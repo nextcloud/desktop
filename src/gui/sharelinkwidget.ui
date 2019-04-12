@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>126</height>
+    <height>136</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -68,7 +68,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QProgressIndicator" name="progressIndicator"/>
+      <widget class="QProgressIndicator" name="progressIndicator" native="true"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">
@@ -84,9 +84,19 @@
       </spacer>
      </item>
      <item>
-      <widget class="QCheckBox" name="enableShareLink">
+      <widget class="QPushButton" name="enableShareLink">
        <property name="text">
-        <string>Enable</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../client.qrc">
+         <normaloff>:/client/resources/add.png</normaloff>:/client/resources/add.png</iconset>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
