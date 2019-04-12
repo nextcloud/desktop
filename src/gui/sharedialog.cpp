@@ -219,6 +219,7 @@ void ShareDialog::slotAdjustScrollWidgetSize()
 
 ShareDialog::~ShareDialog()
 {
+    _linkWidgetList.clear();
     delete _ui;
 }
 
@@ -327,6 +328,10 @@ void ShareDialog::slotAccountStateChanged(int state)
         _userGroupWidget->setEnabled(enabled);
     }
 
-
+    if(_linkWidgetList.size() > 0){
+        foreach(ShareLinkWidget *widget, _linkWidgetList){
+            widget->setEnabled(state);
+        }
+    }
 }
 }
