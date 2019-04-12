@@ -2693,6 +2693,30 @@ void VfsWindows::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
 		qDebug() << "Error in obtaining the results, comes null";
 }
 
+QList<QString> VfsWindows::getLogicalDrives()
+{
+	QList<QString> availableLetters = {
+		"A:/", "B:/", "C:/", "D:/", "E:/", "F:/", "G:/", "H:/", "I:/", "J:/", "K:/", "L:/", "M:/", "N:/", "O:/", "P:/", "Q:/", "R:/", "S:/", "T:/", "U:/", "V:/", "W:/", "X:/", "Y:/", "Z:/"
+	};
+
+	foreach(const QStorageInfo &storage, QStorageInfo::mountedVolumes()) {
+		int index = 0;
+		foreach(QString item, availableLetters) {
+			if (item == storage.rootPath()) {
+				availableLetters.removeAt(index);
+			}
+
+			index++;
+		}
+	}
+
+	foreach(QString item, availableLetters) {
+		qDebug() << item;
+	}
+
+	return availableLetters;
+}
+
 void VfsWindows::initialize(QString rootPath, WCHAR mountLetter, AccountState *accountState_)
 {
 	this->rootPath = rootPath;
