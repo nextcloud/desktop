@@ -22,9 +22,22 @@
 #include "discoveryphase.h"
 #include "accountstate.h"
 #include "configfile.h"
+
 #include <QString>
+#include <QMutex>
+#include <QWaitCondition>
+#include <QRunnable>
+#include <QThreadPool>
+#include <QStorageInfo>
 
 namespace OCC {
+
+class CleanIgnoredTask : public QObject, public QRunnable
+{
+        Q_OBJECT
+public:
+        void run();
+};
 
 class VfsWindows : public QObject
 {
@@ -57,8 +70,11 @@ public:
 	void startDeleteDirectoryAtPath(QString path, QVariantMap &error);
 	void endDeleteDirectoryAtPath(QString path, QVariantMap &error);
 
+	QList<QString> ignoredList;
+
 private:
 	VfsWindows();
+    QList<QString> getLogicalDrives();
     static VfsWindows *_instance;
     QMap<QString, OCC::DiscoveryDirectoryResult *> _fileListMap;
     QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
