@@ -26,6 +26,8 @@
 #include "propagateremotedelete.h"
 #include "propagatedownload.h"
 #include "common/asserts.h"
+#include "configfile.h"
+
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -1035,7 +1037,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
-    if (!_hasNoneFiles && _hasRemoveFile) {
+    ConfigFile cfgFile;
+    if (!_hasNoneFiles && _hasRemoveFile && cfgFile.promptDeleteFiles()) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
         bool cancel = false;
         emit aboutToRemoveAllFiles(syncItems.first()->_direction, &cancel);
