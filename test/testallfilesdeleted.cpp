@@ -204,7 +204,24 @@ private slots:
             //Server support finger print, but none is set.
             fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint></oc:data-fingerprint>";
         }
+
+        int fingerprintRequests = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation, const QNetworkRequest &request, QIODevice *stream) -> QNetworkReply * {
+            auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
+            if (verb == "PROPFIND") {
+                auto data = stream->readAll();
+                if (data.contains("data-fingerprint")) {
+                    if (request.url().path().endsWith("webdav/"))
+                        ++fingerprintRequests;
+                    else
+                        fingerprintRequests = -10000; // fingerprint queried on incorrect path
+                }
+            }
+            return nullptr;
+        });
+
         QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fingerprintRequests, 1);
         // First sync, we did not change the finger print, so the file should be downloaded as normal
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(fakeFolder.currentRemoteState().find("C/c1")->contentChar, 'N');
@@ -230,6 +247,7 @@ private slots:
         fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>new_finger_print</oc:data-fingerprint>";
 
         QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fingerprintRequests, 2);
         auto currentState = fakeFolder.currentLocalState();
         // Altough the local file is kept as a conflict, the server file is downloaded
         QCOMPARE(currentState.find("A/a1")->contentChar, 'O');
