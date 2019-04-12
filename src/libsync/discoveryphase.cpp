@@ -180,6 +180,9 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
         if (job->_dirItem)
             emit itemDiscovered(job->_dirItem);
         job->deleteLater();
+
+        // Once the main job has finished recurse here to execute the remaining
+        // jobs for queued deleted directories.
         if (!_queuedDeletedDirectories.isEmpty()) {
             auto nextJob = _queuedDeletedDirectories.take(_queuedDeletedDirectories.firstKey());
             startJob(nextJob);

@@ -79,9 +79,7 @@ struct LocalInfo
 
 
 /**
- * @brief The DiscoverySingleDirectoryJob class
- *
- * Run in the main thread, reporting to the DiscoveryJobMainThread object
+ * @brief Run a PROPFIND on a directory and process the results for Discovery
  *
  * @ingroup libsync
  */
@@ -90,7 +88,7 @@ class DiscoverySingleDirectoryJob : public QObject
     Q_OBJECT
 public:
     explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
-    // Specify thgat this is the root and we need to check the data-fingerprint
+    // Specify that this is the root and we need to check the data-fingerprint
     void setIsRootPath() { _isRootPath = true; }
     void start();
     void abort();
@@ -130,15 +128,41 @@ class DiscoveryPhase : public QObject
 {
     Q_OBJECT
 
+    friend class ProcessDirectoryJob;
+
     ProcessDirectoryJob *_currentRootJob = nullptr;
 
-    friend class ProcessDirectoryJob;
+    /** Maps the db-path of a deleted item to its SyncFileItem.
+     *
+     * If it turns out the item was renamed after all, the instruction
+     * can be changed. See findAndCancelDeletedJob(). Note that
+     * itemDiscovered() will already have been emitted for the item.
+     */
     QMap<QString, SyncFileItemPtr> _deletedItem;
+
+    /** Maps the db-path of a deleted folder to its queued job.
+     *
+     * If a folder is deleted and must be recursed into, its job isn't
+     * executed immediately. Instead it's queued here and only run
+     * once the rest of the discovery has finished and we are certain
+     * that the folder wasn't just renamed. This avoids running the
+     * discovery on contents in the old location of renamed folders.
+     *
+     * See findAndCancelDeletedJob().
+     */
     QMap<QString, ProcessDirectoryJob *> _queuedDeletedDirectories;
+
     // map source (original path) -> destinations (current server or local path)
     QMap<QString, QString> _renamedItemsRemote;
     QMap<QString, QString> _renamedItemsLocal;
+
+    /** Returns whether the db-path has been renamed locally or on the remote.
+     *
+     * Useful for avoiding processing of items that have already been claimed in
+     * a rename (would otherwise be discovered as deletions).
+     */
     bool isRenamed(const QString &p) { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
+
     int _currentlyActiveJobs = 0;
 
     // both must contain a sorted list
@@ -161,11 +185,16 @@ class DiscoveryPhase : public QObject
      */
     QString adjustRenamedPath(const QString &original, SyncFileItem::Direction) const;
 
-    /**
-     * Check if there is already a job to delete that item.
+    /** If the db-path is scheduled for deletion, abort it.
+     *
+     * Check if there is already a job to delete that item:
      * If that's not the case, return { false, QByteArray() }.
-     * If there is such a job, cancel that job and return true and the old etag
-     * This is useful to detect if a file has been renamed to something else.
+     * If there is such a job, cancel that job and return true and the old etag.
+     *
+     * Used when having detected a rename: The rename source may have been
+     * discovered before and would have looked like a delete.
+     *
+     * See _deletedItem and _queuedDeletedDirectories.
      */
     QPair<bool, QByteArray> findAndCancelDeletedJob(const QString &originalPath);
 
