@@ -1871,8 +1871,8 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
-        <source>There is no enough free space in the local folder!</source>
-        <translation>В локалната папка няма достатъчно свободно място!</translation>
+        <source>There isn&apos;t enough free space in the local folder!</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2563,7 +2563,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="155"/>
         <source>Activity</source>
-        <translation>Активности</translation>
+        <translation>Активност</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="106"/>
@@ -3760,7 +3760,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
         <source>Server Address</source>
-        <translation type="unfinished"/>
+        <translation>Адрес на сървъра</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>

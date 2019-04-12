@@ -298,7 +298,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="931"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 kun la konto &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>%1 per la konto &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="937"/>
@@ -1329,7 +1329,7 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>&amp;Uzu unukolorajn piktogramojn</translation>
+        <translation>&amp;Uzi unukolorajn piktogramojn</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
@@ -1886,7 +1886,7 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
-        <source>There is no enough free space in the local folder!</source>
+        <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Ne estas sufiĉe da libera spaco en la loka dosierujo!</translation>
     </message>
 </context>
@@ -3379,7 +3379,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="124"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation>Vi estis ensalutita de %1 kiel uzanto %2. Bv. re-ensaluti.</translation>
+        <translation>Vi estis elsalutita de %1 kiel uzanto %2. Bv. re-ensaluti.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="141"/>
@@ -3991,7 +3991,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Servila versio elŝutita, la ŝanĝita loka dosiero estis kopiita en konfliktan dosieron</translation>
+        <translation>Servila versio elŝutita; la ŝanĝita loka dosiero estis kopiita en konfliktan dosieron</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>

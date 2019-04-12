@@ -519,7 +519,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="183"/>
         <source>Synced</source>
-        <translation type="unfinished"/>
+        <translation>同期した</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="218"/>
@@ -1289,7 +1289,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>サーバーと通知を表示する</translation>
+        <translation>サーバーと通知を表示(&amp;N)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1299,7 +1299,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="195"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>指定された容量以上のフォルダーは同期前に確認する</translation>
+        <translation>指定された容量以上のフォルダーは同期前に確認</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="215"/>
@@ -1310,7 +1310,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="239"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>外部ストレージと同期する前に確認する</translation>
+        <translation>外部ストレージと同期する前に確認</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -1873,7 +1873,7 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
-        <source>There is no enough free space in the local folder!</source>
+        <source>There isn&apos;t enough free space in the local folder!</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2379,7 +2379,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
         <location filename="../src/libsync/propagateupload.cpp" line="602"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>%1 をアップロードするとフォルダーのクォータを超えます</translation>
+        <translation>%1 をアップロードするとフォルダーのクオータを超えます</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
@@ -3194,7 +3194,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="483"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>同期機能はシンボリックリンクをサポートしていません。</translation>
+        <translation>同期機能はシンボリックリンクをサポートしていません</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="486"/>
@@ -3646,7 +3646,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation>指定された容量以上のフォルダーは同期前に確認する</translation>
+        <translation>指定された容量以上のフォルダーは同期前に確認</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
@@ -3657,7 +3657,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation>外部ストレージと同期する前に確認する(&amp;X)</translation>
+        <translation>外部ストレージと同期する前に確認(&amp;X)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>

@@ -1891,8 +1891,8 @@ vragen om extra autorisaties tijdens installatie.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
-        <source>There is no enough free space in the local folder!</source>
-        <translation>Er is niet genoeg vrije ruimte in de lokale map!</translation>
+        <source>There isn&apos;t enough free space in the local folder!</source>
+        <translation>Er is niet genoeg ruimte beschikbaar in de lokale map!</translation>
     </message>
 </context>
 <context>
@@ -3781,7 +3781,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
         <source>Server Address</source>
-        <translation type="unfinished"/>
+        <translation>Serveradres</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>

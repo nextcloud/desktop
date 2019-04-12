@@ -8,6 +8,7 @@
 #include <QtTest>
 #include "syncenginetestutils.h"
 #include <syncengine.h>
+#include <configfile.h>
 
 using namespace OCC;
 
@@ -48,6 +49,8 @@ private slots:
     {
         QFETCH(bool, deleteOnRemote);
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ConfigFile config;
+        config.setPromptDeleteFiles(true);
 
         //Just set a blacklist so we can check it is still there. This directory does not exists but
         // that does not matter for our purposes.

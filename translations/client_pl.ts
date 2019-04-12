@@ -1460,9 +1460,9 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Pliki lub foldery pasujące do szablonu nie będą zsynchronizowane.
+        <translation>Pliki lub katalogi pasujące do szablonu nie będą zsynchronizowane.
 
-Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawnienia katalogu dopuszczają usuwanie.</translation>
+Elementy, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawnienia katalogu dopuszczają usuwanie. Jest to przydatne dla metadanych.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
@@ -1887,8 +1887,8 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
-        <source>There is no enough free space in the local folder!</source>
-        <translation>Brakuje wolnego miejsca w folderze lokalnym!</translation>
+        <source>There isn&apos;t enough free space in the local folder!</source>
+        <translation>W katalogu lokalnym nie ma wystarczającej ilości wolnego miejsca!</translation>
     </message>
 </context>
 <context>
@@ -2105,7 +2105,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation>tworzenie folderu w usłudze NextCloud: %1</translation>
+        <translation>tworzenie katalogu w Nextcloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
@@ -3316,7 +3316,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1482"/>
         <source>Move not allowed, item restored</source>
-        <translation>Przenoszenie niedozwolone, obiekt przywrócony</translation>
+        <translation>Przenoszenie niedozwolone, element przywrócony</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1493"/>
@@ -4137,7 +4137,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
         <source>Could not open email client</source>
-        <translation>Nie można uruchomić klienta email</translation>
+        <translation>Nie można uruchomić klienta e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
