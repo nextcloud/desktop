@@ -1179,7 +1179,9 @@ void ownCloudGui::slotAbout()
     QIcon appIcon = Theme::instance()->applicationIcon();
     // Assume icon is always small enough to fit an about dialog?
     qDebug() << appIcon.availableSizes().last();
-    msgBox->setIconPixmap(appIcon.pixmap(appIcon.availableSizes().last()));
+    QPixmap iconPixmap = appIcon.pixmap(appIcon.availableSizes().last());
+    iconPixmap.setDevicePixelRatio(2);
+    msgBox->setIconPixmap(iconPixmap);
     msgBox->show();
 }
 
