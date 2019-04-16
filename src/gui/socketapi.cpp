@@ -979,13 +979,13 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         // TODO: Should be a submenu, should use icons
         auto makePinContextMenu = [&](bool makeAvailableLocally, bool freeSpace) {
             listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:")
-                                  + vfsItemAvailabilityToString(*combined, isFolderOrMultiple));
+                                  + Utility::vfsCurrentAvailabilityText(*combined, isFolderOrMultiple));
             listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY:")
                                   + (makeAvailableLocally ? QLatin1String(":") : QLatin1String("d:"))
-                                  + tr("Make always available locally"));
+                                  + Utility::vfsPinActionText());
             listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_ONLINE_ONLY:")
                                   + (freeSpace ? QLatin1String(":") : QLatin1String("d:"))
-                                  + tr("Free up local space"));
+                                  + Utility::vfsFreeSpaceActionText());
         };
 
         switch (*combined) {

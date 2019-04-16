@@ -21,6 +21,8 @@
 #include <QMessageBox>
 #include <QUrlQuery>
 
+#include "common/asserts.h"
+
 using namespace OCC;
 
 Q_LOGGING_CATEGORY(lcUtility, "gui.utility", QtInfoMsg)
@@ -65,4 +67,33 @@ bool Utility::openEmailComposer(const QString &subject, const QString &body, QWi
         return false;
     }
     return true;
+}
+
+QString Utility::vfsCurrentAvailabilityText(VfsItemAvailability availability, bool forFolder)
+{
+    switch(availability) {
+    case VfsItemAvailability::AlwaysLocal:
+        return QCoreApplication::translate("utility", "Currently always available locally");
+    case VfsItemAvailability::AllHydrated:
+        return QCoreApplication::translate("utility", "Currently available locally");
+    case VfsItemAvailability::SomeDehydrated:
+        if (forFolder) {
+            return QCoreApplication::translate("utility", "Currently some available online only");
+        } else {
+            return QCoreApplication::translate("utility", "Currently available online only");
+        }
+    case VfsItemAvailability::OnlineOnly:
+        return QCoreApplication::translate("utility", "Currently available online only");
+    }
+    ENFORCE(false);
+}
+
+QString Utility::vfsPinActionText()
+{
+    return QCoreApplication::translate("utility", "Make always available locally");
+}
+
+QString Utility::vfsFreeSpaceActionText()
+{
+    return QCoreApplication::translate("utility", "Free up local space");
 }
