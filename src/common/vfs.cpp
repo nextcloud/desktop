@@ -205,22 +205,3 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
     qCInfo(lcPlugin) << "Created VFS instance from plugin" << pluginPath;
     return vfs;
 }
-
-QString OCC::vfsItemAvailabilityToString(VfsItemAvailability availability, bool forFolder)
-{
-    switch(availability) {
-    case VfsItemAvailability::AlwaysLocal:
-        return Vfs::tr("Always available locally");
-    case VfsItemAvailability::AllHydrated:
-        return Vfs::tr("Available locally");
-    case VfsItemAvailability::SomeDehydrated:
-        if (forFolder) {
-            return Vfs::tr("Some available online only");
-        } else {
-            return Vfs::tr("Available online only");
-        }
-    case VfsItemAvailability::OnlineOnly:
-        return Vfs::tr("Available online only");
-    }
-    ENFORCE(false);
-}

@@ -300,7 +300,4 @@ OCSYNC_EXPORT Vfs::Mode bestAvailableVfsMode();
 /// Create a VFS instance for the mode, returns nullptr on failure.
 OCSYNC_EXPORT std::unique_ptr<Vfs> createVfsFromPlugin(Vfs::Mode mode);
 
-/// Convert availability to translated string
-OCSYNC_EXPORT QString vfsItemAvailabilityToString(VfsItemAvailability availability, bool forFolder);
-
 } // namespace OCC
