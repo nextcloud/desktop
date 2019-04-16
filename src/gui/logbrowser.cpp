@@ -118,6 +118,7 @@ void LogBrowser::togglePermanentLogging(bool enabled)
     if (enabled) {
         if (!logger->isLoggingToFile()) {
             logger->setupTemporaryFolderLogDir();
+            logger->enterNextLogFile();
         }
     } else {
         logger->disableTemporaryFolderLogDir();
