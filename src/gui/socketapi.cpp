@@ -750,7 +750,7 @@ void SocketApi::emailPrivateLink(const QString &link)
     Utility::openEmailComposer(
         tr("I shared something with you"),
         link,
-        0);
+        nullptr);
 }
 
 void OCC::SocketApi::openPrivateLink(const QString &link)
@@ -953,19 +953,19 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         auto merge = [](VfsItemAvailability lhs, VfsItemAvailability rhs) {
             if (lhs == rhs)
                 return lhs;
-            if (lhs == VfsItemAvailability::SomeDehydrated || rhs == VfsItemAvailability::SomeDehydrated
-                || lhs == VfsItemAvailability::OnlineOnly || rhs == VfsItemAvailability::OnlineOnly) {
-                return VfsItemAvailability::SomeDehydrated;
-            }
-            return VfsItemAvailability::AllHydrated;
+            auto l = int(lhs) < int(rhs) ? lhs : rhs; // reduce cases by sorting
+            auto r = int(lhs) < int(rhs) ? rhs : lhs;
+            if (l == VfsItemAvailability::AlwaysLocal && r == VfsItemAvailability::AllHydrated)
+                return VfsItemAvailability::AllHydrated;
+            if (l == VfsItemAvailability::AllDehydrated && r == VfsItemAvailability::OnlineOnly)
+                return VfsItemAvailability::AllDehydrated;
+            return VfsItemAvailability::Mixed;
         };
-        bool isFolderOrMultiple = false;
         for (const auto &file : files) {
             auto fileData = FileData::get(file);
-            isFolderOrMultiple = QFileInfo(fileData.localPath).isDir();
             auto availability = folder->vfs().availability(fileData.folderRelativePath);
             if (!availability)
-                availability = VfsItemAvailability::SomeDehydrated; // db error
+                availability = VfsItemAvailability::Mixed; // db error
             if (!combined) {
                 combined = availability;
             } else {
@@ -973,13 +973,11 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             }
         }
         ENFORCE(combined);
-        if (files.size() > 1)
-            isFolderOrMultiple = true;
 
         // TODO: Should be a submenu, should use icons
         auto makePinContextMenu = [&](bool makeAvailableLocally, bool freeSpace) {
             listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:")
-                                  + Utility::vfsCurrentAvailabilityText(*combined, isFolderOrMultiple));
+                                  + Utility::vfsCurrentAvailabilityText(*combined));
             listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY:")
                                   + (makeAvailableLocally ? QLatin1String(":") : QLatin1String("d:"))
                                   + Utility::vfsPinActionText());
@@ -993,11 +991,10 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             makePinContextMenu(false, true);
             break;
         case VfsItemAvailability::AllHydrated:
+        case VfsItemAvailability::Mixed:
             makePinContextMenu(true, true);
             break;
-        case VfsItemAvailability::SomeDehydrated:
-            makePinContextMenu(true, true);
-            break;
+        case VfsItemAvailability::AllDehydrated:
         case VfsItemAvailability::OnlineOnly:
             makePinContextMenu(true, false);
             break;

@@ -41,7 +41,7 @@ namespace Utility {
      *
      * This will be used in context menus to describe the current state.
      */
-    QString vfsCurrentAvailabilityText(VfsItemAvailability availability, bool forFolder);
+    QString vfsCurrentAvailabilityText(VfsItemAvailability availability);
 
     /** Translated text for "making items always available locally" */
     QString vfsPinActionText();

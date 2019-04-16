@@ -1061,21 +1061,23 @@ private slots:
         QCOMPARE(*vfs->availability("local/file1"), VfsItemAvailability::AlwaysLocal);
         QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
         QCOMPARE(*vfs->availability("online/file1.owncloud"), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::SomeDehydrated);
-        QCOMPARE(*vfs->availability("unspec/file1.owncloud"), VfsItemAvailability::SomeDehydrated);
+        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("unspec/file1.owncloud"), VfsItemAvailability::AllDehydrated);
 
         // Subitem pin states can ruin "pure" availabilities
         setPin("local/sub", PinState::OnlineOnly);
         QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AllHydrated);
         setPin("online/sub", PinState::Unspecified);
-        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::SomeDehydrated);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::AllDehydrated);
 
         triggerDownload(fakeFolder, "unspec/file1");
         setPin("local/file2", PinState::OnlineOnly);
+        setPin("online/file2", PinState::AlwaysLocal);
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllHydrated);
-        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::SomeDehydrated);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::Mixed);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::Mixed);
 
         vfs->setPinState("local", PinState::AlwaysLocal);
         vfs->setPinState("online", PinState::OnlineOnly);
