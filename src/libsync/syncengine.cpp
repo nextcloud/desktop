@@ -1216,7 +1216,6 @@ void SyncEngine::finalize(bool success)
     _thread.wait();
 
     _csync_ctx->reinitialize();
-    _journal->close();
 
     qCInfo(lcEngine) << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished")) << "ms";
     _stopWatch.stop();
