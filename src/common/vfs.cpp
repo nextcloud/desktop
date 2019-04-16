@@ -83,15 +83,17 @@ Optional<VfsItemAvailability> Vfs::availabilityInDb(const QString &folderPath, c
 {
     auto pin = _setupParams.journal->internalPinStates().effectiveForPathRecursive(pinPath.toUtf8());
     // not being able to retrieve the pin state isn't too bad
-    Optional<bool> hasDehydrated = _setupParams.journal->hasDehydratedFiles(folderPath.toUtf8());
-    if (!hasDehydrated)
+    auto hydrationStatus = _setupParams.journal->hasHydratedOrDehydratedFiles(folderPath.toUtf8());
+    if (!hydrationStatus)
         return {};
 
-    if (*hasDehydrated) {
+    if (hydrationStatus->hasDehydrated) {
+        if (hydrationStatus->hasHydrated)
+            return VfsItemAvailability::Mixed;
         if (pin && *pin == PinState::OnlineOnly)
             return VfsItemAvailability::OnlineOnly;
         else
-            return VfsItemAvailability::SomeDehydrated;
+            return VfsItemAvailability::AllDehydrated;
     } else {
         if (pin && *pin == PinState::AlwaysLocal)
             return VfsItemAvailability::AlwaysLocal;

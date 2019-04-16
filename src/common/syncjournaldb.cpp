@@ -1328,18 +1328,16 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     return _setFileRecordLocalMetadataQuery.exec();
 }
 
-Optional<bool> SyncJournalDb::hasDehydratedFiles(const QByteArray &filename)
+Optional<SyncJournalDb::HasHydratedDehydrated> SyncJournalDb::hasHydratedOrDehydratedFiles(const QByteArray &filename)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
         return {};
 
     auto &query = _countDehydratedFilesQuery;
-    static_assert(ItemTypeVirtualFile == 4 && ItemTypeVirtualFileDownload == 5, "");
     if (!query.initOrReset(QByteArrayLiteral(
-            "SELECT count(*) FROM metadata"
-            " WHERE (" IS_PREFIX_PATH_OR_EQUAL("?1", "path") " OR ?1 == '')"
-            " AND (type == 4 OR type == 5);"), _db)) {
+            "SELECT DISTINCT type FROM metadata"
+            " WHERE (" IS_PREFIX_PATH_OR_EQUAL("?1", "path") " OR ?1 == '');"), _db)) {
         return {};
     }
 
@@ -1347,10 +1345,21 @@ Optional<bool> SyncJournalDb::hasDehydratedFiles(const QByteArray &filename)
     if (!query.exec())
         return {};
 
-    if (!query.next().hasData)
-        return {};
+    HasHydratedDehydrated result;
+    forever {
+        auto next = query.next();
+        if (!next.ok)
+            return {};
+        if (!next.hasData)
+            break;
+        auto type = static_cast<ItemType>(query.intValue(0));
+        if (type == ItemTypeFile || type == ItemTypeVirtualFileDehydration)
+            result.hasHydrated = true;
+        if (type == ItemTypeVirtualFile || type == ItemTypeVirtualFileDownload)
+            result.hasDehydrated = true;
+    }
 
-    return query.intValue(0) > 0;
+    return result;
 }
 
 static void toDownloadInfo(SqlQuery &query, SyncJournalDb::DownloadInfo *res)

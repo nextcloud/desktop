@@ -69,19 +69,17 @@ bool Utility::openEmailComposer(const QString &subject, const QString &body, QWi
     return true;
 }
 
-QString Utility::vfsCurrentAvailabilityText(VfsItemAvailability availability, bool forFolder)
+QString Utility::vfsCurrentAvailabilityText(VfsItemAvailability availability)
 {
     switch(availability) {
     case VfsItemAvailability::AlwaysLocal:
         return QCoreApplication::translate("utility", "Currently always available locally");
     case VfsItemAvailability::AllHydrated:
         return QCoreApplication::translate("utility", "Currently available locally");
-    case VfsItemAvailability::SomeDehydrated:
-        if (forFolder) {
-            return QCoreApplication::translate("utility", "Currently some available online only");
-        } else {
-            return QCoreApplication::translate("utility", "Currently available online only");
-        }
+    case VfsItemAvailability::Mixed:
+        return QCoreApplication::translate("utility", "Currently some available online only");
+    case VfsItemAvailability::AllDehydrated:
+        return QCoreApplication::translate("utility", "Currently available online only");
     case VfsItemAvailability::OnlineOnly:
         return QCoreApplication::translate("utility", "Currently available online only");
     }
