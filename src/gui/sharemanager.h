@@ -242,14 +242,18 @@ public:
      * @param path The path of the linkshare relative to the user folder on the server
      * @param name The name of the created share, may be empty
      * @param password The password of the share, may be empty
+     * @param expireDate Expire date for share, may be null
+     * @param permissions Desired permissions, SharePermissionDefault lets server decide
      *
      * On success the signal linkShareCreated is emitted
-     * For older server the linkShareRequiresPassword signal is emitted when it seems appropiate
+     * On 403 error the linkShareCreationForbidden error is emitted (if params forbid creation)
      * In case of a server error the serverError signal is emitted
      */
     void createLinkShare(const QString &path,
         const QString &name,
-        const QString &password);
+        const QString &password = QString(),
+        const QDate &expireDate = QDate(),
+        const Share::Permissions permissions = SharePermissionDefault);
 
     /**
      * Tell the manager to create a new share
@@ -282,13 +286,14 @@ signals:
     void sharesFetched(const QList<QSharedPointer<Share>> &shares);
     void serverError(int code, const QString &message);
 
-    /** Emitted when creating a link share with password fails.
+    /** Emitted when creating a link share creation fails with 403.
      *
      * @param message the error message reported by the server
      *
-     * See createLinkShare().
+     * See createLinkShare(). Usually for "needs password" but with
+     * server plugins it can also happen for other issues.
      */
-    void linkShareRequiresPassword(const QString &message);
+    void linkShareCreationForbidden(const QString &message);
 
 private slots:
     void slotSharesFetched(const QJsonDocument &reply);

@@ -28,24 +28,6 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_create">
-     <item>
-      <widget class="QLineEdit" name="nameLineEdit">
-       <property name="placeholderText">
-        <string>Enter a name to create a new public link...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="createShareButton">
-       <property name="text">
-        <string>&amp;Create new</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="QTableWidget" name="linkShares">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
@@ -289,6 +271,45 @@
           </spacer>
          </item>
         </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="create" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_create">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="nameLabel">
+        <property name="text">
+         <string>Name:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="nameLineEdit">
+        <property name="placeholderText">
+         <string>Enter name of new share...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="createShareButton">
+        <property name="text">
+         <string>&amp;Create</string>
+        </property>
        </widget>
       </item>
      </layout>

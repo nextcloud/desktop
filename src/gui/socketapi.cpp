@@ -540,7 +540,7 @@ private slots:
 
         // otherwise create a new one
         qCDebug(lcPublicLink) << "Creating new share";
-        _shareManager.createLinkShare(_localFile, shareName, QString());
+        _shareManager.createLinkShare(_localFile, shareName);
     }
 
     void linkShareCreated(const QSharedPointer<LinkShare> &share)
