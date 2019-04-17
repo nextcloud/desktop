@@ -97,16 +97,16 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
     size_t len_filename = filename.size();
 
     // Drive letters
-    if (len_filename == 2 && filename[1] == ':') {
-        if (filename[0] >= 'a' && filename[0] <= 'z') {
+    if (len_filename == 2 && filename.at(1) == ':') {
+        if (filename.at(0) >= 'a' && filename.at(0) <= 'z') {
             return true;
         }
-        if (filename[0] >= 'A' && filename[0] <= 'Z') {
+        if (filename.at(0) >= 'A' && filename.at(0) <= 'Z') {
             return true;
         }
     }
 
-    if (len_filename == 3 || (len_filename > 3 && filename[3] == '.')) {
+    if (len_filename == 3 || (len_filename > 3 && filename.at(3) == '.')) {
         for (const char *word : win_reserved_words_3) {
             if (filename.left(3).compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
                 return true;
@@ -114,7 +114,7 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
         }
     }
 
-    if (len_filename == 4 || (len_filename > 4 && filename[4] == '.')) {
+    if (len_filename == 4 || (len_filename > 4 && filename.at(4) == '.')) {
         for (const char *word : win_reserved_words_4) {
             if (filename.left(4).compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
                 return true;
@@ -145,7 +145,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
 
     size_t blen = bname.size();
     // 9 = strlen(".sync_.db")
-    if (blen >= 9 && bname[0] == '.') {
+    if (blen >= 9 && bname.at(0) == '.') {
         if (bname.contains(QLatin1String(".db"))) {
             if (bname.startsWith(QLatin1String("._sync_"), Qt::CaseInsensitive)  // "._sync_*.db*"
                 || bname.startsWith(QLatin1String(".sync_"), Qt::CaseInsensitive) // ".sync_*.db*"
@@ -171,10 +171,10 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     // as '.' is a separator that is not stored internally, so let's
     // not allow to sync those to avoid file loss/ambiguities (#416)
     if (blen > 1) {
-        if (bname[blen-1]== ' ') {
+        if (bname.at(blen-1) == ' ') {
             match = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
             goto out;
-        } else if (bname[blen-1]== '.' ) {
+        } else if (bname.at(blen-1) == '.' ) {
             match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
             goto out;
         }
