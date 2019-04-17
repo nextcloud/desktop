@@ -57,7 +57,7 @@ version 2.6.0 (2019-04-??)
 * Update SQLite to 3.27.2 (if bundled)
 * Many test improvements (like #6358)
 
-version 2.5.4 (2019-03-xx)
+version 2.5.4 (2019-03-19)
 * Crash fix: Infinite recursion for bad paths on Windows (#7041)
 * Crash fix: SocketApi mustn't send if readyRead happens after disconnected (#7044)
 * Fix rare error causing spurious local deletes (#6677)

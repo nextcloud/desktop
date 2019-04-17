@@ -1,4 +1,7 @@
-#!/bin/bash -x
+#!/bin/bash
+
+set -euxo pipefail
+
 L10NDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
 SCRIPTDIR="$L10NDIR/bin"
 PODIR="$L10NDIR/pofiles"

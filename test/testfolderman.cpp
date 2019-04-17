@@ -144,6 +144,19 @@ private slots:
         QVERIFY(!folderman->checkPathValidityForNewFolder("/usr/bin/somefolder").isNull());
 #endif
 
+#ifdef Q_OS_WIN // drive-letter tests
+        if (!QFileInfo("v:/").exists()) {
+            QVERIFY(!folderman->checkPathValidityForNewFolder("v:").isNull());
+            QVERIFY(!folderman->checkPathValidityForNewFolder("v:/").isNull());
+            QVERIFY(!folderman->checkPathValidityForNewFolder("v:/foo").isNull());
+        }
+        if (QFileInfo("c:/").isWritable()) {
+            QVERIFY(folderman->checkPathValidityForNewFolder("c:").isNull());
+            QVERIFY(folderman->checkPathValidityForNewFolder("c:/").isNull());
+            QVERIFY(folderman->checkPathValidityForNewFolder("c:/foo").isNull());
+        }
+#endif
+
         // Invalid paths
         QVERIFY(!folderman->checkPathValidityForNewFolder("").isNull());
 
