@@ -35,6 +35,7 @@ For first Alpha/Beta of a Major or Minor release:
 * [ ] Make sure there is a job for the docs of the new master branch and the current release branch on rotor e.g. http://doc.owncloud.org/desktop/1.X/ exists
 
 For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
+* [ ] Make sure previous major version's branch is merged into current major branch (or everything cherry-picked)
 * [ ] Add last updates to Changelog in the client source repository.
 * [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
 * [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc. Commit the result to the release branch only
