@@ -54,6 +54,7 @@ For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
 * [ ] Announce on https://central.owncloud.org
 * [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there.
 * [ ] Check crash reporter
+* [ ] Update the owncloud hosted auto updater according to https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy  (beta/unstable channel!)
 
 One week before the final release:
 * [ ] Communicate the release schedule on mailinglist release-coordination@owncloud.com. Give a high level overview of the upcoming new features, changes etc.
@@ -122,7 +123,7 @@ On Release Day (for final release):
 A few days after the release (for final release)
 * [ ] Review changes in the release branch, merge back into master
 * [ ] check the crash reporter if auto update is a good idea or we need a new release
-* [ ] Update the owncloud hosted updater according to https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy  
+* [ ] Update the owncloud hosted auto updater according to https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy  
 * [ ] Increment version number in daily builds. Special case: after the last release in a branch, jump forward to the 'next release branch'... That may mean, this is nightly is the same as edge then.
 
 ```
