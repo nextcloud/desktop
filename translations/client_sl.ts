@@ -1189,7 +1189,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Težave se običajno pojavijo, ko je spremljanje obvestil izčrpano. Preverite pogosta vprašanja za več podrobnosti.</translation>
     </message>
 </context>
 <context>
