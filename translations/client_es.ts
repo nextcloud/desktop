@@ -35,7 +35,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>No hay archivos modificados recientemente</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
@@ -50,37 +50,37 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>Abrir página web</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Cambiado recientemente</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pausar sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Ayuda</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configuración</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar sesión</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar cliente de sincronización</translation>
     </message>
 </context>
 <context>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation>No se pueden crear directorios en la papelera</translation>
+        <translation>No se pueden crear carpetas en la papelera</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="218"/>
         <source>Retry all uploads</source>
-        <translation>Volver a intentar todas las subidas</translation>
+        <translation>Reintentar todas las subidas</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="333"/>
@@ -621,7 +621,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="193"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>Se ha producido un error al accedier al archivo de configuracion en %1. Por favor asegúrese de que que el archivo es accesible por su usuario.</translation>
+        <translation>Se ha producido un error al acceder al archivo de configuración en %1. Por favor asegúrese de que el archivo es accesible por su usuario.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="196"/>
@@ -665,12 +665,12 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="993"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Por favor, introduce tu frase de paso de cifrado de extremo a extremo: &lt;br&gt; &lt;br&gt;Usuario:%2&lt;br&gt;Cuenta: %3&lt;br&gt;</translation>
+        <translation>Por favor, introduce la frase de seguridad del cifrado extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Cuenta: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1001"/>
         <source>Enter E2E passphrase</source>
-        <translation>Introduce frase de acceso E2E</translation>
+        <translation>Introduce la frase de acceso E2E</translation>
     </message>
 </context>
 <context>
@@ -859,9 +859,9 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>Los cambios en las carpetas sincronizadas no se han podido rastrear de forma fiable.
+        <translation>Los cambios en las carpetas sincronizadas no se han podido rastrear de manera fiable.
 
-Esto significa que el cliente de sincronización podría no subir los cambios locales inmediatamente, y en lugar de eso solo escaneará buscando cambios locales y los subirá ocasionalmente (cada dos horas por defecto).
+Esto significa que el cliente de sincronización podría no subir inmediatamente los cambios de las carpetas locales, y en lugar de eso solo escaneará buscando cambios locales y los subirá ocasionalmente (cada dos horas por defecto).
 
 %1</translation>
     </message>
@@ -871,9 +871,9 @@ Esto significa que el cliente de sincronización podría no subir los cambios lo
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Todos los archivos en la carpeta de sincronización &apos;%1&apos; han sido eliminados en el servidor.
-Este borrado se sincronizará a tu carpeta de sincronización local, impidiendo disponer de estos archivos a no ser que tengas derechos para restaurarlos.
-Si decides mantener los archivos, se resincronizarán con el servidor si tienes derechos para hacerlo.
+        <translation>Todos los archivos de la carpeta &apos;%1&apos; han sido eliminados en el servidor.
+Este borrado se sincronizará a tu carpeta local, impidiendo disponer de estos archivos a no ser que tengas derechos para restaurarlos.
+Si decides mantener los archivos, se resubirán al servidor si tienes permisos para hacerlo.
 Si decides eliminar los archivos, no podrás disponer de ellos a no ser que seas el propietario.</translation>
     </message>
     <message>
@@ -970,7 +970,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation>La sincronización ha tenido éxito, hay conflictos sin resolver.</translation>
+        <translation>La sincronización ha tenido éxito, pero hay conflictos sin resolver.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -1196,7 +1196,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation>Este problema sucede habitualmente cuando las guardias inotify están agotadas. Comprueba las PMF para más detalles.</translation>
+        <translation>Este problema sucede habitualmente cuando las &quot;inotify watches&quot; están agotadas. Comprueba el FAQ para más detalles.</translation>
     </message>
 </context>
 <context>
@@ -1421,7 +1421,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation>No se ha podido recuperar o crear el enlace público compartido. Erro:
+        <translation>No se ha podido recuperar o crear el enlace público compartido. Error:
 
 %1</translation>
     </message>
@@ -1596,9 +1596,9 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation>Cuando se activa esta opción y no se configuran otros, los registros se escribirán en una carpeta temporal y expirarán después de unas horas. esta configuración persiste tras reiniciar el cliente.
+        <translation>Cuando se activa esta opción y no se configuran otros, los registros se escribirán en una carpeta temporal y caducarán después de unas horas. Esta configuración persiste tras reiniciar el cliente.
 
-Los registros se guardarán en %1</translation>
+Los registros se guardarán en: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -2057,7 +2057,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>No se ha podido guardar el certificado. ¿Quizás la contraseña es errónea?</translation>
+        <translation>No se ha podido guardar el certificado. ¿Quizás la contraseña sea incorrecta?</translation>
     </message>
 </context>
 <context>
@@ -2292,7 +2292,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="662"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo descargado está vacío a pesar de que el servidor comunicó que debería haber sido %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="847"/>
@@ -2741,7 +2741,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="224"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Añadir otro enlace</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="402"/>
@@ -2807,12 +2807,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="374"/>
         <source>Can create</source>
-        <translation>Can create</translation>
+        <translation>Puede crear</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="380"/>
         <source>Can change</source>
-        <translation>Can change</translation>
+        <translation>Puede cambiar</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
@@ -3408,7 +3408,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation>El host &quot;%1&quot; ha ofrecido un certificado inválido. ¿Continuar?</translation>
+        <translation>El host &quot;%1&quot; ha ofrecido un certificado no válido. ¿Continuar?</translation>
     </message>
 </context>
 <context>
@@ -3971,17 +3971,17 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation>La cabecera del archivo de comprobación está mal formada.</translation>
+        <translation>El encabezado del checksum tiene un formato incorrecto.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation>La cabecera del archivo de comprobación contenía un tipo de comprobación desconocido: &apos;%1&apos;</translation>
+        <translation>El encabezado del checksum contenía un tipo de comprobación desconocido: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation>El archivo descargado no coincide con el archivo de comprobación, se volverá a bajar.</translation>
+        <translation>Al archivo descargado no le coincide el checksum, se volverá a bajar.</translation>
     </message>
 </context>
 <context>
