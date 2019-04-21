@@ -279,7 +279,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="542"/>
         <source>Encrypt</source>
-        <translation>Encripta</translation>
+        <translation>Xifra</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="583"/>
