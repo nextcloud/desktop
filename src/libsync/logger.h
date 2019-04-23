@@ -21,6 +21,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <qmutex.h>
+#include <chrono>
 
 #include "common/utility.h"
 #include "owncloudlib.h"
@@ -58,7 +59,7 @@ public:
     void postGuiMessage(const QString &title, const QString &message);
 
     void setLogFile(const QString &name);
-    void setLogExpire(int expire);
+    void setLogExpire(std::chrono::hours expire);
     void setLogDir(const QString &dir);
     void setLogFlush(bool flush);
 
@@ -71,10 +72,10 @@ public:
     /** Sets up default dir log setup.
      *
      * logdir: a temporary folder
-     * logexpire: 4 hours
      * logdebug: true
      *
-     * Used in conjunction with ConfigFile::automaticLogDir
+     * Used in conjunction with ConfigFile::automaticLogDir,
+     * see LogBrowser::setupLoggingFromConfig.
      */
     void setupTemporaryFolderLogDir();
 
@@ -98,7 +99,7 @@ private:
     bool _showTime;
     QFile _logFile;
     bool _doFileFlush;
-    int _logExpire;
+    std::chrono::hours _logExpire;
     bool _logDebug;
     QScopedPointer<QTextStream> _logstream;
     mutable QMutex _mutex;

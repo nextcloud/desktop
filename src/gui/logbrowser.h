@@ -40,11 +40,16 @@ public:
     explicit LogBrowser(QWidget *parent = 0);
     ~LogBrowser();
 
-protected:
-    void closeEvent(QCloseEvent *) Q_DECL_OVERRIDE;
+    /** Sets Logger settings depending on ConfigFile values.
+     *
+     * Currently used for establishing logging to a temporary directory.
+     * Will only enable logging if it isn't enabled already.
+     */
+    static void setupLoggingFromConfig();
 
 protected slots:
     void togglePermanentLogging(bool enabled);
+    void toggleLogDeletion(bool enabled);
 };
 
 } // namespace
