@@ -623,7 +623,7 @@ void FolderMan::slotEtagJobDestroyed(QObject * /*o*/)
 void FolderMan::slotRunOneEtagJob()
 {
     if (_currentEtagJob.isNull()) {
-        Folder *folder;
+        Folder *folder = nullptr;
         foreach (Folder *f, _folderMap) {
             if (f->etagJob()) {
                 // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a seperate queue.

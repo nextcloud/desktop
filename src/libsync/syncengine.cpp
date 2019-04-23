@@ -475,7 +475,7 @@ void SyncEngine::startSync()
     qCInfo(lcEngine) << verStr;
 
     // This creates the DB if it does not exist yet.
-    if (!_journal->isConnected()) {
+    if (!_journal->open()) {
         qCWarning(lcEngine) << "No way to create a sync journal!";
         syncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
         finalize(false);
@@ -618,7 +618,7 @@ void SyncEngine::slotDiscoveryFinished()
     qCInfo(lcEngine) << "#### Discovery end #################################################### " << _stopWatch.addLapTime(QLatin1String("Discovery Finished")) << "ms";
 
     // Sanity check
-    if (!_journal->isConnected()) {
+    if (!_journal->open()) {
         qCWarning(lcEngine) << "Bailing out, DB failure";
         syncError(tr("Cannot open the sync journal"));
         finalize(false);

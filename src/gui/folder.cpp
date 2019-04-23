@@ -484,6 +484,13 @@ void Folder::startVfs()
             _vfs.data(), &Vfs::fileStatusChanged);
 
     _vfs->start(vfsParams);
+
+    // Immediately mark the sqlite temporaries as excluded. They get recreated
+    // on db-open and need to get marked again every time.
+    QString stateDbFile = _journal.databaseFilePath();
+    _journal.open();
+    _vfs->fileStatusChanged(stateDbFile + "-wal", SyncFileStatus::StatusExcluded);
+    _vfs->fileStatusChanged(stateDbFile + "-shm", SyncFileStatus::StatusExcluded);
 }
 
 int Folder::slotDiscardDownloadProgress()
