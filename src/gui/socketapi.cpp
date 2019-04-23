@@ -1154,7 +1154,7 @@ void SocketApi::command_ASYNC_INVOKE_WIDGET_METHOD(const QSharedPointer<SocketAp
         return;
     }
 
-    QMetaObject::invokeMethod(widget, arguments["method"].toString().toLocal8Bit().constData());
+    QMetaObject::invokeMethod(widget, arguments["method"].toString().toUtf8().constData());
     job->resolve();
 }
 
@@ -1168,9 +1168,9 @@ void SocketApi::command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<SocketApi
 
     auto propertyName = job->arguments()[QLatin1String("property")].toString();
 
-    job->resolve(widget->property(propertyName.toLocal8Bit().constData())
+    job->resolve(widget->property(propertyName.toUtf8().constData())
                      .toString()
-                     .toLocal8Bit()
+                     .toUtf8()
                      .constData());
 }
 
@@ -1182,8 +1182,8 @@ void SocketApi::command_ASYNC_SET_WIDGET_PROPERTY(const QSharedPointer<SocketApi
         job->reject(QLatin1String("widget not found"));
         return;
     }
-    widget->setProperty(arguments["property"].toString().toLocal8Bit().constData(),
-                        arguments["value"].toString().toLocal8Bit().constData());
+    widget->setProperty(arguments["property"].toString().toUtf8().constData(),
+                        arguments["value"].toString().toUtf8().constData());
     job->resolve();
 }
 
@@ -1200,8 +1200,8 @@ void SocketApi::command_ASYNC_WAIT_FOR_WIDGET_SIGNAL(const QSharedPointer<Socket
 
     auto signalSignature = arguments["signalSignature"].toString();
     signalSignature.prepend("2");
-    auto local8bit = signalSignature.toLocal8Bit();
-    auto signalSignatureFinal = local8bit.constData();
+    auto utf8 = signalSignature.toUtf8();
+    auto signalSignatureFinal = utf8.constData();
     connect(widget, signalSignatureFinal, closure, SLOT(closureSlot()), Qt::QueuedConnection);
 }
 
