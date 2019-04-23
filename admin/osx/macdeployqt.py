@@ -43,7 +43,6 @@ LIBRARY_SEARCH_PATH=[
 ]
 
 QT_PLUGINS = [
-    'sqldrivers/libqsqlite.dylib',
     'platforms/libqcocoa.dylib',
     'imageformats/libqgif.dylib',
     'imageformats/libqico.dylib',
