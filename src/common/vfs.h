@@ -99,6 +99,15 @@ public:
     static QString modeToString(Mode mode);
     static Optional<Mode> modeFromString(const QString &str);
 
+    enum class AvailabilityError
+    {
+        // Availability can't be retrieved due to db error
+        DbError,
+        // Availability not available since the item doesn't exist
+        NoSuchItem,
+    };
+    using AvailabilityResult = Result<VfsItemAvailability, AvailabilityError>;
+
 public:
     explicit Vfs(QObject* parent = nullptr);
     virtual ~Vfs();
@@ -204,6 +213,8 @@ public:
      * plugins will override it to retrieve the state from elsewhere.
      *
      * folderPath is relative to the sync folder. Can be "" for root folder.
+     *
+     * Returns none on retrieval error.
      */
     virtual Optional<PinState> pinState(const QString &folderPath) = 0;
 
@@ -214,7 +225,7 @@ public:
      *
      * folderPath is relative to the sync folder. Can be "" for root folder.
      */
-    virtual Optional<VfsItemAvailability> availability(const QString &folderPath) = 0;
+    virtual AvailabilityResult availability(const QString &folderPath) = 0;
 
 public slots:
     /** Update in-sync state based on SyncFileStatusTracker signal.
@@ -247,7 +258,7 @@ protected:
     bool setPinStateInDb(const QString &folderPath, PinState state);
     Optional<PinState> pinStateInDb(const QString &folderPath);
     // sadly for virtual files the path in the metadata table can differ from path in 'flags'
-    Optional<VfsItemAvailability> availabilityInDb(const QString &folderPath, const QString &pinPath);
+    AvailabilityResult availabilityInDb(const QString &folderPath, const QString &pinPath);
 
     // the parameters passed to start()
     VfsSetupParams _setupParams;
@@ -282,7 +293,7 @@ public:
 
     bool setPinState(const QString &, PinState) override { return true; }
     Optional<PinState> pinState(const QString &) override { return PinState::AlwaysLocal; }
-    Optional<VfsItemAvailability> availability(const QString &) override { return VfsItemAvailability::AlwaysLocal; }
+    AvailabilityResult availability(const QString &) override { return VfsItemAvailability::AlwaysLocal; }
 
 public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}

@@ -953,26 +953,29 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         auto merge = [](VfsItemAvailability lhs, VfsItemAvailability rhs) {
             if (lhs == rhs)
                 return lhs;
-            auto l = int(lhs) < int(rhs) ? lhs : rhs; // reduce cases by sorting
-            auto r = int(lhs) < int(rhs) ? rhs : lhs;
-            if (l == VfsItemAvailability::AlwaysLocal && r == VfsItemAvailability::AllHydrated)
+            if (int(lhs) > int(rhs))
+                std::swap(lhs, rhs); // reduce cases ensuring lhs < rhs
+            if (lhs == VfsItemAvailability::AlwaysLocal && rhs == VfsItemAvailability::AllHydrated)
                 return VfsItemAvailability::AllHydrated;
-            if (l == VfsItemAvailability::AllDehydrated && r == VfsItemAvailability::OnlineOnly)
+            if (lhs == VfsItemAvailability::AllDehydrated && rhs == VfsItemAvailability::OnlineOnly)
                 return VfsItemAvailability::AllDehydrated;
             return VfsItemAvailability::Mixed;
         };
         for (const auto &file : files) {
             auto fileData = FileData::get(file);
             auto availability = folder->vfs().availability(fileData.folderRelativePath);
-            if (!availability)
-                availability = VfsItemAvailability::Mixed; // db error
+            if (!availability) {
+                if (availability.error() == Vfs::AvailabilityError::DbError)
+                    availability = VfsItemAvailability::Mixed;
+                if (availability.error() == Vfs::AvailabilityError::NoSuchItem)
+                    continue;
+            }
             if (!combined) {
-                combined = availability;
+                combined = *availability;
             } else {
                 combined = merge(*combined, *availability);
             }
         }
-        ENFORCE(combined);
 
         // TODO: Should be a submenu, should use icons
         auto makePinContextMenu = [&](bool makeAvailableLocally, bool freeSpace) {
@@ -986,18 +989,20 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                                   + Utility::vfsFreeSpaceActionText());
         };
 
-        switch (*combined) {
-        case VfsItemAvailability::AlwaysLocal:
-            makePinContextMenu(false, true);
-            break;
-        case VfsItemAvailability::AllHydrated:
-        case VfsItemAvailability::Mixed:
-            makePinContextMenu(true, true);
-            break;
-        case VfsItemAvailability::AllDehydrated:
-        case VfsItemAvailability::OnlineOnly:
-            makePinContextMenu(true, false);
-            break;
+        if (combined) {
+            switch (*combined) {
+            case VfsItemAvailability::AlwaysLocal:
+                makePinContextMenu(false, true);
+                break;
+            case VfsItemAvailability::AllHydrated:
+            case VfsItemAvailability::Mixed:
+                makePinContextMenu(true, true);
+                break;
+            case VfsItemAvailability::AllDehydrated:
+            case VfsItemAvailability::OnlineOnly:
+                makePinContextMenu(true, false);
+                break;
+            }
         }
     }
 
