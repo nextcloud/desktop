@@ -44,7 +44,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     , _account(account)
     , _sharePath(sharePath)
     , _localPath(localPath)
-    , _manager(0)
+    , _manager(nullptr)
     , _passwordRequired(false)
     , _expiryRequired(false)
     , _namesSupported(true)
@@ -68,7 +68,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _pi_password = new QProgressIndicator();
     _pi_date = new QProgressIndicator();
     _pi_editing = new QProgressIndicator();
-    _ui->horizontalLayout_create->addWidget(_pi_create);
+    _ui->horizontalLayout_create->insertWidget(2, _pi_create);
     _ui->horizontalLayout_password->addWidget(_pi_password);
     _ui->layout_editing->addWidget(_pi_editing, 0, 2);
     _ui->horizontalLayout_expire->insertWidget(_ui->horizontalLayout_expire->count() - 1, _pi_date);
@@ -108,6 +108,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         _ui->createShareButton->setText(tr("Create public link share"));
         _ui->nameLineEdit->hide();
         _ui->nameLineEdit->clear(); // so we don't send a name
+        _ui->nameLabel->hide();
     }
 
     _ui->shareProperties->setEnabled(false);
@@ -175,9 +176,17 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         _manager = new ShareManager(_account, this);
         connect(_manager, &ShareManager::sharesFetched, this, &ShareLinkWidget::slotSharesFetched);
         connect(_manager, &ShareManager::linkShareCreated, this, &ShareLinkWidget::slotCreateShareFetched);
-        connect(_manager, &ShareManager::linkShareRequiresPassword, this, &ShareLinkWidget::slotCreateShareRequiresPassword);
+        connect(_manager, &ShareManager::linkShareCreationForbidden, this, &ShareLinkWidget::slotCreateShareForbidden);
         connect(_manager, &ShareManager::serverError, this, &ShareLinkWidget::slotServerError);
     }
+
+    auto retainSizeWhenHidden = [](QWidget *w) {
+        auto sp = w->sizePolicy();
+        sp.setRetainSizeWhenHidden(true);
+        w->setSizePolicy(sp);
+    };
+    retainSizeWhenHidden(_ui->pushButton_setPassword);
+    retainSizeWhenHidden(_ui->create);
 }
 
 ShareLinkWidget::~ShareLinkWidget()
@@ -264,6 +273,23 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         }
     }
 
+    // Add create-new entry
+    if (_namesSupported || table->rowCount() == 0) {
+        auto row = table->rowCount();
+        table->insertRow(row);
+        auto createItem = new QTableWidgetItem;
+        createItem->setFlags(createItem->flags() & ~Qt::ItemIsEditable);
+        createItem->setText(tr("Create new..."));
+        auto font = createItem->font();
+        font.setItalic(true);
+        createItem->setFont(font);
+        table->setItem(row, 0, createItem);
+        auto dummyItem = new QTableWidgetItem;
+        dummyItem->setFlags(dummyItem->flags() & ~Qt::ItemIsEditable);
+        table->setItem(row, 1, dummyItem->clone());
+        table->setItem(row, 2, dummyItem);
+    }
+
     if (!selectedShare()) {
         if (table->rowCount() != 0) {
             // Select the first share by default
@@ -273,10 +299,6 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             // since this was not triggered on table clear above
             slotShareSelectionChanged();
         }
-    }
-
-    if (!_namesSupported) {
-        _ui->createShareButton->setEnabled(table->rowCount() == 0);
     }
 }
 
@@ -291,18 +313,15 @@ void ShareLinkWidget::slotShareSelectionChanged()
     _ui->errorLabel->hide();
 
     auto share = selectedShare();
-    if (!share) {
+    bool selectionUnchanged = false;
+    bool createNew = !share;
+    if (share) {
+        selectionUnchanged = _selectedShareId == share->getId();
+        _selectedShareId = share->getId();
+    } else {
+        selectionUnchanged = _selectedShareId.isEmpty();
         _selectedShareId.clear();
-        _ui->shareProperties->setEnabled(false);
-        _ui->radio_readOnly->setChecked(false);
-        _ui->radio_readWrite->setChecked(false);
-        _ui->radio_uploadOnly->setChecked(false);
-        _ui->checkBox_expire->setChecked(false);
-        _ui->checkBox_password->setChecked(false);
-        return;
     }
-    bool selectionUnchanged = _selectedShareId == share->getId();
-    _selectedShareId = share->getId();
 
     _ui->shareProperties->setEnabled(true);
 
@@ -315,9 +334,10 @@ void ShareLinkWidget::slotShareSelectionChanged()
     }
 
     // Password state
+    _ui->pushButton_setPassword->setVisible(!createNew);
     _ui->checkBox_password->setText(tr("P&assword protect"));
     if (!selectionUnchanged) {
-        if (share->isPasswordSet()) {
+        if (share && share->isPasswordSet()) {
             _ui->checkBox_password->setChecked(true);
             _ui->lineEdit_password->setPlaceholderText("********");
             _ui->lineEdit_password->setEnabled(true);
@@ -332,7 +352,7 @@ void ShareLinkWidget::slotShareSelectionChanged()
 
     // Expiry state
     _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
-    if (share->getExpireDate().isValid()) {
+    if (share && share->getExpireDate().isValid()) {
         _ui->checkBox_expire->setChecked(true);
         _ui->calendar->setDate(share->getExpireDate());
         _ui->calendar->setEnabled(true);
@@ -343,7 +363,7 @@ void ShareLinkWidget::slotShareSelectionChanged()
 
     // Public upload state (box is hidden for files)
     if (!_isFile) {
-        if (share->getPublicUpload()) {
+        if (share && share->getPublicUpload()) {
             if (share->getShowFileListing()) {
                 _ui->radio_readWrite->setChecked(true);
             } else {
@@ -353,6 +373,9 @@ void ShareLinkWidget::slotShareSelectionChanged()
             _ui->radio_readOnly->setChecked(true);
         }
     }
+
+    // Name and create button
+    _ui->create->setVisible(createNew);
 }
 
 void ShareLinkWidget::setExpireDate(const QDate &date)
@@ -380,22 +403,10 @@ void ShareLinkWidget::slotExpireDateChanged(const QDate &date)
 
 void ShareLinkWidget::slotPasswordReturnPressed()
 {
-    if (!_manager) {
-        return;
-    }
-    if (!selectedShare()) {
-        // If share creation requires a password, we'll be in this case
-        if (_ui->lineEdit_password->text().isEmpty()) {
-            _ui->lineEdit_password->setFocus();
-            return;
-        }
-
-        _pi_create->startAnimation();
-        _manager->createLinkShare(_sharePath, _ui->nameLineEdit->text(), _ui->lineEdit_password->text());
-    } else {
+    if (selectedShare()) {
         setPassword(_ui->lineEdit_password->text());
+        _ui->lineEdit_password->clearFocus();
     }
-    _ui->lineEdit_password->clearFocus();
 }
 
 void ShareLinkWidget::slotPasswordChanged(const QString &newText)
@@ -463,7 +474,12 @@ void ShareLinkWidget::slotShareNameEntered()
         return;
     }
     _pi_create->startAnimation();
-    _manager->createLinkShare(_sharePath, _ui->nameLineEdit->text(), QString());
+    _manager->createLinkShare(
+            _sharePath,
+            _ui->nameLineEdit->text(),
+            _ui->checkBox_password->isChecked() ? _ui->lineEdit_password->text() : QString(),
+            _ui->checkBox_expire->isChecked() ? _ui->calendar->date() : QDate(),
+            uiPermissionState());
 }
 
 void ShareLinkWidget::slotDeleteShareFetched()
@@ -481,28 +497,14 @@ void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> &sh
     getShares();
 }
 
-void ShareLinkWidget::slotCreateShareRequiresPassword(const QString &message)
+void ShareLinkWidget::slotCreateShareForbidden(const QString &message)
 {
-    // Deselect existing shares
-    _ui->linkShares->clearSelection();
-
-    // Prepare password entry
+    // Show the message, so users can adjust and try again
     _pi_create->stopAnimation();
-    _pi_password->stopAnimation();
-    _ui->shareProperties->setEnabled(true);
-    _ui->checkBox_password->setChecked(true);
-    _ui->checkBox_password->setEnabled(false);
-    _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
-    _ui->checkBox_expire->setEnabled(false);
-    _ui->widget_editing->setEnabled(false);
     if (!message.isEmpty()) {
         _ui->errorLabel->setText(message);
         _ui->errorLabel->show();
     }
-
-    _passwordRequired = true;
-
-    slotCheckBoxPasswordClicked();
 }
 
 void ShareLinkWidget::slotCheckBoxPasswordClicked()
@@ -617,6 +619,17 @@ void ShareLinkWidget::slotDeleteShareClicked()
     confirmAndDeleteShare(share);
 }
 
+SharePermissions ShareLinkWidget::uiPermissionState() const
+{
+    if (_ui->radio_readWrite->isChecked()) {
+        return SharePermissionRead | SharePermissionCreate
+            | SharePermissionUpdate | SharePermissionDelete;
+    } else if (_ui->radio_uploadOnly->isChecked()) {
+        return SharePermissionCreate;
+    }
+    return SharePermissionRead;
+}
+
 void ShareLinkWidget::slotPermissionsClicked()
 {
     if (auto current = selectedShare()) {
@@ -624,14 +637,7 @@ void ShareLinkWidget::slotPermissionsClicked()
         _pi_editing->startAnimation();
         _ui->errorLabel->hide();
 
-        SharePermissions perm = SharePermissionRead;
-        if (_ui->radio_readWrite->isChecked()) {
-            perm = SharePermissionRead | SharePermissionCreate
-                | SharePermissionUpdate | SharePermissionDelete;
-        } else if (_ui->radio_uploadOnly->isChecked()) {
-            perm = SharePermissionCreate;
-        }
-        current->setPermissions(perm);
+        current->setPermissions(uiPermissionState());
     }
 }
 

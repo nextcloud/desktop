@@ -109,7 +109,9 @@ void OcsShareJob::setPermissions(const QString &shareId,
 
 void OcsShareJob::createLinkShare(const QString &path,
     const QString &name,
-    const QString &password)
+    const QString &password,
+    const QDate &expireDate,
+    const Share::Permissions permissions)
 {
     setVerb("POST");
 
@@ -121,6 +123,12 @@ void OcsShareJob::createLinkShare(const QString &path,
     }
     if (!password.isEmpty()) {
         addParam(QString::fromLatin1("password"), password);
+    }
+    if (!expireDate.isNull()) {
+        addParam(QString::fromLatin1("expireDate"), expireDate.toString("yyyy-MM-dd"));
+    }
+    if (permissions != SharePermissionDefault) {
+        addParam(QString::fromLatin1("permissions"), QString::number(permissions));
     }
 
     addPassStatusCode(403);

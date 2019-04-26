@@ -83,13 +83,15 @@ enum class PinState {
  *
  * Note that this is only about *intent*. The file could still be out of date,
  * or not have been synced for other reasons, like errors.
+ *
+ * NOTE: The numerical values and ordering of this enum are relevant.
  */
 enum class VfsItemAvailability {
     /** The item and all its subitems are hydrated and pinned AlwaysLocal.
      *
      * This guarantees that all contents will be kept in sync.
      */
-    AlwaysLocal,
+    AlwaysLocal = 0,
 
     /** The item and all its subitems are hydrated.
      *
@@ -98,20 +100,24 @@ enum class VfsItemAvailability {
      *
      * A folder with no file contents will have this availability.
      */
-    AllHydrated,
+    AllHydrated = 1,
 
-    /** There are dehydrated items but the pin state isn't all OnlineOnly.
+    /** There are dehydrated and hydrated items.
      *
      * This would happen if a dehydration happens to a Unspecified item that
      * used to be hydrated.
      */
-    SomeDehydrated,
+    Mixed = 2,
+
+    /** There are only dehydrated items but the pin state isn't all OnlineOnly.
+     */
+    AllDehydrated = 3,
 
     /** The item and all its subitems are dehydrated and OnlineOnly.
      *
      * This guarantees that contents will not take up space.
      */
-    OnlineOnly,
+    OnlineOnly = 4,
 };
 
 }

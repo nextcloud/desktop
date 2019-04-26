@@ -252,12 +252,14 @@ ShareManager::ShareManager(AccountPtr account, QObject *parent)
 
 void ShareManager::createLinkShare(const QString &path,
     const QString &name,
-    const QString &password)
+    const QString &password,
+    const QDate &expireDate,
+    const Share::Permissions permissions)
 {
     OcsShareJob *job = new OcsShareJob(_account);
     connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotLinkShareCreated);
     connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-    job->createLinkShare(path, name, password);
+    job->createLinkShare(path, name, password, expireDate, permissions);
 }
 
 void ShareManager::slotLinkShareCreated(const QJsonDocument &reply)
@@ -265,12 +267,10 @@ void ShareManager::slotLinkShareCreated(const QJsonDocument &reply)
     QString message;
     int code = OcsShareJob::getJsonReturnCode(reply, message);
 
-    /*
-     * Before we had decent sharing capabilities on the server a 403 "generally"
-     * meant that a share was password protected
-     */
+    // A 403 generally means some of the settings for the share are not allowed.
+    // Maybe a password is required, or the expire date isn't acceptable.
     if (code == 403) {
-        emit linkShareRequiresPassword(message);
+        emit linkShareCreationForbidden(message);
         return;
     }
 

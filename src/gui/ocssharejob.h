@@ -95,10 +95,14 @@ public:
      * @param path The path of the file/folder to share
      * @param name The name of the link share, empty name auto-generates one
      * @param password Optionally a password for the share
+     * @param expireDate Target expire data (may be null)
+     * @param permissions Desired permissions (SharePermissionDefault leaves to server)
      */
     void createLinkShare(const QString &path,
         const QString &name,
-        const QString &password);
+        const QString &password,
+        const QDate &expireDate,
+        const Share::Permissions permissions);
 
     /**
      * Create a new share

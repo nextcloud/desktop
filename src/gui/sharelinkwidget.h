@@ -19,6 +19,7 @@
 #include "accountfwd.h"
 #include "sharepermissions.h"
 #include "QProgressIndicator.h"
+#include "sharepermissions.h"
 #include <QDialog>
 #include <QSharedPointer>
 #include <QList>
@@ -75,7 +76,7 @@ private slots:
 
     void slotDeleteShareFetched();
     void slotCreateShareFetched(const QSharedPointer<LinkShare> &share);
-    void slotCreateShareRequiresPassword(const QString &message);
+    void slotCreateShareForbidden(const QString &message);
     void slotPasswordSet();
     void slotExpireSet();
     void slotPermissionsSet();
@@ -99,8 +100,13 @@ private:
     /** Retrieve a share's name, accounting for _namesSupported */
     QString shareName(const LinkShare &share) const;
 
+    /** Permission implied by current ui state */
+    SharePermissions uiPermissionState() const;
+
     /**
      * Retrieve the selected share, returning 0 if none.
+     *
+     * Returning 0 means that the "Create new..." item is selected.
      */
     QSharedPointer<LinkShare> selectedShare() const;
 

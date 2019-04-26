@@ -72,8 +72,15 @@ public:
     bool updateLocalMetadata(const QString &filename,
         qint64 modtime, qint64 size, quint64 inode);
 
+    /// Return value for hasHydratedOrDehydratedFiles()
+    struct HasHydratedDehydrated
+    {
+        bool hasHydrated = false;
+        bool hasDehydrated = false;
+    };
+
     /** Returns whether the item or any subitems are dehydrated */
-    Optional<bool> hasDehydratedFiles(const QByteArray &filename);
+    Optional<HasHydratedDehydrated> hasHydratedOrDehydratedFiles(const QByteArray &filename);
 
     bool exists();
     void walCheckpoint();
