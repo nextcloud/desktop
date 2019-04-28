@@ -35,7 +35,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>Geen recent gewijzigde bestanden</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
@@ -50,37 +50,37 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>Openen website</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Recent gewijzigd</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pauzeer synchronisatie</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Help</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Uitloggen</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Afsluiten syncclient</translation>
     </message>
 </context>
 <context>
@@ -2297,7 +2297,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="662"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Het gedownloade bestand is leeg, hoewel de server meldde dat het %1 zou moeten zijn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="847"/>
@@ -2746,7 +2746,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="224"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Toevoegen andere link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="402"/>
