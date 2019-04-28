@@ -108,7 +108,7 @@ void WebFlowCredentials::fetchFromKeychain() {
     if (ready()) {
         emit fetched();
     } else {
-        qCInfo(lcWebFlowCredentials()) << "Fetch from keyhchain!";
+        qCInfo(lcWebFlowCredentials()) << "Fetch from keychain!";
         fetchFromKeychainHelper();
     }
 }
