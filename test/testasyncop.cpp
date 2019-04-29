@@ -67,6 +67,12 @@ private slots:
         struct TestCase
         {
             using PollRequest_t = std::function<QNetworkReply *(TestCase *, const QNetworkRequest &request)>;
+
+            // for older compilers like on Debian 8
+            explicit TestCase(PollRequest_t request = nullptr)
+                :  pollRequest(request)
+            {}
+
             PollRequest_t pollRequest;
             std::function<FileInfo *()> perform = nullptr;
         };
@@ -141,7 +147,7 @@ private slots:
         // Create a testcase by creating a file of a given size locally and assigning it a callback
         auto insertFile = [&](const QString &file, int size, TestCase::PollRequest_t cb) {
             fakeFolder.localModifier().insert(file, size);
-            testCases[file] = { std::move(cb) };
+            testCases[file] = TestCase(std::move(cb));
         };
         fakeFolder.localModifier().mkdir("success");
         insertFile("success/chunked_success", options._maxChunkSize * 3, successCallback);
@@ -163,10 +169,10 @@ private slots:
         QCOMPARE(*fakeFolder.currentLocalState().find("success"),
             *fakeFolder.currentRemoteState().find("success"));
         testCases.clear();
-        testCases["err/chunked_error"] = { successCallback };
-        testCases["err/chunked_error2"] = { successCallback };
-        testCases["err/single_error"] = { successCallback };
-        testCases["err/single_error2"] = { successCallback };
+        testCases["err/chunked_error"] = TestCase(successCallback);
+        testCases["err/chunked_error2"] = TestCase(successCallback);
+        testCases["err/single_error"] = TestCase(successCallback);
+        testCases["err/single_error2"] = TestCase(successCallback);
 
         fakeFolder.localModifier().mkdir("waiting");
         insertFile("waiting/small", 300, waitForeverCallback);
