@@ -10,7 +10,6 @@ Copy below text into a task and tick the items:
 Some weeks before the release:
 * [ ] Check if we should update the bundled sqlite3 (https://github.com/owncloud/client/tree/master/src/3rdparty/sqlite3)
 * [ ] Check if we should update Sparkle on build machine (https://github.com/sparkle-project/Sparkle/releases)
-* [ ] Ensure NSIS is up to date on the build machine
 * [ ] Ensure up-to-date dependencies (e.g. [latest Qt version](http://qt-project.org/downloads#qt-lib) is installed on the machine and picked up (cmake output)
 * [ ] Ensure the crash reporter server is up
 * [ ] Check crash reporter for bad crashes
@@ -31,7 +30,7 @@ For first Alpha/Beta of a Major or Minor release:
 * [ ] Add the new branch v2.X.X for the new version to gitea/jw/client-linux-build
 * [ ] Add the new version to gitea/ownbrander/scripting/client-linux/templates/client/2.X.X
 * [ ] Add branch to branches.only section in appveyor.yml, so PRs to that branch will be built by AppVeyor
-* [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) and [NSIS](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client-nsis/) to point to the release branch (e.g. 2.1).
+* [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) to point to the release branch (e.g. 2.1).
 * [ ] Make sure there is a job for the docs of the new master branch and the current release branch on rotor e.g. http://doc.owncloud.org/desktop/1.X/ exists
 
 For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
