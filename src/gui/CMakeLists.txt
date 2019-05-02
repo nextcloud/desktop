@@ -317,6 +317,7 @@ endif()
 # application.cpp still uses QDesktopServices::storageLocation
 target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "QT_DISABLE_DEPRECATED_BEFORE=0")
 
+include(libcloudproviders/libcloudproviders.cmake)
 
 install(TARGETS ${APPLICATION_EXECUTABLE}
         RUNTIME DESTINATION bin
