@@ -29,7 +29,7 @@ https://doc.owncloud.org/branded_clients/[ownBrander] to create installer images
 [[getting-source-code]]
 == Getting the Source Code
 
-The xref:generic-build-instructions[generic build instructions] pull the latest code directly from GitHub, and work on xref:linux[Linux], xref:macos[Mac OS X], and xref:windows-development-build[Windows].
+The xref:generic-build-instructions[generic build instructions] pull the latest code directly from GitHub, and work on xref:linux[Linux], xref:macos[Mac OS X], and xref:windows-development-build-mingw[Windows].
 
 [[linux]]
 == Linux
@@ -58,7 +58,7 @@ Install the dependencies using the following commands for your specific Linux di
 Make sure the repositories for source packages are enabled.
 These are:
 
-[options="header"]
+[cols="30%,70%",options="header"]
 |===
 | Distribution | Installation Instructions
 | Debian/Ubuntu | `apt update; apt build-dep owncloud-client`
@@ -100,19 +100,21 @@ The tested and preferred way to develop in this environment is through the use o
 The ownCloud team has its own repository containing non-standard recipes.
 To set up your build environment for development using http://mxcl.github.com/homebrew/[HomeBrew]:
 
-. Install xref:https://developer.apple.com/xcode/[Xcode].
+. Install https://developer.apple.com/xcode[Xcode].
 . Install Xcode command line tools using `xcode-select –install`.
 . Install Homebrew using `/usr/bin/ruby -e $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)`.
 . Add the ownCloud repository using the command `brew tap owncloud/owncloud`
 . Install a Qt5 version, ideally from from 5.10.1, using the command `brew install qt5`.
 . Install any missing dependencies, using the command: `brew install $(brew deps owncloud-client)`.
-. Install qtkeychain by running `git clone https://github.com/frankosterfeld/qtkeychain.git`. Make sure you make the
-same install prefix as later while building the client e.g., `-DCMAKE_INSTALL_PREFIX=/Path/to/client/../install`.
+. Install qtkeychain by running `git clone https://github.com/frankosterfeld/qtkeychain.git`. +
+Make sure you make the same install prefix as later while building the client +
+e.g., `-DCMAKE_INSTALL_PREFIX=/Path/to/client/../install`.
 . For compilation of the client, follow the xref:generic-build-instructions[generic build instructions].
 . Install the http://s.sudre.free.fr/Software/Packages/about.html[Packages] package creation tool.
-. In the build directory, run `admin/osx/create_mac.sh <CMAKE_INSTALL_DIR> <build dir> <installer sign identity>`.
-  If you have a developer signing certificate, you can specify its Common Name as a third parameter (use quotes) to have the package signed automatically.
-
+. In the build directory, run +
+`admin/osx/create_mac.sh <CMAKE_INSTALL_DIR> <build dir> <installer sign identity>`. +
+If you have a developer signing certificate, you can specify its Common Name as a third parameter (use quotes) to have the package signed automatically.
++
 [NOTE]
 ====
 Contrary to earlier versions, version 1.7 and later are packaged as a `pkg` installer.
@@ -146,8 +148,8 @@ Please chose a disk with sufficient free space.
 
 Last but not least, you need to chose the compiler you want to use.
 The official builds only supports {ms-visual-studio-2017-url}[Microsoft Visual Studio 2017].
-However, if you're feeling adventurous, you can also try to use {ming-w64-url}[Mingw-w64]. 
-In contrast to Visual Studio, which you need to install in advance, KDE Craft can install Mingw-w64 for you.
+However, if you're feeling adventurous, you can also try to use {mingw-w64-url}[Mingw-w64]. 
+In contrast to Visual Studio, which you need to install in advance, KDE Craft can install `Mingw-w64` for you.
 
 TIP: Unless you need 32bit builds, you should stick to the default of x64 builds.
 
@@ -157,7 +159,7 @@ After you install KDE Craft, there are two steps left before the ownCloud Client
 These are:
 
 . xref:launch-the-kde-craft-environment[Launch the KDE Craft Environment]
-. xref:build-the-client:[Build the Client]
+. xref:build-the-client[Build the Client]
 
 ==== Launch the KDE Craft Environment
 
@@ -241,7 +243,9 @@ craft nsis
 craft --package owncloud-client
 ....
 
-Now you should have a file called `owncloud-client-master-${COMMIT_HASH}-windows-${COMPILER}.exe` in `C:\CraftRoot\tmp`.
+Now you should have a file called: +
+`owncloud-client-master-${COMMIT_HASH}-windows-${COMPILER}.exe` +
+in `C:\CraftRoot\tmp`.
 
 [NOTE]
 ====
@@ -398,19 +402,21 @@ cd client-build
 cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/ ..
 ....
 +
-For Linux builds (using QT5 libraries via build-dep) a typical setting is `-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/` - version number may vary.
+For Linux builds (using QT5 libraries via build-dep) a typical setting is +
+`-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/` - version number may vary.
 For Linux builds using system dependencies `-DCMAKE_PREFIX_PATH` is not needed.
 You must use absolute paths for the `include` and `library` directories.
 +
 On Mac OS X, you need to specify `-DCMAKE_INSTALL_PREFIX=target`, where `target` is a private location, i.e. in parallel to your build dir by specifying `../install`.
 +
-qtkeychain must be compiled with the same prefix e.g., `-DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/`
+qtkeychain must be compiled with the same prefix +
+e.g., `-DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/`
 
 [start=4]
 . Call `make`. The ownCloud binary will appear in the `bin` directory.
 
 [start=5]
-. (Optional) Call `make install` to install the client to the `/usr/local/bin` directory.
+. (Optional) Call `make install` to install the client to the `/usr/local/bin` directory. +
 The following are known CMake parameters:
 
 * `QTKEYCHAIN_LIBRARY=/path/to/qtkeychain.dylib -DQTKEYCHAIN_INCLUDE_DIR=/path/to/qtkeychain/`

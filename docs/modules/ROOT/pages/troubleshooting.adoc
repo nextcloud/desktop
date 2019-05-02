@@ -1,6 +1,10 @@
 = Appendix C: Troubleshooting
+:toc: right
+:toclevels: 1
 :experimental:
 :files-antivirus-app-url: https://github.com/owncloud/files_antivirus
+
+== Introduction
 
 The following two general issues can result in failed synchronization:
 
@@ -21,7 +25,7 @@ Ensure the WebDAV API is working::
   If all desktop clients fail to connect to the ownCloud Server, but access using the Web interface functions properly, the problem is often a misconfiguration of the WebDAV API.
   The ownCloud Client uses the built-in WebDAV access of the server content.
   Verify that you can log on to ownCloud's WebDAV server.
-  To verify connectivity with the ownCloud WebDAV server, open a browser window and enter the address to the ownCloud WebDAV server. For example, if your ownCloud instance is installed at `http://yourserver.com/owncloud`, your WebDAV server address isi `http://yourserver.com/owncloud/remote.php/webdav`. If you are prompted for your username and password but, after providing the correct credentials, authentication fails, please ensure that your authentication backend is configured properly.
+  To verify connectivity with the ownCloud WebDAV server, open a browser window and enter the address to the ownCloud WebDAV server. For example, if your ownCloud instance is installed at `\http://yourserver.com/owncloud`, your WebDAV server address is `\http://yourserver.com/owncloud/remote.php/webdav`. If you are prompted for your username and password but, after providing the correct credentials, authentication fails, please ensure that your authentication backend is configured properly.
 
 Use a WebDAV command line tool to test::
   A more sophisticated test method for troubleshooting synchronization issues is to use a WebDAV command line client and log into the ownCloud WebDAV server.
@@ -146,7 +150,7 @@ To enable the writing of core dump files, you must define the `OWNCLOUD_CORE_DUM
 
 For example:
 
-`\` OWNCLOUD_CORE_DUMP=1 owncloud``
+`OWNCLOUD_CORE_DUMP=1`
 
 This command starts the client with core dumping enabled and saves the files in the current working directory.
 

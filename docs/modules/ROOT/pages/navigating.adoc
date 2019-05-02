@@ -1,6 +1,12 @@
 = Using the Synchronization Client
+:toc: right
+:toclevels: 1
+
+== Introduction
 
 The ownCloud Desktop Client remains in the background and is visible as an icon in the system tray (Windows, KDE), menu bar (macOS), or notification area (Linux).
+
+== Used Client Icons
 
 image:icon.png[image]
 

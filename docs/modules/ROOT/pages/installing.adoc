@@ -1,4 +1,5 @@
 = Installing the Desktop Synchronization Client
+:toc: right
 
 You can download the latest version of the ownCloud Desktop Synchronization Client from the https://owncloud.com/download/#desktop-clients[ownCloud download page].
 There are clients for _Linux_, _macOS_, and _Microsoft Windows_.

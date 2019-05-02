@@ -1,4 +1,6 @@
 = FAQ
+:toc: right
+:toclevels: 1
 
 == Some Files Are Continuously Uploaded To The Server, Even When They Are Not Modified
 
