@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[hu_HU]=@APPLICATION_ICON_NAME@
-Name[hu_HU]=@APPLICATION_NAME@ asztali szinkronizálási kliens
-Comment[hu_HU]=@APPLICATION_NAME@ asztali szinkronizálási kliens
-GenericName[hu_HU]=Mappaszinkronizálás
+Icon[bg_BG]=@APPLICATION_ICON_NAME@
+Name[bg_BG]=@APPLICATION_NAME@ клиент за синхронизиране на десктоп
+Comment[bg_BG]=@APPLICATION_NAME@ клиент за синхронизиране на десктоп
+GenericName[bg_BG]=Синхронизиране на папка

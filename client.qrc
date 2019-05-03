@@ -37,6 +37,7 @@
         <file>resources/confirm.svg</file>
         <file>resources/copy.svg</file>
         <file>resources/state-sync.svg</file>
+        <file>resources/add.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
