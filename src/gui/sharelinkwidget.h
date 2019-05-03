@@ -37,7 +37,6 @@ class QuotaInfo;
 class SyncResult;
 class LinkShare;
 class Share;
-class ShareManager;
 
 /**
  * @brief The ShareDialog class
@@ -54,44 +53,51 @@ public:
         SharePermissions maxSharingPermissions,
         QWidget *parent = nullptr);
     ~ShareLinkWidget();
-    void getShares();
+
     void toggleButton(bool show);
+    void setupUiOptions();
+
+    void setLinkShare(QSharedPointer<LinkShare> linkShare);
+    QSharedPointer<LinkShare> getLinkShare();
+
+public slots:
+    void slotDeleteShareFetched();
+    void slotToggleAnimation(bool start);
+    void slotServerError(int code, const QString &message);
+    void slotCreateShareRequiresPassword(const QString &message);
 
 private slots:
-    void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
-    //void slotShareSelectionChanged();
+    void slotCreateShareLink(bool clicked);
 
-    void slotCreateOrDeleteShareLink(bool checked);
     void slotCreatePassword();
+    void slotPasswordSet();
+    void slotPasswordSetError(int code, const QString &message);
 
-    void slotExpireDateChanged(const QDate &date);
     void slotSetExpireDate();
+    void slotExpireDateSet();
 
     void slotContextMenuButtonClicked();
     void slotLinkContextMenuActionTriggered(QAction *action);
 
-    void slotDeleteShareFetched();
-    void slotCreateShareFetched();
-    void slotCreateShareRequiresPassword(const QString &message);
+    void slotDeleteAnimationFinished();
+    void slotAnimationFinished();
 
-    void slotPasswordSet();
-    void slotExpireDateSet();
-
-    void slotServerError(int code, const QString &message);
-    void slotPasswordSetError(int code, const QString &message);
+signals:
+    void createLinkShare();
+    void deleteLinkShare();
+    void resizeRequested();
+    void visualDeletionDone();
 
 private:
     void displayError(const QString &errMsg);
 
     void showPasswordOptions(bool show);
     void togglePasswordOptions(bool enable);
-    void setPassword(const QString &password);
 
     void showExpireDateOptions(bool show);
     void toggleExpireDateOptions(bool enable);
-    void setExpireDate(const QDate &date);
 
-    void copyShareLink(const QUrl &url);
+    void slotCopyLinkShare(bool clicked);
 
     /** Confirm with the user and then delete the share */
     void confirmAndDeleteShare();
@@ -99,7 +105,7 @@ private:
     /** Retrieve a share's name, accounting for _namesSupported */
     QString shareName() const;
 
-    void toggleAnimation(bool start);
+    void startAnimation(const int start, const int end);
 
     Ui::ShareLinkWidget *_ui;
     AccountPtr _account;
@@ -107,7 +113,6 @@ private:
     QString _localPath;
     QString _shareUrl;
 
-    ShareManager *_manager;
     QSharedPointer<LinkShare> _linkShare;
 
     bool _isFile;
@@ -116,7 +121,6 @@ private:
     bool _namesSupported;
 
     QMenu *_linkContextMenu;
-    QAction *_copyLinkAction;
     QAction *_readOnlyLinkAction;
     QAction *_allowEditingLinkAction;
     QAction *_allowUploadEditingLinkAction;
@@ -124,6 +128,7 @@ private:
     QAction *_passwordProtectLinkAction;
     QAction *_expirationDateLinkAction;
     QAction *_unshareLinkAction;
+    QAction *_addAnotherLinkAction;
 };
 }
 
