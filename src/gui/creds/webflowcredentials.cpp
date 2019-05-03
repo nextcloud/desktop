@@ -129,7 +129,7 @@ void WebFlowCredentials::askFromUser() {
 
     connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
 
-    qCWarning(lcWebFlowCredentials()) << "User needs to reauth!";
+    qCDebug(lcWebFlowCredentials()) << "User needs to reauth!";
 }
 
 void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
@@ -165,9 +165,10 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
 
 
 bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
-    qCWarning(lcWebFlowCredentials()) << "Still valid?";
-    qCWarning(lcWebFlowCredentials()) << reply->error();
-    qCWarning(lcWebFlowCredentials()) << reply->errorString();
+    if (reply->error() != QNetworkReply::NoError) {
+        qCWarning(lcWebFlowCredentials()) << reply->error();
+        qCWarning(lcWebFlowCredentials()) << reply->errorString();
+    }
     return (reply->error() != QNetworkReply::AuthenticationRequiredError);
 }
 
@@ -208,7 +209,7 @@ void WebFlowCredentials::forgetSensitiveData(){
 
     const QString kck = keychainKey(_account->url().toString(), _user, _account->id());
     if (kck.isEmpty()) {
-        qCWarning(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
+        qCDebug(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
         return;
     }
 
@@ -243,7 +244,7 @@ void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator
         return;
     }
 
-    qCWarning(lcWebFlowCredentials()) << "Requires authentication";
+    qCDebug(lcWebFlowCredentials()) << "Requires authentication";
 
     authenticator->setUser(_user);
     authenticator->setPassword(_password);
@@ -296,7 +297,7 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
         _keychainMigration = false;
         persist();
         deleteOldKeychainEntries();
-        qCWarning(lcWebFlowCredentials) << "Migrated old keychain entries";
+        qCInfo(lcWebFlowCredentials) << "Migrated old keychain entries";
     }
 }
 

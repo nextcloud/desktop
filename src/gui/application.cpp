@@ -72,7 +72,8 @@ namespace {
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
         "  --logdebug           : also output debug-level messages in the log.\n"
-        "  --confdir <dirname>  : Use the given configuration folder.\n";
+        "  --confdir <dirname>  : Use the given configuration folder.\n"
+        "  --background         : launch the application in the background.\n";
 
     QString applicationTrPath()
     {
@@ -106,6 +107,7 @@ Application::Application(int &argc, char **argv)
     , _logDebug(false)
     , _userTriggeredConnect(false)
     , _debugMode(false)
+    , _backgroundMode(false)
 {
     _startedAt.start();
 
@@ -467,6 +469,8 @@ void Application::parseOptions(const QStringList &options)
         } else if (option == QLatin1String("--debug")) {
             _logDebug = true;
             _debugMode = true;
+        } else if (option == QLatin1String("--background")) {
+            _backgroundMode = true;
         } else if (option == QLatin1String("--version")) {
             _versionOnly = true;
         } else {
@@ -538,6 +542,11 @@ void Application::showHint(std::string errorHint)
 bool Application::debugMode()
 {
     return _debugMode;
+}
+
+bool Application::backgroundMode() const
+{
+    return _backgroundMode;
 }
 
 void Application::setHelp()

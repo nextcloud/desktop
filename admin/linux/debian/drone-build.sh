@@ -51,7 +51,7 @@ if ! wget http://ppa.launchpad.net/${repo}/ubuntu/pool/main/n/nextcloud-client/n
     origsourceopt="-sa"
 fi
 
-for distribution in xenial bionic cosmic stable; do
+for distribution in xenial bionic cosmic disco stable; do
     rm -rf nextcloud-client_${basever}
     cp -a ${DRONE_WORKSPACE} nextcloud-client_${basever}
 

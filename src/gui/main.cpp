@@ -126,7 +126,7 @@ int main(int argc, char **argv)
             if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg))
                 return -1;
         }
-        if (!app.sendMessage(QLatin1String("MSG_SHOWSETTINGS"))) {
+        if (!app.backgroundMode() && !app.sendMessage(QLatin1String("MSG_SHOWSETTINGS"))) {
             return -1;
         }
         return 0;
@@ -158,7 +158,7 @@ int main(int argc, char **argv)
                     warnSystray();
                 }
             }
-            if (!QSystemTrayIcon::isSystemTrayAvailable() && desktopSession != "ubuntu") {
+            if (!app.backgroundMode() && !QSystemTrayIcon::isSystemTrayAvailable() && desktopSession != "ubuntu") {
                 app.showSettingsDialog();
             }
         }

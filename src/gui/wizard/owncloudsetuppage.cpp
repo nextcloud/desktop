@@ -96,7 +96,6 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui.installLink->hide();
     _ui.slideShow->hide();
 #endif
-    setStyleSheet(QString("background-color:%1; color:%2 QLabel { color:%2; } QSpacerItem { color: red; }").arg(theme->wizardHeaderBackgroundColor().name(), theme->wizardHeaderTitleColor().name()));
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)

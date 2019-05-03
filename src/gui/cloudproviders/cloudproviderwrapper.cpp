@@ -33,33 +33,25 @@ using namespace OCC;
 
 GSimpleActionGroup *actionGroup = nullptr;
 
-static
-gchar* qstring_to_gchar(const QString &string)
-{
-    QByteArray ba = string.toUtf8();
-    char* data = ba.data();
-    return g_strdup(data);
-}
-
 CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, CloudProvidersProviderExporter* cloudprovider) : QObject(parent)
   , _folder(folder)
 {
+    GMenuModel *model;
+    GActionGroup *action_group;
     _recentlyChanged = new QList<QPair<QString, QString>>();
-    gchar *accountName = g_strdup_printf ("Account%sFolder%s",
-                                    qstring_to_gchar(folder->alias()),
-                                    qstring_to_gchar(folder->accountState()->account()->id()));
+    QString accountName = QString("Account%1Folder%2").arg(folder->alias(), folder->accountState()->account()->id());
 
     _cloudProvider = CLOUD_PROVIDERS_PROVIDER_EXPORTER(cloudprovider);
-    _cloudProviderAccount = cloud_providers_account_exporter_new(_cloudProvider, accountName);
+    _cloudProviderAccount = cloud_providers_account_exporter_new(_cloudProvider, accountName.toUtf8().data());
 
-    gchar* folderName = qstring_to_gchar(folder->shortGuiLocalPath());
-    gchar* folderPath = qstring_to_gchar(folder->cleanPath());
-    cloud_providers_account_exporter_set_name (_cloudProviderAccount, folderName);
+    cloud_providers_account_exporter_set_name (_cloudProviderAccount, folder->shortGuiLocalPath().toUtf8().data());
     cloud_providers_account_exporter_set_icon (_cloudProviderAccount, g_icon_new_for_string(APPLICATION_ICON_NAME, nullptr));
-    cloud_providers_account_exporter_set_path (_cloudProviderAccount, folderPath);
+    cloud_providers_account_exporter_set_path (_cloudProviderAccount, folder->cleanPath().toUtf8().data());
     cloud_providers_account_exporter_set_status (_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_IDLE);
-    cloud_providers_account_exporter_set_menu_model (_cloudProviderAccount, getMenuModel());
-    cloud_providers_account_exporter_set_action_group (_cloudProviderAccount, getActionGroup());
+    model = getMenuModel();
+    cloud_providers_account_exporter_set_menu_model (_cloudProviderAccount, model);
+    action_group = getActionGroup();
+    cloud_providers_account_exporter_set_action_group (_cloudProviderAccount, action_group);
 
     connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)), this, SLOT(slotUpdateProgress(QString, ProgressInfo)));
     connect(_folder, SIGNAL(syncStarted()), this, SLOT(slotSyncStarted()));
@@ -68,10 +60,8 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, Clou
 
     _paused = _folder->syncPaused();
     updatePauseStatus();
-
-    g_free(accountName);
-    g_free(folderName);
-    g_free(folderPath);
+    g_clear_object (&model);
+    g_clear_object (&action_group);
 }
 
 CloudProviderWrapper::~CloudProviderWrapper()
@@ -91,6 +81,16 @@ static bool shouldShowInRecentsMenu(const SyncFileItem &item)
     return !Progress::isIgnoredKind(item._status)
             && item._instruction != CSYNC_INSTRUCTION_EVAL
             && item._instruction != CSYNC_INSTRUCTION_NONE;
+}
+
+static GMenuItem *menu_item_new(const QString &label, const gchar *detailed_action)
+{
+    return g_menu_item_new(label.toUtf8 ().data(), detailed_action);
+}
+
+static GMenuItem *menu_item_new_submenu(const QString &label, GMenuModel *submenu)
+{
+    return g_menu_item_new_submenu(label.toUtf8 ().data(), submenu);
 }
 
 void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const ProgressInfo &progress)
@@ -154,30 +154,25 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
         if(!_recentlyChanged->isEmpty()) {
             QList<QPair<QString, QString>>::iterator i;
             for (i = _recentlyChanged->begin(); i != _recentlyChanged->end(); i++) {
-                gchar *file;
                 QString label = i->first;
                 QString fullPath = i->second;
-                file = g_strdup(qstring_to_gchar(label));
-                item = g_menu_item_new(file, "cloudprovider.showfile");
-                g_menu_item_set_action_and_target_value(item, "cloudprovider.showfile", g_variant_new_string(qstring_to_gchar(fullPath)));
+                item = menu_item_new(label, "cloudprovider.showfile");
+                g_menu_item_set_action_and_target_value(item, "cloudprovider.showfile", g_variant_new_string(fullPath.toUtf8().data()));
                 g_menu_append_item(_recentMenu, item);
+                g_clear_object (&item);
             }
         } else {
-            item = g_menu_item_new("No recently changed files", nullptr);
+            item = menu_item_new(tr("No recently changed files"), nullptr);
             g_menu_append_item(_recentMenu, item);
+            g_clear_object (&item);
         }
     }
 }
 
 void CloudProviderWrapper::updateStatusText(QString statusText)
 {
-    char* state = qstring_to_gchar(_folder->accountState()->stateString(_folder->accountState()->state()));
-    char* statusChar = qstring_to_gchar(statusText);
-    char* status = g_strdup_printf("%s - %s", state, statusChar);
-    cloud_providers_account_exporter_set_status_details(_cloudProviderAccount, status);
-    g_free(state);
-    g_free(statusChar);
-    g_free(status);
+    QString status = QString("%1 - %2").arg(_folder->accountState()->stateString(_folder->accountState()->state()), statusText);
+    cloud_providers_account_exporter_set_status_details(_cloudProviderAccount, status.toUtf8().data());
 }
 
 void CloudProviderWrapper::updatePauseStatus()
@@ -217,38 +212,53 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
 
     GMenu* section;
     GMenuItem* item;
+    QString item_label;
 
     _mainMenu = g_menu_new();
 
     section = g_menu_new();
-    item = g_menu_item_new("Open website", "cloudprovider.openwebsite");
+    item = menu_item_new(tr("Open website"), "cloudprovider.openwebsite");
     g_menu_append_item(section, item);
+    g_clear_object (&item);
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
+    g_clear_object (&section);
 
     _recentMenu = g_menu_new();
-    item = g_menu_item_new("No recently changed files", nullptr);
+    item = menu_item_new(tr("No recently changed files"), nullptr);
     g_menu_append_item(_recentMenu, item);
-    section = g_menu_new();
-    item = g_menu_item_new_submenu("Recently changed", G_MENU_MODEL(_recentMenu));
-    g_menu_append_item(section, item);
-    g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
+    g_clear_object (&item);
 
     section = g_menu_new();
-    item = g_menu_item_new("Pause synchronization", "cloudprovider.pause");
+    item = menu_item_new_submenu(tr("Recently changed"), G_MENU_MODEL(_recentMenu));
     g_menu_append_item(section, item);
+    g_clear_object (&item);
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
+    g_clear_object (&section);
 
     section = g_menu_new();
-    item = g_menu_item_new("Help", "cloudprovider.openhelp");
+    item = menu_item_new(tr("Pause synchronization"), "cloudprovider.pause");
     g_menu_append_item(section, item);
-    item = g_menu_item_new("Settings", "cloudprovider.opensettings");
-    g_menu_append_item(section, item);
-    item = g_menu_item_new("Log out", "cloudprovider.logout");
-    g_menu_append_item(section, item);
-    item = g_menu_item_new("Quit sync client", "cloudprovider.quit");
-    g_menu_append_item(section, item);
+    g_clear_object (&item);
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
+    g_clear_object (&section);
 
+    section = g_menu_new();
+    item = menu_item_new(tr("Help"), "cloudprovider.openhelp");
+    g_menu_append_item(section, item);
+    g_clear_object (&item);
+    item = menu_item_new(tr("Settings"), "cloudprovider.opensettings");
+    g_menu_append_item(section, item);
+    g_clear_object (&item);
+    item = menu_item_new(tr("Log out"), "cloudprovider.logout");
+    g_menu_append_item(section, item);
+    g_clear_object (&item);
+    item = menu_item_new(tr("Quit sync client"), "cloudprovider.quit");
+    g_menu_append_item(section, item);
+    g_clear_object (&item);
+    g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
+    g_clear_object (&section);
+
+    g_clear_object (&_recentMenu);
     return G_MENU_MODEL(_mainMenu);
 }
 
@@ -277,11 +287,10 @@ activate_action_open (GSimpleAction *action, GVariant *parameter, gpointer user_
     }
 
     if(g_str_equal(name, "showfile")) {
-            gchar *path;
-            g_variant_get (parameter, "s", &path);
-            g_print("showfile => %s\n", path);
-            showInFileManager(QString(path));
-        }
+        const gchar *path = g_variant_get_string (parameter, NULL);
+        g_print("showfile => %s\n", path);
+        showInFileManager(QString(path));
+    }
 
     if(g_str_equal(name, "logout")) {
         self->folder()->accountState()->signOutByUi();
@@ -331,12 +340,13 @@ static GActionEntry actions[] = {
 
 GActionGroup* CloudProviderWrapper::getActionGroup()
 {
+    g_clear_object (&actionGroup);
     actionGroup = g_simple_action_group_new ();
     g_action_map_add_action_entries (G_ACTION_MAP (actionGroup), actions, G_N_ELEMENTS (actions), this);
     bool state = _folder->syncPaused();
     GAction *pause = g_action_map_lookup_action(G_ACTION_MAP(actionGroup), "pause");
     g_simple_action_set_state(G_SIMPLE_ACTION(pause), g_variant_new_boolean(state));
-    return G_ACTION_GROUP (actionGroup);
+    return G_ACTION_GROUP (g_object_ref (actionGroup));
 }
 
 void CloudProviderWrapper::slotSyncPausedChanged(Folder *folder, bool state)

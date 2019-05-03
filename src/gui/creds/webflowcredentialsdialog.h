@@ -21,6 +21,9 @@ public:
     void setInfo(const QString &msg);
     void setError(const QString &error);
 
+protected:
+    void closeEvent(QCloseEvent * e) override;
+
 signals:
     void urlCatched(const QString user, const QString pass, const QString host);
 
