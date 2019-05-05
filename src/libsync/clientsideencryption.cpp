@@ -62,14 +62,15 @@ namespace {
 } // ns
 
 namespace {
+    unsigned char* unsignedData(QByteArray& array)
+    {
+        return (unsigned char*)array.data();
+    }
+
     QByteArray BIO2ByteArray(BIO *b) {
         size_t pending = BIO_ctrl_pending(b);
-        char *tmp = (char *)calloc(pending+1, sizeof(char));
-        BIO_read(b, tmp, OCC::Utility::convertSizeToInt(pending));
-
-        QByteArray res(tmp, OCC::Utility::convertSizeToInt(pending));
-        free(tmp);
-
+        QByteArray res(pending, '\0');
+        BIO_read(b, unsignedData(res), pending);
         return res;
     }
 
@@ -81,9 +82,41 @@ namespace {
         BIO_free_all(bioErrors);
         return errors;
     }
+
+    //
+    // Simple class for safe handling of ciper context
+    // allocation and deallocation
+    //
+    class CipherCtx {
+    public:
+        CipherCtx()
+            : m_ctx(EVP_CIPHER_CTX_new())
+        {
+        }
+
+        ~CipherCtx()
+        {
+            EVP_CIPHER_CTX_free(m_ctx);
+        }
+
+        operator EVP_CIPHER_CTX*()
+        {
+            return m_ctx;
+        }
+
+    private:
+        CipherCtx(const CipherCtx&) = delete;
+        CipherCtx& operator=(const CipherCtx&) = delete;
+
+        EVP_CIPHER_CTX* m_ctx;
+    };
 }
 
 namespace EncryptionHelper {
+
+
+
+
 QByteArray generateRandomFilename()
 {
     return QUuid::createUuid().toRfc4122().toHex();
@@ -91,16 +124,13 @@ QByteArray generateRandomFilename()
 
 QByteArray generateRandom(int size)
 {
-    auto *tmp = (unsigned char *)malloc(sizeof(unsigned char) * size);
+    QByteArray result(size, '\0');
 
-    int ret = RAND_bytes(tmp, size);
+    int ret = RAND_bytes(unsignedData(result), size);
     if (ret != 1) {
         qCInfo(lcCse()) << "Random byte generation failed!";
         // Error out?
     }
-
-    QByteArray result((const char *)tmp, size);
-    free(tmp);
 
     return result;
 }
@@ -143,9 +173,9 @@ QByteArray encryptPrivateKey(
 
     QByteArray iv = generateRandom(12);
 
-    EVP_CIPHER_CTX *ctx;
+    CipherCtx ctx;
     /* Create and initialise the context */
-    if(!(ctx = EVP_CIPHER_CTX_new())) {
+    if(!ctx) {
         qCInfo(lcCse()) << "Error creating cipher";
         handleErrors();
     }
@@ -175,11 +205,11 @@ QByteArray encryptPrivateKey(
     QByteArray privateKeyB64 = privateKey.toBase64();
 
     // Make sure we have enough room in the cipher text
-    auto *ctext = (unsigned char *)malloc(sizeof(unsigned char) * (privateKeyB64.size() + 32));
+    QByteArray ctext(privateKeyB64.size() + 32, '\0');
 
     // Do the actual encryption
     int len = 0;
-    if(!EVP_EncryptUpdate(ctx, ctext, &len, (unsigned char *)privateKeyB64.constData(), privateKeyB64.size())) {
+    if(!EVP_EncryptUpdate(ctx, unsignedData(ctext), &len, (unsigned char *)privateKeyB64.constData(), privateKeyB64.size())) {
         qCInfo(lcCse()) << "Error encrypting";
         handleErrors();
     }
@@ -189,21 +219,23 @@ QByteArray encryptPrivateKey(
     /* Finalise the encryption. Normally ciphertext bytes may be written at
      * this stage, but this does not occur in GCM mode
      */
-    if(1 != EVP_EncryptFinal_ex(ctx, ctext + len, &len)) {
+    if(1 != EVP_EncryptFinal_ex(ctx, unsignedData(ctext) + len, &len)) {
         qCInfo(lcCse()) << "Error finalizing encryption";
         handleErrors();
     }
     clen += len;
 
     /* Get the tag */
-    auto *tag = (unsigned char *)calloc(sizeof(unsigned char), 16);
-    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
+    QByteArray tag(16, '\0');
+    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, unsignedData(tag))) {
         qCInfo(lcCse()) << "Error getting the tag";
         handleErrors();
     }
 
-    QByteArray cipherTXT((char *)ctext, clen);
-    cipherTXT.append((char *)tag, 16);
+    QByteArray cipherTXT;
+    cipherTXT.reserve(clen + 16);
+    cipherTXT.append(ctext, clen);
+    cipherTXT.append(tag);
 
     QByteArray result = cipherTXT.toBase64();
     result += "fA==";
@@ -234,10 +266,10 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     cipherTXT.chop(16);
 
     // Init
-    EVP_CIPHER_CTX *ctx;
+    CipherCtx ctx;
 
     /* Create and initialise the context */
-    if(!(ctx = EVP_CIPHER_CTX_new())) {
+    if(!ctx) {
         qCInfo(lcCse()) << "Error creating cipher";
         return QByteArray();
     }
@@ -245,42 +277,35 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     /* Initialise the decryption operation. */
     if(!EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), nullptr, nullptr, nullptr)) {
         qCInfo(lcCse()) << "Error initialising context with aes 256";
-        EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
     /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
         qCInfo(lcCse()) << "Error setting IV size";
-        EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
     /* Initialise key and IV */
     if(!EVP_DecryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
-        EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
-    auto *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
+    QByteArray ptext(cipherTXT.size() + 16, '\0');
     int plen;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
      * EVP_DecryptUpdate can be called multiple times if necessary
      */
-    if(!EVP_DecryptUpdate(ctx, ptext, &plen, (unsigned char *)cipherTXT.constData(), cipherTXT.size())) {
+    if(!EVP_DecryptUpdate(ctx, unsignedData(ptext), &plen, (unsigned char *)cipherTXT.constData(), cipherTXT.size())) {
         qCInfo(lcCse()) << "Could not decrypt";
-        EVP_CIPHER_CTX_free(ctx);
-        free(ptext);
         return QByteArray();
     }
 
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
         qCInfo(lcCse()) << "Could not set tag";
-        EVP_CIPHER_CTX_free(ctx);
-        free(ptext);
         return QByteArray();
     }
 
@@ -288,18 +313,12 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
      * anything else is a failure - the plaintext is not trustworthy.
      */
     int len = plen;
-    if (EVP_DecryptFinal_ex(ctx, ptext + plen, &len) == 0) {
+    if (EVP_DecryptFinal_ex(ctx, unsignedData(ptext) + plen, &len) == 0) {
         qCInfo(lcCse()) << "Tag did not match!";
-        EVP_CIPHER_CTX_free(ctx);
-        free(ptext);
         return QByteArray();
     }
 
-    QByteArray result((char *)ptext, plen);
-
-    free(ptext);
-    EVP_CIPHER_CTX_free(ctx);
-
+    QByteArray result(ptext, plen);
     return QByteArray::fromBase64(result);
 }
 
@@ -323,10 +342,10 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     cipherTXT.chop(16);
 
     // Init
-    EVP_CIPHER_CTX *ctx;
+    CipherCtx ctx;
 
     /* Create and initialise the context */
-    if(!(ctx = EVP_CIPHER_CTX_new())) {
+    if(!ctx) {
         qCInfo(lcCse()) << "Error creating cipher";
         return QByteArray();
     }
@@ -334,42 +353,35 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     /* Initialise the decryption operation. */
     if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
         qCInfo(lcCse()) << "Error initialising context with aes 128";
-        EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
     /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
         qCInfo(lcCse()) << "Error setting IV size";
-        EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
     /* Initialise key and IV */
     if(!EVP_DecryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
-        EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
-    auto *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
+    QByteArray ptext(cipherTXT.size() + 16, '\0');
     int plen;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
      * EVP_DecryptUpdate can be called multiple times if necessary
      */
-    if(!EVP_DecryptUpdate(ctx, ptext, &plen, (unsigned char *)cipherTXT.constData(), cipherTXT.size())) {
+    if(!EVP_DecryptUpdate(ctx, unsignedData(ptext), &plen, (unsigned char *)cipherTXT.constData(), cipherTXT.size())) {
         qCInfo(lcCse()) << "Could not decrypt";
-        EVP_CIPHER_CTX_free(ctx);
-        free(ptext);
         return QByteArray();
     }
 
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
         qCInfo(lcCse()) << "Could not set tag";
-        EVP_CIPHER_CTX_free(ctx);
-        free(ptext);
         return QByteArray();
     }
 
@@ -377,18 +389,12 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
      * anything else is a failure - the plaintext is not trustworthy.
      */
     int len = plen;
-    if (EVP_DecryptFinal_ex(ctx, ptext + plen, &len) == 0) {
+    if (EVP_DecryptFinal_ex(ctx, unsignedData(ptext) + plen, &len) == 0) {
         qCInfo(lcCse()) << "Tag did not match!";
-        EVP_CIPHER_CTX_free(ctx);
-        free(ptext);
         return QByteArray();
     }
 
-    QByteArray result((char *)ptext, plen);
-
-    free(ptext);
-    EVP_CIPHER_CTX_free(ctx);
-
+    QByteArray result(ptext, plen);
     return result;
 }
 
@@ -411,9 +417,9 @@ QByteArray privateKeyToPem(const QByteArray key) {
 QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
     QByteArray iv = generateRandom(16);
 
-    EVP_CIPHER_CTX *ctx;
+    CipherCtx ctx;
     /* Create and initialise the context */
-    if(!(ctx = EVP_CIPHER_CTX_new())) {
+    if(!ctx) {
         qCInfo(lcCse()) << "Error creating cipher";
         handleErrors();
         return {};
@@ -447,11 +453,11 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     QByteArray dataB64 = data.toBase64();
 
     // Make sure we have enough room in the cipher text
-    auto *ctext = (unsigned char *)malloc(sizeof(unsigned char) * (dataB64.size() + 16));
+    QByteArray ctext(dataB64.size() + 16, '\0');
 
     // Do the actual encryption
     int len = 0;
-    if(!EVP_EncryptUpdate(ctx, ctext, &len, (unsigned char *)dataB64.constData(), dataB64.size())) {
+    if(!EVP_EncryptUpdate(ctx, unsignedData(ctext), &len, (unsigned char *)dataB64.constData(), dataB64.size())) {
         qCInfo(lcCse()) << "Error encrypting";
         handleErrors();
         return {};
@@ -462,7 +468,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     /* Finalise the encryption. Normally ciphertext bytes may be written at
      * this stage, but this does not occur in GCM mode
      */
-    if(1 != EVP_EncryptFinal_ex(ctx, ctext + len, &len)) {
+    if(1 != EVP_EncryptFinal_ex(ctx, unsignedData(ctext) + len, &len)) {
         qCInfo(lcCse()) << "Error finalizing encryption";
         handleErrors();
         return {};
@@ -470,15 +476,17 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     clen += len;
 
     /* Get the tag */
-    auto *tag = (unsigned char *)calloc(sizeof(unsigned char), 16);
-    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
+    QByteArray tag(16, '\0');
+    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, unsignedData(tag))) {
         qCInfo(lcCse()) << "Error getting the tag";
         handleErrors();
         return {};
     }
 
-    QByteArray cipherTXT((char *)ctext, clen);
-    cipherTXT.append((char *)tag, 16);
+    QByteArray cipherTXT;
+    cipherTXT.reserve(clen + 16);
+    cipherTXT.append(ctext, clen);
+    cipherTXT.append(tag);
 
     QByteArray result = cipherTXT.toBase64();
     result += "fA==";
@@ -1378,10 +1386,10 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     }
 
     // Init
-    EVP_CIPHER_CTX *ctx;
+    CipherCtx ctx;
 
     /* Create and initialise the context */
-    if(!(ctx = EVP_CIPHER_CTX_new())) {
+    if(!ctx) {
         qCInfo(lcCse()) << "Could not create context";
         return false;
     }
@@ -1406,7 +1414,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
         return false;
     }
 
-    auto *out = (unsigned char *)malloc(sizeof(unsigned char) * (1024 + 16 -1));
+    QByteArray out(1024 + 16 - 1, '\0');
     int len = 0;
     int total_len = 0;
 
@@ -1420,35 +1428,31 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
         }
 
         qCDebug(lcCse) << "Encrypting " << data;
-        if(!EVP_EncryptUpdate(ctx, out, &len, (unsigned char *)data.constData(), data.size())) {
+        if(!EVP_EncryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
             qCInfo(lcCse()) << "Could not encrypt";
             return false;
         }
 
-        output->write((char *)out, len);
+        output->write(out, len);
         total_len += len;
     }
 
-    if(1 != EVP_EncryptFinal_ex(ctx, out, &len)) {
+    if(1 != EVP_EncryptFinal_ex(ctx, unsignedData(out), &len)) {
         qCInfo(lcCse()) << "Could finalize encryption";
         return false;
     }
-    output->write((char *)out, len);
+    output->write(out, len);
     total_len += len;
 
     /* Get the tag */
-    auto *tag = (unsigned char *)malloc(sizeof(unsigned char) * 16);
-    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
+    QByteArray tag(16, '\0');
+    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, unsignedData(tag))) {
         qCInfo(lcCse()) << "Could not get tag";
         return false;
     }
 
-    returnTag = QByteArray((const char*) tag, 16);
-    output->write((char *)tag, 16);
-
-    free(out);
-    free(tag);
-    EVP_CIPHER_CTX_free(ctx);
+    returnTag = tag;
+    output->write(tag, 16);
 
     input->close();
     output->close();
@@ -1463,10 +1467,10 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     output->open(QIODevice::WriteOnly);
 
     // Init
-    EVP_CIPHER_CTX *ctx;
+    CipherCtx ctx;
 
     /* Create and initialise the context */
-    if(!(ctx = EVP_CIPHER_CTX_new())) {
+    if(!ctx) {
         qCInfo(lcCse()) << "Could not create context";
         return false;
     }
@@ -1493,7 +1497,7 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
 
     qint64 size = input->size() - 16;
 
-    auto *out = (unsigned char *)malloc(sizeof(unsigned char) * (1024 + 16 -1));
+    QByteArray out(1024 + 16 - 1, '\0');
     int len = 0;
 
     while(input->pos() < size) {
@@ -1510,12 +1514,12 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
             return false;
         }
 
-        if(!EVP_DecryptUpdate(ctx, out, &len, (unsigned char *)data.constData(), data.size())) {
+        if(!EVP_DecryptUpdate(ctx, unsignedData(out), &len, (unsigned char *)data.constData(), data.size())) {
             qCInfo(lcCse()) << "Could not decrypt";
             return false;
         }
 
-        output->write((char *)out, len);
+        output->write(out, len);
     }
 
     QByteArray tag = input->read(16);
@@ -1526,14 +1530,11 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
         return false;
     }
 
-    if(1 != EVP_DecryptFinal_ex(ctx, out, &len)) {
+    if(1 != EVP_DecryptFinal_ex(ctx, unsignedData(out), &len)) {
         qCInfo(lcCse()) << "Could finalize decryption";
         return false;
     }
-    output->write((char *)out, len);
-
-    free(out);
-    EVP_CIPHER_CTX_free(ctx);
+    output->write(out, len);
 
     input->close();
     output->close();
