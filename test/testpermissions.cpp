@@ -27,6 +27,9 @@ static void applyPermissionsFromName(FileInfo &info) {
 // https://github.com/owncloud/client/issues/2038
 static void assertCsyncJournalOk(SyncJournalDb &journal)
 {
+    // The DB is openend in locked mode: close to allow us to access.
+    journal.close();
+
     SqlDatabase db;
     QVERIFY(db.openReadOnly(journal.databaseFilePath()));
     SqlQuery q("SELECT count(*) from metadata where length(fileId) == 0", db);
