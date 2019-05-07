@@ -2681,7 +2681,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="46"/>
         <source>&amp;Share link</source>
-        <translation>&amp;Megosztás hivatkozás</translation>
+        <translation>&amp;Megosztási hivatkozás</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="128"/>
@@ -3499,12 +3499,12 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Quit %1</source>
-        <translation>%1 kilépés</translation>
+        <translation>Kilépés a %1ból</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Disconnected from %1</source>
-        <translation>Kapcsolat bontva ezzel: %1</translation>
+        <translation>Kapcsolat bontva a %1dal</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="233"/>
@@ -3822,7 +3822,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="339"/>
         <source>Error Label</source>
-        <translation>Hiba címke</translation>
+        <translation>Hibacímke</translation>
     </message>
 </context>
 <context>
