@@ -522,6 +522,8 @@ restart_sync:
     QObject::connect(&engine, &SyncEngine::finished,
         [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
     QObject::connect(&engine, &SyncEngine::transmissionProgress, &cmd, &Cmd::transmissionProgressSlot);
+    QObject::connect(&engine, &SyncEngine::syncError,
+        [](const QString &error) { qWarning() << "Sync error:" << error; });
 
 
     // Exclude lists
