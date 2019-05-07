@@ -347,7 +347,7 @@ public:
         auto writeFileResponse = [&](const FileInfo &fileInfo) {
             xml.writeStartElement(davUri, QStringLiteral("response"));
 
-            xml.writeTextElement(davUri, QStringLiteral("href"), prefix + fileInfo.path());
+            xml.writeTextElement(davUri, QStringLiteral("href"), prefix + QUrl::toPercentEncoding(fileInfo.path(), "/"));
             xml.writeStartElement(davUri, QStringLiteral("propstat"));
             xml.writeStartElement(davUri, QStringLiteral("prop"));
 
@@ -663,9 +663,14 @@ public:
         Q_ASSERT(!fileName.isEmpty());
 
         if ((fileInfo = remoteRootFileInfo.find(fileName))) {
-            QVERIFY(request.hasRawHeader("If")); // The client should put this header
-            if (request.rawHeader("If") != QByteArray("<" + request.rawHeader("Destination") +
-                                                "> ([\"" + fileInfo->etag.toLatin1() + "\"])")) {
+            // The client should put this header
+            Q_ASSERT(request.hasRawHeader("If"));
+
+            // And it should condition on the destination file
+            auto start = QByteArray("<" + request.rawHeader("Destination") + ">");
+            Q_ASSERT(request.rawHeader("If").startsWith(start));
+
+            if (request.rawHeader("If") != start + " ([\"" + fileInfo->etag.toLatin1() + "\"])") {
                 QMetaObject::invokeMethod(this, "respondPreconditionFailed", Qt::QueuedConnection);
                 return;
             }

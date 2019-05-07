@@ -575,6 +575,22 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nGET, 0);
     }
+
+    void testPercentEncoding() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        const int size = 5 * 1000 * 1000;
+        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+
+        fakeFolder.localModifier().insert("A/file % \u20ac", size);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Only the second upload contains an "If" header
+        fakeFolder.localModifier().appendByte("A/file % \u20ac");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestChunkingNG)

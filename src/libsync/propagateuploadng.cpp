@@ -295,7 +295,7 @@ void PropagateUploadFileNG::startNextChunk()
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination
         auto ifMatch = headers.take("If-Match");
         if (!ifMatch.isEmpty()) {
-            headers["If"] = "<" + destination.toUtf8() + "> ([" + ifMatch + "])";
+            headers["If"] = "<" + QUrl::toPercentEncoding(destination, "/") + "> ([" + ifMatch + "])";
         }
         if (!_transmissionChecksumHeader.isEmpty()) {
             qCInfo(lcPropagateUpload) << destination << _transmissionChecksumHeader;
