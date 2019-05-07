@@ -15,6 +15,7 @@
 #include "creds/abstractcredentials.h"
 
 #include <map>
+#include <string>
 
 #include <cstdio>
 
@@ -30,6 +31,7 @@
 #include <QLineEdit>
 #include <QIODevice>
 #include <QUuid>
+#include <QScopeGuard>
 
 #include <keychain.h>
 #include "common/utility.h"
@@ -67,50 +69,180 @@ namespace {
         return (unsigned char*)array.data();
     }
 
-    QByteArray BIO2ByteArray(BIO *b) {
-        size_t pending = BIO_ctrl_pending(b);
-        QByteArray res(pending, '\0');
-        BIO_read(b, unsignedData(res), pending);
-        return res;
-    }
-
-    QByteArray handleErrors()
-    {
-        auto *bioErrors = BIO_new(BIO_s_mem());
-        ERR_print_errors(bioErrors); // This line is not printing anything.
-        auto errors = BIO2ByteArray(bioErrors);
-        BIO_free_all(bioErrors);
-        return errors;
-    }
-
     //
-    // Simple class for safe handling of ciper context
-    // allocation and deallocation
+    // Simple classes for safe (RAII) handling of OpenSSL
+    // data structures
     //
+
     class CipherCtx {
     public:
         CipherCtx()
-            : m_ctx(EVP_CIPHER_CTX_new())
+            : _ctx(EVP_CIPHER_CTX_new())
         {
         }
 
         ~CipherCtx()
         {
-            EVP_CIPHER_CTX_free(m_ctx);
+            EVP_CIPHER_CTX_free(_ctx);
         }
 
         operator EVP_CIPHER_CTX*()
         {
-            return m_ctx;
+            return _ctx;
         }
 
     private:
-        CipherCtx(const CipherCtx&) = delete;
-        CipherCtx& operator=(const CipherCtx&) = delete;
+        Q_DISABLE_COPY(CipherCtx)
 
-        EVP_CIPHER_CTX* m_ctx;
+        EVP_CIPHER_CTX* _ctx;
     };
+
+    class Bio {
+    public:
+        Bio()
+            : _bio(BIO_new(BIO_s_mem()))
+        {
+        }
+
+        ~Bio()
+        {
+            BIO_free_all(_bio);
+        }
+
+        operator BIO*()
+        {
+            return _bio;
+        }
+
+    private:
+        Q_DISABLE_COPY(Bio)
+
+        BIO* _bio;
+    };
+
+    class PKeyCtx {
+    public:
+        explicit PKeyCtx(int id, ENGINE *e = nullptr)
+            : _ctx(EVP_PKEY_CTX_new_id(id, e))
+        {
+        }
+
+        ~PKeyCtx()
+        {
+            EVP_PKEY_CTX_free(_ctx);
+        }
+
+        // The move constructor is needed for pre-C++17 where
+        // return-value optimization (RVO) is not obligatory
+        // and we have a `forKey` static function that returns
+        // an instance of this class
+        PKeyCtx(PKeyCtx&& other)
+            : _ctx(nullptr)
+        {
+            std::swap(_ctx, other._ctx);
+        }
+
+        PKeyCtx& operator=(PKeyCtx&& other) = delete;
+
+        static PKeyCtx forKey(EVP_PKEY *pkey, ENGINE *e = nullptr)
+        {
+            PKeyCtx ctx;
+            ctx._ctx = EVP_PKEY_CTX_new(pkey, e);
+            return ctx;
+        }
+
+        operator EVP_PKEY_CTX*()
+        {
+            return _ctx;
+        }
+
+    private:
+        Q_DISABLE_COPY(PKeyCtx)
+
+        PKeyCtx()
+            : _ctx(nullptr)
+        {
+        }
+
+        EVP_PKEY_CTX* _ctx;
+    };
+
+    class PKey {
+    public:
+        ~PKey()
+        {
+            EVP_PKEY_free(_pkey);
+        }
+
+        // The move constructor is needed for pre-C++17 where
+        // return-value optimization (RVO) is not obligatory
+        // and we have a static functions that return
+        // an instance of this class
+        PKey(PKey&& other)
+            : _pkey(nullptr)
+        {
+            std::swap(_pkey, other._pkey);
+        }
+
+        PKey& operator=(PKey&& other) = delete;
+
+        static PKey readPublicKey(Bio &bio)
+        {
+            PKey result;
+            result._pkey = PEM_read_bio_PUBKEY(bio, nullptr, nullptr, nullptr);
+            return result;
+        }
+
+        static PKey readPrivateKey(Bio &bio)
+        {
+            PKey result;
+            result._pkey = PEM_read_bio_PrivateKey(bio, nullptr, nullptr, nullptr);
+            return result;
+        }
+
+        static PKey generate(PKeyCtx& ctx)
+        {
+            PKey result;
+            if (EVP_PKEY_keygen(ctx, &result._pkey) <= 0) {
+                result._pkey = nullptr;
+            }
+            return result;
+        }
+
+        operator EVP_PKEY*()
+        {
+            return _pkey;
+        }
+
+    private:
+        Q_DISABLE_COPY(PKey)
+
+        PKey()
+            : _pkey(nullptr)
+        {
+        }
+
+        EVP_PKEY* _pkey;
+    };
+
+
+
+
+    QByteArray BIO2ByteArray(Bio &b) {
+        int pending = BIO_ctrl_pending(b);
+        QByteArray res(pending, '\0');
+        BIO_read(b, unsignedData(res), pending);
+        return res;
+    }
+
+    QByteArray handleErrors(void)
+    {
+        Bio bioErrors;
+        ERR_print_errors(bioErrors); // This line is not printing anything.
+        return BIO2ByteArray(bioErrors);
+    }
 }
+
 
 namespace EncryptionHelper {
 
@@ -142,16 +274,16 @@ QByteArray generatePassword(const QString& wordlist, const QByteArray& salt) {
     const int keyStrength = 256;
     const int keyLength = keyStrength/8;
 
-    unsigned char secretKey[keyLength];
+    QByteArray secretKey(keyLength, '\0');
 
     int ret = PKCS5_PBKDF2_HMAC_SHA1(
         wordlist.toLocal8Bit().constData(),     // const char *password,
         wordlist.size(),                        // int password length,
-        (const unsigned char *)salt.constData(),                       // const unsigned char *salt,
+        (const unsigned char *)salt.constData(),// const unsigned char *salt,
         salt.size(),                            // int saltlen,
         iterationCount,                         // int iterations,
         keyLength,                              // int keylen,
-        secretKey                               // unsigned char *out
+        unsignedData(secretKey)                 // unsigned char *out
     );
 
     if (ret != 1) {
@@ -161,8 +293,7 @@ QByteArray generatePassword(const QString& wordlist, const QByteArray& salt) {
 
     qCInfo(lcCse()) << "Encryption key generated!";
 
-    QByteArray password((const char *)secretKey, keyLength);
-    return password;
+    return secretKey;
 }
 
 QByteArray encryptPrivateKey(
@@ -394,22 +525,17 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         return QByteArray();
     }
 
-    QByteArray result(ptext, plen);
-    return result;
+    return QByteArray(ptext, plen);
 }
 
 QByteArray privateKeyToPem(const QByteArray key) {
-    BIO *privateKeyBio = BIO_new(BIO_s_mem());
+    Bio privateKeyBio;
     BIO_write(privateKeyBio, key.constData(), key.size());
-    EVP_PKEY *pkey = PEM_read_bio_PrivateKey(privateKeyBio, nullptr, nullptr, nullptr);
+    auto pkey = PKey::readPrivateKey(privateKeyBio);
 
-    BIO *pemBio = BIO_new(BIO_s_mem());
+    Bio pemBio;
     PEM_write_bio_PKCS8PrivateKey(pemBio, pkey, nullptr, nullptr, 0, nullptr, nullptr);
     QByteArray pem = BIO2ByteArray(pemBio);
-
-    BIO_free_all(privateKeyBio);
-    BIO_free_all(pemBio);
-    EVP_PKEY_free(pkey);
 
     return pem;
 }
@@ -499,7 +625,7 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     int err = -1;
 
     qCInfo(lcCseDecryption()) << "Start to work the decryption.";
-    auto ctx = EVP_PKEY_CTX_new(privateKey, ENGINE_get_default_RSA());
+    auto ctx = PKeyCtx::forKey(privateKey, ENGINE_get_default_RSA());
     if (!ctx) {
         qCInfo(lcCseDecryption()) << "Could not create the PKEY context.";
         handleErrors();
@@ -542,14 +668,9 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
         qCInfo(lcCseDecryption()) << "Size of data is: " << data.size();
     }
 
-    auto *out = (unsigned char *) OPENSSL_malloc(outlen);
-    if (!out) {
-        qCInfo(lcCseDecryption()) << "Could not alloc space for the decrypted metadata";
-        handleErrors();
-        return {};
-    }
+    QByteArray out(outlen, '\0');
 
-    if (EVP_PKEY_decrypt(ctx, out, &outlen, (unsigned char *)data.constData(), data.size()) <= 0) {
+    if (EVP_PKEY_decrypt(ctx, unsignedData(out), &outlen, (unsigned char *)data.constData(), data.size()) <= 0) {
         qCInfo(lcCseDecryption()) << "Could not decrypt the data.";
         ERR_print_errors_fp(stdout); // This line is not printing anything.
         return {};
@@ -557,16 +678,14 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
         qCInfo(lcCseDecryption()) << "data decrypted successfully";
     }
 
-    const auto ret = std::string((char*) out, outlen);
-    QByteArray raw((const char*) out, OCC::Utility::convertSizeToInt(outlen));
-    qCInfo(lcCse()) << raw;
-    return raw;
+    qCInfo(lcCse()) << out;
+    return out;
 }
 
 QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) {
     int err = -1;
 
-    auto ctx = EVP_PKEY_CTX_new(publicKey, ENGINE_get_default_RSA());
+    auto ctx = PKeyCtx::forKey(publicKey, ENGINE_get_default_RSA());
     if (!ctx) {
         qCInfo(lcCse()) << "Could not initialize the pkey context.";
         exit(1);
@@ -600,21 +719,15 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
         qCInfo(lcCse()) << "Encryption Length:" << outLen;
     }
 
-    auto *out = (uchar*) OPENSSL_malloc(outLen);
-    if (!out) {
-        qCInfo(lcCse()) << "Error requesting memory for the encrypted contents";
-        exit(1);
-    }
-
-    if (EVP_PKEY_encrypt(ctx, out, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
+    QByteArray out(outLen, '\0');
+    if (EVP_PKEY_encrypt(ctx, unsignedData(out), &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
         qCInfo(lcCse()) << "Could not encrypt key." << err;
         exit(1);
     }
 
     // Transform the encrypted data into base64.
-    QByteArray raw((const char*) out, OCC::Utility::convertSizeToInt(outLen));
-    qCInfo(lcCse()) << raw.toBase64();
-    return raw.toBase64();
+    qCInfo(lcCse()) << out.toBase64();
+    return out.toBase64();
 }
 
 }
@@ -838,10 +951,9 @@ void ClientSideEncryption::generateKeyPair()
     qCInfo(lcCse()) << "No public key, generating a pair.";
     const int rsaKeyLen = 2048;
 
-    EVP_PKEY *localKeyPair = nullptr;
 
     // Init RSA
-    EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr);
+    PKeyCtx ctx(EVP_PKEY_RSA);
 
     if(EVP_PKEY_keygen_init(ctx) <= 0) {
         qCInfo(lcCse()) << "Couldn't initialize the key generator";
@@ -853,15 +965,16 @@ void ClientSideEncryption::generateKeyPair()
         return;
     }
 
-    if(EVP_PKEY_keygen(ctx, &localKeyPair) <= 0) {
+    auto localKeyPair = PKey::generate(ctx);
+    if(!localKeyPair) {
         qCInfo(lcCse()) << "Could not generate the key";
         return;
     }
-    EVP_PKEY_CTX_free(ctx);
+
     qCInfo(lcCse()) << "Key correctly generated";
     qCInfo(lcCse()) << "Storing keys locally";
 
-    BIO *privKey = BIO_new(BIO_s_mem());
+    Bio privKey;
     if (PEM_write_bio_PrivateKey(privKey, localKeyPair, nullptr, nullptr, 0, nullptr, nullptr) <= 0) {
         qCInfo(lcCse()) << "Could not read private key from bio.";
         return;
@@ -888,25 +1001,24 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
       {"CN", cnArray.constData()}
     };
 
-    int             ret = 0;
-    int             nVersion = 1;
-
-    X509_REQ *x509_req = nullptr;
-    SignPublicKeyApiJob *job = nullptr;
+    int ret = 0;
+    int nVersion = 1;
 
     // 2. set version of x509 req
-    x509_req = X509_REQ_new();
+    X509_REQ *x509_req = X509_REQ_new();
+    auto release_on_exit_x509_req = qScopeGuard([&] {
+                X509_REQ_free(x509_req);
+            });
+
     ret = X509_REQ_set_version(x509_req, nVersion);
 
     // 3. set subject of x509 req
     auto x509_name = X509_REQ_get_subject_name(x509_req);
 
-    using ucharp = const unsigned char *;
     for(const auto& v : certParams) {
-        ret = X509_NAME_add_entry_by_txt(x509_name, v.first,  MBSTRING_ASC, (ucharp) v.second, -1, -1, 0);
+        ret = X509_NAME_add_entry_by_txt(x509_name, v.first,  MBSTRING_ASC, (const unsigned char*) v.second, -1, -1, 0);
         if (ret != 1) {
             qCInfo(lcCse()) << "Error Generating the Certificate while adding" << v.first << v.second;
-            X509_REQ_free(x509_req);
             return;
         }
     }
@@ -914,27 +1026,23 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
     ret = X509_REQ_set_pubkey(x509_req, keyPair);
     if (ret != 1){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
-        X509_REQ_free(x509_req);
         return;
     }
 
     ret = X509_REQ_sign(x509_req, keyPair, EVP_sha1());    // return x509_req->signature->length
     if (ret <= 0){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
-        X509_REQ_free(x509_req);
         return;
     }
 
-    BIO *out = BIO_new(BIO_s_mem());
+    Bio out;
     ret = PEM_write_bio_X509_REQ(out, x509_req);
     QByteArray output = BIO2ByteArray(out);
-    BIO_free(out);
-    EVP_PKEY_free(keyPair);
 
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
 
-    job = new SignPublicKeyApiJob(_account, baseUrl() + "public-key", this);
+    auto job = new SignPublicKeyApiJob(_account, baseUrl() + "public-key", this);
     job->setCsr(output);
 
     connect(job, &SignPublicKeyApiJob::jsonReceived, [this](const QJsonDocument& json, int retCode) {
@@ -1226,25 +1334,23 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
-QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const {
-
-    BIO *publicKeyBio = BIO_new(BIO_s_mem());
+QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const
+{
+    Bio publicKeyBio;
     QByteArray publicKeyPem = _account->e2e()->_publicKey.toPem();
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
-    EVP_PKEY *publicKey = PEM_read_bio_PUBKEY(publicKeyBio, nullptr, nullptr, nullptr);
+    auto publicKey = PKey::readPublicKey(publicKeyBio);
 
     // The metadata key is binary so base64 encode it first
-    auto ret = EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
-    EVP_PKEY_free(publicKey);
-    return ret; // ret is already b64
+    return EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
 }
 
 QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadata) const
 {
-    BIO *privateKeyBio = BIO_new(BIO_s_mem());
+    Bio privateKeyBio;
     QByteArray privateKeyPem = _account->e2e()->_privateKey;
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
-    EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, nullptr, nullptr, nullptr);
+    auto key = PKey::readPrivateKey(privateKeyBio);
 
     // Also base64 decode the result
     QByteArray decryptResult = EncryptionHelper::decryptStringAsymmetric(
