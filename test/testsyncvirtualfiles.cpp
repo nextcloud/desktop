@@ -1056,7 +1056,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         // root is unspecified
-        QCOMPARE(*vfs->availability("file1"), VfsItemAvailability::AllHydrated);
+        QCOMPARE(*vfs->availability("file1.nextcloud"), VfsItemAvailability::AllDehydrated);
         QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
         QCOMPARE(*vfs->availability("local/file1"), VfsItemAvailability::AlwaysLocal);
         QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
@@ -1085,6 +1085,10 @@ private slots:
 
         QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
         QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
+
+        auto r = vfs->availability("nonexistant");
+        QVERIFY(!r);
+        QCOMPARE(r.error(), Vfs::AvailabilityError::NoSuchItem);
     }
 };
 
