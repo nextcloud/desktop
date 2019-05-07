@@ -150,7 +150,7 @@ To enable the writing of core dump files, you must define the `OWNCLOUD_CORE_DUM
 
 For example:
 
-`OWNCLOUD_CORE_DUMP=1`
+`OWNCLOUD_CORE_DUMP=1 owncloud`
 
 This command starts the client with core dumping enabled and saves the files in the current working directory.
 
