@@ -180,7 +180,7 @@ void OwncloudWizard::successfulStep()
     case WizardCommon::Page_WebView:{
         _webViewPage->setConnected();
         ConfigFile cfgFile;
-        emit createLocalAndRemoteFolders(cfgFile.defaultFileStreamMirrorPath(), ocUrl());
+        emit createLocalAndRemoteFolders(cfgFile.getFsMirrorPath(), ocUrl());
         break;
       }
 //    case WizardCommon::Page_AdvancedSetup:

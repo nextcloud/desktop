@@ -742,7 +742,7 @@ void ownCloudGui::slotFolderOpenAction(const QString &alias)
         qCInfo(lcApplication) << "opening local url " << f->path();
         QUrl url = QUrl::fromLocalFile(f->path());
 
-#ifdef Q_OS_WIN
+	#ifdef Q_OS_WIN
         // work around a bug in QDesktopServices on Win32, see i-net
         QString filePath = f->path();
 
@@ -750,7 +750,11 @@ void ownCloudGui::slotFolderOpenAction(const QString &alias)
             url = QUrl::fromLocalFile(QDir::toNativeSeparators(filePath));
         else
             url = QUrl::fromLocalFile(filePath);
-#endif
+
+		ConfigFile cfgFile;
+		url = QUrl::fromLocalFile(cfgFile.getFsSyncPath());
+		qDebug() << "Open virtual drive: " << cfgFile.getFsSyncPath();
+	#endif
         QDesktopServices::openUrl(url);
     }
 }
