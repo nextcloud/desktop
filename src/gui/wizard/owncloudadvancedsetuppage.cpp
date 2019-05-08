@@ -42,6 +42,8 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     , _localFolderValid(false)
     , _progressIndi(new QProgressIndicator(this))
     , _remoteFolder()
+    , _rSize(-1)
+    , _rSelectedSize(-1)
 {
     _ui.setupUi(this);
 
@@ -368,6 +370,8 @@ void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 {
     _rSize = result["size"].toDouble();
     _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(_rSize)));
+
+    updateStatus();
 }
 
 qint64 OwncloudAdvancedSetupPage::availableLocalSpace() const
