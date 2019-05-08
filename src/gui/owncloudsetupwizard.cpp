@@ -318,6 +318,10 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
                                             .arg(url));
 
     testOwnCloudConnect();
+
+	emit _ocWizard->basicSetupFinished(1);
+    _ocWizard->close();
+    emit ownCloudWizardDone(0);
 }
 
 void OwncloudSetupWizard::testOwnCloudConnect()
@@ -625,7 +629,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
         auto account = applyAccountChanges();
 
         ConfigFile cfgFile;
-        QString localFolder = FolderDefinition::prepareLocalPath(cfgFile.defaultFileStreamMirrorPath());
+		QString localFolder = FolderDefinition::prepareLocalPath(cfgFile.getFsMirrorPath());
 
 //        bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
 //        if (!startFromScratch || ensureStartFromScratch(localFolder)) {

@@ -34,11 +34,7 @@
 #include "sharedialog.h"
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
-
-#if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
-#endif
-
 #include "owncloudsetupwizard.h"
 #include "version.h"
 
@@ -71,9 +67,8 @@ namespace {
 
     static const char optionsC[] =
         "Options:\n"
-        "  --help, -h           : show this help screen.\n"
-        "  --version, -v        : show version information.\n"
-        "  --logwindow, -l      : open a window to show log output.\n"
+        "  -h --help            : show this help screen.\n"
+        "  --logwindow          : open a window to show log output.\n"
         "  --logfile <filename> : write log output to file <filename>.\n"
         "  --logdir <name>      : write each sync log output in a new file\n"
         "                         in folder <name>.\n"
@@ -262,22 +257,15 @@ Application::Application(int &argc, char **argv)
     connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
         this, &Application::slotSystemOnlineConfigurationChanged);
 
-#if defined(BUILD_UPDATER)
     // Update checks
-    auto *updaterScheduler = new UpdaterScheduler(this);
+    UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
     connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
         _gui.data(), &ownCloudGui::slotShowTrayMessage);
     connect(updaterScheduler, &UpdaterScheduler::requestRestart,
         _folderManager.data(), &FolderMan::slotScheduleAppRestart);
-#endif
 
     // Cleanup at Quit.
     connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
-
-    // Allow other classes to hook into isShowingSettingsDialog() signals (re-auth widgets, for example)
-    connect(_gui.data(), &ownCloudGui::isShowingSettingsDialog, this, &Application::slotGuiIsShowingSettings);
-
-    _gui->createTray();
 }
 
 Application::~Application()
@@ -350,6 +338,8 @@ void Application::slotAccountStateAdded(AccountState *accountState)
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 
     // Mount the virtual FileSystem.
+	ConfigFile cfgFile;
+
 #if defined(Q_OS_MAC)
     QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";
     QString mountPath = "/Volumes/" + _theme->appName() + "fs";
@@ -358,10 +348,9 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 #endif
 
 #if defined(Q_OS_WIN)
-    QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-    WCHAR mountLetter = L'X';
-    VfsWindows::instance()->initialize(rootPath, mountLetter, accountState);
-    VfsWindows::instance()->mount();
+	WCHAR mountLetter = VfsWindows::instance()->getRandomUnit();
+	VfsWindows::instance()->initialize(cfgFile.getFsMirrorPath(), mountLetter, accountState);
+	VfsWindows::instance()->mount();
 #endif
 
     //< For cron delete dir/files online. Execute each 60000 msec
@@ -453,7 +442,7 @@ void Application::slotownCloudWizardDone(int res)
             Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
         }
 
-        Systray::instance()->showWindow();
+        _gui->slotShowSettings();
     }
 }
 
@@ -487,14 +476,14 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
         parseOptions(options);
         setupLogging();
-    } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
+    } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
             // This call is mirrored with the one in int main()
-            qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
+            qCWarning(lcApplication) << "Ignoring MSG_SHOWSETTINGS, possibly double-invocation of client via session restore and auto start";
             return;
         }
-        showMainDialog();
+        showSettingsDialog();
     }
 }
 
@@ -549,7 +538,7 @@ void Application::parseOptions(const QStringList &options)
             _debugMode = true;
         } else if (option == QLatin1String("--background")) {
             _backgroundMode = true;
-        } else if (option == QLatin1String("--version") || option == QLatin1String("-v")) {
+        } else if (option == QLatin1String("--version")) {
             _versionOnly = true;
         } else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
@@ -662,9 +651,9 @@ void Application::setupTranslations()
     if (!enforcedLocale.isEmpty())
         uiLanguages.prepend(enforcedLocale);
 
-    auto *translator = new QTranslator(this);
-    auto *qtTranslator = new QTranslator(this);
-    auto *qtkeychainTranslator = new QTranslator(this);
+    QTranslator *translator = new QTranslator(this);
+    QTranslator *qtTranslator = new QTranslator(this);
+    QTranslator *qtkeychainTranslator = new QTranslator(this);
 
     foreach (QString lang, uiLanguages) {
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
@@ -754,7 +743,7 @@ void Application::slotDeleteOnlineFiles()
         foreach(item, list)
         {
             qDebug() << Q_FUNC_INFO << " 03";
-            qint64 m_secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
+			qint64 secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
             SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
 
             qDebug() << Q_FUNC_INFO << " 04";
@@ -764,53 +753,42 @@ void Application::slotDeleteOnlineFiles()
             qDebug() << Q_FUNC_INFO << " 05";
 
 			if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NONE" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NONE" << " secondsSinceLastAccess: " << secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NONE" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NONE" << " secondsSinceLastAccess: " << secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NO" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NO" << " secondsSinceLastAccess: " << secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_YES" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_YES" << " secondsSinceLastAccess: " << secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NO" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NO" << " secondsSinceLastAccess: " << secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_YES" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_YES" << " secondsSinceLastAccess: " << secondsSinceLastAccess;
 
             //< After 10' and assumption SYNCMODE_ONLINE = Online, SYNCMODE_ALWAYS = Offline.
-            if (m_secondsSinceLastAccess > 65 &&
-                (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE)
-                )
-            {
-                QString relative_prefix;
+            if (secondsSinceLastAccess > 65 && (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE)) {
+				qDebug() << Q_FUNC_INFO << " Prepare to delete file or dir ..." << item;
+				ConfigFile cfgFile;
+				QString absolutePath = cfgFile.getFsMirrorPath().append(item);
+				qDebug() << Q_FUNC_INFO << " Prepare to delete file or dir ..." << item;
 
-				#if defined(Q_OS_WIN)
-					relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-				#elif defined(Q_OS_MAC)
-					relative_prefix = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/cachedFiles/";
-				#endif
-
-                QString realPathItem = relative_prefix.append(item);
-                qDebug() << " clfCase Prepare to delete file or dir ..." << item;
-
-                QDir dir(realPathItem);
+                QDir dir(absolutePath);
                 //< if is dir
-                if (dir.exists())
-                {
-                    qDebug() << " clfCase remove dir ..." << realPathItem;
-                    removeDirs(realPathItem); //< Auxiliary function to remove folder contents
+                if (dir.exists()) {
+					qDebug() << Q_FUNC_INFO << " Remove dir... " << absolutePath;
+                    removeDirs(absolutePath); //< Auxiliary function to remove folder contents
                     SyncJournalDb::instance()->deleteFileRecord(item, true);
                 }
-                else
-                {
-                    qDebug() << " clfCase remove file ..." << realPathItem;
-
-                //< if is file
-                    QFile file(realPathItem);
+                else {
+					qDebug() << Q_FUNC_INFO << " Remove file... " << absolutePath;
+					//< if is file
+                    QFile file(absolutePath);
                     while (file.exists()) {
-                        QFile::remove(realPathItem); //< Remove
+                        QFile::remove(absolutePath); //< Remove
                         QThread::msleep(100);
                     }
-                SyncJournalDb::instance()->deleteFileRecord(item, false);
+
+					SyncJournalDb::instance()->deleteFileRecord(item, false);
                 }
                 SyncJournalDb::instance()->deleteSyncMode(item);
             }
@@ -829,15 +807,9 @@ bool Application::versionOnly()
     return _versionOnly;
 }
 
-void Application::showMainDialog()
+void Application::showSettingsDialog()
 {
-    _gui->slotOpenMainDialog();
-}
-
-void Application::slotGuiIsShowingSettings()
-{
-    emit isShowingSettingsDialog();
+    _gui->slotShowSettings();
 }
 
 } // namespace OCC
-

@@ -544,8 +544,13 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
     QMenu menu;
     auto ac = menu.addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentLocalSubFolder);
+#ifdef Q_OS_WIN
+	ConfigFile cfgFile;
+	QString fileName = cfgFile.getFsSyncPath();
+#elif defined(Q_OS_MAC)
+	QString fileName = _model->data(index, FolderStatusDelegate::FolderPathRole).toString();
+#endif
 
-    auto fileName = _model->data(index, FolderStatusDelegate::FolderPathRole).toString();
     if (!QFile::exists(fileName)) {
         ac->setEnabled(false);
     }

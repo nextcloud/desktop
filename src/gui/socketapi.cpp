@@ -17,7 +17,6 @@
 #include "socketapi.h"
 
 #include "config.h"
-#include "configfile.h"
 #include "folderman.h"
 #include "folder.h"
 #include "theme.h"
@@ -51,14 +50,17 @@
 #include <QMessageBox>
 
 #include <QClipboard>
-#include <QDesktopServices>
 #include <QFileInfo>
-
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QStandardPaths>
 #endif
 
+#if defined(Q_OS_WIN)
+#include "vfs_windows.h"
+#include <shlobj_core.h>
+#include <windows.h>
+#endif
 
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
@@ -338,19 +340,25 @@ void SocketApi::slotUnregisterPath(const QString &alias)
         return;
 
     Folder *f = FolderMan::instance()->folder(alias);
-    if (f)
-        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
+	if (f) {
+	#if defined(Q_OS_WIN)
+		broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), cfgFile.getFsSyncPath(), QString()), true);
+	#elif defined(Q_OS_MAC)
+		broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
+	#endif
+	}
 
     _registeredAliases.remove(alias);
 }
 
-void SocketApi::slotUpdateFolderView(Folder *f)
+void SocketApi::slotUpdateFolderView()
 {
     if (_listeners.isEmpty()) {
         return;
     }
 
-	if (f) {
+    Folder *f = FolderMan::instance()->currentSyncFolder();
+    if (f) {
         // do only send UPDATE_VIEW for a couple of status
         if (f->syncResult().status() == SyncResult::SyncPrepare
             || f->syncResult().status() == SyncResult::Success
@@ -359,9 +367,16 @@ void SocketApi::slotUpdateFolderView(Folder *f)
             || f->syncResult().status() == SyncResult::Error
             || f->syncResult().status() == SyncResult::SetupError) {
             QString rootPath = removeTrailingSlash(f->path());
-            broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
 
-            broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
+
+		#if defined(Q_OS_WIN)
+			broadcastStatusPushMessage(cfgFile.getFsSyncPath(), f->syncEngine().syncFileStatusTracker().fileStatus(""));
+			broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), cfgFile.getFsSyncPath()));
+		#elif defined(Q_OS_MAC)
+			broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
+			broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
+		#endif
+
         } else {
             qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
         }
@@ -375,9 +390,16 @@ void SocketApi::broadcastMessage(const QString &msg, bool doWait)
     }
 }
 
-void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage)
+void SocketApi::processShareRequest(const QString &localFileC, SocketListener *listener, ShareDialogStartPage startPage)
 {
+    QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     auto theme = Theme::instance();
+
     auto fileData = FileData::get(localFile);
     auto shareFolder = fileData.folder;
     if (!shareFolder) {
@@ -418,10 +440,20 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
-    Q_ASSERT(!systemPath.endsWith('/'));
+#if defined(Q_OS_WIN)
+	uint directoryHash = qHash(systemPath.left(cfgFile.getFsSyncPath().append("/").lastIndexOf('/')));
+#elif defined(Q_OS_MAC)
     uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
-    foreach (auto &listener, _listeners) {
-        listener.sendMessageIfDirectoryMonitored(msg, directoryHash);
+#endif
+	foreach (auto &listener, _listeners) {
+	#if defined(Q_OS_WIN)
+		QString mSystemPath = systemPath;
+		mSystemPath.replace(0, cfgFile.getFsMirrorPath().length(), cfgFile.getFsSyncPath());
+		msg = buildMessage(QLatin1String("STATUS"), mSystemPath, fileStatus.toSocketAPIString());
+		listener.sendMessageIfDirectoryMonitored(msg, directoryHash);
+	#elif defined(Q_OS_MAC)
+		listener.sendMessageIfDirectoryMonitored(msg, directoryHash);
+	#endif
     }
 }
 
@@ -431,40 +463,61 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketLi
     command_RETRIEVE_FILE_STATUS(argument, listener);
 }
 
-void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener)
+void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argumentC, SocketListener *listener)
 {
-    QString statusString;
+	QString argument = argumentC;
+#if defined(Q_OS_WIN)
+	argument.replace(0, 3, cfgFile.getFsMirrorPath());
+#endif
+	QString statusString;
 
-    auto fileData = FileData::get(argument);
-    if (!fileData.folder) {
-        // this can happen in offline mode e.g.: nothing to worry about
-        statusString = QLatin1String("NOP");
-    } else {
+	auto fileData = FileData::get(argument);
+	if (!fileData.folder) {
+		// this can happen in offline mode e.g.: nothing to worry about
+		statusString = QLatin1String("NOP");
+	} else {
 		QString systemPath = QDir::cleanPath(argument);
-        if (systemPath.endsWith(QLatin1Char('/'))) {
-            systemPath.truncate(systemPath.length() - 1);
-            qCWarning(lcSocketApi) << "Removed trailing slash for directory: " << systemPath << "Status pushes won't have one.";
-        }
-        // The user probably visited this directory in the file shell.
-        // Let the listener know that it should now send status pushes for sibblings of this file.
+		if (systemPath.endsWith(QLatin1Char('/'))) {
+			systemPath.truncate(systemPath.length() - 1);
+			qCWarning(lcSocketApi) << "Removed trailing slash for directory: " << systemPath << "Status pushes won't have one.";
+		}
+		// The user probably visited this directory in the file shell.
+		// Let the listener know that it should now send status pushes for sibblings of this file.
 		QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf('/'));
-        listener->registerMonitoredDirectory(qHash(directory));
-
+	#if defined(Q_OS_WIN)
+		listener->registerMonitoredDirectory(qHash(cfgFile.getFsSyncPath()));
+		argument.replace(0, cfgFile.getFsMirrorPath().length(), cfgFile.getFsSyncPath());
+	#elif defined(Q_OS_MAC)
+		listener->registerMonitoredDirectory(qHash(directory));
+	#endif
 		SyncFileStatus fileStatus = fileData.syncFileStatus();
-        statusString = fileStatus.toSocketAPIString();
-    }
+		statusString = fileStatus.toSocketAPIString();
+	}
 
-    const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') % QDir::toNativeSeparators(argument);
+	const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') % QDir::toNativeSeparators(argument);
+
     listener->sendMessage(message);
 }
 
-void SocketApi::command_SHARE(const QString &localFile, SocketListener *listener)
+void SocketApi::command_SHARE(const QString &localFileC, SocketListener *listener)
 {
+    QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     processShareRequest(localFile, listener, ShareDialogStartPage::UsersAndGroups);
 }
 
-void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener)
+void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFileC, SocketListener *listener)
 {
+    QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     processShareRequest(localFile, listener, ShareDialogStartPage::PublicLinks);
 }
 
@@ -473,8 +526,14 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
     listener->sendMessage(QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
-void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *listener)
+void SocketApi::command_SHARE_STATUS(const QString &localFileC, SocketListener *listener)
 {
+    QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
 
     if (!shareFolder) {
@@ -526,43 +585,9 @@ void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *l
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)
 {
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
-    listener->sendMessage(QLatin1String("STREAM_SUBMENU_TITLE:") + tr("Claro drive FS"));
-    listener->sendMessage(QLatin1String("STREAM_OFFLINE_ITEM_TITLE:") + tr("0ff line"));
-    listener->sendMessage(QLatin1String("STREAM_ONLINE_ITEM_TITLE:") + tr("On line"));
-}
-
-void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
-{
-    auto fileData = FileData::get(localFile);
-    if (!fileData.folder) {
-        qCWarning(lcSocketApi) << "Unknown path" << localFile;
-        return;
-    }
-
-    auto record = fileData.journalRecord();
-    if (!record.isValid())
-        return;
-
-    DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
-    if (!editor)
-        return;
-
-    auto *job = new JsonApiJob(fileData.folder->accountState()->account(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing/open"), this);
-
-    QUrlQuery params;
-    params.addQueryItem("path", fileData.accountRelativePath);
-    params.addQueryItem("editorId", editor->id());
-    job->addQueryParams(params);
-    job->usePOST();
-
-    QObject::connect(job, &JsonApiJob::jsonReceived, [](const QJsonDocument &json){
-        auto data = json.object().value("ocs").toObject().value("data").toObject();
-        auto url = QUrl(data.value("url").toString());
-
-        if(!url.isEmpty())
-            Utility::openBrowser(url, nullptr);
-    });
-    job->start();
+    listener->sendMessage(QLatin1String("STREAM_SUBMENU_TITLE:") + tr("Virtual Drive"));
+    listener->sendMessage(QLatin1String("STREAM_OFFLINE_ITEM_TITLE:") + tr("Available offline"));
+    listener->sendMessage(QLatin1String("STREAM_ONLINE_ITEM_TITLE:") + tr("Online only"));
 }
 
 // don't pull the share manager into socketapi unittests
@@ -620,8 +645,15 @@ private slots:
         success(share->getLink().toString());
     }
 
-    void serverError(int code, const QString &message)
+    void serverError(int code, const QString &messageC)
     {
+		QString message = messageC;
+
+	#if defined(Q_OS_WIN)
+		ConfigFile cfgFile;
+		message.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+	#endif
+
         qCWarning(lcPublicLink) << "Share fetch/create error" << code << message;
         QMessageBox::warning(
             0,
@@ -633,8 +665,15 @@ private slots:
     }
 
 private:
-    void success(const QString &link)
+    void success(const QString &linkC)
     {
+        QString link = linkC;
+
+	#if defined(Q_OS_WIN)
+		ConfigFile cfgFile;
+		link.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+	#endif
+
         _targetFun(link);
         deleteLater();
     }
@@ -662,8 +701,14 @@ public:
 
 #endif
 
-void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListener *)
+void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFileC, SocketListener *)
 {
+	QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     auto fileData = FileData::get(localFile);
     if (!fileData.folder)
         return;
@@ -673,27 +718,15 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
     job->run();
 }
 
-// Windows Shell / Explorer pinning fallbacks, see issue: https://github.com/nextcloud/desktop/issues/1599
-#ifdef Q_OS_WIN
-void SocketApi::command_COPYASPATH(const QString &localFile, SocketListener *)
+// Fetches the private link url asynchronously and then calls the target slot
+void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFileC, const std::function<void(const QString &url)> &targetFun)
 {
-    QApplication::clipboard()->setText(localFile);
-}
+    QString localFile = localFileC;
 
-void SocketApi::command_OPENNEWWINDOW(const QString &localFile, SocketListener *)
-{
-    QDesktopServices::openUrl(QUrl::fromLocalFile(localFile));
-}
-
-void SocketApi::command_OPEN(const QString &localFile, SocketListener *socketListener)
-{
-    command_OPENNEWWINDOW(localFile, socketListener);
-}
+#if defined(Q_OS_WIN)
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
 #endif
 
-// Fetches the private link url asynchronously and then calls the target slot
-void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
-{
     auto fileData = FileData::get(localFile);
     if (!fileData.folder) {
         qCWarning(lcSocketApi) << "Unknown path" << localFile;
@@ -712,53 +745,98 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::f
         targetFun);
 }
 
-void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *)
+void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
+    QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::copyUrlToClipboard);
 }
 
-void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *)
+void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
+    QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::emailPrivateLink);
 }
 
-void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *)
+void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
+    QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
 }
 
-void SocketApi::copyUrlToClipboard(const QString &link)
+void SocketApi::copyUrlToClipboard(const QString &linkC)
 {
+    QString link = linkC;
+
+#if defined(Q_OS_WIN)
+	ConfigFile cfgFile;
+	link.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     QApplication::clipboard()->setText(link);
 }
 
-void SocketApi::emailPrivateLink(const QString &link)
+void SocketApi::emailPrivateLink(const QString &linkC)
 {
-    Utility::openEmailComposer(
-        tr("I shared something with you"),
-        link,
-        0);
+    QString link = linkC;
+
+#if defined(Q_OS_WIN)
+	ConfigFile cfgFile;
+	link.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
+    Utility::openEmailComposer(tr("I shared something with you"), link, 0);
 }
 
-void OCC::SocketApi::openPrivateLink(const QString &link)
+void SocketApi::openPrivateLink(const QString &linkC)
 {
+    QString link = linkC;
+
+#if defined(Q_OS_WIN)
+	ConfigFile cfgFile;
+	link.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     Utility::openBrowser(link, nullptr);
 }
 
-void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
+void SocketApi::command_GET_STRINGS(const QString &argumentC, SocketListener *listener)
 {
-    static std::array<std::pair<const char *, QString>, 5> strings { {
+    QString argument = argumentC;
+
+#if defined(Q_OS_WIN)
+	argument.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
+    static std::array<std::pair<const char *, QString>, 5> strings{ {
         { "SHARE_MENU_TITLE", tr("Share...") },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
         { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email...") },
     } };
+
     listener->sendMessage(QString("GET_STRINGS:BEGIN"));
+
     for (auto key_value : strings) {
         if (argument.isEmpty() || argument == QLatin1String(key_value.first)) {
             listener->sendMessage(QString("STRING:%1:%2").arg(key_value.first, key_value.second));
         }
     }
+
     listener->sendMessage(QString("GET_STRINGS:END"));
 }
 
@@ -775,10 +853,10 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
 
     // If sharing is globally disabled, do not show any sharing entries.
     // If there is no permission to share for this file, add a disabled entry saying so
-    
+
     listener->sendMessage(QLatin1String("MENU_ITEM:OFFLINE_DOWNLOAD_MODE") + flagString + tr("0ff line"));
     listener->sendMessage(QLatin1String("MENU_ITEM:ONLINE_DOWNLOAD_MODE") + flagString + tr("On line"));
-    
+
     if (isOnTheServer && !record._remotePerm.isNull() && !record._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
         listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + tr("Resharing this file is not allowed"));
     } else {
@@ -806,8 +884,15 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email..."));
 }
 
-SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
+SocketApi::FileData SocketApi::FileData::get(const QString &localFileC)
 {
+    QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+	ConfigFile cfgFile;
+	localFile.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     FileData data;
 
     data.localPath = QDir::cleanPath(localFile);
@@ -840,88 +925,84 @@ SyncJournalFileRecord SocketApi::FileData::journalRecord() const
     return record;
 }
 
-void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
+void SocketApi::command_GET_MENU_ITEMS(const QString &argumentC, OCC::SocketListener *listener)
 {
+    QString argument = argumentC;
+
+#if defined(Q_OS_WIN)
+	argument.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
+#endif
+
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
-    bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
+    auto flagString = QLatin1String(":d:");
+    listener->sendMessage(QLatin1String("MENU_ITEM:OFFLINE_DOWNLOAD_MODE") + flagString + tr("0ff line"));
+    listener->sendMessage(QLatin1String("MENU_ITEM:ONLINE_DOWNLOAD_MODE") + flagString + tr("On line"));
+    listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + tr("Share..."));
+
+    /*bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
     FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
     bool isOnTheServer = fileData.journalRecord().isValid();
     auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
     if (fileData.folder && fileData.folder->accountState()->isConnected()) {
-		DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
-        if (editor) {
-            //listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit via ") + editor->name());
-            listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit"));
-        } else {
-            listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
-        }
-    }
+        sendSharingContextMenuOptions(fileData, listener);
+        listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+    }*/
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }
 
-DirectEditor* SocketApi::getDirectEditorForLocalFile(const QString &localFile)
+QString SocketApi::buildRegisterPathMessage(const QString &pathC)
 {
-    FileData fileData = FileData::get(localFile);
-    auto capabilities = fileData.folder->accountState()->account()->capabilities();
-
-    if (fileData.folder && fileData.folder->accountState()->isConnected()) {
-        QMimeDatabase db;
-        QMimeType type = db.mimeTypeForFile(localFile);
-
-        DirectEditor* editor = capabilities.getDirectEditorForMimetype(type);
-        if (!editor) {
-            editor = capabilities.getDirectEditorForOptionalMimetype(type);
-        }
-        return editor;
-    }
-
-    return nullptr;
+	QString path = pathC;
+#if defined(Q_OS_WIN)
+	path = cfgFile.getFsSyncPath();
+#endif
+	QFileInfo fi(path);
+	QString message = QLatin1String("REGISTER_PATH:");
+	message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+	return message;
 }
 
-QString SocketApi::buildRegisterPathMessage(const QString &path)
-{
-    QFileInfo fi(path);
-    QString message = QLatin1String("REGISTER_PATH:");
-    message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
-    return message;
-}
-    
 QString SocketApi::buildRegisterFsMessage()
 {
-    ConfigFile cfg;
-    QString path;
+	ConfigFile cfgFile;
+	QString message = QLatin1String("REGISTER_DRIVEFS:");
 #if defined(Q_OS_WIN)
-    path=QLatin1String("REGISTER_DRIVEFS:");
-    path.append(cfg.defaultFileStreamLetterDrive().toUpper());
-return path;    
+	QString letter = cfgFile.getFsSyncPath();
+	letter.truncate(letter.length() - 2);
+	message.append(letter);
 #elif defined(Q_OS_MAC)
-    path = cfg.defaultFileStreamSyncPath();
+	QFileInfo fi(cfgFile.getFsSyncPath());
+	message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
 #endif
-    QFileInfo fi(path);
-    QString message = QLatin1String("REGISTER_DRIVEFS:");
-    message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
-    return message;
+	return message;
 }
 
 //< Mac callback for ContextMenu Online option
-void SocketApi::command_ONLINE_DOWNLOAD_MODE(const QString& path, SocketListener* listener)
+void SocketApi::command_ONLINE_DOWNLOAD_MODE(const QString &path, SocketListener *listener)
 {
-    qDebug() << "\n" << Q_FUNC_INFO << "ONLINE_DOWNLOAD_MODE";
-    SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
+	ConfigFile cfgFile;
+	QString relative_prefix = cfgFile.getFsMirrorPath();
+	QString relative_path = path;
+	relative_path = relative_path.replace(0, relative_prefix.length(), QString(""));
     
-    //< Example
-    SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-    SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+	qDebug() << "\n" << Q_FUNC_INFO << "ONLINE_DOWNLOAD_MODE: " << relative_path;
+	SyncJournalDb::instance()->setSyncMode(relative_path, SyncJournalDb::SYNCMODE_ONLINE);
+	//< Example
+	//SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+	//SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
 }
 
 //< Mac callback for ContextMenu Offline option
-void SocketApi::command_OFFLINE_DOWNLOAD_MODE(const QString& path, SocketListener* listener)
+void SocketApi::command_OFFLINE_DOWNLOAD_MODE(const QString &path, SocketListener *listener)
 {
-    qDebug() << "\n" << Q_FUNC_INFO << "OFFLINE_DOWNLOAD_MODE";
-    SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
+    QString relative_path = path;
+    relative_path = relative_path.replace(0, cfgFile.getFsMirrorPath().length(), QString(""));
+
+    qDebug() << "\n" << Q_FUNC_INFO << "OFFLINE_DOWNLOAD_MODE: " << relative_path;
+    SyncJournalDb::instance()->setSyncMode(relative_path, SyncJournalDb::SYNCMODE_OFFLINE);
     //< Example
-    SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-    SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+    //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+    //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
 }
 
 //< Windows callback for ContextMenu option
@@ -930,136 +1011,84 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argumentC, SocketListen
 	QString argument = argumentC;
 
 #if defined(Q_OS_WIN)
-        char Letter[2];
-        Letter[0] = argument.toStdString().c_str()[0];
-        Letter[1] = 0;
-        ConfigFile Cfg;
+	argument.replace(cfgFile.getFsSyncPath(), cfgFile.getFsMirrorPath());
 
-    if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
-        argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-#endif
+	//< Parser on type string: (for get path and type: 0 or 1).
+	//< "C:\\Users\\USERNAME\\AppData\\Roaming\\ClaroDrive\\cachedFiles\\b6.txt|1"
+	QString indicator = (argument.endsWith("1") ? "1" : "0");
+	argument.truncate(argument.length() - 2);
+	argument.replace(0, cfgFile.getFsMirrorPath().length(), QString(""));
+	argument.replace("\\", "/");
 
-    qDebug() << Q_FUNC_INFO << " argument: " << argument;
+	if (indicator == "0") //< OffLine
+	{
+		qDebug() << "\n" << Q_FUNC_INFO << " Indicator is 0 = OffLine";
+		SyncJournalDb::instance()->setSyncMode(argument, SyncJournalDb::SYNCMODE_OFFLINE);
 
-    #if defined(Q_OS_WIN)
-        //< Parser on type string: (for get path and type: 0 or 1).
-        //< "C:\\Users\\USERNAME\\DIR_LOCAL\\Mi unidad\\Mi unidad\\b6.txt|1"
-        std::string m_alias = argument.toLocal8Bit().constData();
-        char *pc = (char*)m_alias.c_str();
+		//< Example
+		//SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+		//SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+	}
+	else if (indicator == "1") //< OnLine
+	{
+		qDebug() << "\n" << Q_FUNC_INFO << " Indicator is 1 = Online";
+		SyncJournalDb::instance()->setSyncMode(argument, SyncJournalDb::SYNCMODE_ONLINE);
 
-        while (*pc != NULL)
-            pc++;
-        pc--;
-        char *pq = pc;
-        char *pw = pq -= 2;
-        pq = (char*)m_alias.c_str();
-        char QQ[300]; int l = 0;
-        while (pq != pw)
-            {
-            if (l < 300) {
-                QQ[l++] = *pq;
-            }
-            else
-                {
-                qDebug() << "\n" << Q_FUNC_INFO << " QQ is very small for enter value";
-                break;
-                }
-            pq++;
-            }
-
-        QQ[l]   = *pq;
-        QQ[l+1] = 0;
-
-		// fixpath
-        QString path = QString(QQ);
-        QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-        path.replace(0, relative_prefix.length(), QString(""));
-        path.replace("\\","/");
-
-        qDebug() << "\n" << Q_FUNC_INFO << " QQ==" <<QQ<< "==";
-
-            if (*pc == '0')     //< OffLine
-            {
-        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 0 OffLine";
-            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
-
-            //< Example
-            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-            SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
-            }
-            else if (*pc == '1')    //< OnLine
-            {
-        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 1 Online";
-            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
-
-            //< Example
-            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-            SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
-            }
+		//< Example
+		//SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+		//SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+	}
 #endif
 
     qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD INIT";
 
-        //< Show paths from SyncMode table.
-        QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
-            QString item;
-            foreach(item, list)
-                {
+    //< Show paths from SyncMode table.
+    QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+    QString item;
+    foreach(item, list) {
+        SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
 
-                SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
+        if (mode == SyncJournalDb::SYNCMODE_ONLINE)
+            qDebug() << " :::BD " << item << " ONLINE";
 
-                if(m == SyncJournalDb::SYNCMODE_ONLINE) 
-                    qDebug() << " :::BD " << item << " ONLINE";
-    
-                if(m == SyncJournalDb::SYNCMODE_OFFLINE) 
-                    qDebug() << " :::BD " << item << " OFFLINE";
-                }
+        if (mode == SyncJournalDb::SYNCMODE_OFFLINE)
+            qDebug() << " :::BD " << item << " OFFLINE";
+    }
 
     qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD END";
-
-    }
+}
 
 //< Windows & Mac callback for ContextMenu status option
-void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFileC, SocketListener* listener)
-    {
-
-	QString localFile = localFileC;
-
+void SocketApi::command_GET_DOWNLOAD_MODE(const QString &localFileC, SocketListener *listener)
+{
+    QString localFile = localFileC;
 #if defined(Q_OS_WIN)
-        char Letter[2];
-        Letter[0] = localFile.toStdString().c_str()[0];
-        Letter[1] = 0;
-        ConfigFile Cfg;
-
-        if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
-            localFile.replace(0, 3, QString(""));
-        localFile.replace("\\", "/");
+	localFile.replace(cfgFile.getFsSyncPath(), QString("").replace("\\", "/"));
+#elif defined(Q_OS_MAC)
+	QString relative_prefix = cfgFile.getFsMirrorPath();
+	localFile = localFile.replace(0, relative_prefix.length(), QString(""));
 #endif
+    qDebug() << Q_FUNC_INFO << " localFile_0: " << localFile;
 
-		qDebug() << Q_FUNC_INFO << " localFile_0: " << localFile;
+    QString downloadMode = "ONLINE";
 
-        QString downloadMode = "ONLINE";
+    //< Iterate paths from SyncMode table.
+    QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+    QString item;
 
-        //< Iterate paths from SyncMode table.
-        QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
-        QString item;
-
-        foreach(item, list)
-        {
-            qDebug() << "  :::BD localFile: " << localFile << " item: " << item;
-            if (item.compare(localFile) == 0)
-            {
+    foreach (item, list) {
+        qDebug() << "  :::BD localFile: " << localFile << " item: " << item;
+        if (item.compare(localFile) == 0) {
             SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
-            if (m == SyncJournalDb::SYNCMODE_OFFLINE)
-				{
+            if (m == SyncJournalDb::SYNCMODE_OFFLINE) {
                 downloadMode = "OFFLINE";
                 qDebug() << "  :::BD item: " << item << " isOFFLINE";
-				}
-            break;
             }
+            break;
         }
-        listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
     }
+    listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
+}
 } // namespace OCC
 
 #include "socketapi.moc"

@@ -22,13 +22,17 @@
 #include "discoveryphase.h"
 #include "accountstate.h"
 #include "configfile.h"
+#include "syncwrapper.h"
 
 #include <QMutex>
 #include <QWaitCondition>
 #include <QRunnable>
 #include <QThreadPool>
 #include <QStorageInfo>
-#include "syncwrapper.h"
+#include <QApplication>
+#include <QFileInfo>
+#include <QGlobal.h>
+#include <QTime>
 
 namespace OCC {
 
@@ -43,27 +47,27 @@ class VfsWindows : public QObject
 {
     Q_OBJECT
 public:
-    ~VfsWindows();
-    static VfsWindows *instance();
-    void initialize(QString rootPath, WCHAR mountLetter, AccountState *accountState);
-    void mount();
-    void unmount();
-    bool removeRecursively(const QString &dirName);
-    bool removeDir();
+	~VfsWindows();
+	static VfsWindows *instance();
+	void initialize(QString rootPath, WCHAR mountLetter, AccountState *accountState);
+	void mount();
+	void unmount();
+	void cleanCacheFolder();
+	WCHAR getRandomUnit();
 
 	void setNumberOfBytes(unsigned long long numberOfBytes);
-    unsigned long long getNumberOfBytes();
+	unsigned long long getNumberOfBytes();
 
-    void setNumberOfFreeBytes(unsigned long long numberOfFreeBytes);
-    unsigned long long getNumberOfFreeBytes();
+	void setNumberOfFreeBytes(unsigned long long numberOfFreeBytes);
+	unsigned long long getNumberOfFreeBytes();
 
 	QStringList* contentsOfDirectoryAtPath(QString path, QVariantMap &error);
 	QList<QString> ignoredList;
 
 	void createFileAtPath(QString path, QVariantMap &error);
-	void moveFileAtPath(QString path, QString npath,QVariantMap &error);
+	void moveFileAtPath(QString oldPath, QString newPath,QVariantMap &error);
 	void createDirectoryAtPath(QString path, QVariantMap &error);
-	void moveDirectoryAtPath(QString path, QString npath, QVariantMap &error);
+	void moveDirectoryAtPath(QString oldPath, QString newPath, QVariantMap &error);
 
 	void openFileAtPath(QString path, QVariantMap &error);
 	void writeFileAtPath(QString path, QVariantMap &error);
@@ -73,28 +77,32 @@ public:
 
 private:
 	VfsWindows();
-    QList<QString> getLogicalDrives();
-    static VfsWindows *_instance;
-    QMap<QString, OCC::DiscoveryDirectoryResult *> _fileListMap;
-    QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
-    QString rootPath;
-    WCHAR mountLetter;
+	QList<QString> getLogicalDrives();
+	bool removeFiles(const QString &path);
+	bool removeDirectory(const QString &path);
+
+	static VfsWindows *_instance;
+	QMap<QString, OCC::DiscoveryDirectoryResult*> _fileListMap;
+	QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
+	QString rootPath;
+	WCHAR mountLetter;
+	ConfigFile cfgFile;
 
 	// @Capacity
-    //*TotalNumberOfBytes = (ULONGLONG)1024L * 1024 * 1024 * 50;
-    unsigned long long numberOfBytes = 0;
-    // @Used space
-    //*TotalNumberOfFreeBytes = (ULONGLONG)1024L * 1024 * 10;
-    unsigned long long numberOfFreeBytes = 0;
-    // @Free space
-    //*FreeBytesAvailable = (ULONGLONG)(*TotalNumberOfBytes - *TotalNumberOfFreeBytes); / *1024 * 1024 * 10;
-    unsigned long long freeBytesAvailable = 0;
+	//*TotalNumberOfBytes = (ULONGLONG)1024L * 1024 * 1024 * 50;
+	unsigned long long numberOfBytes = 0;
+	// @Used space
+	//*TotalNumberOfFreeBytes = (ULONGLONG)1024L * 1024 * 10;
+	unsigned long long numberOfFreeBytes = 0;
+	// @Free space
+	//*FreeBytesAvailable = (ULONGLONG)(*TotalNumberOfBytes - *TotalNumberOfFreeBytes); / *1024 * 1024 * 10;
+	unsigned long long freeBytesAvailable = 0;
 
 	// To sync
 	OCC::SyncWrapper *_syncWrapper;
-    QMutex _mutex;
-    QWaitCondition _syncCondition;
-    QWaitCondition _dirCondition;
+	QMutex _mutex;
+	QWaitCondition _syncCondition;
+	QWaitCondition _dirCondition;
 
 signals:
 	void startRemoteFileListJob(QString path);
