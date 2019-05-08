@@ -165,6 +165,7 @@ set(3rdparty_SRC
     ../3rdparty/qtsingleapplication/qtlocalpeer.cpp
     ../3rdparty/qtsingleapplication/qtsingleapplication.cpp
     ../3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
+    ../3rdparty/kmessagewidget/kmessagewidget.cpp
    )
 
 if (APPLE)
@@ -329,6 +330,7 @@ target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
