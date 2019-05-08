@@ -35,7 +35,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>Nem található mostanában módosított fájl</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
@@ -50,37 +50,37 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>Weboldal megnyitása</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Nemrég módosítva</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálás szüneteltetése</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Súgó</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Beállítások</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Kijelentkezés</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Kilépés a szinkronizálási kliensből</translation>
     </message>
 </context>
 <context>
@@ -1928,7 +1928,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Nincs elég szabad hely a helyi mappában.</translation>
     </message>
 </context>
 <context>
@@ -2292,7 +2292,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="662"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>A letöltött fájl üres, annak ellenére, hogy a kiszolgáló szerint %1 méretű kellene legyen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="847"/>
@@ -2681,7 +2681,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="46"/>
         <source>&amp;Share link</source>
-        <translation>&amp;Megosztás hivatkozás</translation>
+        <translation>&amp;Megosztási hivatkozás</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="128"/>
@@ -2741,7 +2741,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="224"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Egyéb hivatkozás hozzáadása</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="402"/>
@@ -2988,7 +2988,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="116"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;Megjegyzés:&lt;/b&gt; A tanúsítvány kézileg jóváhagyva&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;Megjegyzés:&lt;/b&gt; A tanúsítvány kézileg lett jóváhagyva&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="136"/>
@@ -3090,7 +3090,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
         <source>Effective Date: %1</source>
-        <translation>Tényleges dátum: %1</translation>
+        <translation>Érvényességi dátum: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
@@ -3189,7 +3189,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
         <source>CSync unspecified error.</source>
-        <translation>CSync ismeretlen hiba.</translation>
+        <translation>Ismeretlen CSync hiba.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="153"/>
@@ -3244,7 +3244,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="485"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>A szimbolikus nem támogatott a szinkronizálásnál.</translation>
+        <translation>A szimbolikus linkek nem támogatottak a szinkronizálásnál.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="488"/>
@@ -3499,12 +3499,12 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Quit %1</source>
-        <translation>%1 kilépés</translation>
+        <translation>Kilépés a %1ból</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Disconnected from %1</source>
-        <translation>Kapcsolat bontva ezzel: %1</translation>
+        <translation>Kapcsolat bontva a %1dal</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="233"/>
@@ -3822,7 +3822,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="339"/>
         <source>Error Label</source>
-        <translation>Hiba címke</translation>
+        <translation>Hibacímke</translation>
     </message>
 </context>
 <context>

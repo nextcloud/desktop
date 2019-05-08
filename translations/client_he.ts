@@ -1451,7 +1451,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation type="unfinished"/>
+        <translation>סנכרון קבצים נסתרים</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
@@ -1498,7 +1498,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן לכתוב שינויים אל ‚%1’.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="159"/>
@@ -1526,7 +1526,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>הצהרה משפטית</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
@@ -1536,12 +1536,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>סגירה</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
         <source>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;כל הזכויות שמורות 2017‏-2018 ל־Nextcloud GmbH&lt;br /&gt;כל הזכויות שמורות 2012‏-2018 ל־ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
@@ -1559,12 +1559,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>&amp;Search:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;חיפוש:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;איתור:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
@@ -1596,27 +1596,27 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="122"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>&amp;שמירה</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation type="unfinished"/>
+        <translation>שמירת קובץ היומן לקובץ בכונן לצורכי ניפוי שגיאות.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="212"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>שמירת קובץ יומן</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="222"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="222"/>
         <source>Could not write to log file %1</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן לכתוב לקובץ היומן %1</translation>
     </message>
 </context>
 <context>
@@ -1624,7 +1624,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/libsync/logger.cpp" line="162"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה</translation>
     </message>
     <message>
         <location filename="../src/libsync/logger.cpp" line="163"/>
@@ -1647,17 +1647,17 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>לדלג על הגרסה הזו</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="353"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>לדלג הפעם</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>לקבל עדכון</translation>
     </message>
 </context>
 <context>
@@ -1670,27 +1670,27 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>הגדרות מתווך</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>אין מתווך</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>להשתמש במתווך המערכת</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>לציין מתווך ידנית בתור</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>מארח</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="100"/>
@@ -1700,30 +1700,30 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>השרת המתווך דורש אימות</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>רוחב פס הורדה</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="275"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>להגביל לכדי</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="241"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>ק״ב/ש׳</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
         <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>ללא הגבלה</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="250"/>
@@ -1895,23 +1895,23 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="174"/>
         <source>Free space: %1</source>
-        <translation type="unfinished"/>
+        <translation>מקום פנוי: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>תיקיית סנכרון מקומית</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="340"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>אין מספיק שטח פנוי בתיקייה המקומית!</translation>
     </message>
 </context>
 <context>
@@ -1919,7 +1919,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>החיבור נכשל</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
@@ -1929,7 +1929,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>נא לבחור בכתובת אחרת</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
@@ -1952,17 +1952,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation type="unfinished"/>
+        <translation>&amp;דוא״ל</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>להתחבר אל %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>להכניס פרטי משתמש</translation>
     </message>
 </context>
 <context>
@@ -1970,17 +1970,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>להתחבר אל %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>כניסה בדפדפן שלך</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>להעתיק קישור ללוח הגזירים</translation>
     </message>
 </context>
 <context>
@@ -1988,12 +1988,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="54"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>להתחבר אל %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="55"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>הקמת שרת %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
@@ -2034,7 +2034,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="281"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>כתובת שגויה</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
@@ -2122,7 +2122,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="495"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
@@ -2197,12 +2197,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="89"/>
         <source>%1 Connection Wizard</source>
-        <translation type="unfinished"/>
+        <translation>אשף החיבור אל %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>דילוג על הגדרות תיקיות</translation>
     </message>
 </context>
 <context>
@@ -2210,17 +2210,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="36"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>הכול הוגדר!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="40"/>
         <source>Open Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>פתיחת תיקייה מקומית</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="48"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>לפתוח את %1 בדפדפן</translation>
     </message>
 </context>
 <context>
@@ -2228,7 +2228,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="140"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>תגובת JSON שגויה מכתובת התשאול</translation>
     </message>
 </context>
 <context>
@@ -2236,7 +2236,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="972"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה בכתיבת נתוני העל למסד הנתונים</translation>
     </message>
 </context>
 <context>
@@ -2264,12 +2264,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="602"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>הקובץ נמחק מהשרת</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="655"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן להוריד את הקובץ במלואו.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="662"/>
