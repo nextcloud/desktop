@@ -9,22 +9,22 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Γίνεται έλεγχος για αλλαγές στο &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονισμός %1 από %2 (%3 απομένουν)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονισμός %1 από %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονισμός %1 (%2 απομένουν)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
@@ -35,7 +35,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>Δεν προστέθηκαν πρόσφατα αρχεία.</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
@@ -50,32 +50,32 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>Άνοιγμα ιστοσελίδας</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Τροποποιήθηκαν πρόσφατα</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Παύση συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Βοήθεια</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ρυθμίσεις</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Αποσύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
@@ -359,7 +359,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="943"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής %1 βρίσκεται τώρα σε κατάσταση συντήρησης.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="945"/>
@@ -369,7 +369,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Γίνεται λήψη της εξουσιοδότησης από το πρόγραμμα περιήγησης. Κάντε κλικ &lt;a href=&apos;%1&apos;&gt;εδώ&lt;/a&gt; για να ανοίξετε πάλι το πρόγραμμα περιήγησης.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="958"/>
@@ -489,7 +489,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="128"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Κατάσταση συντήρησης</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="130"/>
@@ -560,12 +560,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="183"/>
         <source>Synced</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονίστηκε</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="218"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Επανάληψη όλων των μεταφορτώσεων</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="333"/>
@@ -621,12 +621,12 @@
     <message>
         <location filename="../src/gui/application.cpp" line="193"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>Υπήρξε σφάλμα κατά την πρόσβαση του αρχείου ρυθμίσεων στο %1. Παρακαλώ επαληθεύστε αν μπορείτε να προσπελάσετε το αρχείο.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="196"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>Κλείσιμο %1</translation>
     </message>
 </context>
 <context>
@@ -963,7 +963,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Ο συγχρονισμός ήταν επιτυχής, μη διευθετημένες διενέξεις.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -1031,7 +1031,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="255"/>
         <source>Synchronized with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονίστηκε με τοπικό φάκελο</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="302"/>
@@ -1127,7 +1127,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Γίνεται έλεγχος για αλλαγές στο τοπικό &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
@@ -1332,7 +1332,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση των ειδοποιήσεων διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1399,7 +1399,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Ειδοποιήσεις από τον διακομιστή που απαιτούν την προσοχή σας.</translation>
     </message>
 </context>
 <context>
@@ -1779,7 +1779,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής επέστρεψε το σφάλμα: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
