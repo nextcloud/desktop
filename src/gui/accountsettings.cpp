@@ -233,9 +233,9 @@ void AccountSettings::createAccountToolbox()
 
 void AccountSettings::slotNewMnemonicGenerated()
 {
-    ui->encryptionMessage->setText(tr("This account supports end to end encryption"));
+    ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
 
-    QAction *mnemonic = new QAction(tr("Setup"), this);
+    QAction *mnemonic = new QAction(tr("Enable..."), this);
     connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
     connect(mnemonic, &QAction::triggered, ui->encryptionMessage, &KMessageWidget::hide);
 
