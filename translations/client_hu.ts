@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="110"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Címke</translation>
     </message>
 </context>
 <context>
@@ -550,7 +550,7 @@
     <message>
         <location filename="../src/gui/activitywidget.ui" line="84"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Címke</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="56"/>
@@ -1546,7 +1546,7 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Címke</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
@@ -2450,27 +2450,27 @@ Használata nem ajánlott.</translation>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="403"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="404"/>
         <source>The local file was removed during sync.</source>
         <translation>A helyi fájl el lett távolítva szinkronizálás közben.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="414"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="415"/>
         <source>Local file changed during sync.</source>
         <translation>A helyi fájl megváltozott szinkronizálás közben.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="448"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="449"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Nem várt visszatérési érték a kiszolgálótól (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="455"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Missing File ID from server</source>
         <translation>Hiányzik a fájlazonosító a kiszolgálóról</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="469"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="470"/>
         <source>Missing ETag from server</source>
         <translation>Hiányzik az ETag a kiszolgálóról</translation>
     </message>
@@ -2528,7 +2528,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="74"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Címke</translation>
     </message>
 </context>
 <context>
@@ -2681,7 +2681,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="46"/>
         <source>&amp;Share link</source>
-        <translation>&amp;Megosztás hivatkozás</translation>
+        <translation>&amp;Megosztási hivatkozás</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="128"/>
@@ -2696,7 +2696,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="236"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Címke</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="409"/>
@@ -3499,12 +3499,12 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Quit %1</source>
-        <translation>%1 kilépés</translation>
+        <translation>Kilépés a %1ból</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Disconnected from %1</source>
-        <translation>Kapcsolat bontva ezzel: %1</translation>
+        <translation>Kapcsolat bontva a %1dal</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="233"/>
@@ -3676,7 +3676,7 @@ Használata nem ajánlott.</translation>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="421"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Címke</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
@@ -3722,7 +3722,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="285"/>
         <source>pbSelectLocalFolder</source>
-        <translation>pbSelectLocalFolder</translation>
+        <translation>Helyi mappa kiválasztása gomb</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
@@ -3792,7 +3792,7 @@ Használata nem ajánlott.</translation>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="38"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="97"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Címke</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
@@ -3822,7 +3822,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="339"/>
         <source>Error Label</source>
-        <translation>Hiba címke</translation>
+        <translation>Hibacímke</translation>
     </message>
 </context>
 <context>
@@ -3835,7 +3835,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="20"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Címke</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>

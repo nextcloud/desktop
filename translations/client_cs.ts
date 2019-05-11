@@ -2292,7 +2292,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="662"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Stažený soubor je prázdný, přestože soubor oznámil, že měl mít %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="847"/>
@@ -2450,27 +2450,27 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="403"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="404"/>
         <source>The local file was removed during sync.</source>
         <translation>Místní soubor byl odstraněn během synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="414"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="415"/>
         <source>Local file changed during sync.</source>
         <translation>Místní soubor byl změněn během synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="448"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="449"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Neočekávaný návratový kód ze serveru (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="455"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Missing File ID from server</source>
         <translation>Chybějící souborové ID ze serveru</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="469"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="470"/>
         <source>Missing ETag from server</source>
         <translation>Chybějící ETag ze serveru</translation>
     </message>
