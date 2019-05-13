@@ -506,7 +506,7 @@ void PropagateUploadFileNG::doFinalMove()
     // "If-Match applies to the source, but we are interested in comparing the etag of the destination
     auto ifMatch = headers.take(QByteArrayLiteral("If-Match"));
     if (!ifMatch.isEmpty()) {
-        headers[QByteArrayLiteral("If")] = "<" + destination.toUtf8() + "> ([" + ifMatch + "])";
+        headers[QByteArrayLiteral("If")] = "<" + QUrl::toPercentEncoding(destination, "/") + "> ([" + ifMatch + "])";
     }
     if (!_transmissionChecksumHeader.isEmpty()) {
         headers[checkSumHeaderC] = _transmissionChecksumHeader;
