@@ -2310,22 +2310,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="170"/>
         <source>could not delete file %1, error: %2</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן למחוק את הקובץ %1, שגיאה: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>לתשומת לבך, כנראה שיש סתירה של אותיות רישיות עם %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="191"/>
         <source>could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן ליצור את התיקייה %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="203"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה בכתיבת נתוני העל למסד הנתונים</translation>
     </message>
 </context>
 <context>
@@ -2333,17 +2333,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="77"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה בהסרת ‚%1’: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="102"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן להסיר את התיקייה ‚%1’</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="123"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן להסיר את %1 עקב סתירה עם שם קובץ מקומי</translation>
     </message>
 </context>
 <context>
@@ -2351,13 +2351,13 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="241"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן לשנות את השם של %1 לשם %2 עקב סתירה עם שם קובץ מקומי</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה בכתיבת נתוני העל למסד הנתונים</translation>
     </message>
 </context>
 <context>
@@ -2449,12 +2449,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>מזהה הקובץ חסר בשרת</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="470"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>ETag חסר בשרת</translation>
     </message>
 </context>
 <context>
@@ -2462,22 +2462,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="213"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>חסרה כתובת הסקר</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="240"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>הקובץ המקומי הוסר במהלך הסנכרון.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="251"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>הקובץ המקומי השתנה במהלך הסנכרון.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>השרת לא הכיר בחלק האחרון. (לא היה e-tag)</translation>
     </message>
 </context>
 <context>
@@ -2485,27 +2485,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>נדרש אימות מול המתווך</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>Username:</source>
-        <translation type="unfinished"/>
+        <translation>שם משתמש:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation type="unfinished"/>
+        <translation>מתווך:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>לשרת המתווך נדרשים שם משתמש וססמה.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>ססמה:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="74"/>
@@ -2518,7 +2518,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="459"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>נא לבחור מה לסנכרן</translation>
     </message>
 </context>
 <context>
@@ -2526,33 +2526,33 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading ...</source>
-        <translation type="unfinished"/>
+        <translation>בטעינה…</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>יש לבטל את בחירת התיקיות המרוחקות אם אין ברצונך לסנכרן.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>שם</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="96"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>גודל</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="227"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="277"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>אין כרגע תת־תיקיות בשרת.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="279"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>אירעה שגיאה בעת טעינת רשימת תת־התיקיות.</translation>
     </message>
 </context>
 <context>
@@ -2560,7 +2560,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="153"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>התעלמות</translation>
     </message>
 </context>
 <context>
@@ -2568,27 +2568,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>הגדרות</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="211"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>פעילות</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>כללי</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="111"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>רשת</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="234"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>חשבון</translation>
     </message>
 </context>
 <context>
@@ -2596,28 +2596,28 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="92"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="155"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>פעילות</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="106"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>כללי</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="110"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>רשת</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="138"/>
         <location filename="../src/gui/settingsdialogmac.cpp" line="231"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>חשבון</translation>
     </message>
 </context>
 <context>
@@ -2630,12 +2630,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="67"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>נתיב ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="123"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>סמל</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="104"/>
@@ -2650,12 +2650,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="101"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>תיקייה: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="272"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן לשתף את הקובץ כיוון שהוא שותף ללא הרשאות שיתוף.</translation>
     </message>
 </context>
 <context>
@@ -2668,12 +2668,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="128"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>ססמה:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="168"/>
         <source>Expiration date:</source>
-        <translation type="unfinished"/>
+        <translation>מועד תפוגת תוקף:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="236"/>
@@ -2683,52 +2683,52 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="409"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>מחיקה</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="149"/>
         <source>Allow Editing</source>
-        <translation type="unfinished"/>
+        <translation>לאפשר עריכה</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="155"/>
         <source>Read only</source>
-        <translation type="unfinished"/>
+        <translation>קריאה בלבד</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation type="unfinished"/>
+        <translation>לאפשר העלאה ועריכה</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>גרירת קבצים (העלאה בלבד)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="183"/>
         <source>Password Protect</source>
-        <translation type="unfinished"/>
+        <translation>הגנה בססמה</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
         <source>Expiration Date</source>
-        <translation type="unfinished"/>
+        <translation>מועד תפוגת תוקף</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>ביטול שיתוף</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="224"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>הוספת קישור נוסף</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="402"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>אישור מחיקת קישור לשיתוף</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="403"/>
@@ -2738,12 +2738,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="410"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>ביטול</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="428"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>קישור ציבורי</translation>
     </message>
 </context>
 <context>
@@ -2751,22 +2751,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="52"/>
         <source>Share with users or groups ...</source>
-        <translation type="unfinished"/>
+        <translation>שיתוף עם משתמשים או קבוצות…</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="238"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>העתקת קישור</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>אין תוצאות לחיפוש אחר ‚%1’</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="335"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>שיתפת אתך משהו</translation>
     </message>
 </context>
 <context>
@@ -2774,32 +2774,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="66"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>שם משתמש</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="82"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>הרשאה לעריכה</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="364"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>הרשאה לשיתוף מחדש</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="374"/>
         <source>Can create</source>
-        <translation type="unfinished"/>
+        <translation>הרשאה ליצירה</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="380"/>
         <source>Can change</source>
-        <translation type="unfinished"/>
+        <translation>הרשאה לעריכה</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
         <source>Can delete</source>
-        <translation type="unfinished"/>
+        <translation>הרשאה למחיקה</translation>
     </message>
 </context>
 <context>
@@ -2807,12 +2807,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>שגיאת כניסה</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>עליך להיכנס בתור המשתמש %1</translation>
     </message>
 </context>
 <context>
@@ -2820,7 +2820,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - אימות</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
@@ -2830,12 +2830,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>נדרשת אימות חוזר</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>ההפעלה שלך פגה. עליך להיכנס מחדש כדי להמשיך להשתמש בתכנית הלקוח.</translation>
     </message>
 </context>
 <context>
@@ -2844,50 +2844,50 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="457"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation type="unfinished"/>
+        <translation>שיתוף עם %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>שיתוף מתפריט הקשר</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="612"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>שיתפתי אתך משהו</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
-        <translation type="unfinished"/>
+        <translation>שיתוף…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>העתקת שיעור פרטי ללוח הגזירים</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="628"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>שליחת קישור פרטי בדוא״ל…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="653"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>אסור לשתף קובץ זה מחדש</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>העתקת קישור ציבורי ללוח הגזירים</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>פתיחה בדפדפן</translation>
     </message>
 </context>
 <context>
@@ -2895,7 +2895,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="87"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;פרטי האישור&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="90"/>
@@ -2960,12 +2960,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="111"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="116"/>
@@ -3184,17 +3184,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>שלב בגילוי נכשל</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>ההרשאה נדחתה.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>קובץ או תיקייה לא נמצאו:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
@@ -3209,12 +3209,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>השירות אינו זמין באופן זמני</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>הגישה אסורה</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="173"/>
@@ -3254,17 +3254,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="513"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>שם הקובץ ארוך מדי</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="522"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן להצפין את שם הקובץ במערכת הקבצים שלך.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="531"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>סתירה בלתי פתורה.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="539"/>
@@ -3341,12 +3341,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1496"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>היעד</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1496"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>המקור</translation>
     </message>
 </context>
 <context>
@@ -3354,7 +3354,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>יומן סנכרון</translation>
     </message>
 </context>
 <context>
@@ -3401,7 +3401,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="141"/>
         <source>Please login with the user: %1</source>
-        <translation type="unfinished"/>
+        <translation>נא להיכנס עם המשתמש: %1</translation>
     </message>
 </context>
 <context>
@@ -3409,87 +3409,87 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="302"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>נא להיכנס</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="348"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>תיקייה %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>לא מוגדרות תיקיות לסנכרון</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>פתיחה בדפדפן</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Log in...</source>
-        <translation type="unfinished"/>
+        <translation>כניסה…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="428"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>יציאה</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>שינויים אחרונים</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="402"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>תיקיות מנוהלות:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="405"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>פתיחת התיקייה ‚%1’</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="377"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>פתיחת %1 בדפדפן</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>מצב לא ידוע</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>הגדרות…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>פרטים…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>עזרה</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>יציאה מ־%1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>ניתוק מ־%1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="233"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>גרסת השרת אינה נתמכת</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="234"/>
@@ -3514,73 +3514,73 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="288"/>
         <source>Account %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>חשבון %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>יצאת</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>סנכרון החשבון מושבת</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>הסנכרון מושהה</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>סתירות בלתי פתורות</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="363"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה במהלך הסנכרון</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>לא הוגדרו תיקיות סנכרון</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="413"/>
         <source>Resume all folders</source>
-        <translation type="unfinished"/>
+        <translation>להמשיך עם כל התיקיות</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Pause all folders</source>
-        <translation type="unfinished"/>
+        <translation>להשהות את כל התיקיות</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="694"/>
         <source>Resume all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>להמשיך את כל הסנכרונים</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="696"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>להמשיך סנכרון</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="704"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>להשהות את כל הסנכרונים</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="706"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>להשהות סנכרון</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account...</source>
-        <translation type="unfinished"/>
+        <translation>חשבון חדש…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
@@ -3636,7 +3636,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="358"/>
         <source>Up to date</source>
-        <translation type="unfinished"/>
+        <translation>עדכני</translation>
     </message>
 </context>
 <context>
@@ -3661,7 +3661,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation>שרת</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
@@ -3682,7 +3682,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>מ״ב</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
@@ -3697,7 +3697,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>&amp;תיקייה מקומית</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="285"/>
@@ -3707,17 +3707,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>לה&amp;שאיר את הנתונים המקומיים</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>ל&amp;סנכרן הכול מהשרת</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="402"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>הודעת מצב</translation>
     </message>
 </context>
 <context>
@@ -3730,12 +3730,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>&amp;שם משתמש</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;ססמה</translation>
     </message>
 </context>
 <context>
@@ -3748,17 +3748,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>נא להחליף לדפדפן שלך כדי להמשיך.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>אירעה שגיאה בזמן החיבור. נא לנסות שוב.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>נא לפתוח את הדפדפן מחדש</translation>
     </message>
 </context>
 <context>
@@ -3777,22 +3777,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;אירוח שרת משלך&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>הרשמה אצל ספק</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="165"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>כניסה</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
         <source>Server Address</source>
-        <translation type="unfinished"/>
+        <translation>כתובת השרת</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>
@@ -3802,7 +3802,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="339"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>תווית שגיאה</translation>
     </message>
 </context>
 <context>
@@ -3820,7 +3820,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation type="unfinished"/>
+        <translation>כל החשבון שלך מסונכרן לתיקייה הנוכחית</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
@@ -3834,52 +3834,52 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="443"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>בעתיד</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="437"/>
         <source>%n day ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>אתמול</numerusform><numerusform>שלשום</numerusform><numerusform>לפני %n ימים</numerusform><numerusform>לפני %n ימים</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="439"/>
         <source>%n days ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>אתמול</numerusform><numerusform>שלשום</numerusform><numerusform>לפני %n ימים</numerusform><numerusform>לפני %n ימים</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="449"/>
         <source>%n hour ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>לפני שעה</numerusform><numerusform>לפני שעתיים</numerusform><numerusform>לפני %n שעות</numerusform><numerusform>לפני %n שעות</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="451"/>
         <source>%n hours ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>לפני שעה</numerusform><numerusform>לפני שעתיים</numerusform><numerusform>לפני %n שעות</numerusform><numerusform>לפני %n שעות</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="458"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>עכשיו</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="460"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>לפני פחות מדקה</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>%n minute ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>לפני דקה</numerusform><numerusform>לפני %n דקות</numerusform><numerusform>לפני %n דקות</numerusform><numerusform>לפני %n דקות</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="466"/>
         <source>%n minutes ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>לפני דקה</numerusform><numerusform>לפני %n דקות</numerusform><numerusform>לפני %n דקות</numerusform><numerusform>לפני %n דקות</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="470"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>ממש לא מזמן</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="145"/>
@@ -3893,42 +3893,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="130"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 ג״ב</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="134"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 מ״ב</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="138"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 ק״ב</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="141"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 ב׳</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>שנה</numerusform><numerusform>שנתיים</numerusform><numerusform>%n שנים</numerusform><numerusform>%n שנים</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>חודש</numerusform><numerusform>חודשיים</numerusform><numerusform>%n חודשים</numerusform><numerusform>%n חודשים</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>יום</numerusform><numerusform>יומיים</numerusform><numerusform>%n ימים</numerusform><numerusform>%n ימים</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>שעה</numerusform><numerusform>שעתיים</numerusform><numerusform>%n שעות</numerusform><numerusform>%n שעות</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
