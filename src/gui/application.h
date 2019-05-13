@@ -124,7 +124,7 @@ private:
     bool _showLogWindow;
     QString _logFile;
     QString _logDir;
-    int _logExpire;
+    std::chrono::hours _logExpire;
     bool _logFlush;
     bool _logDebug;
     bool _userTriggeredConnect;

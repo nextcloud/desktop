@@ -68,6 +68,7 @@ static const char minChunkSizeC[] = "minChunkSize";
 static const char maxChunkSizeC[] = "maxChunkSize";
 static const char targetChunkUploadDurationC[] = "targetChunkUploadDuration";
 static const char automaticLogDirC[] = "logToTemporaryLogDir";
+static const char deleteOldLogsAfterHoursC[] = "temporaryLogDirDeleteOldLogsAfterHours";
 static const char showExperimentalOptionsC[] = "showExperimentalOptions";
 static const char clientVersionC[] = "clientVersion";
 
@@ -821,6 +822,28 @@ void ConfigFile::setAutomaticLogDir(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(automaticLogDirC), enabled);
+}
+
+Optional<chrono::hours> ConfigFile::automaticDeleteOldLogsAge() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    auto value = settings.value(QLatin1String(deleteOldLogsAfterHoursC));
+    if (!value.isValid())
+        return chrono::hours(4);
+    auto hours = value.toInt();
+    if (hours <= 0)
+        return {};
+    return chrono::hours(hours);
+}
+
+void ConfigFile::setAutomaticDeleteOldLogsAge(Optional<chrono::hours> expireTime)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    if (!expireTime) {
+        settings.setValue(QLatin1String(deleteOldLogsAfterHoursC), -1);
+    } else {
+        settings.setValue(QLatin1String(deleteOldLogsAfterHoursC), QVariant::fromValue(expireTime->count()));
+    }
 }
 
 bool ConfigFile::showExperimentalOptions() const

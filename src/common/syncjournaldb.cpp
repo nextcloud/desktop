@@ -2257,6 +2257,17 @@ void SyncJournalDb::commitIfNeededAndStartNewTransaction(const QString &context)
     }
 }
 
+bool SyncJournalDb::open()
+{
+    QMutexLocker lock(&_mutex);
+    return checkConnect();
+}
+
+bool SyncJournalDb::isOpen()
+{
+    QMutexLocker lock(&_mutex);
+    return _db.isOpen();
+}
 
 void SyncJournalDb::commitInternal(const QString &context, bool startTrans)
 {
@@ -2273,11 +2284,6 @@ SyncJournalDb::~SyncJournalDb()
     close();
 }
 
-bool SyncJournalDb::isConnected()
-{
-    QMutexLocker lock(&_mutex);
-    return checkConnect();
-}
 
 bool operator==(const SyncJournalDb::DownloadInfo &lhs,
     const SyncJournalDb::DownloadInfo &rhs)

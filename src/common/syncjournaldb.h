@@ -213,12 +213,20 @@ public:
     void commit(const QString &context, bool startTrans = true);
     void commitIfNeededAndStartNewTransaction(const QString &context);
 
-    void close();
-
-    /**
-     * return true if everything is correct
+    /** Open the db if it isn't already.
+     *
+     * This usually creates some temporary files next to the db file, like
+     * $dbfile-shm or $dbfile-wal.
+     *
+     * returns true if it could be openend or is currently opened.
      */
-    bool isConnected();
+    bool open();
+
+    /** Returns whether the db is currently openend. */
+    bool isOpen();
+
+    /** Close the database */
+    void close();
 
     /**
      * Returns the checksum type for an id.

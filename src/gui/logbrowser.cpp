@@ -36,6 +36,8 @@ namespace OCC {
 
 // ==============================================================================
 
+const std::chrono::hours defaultExpireDuration(4);
+
 LogBrowser::LogBrowser(QWidget *parent)
     : QDialog(parent)
 {
@@ -50,8 +52,8 @@ LogBrowser::LogBrowser(QWidget *parent)
         tr("The client can write debug logs to a temporary folder. "
            "These logs are very helpful for diagnosing problems.\n"
            "Since log files can get large, the client will start a new one for each sync "
-           "run and compress older ones. It will also delete log files after a couple "
-           "of hours to avoid consuming too much disk space.\n"
+           "run and compress older ones. It is also recommended to enable deleting log files "
+           "after a couple of hours to avoid consuming too much disk space.\n"
            "If enabled, logs will be written to %1")
         .arg(Logger::instance()->temporaryFolderLogDirPath()));
     label->setWordWrap(true);
@@ -66,9 +68,15 @@ LogBrowser::LogBrowser(QWidget *parent)
     connect(enableLoggingButton, &QCheckBox::toggled, this, &LogBrowser::togglePermanentLogging);
     mainLayout->addWidget(enableLoggingButton);
 
+    auto deleteLogsButton = new QCheckBox;
+    deleteLogsButton->setText(tr("Delete logs older than %1 hours").arg(QString::number(defaultExpireDuration.count())));
+    deleteLogsButton->setChecked(bool(ConfigFile().automaticDeleteOldLogsAge()));
+    connect(deleteLogsButton, &QCheckBox::toggled, this, &LogBrowser::toggleLogDeletion);
+    mainLayout->addWidget(deleteLogsButton);
+
     label = new QLabel(
-        tr("This setting persists across client restarts.\n"
-           "Note that using any logging command line options will override this setting."));
+        tr("These settings persist across client restarts.\n"
+           "Note that using any logging command line options will override the settings."));
     label->setWordWrap(true);
     label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
     mainLayout->addWidget(label);
@@ -104,24 +112,46 @@ LogBrowser::~LogBrowser()
 {
 }
 
-void LogBrowser::closeEvent(QCloseEvent *)
+void LogBrowser::setupLoggingFromConfig()
 {
-    ConfigFile cfg;
-    cfg.saveGeometry(this);
+    ConfigFile config;
+    auto logger = Logger::instance();
+
+    if (config.automaticLogDir()) {
+        // Don't override other configured logging
+        if (logger->isLoggingToFile())
+            return;
+
+        logger->setupTemporaryFolderLogDir();
+        if (auto deleteOldLogsHours = config.automaticDeleteOldLogsAge()) {
+            logger->setLogExpire(*deleteOldLogsHours);
+        } else {
+            logger->setLogExpire(std::chrono::hours(0));
+        }
+        logger->enterNextLogFile();
+    } else {
+        logger->disableTemporaryFolderLogDir();
+    }
 }
 
 void LogBrowser::togglePermanentLogging(bool enabled)
 {
-    ConfigFile().setAutomaticLogDir(enabled);
+    ConfigFile config;
+    config.setAutomaticLogDir(enabled);
+    setupLoggingFromConfig();
+}
 
+void LogBrowser::toggleLogDeletion(bool enabled)
+{
+    ConfigFile config;
     auto logger = Logger::instance();
+
     if (enabled) {
-        if (!logger->isLoggingToFile()) {
-            logger->setupTemporaryFolderLogDir();
-            logger->enterNextLogFile();
-        }
+        config.setAutomaticDeleteOldLogsAge(defaultExpireDuration);
+        logger->setLogExpire(defaultExpireDuration);
     } else {
-        logger->disableTemporaryFolderLogDir();
+        config.setAutomaticDeleteOldLogsAge({});
+        logger->setLogExpire(std::chrono::hours(0));
     }
 }
 

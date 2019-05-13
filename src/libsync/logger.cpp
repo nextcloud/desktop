@@ -176,7 +176,7 @@ void Logger::setLogFile(const QString &name)
     _logstream.reset(new QTextStream(&_logFile));
 }
 
-void Logger::setLogExpire(int expire)
+void Logger::setLogExpire(std::chrono::hours expire)
 {
     _logExpire = expire;
 }
@@ -209,7 +209,6 @@ void Logger::setupTemporaryFolderLogDir()
     if (!QDir().mkpath(dir))
         return;
     setLogDebug(true);
-    setLogExpire(4 /*hours*/);
     setLogDir(dir);
     _temporaryFolderLogDir = true;
 }
@@ -271,9 +270,10 @@ void Logger::enterNextLogFile()
         QRegExp rx(R"(.*owncloud\.log\.(\d+).*)");
         int maxNumber = -1;
         foreach (const QString &s, files) {
-            if (_logExpire > 0) {
+            if (_logExpire.count() > 0) {
+                std::chrono::seconds expireSeconds(_logExpire);
                 QFileInfo fileInfo(dir.absoluteFilePath(s));
-                if (fileInfo.lastModified().addSecs(60 * 60 * _logExpire) < now) {
+                if (fileInfo.lastModified().addSecs(expireSeconds.count()) < now) {
                     dir.remove(s);
                 }
             }

@@ -196,7 +196,7 @@ void AccountState::checkConnectivity()
     std::chrono::milliseconds polltime = cfg.remotePollInterval();
 
     if (isConnected() && _timeSinceLastETagCheck.isValid()
-        && _timeSinceLastETagCheck.hasExpired(polltime.count())) {
+        && !_timeSinceLastETagCheck.hasExpired(polltime.count())) {
         qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() / 1000 << " secs. No connection check needed!";
         return;
     }

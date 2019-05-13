@@ -22,6 +22,7 @@
 #include <QString>
 #include <QVariant>
 #include <chrono>
+#include "common/result.h"
 
 class QWidget;
 class QHeaderView;
@@ -96,8 +97,16 @@ public:
     bool crashReporter() const;
     void setCrashReporter(bool enabled);
 
+    /** Whether to set up logging to a temp directory on startup.
+     *
+     * Configured via the log window. Not used if command line sets up logging.
+     */
     bool automaticLogDir() const;
     void setAutomaticLogDir(bool enabled);
+
+    /** Wheter the automaticLogDir should expire logs, and after how many hours */
+    Optional<std::chrono::hours> automaticDeleteOldLogsAge() const;
+    void setAutomaticDeleteOldLogsAge(Optional<std::chrono::hours> expireTime);
 
     // Whether experimental UI options should be shown
     bool showExperimentalOptions() const;

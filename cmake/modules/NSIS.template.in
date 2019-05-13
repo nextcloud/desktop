@@ -41,7 +41,6 @@
 !define SOURCE_PATH "@CMAKE_SOURCE_DIR@"
 !define QT_DLL_PATH "${MING_BIN}"
 !define ACCESSIBLE_DLL_PATH "${MING_LIB}/qt5/plugins/accessible"
-!define SQLITE_DLL_PATH "${MING_LIB}/qt5/plugins/sqldrivers"
 !define IMAGEFORMATS_DLL_PATH "${MING_LIB}/qt5/plugins/imageformats"
 !define PLATFORMS_DLL_PATH "${MING_LIB}/qt5/plugins/platforms"
 
@@ -410,9 +409,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${IMAGEFORMATS_DLL_PATH}\qsvg.dll"
    ; PNG is built in Qt
 
-   SetOutPath "$INSTDIR\sqldrivers"
-   File "${SQLITE_DLL_PATH}\qsqlite.dll"
-
    SetOutPath "$INSTDIR"
    ;License & release notes.
    File "@CPACK_RESOURCE_FILE_LICENSE@"
@@ -429,15 +425,8 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${QT_DLL_PATH}\Qt5Svg.dll"
    File "${QT_DLL_PATH}\Qt5Qml.dll"
    File "${QT_DLL_PATH}\Qt5Sql.dll"
-   File "${QT_DLL_PATH}\Qt5WebKit.dll"
-   File "${QT_DLL_PATH}\Qt5WebKitWidgets.dll"
    File "${QT_DLL_PATH}\Qt5Widgets.dll"
    File "${QT_DLL_PATH}\Qt5Xml.dll"
-
-   ;QtWebKit dependencies
-   File "${QT_DLL_PATH}\Qt5Multimedia.dll"
-   File "${QT_DLL_PATH}\Qt5MultimediaWidgets.dll"
-   File "${QT_DLL_PATH}\Qt5Sensors.dll"
 
    ;Qt deps
    File "${MING_BIN}\libpng16-16.dll"
