@@ -1,6 +1,6 @@
 name: desktop
 title: Desktop Client
-version: '2.6'
+version: 'master'
 start_page: ROOT:index.adoc
 nav:
 - modules/ROOT/nav.adoc
