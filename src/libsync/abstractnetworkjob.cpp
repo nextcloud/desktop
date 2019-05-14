@@ -222,6 +222,10 @@ void AbstractNetworkJob::slotFinished()
                 qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
                 resetTimeout();
                 if (_requestBody) {
+                    if(!_requestBody->isOpen()) {
+                        // Avoid the QIODevice::seek (QBuffer): The device is not open warning message
+                       _requestBody->open(QIODevice::ReadOnly);
+                    }
                     _requestBody->seek(0);
                 }
                 sendRequest(
