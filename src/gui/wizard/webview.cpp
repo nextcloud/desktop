@@ -197,7 +197,7 @@ bool WebEnginePage::certificateError(const QWebEngineCertificateError &certifica
      */
     QMessageBox messageBox;
     messageBox.setText(tr("Invalid certificate detected"));
-    messageBox.setInformativeText(tr("The host \"%1\" provided an invalid certitiface. Continue?").arg(certificateError.url().host()));
+    messageBox.setInformativeText(tr("The host \"%1\" provided an invalid certificate. Continue?").arg(certificateError.url().host()));
     messageBox.setIcon(QMessageBox::Warning);
     messageBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
     messageBox.setDefaultButton(QMessageBox::No);

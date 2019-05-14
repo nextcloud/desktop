@@ -2847,8 +2847,8 @@ We adviseren deze site niet te gebruiken.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
-        <source>SSL Chipher Debug View</source>
-        <translation>SSL Cipher Debug weergave</translation>
+        <source>SSL Cipher Debug View</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -3412,8 +3412,8 @@ We adviseren deze site niet te gebruiken.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
-        <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation>De host &quot;%1&quot; verstrekt een ongeldig certificaat. Doorgaan?</translation>
+        <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
