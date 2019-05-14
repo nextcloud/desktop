@@ -50,37 +50,37 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>לפתוח את האתר</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>השתנה לאחרונה</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>השהיית הסנכרון</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>עזרה</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>הגדרות</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>יציאה</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>יצירה מלקוח הסנכרון</translation>
     </message>
 </context>
 <context>
@@ -339,17 +339,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="931"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 כ &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>%1 בתור &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="937"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>גרסת השרת %1 היא ישנה ואינה נתמכת! המשך עבודה בגרסה זו תחת אחריותך.</translation>
+        <translation>גרסת השרת %1 ישנה ואינה נתמכת! המשך עבודה בגרסה זו תחת אחריותך.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="939"/>
         <source>Connected to %1.</source>
-        <translation>מחובר ל %1.</translation>
+        <translation>בוצע חיבור אל %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="941"/>
@@ -364,22 +364,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="945"/>
         <source>Signed out from %1.</source>
-        <translation>התנתקת מ %1.</translation>
+        <translation>יצאת מהשירות %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>מבקש אימות מהדפדפן. &lt;a href=&apos;%1&apos;&gt;הקלק כאן&lt;/a&gt; לפתיחה מחדש של הדפדפן.</translation>
+        <translation>מתבצעת בקשת אימות מהדפדפן. נא &lt;a href=&apos;%1&apos;&gt;ללחוץ כאן&lt;/a&gt; לפתיחה מחדש של הדפדפן.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="958"/>
         <source>Connecting to %1...</source>
-        <translation>מתחבר ל %1...</translation>
+        <translation>בהתחברות אל %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="961"/>
         <source>No connection to %1 at %2.</source>
-        <translation>אין חיבור ל %1 ב %2.</translation>
+        <translation>אין חיבור אל %1 ב־%2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="993"/>
@@ -389,22 +389,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1089"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>לא סונכרנו בשל בעיות גודל התיקיות הבאות: </translation>
+        <translation>ישנן תיקיות שלא סונכרנו מפאת גודלן הרב:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1091"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>לא סונכרנו בשל היותן על אחסון חיצוני התיקיות הבאות :</translation>
+        <translation>ישנן תיקיות שלא סונכרנו כיוון שהן נמצאות על אמצעי אחסון חיצוניים:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1092"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>לא סונכרנו בשל היותן על אחסון חיצוני או בשל בעיות גודל התיקיות הבאות :</translation>
+        <translation>ישנן תיקיות שלא סונכרנו כיוון שהן גדולות מדי או באחסון חיצוני:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1138"/>
         <source>Confirm Account Removal</source>
-        <translation>אשר הסרת חשבון</translation>
+        <translation>אישור הסרת חשבון</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1139"/>
@@ -2824,7 +2824,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
-        <source>SSL Chipher Debug View</source>
+        <source>SSL Cipher Debug View</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3387,7 +3387,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
-        <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
+        <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3933,17 +3933,17 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>דקה</numerusform><numerusform>%n דקות</numerusform><numerusform>%n דקות</numerusform><numerusform>%n דקות</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>שנייה</numerusform><numerusform>%n שניות</numerusform><numerusform>%n שניות</numerusform><numerusform>%n שניות</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>
@@ -3951,7 +3951,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>כותרת הבדיקה פגומה.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
@@ -3977,7 +3977,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>מגש המערכת אינו זמין</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="40"/>
@@ -3990,7 +3990,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="328"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;נבנה מהמהדורה &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ב־Git ב־%3, %4 באמצעות Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -4018,7 +4018,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>הועבר אל %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
@@ -4028,23 +4028,23 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>שגיאת גישה למערכת הקבצים</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>נתוני העל המקומיים עודכנו</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="55"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>לא ידוע</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="66"/>
@@ -4075,12 +4075,12 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>נתוני העל המקומיים מתעדכנים</translation>
     </message>
 </context>
 <context>
@@ -4088,42 +4088,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="62"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>המצב לא מוגדר</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="65"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>בהמתנה להתחלת סנכרון</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="68"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>הסנכרון פעיל</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="71"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>הסנכרון הצליח</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="74"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>הסנכרון הצליח תוך התעלמות ממספר קבצים.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="77"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>שגיאת סנכרון</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="80"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>שגיאת התקנה</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="83"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>בהכנה לסנכרון</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
@@ -4133,7 +4133,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>הסנכרון מושהה</translation>
     </message>
 </context>
 <context>
@@ -4141,7 +4141,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן לפתוח דפדפן</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
@@ -4151,12 +4151,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן לפתוח לקוח דוא״ל</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>אירעה שגיאה בעת הפעלת לקוח הדוא״ל לצורך כתיבת הודעה חדשה. אולי לא מוגדר לקוח דוא״ל כבררת מחדל?</translation>
     </message>
 </context>
 </TS>

@@ -2833,8 +2833,8 @@ No es recomendable usarlo. </translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
-        <source>SSL Chipher Debug View</source>
-        <translation>Vista de Depuración del Cifrado SSL</translation>
+        <source>SSL Cipher Debug View</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -3398,7 +3398,7 @@ No es recomendable usarlo. </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
-        <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
+        <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation type="unfinished"/>
     </message>
 </context>

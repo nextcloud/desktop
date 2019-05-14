@@ -2832,8 +2832,8 @@ Nie je vhodné ju používať.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
-        <source>SSL Chipher Debug View</source>
-        <translation>Debug zobrazenie šifrovania SSL</translation>
+        <source>SSL Cipher Debug View</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -3397,8 +3397,8 @@ Nie je vhodné ju používať.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
-        <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation>Hostiteľ &quot;%1&quot; poskytol neplatný certifikát. Chcete pokračovať?</translation>
+        <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
