@@ -2843,7 +2843,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
         <source>SSL Cipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>SSL Şifreleme Hata Ayıklama Görünümü</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -3408,7 +3408,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; sunucusunun sertifikası geçersiz. Devam etmek ister misiniz?</translation>
     </message>
 </context>
 <context>

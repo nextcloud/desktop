@@ -2737,7 +2737,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="224"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti dar vieną nuorodą</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="402"/>
@@ -3404,7 +3404,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Serveris &quot;%1&quot; pateikė negaliojantį liudijimą. Tęsti?</translation>
     </message>
 </context>
 <context>
