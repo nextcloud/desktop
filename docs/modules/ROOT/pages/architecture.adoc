@@ -1,4 +1,8 @@
 = Appendix B: History and Architecture
+:toc: right
+:toclevels: 1
+
+== Introduction
 
 ownCloud provides desktop sync clients to synchronize the contents of local directories from computers, tablets, and handheld devices to the ownCloud server.
 

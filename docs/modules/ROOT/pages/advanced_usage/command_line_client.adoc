@@ -1,4 +1,7 @@
 = The Command Line Client
+:toc: right
+
+== Introduction
 
 The ownCloud Client packages contain a command line client, `owncloudcmd`, that can be used to synchronize ownCloud files to client machines.
 
@@ -16,7 +19,7 @@ owncloudcmd [OPTIONS...] sourcedir owncloudurl.
 `sourcedir` is the local directory and `owncloudurl` is the server URL.
 Other command line switches supported by `owncloudcmd` include the following:
 
-[options="header"]
+[width="100%",cols="45%,55%",options="header"]
 |===
 | Switch | Description
 | `--user`, `-u` `[user]`|  Use `user` as the login name.

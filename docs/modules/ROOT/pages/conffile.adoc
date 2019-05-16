@@ -1,4 +1,7 @@
 = Advanced Usage - Configuration File
+:toc: right
+
+== Introduction
 
 The ownCloud Client reads a configuration file.
 You can locate this configuration file as follows:
@@ -16,6 +19,7 @@ Some interesting values that can be set on the configuration file are:
 
 == `[ownCloud]` Section
 
+[width="100%",cols="30%,10%,60%",]
 |===
 |  Variable | Default | Meaning 
 | `remotePollInterval` 
@@ -37,6 +41,7 @@ Some interesting values that can be set on the configuration file are:
 
 == `[General]` Section
 
+[width="100%",cols="30%,10%,60%",]
 |===
 | Variable | Default | Meaning 
 
@@ -69,11 +74,9 @@ It does enable user interface options that can be used to opt in to experimental
 
 == `[Proxy]` Section 
 
-[cols="2,2,2a"]
+[width="100%",cols="30%,10%,60%a",]
 |===
-| Variable 
-| Default 
-| Meaning 
+| Variable | Default | Meaning 
 
 | `host` 
 | `127.0.0.1` 

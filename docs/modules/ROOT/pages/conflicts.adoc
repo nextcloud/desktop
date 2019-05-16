@@ -1,4 +1,6 @@
 = Conflicts
+:toc: right
+:toclevels: 1
 
 == Overview
 
