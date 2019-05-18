@@ -1465,7 +1465,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation>Sincronizar os ficheiros agachados</translation>
+        <translation>Sincronizar os ficheiros agochados</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
@@ -3145,7 +3145,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="516"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>O ficheiro/cartafol ignórase por estar agachado.</translation>
+        <translation>O ficheiro/cartafol ignórase por estar agochado.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="519"/>
