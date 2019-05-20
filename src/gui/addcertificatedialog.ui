@@ -9,15 +9,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>478</width>
-    <height>225</height>
+    <width>586</width>
+    <height>341</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>SSL client certificate authentication</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="4">
     <widget class="QLabel" name="labelErrorMessage">
      <property name="text">
       <string>This server probably requires a SSL client certificate.</string>
@@ -27,53 +27,45 @@
      </property>
     </widget>
    </item>
-   <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="labelCertificateFile">
-       <property name="text">
-        <string>Certificate &amp; Key (pkcs12) :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QLineEdit" name="lineEditCertificatePath">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonBrowseCertificate">
-         <property name="text">
-          <string>Browse...</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="labelPWDCertificate">
-       <property name="text">
-        <string>Certificate password :</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEditPWDCertificate">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="echoMode">
-        <enum>QLineEdit::Password</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="labelCertificateFile">
+     <property name="text">
+      <string>Certificate &amp; Key (pkcs12) :</string>
+     </property>
+    </widget>
    </item>
-   <item>
+   <item row="1" column="2">
+    <widget class="QLineEdit" name="lineEditCertificatePath">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="pushButtonBrowseCertificate">
+     <property name="text">
+      <string>Browse...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="labelPWDCertificate">
+     <property name="text">
+      <string>Certificate password :</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2" colspan="2">
+    <widget class="QLineEdit" name="lineEditPWDCertificate">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="4">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</string>
@@ -83,7 +75,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="4" column="0">
     <widget class="QLabel" name="labelErrorCertif">
      <property name="palette">
       <palette>
@@ -100,6 +92,15 @@
         <colorrole role="Text">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
+           <red>231</red>
+           <green>23</green>
+           <blue>12</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
            <red>231</red>
            <green>23</green>
            <blue>12</blue>
@@ -126,6 +127,15 @@
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>231</red>
+           <green>23</green>
+           <blue>12</blue>
+          </color>
+         </brush>
+        </colorrole>
        </inactive>
        <disabled>
         <colorrole role="WindowText">
@@ -146,6 +156,15 @@
           </color>
          </brush>
         </colorrole>
+        <colorrole role="PlaceholderText">
+         <brush brushstyle="NoBrush">
+          <color alpha="128">
+           <red>231</red>
+           <green>23</green>
+           <blue>12</blue>
+          </color>
+         </brush>
+        </colorrole>
        </disabled>
       </palette>
      </property>
@@ -154,7 +173,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="5" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -167,7 +186,7 @@
      </property>
     </spacer>
    </item>
-   <item>
+   <item row="6" column="0" colspan="4">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
