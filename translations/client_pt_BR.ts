@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>O servidor respondeu &quot;%1 %2&quot; to &quot;%3 %4&quot;</translation>
+        <translation>O servidor respondeu &quot;%1 %2&quot; para &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -324,7 +324,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="814"/>
         <source>Sync Running</source>
-        <translation>Sincronização Ocorrendo</translation>
+        <translation>Sincronização ocorrendo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="815"/>
@@ -2021,7 +2021,7 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation>Colaboração segura e troca de arquivo</translation>
+        <translation>Colaboração segura e troca de arquivos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
@@ -3798,7 +3798,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Hospeda teu próprio servidor&lt;/span&gt;&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Hospede seu próprio servidor&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>
