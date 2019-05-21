@@ -629,7 +629,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
         auto account = applyAccountChanges();
 
         ConfigFile cfgFile;
-		QString localFolder = FolderDefinition::prepareLocalPath(cfgFile.getFsMirrorPath());
+        QString localFolder = FolderDefinition::prepareLocalPath(cfgFile.defaultFileStreamMirrorPath());
 
 //        bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
 //        if (!startFromScratch || ensureStartFromScratch(localFolder)) {

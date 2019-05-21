@@ -53,8 +53,9 @@ namespace chrono = std::chrono;
 Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
 
 
-static const char fsSyncPathC[]			= "fsSyncPath";
-static const char fsMirrorPathC[]		= "fsMirrorPath";
+static const char defaultFileStreamSyncPathC[]			= "fileStreamSyncPathDefault";
+static const char defaultFileStreamMirrorPathC[]		= "fileStreamMirrorPathDefault";
+static const char defaultFileStreamLetterDriveC[]		= "fileStreamPathDefaultLetterDrive";
 
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
@@ -857,37 +858,43 @@ void ConfigFile::setAutomaticLogDir(bool enabled)
     settings.setValue(QLatin1String(automaticLogDirC), enabled);
 }
 
-void ConfigFile::setFsMirrorPath()
+void ConfigFile::setDefaultFileStreamMirrorPath(QString path)
 {
-	QString path;
-#if defined(Q_OS_WIN)
-	path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-#elif defined(Q_OS_MAC)
-	path = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/cachedFiles/";
-#endif
-
-	QSettings settings(configFile(), QSettings::IniFormat);
-	settings.setValue(QLatin1String(fsMirrorPathC), path);
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(defaultFileStreamMirrorPathC), path);
 }
 
-QString ConfigFile::getFsMirrorPath()
+QString ConfigFile::defaultFileStreamMirrorPath()
 {
-	QSettings settings(configFile(), QSettings::IniFormat);
-	QString defaultString;
-	return settings.value(QLatin1String(fsMirrorPathC), defaultString).toString();
+    QSettings settings(configFile(), QSettings::IniFormat);
+    QString defaultString;
+    return settings.value(QLatin1String(defaultFileStreamMirrorPathC), defaultString).toString();
 }
 
-void ConfigFile::setFsSyncPath(QString path)
+void ConfigFile::setDefaultFileStreamSyncPath(QString path)
 {
-	QSettings settings(configFile(), QSettings::IniFormat);
-	settings.setValue(QLatin1String(fsSyncPathC), path);
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(defaultFileStreamSyncPathC), path);
 }
 
-QString ConfigFile::getFsSyncPath()
+QString ConfigFile::defaultFileStreamSyncPath()
 {
-	QSettings settings(configFile(), QSettings::IniFormat);
-	QString defaultString;
-	return settings.value(QLatin1String(fsSyncPathC), defaultString).toString();
+    QSettings settings(configFile(), QSettings::IniFormat);
+    QString defaultString;
+    return settings.value(QLatin1String(defaultFileStreamSyncPathC), defaultString).toString();
+}
+
+void ConfigFile::setDefaultFileStreamLetterDrive(QString path)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(defaultFileStreamLetterDriveC), path);
+}
+
+QString ConfigFile::defaultFileStreamLetterDrive()
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    QString defaultString;
+    return settings.value(QLatin1String(defaultFileStreamLetterDriveC), defaultString).toString();
 }
 
 void ConfigFile::createAuxiliarDirectories()
