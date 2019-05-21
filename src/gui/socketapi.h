@@ -20,7 +20,6 @@
 #include "syncfilestatus.h"
 #include "sharedialog.h" // for the ShareDialogStartPage
 #include "common/syncjournalfilerecord.h"
-#include "configfile.h"
 
 #if defined(Q_OS_MAC)
 #include "socketapisocket_mac.h"
@@ -58,7 +57,7 @@ public slots:
     void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
 
 signals:
-	void shareCommandReceived(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
+    void shareCommandReceived(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
 	void shareUserGroupCommandReceived(const QString &sharePath, const QString &localPath, bool resharingAllowed);
 
 private slots:
@@ -91,6 +90,7 @@ private:
 
     // opens share dialog, sends reply
     void processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage);
+
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketListener *listener);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener);
 
@@ -135,8 +135,6 @@ private:
     QSet<QString> _registeredAliases;
     QList<SocketListener> _listeners;
     SocketApiServer _localServer;
-
-	ConfigFile cfgFile;
 };
 }
 #endif // SOCKETAPI_H
