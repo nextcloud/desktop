@@ -3400,12 +3400,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="199"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="201"/>
         <source>Invalid certificate detected</source>
         <translation>检测到无效证书</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="200"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="202"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation>主机 “%1” 提供了无效证书。是否继续？</translation>
     </message>

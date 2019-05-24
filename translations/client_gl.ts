@@ -1688,7 +1688,7 @@ Os rexistros escribiranse en %1</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>Configuración do proxy</translation>
+        <translation>Axustes do proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
@@ -3403,12 +3403,12 @@ Recomendámoslle que non o use.</translation>
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="199"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="201"/>
         <source>Invalid certificate detected</source>
         <translation>Detectouse un certificado non válido</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="200"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="202"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation>O servidor «%1» forneceu un certificado non válido. Continuar?</translation>
     </message>

@@ -3406,12 +3406,12 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="199"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="201"/>
         <source>Invalid certificate detected</source>
         <translation>Ongeldig certificaat gedetecteerd</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="200"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="202"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation>De server &quot;%1&quot; heeft een ongeldig certificaat . Wilt u doorgaan?</translation>
     </message>
