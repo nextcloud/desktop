@@ -32,7 +32,7 @@ rem 			"clean up"
 Rem ******************************************************************************************
 
 echo "* Remove old installation files %PROJECT_PATH%/install from previous build."
-start "rm-rf" /B /wait rm -rf %PROJECT_PATH%/install/*
+start "rm -rf" /B /wait rm -rf %PROJECT_PATH%/install/*
 
 echo "* Remove old dependencies files %PROJECT_PATH%/libs from previous build."
 start "rm -rf" /B /wait rm -rf %PROJECT_PATH%/libs/*
