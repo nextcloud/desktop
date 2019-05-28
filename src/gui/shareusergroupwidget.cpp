@@ -202,7 +202,6 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
         s->setBackgroundRole(layout->count() % 2 == 0 ? QPalette::Base : QPalette::AlternateBase);
         layout->addWidget(s);
-        s->setVisible(true);
 
         x++;
         if (x <= 3) {
@@ -368,6 +367,15 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     menu->addAction(_permissionReshare);
     connect(_permissionReshare, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
 
+    menu->addSeparator();
+
+      // Adds action to delete share widget
+      QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),QIcon(QLatin1String(":/client/resources/delete.png")));
+      _deleteShareButton= new QAction(deleteicon,tr("Unshare"), this);
+
+    menu->addAction(_deleteShareButton);
+    connect(_deleteShareButton, &QAction::triggered, this, &ShareUserLine::on_deleteShareButton_clicked);
+
     /*
      * Files can't have create or delete permissions
      */
@@ -414,18 +422,11 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     connect(share.data(), &Share::permissionsSet, this, &ShareUserLine::slotPermissionsSet);
     connect(share.data(), &Share::shareDeleted, this, &ShareUserLine::slotShareDeleted);
 
-    _ui->deleteShareButton->setIcon(QIcon::fromTheme(QLatin1String("user-trash"),
-                                                     QIcon(QLatin1String(":/client/resources/delete.png"))));
+    // _ui->deleteShareButton->setIcon(QIcon::fromTheme(QLatin1String("user-trash"),
+    //                                                  QIcon(QLatin1String(":/client/resources/delete.png"))));
 
     if (!share->account()->capabilities().shareResharing()) {
         _permissionReshare->setVisible(false);
-    }
-
-    //If the initiator is not you. And the recipient is not you. Show it without any options.
-    if(share->account()->id() != share->getId() && share->account()->davUser() != share->getShareWith()->shareWith()){
-        _ui->permissionsEdit->hide();
-        _ui->permissionToolButton->hide();
-        _ui->deleteShareButton->hide();
     }
 
     loadAvatar();
