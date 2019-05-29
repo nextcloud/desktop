@@ -24,7 +24,7 @@ namespace OCC {
 OcsShareJob::OcsShareJob(AccountPtr account)
     : OcsJob(account)
 {
-    setPath("ocs/v1.php/apps/files_sharing/api/v1/shares");
+    setPath("ocs/v2.php/apps/files_sharing/api/v1/shares");
     connect(this, &OcsJob::jobFinished, this, &OcsShareJob::jobDone);
 }
 
@@ -33,6 +33,7 @@ void OcsShareJob::getShares(const QString &path)
     setVerb("GET");
 
     addParam(QString::fromLatin1("path"), path);
+    addParam(QString::fromLatin1("reshares"), QString("true"));
     addPassStatusCode(404);
 
     start();
