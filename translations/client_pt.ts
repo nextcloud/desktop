@@ -840,7 +840,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="957"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Por favor, vá às configurações para a selecionar se a desejar transferir.</translation>
+        <translation>Por favor, vá às definições para a selecionar, se desejar transferi-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
@@ -872,12 +872,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Download new files?</source>
-        <translation type="unfinished"/>
+        <translation>Transferir novos ficheiros?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Transferir novos ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
@@ -1648,7 +1648,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Está disponível uma nova versão do Cliente %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponível para transferência. A versão instalada é a %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Está disponível uma nova versão do Cliente %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponível para transferência. A versão instalada é %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
@@ -4018,7 +4018,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>A versão do servidor transferida, o ficheiro local alterado foi copiado para o ficheiro de conflito</translation>
+        <translation>A versão transferida do servidor, o ficheiro local alterado foi copiado para o ficheiro de conflito</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -4059,7 +4059,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="66"/>
         <source>downloading</source>
-        <translation>A transferir</translation>
+        <translation>a transferir</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>

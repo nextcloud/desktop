@@ -2844,7 +2844,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
         <source>SSL Cipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>Widok debugowania szyfrowania SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -3409,7 +3409,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="202"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Host &quot;%1&quot; podał nieprawidłowy certyfikat. Kontynuować?</translation>
     </message>
 </context>
 <context>
