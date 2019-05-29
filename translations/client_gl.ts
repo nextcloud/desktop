@@ -2774,17 +2774,17 @@ Recomendámoslle que non o use.</translation>
         <translation>Compartir con usuarios ou grupos...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="238"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
         <source>Copy link</source>
         <translation>Copiar a ligazón</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>Non hai resultados para «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="335"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="336"/>
         <source>I shared something with you</source>
         <translation>Compartín algo con vostede</translation>
     </message>
@@ -2802,22 +2802,22 @@ Recomendámoslle que non o use.</translation>
         <translation>pode editar</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="364"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
         <source>Can reshare</source>
         <translation>Pode volver compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="374"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="375"/>
         <source>Can create</source>
         <translation>Pode crear</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="380"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="381"/>
         <source>Can change</source>
         <translation>Pode cambiar</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="387"/>
         <source>Can delete</source>
         <translation>Pode eliminar</translation>
     </message>
