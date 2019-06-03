@@ -776,7 +776,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="376"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 e %n outro ficheiro foram transferidos.</numerusform><numerusform>%1 e %n outros ficheiros foram transferidos.</numerusform></translation>
+        <translation><numerusform>%1 e %n outro ficheiro foi transferido.</numerusform><numerusform>%1 e %n outros ficheiros foram transferidos.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="383"/>
@@ -840,7 +840,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="957"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Por favor, vá às configurações para a selecionar se a desejar transferir.</translation>
+        <translation>Por favor, vá às definições para a selecionar, se desejar transferi-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
@@ -872,12 +872,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Download new files?</source>
-        <translation type="unfinished"/>
+        <translation>Transferir novos ficheiros?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Transferir novos ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
@@ -1648,7 +1648,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Está disponível uma nova versão do Cliente %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponível para transferência. A versão instalada é a %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Está disponível uma nova versão do Cliente %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; está disponível para transferência. A versão instalada é %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
@@ -2262,7 +2262,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="484"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>A transferência iria reduzir o espaço livre local acima do limite</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="488"/>
@@ -2762,17 +2762,17 @@ Não é aconselhada a sua utilização.</translation>
         <translation>Partilhar com utilizadores ou grupos...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="238"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
         <source>Copy link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>Sem resultados para &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="335"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="336"/>
         <source>I shared something with you</source>
         <translation type="unfinished"/>
     </message>
@@ -2790,22 +2790,22 @@ Não é aconselhada a sua utilização.</translation>
         <translation>pode editar</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="364"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
         <source>Can reshare</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="374"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="375"/>
         <source>Can create</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="380"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="381"/>
         <source>Can change</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="387"/>
         <source>Can delete</source>
         <translation type="unfinished"/>
     </message>
@@ -3143,7 +3143,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="535"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Conflito: versão do servidor transferida, cópia local renomeada e não enviada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="801"/>
@@ -3391,12 +3391,12 @@ Não é aconselhada a sua utilização.</translation>
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="199"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="201"/>
         <source>Invalid certificate detected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="200"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="202"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation type="unfinished"/>
     </message>
@@ -4018,7 +4018,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>A versão do servidor transferida, o ficheiro local alterado foi copiado para o ficheiro de conflito</translation>
+        <translation>A versão transferida do servidor, o ficheiro local alterado foi copiado para o ficheiro de conflito</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -4059,7 +4059,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="66"/>
         <source>downloading</source>
-        <translation>A transferir</translation>
+        <translation>a transferir</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>

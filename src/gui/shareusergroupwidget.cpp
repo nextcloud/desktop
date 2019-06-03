@@ -202,6 +202,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
         s->setBackgroundRole(layout->count() % 2 == 0 ? QPalette::Base : QPalette::AlternateBase);
         layout->addWidget(s);
+        s->setVisible(true);
 
         x++;
         if (x <= 3) {
@@ -418,6 +419,13 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
 
     if (!share->account()->capabilities().shareResharing()) {
         _permissionReshare->setVisible(false);
+    }
+
+    //If the initiator is not you. And the recipient is not you. Show it without any options.
+    if(share->account()->id() != share->getId() && share->account()->davUser() != share->getShareWith()->shareWith()){
+        _ui->permissionsEdit->hide();
+        _ui->permissionToolButton->hide();
+        _ui->deleteShareButton->hide();
     }
 
     loadAvatar();
