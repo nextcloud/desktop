@@ -120,9 +120,9 @@ public slots:
 
 protected slots:
     void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
+    void slotOpenUpdateUrl();
 
 private slots:
-    void slotOpenUpdateUrl();
     void slotVersionInfoArrived();
     void slotTimedOut();
 
@@ -148,9 +148,6 @@ class NSISUpdater : public OCUpdater
 {
     Q_OBJECT
 public:
-    enum UpdateState { NoUpdate = 0,
-        UpdateAvailable,
-        UpdateFailed };
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() Q_DECL_OVERRIDE;
 private slots:
@@ -159,12 +156,12 @@ private slots:
     void slotWriteFile();
 
 private:
-    NSISUpdater::UpdateState updateStateOnStart();
-    void showDialog(const UpdateInfo &info);
+    void wipeUpdateData();
+    void showNoUrlDialog(const UpdateInfo &info);
+    void showUpdateErrorDialog();
     void versionInfoArrived(const UpdateInfo &info) Q_DECL_OVERRIDE;
     QScopedPointer<QTemporaryFile> _file;
     QString _targetFile;
-    bool _showFallbackMessage;
 };
 
 /**
