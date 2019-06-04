@@ -271,6 +271,30 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testSingleFileRenamed() {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        int aboutToRemoveAllFilesCalled = 0;
+        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
+            [&](SyncFileItem::Direction , bool *) {
+                aboutToRemoveAllFilesCalled++;
+                QFAIL("should not be called");
+            });
+
+        // add a single file
+        fakeFolder.localModifier().insert("hello.txt");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // rename it
+        fakeFolder.localModifier().rename("hello.txt", "goodbye.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestAllFilesDeleted)

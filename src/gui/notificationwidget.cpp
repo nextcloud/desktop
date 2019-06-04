@@ -65,9 +65,7 @@ void NotificationWidget::setActivity(const Activity &activity)
     _ui._timeLabel->setText(tText);
 
     // always remove the buttons
-    foreach (auto button, _ui._buttonBox->buttons()) {
-        _ui._buttonBox->removeButton(button);
-    }
+    qDeleteAll(_buttons);
     _buttons.clear();
 
     // display buttons for the links

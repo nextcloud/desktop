@@ -376,6 +376,8 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
         return;
     } else if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
         _hasRemoveFile = true;
+    } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
+        _hasNoneFiles = true; // If a file (or every file) has been renamed, it means not al files where deleted
     } else if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
         || item->_instruction == CSYNC_INSTRUCTION_SYNC) {
         if (item->_direction == SyncFileItem::Up) {

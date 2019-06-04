@@ -639,6 +639,18 @@ void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListen
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
 }
 
+void SocketApi::command_OPEN_PRIVATE_LINK_VERSIONS(const QString &localFile, SocketListener *)
+{
+    auto openVersionsLink = [](const QString &link) {
+        QUrl url(link);
+        QUrlQuery query(url);
+        query.addQueryItem(QStringLiteral("details"), QStringLiteral("versionsTabView"));
+        url.setQuery(query);
+        Utility::openBrowser(url, nullptr);
+    };
+    fetchPrivateLinkUrlHelper(localFile, openVersionsLink);
+}
+
 void SocketApi::copyUrlToClipboard(const QString &link)
 {
     QApplication::clipboard()->setText(link);
@@ -789,7 +801,8 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     // If sharing is globally disabled, do not show any sharing entries.
     // If there is no permission to share for this file, add a disabled entry saying so
     if (isOnTheServer && !record._remotePerm.isNull() && !record._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
-        listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + tr("Resharing this file is not allowed"));
+        listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + (!record.isDirectory()
+            ? tr("Resharing this file is not allowed") : tr("Resharing this folder is not allowed")));
     } else {
         listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + tr("Share..."));
 
@@ -895,6 +908,11 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         if (fileData.folder && fileData.folder->accountState()->isConnected()) {
             sendSharingContextMenuOptions(fileData, listener);
             listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+
+            // Add link to versions pane if possible
+            if (folder->accountState()->account()->capabilities().privateLinkDetailsParamAvailable()) {
+                listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK_VERSIONS") + flagString + tr("Show file versions in browser"));
+            }
 
             // Conflict files get conflict resolution actions
             bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);

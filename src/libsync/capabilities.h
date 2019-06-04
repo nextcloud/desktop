@@ -52,6 +52,9 @@ public:
     /// Whether the "privatelink" DAV property is available
     bool privateLinkPropertyAvailable() const;
 
+    /// Whether the "privatelink" DAV property supports the 'details' param
+    bool privateLinkDetailsParamAvailable() const;
+
     /// returns true if the capabilities report notifications
     bool notificationsAvailable() const;
 

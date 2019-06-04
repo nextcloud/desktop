@@ -141,6 +141,11 @@ bool Capabilities::privateLinkPropertyAvailable() const
     return _capabilities["files"].toMap()["privateLinks"].toBool();
 }
 
+bool Capabilities::privateLinkDetailsParamAvailable() const
+{
+    return _capabilities["files"].toMap()["privateLinksDetailsParam"].toBool();
+}
+
 QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 {
     QList<int> list;
