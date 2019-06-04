@@ -639,6 +639,18 @@ void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListen
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
 }
 
+void SocketApi::command_OPEN_PRIVATE_LINK_VERSIONS(const QString &localFile, SocketListener *)
+{
+    auto openVersionsLink = [](const QString &link) {
+        QUrl url(link);
+        QUrlQuery query(url);
+        query.addQueryItem(QStringLiteral("details"), QStringLiteral("versionsTabView"));
+        url.setQuery(query);
+        Utility::openBrowser(url, nullptr);
+    };
+    fetchPrivateLinkUrlHelper(localFile, openVersionsLink);
+}
+
 void SocketApi::copyUrlToClipboard(const QString &link)
 {
     QApplication::clipboard()->setText(link);
@@ -895,6 +907,11 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         if (fileData.folder && fileData.folder->accountState()->isConnected()) {
             sendSharingContextMenuOptions(fileData, listener);
             listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+
+            // Add link to versions pane if possible
+            if (folder->accountState()->account()->capabilities().privateLinkDetailsParamAvailable()) {
+                listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK_VERSIONS") + flagString + tr("Show file versions in browser"));
+            }
 
             // Conflict files get conflict resolution actions
             bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);
