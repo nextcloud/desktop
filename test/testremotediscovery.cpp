@@ -63,17 +63,20 @@ private slots:
         qRegisterMetaType<ErrorCategory>();
         QTest::addColumn<int>("errorKind");
         QTest::addColumn<QString>("expectedErrorString");
+        QTest::addColumn<bool>("syncSucceeds");
 
         QString itemErrorMessage = "Internal Server Fake Error";
 
-        QTest::newRow("403") << 403 << itemErrorMessage;
-        QTest::newRow("404") << 404 << itemErrorMessage;
-        QTest::newRow("500") << 500 << itemErrorMessage;
-        QTest::newRow("503") << 503 << itemErrorMessage;
+        QTest::newRow("400") << 400 << itemErrorMessage << false;
+        QTest::newRow("401") << 401 << itemErrorMessage << false;
+        QTest::newRow("403") << 403 << itemErrorMessage << true;
+        QTest::newRow("404") << 404 << itemErrorMessage << true;
+        QTest::newRow("500") << 500 << itemErrorMessage << true;
+        QTest::newRow("503") << 503 << itemErrorMessage << true;
         // 200 should be an error since propfind should return 207
-        QTest::newRow("200") << 200 << itemErrorMessage;
-        QTest::newRow("InvalidXML") << +InvalidXML << "Unknown error";
-        QTest::newRow("Timeout") << +Timeout << "Operation canceled";
+        QTest::newRow("200") << 200 << itemErrorMessage << false;
+        QTest::newRow("InvalidXML") << +InvalidXML << "Unknown error" << false;
+        QTest::newRow("Timeout") << +Timeout << "Operation canceled" << false;
     }
 
 
@@ -82,8 +85,7 @@ private slots:
     {
         QFETCH(int, errorKind);
         QFETCH(QString, expectedErrorString);
-        // 403/503 just ignore the temporarily unavailable directory
-        bool syncSucceeds = errorKind == 503 || errorKind == 403;
+        QFETCH(bool, syncSucceeds);
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
