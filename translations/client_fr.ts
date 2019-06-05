@@ -274,12 +274,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="236"/>
         <source>This account supports end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Ce compte prend en charge le chiffrement de bout en bout.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Activer le chiffrement</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
