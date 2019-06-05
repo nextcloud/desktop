@@ -996,22 +996,26 @@ class FakeErrorReply : public QNetworkReply
 public:
     FakeErrorReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
                    QObject *parent, int httpErrorCode, const QByteArray &body = QByteArray())
-    : QNetworkReply{parent}, _httpErrorCode(httpErrorCode), _body(body) {
+    : QNetworkReply{parent}, _body(body) {
         setRequest(request);
         setUrl(request.url());
         setOperation(op);
         open(QIODevice::ReadOnly);
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, httpErrorCode);
+        setError(InternalServerError, "Internal Server Fake Error");
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
 
     Q_INVOKABLE virtual void respond() {
-        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, _httpErrorCode);
-        setError(InternalServerError, "Internal Server Fake Error");
         emit metaDataChanged();
         emit readyRead();
         // finishing can come strictly after readyRead was called
         QTimer::singleShot(5, this, &FakeErrorReply::slotSetFinished);
     }
+
+    // make public to give tests easy interface
+    using QNetworkReply::setError;
+    using QNetworkReply::setAttribute;
 
 public slots:
     void slotSetFinished() {
@@ -1031,7 +1035,6 @@ public:
         return _body.size();
     }
 
-    int _httpErrorCode;
     QByteArray _body;
 };
 

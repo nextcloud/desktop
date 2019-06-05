@@ -123,10 +123,6 @@ void GETFileJob::start()
         _bandwidthManager->registerDownloadJob(this);
     }
 
-    if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcGetJob) << " Network error: " << errorString();
-    }
-
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
 
     AbstractNetworkJob::start();
@@ -167,7 +163,6 @@ void GETFileJob::slotMetaDataChanged()
         // Disable the buffer limit, as we don't limit the bandwidth for error messages.
         // (We are only going to do a readAll() at the end.)
         reply()->setReadBufferSize(0);
-        _device->close();
         return;
     }
     if (reply()->error() != QNetworkReply::NoError) {
@@ -304,15 +299,13 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        if (_device->isOpen()) {
-            qint64 w = _device->write(buffer.constData(), r);
-            if (w != r) {
-                _errorString = _device->errorString();
-                _errorStatus = SyncFileItem::NormalError;
-                qCWarning(lcGetJob) << "Error while writing to file" << w << r << _errorString;
-                reply()->abort();
-                return;
-            }
+        qint64 w = _device->write(buffer.constData(), r);
+        if (w != r) {
+            _errorString = _device->errorString();
+            _errorStatus = SyncFileItem::NormalError;
+            qCWarning(lcGetJob) << "Error while writing to file" << w << r << _errorString;
+            reply()->abort();
+            return;
         }
     }
 

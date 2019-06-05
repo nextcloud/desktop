@@ -206,6 +206,42 @@ private slots:
         QVERIFY(QFile::remove(conflictFile)); // So the comparison succeeds;
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testHttp2Resend() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.remoteModifier().insert("A/resendme", 300);
+
+        QByteArray serverMessage = "Needs to be resend on a new connection!";
+        int resendActual = 0;
+        int resendExpected = 2;
+
+        // First, download only the first 3 MB of the file
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/resendme") && resendActual < resendExpected) {
+                auto errorReply = new FakeErrorReply(op, request, this, 400, "ignore this body");
+                errorReply->setError(QNetworkReply::ContentReSendError, serverMessage);
+                errorReply->setAttribute(QNetworkRequest::HTTP2WasUsedAttribute, true);
+                errorReply->setAttribute(QNetworkRequest::HttpStatusCodeAttribute, QVariant());
+                resendActual += 1;
+                return errorReply;
+            }
+            return nullptr;
+        });
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(resendActual, 2);
+
+        fakeFolder.remoteModifier().appendByte("A/resendme");
+        resendActual = 0;
+        resendExpected = 10;
+
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(resendActual, 4); // the 4th fails because it only resends 3 times
+        QCOMPARE(getItem(completeSpy, "A/resendme")->_status, SyncFileItem::NormalError);
+        QVERIFY(getItem(completeSpy, "A/resendme")->_errorString.contains(serverMessage));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestDownload)

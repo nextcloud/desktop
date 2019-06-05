@@ -53,7 +53,6 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
     , _ignoreCredentialFailure(false)
     , _reply(0)
     , _path(path)
-    , _redirectCount(0)
 {
     // Since we hold a QSharedPointer to the account, this makes no sense. (issue #6893)
     ASSERT(account != parent);
@@ -164,6 +163,37 @@ void AbstractNetworkJob::slotFinished()
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
 
+    // Qt doesn't yet transparently resend HTTP2 requests, do so here
+    const auto maxHttp2Resends = 3;
+    QByteArray verb = requestVerb(*reply());
+    if (_reply->error() == QNetworkReply::ContentReSendError
+        && _reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()) {
+
+        if ((_requestBody && !_requestBody->isSequential()) || verb.isEmpty()) {
+            qCWarning(lcNetworkJob) << "Can't resend HTTP2 request, verb or body not suitable"
+                                    << _reply->request().url() << verb << _requestBody;
+        } else if (_http2ResendCount >= maxHttp2Resends) {
+            qCWarning(lcNetworkJob) << "Not resending HTTP2 request, number of resends exhausted"
+                                    << _reply->request().url() << _http2ResendCount;
+        } else {
+            qCInfo(lcNetworkJob) << "HTTP2 resending" << _reply->request().url();
+            _http2ResendCount++;
+
+            resetTimeout();
+            if (_requestBody) {
+                if(!_requestBody->isOpen())
+                   _requestBody->open(QIODevice::ReadOnly);
+                _requestBody->seek(0);
+            }
+            sendRequest(
+                verb,
+                _reply->request().url(),
+                _reply->request(),
+                _requestBody);
+            return;
+        }
+    }
+
     if (_reply->error() != QNetworkReply::NoError) {
 
         if (_account->credentials()->retryIfNeeded(this))
@@ -202,7 +232,6 @@ void AbstractNetworkJob::slotFinished()
 
         // ### some of the qWarnings here should be exported via displayErrors() so they
         // ### can be presented to the user if the job executor has a GUI
-        QByteArray verb = requestVerb(*reply());
         if (requestedUrl.scheme() == QLatin1String("https") && redirectUrl.scheme() == QLatin1String("http")) {
             qCWarning(lcNetworkJob) << this << "HTTPS->HTTP downgrade detected!";
         } else if (requestedUrl == redirectUrl || _redirectCount + 1 >= maxRedirects()) {
