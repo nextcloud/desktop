@@ -780,7 +780,7 @@ class FakeErrorReply : public QNetworkReply
 public:
     FakeErrorReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
                    QObject *parent, int httpErrorCode, const QByteArray &body = QByteArray())
-    : QNetworkReply{parent}, _httpErrorCode(httpErrorCode), _body(body) {
+    : QNetworkReply{parent}, _body(body) {
         setRequest(request);
         setUrl(request.url());
         setOperation(op);
@@ -819,7 +819,6 @@ public:
         return _body.size();
     }
 
-    int _httpErrorCode;
     QByteArray _body;
 };
 

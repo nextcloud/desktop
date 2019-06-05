@@ -163,7 +163,6 @@ void AbstractNetworkJob::slotFinished()
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
 
-#if (QT_VERSION >= 0x050800)
     // Qt doesn't yet transparently resend HTTP2 requests, do so here
     const auto maxHttp2Resends = 3;
     QByteArray verb = requestVerb(*reply());
@@ -194,7 +193,6 @@ void AbstractNetworkJob::slotFinished()
             return;
         }
     }
-#endif
 
     if (_reply->error() != QNetworkReply::NoError) {
 
@@ -234,7 +232,6 @@ void AbstractNetworkJob::slotFinished()
 
         // ### some of the qWarnings here should be exported via displayErrors() so they
         // ### can be presented to the user if the job executor has a GUI
-        QByteArray verb = requestVerb(*reply());
         if (requestedUrl.scheme() == QLatin1String("https") && redirectUrl.scheme() == QLatin1String("http")) {
             qCWarning(lcNetworkJob) << this << "HTTPS->HTTP downgrade detected!";
         } else if (requestedUrl == redirectUrl || _redirectCount + 1 >= maxRedirects()) {

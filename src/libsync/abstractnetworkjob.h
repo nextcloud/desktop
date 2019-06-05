@@ -195,9 +195,7 @@ private:
     QString _path;
     QTimer _timer;
     int _redirectCount = 0;
-#if (QT_VERSION >= 0x050800)
     int _http2ResendCount = 0;
-#endif
 
     // Set by the xyzRequest() functions and needed to be able to redirect
     // requests, should it be required.

@@ -314,15 +314,13 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        if (_device->isOpen()) {
-            qint64 w = _device->write(buffer.constData(), r);
-            if (w != r) {
-                _errorString = _device->errorString();
-                _errorStatus = SyncFileItem::NormalError;
-                qCWarning(lcGetJob) << "Error while writing to file" << w << r << _errorString;
-                reply()->abort();
-                return;
-            }
+        qint64 w = _device->write(buffer.constData(), r);
+        if (w != r) {
+            _errorString = _device->errorString();
+            _errorStatus = SyncFileItem::NormalError;
+            qCWarning(lcGetJob) << "Error while writing to file" << w << r << _errorString;
+            reply()->abort();
+            return;
         }
     }
 
