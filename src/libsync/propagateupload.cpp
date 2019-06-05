@@ -341,7 +341,12 @@ bool UploadDevice::prepareAndOpen(const QString &fileName, qint64 start, qint64 
     }
 
     size = qBound(0ll, size, FileSystem::getSize(fileName) - start);
-    _data.resize(size);
+    try {
+        _data.resize(size);
+    } catch (const std::bad_alloc &) {
+        setErrorString(tr("Not enough memory to allocate file buffer of size %1").arg(size));
+        return false;
+    }
     auto read = file.read(_data.data(), size);
     if (read != size) {
         setErrorString(file.errorString());
