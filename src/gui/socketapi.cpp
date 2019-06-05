@@ -1233,6 +1233,51 @@ void SocketApi::command_ASYNC_TRIGGER_MENU_ACTION(const QSharedPointer<SocketApi
 
     job->reject("Action not found");
 }
+
+void SocketApi::command_ASYNC_ASSERT_ICON_IS_EQUAL(const QSharedPointer<SocketApiJob> &job)
+{
+    auto widget = findWidget(job->arguments()[QLatin1String("queryString")].toString());
+    if (!widget) {
+        QString message("Widget not found: 37: ");
+        message.append(job->arguments()["objectName"].toString());
+        job->reject(message);
+        return;
+    }
+
+    auto propertyName = job->arguments()[QLatin1String("propertyPath")].toString();
+
+    auto segments = propertyName.split('.');
+
+    QObject* currentObject = widget;
+    QIcon value;
+    for(int i = 0;i<segments.count(); i++) {
+        auto segment = segments.at(i);
+        auto var = currentObject->property(segment.toUtf8().constData());
+
+        if(var.canConvert<QIcon>()) {
+            var.convert(QMetaType::QIcon);
+            value = var.value<QIcon>();
+
+            DEBUG << "VALUE: " << value;
+            break;
+        }
+
+        auto tmpObject = var.value<QObject*>();
+        if(tmpObject) {
+            currentObject = tmpObject;
+        } else {
+            DEBUG << "HUH not found .. what do";
+        }
+    }
+
+    auto iconName = job->arguments()[QLatin1String("iconName")].toString();
+    if (value.name() ==  iconName) {
+        job->resolve();
+    } else {
+        job->reject("iconName " + iconName + " does not match: " + value.name());
+    }
+
+}
 #endif
 
 QString SocketApi::buildRegisterPathMessage(const QString &path)
