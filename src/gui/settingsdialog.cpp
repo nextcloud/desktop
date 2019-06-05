@@ -143,6 +143,11 @@ SettingsDialog::~SettingsDialog()
     delete _ui;
 }
 
+QWidget* SettingsDialog::currentPage()
+{
+    return _ui->stack->currentWidget();
+}
+
 // close event is not being called here
 void SettingsDialog::reject()
 {

@@ -51,6 +51,7 @@ class FolderStatusModel;
 class AccountSettings : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(AccountState* accountState MEMBER _accountState)
 
 public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
