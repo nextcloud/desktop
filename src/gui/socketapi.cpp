@@ -75,15 +75,65 @@
 
 namespace {
 #if GUI_TESTING
-QWidget *findWidget(const QString &objectName)
+
+QList<QObject*> allObjects(const QList<QWidget*> &widgets) {
+    QList<QObject*> objects;
+    std::copy(widgets.constBegin(), widgets.constEnd(), std::back_inserter(objects));
+
+    objects << qApp;
+
+    return objects;
+}
+
+QObject *findWidget(const QString &queryString, const QList<QWidget*> &widgets = QApplication::allWidgets())
 {
-    auto widgets = QApplication::allWidgets();
+    auto objects = allObjects(widgets);
 
-    auto foundWidget = std::find_if(widgets.constBegin(), widgets.constEnd(), [&](QWidget *widget) {
-        return widget->objectName() == objectName;
-    });
+    QList<QObject*>::const_iterator foundWidget;
 
-    if (foundWidget == widgets.constEnd()) {
+    if (queryString.contains('>')) {
+        DEBUG << "queryString contains >";
+
+        auto subQueries = queryString.split('>', QString::SkipEmptyParts);
+        Q_ASSERT(subQueries.count() == 2);
+
+        auto parentQueryString = subQueries[0].trimmed();
+        DEBUG << "Find parent: " << parentQueryString;
+        auto parent = findWidget(parentQueryString);
+
+        if(!parent) {
+            return nullptr;
+        }
+
+        auto childQueryString = subQueries[1].trimmed();
+        auto child = findWidget(childQueryString, parent->findChildren<QWidget*>());
+        DEBUG << "found child: " << !!child;
+        return child;
+
+    } else if(queryString.startsWith('#')) {
+        auto objectName = queryString.mid(1);
+        DEBUG << "find objectName: " << objectName;
+        foundWidget = std::find_if(objects.constBegin(), objects.constEnd(), [&](QObject *widget) {
+            return widget->objectName() == objectName;
+        });
+    } else {
+        QList<QObject*> matches;
+        std::copy_if(objects.constBegin(), objects.constEnd(), std::back_inserter(matches), [&](QObject* widget) {
+            return widget->inherits(queryString.toLatin1());
+        });
+
+        std::for_each(matches.constBegin(), matches.constEnd(), [](QObject* w) {
+            if(!w) return;
+            DEBUG << "WIDGET: " << w->objectName() << w->metaObject()->className();
+        });
+
+        if(matches.empty()) {
+            return nullptr;
+        }
+        return matches[0];
+    }
+
+    if (foundWidget == objects.constEnd()) {
         return nullptr;
     }
 
@@ -1063,7 +1113,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 void SocketApi::command_ASYNC_LIST_WIDGETS(const QSharedPointer<SocketApiJob> &job)
 {
     QString response;
-    for (auto &widget : QApplication::allWidgets()) {
+    for (auto &widget : allObjects(QApplication::allWidgets())) {
         auto objectName = widget->objectName();
         if (!objectName.isEmpty()) {
             response += objectName + ":" + widget->property("text").toString() + ", ";
@@ -1090,16 +1140,39 @@ void SocketApi::command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<SocketApi
 {
     auto widget = findWidget(job->arguments()[QLatin1String("objectName")].toString());
     if (!widget) {
-        job->reject(QLatin1String("widget not found"));
+        QString message("Widget not found: 2: ");
+        message.append(job->arguments()["objectName"].toString());
+        job->reject(message);
         return;
     }
 
     auto propertyName = job->arguments()[QLatin1String("property")].toString();
 
-    job->resolve(widget->property(propertyName.toUtf8().constData())
-                     .toString()
-                     .toUtf8()
-                     .constData());
+    auto segments = propertyName.split('.');
+
+    QObject* currentObject = widget;
+    QString value;
+    for(int i = 0;i<segments.count(); i++) {
+        auto segment = segments.at(i);
+        auto var = currentObject->property(segment.toUtf8().constData());
+
+        if(var.canConvert<QString>()) {
+            var.convert(QMetaType::QString);
+            value = var.value<QString>();
+
+            DEBUG << "VALUE: " << value;
+            break;
+        }
+
+        auto tmpObject = var.value<QObject*>();
+        if(tmpObject) {
+            currentObject = tmpObject;
+        } else {
+            DEBUG << "TODO: object not found, what should happen here now?";
+        }
+    }
+
+    job->resolve(value.toUtf8().constData());
 }
 
 void SocketApi::command_ASYNC_SET_WIDGET_PROPERTY(const QSharedPointer<SocketApiJob> &job)
