@@ -274,12 +274,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="236"/>
         <source>This account supports end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Bu hesap uçtan uca şifrelemeyi destekliyor</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme kullanılsın</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
