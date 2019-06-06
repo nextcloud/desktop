@@ -40,6 +40,8 @@ class Folder;
 class SocketListener;
 class SocketApiJob;
 
+Q_DECLARE_LOGGING_CATEGORY(lcSocketApi)
+
 /**
  * @brief The SocketApi class
  * @ingroup gui

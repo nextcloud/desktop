@@ -71,10 +71,11 @@
 // The first number should be changed if there is an incompatible change that breaks old clients.
 // The second number should be changed when there are new features.
 #define MIRALL_SOCKET_API_VERSION "1.1"
-#define DEBUG qDebug() << "SocketApi: "
 
 namespace {
 #if GUI_TESTING
+
+using namespace OCC;
 
 QList<QObject*> allObjects(const QList<QWidget*> &widgets) {
     QList<QObject*> objects;
@@ -92,13 +93,13 @@ QObject *findWidget(const QString &queryString, const QList<QWidget*> &widgets =
     QList<QObject*>::const_iterator foundWidget;
 
     if (queryString.contains('>')) {
-        DEBUG << "queryString contains >";
+        qCDebug(lcSocketApi) << "queryString contains >";
 
         auto subQueries = queryString.split('>', QString::SkipEmptyParts);
         Q_ASSERT(subQueries.count() == 2);
 
         auto parentQueryString = subQueries[0].trimmed();
-        DEBUG << "Find parent: " << parentQueryString;
+        qCDebug(lcSocketApi) << "Find parent: " << parentQueryString;
         auto parent = findWidget(parentQueryString);
 
         if(!parent) {
@@ -107,12 +108,12 @@ QObject *findWidget(const QString &queryString, const QList<QWidget*> &widgets =
 
         auto childQueryString = subQueries[1].trimmed();
         auto child = findWidget(childQueryString, parent->findChildren<QWidget*>());
-        DEBUG << "found child: " << !!child;
+        qCDebug(lcSocketApi) << "found child: " << !!child;
         return child;
 
     } else if(queryString.startsWith('#')) {
         auto objectName = queryString.mid(1);
-        DEBUG << "find objectName: " << objectName;
+        qCDebug(lcSocketApi) << "find objectName: " << objectName;
         foundWidget = std::find_if(objects.constBegin(), objects.constEnd(), [&](QObject *widget) {
             return widget->objectName() == objectName;
         });
@@ -124,7 +125,7 @@ QObject *findWidget(const QString &queryString, const QList<QWidget*> &widgets =
 
         std::for_each(matches.constBegin(), matches.constEnd(), [](QObject* w) {
             if(!w) return;
-            DEBUG << "WIDGET: " << w->objectName() << w->metaObject()->className();
+            qCDebug(lcSocketApi) << "WIDGET: " << w->objectName() << w->metaObject()->className();
         });
 
         if(matches.empty()) {
@@ -1138,10 +1139,10 @@ void SocketApi::command_ASYNC_INVOKE_WIDGET_METHOD(const QSharedPointer<SocketAp
 
 void SocketApi::command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<SocketApiJob> &job)
 {
-    auto widget = findWidget(job->arguments()[QLatin1String("objectName")].toString());
+    QString widgetName = job->arguments()[QLatin1String("objectName")].toString();
+    auto widget = findWidget(widgetName);
     if (!widget) {
-        QString message("Widget not found: 2: ");
-        message.append(job->arguments()["objectName"].toString());
+        QString message = QString(QLatin1String("Widget not found: 2: %1")).arg(widgetName);
         job->reject(message);
         return;
     }
@@ -1159,8 +1160,6 @@ void SocketApi::command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<SocketApi
         if(var.canConvert<QString>()) {
             var.convert(QMetaType::QString);
             value = var.value<QString>();
-
-            DEBUG << "VALUE: " << value;
             break;
         }
 
@@ -1168,7 +1167,9 @@ void SocketApi::command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<SocketApi
         if(tmpObject) {
             currentObject = tmpObject;
         } else {
-            DEBUG << "TODO: object not found, what should happen here now?";
+            QString message = QString(QLatin1String("Widget not found: 3: %1")).arg(widgetName);
+            job->reject(message);
+            return;
         }
     }
 
@@ -1178,9 +1179,11 @@ void SocketApi::command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<SocketApi
 void SocketApi::command_ASYNC_SET_WIDGET_PROPERTY(const QSharedPointer<SocketApiJob> &job)
 {
     auto &arguments = job->arguments();
-    auto widget = findWidget(arguments["objectName"].toString());
+    QString widgetName = arguments["objectName"].toString();
+    auto widget = findWidget(widgetName);
     if (!widget) {
-        job->reject(QLatin1String("widget not found"));
+        QString message = QString(QLatin1String("Widget not found: 4: %1")).arg(widgetName);
+        job->reject(message);
         return;
     }
     widget->setProperty(arguments["property"].toString().toUtf8().constData(),
@@ -1191,9 +1194,11 @@ void SocketApi::command_ASYNC_SET_WIDGET_PROPERTY(const QSharedPointer<SocketApi
 void SocketApi::command_ASYNC_WAIT_FOR_WIDGET_SIGNAL(const QSharedPointer<SocketApiJob> &job)
 {
     auto &arguments = job->arguments();
+    QString widgetName = arguments["objectName"].toString();
     auto widget = findWidget(arguments["objectName"].toString());
     if (!widget) {
-        job->reject(QLatin1String("widget not found"));
+        QString message = QString(QLatin1String("Widget not found: 5: %1")).arg(widgetName);
+        job->reject(message);
         return;
     }
 
@@ -1213,7 +1218,8 @@ void SocketApi::command_ASYNC_TRIGGER_MENU_ACTION(const QSharedPointer<SocketApi
     auto objectName = arguments["objectName"].toString();
     auto widget = findWidget(objectName);
     if (!widget) {
-        job->reject(QLatin1String("widget not found: ") + objectName);
+        QString message = QString(QLatin1String("Object not found: 1: %1")).arg(objectName);
+        job->reject(message);
         return;
     }
 
@@ -1231,15 +1237,15 @@ void SocketApi::command_ASYNC_TRIGGER_MENU_ACTION(const QSharedPointer<SocketApi
         }
     }
 
-    job->reject("Action not found");
+    QString message = QString(QLatin1String("Action not found: 1: %1")).arg(arguments["actionName"].toString());
+    job->reject(message);
 }
 
 void SocketApi::command_ASYNC_ASSERT_ICON_IS_EQUAL(const QSharedPointer<SocketApiJob> &job)
 {
     auto widget = findWidget(job->arguments()[QLatin1String("queryString")].toString());
     if (!widget) {
-        QString message("Widget not found: 37: ");
-        message.append(job->arguments()["objectName"].toString());
+        QString message = QString(QLatin1String("Object not found: 6: %1")).arg(job->arguments()["queryString"].toString());
         job->reject(message);
         return;
     }
@@ -1257,8 +1263,6 @@ void SocketApi::command_ASYNC_ASSERT_ICON_IS_EQUAL(const QSharedPointer<SocketAp
         if(var.canConvert<QIcon>()) {
             var.convert(QMetaType::QIcon);
             value = var.value<QIcon>();
-
-            DEBUG << "VALUE: " << value;
             break;
         }
 
@@ -1266,7 +1270,7 @@ void SocketApi::command_ASYNC_ASSERT_ICON_IS_EQUAL(const QSharedPointer<SocketAp
         if(tmpObject) {
             currentObject = tmpObject;
         } else {
-            DEBUG << "HUH not found .. what do";
+            job->reject(QString(QLatin1String("Icon not found: %1")).arg(propertyName));
         }
     }
 
