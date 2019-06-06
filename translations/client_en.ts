@@ -2524,27 +2524,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1386"/>
+        <location filename="../src/libsync/discovery.cpp" line="1384"/>
         <source>Error while opening directory %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1388"/>
+        <location filename="../src/libsync/discovery.cpp" line="1386"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1396"/>
+        <location filename="../src/libsync/discovery.cpp" line="1394"/>
         <source>Directory not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1420"/>
+        <location filename="../src/libsync/discovery.cpp" line="1418"/>
         <source>Filename encoding is not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1438"/>
+        <location filename="../src/libsync/discovery.cpp" line="1436"/>
         <source>Error while reading directory %1</source>
         <translation type="unfinished"></translation>
     </message>
