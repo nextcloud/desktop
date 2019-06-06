@@ -316,10 +316,10 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
     const QString fileName = _fileToUpload._path;
-
-    if (!device->prepareAndOpen(fileName, _sent, _currentChunkSize)) {
+    auto device = std::make_unique<UploadDevice>(
+            fileName, _currentChunk, _currentChunkSize, &propagator()->_bandwidthManager);
+    if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync

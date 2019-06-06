@@ -90,7 +90,6 @@ void PropagateUploadFileV1::startNextChunk()
 
     QString path = _fileToUpload._file;
 
-    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
     qint64 chunkStart = 0;
     qint64 currentChunkSize = fileSize;
     bool isFinalChunk = false;
@@ -124,8 +123,9 @@ void PropagateUploadFileV1::startNextChunk()
     }
 
     const QString fileName = _fileToUpload._path;
-    qDebug() << "Trying to upload" << fileName;
-    if (!device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
+    auto device = std::make_unique<UploadDevice>(
+            fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager);
+    if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
