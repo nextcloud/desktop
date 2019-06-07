@@ -194,6 +194,14 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     // Connect E2E stuff
     connect(this, &AccountSettings::requesetMnemonic, _accountState->account()->e2e(), &ClientSideEncryption::slotRequestMnemonic);
     connect(_accountState->account()->e2e(), &ClientSideEncryption::showMnemonic, this, &AccountSettings::slotShowMnemonic);
+
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::mnemonicGenerated, this, &AccountSettings::slotNewMnemonicGenerated);
+    if (_accountState->account()->e2e()->newMnemonicGenerated())
+    {
+        slotNewMnemonicGenerated();
+    } else {
+        ui->encryptionMessage->hide();
+    }
 }
 
 
@@ -220,6 +228,19 @@ void AccountSettings::createAccountToolbox()
     ui->_accountToolbox->setPopupMode(QToolButton::InstantPopup);
 
     slotAccountAdded(_accountState);
+}
+
+
+void AccountSettings::slotNewMnemonicGenerated()
+{
+    ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
+
+    QAction *mnemonic = new QAction(tr("Enable encryption"), this);
+    connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
+    connect(mnemonic, &QAction::triggered, ui->encryptionMessage, &KMessageWidget::hide);
+
+    ui->encryptionMessage->addAction(mnemonic);
+    ui->encryptionMessage->show();
 }
 
 void AccountSettings::slotMenuBeforeShow() {
