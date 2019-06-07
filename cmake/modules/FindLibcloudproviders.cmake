@@ -23,7 +23,7 @@ find_library(LIBCLOUDPROVIDERS_LIBRARY
 
 # Using version <0.3.0 would lead to crashes during runtime when accounts are unexported.
 get_filename_component(LIBCLOUDPROVIDERS_LIBRARY_REALPATH ${LIBCLOUDPROVIDERS_LIBRARY} REALPATH)
-if(${LIBCLOUDPROVIDERS_LIBRARY_REALPATH} MATCHES "\.([0-9]*)\.([0-9]*)\.([0-9]*)$")
+if(${LIBCLOUDPROVIDERS_LIBRARY_REALPATH} MATCHES "\\.([0-9]*)\\.([0-9]*)\\.([0-9]*)$")
     if ((${CMAKE_MATCH_1} EQUAL 0) AND (${CMAKE_MATCH_2} LESS 3))
         message("libcloudproviders version is older than 0.3.0, not enabling it")
         set(LIBCLOUDPROVIDERS_LIBRARY "")
