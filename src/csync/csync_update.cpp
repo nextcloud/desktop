@@ -197,11 +197,15 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       auto virtualFilePath = fs->path;
       virtualFilePath.append(ctx->virtual_file_suffix);
       ctx->statedb->getFileRecord(virtualFilePath, &base);
-      if (base.isValid() && base._type == ItemTypeVirtualFile) {
-          fs->type = ItemTypeVirtualFile;
-          fs->path = virtualFilePath;
-      } else {
-          base = OCC::SyncJournalFileRecord();
+      if (base.isValid()) {
+          if (base._type == ItemTypeVirtualFile) {
+              fs->type = ItemTypeVirtualFile;
+              fs->path = virtualFilePath;
+          } else if (base._type == ItemTypeVirtualFileDownload) {
+              // keep everything: fs looks like a remote file
+          } else {
+              base = OCC::SyncJournalFileRecord();
+          }
       }
   }
 
