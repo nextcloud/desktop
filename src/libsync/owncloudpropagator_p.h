@@ -93,7 +93,7 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
         if (anotherSyncNeeded) {
             *anotherSyncNeeded = true;
         }
-        return SyncFileItem::SoftError;
+        return SyncFileItem::FileLocked;
     }
 
     return SyncFileItem::NormalError;
