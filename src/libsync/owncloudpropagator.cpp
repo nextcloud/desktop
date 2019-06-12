@@ -269,6 +269,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::FileIgnored:
     case SyncFileItem::NoStatus:
     case SyncFileItem::BlacklistedError:
+    case SyncFileItem::FileLocked:
         // nothing
         break;
     }

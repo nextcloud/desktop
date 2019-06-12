@@ -105,7 +105,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                } else if(a._status == SyncFileItem::SoftError
                          || a._status == SyncFileItem::FileIgnored
                          || a._status == SyncFileItem::Conflict
-                         || a._status == SyncFileItem::Restoration){
+                         || a._status == SyncFileItem::Restoration
+                         || a._status == SyncFileItem::FileLocked){
                    return QIcon(QLatin1String(":/client/resources/state-warning.svg"));
                }
                return QIcon(QLatin1String(":/client/resources/state-sync.svg"));

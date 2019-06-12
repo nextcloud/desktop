@@ -136,7 +136,7 @@ WebViewPageUrlSchemeHandler::WebViewPageUrlSchemeHandler(QObject *parent)
 void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request) {
     QUrl url = request->requestUrl();
 
-    QString path = url.path().mid(1);
+    QString path = url.path(0).mid(1); // get undecoded path
     QStringList parts = path.split("&");
 
     QString server;
@@ -153,11 +153,13 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
         }
     }
 
-    user = QUrl::fromPercentEncoding(user.toUtf8());
-    password = QUrl::fromPercentEncoding(password.toUtf8());
+    qCDebug(lcWizardWebiew()) << "Got raw user from request path: " << user;
 
     user = user.replace(QChar('+'), QChar(' '));
     password = password.replace(QChar('+'), QChar(' '));
+
+    user = QUrl::fromPercentEncoding(user.toUtf8());
+    password = QUrl::fromPercentEncoding(password.toUtf8());
 
     if (!server.startsWith("http://") && !server.startsWith("https://")) {
         server = "https://" + server;
@@ -197,7 +199,7 @@ bool WebEnginePage::certificateError(const QWebEngineCertificateError &certifica
      */
     QMessageBox messageBox;
     messageBox.setText(tr("Invalid certificate detected"));
-    messageBox.setInformativeText(tr("The host \"%1\" provided an invalid certitiface. Continue?").arg(certificateError.url().host()));
+    messageBox.setInformativeText(tr("The host \"%1\" provided an invalid certificate. Continue?").arg(certificateError.url().host()));
     messageBox.setIcon(QMessageBox::Warning);
     messageBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
     messageBox.setDefaultButton(QMessageBox::No);

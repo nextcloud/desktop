@@ -1,9 +1,14 @@
-<!---
-Please try to only report a bug if it happens with the latest version
-The latest version can be seen by checking https://download.nextcloud.com/desktop/
-For support try our forums: https://help.nextcloud.com
---->
-
+<!--
+Dear user,
+Please understand that at the moment, we are very busy with customer issues 
+and some high priority development work. A lot of issues are getting reported. 
+Right now we can't keep up and timely respond to all of them. 
+We're sorry for that and are expanding our team, if you're looking for a C++ 
+job or know somebody who is, please point them to https://nextcloud.com/jobs
+Don't forget that Github is not a support system or a place to ask for 
+features but only a place to report verified bugs - see nextcloud.com/support 
+for support options!
+-->
 
 ### Expected behaviour
 Tell us what should happen
@@ -18,6 +23,11 @@ Tell us what happens instead
 
 ### Client configuration
 Client version:
+<!---
+Please try to only report a bug if it happens with the latest version
+The latest version can be seen by checking https://download.nextcloud.com/desktop/
+For support try our forums: https://help.nextcloud.com
+--->
 
 Operating system:
 
@@ -34,15 +44,6 @@ Installation path of client:
 <!---
 Optional section. It depends on the issue.
 --->
-
-Operating system:
-
-Web server:
-
-Database:
-
-PHP version:
-
 Nextcloud version:
 
 Storage backend (external storage):
@@ -51,8 +52,6 @@ Storage backend (external storage):
 
 Please use Gist (https://gist.github.com/) or a similar code paster for longer
 logs.
-
-```Template for output < 10 lines```
 
 1. Client logfile: Output of `nextcloud --logwindow` or `nextcloud --logfile log.txt`
 (On Windows using `cmd.exe`, you might need to first `cd` into the Nextcloud directory)

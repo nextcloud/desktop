@@ -342,9 +342,6 @@ AccountPtr AccountManager::createAccount()
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
 
-    connect(acc.data()->e2e(), &ClientSideEncryption::mnemonicGenerated,
-             &AccountManager::displayMnemonic);
-
     return acc;
 }
 
@@ -364,6 +361,7 @@ void AccountManager::displayMnemonic(const QString& mnemonic)
     widget->exec();
     widget->resize(widget->sizeHint());
 }
+
 void AccountManager::shutdown()
 {
     auto accountsCopy = _accounts;
