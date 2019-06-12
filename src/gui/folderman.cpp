@@ -93,9 +93,14 @@ FolderMan::~FolderMan()
     _instance = 0;
 }
 
-OCC::Folder::Map FolderMan::map()
+OCC::Folder::Map FolderMan::map() const
 {
     return _folderMap;
+}
+
+QList<Folder *> FolderMan::list() const
+{
+    return _folderMap.values();
 }
 
 void FolderMan::unloadFolder(Folder *f)

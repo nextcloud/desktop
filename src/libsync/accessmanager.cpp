@@ -22,6 +22,7 @@
 #include <QNetworkCookieJar>
 #include <QNetworkConfiguration>
 #include <QUuid>
+#include <QLibraryInfo>
 
 #include "cookiejar.h"
 #include "accessmanager.h"
@@ -96,11 +97,16 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 4)
     // only enable HTTP2 with Qt 5.9.4 because old Qt have too many bugs (e.g. QTBUG-64359 is fixed in >= Qt 5.9.4)
     if (newRequest.url().scheme() == "https") { // Not for "http": QTBUG-61397
-        // Don't enable by default until QTBUG-73947 is fixed
+        // Qt 5.12.4 fixed QTBUG-73947 - http2 should be usable after that
+        bool http2Allowed = QLibraryInfo::version() >= QVersionNumber(5, 12, 4);
+
         static auto http2EnabledEnv = qgetenv("OWNCLOUD_HTTP2_ENABLED");
-        if (http2EnabledEnv == "1") {
-            newRequest.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
-        }
+        if (http2EnabledEnv == "1")
+            http2Allowed = true;
+        if (http2EnabledEnv == "0")
+            http2Allowed = false;
+
+        newRequest.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, http2Allowed);
     }
 #endif
 

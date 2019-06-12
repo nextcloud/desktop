@@ -34,7 +34,7 @@ StrCpy $UNINSTALL_MESSAGEBOX "มันจะไม่ปรากฏ ${APPLICAT
 StrCpy $UNINSTALL_ABORT "ถอนการติดตั้งถูกยกเลิกโดยผู้ใช้"
 StrCpy $INIT_NO_QUICK_LAUNCH "ทางลัดเร่งด่วน (N/A)"
 StrCpy $INIT_NO_DESKTOP "ทางลัดเดสก์ทอป (จะเขียนทับหากมีอยู่แล้ว)"
-StrCpy $UAC_ERROR_ELEVATE "ไม่สามารถที่จะยกระดับข้อผิดพลาด:"
+StrCpy $UAC_ERROR_ELEVATE "ไม่สามารถยกระดับข้อผิดพลาด:"
 StrCpy $UAC_INSTALLER_REQUIRE_ADMIN "การติดตั้งนี้จะต้องมีการเข้าถึงผู้ดูแลระบบ กรุณาลองอีกครั้ง"
 StrCpy $INIT_INSTALLER_RUNNING "กำลังทำการติดตั้ง"
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "การถอนการติดตั้งนี้จะต้องมีการเข้าถึงส่วนผู้ดูแลระบบ กรุณาลองอีกครั้ง"

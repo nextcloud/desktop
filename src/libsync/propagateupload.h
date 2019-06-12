@@ -36,11 +36,11 @@ class UploadDevice : public QIODevice
 {
     Q_OBJECT
 public:
-    UploadDevice(BandwidthManager *bwm);
+    UploadDevice(const QString &fileName, qint64 start, qint64 size, BandwidthManager *bwm);
     ~UploadDevice();
 
-    /** Reads the data from the file and opens the device */
-    bool prepareAndOpen(const QString &fileName, qint64 start, qint64 size);
+    bool open(QIODevice::OpenMode mode) override;
+    void close() override;
 
     qint64 writeData(const char *, qint64) Q_DECL_OVERRIDE;
     qint64 readData(char *data, qint64 maxlen) Q_DECL_OVERRIDE;
@@ -59,10 +59,15 @@ public:
 signals:
 
 private:
-    // The file data
-    QByteArray _data;
-    // Position in the data
-    qint64 _read;
+    /// The local file to read data from
+    QFile _file;
+
+    /// Start of the file data to use
+    qint64 _start = 0;
+    /// Amount of file data after _start to use
+    qint64 _size = 0;
+    /// Position between _start and _start+_size
+    qint64 _read = 0;
 
     // Bandwidth manager related
     QPointer<BandwidthManager> _bandwidthManager;

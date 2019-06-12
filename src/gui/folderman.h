@@ -87,7 +87,8 @@ public:
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
-    OCC::Folder::Map map();
+    OCC::Folder::Map map() const;
+    QList<Folder *> list() const;
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
       */

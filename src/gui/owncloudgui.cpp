@@ -45,6 +45,10 @@
 #include <QX11Info>
 #endif
 
+#ifdef WITH_LIBCLOUDPROVIDERS
+#include "libcloudproviders/libcloudproviders.h"
+#endif
+
 namespace OCC {
 
 const char propertyAccountC[] = "oc_account";
@@ -74,6 +78,12 @@ ownCloudGui::ownCloudGui(Application *parent)
     setupContextMenu();
 
     _tray->show();
+
+#ifdef WITH_LIBCLOUDPROVIDERS
+    auto exporter = new LibCloudProviders(this);
+    exporter->start();
+    connect(exporter, &LibCloudProviders::showSettings, this, &ownCloudGui::slotShowSettings);
+#endif
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,

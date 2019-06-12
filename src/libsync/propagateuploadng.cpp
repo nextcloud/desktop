@@ -542,10 +542,11 @@ void PropagateUploadFileNG::startNextChunk()
     _currentChunkOffset = _rangesToUpload.first().start;
     _currentChunkSize = qMin(propagator()->_chunkSize, _rangesToUpload.first().size);
 
-    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(&propagator()->_bandwidthManager));
     const QString fileName = propagator()->getFilePath(_item->_file);
 
-    if (!device->prepareAndOpen(fileName, _currentChunkOffset, _currentChunkSize)) {
+    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
+            fileName, _currentChunkOffset, _currentChunkSize, &propagator()->_bandwidthManager));
+    if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
@@ -583,9 +584,9 @@ void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generated
         << "Finished generation of:" << generatedFileName
         << "size:" << FileSystem::getSize(generatedFileName);
 
-    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(&propagator()->_bandwidthManager));
-
-    if (!device->prepareAndOpen(generatedFileName, 0, FileSystem::getSize(generatedFileName))) {
+    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
+            generatedFileName, 0, FileSystem::getSize(generatedFileName), &propagator()->_bandwidthManager));
+    if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUpload) << "Could not prepare generated file: " << generatedFileName << device->errorString();
         abortWithError(SyncFileItem::SoftError, device->errorString());
         return;

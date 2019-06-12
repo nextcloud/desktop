@@ -32,7 +32,6 @@ namespace OCC {
 static const char updateAvailableC[] = "Updater/updateAvailable";
 static const char updateTargetVersionC[] = "Updater/updateTargetVersion";
 static const char seenVersionC[] = "Updater/seenVersion";
-static const char autoUpdateFailedVersionC[] = "Updater/autoUpdateFailedVersion";
 static const char autoUpdateAttemptedC[] = "Updater/autoUpdateAttempted";
 
 
@@ -275,7 +274,6 @@ void OCUpdater::slotTimedOut()
 
 NSISUpdater::NSISUpdater(const QUrl &url)
     : OCUpdater(url)
-    , _showFallbackMessage(false)
 {
 }
 
@@ -285,6 +283,18 @@ void NSISUpdater::slotWriteFile()
     if (_file->isOpen()) {
         _file->write(reply->readAll());
     }
+}
+
+void NSISUpdater::wipeUpdateData()
+{
+    ConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+    QString updateFileName = settings.value(updateAvailableC).toString();
+    if (!updateFileName.isEmpty())
+        QFile::remove(updateFileName);
+    settings.remove(updateAvailableC);
+    settings.remove(updateTargetVersionC);
+    settings.remove(autoUpdateAttemptedC);
 }
 
 void NSISUpdater::slotDownloadFinished()
@@ -329,12 +339,9 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
         setDownloadState(UpToDate);
     } else {
         QString url = info.downloadUrl();
-        qint64 autoUpdateFailedVersion =
-            Helper::stringVersionToInt(settings.value(autoUpdateFailedVersionC).toString());
-        if (url.isEmpty() || _showFallbackMessage || infoVersion == autoUpdateFailedVersion) {
-            showDialog(info);
-        }
-        if (!url.isEmpty()) {
+        if (url.isEmpty()) {
+            showNoUrlDialog(info);
+        } else {
             _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/')+1);
             if (QFile(_targetFile).exists()) {
                 setDownloadState(DownloadComplete);
@@ -351,14 +358,15 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     }
 }
 
-void NSISUpdater::showDialog(const UpdateInfo &info)
+void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
 {
     // if the version tag is set, there is a newer version.
     QDialog *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation, 0, 0);
-    int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, 0);
+    QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
+    int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
 
     msgBox->setWindowIcon(infoIcon);
 
@@ -385,7 +393,6 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
     hlayout->addWidget(lbl);
 
     QDialogButtonBox *bb = new QDialogButtonBox;
-    bb->setWindowFlags(bb->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     QPushButton *skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
     QPushButton *reject = bb->addButton(tr("Skip this time"), QDialogButtonBox::AcceptRole);
     QPushButton *getupdate = bb->addButton(tr("Get update"), QDialogButtonBox::AcceptRole);
@@ -395,14 +402,78 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
     connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
 
     connect(skip, &QAbstractButton::clicked, this, &NSISUpdater::slotSetSeenVersion);
-    connect(getupdate, SIGNAL(clicked()), SLOT(slotOpenUpdateUrl()));
+    connect(getupdate, &QAbstractButton::clicked, this, &NSISUpdater::slotOpenUpdateUrl);
 
     layout->addWidget(bb);
 
     msgBox->open();
 }
 
-NSISUpdater::UpdateState NSISUpdater::updateStateOnStart()
+void NSISUpdater::showUpdateErrorDialog()
+{
+    QDialog *msgBox = new QDialog;
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+    QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
+    int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
+
+    msgBox->setWindowIcon(infoIcon);
+
+    QVBoxLayout *layout = new QVBoxLayout(msgBox);
+    QHBoxLayout *hlayout = new QHBoxLayout;
+    layout->addLayout(hlayout);
+
+    msgBox->setWindowTitle(tr("Update Failed"));
+
+    QLabel *ico = new QLabel;
+    ico->setFixedSize(iconSize, iconSize);
+    ico->setPixmap(infoIcon.pixmap(iconSize));
+    QLabel *lbl = new QLabel;
+    QString txt = tr("<p>A new version of the %1 Client is available but the updating process failed.</p>"
+                     "<p><b>%2</b> has been downloaded. The installed version is %3.</p>")
+                      .arg(Utility::escape(Theme::instance()->appNameGUI()),
+                          Utility::escape(updateInfo().versionString()), Utility::escape(clientVersion()));
+
+    lbl->setText(txt);
+    lbl->setTextFormat(Qt::RichText);
+    lbl->setWordWrap(true);
+
+    hlayout->addWidget(ico);
+    hlayout->addWidget(lbl);
+
+    QDialogButtonBox *bb = new QDialogButtonBox;
+    QPushButton *skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
+    QPushButton *askagain = bb->addButton(tr("Ask again later"), QDialogButtonBox::ResetRole);
+    QPushButton *retry = bb->addButton(tr("Restart and update"), QDialogButtonBox::AcceptRole);
+    QPushButton *getupdate = bb->addButton(tr("Update manually"), QDialogButtonBox::AcceptRole);
+
+    connect(skip, &QAbstractButton::clicked, msgBox, &QDialog::reject);
+    connect(askagain, &QAbstractButton::clicked, msgBox, &QDialog::reject);
+    connect(retry, &QAbstractButton::clicked, msgBox, &QDialog::accept);
+    connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
+
+    connect(skip, &QAbstractButton::clicked, this, [this]() {
+        wipeUpdateData();
+        slotSetSeenVersion();
+    });
+    // askagain: do nothing
+    connect(retry, &QAbstractButton::clicked, this, [this]() {
+        slotStartInstaller();
+        qApp->quit();
+    });
+    connect(getupdate, &QAbstractButton::clicked, this, [this]() {
+        wipeUpdateData();
+        slotSetSeenVersion();
+        slotOpenUpdateUrl();
+    });
+
+    layout->addWidget(bb);
+
+    msgBox->open();
+}
+
+bool NSISUpdater::handleStartup()
 {
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
@@ -411,44 +482,20 @@ NSISUpdater::UpdateState NSISUpdater::updateStateOnStart()
     if (!updateFileName.isEmpty() && QFile(updateFileName).exists()) {
         // did it try to execute the update?
         if (settings.value(autoUpdateAttemptedC, false).toBool()) {
-            // clean up
-            settings.remove(autoUpdateAttemptedC);
-            settings.remove(updateAvailableC);
-            QFile::remove(updateFileName);
             if (updateSucceeded()) {
-                // success: clean up even more
-                settings.remove(updateTargetVersionC);
-                settings.remove(autoUpdateFailedVersionC);
-                return NoUpdate;
+                // success: clean up
+                wipeUpdateData();
+                return false;
             } else {
-                // auto update failed. Set autoUpdateFailedVersion as a hint
-                // for visual fallback notification
-                QString targetVersion = settings.value(updateTargetVersionC).toString();
-                settings.setValue(autoUpdateFailedVersionC, targetVersion);
-                settings.remove(updateTargetVersionC);
-                return UpdateFailed;
+                // auto update failed. Ask user what to do
+                showUpdateErrorDialog();
+                return false;
             }
         } else {
-            if (!settings.contains(autoUpdateFailedVersionC)) {
-                return UpdateAvailable;
-            }
+            return performUpdate();
         }
     }
-    return NoUpdate;
-}
-
-bool NSISUpdater::handleStartup()
-{
-    switch (updateStateOnStart()) {
-    case NSISUpdater::UpdateAvailable:
-        return performUpdate();
-    case NSISUpdater::UpdateFailed:
-        _showFallbackMessage = true;
-        return false;
-    case NSISUpdater::NoUpdate:
-    default:
-        return false;
-    }
+    return false;
 }
 
 void NSISUpdater::slotSetSeenVersion()

@@ -316,8 +316,11 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     doStartUpload();
 }
 
-UploadDevice::UploadDevice(BandwidthManager *bwm)
-    : _read(0)
+UploadDevice::UploadDevice(const QString &fileName, qint64 start, qint64 size, BandwidthManager *bwm)
+    : _file(fileName)
+    , _start(start)
+    , _size(size)
+    , _read(0)
     , _bandwidthManager(bwm)
     , _bandwidthQuota(0)
     , _readWithProgress(0)
@@ -335,29 +338,28 @@ UploadDevice::~UploadDevice()
     }
 }
 
-bool UploadDevice::prepareAndOpen(const QString &fileName, qint64 start, qint64 size)
+bool UploadDevice::open(QIODevice::OpenMode mode)
 {
-    _data.clear();
-    _read = 0;
+    if (mode & QIODevice::WriteOnly)
+        return false;
 
-    QFile file(fileName);
     QString openError;
-    if (!FileSystem::openAndSeekFileSharedRead(&file, &openError, start)) {
+    if (!FileSystem::openAndSeekFileSharedRead(&_file, &openError, _start)) {
         setErrorString(openError);
         return false;
     }
 
-    size = qBound(0ll, size, FileSystem::getSize(fileName) - start);
-    _data.resize(size);
-    auto read = file.read(_data.data(), size);
-    if (read != size) {
-        setErrorString(file.errorString());
-        return false;
-    }
+    _size = qBound(0ll, _size, FileSystem::getSize(_file.fileName()) - _start);
+    _read = 0;
 
-    return QIODevice::open(QIODevice::ReadOnly);
+    return QIODevice::open(mode);
 }
 
+void UploadDevice::close()
+{
+    _file.close();
+    QIODevice::close();
+}
 
 qint64 UploadDevice::writeData(const char *, qint64)
 {
@@ -367,15 +369,15 @@ qint64 UploadDevice::writeData(const char *, qint64)
 
 qint64 UploadDevice::readData(char *data, qint64 maxlen)
 {
-    if (_data.size() - _read <= 0) {
+    if (_size - _read <= 0) {
         // at end
         if (_bandwidthManager) {
             _bandwidthManager->unregisterUploadDevice(this);
         }
         return -1;
     }
-    maxlen = qMin(maxlen, _data.size() - _read);
-    if (maxlen == 0) {
+    maxlen = qMin(maxlen, _size - _read);
+    if (maxlen <= 0) {
         return 0;
     }
     if (isChoked()) {
@@ -388,9 +390,14 @@ qint64 UploadDevice::readData(char *data, qint64 maxlen)
         }
         _bandwidthQuota -= maxlen;
     }
-    std::memcpy(data, _data.data() + _read, maxlen);
-    _read += maxlen;
-    return maxlen;
+
+    auto c = _file.read(data, maxlen);
+    if (c < 0) {
+        setErrorString(_file.errorString());
+        return -1;
+    }
+    _read += c;
+    return c;
 }
 
 void UploadDevice::slotJobUploadProgress(qint64 sent, qint64 t)
@@ -403,17 +410,17 @@ void UploadDevice::slotJobUploadProgress(qint64 sent, qint64 t)
 
 bool UploadDevice::atEnd() const
 {
-    return _read >= _data.size();
+    return _read >= _size;
 }
 
 qint64 UploadDevice::size() const
 {
-    return _data.size();
+    return _size;
 }
 
 qint64 UploadDevice::bytesAvailable() const
 {
-    return _data.size() - _read + QIODevice::bytesAvailable();
+    return _size - _read + QIODevice::bytesAvailable();
 }
 
 // random access, we can seek
@@ -427,10 +434,11 @@ bool UploadDevice::seek(qint64 pos)
     if (!QIODevice::seek(pos)) {
         return false;
     }
-    if (pos < 0 || pos > _data.size()) {
+    if (pos < 0 || pos > _size) {
         return false;
     }
     _read = pos;
+    _file.seek(_start + pos);
     return true;
 }
 

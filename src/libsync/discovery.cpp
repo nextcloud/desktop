@@ -1351,20 +1351,18 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 }
             };
 
-            if (results.error().code == 403) {
+            auto code = results.error().code;
+            qCWarning(lcDisco) << "Server error in directory" << _currentFolder._server << code;
+            if (code == 403 || code == 404 || code == 500 || code == 503) {
                 // 403 Forbidden can be sent by the server if the file firewall is active.
                 // A file or directory should be ignored and sync must continue. See #3490
-                qCWarning(lcDisco, "Directory access Forbidden (File Firewall?)");
-                ignoreOrFatal();
-            } else if (results.error().code == 503) {
                 // The server usually replies with the custom "503 Storage not available"
                 // if some path is temporarily unavailable. But in some cases a standard 503
                 // is returned too. Thus we can't distinguish the two and will treat any
                 // 503 as request to ignore the folder. See #3113 #2884.
-                qCWarning(lcDisco(), "Storage was not available!");
+                // Similarly, the server might also return 404 or 500 in case of bugs. #7199
                 ignoreOrFatal();
             } else {
-                qCWarning(lcDisco) << "Server error in directory" << _currentFolder._server << results.error().message;
                 fatalError();
             }
         }
