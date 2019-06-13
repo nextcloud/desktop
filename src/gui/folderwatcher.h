@@ -72,6 +72,14 @@ public:
      */
     bool isReliable() const;
 
+    /**
+     * Triggers a change in the path and verifies a notification arrives.
+     *
+     * If no notification is seen, the folderwatcher marks itself as unreliable.
+     * The path must be ignored by the watcher.
+     */
+    void startNotificatonTest(const QString &path);
+
     /// For testing linux behavior only
     int testLinuxWatchCount() const;
 
@@ -111,7 +119,11 @@ private:
     Folder *_folder;
     bool _isReliable = true;
 
+
     void appendSubPaths(QDir dir, QStringList& subPaths);
+
+    /** Path of the expected test notification */
+    QString _testNotificationPath;
 
     friend class FolderWatcherPrivate;
 };

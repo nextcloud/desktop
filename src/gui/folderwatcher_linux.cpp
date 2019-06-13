@@ -179,9 +179,10 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         if (event->len == 0 || event->wd <= -1)
             continue;
         QByteArray fileName(event->name);
+        // Filter out journal changes - redundant with filtering in
+        // FolderWatcher::pathIsIgnored.
         if (fileName.startsWith("._sync_")
             || fileName.startsWith(".csync_journal.db")
-            || fileName.startsWith(".owncloudsync.log")
             || fileName.startsWith(".sync_")) {
             continue;
         }
