@@ -33,6 +33,7 @@
 #endif
 
 #include "folder.h"
+#include "filesystem.h"
 
 namespace OCC {
 
@@ -86,6 +87,26 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
     }
 }
 
+void FolderWatcher::startNotificatonTest(const QString &path)
+{
+    Q_ASSERT(_testNotificationPath.isEmpty());
+    _testNotificationPath = path;
+
+    if (QFile::exists(path)) {
+        auto mtime = FileSystem::getModTime(path);
+        FileSystem::setModTime(path, mtime + 1);
+    } else {
+        QFile f(path);
+        f.open(QIODevice::WriteOnly | QIODevice::Append);
+    }
+
+    QTimer::singleShot(5000, this, [&]() {
+        if (!_testNotificationPath.isEmpty())
+            emit becameUnreliable(tr("The watcher did not receive a test notification."));
+        _testNotificationPath.clear();
+    });
+}
+
 int FolderWatcher::testLinuxWatchCount() const
 {
 #ifdef Q_OS_LINUX
@@ -127,6 +148,10 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     // ------- handle ignores:
     for (int i = 0; i < paths.size(); ++i) {
         QString path = paths[i];
+        if (!_testNotificationPath.isEmpty()
+            && Utility::fileNamesEqual(path, _testNotificationPath)) {
+            _testNotificationPath.clear();
+        }
         if (pathIsIgnored(path)) {
             continue;
         }
