@@ -170,6 +170,11 @@ bool Capabilities::uploadConflictFiles() const
     return _capabilities[QStringLiteral("uploadConflictFiles")].toBool();
 }
 
+bool Capabilities::versioningEnabled() const
+{
+    return _capabilities["files"].toMap()["versioning"].toBool();
+}
+
 QString Capabilities::zsyncSupportedVersion() const
 {
     return _capabilities[QStringLiteral("dav")].toMap()[QStringLiteral("zsync")].toString();

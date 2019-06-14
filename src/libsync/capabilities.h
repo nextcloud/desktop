@@ -131,6 +131,9 @@ public:
      */
     bool uploadConflictFiles() const;
 
+    /** Is versioning available? */
+    bool versioningEnabled() const;
+
 private:
     QVariantMap _capabilities;
 };
