@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="393"/>
         <source>Could not make directories in trash</source>
-        <translation>Verzeichnisse können nicht im Papierkorb erstellt werden</translation>
+        <translation>Ordner können nicht im Papierkorb erstellt werden</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="407"/>
@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Entfernen &apos;%1&apos;: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -94,7 +94,7 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Unerwartete Content-Length beim Herunterladen empfangen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="607"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Deaktiviere Support für virtuelle Dateien?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="608"/>
@@ -270,12 +270,16 @@
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Diese Aktion wird die Unterstützung für virtuelle Dateien abschalten. Als Konsequenz werden Inhalte aus Ordnern heruntergeladen, die aktuell als &apos;nur online verfügbar&apos; markiert sind.
+
+Der einzige Vorteil durch das Abschalten der Unterstützung für virtuelle Dateien ist, dass das Feature selective sync wieder verfügbar wird.
+
+Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="615"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Unterstützung abschalten</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="717"/>
@@ -381,12 +385,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="276"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Öffne lokalen Ordner</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="284"/>
         <source>Open folder in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ordner im Browser öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="335"/>
@@ -401,17 +405,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="342"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Verfügbarkeit</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="359"/>
         <source>Disable virtual file support...</source>
-        <translation type="unfinished"/>
+        <translation>Deaktiviere Support für virtuelle Dateien ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="367"/>
         <source>Enable virtual file support (experimental)...</source>
-        <translation type="unfinished"/>
+        <translation>Support für virtuelle Dateien einschalten (experimentell) ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="504"/>
@@ -640,7 +644,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="71"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Ein verschlüsseltes pkcs12 Bundle wird besonders empfohlen, da eine Kopie davon in der Konfigurationsdatei gespeichert wird.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -766,7 +770,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="378"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="400"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Server Fehler: Die PROPFIND Antwort ist nicht XML formattiert!</translation>
     </message>
 </context>
 <context>
@@ -817,13 +821,13 @@ This action will abort any currently running synchronization.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="419"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 und %n andere Datei(en) wurden hinzugefügt.</numerusform><numerusform>%1 und %n andere Datei(en) wurden hinzugefügt.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="421"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 wurde hinzugefügt.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="426"/>
@@ -913,7 +917,7 @@ Dies bedeutet, dass der Synchronisationsclient lokale Änderungen möglicherweis
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -924,7 +928,7 @@ Wenn Sie sich dazu entscheiden, diese Dateien zu behalten, werden diese wieder z
 Wenn Sie sich zum Löschen der Dateien entscheiden, sind diese nicht mehr verfügbar, außer Sie sind der Eigentümer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1215"/>
+        <location filename="../src/gui/folder.cpp" line="1216"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -933,17 +937,17 @@ Sind Sie sich sicher, dass Sie diese Aktion mit Ihrem Server synchronisieren mö
 Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheiden, werden diese wieder vom Server synchronisiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1219"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>Remove All Files?</source>
         <translation>Alle Dateien löschen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1222"/>
+        <location filename="../src/gui/folder.cpp" line="1223"/>
         <source>Remove all files</source>
         <translation>Lösche alle Dateien</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1223"/>
+        <location filename="../src/gui/folder.cpp" line="1224"/>
         <source>Keep files</source>
         <translation>Dateien behalten</translation>
     </message>
@@ -1028,7 +1032,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="1372"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Der gewählte Pfad existiert nicht!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1376"/>
@@ -1101,7 +1105,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Support für virtuelle Dateien ist aktiviert.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
@@ -1166,12 +1170,12 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
@@ -1222,6 +1226,14 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
         <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
         <source>Preparing to sync...</source>
         <translation>Bereite Synchronisation vor...</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::FolderWatcher</name>
+    <message>
+        <location filename="../src/gui/folderwatcher.cpp" line="94"/>
+        <source>The watcher did not receive a test notification.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1337,22 +1349,22 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="149"/>
         <source>Unable to parse zsync.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Parsen von zsync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="171"/>
         <source>Failed to get zsync byte ranges.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler bei zsync_needed_byte_ranges().</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="194"/>
         <source>Failed to initialize zsync receive structure.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Initialisieren der zsync Empfangs-Datenstruktur.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="319"/>
         <source>We received a different E-Tag for delta. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Es wurde ein unterschiedlicher E-Tag für das Delta empfangen. Ein erneuter Versuch wird unternommen.</translation>
     </message>
 </context>
 <context>
@@ -1435,7 +1447,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>Enable Delta-Synchronization for files larger than</source>
-        <translation type="unfinished"/>
+        <translation>Delta-Synchronisation für Dateien einschalten, die größer sind als</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="216"/>
@@ -1718,23 +1730,26 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschun
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Der Client kann Debug-Logs in einen temporären Ordner schreiben. Diese Logs sind sehr hilfreich bei der Fehlersuche.
+Da die Log Dateien groß werden können, wird der Client eine neue Datei für jeden Synchronisationslauf anlegen und alte Dateien komprimieren. Es wird außerdem empfohlen das Löschen von Log Dateien nach einigen Stunden einzuschalten. Dies verhindert unnötigen Verbrauch von Plattenplatz.
+Logs werden nach %1 geschrieben, wenn eingeschaltet.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="66"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Einschalten von Logging in einen temporären Ordner</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="72"/>
         <source>Delete logs older than %1 hours</source>
-        <translation type="unfinished"/>
+        <translation>Logs löschen, die älter sind als %1 Stunden</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>These settings persist across client restarts.
 Note that using any logging command line options will override the settings.</source>
-        <translation type="unfinished"/>
+        <translation>Diese Einstellungen bleiben nach einem Neustart des Clients erhalten.
+Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen überschreiben.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="85"/>
@@ -1786,27 +1801,27 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Update fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="433"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Eine neue Version des %1 Clients ist verfügbar, aber der Aktualisierungs-Prozess ist fehlgeschlagen.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; wurde heruntergeladen. Die installierte Version ist %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Später noch einmal fragen</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="448"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Neustarten und aktualisieren</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Manuell aktualisieren</translation>
     </message>
 </context>
 <context>
@@ -1957,7 +1972,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>Leere JSON-Antwort von der OAuth2 Weiterleitung</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
@@ -2006,17 +2021,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Downloading %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Herunterladen von %1. Bitte warten…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ist verfügbar. Anwendung zum Start der Aktualisierung neu starten.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Aktualisierung von %1 verfügbar. Bitte nutzen Sie zur Installation das Systemaktualisierungstool.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2364,7 +2379,11 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Wenn der Modus &quot;Virtuelle Dateien&quot; aktiviert ist, werden die Dateien nicht sofort heruntergeladen. Stattdessen wird für jede Datei des Servers eine Platzhalter-Datei erstellt. Der Inhalt der Dateien wird beim Ausführen der Datei automatisch heruntergeladen. Stattdessen können Dateien auch händisch über das Kontext-Menü heruntergeladen werden.
+
+Der Modus virtuelle Dateien schließt sich mit dem Modus &quot;Selective Sync&quot; gegenseitig aus. Aktuell abgewählte Ordner werden zu nur online verfügbaren Ordnern umgesetzt und die Einstellungen im &quot;Selective Sync&quot; werden verworfen.
+
+Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, berichten sie bitte alle Probleme, die auftreten.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
@@ -2375,7 +2394,11 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Wenn der Modus &quot;Virtuelle Dateien&quot; aktiviert ist, werden die Dateien nicht sofort heruntergeladen. Stattdessen wird für jede Datei des Servers eine winzige &quot;%1&quot; Datei erstellt. Der Inhalt der Dateien kann durch Ausführen der Datei oder über das Kontext-Menü heruntergeladen werden.
+
+Der Modus virtuelle Dateien schließt sich mit dem Modus &quot;Selective Sync&quot; gegenseitig aus. Aktuell abgewählte Ordner werden zu nur online verfügbaren Ordnern umgesetzt und die Einstellungen im &quot;Selective Sync&quot; werden verworfen.
+
+Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, berichten sie bitte alle Probleme, die auftreten.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="276"/>
@@ -2479,12 +2502,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="263"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Der Dateiname ist auf der schwarzen Liste des Servers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="316"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Die Datei hat eine Endung, die für virtuelle Dateien reserviert ist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="377"/>
@@ -2494,22 +2517,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="379"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>Berechtigungen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="381"/>
         <source>etag</source>
-        <translation type="unfinished"/>
+        <translation>E-Tag</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>file id</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Der Server meldet kein %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="687"/>
@@ -2540,27 +2563,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1294"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Lesen der Datenbank</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1340"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Der Server meldet einen Fehler beim Lesen des Ordners &apos;%1&apos; : %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1384"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Öffnen des Ordners %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1386"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Der Ordner ist auf dem Client nicht erreichbar, Zugriff verweigert</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1394"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ordner nicht gefunden: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1418"/>
@@ -2570,7 +2593,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1436"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Lesen des Ordners %1</translation>
     </message>
 </context>
 <context>
@@ -2601,7 +2624,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="629"/>
         <source>Download slot finished, but there was no reply!</source>
-        <translation type="unfinished"/>
+        <translation>Herunterladen eines Teils beendet, aber es kam keine Antwort!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="682"/>
@@ -2719,7 +2742,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="142"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Konnte %1 nicht nach %2 umbenennen, Fehler: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="191"/>
@@ -2772,12 +2795,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="76"/>
         <source>Failed to get zsync byte ranges.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler bei zsync_needed_byte_ranges().</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="634"/>
         <source>Failed to generate zsync file.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Erzeugen der zsync Datei.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="701"/>
@@ -3114,17 +3137,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="297"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Name:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="304"/>
         <source>Enter name of new share...</source>
-        <translation type="unfinished"/>
+        <translation>Geben Sie den Namen der neuen Freigabe ein ...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="311"/>
         <source>&amp;Create</source>
-        <translation type="unfinished"/>
+        <translation>Erstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="364"/>
@@ -3226,7 +3249,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="282"/>
         <source>Create new...</source>
-        <translation type="unfinished"/>
+        <translation>Neu erstellen...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="544"/>
@@ -3382,27 +3405,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="526"/>
         <source>Context menu share %1</source>
-        <translation type="unfinished"/>
+        <translation>Freigabe %1 über das Kontextmenü</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="703"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Löschung bestätigen</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="705"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Möchten Sie den Ordner &lt;i&gt;%1&lt;/i&gt; und alle seine Inhalte dauerhaft löschen?</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="706"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Möchten Sie die Datei &lt;i&gt;%1&lt;/i&gt; dauerhaft löschen?</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="745"/>
         <source>Select new location...</source>
-        <translation type="unfinished"/>
+        <translation>Neuen Ort wählen...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="755"/>
@@ -3414,7 +3437,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Verschieben der Datei fehlgeschlagen:
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="763"/>
@@ -3446,7 +3471,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="805"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Weiterteilen des Ordners ist nicht erlaubt</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="817"/>
@@ -3462,37 +3487,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Show file versions in browser</source>
-        <translation type="unfinished"/>
+        <translation>Zeige Dateiversionen im Browser</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="937"/>
         <source>Rename...</source>
-        <translation type="unfinished"/>
+        <translation>Umbenennen...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="940"/>
         <source>Rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Umbenennen und hochladen...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="945"/>
         <source>Move and rename...</source>
-        <translation type="unfinished"/>
+        <translation>Verschieben und umbenennen...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="948"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Verschieben, umbenennen und hochladen...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="951"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Lokale Änderungen löschen</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="956"/>
         <source>Move and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Verschieben und hochladen...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="957"/>
@@ -3602,7 +3627,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Serverversion: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -3617,7 +3642,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>Die Verbindung ist nicht sicher</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
@@ -3741,12 +3766,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="350"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Metadaten der virtuellen Datei konnten nicht aktualisiert werden: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="498"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Virtuelle Dateien mit Dateiendung werden genutzt, aber die Dateiendung ist nicht definiert</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
@@ -3826,22 +3851,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="186"/>
         <source>Failed to open input file %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Öffnen der Eingabe Datei %1: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="195"/>
         <source>Failed to open input file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Öffnen der Eingabe Datei %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="208"/>
         <source>Failed to write block sums:</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Schreiben der Block-Summe:</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="229"/>
         <source>Failed to write zsync metadata file:</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Schreiben der zsync Metadaten-Datei.</translation>
     </message>
 </context>
 <context>
@@ -3849,12 +3874,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="115"/>
         <source>Unable to parse zsync file.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Parsen der zsync Datei.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="132"/>
         <source>Unable to open file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Konnte Datei nicht öffnen: %1</translation>
     </message>
 </context>
 <context>
@@ -4419,12 +4444,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Virtuelle Datei erstellt</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Ersetzt durch virtuelle Datei</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -4592,33 +4617,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
         <source>Currently always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Aktuell immer lokal verfügbar</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="78"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Aktuell lokal verfügbar</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
         <source>Currently some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Aktuell teilweise nur online verfügbar</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="82"/>
         <location filename="../src/gui/guiutility.cpp" line="84"/>
         <source>Currently available online only</source>
-        <translation type="unfinished"/>
+        <translation>Aktuell nur online verfügbar</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Auf immer lokal verfügbar umschalten</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Lokalen Speicherplatz freigeben</translation>
     </message>
 </context>
 </TS>

@@ -908,7 +908,7 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -916,24 +916,24 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation>A kiszolgáló egy &quot;% 1&quot; mappában levő összes fájlt törölték.Ezek a törlések szinkronizálódnak a helyi szinkronizálási mappájukhoz, így az ilyen fájlok nem érhetők el, hacsak nem jogosult a visszaállításra. Ha úgy dönt, hogy megtartja a fájlokat, akkor újra szinkronizálódik a szerverrel, ha jogosult erre.Ha úgy dönt, hogy törli a fájlokat, akkor nem lesznek elérhetők, hacsak nem vagy egy tulajdonos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1215"/>
+        <location filename="../src/gui/folder.cpp" line="1216"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
         <translation>A (z) &quot;% 1&quot; helyi szinkronmappában található összes fájl törölve lett. Ezek a törlések szinkronizálásra kerülnek a kiszolgálóval, így az ilyen fájlok nem érhetők el, hacsak vissza nem állítják őket.Biztos benne, hogy ezeket a műveleteket szinkronizálni szeretné a kiszolgálóval?Ha ez baleset volt, és úgy döntenél, hogy megőrzi a fájlokat, újra szinkronizálódik a kiszolgálóról.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1219"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>Remove All Files?</source>
         <translation>Törli az összes fájlt?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1222"/>
+        <location filename="../src/gui/folder.cpp" line="1223"/>
         <source>Remove all files</source>
         <translation>Összes fájl eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1223"/>
+        <location filename="../src/gui/folder.cpp" line="1224"/>
         <source>Keep files</source>
         <translation>Fájlok megtartása</translation>
     </message>
@@ -1212,6 +1212,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
         <source>Preparing to sync...</source>
         <translation>Felkészülés szinkronizálásra...</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::FolderWatcher</name>
+    <message>
+        <location filename="../src/gui/folderwatcher.cpp" line="94"/>
+        <source>The watcher did not receive a test notification.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
