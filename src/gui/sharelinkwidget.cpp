@@ -187,6 +187,11 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     };
     retainSizeWhenHidden(_ui->pushButton_setPassword);
     retainSizeWhenHidden(_ui->create);
+
+    // If this starts out empty the first call to slotShareSelectionChanged()
+    // will not properly initialize the ui state if "Create new..." is the
+    // only option. So pre-fill with an invalid share id.
+    _selectedShareId = QStringLiteral("!&no-share-selected");
 }
 
 ShareLinkWidget::~ShareLinkWidget()
@@ -341,6 +346,10 @@ void ShareLinkWidget::slotShareSelectionChanged()
             _ui->checkBox_password->setChecked(true);
             _ui->lineEdit_password->setPlaceholderText("********");
             _ui->lineEdit_password->setEnabled(true);
+        } else if (createNew && _passwordRequired) {
+            _ui->checkBox_password->setChecked(true);
+            _ui->lineEdit_password->setPlaceholderText(tr("Please Set Password"));
+            _ui->lineEdit_password->setEnabled(true);
         } else {
             _ui->checkBox_password->setChecked(false);
             _ui->lineEdit_password->setPlaceholderText(QString());
@@ -355,6 +364,9 @@ void ShareLinkWidget::slotShareSelectionChanged()
     if (share && share->getExpireDate().isValid()) {
         _ui->checkBox_expire->setChecked(true);
         _ui->calendar->setDate(share->getExpireDate());
+        _ui->calendar->setEnabled(true);
+    } else if (createNew && _expiryRequired) {
+        _ui->checkBox_expire->setChecked(true);
         _ui->calendar->setEnabled(true);
     } else {
         _ui->checkBox_expire->setChecked(false);
