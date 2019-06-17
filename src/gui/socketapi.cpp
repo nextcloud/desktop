@@ -522,8 +522,11 @@ private slots:
         auto shareName = SocketApi::tr("Context menu share");
 
         // If shares will expire, create a new one every day.
+        QDate expireDate;
         if (_account->capabilities().sharePublicLinkDefaultExpire()) {
             shareName = SocketApi::tr("Context menu share %1").arg(QDate::currentDate().toString(Qt::ISODate));
+            expireDate = QDate::currentDate().addDays(
+                    _account->capabilities().sharePublicLinkDefaultExpireDateDays());
         }
 
         // If there already is a context menu share, reuse it
@@ -540,7 +543,8 @@ private slots:
 
         // otherwise create a new one
         qCDebug(lcPublicLink) << "Creating new share";
-        _shareManager.createLinkShare(_localFile, shareName);
+        QString noPassword;
+        _shareManager.createLinkShare(_localFile, shareName, noPassword, expireDate);
     }
 
     void linkShareCreated(const QSharedPointer<LinkShare> &share)
