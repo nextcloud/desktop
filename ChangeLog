@@ -3,12 +3,24 @@ ChangeLog
 
 version 2.6.0 (2019-06-??)
 (last update on 8022dc266dc634fd40364b91c933ce603b8c9a78)
-* Sync: Introduce experimental capability to sync file deltas. (#179)
-* Sync: Rewrote discovery code for performance improvements and better maintainability.
-* Sync: Don't abort on 503 errors (#5088, #5859)
-* Sync: Fix downloading of files when the database is used for local discovery
+Major changes and additions:
+* Rewrote discovery code for performance improvements and better maintainability.
+* Add experimental native virtual files mode for Windows 10.
+  (https://github.com/owncloud/client/wiki/VfsWinCfAPI)
+* Add experimental capability to sync file deltas. (#179)
+  (https://github.com/owncloud/client/wiki/DeltaSync)
+* Improvements and fixes for all virtual files mode
+  (https://github.com/owncloud/client/wiki/Vfs)
+* Add basic support for libcloudproviders for gtk/gnome integration (#7209)
+* Remove support for Shibboleth auth (#6451)
+
+Small changes and bug fixes:
 * Sync: Better detection of complex renames
+* Sync: Add workarounds so HTTP2 may be enabled with Qt >=5.12.4 (#7092, #7174)
+* Sync: When propagating new remote directories, set local mtime to server mtime (#7119)
+* Sync: Add support for asynchronous upload operations (core#31851)
 * Sync: Handle blacklisted_files server capability (#434)
+* Sync: Fix downloading of files when the database is used for local discovery
 * Sync: Fix sync progress when virtual files are created (#6933)
 * Sync: Fix issue with a folder being renamed into another renamed folder (#6694)
 * Sync: Reduce client-triggered touch ignore duration from 15s to 3s
@@ -16,15 +28,10 @@ version 2.6.0 (2019-06-??)
 * Sync: Fix local discovery when removing a selective sync exclusion
 * Sync: Fix detection of case-only renames on Windows
 * Sync: Fix race conditions in the linux folder watcher (#7068)
-* Sync: Add support for asynchronous upload operations (core#31851)
-* Sync: When propagating new remote directories, set local mtime to server mtime (#7119)
 * Sync: Fix issue with special characters in the filename and chunked uploads (#7176)
 * Sync: Fix renaming a single file causing the "all files deleted" popup (#7204)
-* Sync: Do not abort the sync in case of 404 of 500 errors (#7199)
-* Sync: Add workarounds so HTTP2 may be enabled with Qt >=5.12.4 (#7092, #7174)
 * Sync: Reduce memory use during uploads by not reading whole chunks to memory (#7226)
-* Vfs: Introduce experimental native virtual files mode for Windows 10.
-* Vfs: Improvements to UI around marking folders as available locally or online only.
+* Sync: Don't abort on 404, 500, 503 errors (#5088, #5859, #7199)
 * Vfs: The online-only/available-locally flag applies to new remote files now.
 * Vfs: Introduce actions and warning text for switching vfs on and off.
 * Vfs: Cannot be used with selective sync at the same time.
@@ -49,7 +56,6 @@ version 2.6.0 (2019-06-??)
 * GUI: Fix notification buttons sometimes getting their own window (#7185)
 * GUI: Add "Show file versions" context menu action (#7196)
 * GUI: Fix layout in "Add Certificate" dialog (#7184)
-* GUI: Add support for libcloudproviders for gtk/gnome integration (#7209)
 * OSX: Fix issues with Finder integration being gone after reboot
 * Linux: Add autostart delay to avoid tray icon issues (#6518)
 * Folder watcher: Test before relying on it (#7241)
@@ -68,7 +74,6 @@ version 2.6.0 (2019-06-??)
 * Build: Fix KDEInstallDirs deprecation warnings (#6922)
 * Build: Fixes for compiling on "remarkable" tablet (#6870)
 * Build: Add PLUGINDIR variable for finding vfs plugins (#7027)
-* Remove support for Shibboleth auth (#6451)
 * Remove the WebKit dependency (#6451)
 * Several performance optimizations
 * Update SQLite to 3.27.2 (if bundled)
