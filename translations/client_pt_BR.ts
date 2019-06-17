@@ -2895,7 +2895,7 @@ Não é aconselhável usá-la.</translation>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
-        <translation>Copiar o link privado para a área de transferência</translation>
+        <translation>Copiar link privado para a área de transferência</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="628"/>

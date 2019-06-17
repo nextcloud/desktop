@@ -274,12 +274,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="236"/>
         <source>This account supports end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Овај налог подржава шифровање са краја на крај</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Укључи шифровање</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
@@ -2854,7 +2854,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
         <source>SSL Cipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>SSL Chipher поглед за отклањање грешака</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -3419,7 +3419,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="202"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Сервер „%1“ је понудио неисправан сертификат. Наставити?</translation>
     </message>
 </context>
 <context>
