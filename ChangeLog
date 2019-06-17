@@ -1,8 +1,8 @@
 ChangeLog
 =========
 
-version 2.6.0 (2019-04-??)
-(last update on 2a900901d386bd4d0388f5c6e862a6274059ee40)
+version 2.6.0 (2019-06-??)
+(last update on 8022dc266dc634fd40364b91c933ce603b8c9a78)
 * Sync: Introduce experimental capability to sync file deltas. (#179)
 * Sync: Rewrote discovery code for performance improvements and better maintainability.
 * Sync: Don't abort on 503 errors (#5088, #5859)
@@ -18,6 +18,11 @@ version 2.6.0 (2019-04-??)
 * Sync: Fix race conditions in the linux folder watcher (#7068)
 * Sync: Add support for asynchronous upload operations (core#31851)
 * Sync: When propagating new remote directories, set local mtime to server mtime (#7119)
+* Sync: Fix issue with special characters in the filename and chunked uploads (#7176)
+* Sync: Fix renaming a single file causing the "all files deleted" popup (#7204)
+* Sync: Do not abort the sync in case of 404 of 500 errors (#7199)
+* Sync: Add workarounds so HTTP2 may be enabled with Qt >=5.12.4 (#7092, #7174)
+* Sync: Reduce memory use during uploads by not reading whole chunks to memory (#7226)
 * Vfs: Introduce experimental native virtual files mode for Windows 10.
 * Vfs: Improvements to UI around marking folders as available locally or online only.
 * Vfs: The online-only/available-locally flag applies to new remote files now.
@@ -29,6 +34,11 @@ version 2.6.0 (2019-04-??)
 * Vfs: Improve notifications for file creation actions (#7101)
 * Vfs: Improve user-visible aspects of pinning and availability (#7111)
 * Vfs: Add note about which plugin is in use to about dialog (#7137)
+* Vfs: Fix reliability of "Download file" context menu action (#7124)
+* Vfs: Fix crash when dehydrating a complete folder
+* Vfs: Make "Free space" context menu action only enabled when it has an effect (#7143)
+* Vfs: Ensure the database temporaries are marked as excluded (#7141)
+* GUI: Adjust "new public link share" ui so options can be set before share creation
 * GUI: Added action to open folder in browser to selective sync context menu (#6471)
 * GUI: Add server version info to SSL info button (#6628)
 * GUI: Allow log window of running client to be opened via command line
@@ -36,11 +46,17 @@ version 2.6.0 (2019-04-??)
 * GUI: Update sooner when user resolves a conflict (#7073)
 * GUI: Improve error message for missing data in server replies (#7112)
 * GUI: Remove log window, instead focus on easy handling of log files (#6475)
+* GUI: Fix notification buttons sometimes getting their own window (#7185)
+* GUI: Add "Show file versions" context menu action (#7196)
+* GUI: Fix layout in "Add Certificate" dialog (#7184)
+* GUI: Add support for libcloudproviders for gtk/gnome integration (#7209)
 * OSX: Fix issues with Finder integration being gone after reboot
 * Linux: Add autostart delay to avoid tray icon issues (#6518)
+* Folder watcher: Test before relying on it (#7241)
 * Client certs: Fix storage of large certs in older Windows versions (#6776)
 * Updater: Show a nicer version string In the "available update" notification (#6602)
 * Updater: Set correct state on network error (#3933)
+* Updater: Provide more useful options on update failure (#7217)
 * DB: Database path for new folders now starts with ".sync_", avoiding the "._" (#5904)
 * File hashes: Add support for SHA256 and SHA3
 * Cmd: Respect chunk sizing environment variables (#7078)
@@ -53,6 +69,7 @@ version 2.6.0 (2019-04-??)
 * Build: Fixes for compiling on "remarkable" tablet (#6870)
 * Build: Add PLUGINDIR variable for finding vfs plugins (#7027)
 * Remove support for Shibboleth auth (#6451)
+* Remove the WebKit dependency (#6451)
 * Several performance optimizations
 * Update SQLite to 3.27.2 (if bundled)
 * Many test improvements (like #6358)
