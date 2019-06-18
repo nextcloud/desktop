@@ -110,6 +110,9 @@ private:
      */
     QSharedPointer<LinkShare> selectedShare() const;
 
+    /** Returns the default expire date as requested by the server, invalid otherwise */
+    QDate capabilityDefaultExpireDate() const;
+
     Ui::ShareLinkWidget *_ui;
     AccountPtr _account;
     QString _sharePath;
