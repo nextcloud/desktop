@@ -1532,12 +1532,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="557"/>
+        <location filename="../src/gui/socketapi.cpp" line="561"/>
         <source>Sharing error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="558"/>
+        <location filename="../src/gui/socketapi.cpp" line="562"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -3196,7 +3196,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="119"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="338"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="343"/>
         <source>P&amp;assword protect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3217,7 +3217,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="565"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="577"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3247,43 +3247,44 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="282"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="287"/>
         <source>Create new...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="544"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="556"/>
         <source>I shared %1 with you</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="558"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="570"/>
         <source>Confirm Link Share Deletion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="559"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="571"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="566"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="578"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="582"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="594"/>
         <source>Public link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="266"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="271"/>
         <source>Delete link share</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="515"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="351"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="527"/>
         <source>Please Set Password</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3403,122 +3404,122 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="526"/>
+        <location filename="../src/gui/socketapi.cpp" line="527"/>
         <source>Context menu share %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="703"/>
+        <location filename="../src/gui/socketapi.cpp" line="707"/>
         <source>Confirm deletion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="705"/>
+        <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="706"/>
+        <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="745"/>
+        <location filename="../src/gui/socketapi.cpp" line="749"/>
         <source>Select new location...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="755"/>
+        <location filename="../src/gui/socketapi.cpp" line="759"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="756"/>
+        <location filename="../src/gui/socketapi.cpp" line="760"/>
         <source>Moving file failed:
 
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="763"/>
+        <location filename="../src/gui/socketapi.cpp" line="767"/>
         <source>I shared something with you</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="776"/>
-        <location filename="../src/gui/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi.cpp" line="780"/>
+        <location filename="../src/gui/socketapi.cpp" line="811"/>
         <source>Share...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="778"/>
-        <location filename="../src/gui/socketapi.cpp" line="823"/>
+        <location filename="../src/gui/socketapi.cpp" line="782"/>
+        <location filename="../src/gui/socketapi.cpp" line="827"/>
         <source>Copy private link to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="779"/>
+        <location filename="../src/gui/socketapi.cpp" line="783"/>
         <source>Send private link by email...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="805"/>
+        <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Resharing this file is not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="805"/>
+        <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Resharing this folder is not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="817"/>
-        <location filename="../src/gui/socketapi.cpp" line="819"/>
+        <location filename="../src/gui/socketapi.cpp" line="821"/>
+        <location filename="../src/gui/socketapi.cpp" line="823"/>
         <source>Copy public link to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="910"/>
+        <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Open in browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="918"/>
+        <location filename="../src/gui/socketapi.cpp" line="922"/>
         <source>Show file versions in browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="941"/>
+        <location filename="../src/gui/socketapi.cpp" line="945"/>
         <source>Rename...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="944"/>
+        <location filename="../src/gui/socketapi.cpp" line="948"/>
         <source>Rename and upload...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="949"/>
+        <location filename="../src/gui/socketapi.cpp" line="953"/>
         <source>Move and rename...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="952"/>
+        <location filename="../src/gui/socketapi.cpp" line="956"/>
         <source>Move, rename and upload...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="955"/>
+        <location filename="../src/gui/socketapi.cpp" line="959"/>
         <source>Delete local changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="960"/>
+        <location filename="../src/gui/socketapi.cpp" line="964"/>
         <source>Move and upload...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="961"/>
+        <location filename="../src/gui/socketapi.cpp" line="965"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
