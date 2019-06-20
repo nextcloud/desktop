@@ -2701,7 +2701,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="236"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Название</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="409"/>
@@ -3681,7 +3681,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="421"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Название</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
@@ -3727,7 +3727,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="285"/>
         <source>pbSelectLocalFolder</source>
-        <translation>pbSelectLocalFolder</translation>
+        <translation>pbВыбрать локальную папку</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
@@ -3797,7 +3797,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="38"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="97"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Обозначение</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
@@ -3840,7 +3840,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="20"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Обозначение</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
@@ -3851,7 +3851,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="120"/>
         <source>PushButton</source>
-        <translation>PushButton</translation>
+        <translation>Клавиша включения</translation>
     </message>
 </context>
 <context>
