@@ -91,6 +91,19 @@ void PUTFileJob::start()
     AbstractNetworkJob::start();
 }
 
+bool PUTFileJob::finished()
+{
+    _device->close();
+
+    qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
+                     << replyStatusString()
+                     << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
+                     << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+
+    emit finishedSignal();
+    return true;
+}
+
 void PollJob::start()
 {
     setTimeout(120 * 1000);
@@ -343,13 +356,17 @@ bool UploadDevice::open(QIODevice::OpenMode mode)
     if (mode & QIODevice::WriteOnly)
         return false;
 
+    // Get the file size now: _file.fileName() is no longer reliable
+    // on all platforms after openAndSeekFileSharedRead().
+    auto fileDiskSize = FileSystem::getSize(_file.fileName());
+
     QString openError;
     if (!FileSystem::openAndSeekFileSharedRead(&_file, &openError, _start)) {
         setErrorString(openError);
         return false;
     }
 
-    _size = qBound(0ll, _size, FileSystem::getSize(_file.fileName()) - _start);
+    _size = qBound(0ll, _size, fileDiskSize - _start);
     _read = 0;
 
     return QIODevice::open(mode);
