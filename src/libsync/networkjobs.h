@@ -26,6 +26,9 @@ class QJsonObject;
 
 namespace OCC {
 
+/** Strips quotes and gzip annotations */
+QByteArray parseEtag(const char *header);
+
 struct HttpError
 {
     int code; // HTTP error code

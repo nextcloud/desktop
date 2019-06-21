@@ -395,7 +395,7 @@ public:
             auto stringDate = QLocale::c().toString(gmtDate, "ddd, dd MMM yyyy HH:mm:ss 'GMT'");
             xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
             xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
-            xml.writeTextElement(davUri, QStringLiteral("getetag"), fileInfo.etag);
+            xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(fileInfo.etag));
             xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull()
                 ? QString(fileInfo.permissions.toString())
                 : fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
