@@ -1090,6 +1090,45 @@ private slots:
         QVERIFY(!r);
         QCOMPARE(r.error(), Vfs::AvailabilityError::NoSuchItem);
     }
+
+    void testPinStateLocals()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        auto vfs = setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        auto setPin = [&] (const QByteArray &path, PinState state) {
+            fakeFolder.syncJournal().internalPinStates().setForPath(path, state);
+        };
+
+        fakeFolder.remoteModifier().mkdir("local");
+        fakeFolder.remoteModifier().mkdir("online");
+        fakeFolder.remoteModifier().mkdir("unspec");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        setPin("local", PinState::AlwaysLocal);
+        setPin("online", PinState::OnlineOnly);
+        setPin("unspec", PinState::Unspecified);
+
+        fakeFolder.localModifier().insert("file1");
+        fakeFolder.localModifier().insert("online/file1");
+        fakeFolder.localModifier().insert("online/file2");
+        fakeFolder.localModifier().insert("local/file1");
+        fakeFolder.localModifier().insert("unspec/file1");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // root is unspecified
+        QCOMPARE(*vfs->pinState("file1"), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState("local/file1"), PinState::AlwaysLocal);
+        QCOMPARE(*vfs->pinState("online/file1"), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState("unspec/file1"), PinState::Unspecified);
+
+        // Sync again: bad pin states of new local files usually take effect on second sync
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncVirtualFiles)

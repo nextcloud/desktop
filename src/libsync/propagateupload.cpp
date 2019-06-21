@@ -644,6 +644,17 @@ void PropagateUploadFileCommon::finalize()
         return;
     }
 
+    // Files that were new on the remote shouldn't have online-only pin state
+    // even if their parent folder is online-only.
+    if (_item->_instruction == CSYNC_INSTRUCTION_NEW
+        || _item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+        auto &vfs = propagator()->syncOptions()._vfs;
+        const auto pin = vfs->pinState(_item->_file);
+        if (pin && *pin == PinState::OnlineOnly) {
+            vfs->setPinState(_item->_file, PinState::Unspecified);
+        }
+    }
+
     // Remove from the progress database:
     propagator()->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
     propagator()->_journal->commit("upload file start");
