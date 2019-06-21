@@ -194,7 +194,7 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
     const QString versionString = _accountState->account()->serverVersion();
     qCInfo(lcSharing) << versionString << "Fetched" << shares.count() << "shares";
     foreach (auto share, shares) {
-        if (share->getShareType() != Share::TypeLink) {
+        if (share->getShareType() != Share::TypeLink || share->getUidOwner() != share->account()->davUser()) {
             continue;
         }
 

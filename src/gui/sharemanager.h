@@ -54,6 +54,8 @@ public:
      */
     explicit Share(AccountPtr account,
         const QString &id,
+        const QString &owner,
+        const QString &ownerDisplayName,
         const QString &path,
         const ShareType shareType,
         const Permissions permissions = SharePermissionDefault,
@@ -70,6 +72,16 @@ public:
      * Get the id
      */
     QString getId() const;
+
+    /*
+     * Get the uid_owner
+     */
+    QString getUidOwner() const;
+
+    /*
+     * Get the owner display name
+     */
+    QString getOwnerDisplayName() const;
 
     /*
      * Get the shareType
@@ -110,6 +122,8 @@ signals:
 protected:
     AccountPtr _account;
     QString _id;
+    QString _uidowner;
+    QString _ownerDisplayName;
     QString _path;
     ShareType _shareType;
     Permissions _permissions;
@@ -134,6 +148,8 @@ class LinkShare : public Share
 public:
     explicit LinkShare(AccountPtr account,
         const QString &id,
+        const QString &uidowner,
+        const QString &ownerDisplayName,
         const QString &path,
         const QString &name,
         const QString &token,
