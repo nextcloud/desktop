@@ -52,12 +52,16 @@ static void updateFolder(const AccountPtr &account, const QString &path)
 
 Share::Share(AccountPtr account,
     const QString &id,
+    const QString &uidowner,
+    const QString &ownerDisplayName,
     const QString &path,
     const ShareType shareType,
     const Permissions permissions,
     const QSharedPointer<Sharee> shareWith)
     : _account(account)
     , _id(id)
+    , _uidowner(uidowner)
+    , _ownerDisplayName(ownerDisplayName)
     , _path(path)
     , _shareType(shareType)
     , _permissions(permissions)
@@ -78,6 +82,16 @@ QString Share::path() const
 QString Share::getId() const
 {
     return _id;
+}
+
+QString Share::getUidOwner() const
+{
+    return _uidowner;
+}
+
+QString Share::getOwnerDisplayName() const
+{
+    return _ownerDisplayName;
 }
 
 Share::ShareType Share::getShareType() const
@@ -153,6 +167,8 @@ bool LinkShare::isPasswordSet() const
 
 LinkShare::LinkShare(AccountPtr account,
     const QString &id,
+    const QString &uidowner,
+    const QString &ownerDisplayName,
     const QString &path,
     const QString &name,
     const QString &token,
@@ -160,7 +176,7 @@ LinkShare::LinkShare(AccountPtr account,
     bool passwordSet,
     const QUrl &url,
     const QDate &expireDate)
-    : Share(account, id, path, Share::TypeLink, permissions)
+    : Share(account, id, uidowner, ownerDisplayName, path, Share::TypeLink, permissions)
     , _name(name)
     , _token(token)
     , _passwordSet(passwordSet)
@@ -393,6 +409,8 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
 
     return QSharedPointer<LinkShare>(new LinkShare(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
+        data.value("uid_owner").toString(),
+        data.value("displayname_owner").toString(),
         data.value("path").toString(),
         data.value("name").toString(),
         data.value("token").toString(),
@@ -410,6 +428,8 @@ QSharedPointer<Share> ShareManager::parseShare(const QJsonObject &data)
 
     return QSharedPointer<Share>(new Share(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
+        data.value("uid_owner").toVariant().toString(),
+        data.value("displayname_owner").toVariant().toString(),
         data.value("path").toString(),
         (Share::ShareType)data.value("share_type").toInt(),
         (Share::Permissions)data.value("permissions").toInt(),
