@@ -1128,6 +1128,26 @@ private slots:
         // Sync again: bad pin states of new local files usually take effect on second sync
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // When a file in an online-only folder is renamed, it retains its pin
+        fakeFolder.localModifier().rename("online/file1", "online/file1rename");
+        fakeFolder.remoteModifier().rename("online/file2", "online/file2rename");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->pinState("online/file1rename"), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState("online/file2rename"), PinState::Unspecified);
+
+        // When a folder is renamed, the pin states inside should be retained
+        fakeFolder.localModifier().rename("online", "onlinerenamed1");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->pinState("onlinerenamed1"), PinState::OnlineOnly);
+        QCOMPARE(*vfs->pinState("onlinerenamed1/file1rename"), PinState::Unspecified);
+
+        fakeFolder.remoteModifier().rename("onlinerenamed1", "onlinerenamed2");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->pinState("onlinerenamed2"), PinState::OnlineOnly);
+        QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::Unspecified);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 };
 
