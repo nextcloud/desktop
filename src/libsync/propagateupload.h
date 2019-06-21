@@ -122,16 +122,7 @@ public:
 
     void start() override;
 
-    bool finished() override
-    {
-        qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                         << replyStatusString()
-                         << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
-                         << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-
-        emit finishedSignal();
-        return true;
-    }
+    bool finished() override;
 
     QIODevice *device()
     {
