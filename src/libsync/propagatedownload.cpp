@@ -1025,6 +1025,13 @@ void PropagateDownloadFile::downloadFinished()
             qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
             QFile::remove(fn);
             propagator()->_journal->deleteFileRecord(virtualFile);
+
+            // Move the pin state to the new location
+            auto pin = propagator()->_journal->internalPinStates().rawForPath(_item->_file.toUtf8());
+            if (pin && *pin != PinState::Inherited) {
+                vfs->setPinState(virtualFile, *pin);
+                vfs->setPinState(_item->_file, PinState::Inherited);
+            }
         }
     }
 

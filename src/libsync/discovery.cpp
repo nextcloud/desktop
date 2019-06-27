@@ -1460,13 +1460,7 @@ void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
     if (!isVfsWithSuffix())
         return;
 
-    QByteArray pinPath = record._path;
-    if (record.isVirtualFile()) {
-        const auto suffix = _discoveryData->_syncOptions._vfs->fileSuffix().toUtf8();
-        if (pinPath.endsWith(suffix))
-            pinPath.chop(suffix.size());
-    }
-    auto pin = _discoveryData->_statedb->internalPinStates().rawForPath(pinPath);
+    auto pin = _discoveryData->_statedb->internalPinStates().rawForPath(record._path);
     if (!pin || *pin == PinState::Inherited)
         pin = _pinState;
 

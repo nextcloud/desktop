@@ -604,12 +604,9 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
 
     // Change the file's pin state if it's contradictory to being hydrated
     // (suffix-virtual file's pin state is stored at the hydrated path)
-    QString pinPath = relativepath;
-    if (_vfs->mode() == Vfs::WithSuffix && pinPath.endsWith(_vfs->fileSuffix()))
-        pinPath.chop(_vfs->fileSuffix().size());
-    const auto pin = _vfs->pinState(pinPath);
+    const auto pin = _vfs->pinState(relativepath);
     if (pin && *pin == PinState::OnlineOnly) {
-        _vfs->setPinState(pinPath, PinState::Unspecified);
+        _vfs->setPinState(relativepath, PinState::Unspecified);
     }
 
     // Add to local discovery

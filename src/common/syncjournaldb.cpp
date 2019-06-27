@@ -1589,6 +1589,16 @@ bool SyncJournalDb::deleteStaleErrorBlacklistEntries(const QSet<QString> &keep)
     return deleteBatch(delQuery, superfluousPaths, "blacklist");
 }
 
+void SyncJournalDb::deleteStaleFlagsEntries()
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect())
+        return;
+
+    SqlQuery delQuery("DELETE FROM flags WHERE path != '' AND path NOT IN (SELECT path from metadata);", _db);
+    delQuery.exec();
+}
+
 int SyncJournalDb::errorBlackListEntryCount()
 {
     int re = 0;
