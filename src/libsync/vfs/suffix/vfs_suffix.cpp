@@ -18,6 +18,7 @@
 
 #include "syncfileitem.h"
 #include "filesystem.h"
+#include "common/syncjournaldb.h"
 
 namespace OCC {
 
@@ -81,6 +82,13 @@ void VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
     SyncFileItem virtualItem(item);
     virtualItem._file = item._renameTarget;
     createPlaceholder(virtualItem);
+
+    // Move the item's pin state
+    auto pin = _setupParams.journal->internalPinStates().rawForPath(item._file.toUtf8());
+    if (pin && *pin != PinState::Inherited) {
+        setPinState(item._renameTarget, *pin);
+        setPinState(item._file, PinState::Inherited);
+    }
 }
 
 void VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
@@ -107,11 +115,7 @@ bool VfsSuffix::statTypeVirtualFile(csync_file_stat_t *stat, void *)
 
 Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath)
 {
-    const auto suffix = fileSuffix();
-    QString pinPath = folderPath;
-    if (pinPath.endsWith(suffix))
-        pinPath.chop(suffix.size());
-    return availabilityInDb(folderPath, pinPath);
+    return availabilityInDb(folderPath);
 }
 
 } // namespace OCC
