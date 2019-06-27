@@ -145,8 +145,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     // If expiredate is enforced do not allow disable and set max days
     if (_account->capabilities().sharePublicLinkEnforceExpireDate()) {
         _ui->checkBox_expire->setEnabled(false);
-        _ui->calendar->setMaximumDate(QDate::currentDate().addDays(
-            _account->capabilities().sharePublicLinkDefaultExpireDateDays()));
+        _ui->calendar->setMaximumDate(capabilityDefaultExpireDate());
         _expiryRequired = true;
     }
 
@@ -187,6 +186,11 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     };
     retainSizeWhenHidden(_ui->pushButton_setPassword);
     retainSizeWhenHidden(_ui->create);
+
+    // If this starts out empty the first call to slotShareSelectionChanged()
+    // will not properly initialize the ui state if "Create new..." is the
+    // only option. So pre-fill with an invalid share id.
+    _selectedShareId = QStringLiteral("!&no-share-selected");
 }
 
 ShareLinkWidget::~ShareLinkWidget()
@@ -341,6 +345,10 @@ void ShareLinkWidget::slotShareSelectionChanged()
             _ui->checkBox_password->setChecked(true);
             _ui->lineEdit_password->setPlaceholderText("********");
             _ui->lineEdit_password->setEnabled(true);
+        } else if (createNew && _passwordRequired) {
+            _ui->checkBox_password->setChecked(true);
+            _ui->lineEdit_password->setPlaceholderText(tr("Please Set Password"));
+            _ui->lineEdit_password->setEnabled(true);
         } else {
             _ui->checkBox_password->setChecked(false);
             _ui->lineEdit_password->setPlaceholderText(QString());
@@ -356,6 +364,13 @@ void ShareLinkWidget::slotShareSelectionChanged()
         _ui->checkBox_expire->setChecked(true);
         _ui->calendar->setDate(share->getExpireDate());
         _ui->calendar->setEnabled(true);
+    } else if (createNew) {
+        const QDate defaultExpire = capabilityDefaultExpireDate();
+        if (defaultExpire.isValid())
+            _ui->calendar->setDate(defaultExpire);
+        const bool enabled = _expiryRequired || defaultExpire.isValid();
+        _ui->checkBox_expire->setChecked(enabled);
+        _ui->calendar->setEnabled(enabled);
     } else {
         _ui->checkBox_expire->setChecked(false);
         _ui->calendar->setEnabled(false);
@@ -526,10 +541,13 @@ void ShareLinkWidget::slotCheckBoxPasswordClicked()
 void ShareLinkWidget::slotCheckBoxExpireClicked()
 {
     if (_ui->checkBox_expire->checkState() == Qt::Checked) {
-        const QDate date = QDate::currentDate().addDays(1);
-        setExpireDate(date);
-        _ui->calendar->setDate(date);
-        _ui->calendar->setMinimumDate(date);
+        const QDate tomorrow = QDate::currentDate().addDays(1);
+        QDate defaultDate = capabilityDefaultExpireDate();
+        if (!defaultDate.isValid())
+            defaultDate = tomorrow;
+        setExpireDate(defaultDate);
+        _ui->calendar->setDate(defaultDate);
+        _ui->calendar->setMinimumDate(tomorrow);
         _ui->calendar->setEnabled(true);
     } else {
         setExpireDate(QDate());
@@ -649,6 +667,14 @@ QSharedPointer<LinkShare> ShareLinkWidget::selectedShare() const
     }
 
     return items.first()->data(Qt::UserRole).value<QSharedPointer<LinkShare>>();
+}
+
+QDate ShareLinkWidget::capabilityDefaultExpireDate() const
+{
+    if (!_account->capabilities().sharePublicLinkDefaultExpire())
+        return QDate();
+    return QDate::currentDate().addDays(
+            _account->capabilities().sharePublicLinkDefaultExpireDateDays());
 }
 
 void ShareLinkWidget::slotPermissionsSet()

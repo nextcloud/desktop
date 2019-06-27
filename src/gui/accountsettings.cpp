@@ -985,6 +985,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
 
         ui->selectiveSyncButtons->setVisible(true);
         ui->bigFolderUi->setVisible(false);
+        ui->selectiveSyncApply->setEnabled(_model->isDirty());
     } else {
         // There's a reason the big folder ui should be shown
         shouldBeVisible = _accountState->isConnected();
@@ -999,9 +1000,9 @@ void AccountSettings::refreshSelectiveSyncStatus()
         ui->selectiveSyncNotification->setText(info + msg);
         ui->selectiveSyncButtons->setVisible(false);
         ui->bigFolderUi->setVisible(true);
+        ui->bigFolderApply->setEnabled(_model->isDirty());
     }
 
-    ui->selectiveSyncApply->setEnabled(_model->isDirty() || !msg.isEmpty());
     bool wasVisible = !ui->selectiveSyncStatus->isHidden();
     if (wasVisible != shouldBeVisible) {
         QSize hint = ui->selectiveSyncStatus->sizeHint();

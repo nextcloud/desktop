@@ -1090,6 +1090,65 @@ private slots:
         QVERIFY(!r);
         QCOMPARE(r.error(), Vfs::AvailabilityError::NoSuchItem);
     }
+
+    void testPinStateLocals()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        auto vfs = setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        auto setPin = [&] (const QByteArray &path, PinState state) {
+            fakeFolder.syncJournal().internalPinStates().setForPath(path, state);
+        };
+
+        fakeFolder.remoteModifier().mkdir("local");
+        fakeFolder.remoteModifier().mkdir("online");
+        fakeFolder.remoteModifier().mkdir("unspec");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        setPin("local", PinState::AlwaysLocal);
+        setPin("online", PinState::OnlineOnly);
+        setPin("unspec", PinState::Unspecified);
+
+        fakeFolder.localModifier().insert("file1");
+        fakeFolder.localModifier().insert("online/file1");
+        fakeFolder.localModifier().insert("online/file2");
+        fakeFolder.localModifier().insert("local/file1");
+        fakeFolder.localModifier().insert("unspec/file1");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // root is unspecified
+        QCOMPARE(*vfs->pinState("file1"), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState("local/file1"), PinState::AlwaysLocal);
+        QCOMPARE(*vfs->pinState("online/file1"), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState("unspec/file1"), PinState::Unspecified);
+
+        // Sync again: bad pin states of new local files usually take effect on second sync
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // When a file in an online-only folder is renamed, it retains its pin
+        fakeFolder.localModifier().rename("online/file1", "online/file1rename");
+        fakeFolder.remoteModifier().rename("online/file2", "online/file2rename");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->pinState("online/file1rename"), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState("online/file2rename"), PinState::Unspecified);
+
+        // When a folder is renamed, the pin states inside should be retained
+        fakeFolder.localModifier().rename("online", "onlinerenamed1");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->pinState("onlinerenamed1"), PinState::OnlineOnly);
+        QCOMPARE(*vfs->pinState("onlinerenamed1/file1rename"), PinState::Unspecified);
+
+        fakeFolder.remoteModifier().rename("onlinerenamed1", "onlinerenamed2");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(*vfs->pinState("onlinerenamed2"), PinState::OnlineOnly);
+        QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::Unspecified);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncVirtualFiles)

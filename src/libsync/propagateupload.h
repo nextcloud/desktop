@@ -121,16 +121,7 @@ public:
 
     virtual void start() Q_DECL_OVERRIDE;
 
-    virtual bool finished() Q_DECL_OVERRIDE
-    {
-        qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                         << replyStatusString()
-                         << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
-                         << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-
-        emit finishedSignal();
-        return true;
-    }
+    virtual bool finished() Q_DECL_OVERRIDE;
 
     QIODevice *device()
     {
