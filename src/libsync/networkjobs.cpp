@@ -52,6 +52,25 @@ Q_LOGGING_CATEGORY(lcProppatchJob, "sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "sync.networkjob.jsonapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
 
+QByteArray parseEtag(const char *header)
+{
+    if (!header)
+        return QByteArray();
+    QByteArray arr = header;
+
+    // Weak E-Tags can appear when gzip compression is on, see #3946
+    if (arr.startsWith("W/"))
+        arr = arr.mid(2);
+
+    // https://github.com/owncloud/client/issues/1195
+    arr.replace("-gzip", "");
+
+    if (arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
+        arr = arr.mid(1, arr.length() - 2);
+    }
+    return arr;
+}
+
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
@@ -96,7 +115,13 @@ bool RequestEtagJob::finished()
             if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
                 QString name = reader.name().toString();
                 if (name == QLatin1String("getetag")) {
-                    etag += reader.readElementText();
+                    auto etagText = reader.readElementText();
+                    auto parsedTag = parseEtag(etagText.toUtf8());
+                    if (!parsedTag.isEmpty()) {
+                        etag += QString::fromUtf8(parsedTag);
+                    } else {
+                        etag += etagText;
+                    }
                 }
             }
         }

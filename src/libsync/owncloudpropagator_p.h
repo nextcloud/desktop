@@ -17,29 +17,11 @@
 
 #include "owncloudpropagator.h"
 #include "syncfileitem.h"
+#include "networkjobs.h"
 #include <QLoggingCategory>
 #include <QNetworkReply>
 
 namespace OCC {
-
-inline QByteArray parseEtag(const char *header)
-{
-    if (!header)
-        return QByteArray();
-    QByteArray arr = header;
-
-    // Weak E-Tags can appear when gzip compression is on, see #3946
-    if (arr.startsWith("W/"))
-        arr = arr.mid(2);
-
-    // https://github.com/owncloud/client/issues/1195
-    arr.replace("-gzip", "");
-
-    if (arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
-        arr = arr.mid(1, arr.length() - 2);
-    }
-    return arr;
-}
 
 inline QByteArray getEtagFromReply(QNetworkReply *reply)
 {

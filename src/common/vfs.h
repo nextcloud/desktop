@@ -257,8 +257,7 @@ protected:
     // Db-backed pin state handling. Derived classes may use it to implement pin states.
     bool setPinStateInDb(const QString &folderPath, PinState state);
     Optional<PinState> pinStateInDb(const QString &folderPath);
-    // sadly for virtual files the path in the metadata table can differ from path in 'flags'
-    AvailabilityResult availabilityInDb(const QString &folderPath, const QString &pinPath);
+    AvailabilityResult availabilityInDb(const QString &folderPath);
 
     // the parameters passed to start()
     VfsSetupParams _setupParams;

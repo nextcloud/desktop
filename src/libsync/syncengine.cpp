@@ -774,6 +774,7 @@ void SyncEngine::slotPropagationFinished(bool success)
 
     conflictRecordMaintenance();
 
+    _journal->deleteStaleFlagsEntries();
     _journal->commit("All Finished.", false);
 
     // Send final progress information even if no
