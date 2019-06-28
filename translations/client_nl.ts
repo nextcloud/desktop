@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="236"/>
         <source>This account supports end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Dit account ondersteunt end-to-endversleuteling</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="238"/>
