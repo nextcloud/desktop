@@ -8,9 +8,12 @@
 #include <QtTest>
 #include "syncenginetestutils.h"
 #include "common/vfs.h"
+#include "config.h"
 #include <syncengine.h>
 
 using namespace OCC;
+
+#define DVSUFFIX APPLICATION_DOTVIRTUALFILE_SUFFIX
 
 SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
 {
@@ -39,7 +42,7 @@ void triggerDownload(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    journal.getFileRecord(path + ".owncloud", &record);
+    journal.getFileRecord(path + DVSUFFIX, &record);
     if (!record.isValid())
         return;
     record._type = ItemTypeVirtualFileDownload;
@@ -107,20 +110,20 @@ private slots:
         fakeFolder.remoteModifier().setModTime("A/a1", someDate);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1.owncloud").lastModified(), someDate);
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1" DVSUFFIX).lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
         cleanup();
 
         // Another sync doesn't actually lead to changes
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1.owncloud").lastModified(), someDate);
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1" DVSUFFIX).lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.isEmpty());
         cleanup();
 
@@ -128,10 +131,10 @@ private slots:
         fakeFolder.syncJournal().forceRemoteDiscoveryNextSync();
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1.owncloud").lastModified(), someDate);
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1" DVSUFFIX).lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.isEmpty());
         cleanup();
 
@@ -139,24 +142,24 @@ private slots:
         fakeFolder.remoteModifier().appendByte("A/a1");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_UPDATE_METADATA));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._fileSize, 65);
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_UPDATE_METADATA));
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._fileSize, 65);
         cleanup();
 
         // If the local virtual file file is removed, it'll just be recreated
         if (!doLocalDiscovery)
             fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A" });
-        fakeFolder.localModifier().remove("A/a1.owncloud");
+        fakeFolder.localModifier().remove("A/a1" DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._fileSize, 65);
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._fileSize, 65);
         cleanup();
 
         // Remote rename is propagated
@@ -164,46 +167,46 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1m"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1m.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1m" DVSUFFIX));
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1m"));
         QVERIFY(
-            itemInstruction(completeSpy, "A/a1m.owncloud", CSYNC_INSTRUCTION_RENAME)
-            || (itemInstruction(completeSpy, "A/a1m.owncloud", CSYNC_INSTRUCTION_NEW)
-                && itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_REMOVE)));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1m.owncloud")._type, ItemTypeVirtualFile);
+            itemInstruction(completeSpy, "A/a1m" DVSUFFIX, CSYNC_INSTRUCTION_RENAME)
+            || (itemInstruction(completeSpy, "A/a1m" DVSUFFIX, CSYNC_INSTRUCTION_NEW)
+                && itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_REMOVE)));
+        QCOMPARE(dbRecord(fakeFolder, "A/a1m" DVSUFFIX)._type, ItemTypeVirtualFile);
         cleanup();
 
         // Remote remove is propagated
         fakeFolder.remoteModifier().remove("A/a1m");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1m.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1m" DVSUFFIX));
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1m"));
-        QVERIFY(itemInstruction(completeSpy, "A/a1m.owncloud", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(!dbRecord(fakeFolder, "A/a1.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/a1m.owncloud").isValid());
+        QVERIFY(itemInstruction(completeSpy, "A/a1m" DVSUFFIX, CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(!dbRecord(fakeFolder, "A/a1" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a1m" DVSUFFIX).isValid());
         cleanup();
 
         // Edge case: Local virtual file but no db entry for some reason
         fakeFolder.remoteModifier().insert("A/a2", 64);
         fakeFolder.remoteModifier().insert("A/a3", 64);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/a2.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a3.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a3" DVSUFFIX));
         cleanup();
 
-        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2.owncloud");
-        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3.owncloud");
+        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2" DVSUFFIX);
+        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3" DVSUFFIX);
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/a2.owncloud"));
-        QVERIFY(itemInstruction(completeSpy, "A/a2.owncloud", CSYNC_INSTRUCTION_UPDATE_METADATA));
-        QVERIFY(dbRecord(fakeFolder, "A/a2.owncloud").isValid());
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a3.owncloud"));
-        QVERIFY(itemInstruction(completeSpy, "A/a3.owncloud", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(!dbRecord(fakeFolder, "A/a3.owncloud").isValid());
+        QVERIFY(fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
+        QVERIFY(itemInstruction(completeSpy, "A/a2" DVSUFFIX, CSYNC_INSTRUCTION_UPDATE_METADATA));
+        QVERIFY(dbRecord(fakeFolder, "A/a2" DVSUFFIX).isValid());
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a3" DVSUFFIX));
+        QVERIFY(itemInstruction(completeSpy, "A/a3" DVSUFFIX, CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(!dbRecord(fakeFolder, "A/a3" DVSUFFIX).isValid());
         cleanup();
     }
 
@@ -229,8 +232,8 @@ private slots:
         fakeFolder.remoteModifier().mkdir("C");
         fakeFolder.remoteModifier().insert("C/c1", 64);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("B/b2.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("B/b2" DVSUFFIX));
         cleanup();
 
         // A: the correct file and a conflicting file are added, virtual files stay
@@ -240,8 +243,8 @@ private slots:
         fakeFolder.localModifier().insert("A/a2", 30);
         fakeFolder.localModifier().insert("B/b1", 64);
         fakeFolder.localModifier().insert("B/b2", 30);
-        fakeFolder.localModifier().remove("B/b1.owncloud");
-        fakeFolder.localModifier().remove("B/b2.owncloud");
+        fakeFolder.localModifier().remove("B/b1" DVSUFFIX);
+        fakeFolder.localModifier().remove("B/b2" DVSUFFIX);
         fakeFolder.localModifier().mkdir("C/c1");
         fakeFolder.localModifier().insert("C/c1/foo");
         QVERIFY(fakeFolder.syncOnce());
@@ -254,11 +257,11 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "C/c1", CSYNC_INSTRUCTION_CONFLICT));
 
         // no virtual file files should remain
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a2.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("B/b1.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("B/b2.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("C/c1.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("B/b1" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("B/b2" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("C/c1" DVSUFFIX));
 
         // conflict files should exist
         QCOMPARE(fakeFolder.syncJournal().conflictRecordPaths().size(), 3);
@@ -269,11 +272,11 @@ private slots:
         QCOMPARE(dbRecord(fakeFolder, "B/b1")._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, "B/b2")._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, "C/c1")._type, ItemTypeFile);
-        QVERIFY(!dbRecord(fakeFolder, "A/a1.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/a2.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "B/b1.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "B/b2.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "C/c1.owncloud").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a1" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a2" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "B/b1" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "B/b2" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "C/c1" DVSUFFIX).isValid());
 
         cleanup();
     }
@@ -307,10 +310,10 @@ private slots:
         fakeFolder.remoteModifier().insert("A/new");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/new"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/new.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/new" DVSUFFIX));
         QVERIFY(fakeFolder.currentRemoteState().find("A/new"));
-        QVERIFY(itemInstruction(completeSpy, "A/new.owncloud", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/new.owncloud")._type, ItemTypeVirtualFile);
+        QVERIFY(itemInstruction(completeSpy, "A/new" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
+        QCOMPARE(dbRecord(fakeFolder, "A/new" DVSUFFIX)._type, ItemTypeVirtualFile);
         cleanup();
     }
 
@@ -340,17 +343,17 @@ private slots:
         fakeFolder.remoteModifier().insert("A/b3");
         fakeFolder.remoteModifier().insert("A/b4");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a2.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a3.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a4.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a5.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a6.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a7.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/b1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/b2.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/b3.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/b4.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a3" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a4" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a5" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a6" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a7" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/b1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/b2" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/b3" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/b4" DVSUFFIX));
         cleanup();
 
         // Download by changing the db entry
@@ -362,10 +365,10 @@ private slots:
         triggerDownload(fakeFolder, "A/a6");
         triggerDownload(fakeFolder, "A/a7");
         // Download by renaming locally
-        fakeFolder.localModifier().rename("A/b1.owncloud", "A/b1");
-        fakeFolder.localModifier().rename("A/b2.owncloud", "A/b2");
-        fakeFolder.localModifier().rename("A/b3.owncloud", "A/b3");
-        fakeFolder.localModifier().rename("A/b4.owncloud", "A/b4");
+        fakeFolder.localModifier().rename("A/b1" DVSUFFIX, "A/b1");
+        fakeFolder.localModifier().rename("A/b2" DVSUFFIX, "A/b2");
+        fakeFolder.localModifier().rename("A/b3" DVSUFFIX, "A/b3");
+        fakeFolder.localModifier().rename("A/b4" DVSUFFIX, "A/b4");
         // Remote complications
         fakeFolder.remoteModifier().appendByte("A/a2");
         fakeFolder.remoteModifier().remove("A/a3");
@@ -376,27 +379,27 @@ private slots:
         // Local complications
         fakeFolder.localModifier().insert("A/a5");
         fakeFolder.localModifier().insert("A/a6");
-        fakeFolder.localModifier().remove("A/a6.owncloud");
-        fakeFolder.localModifier().rename("A/a7.owncloud", "A/a7");
+        fakeFolder.localModifier().remove("A/a6" DVSUFFIX);
+        fakeFolder.localModifier().rename("A/a7" DVSUFFIX, "A/a7");
 
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
         QCOMPARE(findItem(completeSpy, "A/a1")->_type, ItemTypeVirtualFileDownload);
-        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NONE));
         QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_SYNC));
         QCOMPARE(findItem(completeSpy, "A/a2")->_type, ItemTypeVirtualFileDownload);
-        QVERIFY(itemInstruction(completeSpy, "A/a2.owncloud", CSYNC_INSTRUCTION_NONE));
-        QVERIFY(itemInstruction(completeSpy, "A/a3.owncloud", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(itemInstruction(completeSpy, "A/a2" DVSUFFIX, CSYNC_INSTRUCTION_NONE));
+        QVERIFY(itemInstruction(completeSpy, "A/a3" DVSUFFIX, CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "A/a4m", CSYNC_INSTRUCTION_NEW));
-        QVERIFY(itemInstruction(completeSpy, "A/a4.owncloud", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(itemInstruction(completeSpy, "A/a4" DVSUFFIX, CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "A/a5", CSYNC_INSTRUCTION_CONFLICT));
-        QVERIFY(itemInstruction(completeSpy, "A/a5.owncloud", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(itemInstruction(completeSpy, "A/a5" DVSUFFIX, CSYNC_INSTRUCTION_NONE));
         QVERIFY(itemInstruction(completeSpy, "A/a6", CSYNC_INSTRUCTION_CONFLICT));
         QVERIFY(itemInstruction(completeSpy, "A/a7", CSYNC_INSTRUCTION_SYNC));
         QVERIFY(itemInstruction(completeSpy, "A/b1", CSYNC_INSTRUCTION_SYNC));
         QVERIFY(itemInstruction(completeSpy, "A/b2", CSYNC_INSTRUCTION_SYNC));
         QVERIFY(itemInstruction(completeSpy, "A/b3", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(itemInstruction(completeSpy, "A/b4m.owncloud", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/b4m" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "A/b4", CSYNC_INSTRUCTION_REMOVE));
         QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeFile);
@@ -408,18 +411,18 @@ private slots:
         QCOMPARE(dbRecord(fakeFolder, "A/b1")._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, "A/b2")._type, ItemTypeFile);
         QVERIFY(!dbRecord(fakeFolder, "A/b3").isValid());
-        QCOMPARE(dbRecord(fakeFolder, "A/b4m.owncloud")._type, ItemTypeVirtualFile);
-        QVERIFY(!dbRecord(fakeFolder, "A/a1.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/a2.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/a3.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/a4.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/a5.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/a6.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/a7.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/b1.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/b2.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/b3.owncloud").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/b4.owncloud").isValid());
+        QCOMPARE(dbRecord(fakeFolder, "A/b4m" DVSUFFIX)._type, ItemTypeVirtualFile);
+        QVERIFY(!dbRecord(fakeFolder, "A/a1" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a2" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a3" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a4" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a5" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a6" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a7" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/b1" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/b2" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/b3" DVSUFFIX).isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/b4" DVSUFFIX).isValid());
 
         triggerDownload(fakeFolder, "A/b4m");
         QVERIFY(fakeFolder.syncOnce());
@@ -444,7 +447,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
         cleanup();
 
         // Download by changing the db entry
@@ -452,20 +455,20 @@ private slots:
         fakeFolder.serverErrorPaths().append("A/a1", 500);
         QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
-        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NONE));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NONE));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFileDownload);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFileDownload);
         QVERIFY(!dbRecord(fakeFolder, "A/a1").isValid());
         cleanup();
 
         fakeFolder.serverErrorPaths().clear();
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
-        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NONE));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
-        QVERIFY(!dbRecord(fakeFolder, "A/a1.owncloud").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a1" DVSUFFIX).isValid());
     }
 
     void testNewFilesNotVirtual()
@@ -477,7 +480,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
 
         fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::AlwaysLocal);
 
@@ -485,7 +488,7 @@ private slots:
         fakeFolder.remoteModifier().insert("A/a2");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("A/a2"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a2.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
     }
 
     void testDownloadRecursive()
@@ -510,14 +513,14 @@ private slots:
         fakeFolder.remoteModifier().insert("B/b1");
         fakeFolder.remoteModifier().insert("B/Sub/b2");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a2.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/Sub/a3.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/Sub/a4.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/Sub/SubSub/a5.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/Sub2/a6.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("B/b1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("B/Sub/b2.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/Sub/a3" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/Sub/a4" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/Sub/SubSub/a5" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/Sub2/a6" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("B/b1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("B/Sub/b2" DVSUFFIX));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a2"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/a3"));
@@ -533,14 +536,14 @@ private slots:
         fakeFolder.syncJournal().markVirtualFileForDownloadRecursively("A/Sub");
 
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a2.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/a3.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/a4.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/SubSub/a5.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/Sub2/a6.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("B/b1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("B/Sub/b2.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/a3" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/a4" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/SubSub/a5" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/Sub2/a6" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("B/b1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("B/Sub/b2" DVSUFFIX));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a2"));
         QVERIFY(fakeFolder.currentLocalState().find("A/Sub/a3"));
@@ -554,21 +557,21 @@ private slots:
         // Currently, this continue to add it as a virtual file.
         fakeFolder.remoteModifier().insert("A/Sub/SubSub/a7");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/Sub/SubSub/a7.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/Sub/SubSub/a7" DVSUFFIX));
         QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/SubSub/a7"));
 
         // Now download all files in "A"
         fakeFolder.syncJournal().markVirtualFileForDownloadRecursively("A");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a2.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/a3.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/a4.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/SubSub/a5.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub2/a6.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/SubSub/a7.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("B/b1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("B/Sub/b2.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/a3" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/a4" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/SubSub/a5" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub2/a6" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/Sub/SubSub/a7" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("B/b1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("B/Sub/b2" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a2"));
         QVERIFY(fakeFolder.currentLocalState().find("A/Sub/a3"));
@@ -598,29 +601,29 @@ private slots:
         cleanup();
 
         // If a file is renamed to <name>.owncloud, it becomes virtual
-        fakeFolder.localModifier().rename("A/a1", "A/a1.owncloud");
+        fakeFolder.localModifier().rename("A/a1", "A/a1" DVSUFFIX);
         // If a file is renamed to <random>.owncloud, the rename propagates but the
         // file isn't made virtual the first sync run.
-        fakeFolder.localModifier().rename("A/a2", "A/rand.owncloud");
+        fakeFolder.localModifier().rename("A/a2", "A/rand" DVSUFFIX);
         // dangling virtual files are removed
-        fakeFolder.localModifier().insert("A/dangling.owncloud", 1, ' ');
+        fakeFolder.localModifier().insert("A/dangling" DVSUFFIX, 1, ' ');
         QVERIFY(fakeFolder.syncOnce());
 
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
+        QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
 
         QVERIFY(!fakeFolder.currentLocalState().find("A/a2"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a2.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("A/rand"));
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a2"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/rand"));
         QVERIFY(itemInstruction(completeSpy, "A/rand", CSYNC_INSTRUCTION_RENAME));
         QVERIFY(dbRecord(fakeFolder, "A/rand")._type == ItemTypeFile);
 
-        QVERIFY(!fakeFolder.currentLocalState().find("A/dangling.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/dangling" DVSUFFIX));
         cleanup();
     }
 
@@ -641,41 +644,41 @@ private slots:
         fakeFolder.remoteModifier().insert("file3", 256, 'C');
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(fakeFolder.currentLocalState().find("file1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("file2.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("file3.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("file1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("file2" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("file3" DVSUFFIX));
         cleanup();
 
-        fakeFolder.localModifier().rename("file1.owncloud", "renamed1.owncloud");
-        fakeFolder.localModifier().rename("file2.owncloud", "renamed2.owncloud");
+        fakeFolder.localModifier().rename("file1" DVSUFFIX, "renamed1" DVSUFFIX);
+        fakeFolder.localModifier().rename("file2" DVSUFFIX, "renamed2" DVSUFFIX);
         triggerDownload(fakeFolder, "file2");
         triggerDownload(fakeFolder, "file3");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(!fakeFolder.currentLocalState().find("file1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("renamed1.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("file1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("renamed1" DVSUFFIX));
         QVERIFY(!fakeFolder.currentRemoteState().find("file1"));
         QVERIFY(fakeFolder.currentRemoteState().find("renamed1"));
-        QVERIFY(itemInstruction(completeSpy, "renamed1.owncloud", CSYNC_INSTRUCTION_RENAME));
-        QVERIFY(dbRecord(fakeFolder, "renamed1.owncloud").isValid());
+        QVERIFY(itemInstruction(completeSpy, "renamed1" DVSUFFIX, CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "renamed1" DVSUFFIX).isValid());
 
         // file2 has a conflict between the download request and the rename:
         // the rename wins, the download is ignored
         QVERIFY(!fakeFolder.currentLocalState().find("file2"));
-        QVERIFY(!fakeFolder.currentLocalState().find("file2.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("renamed2.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("file2" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("renamed2" DVSUFFIX));
         QVERIFY(fakeFolder.currentRemoteState().find("renamed2"));
-        QVERIFY(itemInstruction(completeSpy, "renamed2.owncloud", CSYNC_INSTRUCTION_RENAME));
-        QVERIFY(dbRecord(fakeFolder, "renamed2.owncloud")._type == ItemTypeVirtualFile);
+        QVERIFY(itemInstruction(completeSpy, "renamed2" DVSUFFIX, CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "renamed2" DVSUFFIX)._type == ItemTypeVirtualFile);
 
         QVERIFY(itemInstruction(completeSpy, "file3", CSYNC_INSTRUCTION_SYNC));
         QVERIFY(dbRecord(fakeFolder, "file3")._type == ItemTypeFile);
         cleanup();
 
         // Test rename while adding/removing vfs suffix
-        fakeFolder.localModifier().rename("renamed1.owncloud", "R1");
+        fakeFolder.localModifier().rename("renamed1" DVSUFFIX, "R1");
         // Contents of file2 could also change at the same time...
-        fakeFolder.localModifier().rename("file3", "R3.owncloud");
+        fakeFolder.localModifier().rename("file3", "R3" DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
         cleanup();
     }
@@ -700,9 +703,9 @@ private slots:
         triggerDownload(fakeFolder, "case6");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(fakeFolder.currentLocalState().find("case3.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("case3" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("case4"));
-        QVERIFY(fakeFolder.currentLocalState().find("case5.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("case5" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("case6"));
         cleanup();
 
@@ -710,13 +713,13 @@ private slots:
         // Case 2: foo.oc -> bar.oc (tested elsewhere)
 
         // Case 3: foo.oc -> bar (db unchanged)
-        fakeFolder.localModifier().rename("case3.owncloud", "case3-rename");
+        fakeFolder.localModifier().rename("case3" DVSUFFIX, "case3-rename");
 
         // Case 4: foo -> bar.oc (db unchanged)
-        fakeFolder.localModifier().rename("case4", "case4-rename.owncloud");
+        fakeFolder.localModifier().rename("case4", "case4-rename" DVSUFFIX);
 
         // Case 5: foo -> bar (db dehydrate)
-        fakeFolder.localModifier().rename("case5.owncloud", "case5-rename.owncloud");
+        fakeFolder.localModifier().rename("case5" DVSUFFIX, "case5-rename" DVSUFFIX);
         triggerDownload(fakeFolder, "case5");
 
         // Case 6: foo.oc -> bar.oc (db hydrate)
@@ -727,19 +730,19 @@ private slots:
 
         // Case 3: the rename went though, hydration is forgotten
         QVERIFY(!fakeFolder.currentLocalState().find("case3"));
-        QVERIFY(!fakeFolder.currentLocalState().find("case3.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case3" DVSUFFIX));
         QVERIFY(!fakeFolder.currentLocalState().find("case3-rename"));
-        QVERIFY(fakeFolder.currentLocalState().find("case3-rename.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("case3-rename" DVSUFFIX));
         QVERIFY(!fakeFolder.currentRemoteState().find("case3"));
         QVERIFY(fakeFolder.currentRemoteState().find("case3-rename"));
-        QVERIFY(itemInstruction(completeSpy, "case3-rename.owncloud", CSYNC_INSTRUCTION_RENAME));
-        QVERIFY(dbRecord(fakeFolder, "case3-rename.owncloud")._type == ItemTypeVirtualFile);
+        QVERIFY(itemInstruction(completeSpy, "case3-rename" DVSUFFIX, CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "case3-rename" DVSUFFIX)._type == ItemTypeVirtualFile);
 
         // Case 4: the rename went though, dehydration is forgotten
         QVERIFY(!fakeFolder.currentLocalState().find("case4"));
-        QVERIFY(!fakeFolder.currentLocalState().find("case4.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case4" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("case4-rename"));
-        QVERIFY(!fakeFolder.currentLocalState().find("case4-rename.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case4-rename" DVSUFFIX));
         QVERIFY(!fakeFolder.currentRemoteState().find("case4"));
         QVERIFY(fakeFolder.currentRemoteState().find("case4-rename"));
         QVERIFY(itemInstruction(completeSpy, "case4-rename", CSYNC_INSTRUCTION_RENAME));
@@ -747,19 +750,19 @@ private slots:
 
         // Case 5: the rename went though, hydration is forgotten
         QVERIFY(!fakeFolder.currentLocalState().find("case5"));
-        QVERIFY(!fakeFolder.currentLocalState().find("case5.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case5" DVSUFFIX));
         QVERIFY(!fakeFolder.currentLocalState().find("case5-rename"));
-        QVERIFY(fakeFolder.currentLocalState().find("case5-rename.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("case5-rename" DVSUFFIX));
         QVERIFY(!fakeFolder.currentRemoteState().find("case5"));
         QVERIFY(fakeFolder.currentRemoteState().find("case5-rename"));
-        QVERIFY(itemInstruction(completeSpy, "case5-rename.owncloud", CSYNC_INSTRUCTION_RENAME));
-        QVERIFY(dbRecord(fakeFolder, "case5-rename.owncloud")._type == ItemTypeVirtualFile);
+        QVERIFY(itemInstruction(completeSpy, "case5-rename" DVSUFFIX, CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "case5-rename" DVSUFFIX)._type == ItemTypeVirtualFile);
 
         // Case 6: the rename went though, dehydration is forgotten
         QVERIFY(!fakeFolder.currentLocalState().find("case6"));
-        QVERIFY(!fakeFolder.currentLocalState().find("case6.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case6" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("case6-rename"));
-        QVERIFY(!fakeFolder.currentLocalState().find("case6-rename.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case6-rename" DVSUFFIX));
         QVERIFY(!fakeFolder.currentRemoteState().find("case6"));
         QVERIFY(fakeFolder.currentRemoteState().find("case6-rename"));
         QVERIFY(itemInstruction(completeSpy, "case6-rename", CSYNC_INSTRUCTION_RENAME));
@@ -812,27 +815,27 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         auto isDehydrated = [&](const QString &path) {
-            QString placeholder = path + ".owncloud";
+            QString placeholder = path + DVSUFFIX;
             return !fakeFolder.currentLocalState().find(path)
                 && fakeFolder.currentLocalState().find(placeholder);
         };
         auto hasDehydratedDbEntries = [&](const QString &path) {
             SyncJournalFileRecord normal, suffix;
             fakeFolder.syncJournal().getFileRecord(path, &normal);
-            fakeFolder.syncJournal().getFileRecord(path + ".owncloud", &suffix);
+            fakeFolder.syncJournal().getFileRecord(path + DVSUFFIX, &suffix);
             return !normal.isValid() && suffix.isValid() && suffix._type == ItemTypeVirtualFile;
         };
 
         QVERIFY(isDehydrated("A/a1"));
         QVERIFY(hasDehydratedDbEntries("A/a1"));
-        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_SYNC));
-        QCOMPARE(findItem(completeSpy, "A/a1.owncloud")->_type, ItemTypeVirtualFileDehydration);
-        QCOMPARE(findItem(completeSpy, "A/a1.owncloud")->_file, QStringLiteral("A/a1"));
-        QCOMPARE(findItem(completeSpy, "A/a1.owncloud")->_renameTarget, QStringLiteral("A/a1.owncloud"));
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_SYNC));
+        QCOMPARE(findItem(completeSpy, "A/a1" DVSUFFIX)->_type, ItemTypeVirtualFileDehydration);
+        QCOMPARE(findItem(completeSpy, "A/a1" DVSUFFIX)->_file, QStringLiteral("A/a1"));
+        QCOMPARE(findItem(completeSpy, "A/a1" DVSUFFIX)->_renameTarget, QStringLiteral("A/a1" DVSUFFIX));
         QVERIFY(isDehydrated("A/a2"));
         QVERIFY(hasDehydratedDbEntries("A/a2"));
-        QVERIFY(itemInstruction(completeSpy, "A/a2.owncloud", CSYNC_INSTRUCTION_SYNC));
-        QCOMPARE(findItem(completeSpy, "A/a2.owncloud")->_type, ItemTypeVirtualFileDehydration);
+        QVERIFY(itemInstruction(completeSpy, "A/a2" DVSUFFIX, CSYNC_INSTRUCTION_SYNC));
+        QCOMPARE(findItem(completeSpy, "A/a2" DVSUFFIX)->_type, ItemTypeVirtualFileDehydration);
 
         QVERIFY(!fakeFolder.currentLocalState().find("B/b1"));
         QVERIFY(!fakeFolder.currentRemoteState().find("B/b1"));
@@ -843,7 +846,7 @@ private slots:
         QVERIFY(isDehydrated("B/b3"));
         QVERIFY(hasDehydratedDbEntries("B/b3"));
         QVERIFY(itemInstruction(completeSpy, "B/b2", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(itemInstruction(completeSpy, "B/b3.owncloud", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "B/b3" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
 
         QCOMPARE(fakeFolder.currentRemoteState().find("C/c1")->size, 25);
         QVERIFY(itemInstruction(completeSpy, "C/c1", CSYNC_INSTRUCTION_SYNC));
@@ -880,27 +883,27 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(fakeFolder.currentLocalState().find("f1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a3.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/B/b1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("f1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a3" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/B/b1" DVSUFFIX));
 
         // Make local changes to a3
-        fakeFolder.localModifier().remove("A/a3.owncloud");
-        fakeFolder.localModifier().insert("A/a3.owncloud", 100);
+        fakeFolder.localModifier().remove("A/a3" DVSUFFIX);
+        fakeFolder.localModifier().insert("A/a3" DVSUFFIX, 100);
 
         // Now wipe the virtuals
 
         SyncEngine::wipeVirtualFiles(fakeFolder.localPath(), fakeFolder.syncJournal(), *fakeFolder.syncEngine().syncOptions()._vfs);
 
-        QVERIFY(!fakeFolder.currentLocalState().find("f1.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/a3.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/B/b1.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("f1" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a3" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/B/b1" DVSUFFIX));
 
         fakeFolder.switchToVfs(QSharedPointer<Vfs>(new VfsOff));
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentRemoteState().find("A/a3.owncloud")); // regular upload
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a3" DVSUFFIX)); // regular upload
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
@@ -931,10 +934,10 @@ private slots:
         fakeFolder.remoteModifier().insert("unspec/file1");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(fakeFolder.currentLocalState().find("file1.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("online/file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("file1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("online/file1" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("local/file1"));
-        QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file1" DVSUFFIX));
 
         // Test 2: change root to AlwaysLocal
         setPin("", PinState::AlwaysLocal);
@@ -946,17 +949,17 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         QVERIFY(fakeFolder.currentLocalState().find("file2"));
-        QVERIFY(fakeFolder.currentLocalState().find("online/file2.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("online/file2" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("local/file2"));
-        QVERIFY(fakeFolder.currentLocalState().find("unspec/file2.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file2" DVSUFFIX));
 
         // root file1 was hydrated due to its new pin state
         QVERIFY(fakeFolder.currentLocalState().find("file1"));
 
         // file1 is unchanged in the explicitly pinned subfolders
-        QVERIFY(fakeFolder.currentLocalState().find("online/file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("online/file1" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("local/file1"));
-        QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file1" DVSUFFIX));
 
         // Test 3: change root to OnlineOnly
         setPin("", PinState::OnlineOnly);
@@ -967,18 +970,18 @@ private slots:
         fakeFolder.remoteModifier().insert("unspec/file3");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(fakeFolder.currentLocalState().find("file3.owncloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("online/file3.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("file3" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("online/file3" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("local/file3"));
-        QVERIFY(fakeFolder.currentLocalState().find("unspec/file3.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file3" DVSUFFIX));
 
         // root file1 was dehydrated due to its new pin state
-        QVERIFY(fakeFolder.currentLocalState().find("file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("file1" DVSUFFIX));
 
         // file1 is unchanged in the explicitly pinned subfolders
-        QVERIFY(fakeFolder.currentLocalState().find("online/file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("online/file1" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("local/file1"));
-        QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file1" DVSUFFIX));
     }
 
     // Check what happens if vfs-suffixed files exist on the server or in the db
@@ -994,7 +997,7 @@ private slots:
 
         // file1.owncloud is happily synced with Vfs::Off
         fakeFolder.remoteModifier().mkdir("A");
-        fakeFolder.remoteModifier().insert("A/file1.owncloud");
+        fakeFolder.remoteModifier().insert("A/file1" DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         cleanup();
@@ -1003,25 +1006,25 @@ private slots:
         setupVfs(fakeFolder);
 
         // Local changes of suffixed file do nothing
-        fakeFolder.localModifier().appendByte("A/file1.owncloud");
+        fakeFolder.localModifier().appendByte("A/file1" DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(itemInstruction(completeSpy, "A/file1.owncloud", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(itemInstruction(completeSpy, "A/file1" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
         cleanup();
 
         // Remote don't do anything either
-        fakeFolder.remoteModifier().appendByte("A/file1.owncloud");
+        fakeFolder.remoteModifier().appendByte("A/file1" DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(itemInstruction(completeSpy, "A/file1.owncloud", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(itemInstruction(completeSpy, "A/file1" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
         cleanup();
 
         // New files with a suffix aren't propagated downwards in the first place
-        fakeFolder.remoteModifier().insert("A/file2.owncloud");
+        fakeFolder.remoteModifier().insert("A/file2" DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(itemInstruction(completeSpy, "A/file2.owncloud", CSYNC_INSTRUCTION_IGNORE));
-        QVERIFY(fakeFolder.currentRemoteState().find("A/file2.owncloud"));
+        QVERIFY(itemInstruction(completeSpy, "A/file2" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(fakeFolder.currentRemoteState().find("A/file2" DVSUFFIX));
         QVERIFY(!fakeFolder.currentLocalState().find("A/file2"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/file2.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/file2.owncloud.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/file2" DVSUFFIX));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/file2" DVSUFFIX DVSUFFIX));
         cleanup();
     }
 
@@ -1056,13 +1059,13 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         // root is unspecified
-        QCOMPARE(*vfs->availability("file1.owncloud"), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("file1" DVSUFFIX), VfsItemAvailability::AllDehydrated);
         QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
         QCOMPARE(*vfs->availability("local/file1"), VfsItemAvailability::AlwaysLocal);
         QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
-        QCOMPARE(*vfs->availability("online/file1.owncloud"), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("online/file1" DVSUFFIX), VfsItemAvailability::OnlineOnly);
         QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllDehydrated);
-        QCOMPARE(*vfs->availability("unspec/file1.owncloud"), VfsItemAvailability::AllDehydrated);
+        QCOMPARE(*vfs->availability("unspec/file1" DVSUFFIX), VfsItemAvailability::AllDehydrated);
 
         // Subitem pin states can ruin "pure" availabilities
         setPin("local/sub", PinState::OnlineOnly);
@@ -1072,7 +1075,7 @@ private slots:
 
         triggerDownload(fakeFolder, "unspec/file1");
         setPin("local/file2", PinState::OnlineOnly);
-        setPin("online/file2.owncloud", PinState::AlwaysLocal);
+        setPin("online/file2" DVSUFFIX, PinState::AlwaysLocal);
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllHydrated);
@@ -1120,7 +1123,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // root is unspecified
-        QCOMPARE(*vfs->pinState("file1.owncloud"), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState("file1" DVSUFFIX), PinState::Unspecified);
         QCOMPARE(*vfs->pinState("local/file1"), PinState::AlwaysLocal);
         QCOMPARE(*vfs->pinState("online/file1"), PinState::Unspecified);
         QCOMPARE(*vfs->pinState("unspec/file1"), PinState::Unspecified);
@@ -1158,7 +1161,7 @@ private slots:
         fakeFolder.remoteModifier().insert("onlinerenamed2/file1rename");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::OnlineOnly);
-        QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename.owncloud"), PinState::OnlineOnly);
+        QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename" DVSUFFIX), PinState::OnlineOnly);
     }
 };
 
