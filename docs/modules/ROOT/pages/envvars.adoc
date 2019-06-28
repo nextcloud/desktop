@@ -12,7 +12,7 @@ The environment variables are:
 | Description
 
 | `OWNCLOUD_CHUNK_SIZE`
-| 5242880 (or 5 MiB)
+|  dynamic, initially 10*1000*1000
 | Specifies the chunk size of uploaded files in bytes.
 Increasing this value may help with synchronization problems in certain configurations.
 
