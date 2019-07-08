@@ -298,7 +298,7 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
             sharee->shareWith(), SharePermission(permissions));
     } else {
         _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-            sharee->shareWith(), SharePermissionDefault);
+            sharee->shareWith(), _maxSharingPermissions);
     }
 
     _ui->shareeLineEdit->setEnabled(false);

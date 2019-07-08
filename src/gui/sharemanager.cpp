@@ -295,6 +295,13 @@ void ShareManager::createShare(const QString &path,
     connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
     connect(job, &OcsShareJob::shareJobFinished, this,
         [=](const QJsonDocument &reply) {
+            // Note: The following code attempts to determine if the item was shared with
+            // the user and what the permissions were. It doesn't do a good job at it since
+            // the == path comparison will mean it doesn't work for subitems of shared
+            // folders. Also, it's nicer if the calling code determines the share-permissions
+            // (see maxSharingPermissions) via a PropFind and passes in valid permissions.
+            // Remove this code for >= 2.7.0.
+
             // Find existing share permissions (if this was shared with us)
             Share::Permissions existingPermissions = SharePermissionDefault;
             foreach (const QJsonValue &element, reply.object()["ocs"].toObject()["data"].toArray()) {
