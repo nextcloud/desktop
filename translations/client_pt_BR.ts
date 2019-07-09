@@ -409,7 +409,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1113"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Existem pastas que não foram sincronizadas porque são muito grandes ou são armazenamentos externos:</translation>
+        <translation>Existem pastas que não foram sincronizadas porque são muito grandes ou são armazenamentos externos: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1159"/>
@@ -1464,7 +1464,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Editor de Arquivos Ignorado</translation>
+        <translation>Editor de Arquivos Ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
@@ -1474,7 +1474,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation>Sincronizar arquivos escondidos</translation>
+        <translation>Sincronizar arquivos ocultos</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
