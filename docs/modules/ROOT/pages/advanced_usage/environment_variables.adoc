@@ -3,6 +3,10 @@
 The behavior of the client can also be controlled using environment variables.
 The value of the environment variables overrides the values in the configuration file.
 
+Note that most environment variables only exist for debugging or testing.
+They are not officially supported and may change from version to version.
+If you end up relying on a setting only available through an environment variable, please create a bug report.
+
 The environment variables are:
 
 [cols="2,1,4", options="header"]
@@ -12,9 +16,27 @@ The environment variables are:
 | Description
 
 | `OWNCLOUD_CHUNK_SIZE`
-| 5242880 (or 5 MiB)
-| Specifies the chunk size of uploaded files in bytes.
-Increasing this value may help with synchronization problems in certain configurations.
+| 10000000 (or 10 MB)
+| Specifies the initial chunk size of uploaded files in bytes.
+The client will dynamically adjust this size within the maximum and minimum bounds (see below).
+
+| `OWNCLOUD_MAX_CHUNK_SIZE`
+| 100000000 (or 100 MB)
+| Specifies the maximum chunk size of uploaded files in bytes.
+
+| `OWNCLOUD_MIN_CHUNK_SIZE`
+| 1000000 (or 1 MB)
+| Specifies the minimum chunk size of uploaded files in bytes.
+
+| `OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION`
+| 60000
+| Target duration in milliseconds for chunk uploads.
+The client adjusts the chunk size until each chunk upload takes approximately this long.
+Set to 0 to disable dynamic chunk sizing.
+
+| `OWNCLOUD_CHUNKING_NG`
+| depend on server capability
+| Force-enable ("1") or force-disable ("0") the NG chunking algorithm.
 
 | `OWNCLOUD_TIMEOUT`
 | 300 
@@ -41,4 +63,69 @@ More information available under the "Low Disk Space" section.
 | `OWNCLOUD_BLACKLIST_TIME_MAX` 
 | 24*60*60 (or one day)
 | Maximum timeout, in seconds, for blacklisted files.
+
+| `OWNCLOUD_HTTP2_ENABLED`
+| depend on Qt version
+| Force-enable ("1") or force-disable ("0") HTTP2 support.
+Note that HTTP2 use also depends on whether the server supports it.
+
+| `OWNCLOUD_MINIMAL_TRAY_MENU`
+| unset
+| If set a minimal tray menu is used.
+Helpful if a platform's tray has problematic behavior.
+
+| `OWNCLOUD_TRAY_UPDATE_WHILE_VISIBLE`
+| 0
+| Set to "1" to allow the tray menu to be updated while it's visible to the user.
+
+| `OWNCLOUD_FORCE_TRAY_SHOW_HIDE`
+| unset
+| Set to "1" to reestablish the tray icon every time the menu changes.
+
+| `OWNCLOUD_FORCE_TRAY_FAKE_DOUBLE_CLICK`
+| unset
+| Set to "1" if single tray clicks sometimes get recognized as double clicks.
+
+| `OWNCLOUD_FORCE_TRAY_MANUAL_VISIBILITY`
+| unset
+| Set to "1" if the tray menu is flickering while opened.
+
+| `OWNCLOUD_FORCE_TRAY_NO_ABOUT_TO_SHOW`
+| unset
+| Set to "1" if the tray menu sometimes contains stale entries.
+
+| `OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL`
+| 3600000 (1 hour)
+| Maximum time in milliseconds that fast local discovery is allowed for after a full local discovery.
+Set to 0 to always require full local discovery.
+Set to -1 to never require full local discovery.
+
+| `OWNCLOUD_SQLITE_JOURNAL_MODE`
+| depends on filesystem
+| Set a specific sqlite journal mode.
+
+| `OWNCLOUD_SQLITE_LOCKING_MODE`
+| EXCLUSIVE
+| Set a specific sqlite locking mode.
+
+| `OWNCLOUD_SQLITE_TEMP_STORE`
+| unset
+| Set the given temp_store on the sqlite database.
+
+| `OWNCLOUD_DISABLE_CHECKSUM_COMPUTATIONS`
+| unset
+| Set to disable all file checksum computations.
+
+| `OWNCLOUD_DISABLE_CHECKSUM_UPLOAD`
+| unset
+| Set to disable computing checksums for uploaded files.
+
+| `OWNCLOUD_CONTENT_CHECKSUM_TYPE`
+| SHA1
+| Select the file checksumming algorithm.
+"Adler32", "MD5", "SHA1", "SHA256", "SHA3-256" are valid, but not all have server support.
+
+| `OWNCLOUD_UPLOAD_CONFLICT_FILES`
+| unset
+| Set to "1" to enable uploading conflict files to the server.
 |===
