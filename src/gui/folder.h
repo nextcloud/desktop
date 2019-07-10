@@ -275,10 +275,11 @@ public:
 
     /** whether new remote files shall become virtual locally
      *
-     * This is the root folder pin state and can be overridden by explicit subfolder pin states.
+     * This happens when the root folder pin state is OnlineOnly, but can be
+     * overridden by explicit subfolder pin states.
      */
     bool newFilesAreVirtual() const;
-    void setNewFilesAreVirtual(bool enabled);
+    void setRootPinState(PinState state);
 
     /** Whether user desires a switch that couldn't be executed yet, see member */
     bool isVfsOnOffSwitchPending() const { return _vfsOnOffPending; }
@@ -356,6 +357,9 @@ public slots:
      */
     void schedulePathForLocalDiscovery(const QString &relativePath);
 
+    /** Ensures that the next sync performs a full local discovery. */
+    void slotNextSyncFullLocalDiscovery();
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
@@ -381,9 +385,6 @@ private slots:
      *  FolderMan.
      */
     void slotScheduleThisFolder();
-
-    /** Ensures that the next sync performs a full local discovery. */
-    void slotNextSyncFullLocalDiscovery();
 
     /** Adjust sync result based on conflict data from IssuesWidget.
      *
