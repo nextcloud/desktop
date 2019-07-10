@@ -469,7 +469,7 @@ void AccountSettings::slotFolderWizardAccepted()
     Folder *f = folderMan->addFolder(_accountState, definition);
     if (f) {
         if (definition.virtualFilesMode != Vfs::Off && folderWizard->property("useVirtualFiles").toBool())
-            f->setNewFilesAreVirtual(true);
+            f->setRootPinState(PinState::OnlineOnly);
 
         f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
 
@@ -566,17 +566,19 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             bool ok = false;
             auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
-            for (const auto &entry : oldBlacklist) {
-                folder->journalDb()->schedulePathForRemoteDiscovery(entry);
-                folder->schedulePathForLocalDiscovery(entry);
-            }
 
             // Change the folder vfs mode and load the plugin
             folder->setSupportsVirtualFiles(true);
             folder->setVfsOnOffSwitchPending(false);
 
-            // Sets pin states to OnlineOnly everywhere
-            folder->setNewFilesAreVirtual(true);
+            // Setting to Unspecified retains existing data.
+            // Selective sync excluded folders become OnlineOnly.
+            folder->setRootPinState(PinState::Unspecified);
+            for (const auto &entry : oldBlacklist) {
+                folder->journalDb()->schedulePathForRemoteDiscovery(entry);
+                folder->vfs().setPinState(entry, PinState::OnlineOnly);
+            }
+            folder->slotNextSyncFullLocalDiscovery();
 
             FolderMan::instance()->scheduleFolder(folder);
 
@@ -632,7 +634,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             folder->setVfsOnOffSwitchPending(false);
 
             // Wipe pin states and selective sync db
-            folder->setNewFilesAreVirtual(false);
+            folder->setRootPinState(PinState::AlwaysLocal);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
             FolderMan::instance()->scheduleFolder(folder);
@@ -663,7 +665,7 @@ void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
         return;
 
     // similar to socket api: sets pin state recursively and sync
-    folder->setNewFilesAreVirtual(state == PinState::OnlineOnly);
+    folder->setRootPinState(state);
     folder->scheduleThisFolderSoon();
 }
 
