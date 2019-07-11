@@ -120,6 +120,7 @@ void FolderWatcher::startNotificationTestWhenReady()
     });
 }
 
+
 int FolderWatcher::testLinuxWatchCount() const
 {
 #ifdef Q_OS_LINUX
