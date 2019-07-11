@@ -92,6 +92,19 @@ void FolderWatcher::startNotificatonTest(const QString &path)
     Q_ASSERT(_testNotificationPath.isEmpty());
     _testNotificationPath = path;
 
+    // Don't do the local file modification immediately:
+    // wait for FolderWatchPrivate::_ready
+    startNotificationTestWhenReady();
+}
+
+void FolderWatcher::startNotificationTestWhenReady()
+{
+    if (!_d->_ready) {
+        QTimer::singleShot(1000, this, &FolderWatcher::startNotificationTestWhenReady);
+        return;
+    }
+
+    auto path = _testNotificationPath;
     if (QFile::exists(path)) {
         auto mtime = FileSystem::getModTime(path);
         FileSystem::setModTime(path, mtime + 1);
@@ -100,12 +113,13 @@ void FolderWatcher::startNotificatonTest(const QString &path)
         f.open(QIODevice::WriteOnly | QIODevice::Append);
     }
 
-    QTimer::singleShot(5000, this, [&]() {
+    QTimer::singleShot(5000, this, [this]() {
         if (!_testNotificationPath.isEmpty())
             emit becameUnreliable(tr("The watcher did not receive a test notification."));
         _testNotificationPath.clear();
     });
 }
+
 
 int FolderWatcher::testLinuxWatchCount() const
 {

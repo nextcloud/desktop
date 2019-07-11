@@ -41,6 +41,9 @@ public:
 
     int testWatchCount() const { return _pathToWatch.size(); }
 
+    /// On linux the watcher is ready when the ctor finished.
+    bool _ready = 1;
+
 protected slots:
     void slotReceivedNotification(int fd);
     void slotAddFolderRecursive(const QString &path);
