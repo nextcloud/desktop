@@ -54,6 +54,7 @@ protected:
 signals:
     void changed(const QString &path);
     void lostChanges();
+    void ready();
 
 private:
     QString _path;
@@ -73,6 +74,9 @@ class FolderWatcherPrivate : public QObject
 public:
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate();
+
+    /// Set to non-zero once the WatcherThread is capturing events.
+    QAtomicInt _ready;
 
 private:
     FolderWatcher *_parent;
