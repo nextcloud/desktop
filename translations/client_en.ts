@@ -1248,7 +1248,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="94"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="107"/>
         <source>The watcher did not receive a test notification.</source>
         <translation type="unfinished"></translation>
     </message>
