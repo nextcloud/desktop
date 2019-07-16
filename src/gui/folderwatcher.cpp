@@ -89,6 +89,14 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
 
 void FolderWatcher::startNotificatonTest(const QString &path)
 {
+#ifdef Q_OS_MAC
+    // Testing the folder watcher on OSX is harder because the watcher
+    // automatically discards changes that were performed by our process.
+    // It would still be useful to test but the OSX implementation
+    // is deferred until later.
+    return;
+#endif
+
     Q_ASSERT(_testNotificationPath.isEmpty());
     _testNotificationPath = path;
 
