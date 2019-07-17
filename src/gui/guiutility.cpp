@@ -73,15 +73,15 @@ QString Utility::vfsCurrentAvailabilityText(VfsItemAvailability availability)
 {
     switch(availability) {
     case VfsItemAvailability::AlwaysLocal:
-        return QCoreApplication::translate("utility", "Currently always available locally");
+        return QCoreApplication::translate("utility", "Always available locally");
     case VfsItemAvailability::AllHydrated:
         return QCoreApplication::translate("utility", "Currently available locally");
     case VfsItemAvailability::Mixed:
-        return QCoreApplication::translate("utility", "Currently some available online only");
+        return QCoreApplication::translate("utility", "Some available online only");
     case VfsItemAvailability::AllDehydrated:
-        return QCoreApplication::translate("utility", "Currently available online only");
+        return QCoreApplication::translate("utility", "Available online only");
     case VfsItemAvailability::OnlineOnly:
-        return QCoreApplication::translate("utility", "Currently available online only");
+        return QCoreApplication::translate("utility", "Available online only");
     }
     ENFORCE(false);
 }
