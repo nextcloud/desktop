@@ -1,16 +1,17 @@
 ChangeLog
 =========
 
-version 2.6.0 (2019-06-??)
-(last update on 8022dc266dc634fd40364b91c933ce603b8c9a78)
+version 2.6.0 (2019-07)
+(last update on aafa903a02bbfc30a6c2ad83f02966994c647eb8)
+
 Major changes and additions:
 * Rewrote discovery code for performance improvements and better maintainability.
 * Add experimental native virtual files mode for Windows 10.
-  (https://github.com/owncloud/client/wiki/VfsWinCfAPI)
+  (https://github.com/owncloud/client/wiki/Virtual-Files-on-Windows-10)
 * Add experimental capability to sync file deltas. (#179)
   (https://github.com/owncloud/client/wiki/DeltaSync)
 * Improvements and fixes for all virtual files mode
-  (https://github.com/owncloud/client/wiki/Vfs)
+  (https://github.com/owncloud/client/wiki/Virtual-Files)
 * Add basic support for libcloudproviders for gtk/gnome integration (#7209)
 * Remove support for Shibboleth auth (#6451)
 
@@ -32,6 +33,7 @@ Small changes and bug fixes:
 * Sync: Fix renaming a single file causing the "all files deleted" popup (#7204)
 * Sync: Reduce memory use during uploads by not reading whole chunks to memory (#7226)
 * Sync: Don't abort on 404, 500, 503 errors (#5088, #5859, #7199)
+* Sync: Fix parsing of etags, improving move detection (#7271)
 * Vfs: The online-only/available-locally flag applies to new remote files now.
 * Vfs: Introduce actions and warning text for switching vfs on and off.
 * Vfs: Cannot be used with selective sync at the same time.
@@ -45,6 +47,7 @@ Small changes and bug fixes:
 * Vfs: Fix crash when dehydrating a complete folder
 * Vfs: Make "Free space" context menu action only enabled when it has an effect (#7143)
 * Vfs: Ensure the database temporaries are marked as excluded (#7141)
+* Vfs: Don't dehydrate existing data when switching on (#7302)
 * GUI: Adjust "new public link share" ui so options can be set before share creation
 * GUI: Added action to open folder in browser to selective sync context menu (#6471)
 * GUI: Add server version info to SSL info button (#6628)
@@ -56,6 +59,9 @@ Small changes and bug fixes:
 * GUI: Fix notification buttons sometimes getting their own window (#7185)
 * GUI: Add "Show file versions" context menu action (#7196)
 * GUI: Fix layout in "Add Certificate" dialog (#7184)
+* Sharing: Fix issues with enforced passwords and expiry (#7246, #7245)
+* Sharing: Fix resharing an item in a share with limited permissions (#7275)
+* Sharing: Use the default expiration date even when not enforced (#7256)
 * OSX: Fix issues with Finder integration being gone after reboot
 * Linux: Add autostart delay to avoid tray icon issues (#6518)
 * Folder watcher: Test before relying on it (#7241)
@@ -71,6 +77,7 @@ Small changes and bug fixes:
 * Doc: Migrate the documentation to Antora (#6785)
 * Doc: Update Windows build instructions
 * Doc: Add explanation of how to manually change server url (#6579)
+* Doc: List more environment variables
 * Build: Fix KDEInstallDirs deprecation warnings (#6922)
 * Build: Fixes for compiling on "remarkable" tablet (#6870)
 * Build: Add PLUGINDIR variable for finding vfs plugins (#7027)
