@@ -55,9 +55,27 @@ bool Capabilities::sharePublicLinkSupportsUploadOnly() const
     return _capabilities["files_sharing"].toMap()["public"].toMap()["supports_upload_only"].toBool();
 }
 
-bool Capabilities::sharePublicLinkEnforcePassword() const
+static bool getEnforcePasswordCapability(const QVariantMap &capabilities, const QByteArray &name)
 {
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool();
+    auto value = capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced_for"].toMap()[name];
+    if (!value.isValid())
+        return capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool();
+    return value.toBool();
+}
+
+bool Capabilities::sharePublicLinkEnforcePasswordForReadOnly() const
+{
+    return getEnforcePasswordCapability(_capabilities, QByteArrayLiteral("read_only"));
+}
+
+bool Capabilities::sharePublicLinkEnforcePasswordForReadWrite() const
+{
+    return getEnforcePasswordCapability(_capabilities, QByteArrayLiteral("read_write"));
+}
+
+bool Capabilities::sharePublicLinkEnforcePasswordForUploadOnly() const
+{
+    return getEnforcePasswordCapability(_capabilities, QByteArrayLiteral("upload_only"));
 }
 
 bool Capabilities::sharePublicLinkDefaultExpire() const

@@ -37,7 +37,16 @@ public:
     bool sharePublicLink() const;
     bool sharePublicLinkAllowUpload() const;
     bool sharePublicLinkSupportsUploadOnly() const;
-    bool sharePublicLinkEnforcePassword() const;
+
+    /** Whether read-only link shares require a password.
+     *
+     * Returns sharePublicLinkEnforcePassword() if the fine-grained
+     * permission isn't available.
+     */
+    bool sharePublicLinkEnforcePasswordForReadOnly() const;
+    bool sharePublicLinkEnforcePasswordForReadWrite() const;
+    bool sharePublicLinkEnforcePasswordForUploadOnly() const;
+
     bool sharePublicLinkDefaultExpire() const;
     int sharePublicLinkDefaultExpireDateDays() const;
     bool sharePublicLinkEnforceExpireDate() const;

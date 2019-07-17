@@ -45,7 +45,6 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     , _sharePath(sharePath)
     , _localPath(localPath)
     , _manager(nullptr)
-    , _passwordRequired(false)
     , _expiryRequired(false)
     , _namesSupported(true)
 {
@@ -136,10 +135,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
 
     // Parse capabilities
 
-    // If password is enforced then don't allow users to disable it
-    if (_account->capabilities().sharePublicLinkEnforcePassword()) {
-        _ui->checkBox_password->setEnabled(false);
-        _passwordRequired = true;
+    if (!_account->capabilities().sharePublicLinkAllowUpload()) {
+        _ui->radio_readWrite->setEnabled(false);
+        _ui->radio_uploadOnly->setEnabled(false);
     }
 
     // If expiredate is enforced do not allow disable and set max days
@@ -329,25 +327,48 @@ void ShareLinkWidget::slotShareSelectionChanged()
 
     _ui->shareProperties->setEnabled(true);
 
-    _ui->checkBox_password->setEnabled(!_passwordRequired);
-    _ui->checkBox_expire->setEnabled(!_expiryRequired);
-    _ui->widget_editing->setEnabled(true);
-    if (!_account->capabilities().sharePublicLinkAllowUpload()) {
-        _ui->radio_readWrite->setEnabled(false);
-        _ui->radio_uploadOnly->setEnabled(false);
+    // Public upload state (files can only be read-only, box is hidden for them)
+    _ui->widget_editing->setEnabled(!_isFile);
+    if (!selectionUnchanged) {
+        if (_isFile) {
+            _ui->radio_readOnly->setChecked(true);
+        } else {
+            if (share && share->getPublicUpload()) {
+                if (share->getShowFileListing()) {
+                    _ui->radio_readWrite->setChecked(true);
+                } else {
+                    _ui->radio_uploadOnly->setChecked(true);
+                }
+            } else {
+                _ui->radio_readOnly->setChecked(true);
+            }
+        }
     }
+
+    const auto capabilities = _account->capabilities();
+    const bool passwordRequired =
+        (_ui->radio_readOnly->isChecked() && capabilities.sharePublicLinkEnforcePasswordForReadOnly())
+        || (_ui->radio_readWrite->isChecked() && capabilities.sharePublicLinkEnforcePasswordForReadWrite())
+        || (_ui->radio_uploadOnly->isChecked() && capabilities.sharePublicLinkEnforcePasswordForUploadOnly());
 
     // Password state
     _ui->pushButton_setPassword->setVisible(!createNew);
     _ui->checkBox_password->setText(tr("P&assword protect"));
-    if (!selectionUnchanged) {
+    if (createNew) {
+        if (passwordRequired) {
+            _ui->checkBox_password->setChecked(true);
+            _ui->lineEdit_password->setPlaceholderText(tr("Please Set Password"));
+            _ui->lineEdit_password->setEnabled(true);
+        } else if (!selectionUnchanged || _ui->lineEdit_password->text().isEmpty()) {
+            // force to off if no password was entered yet
+            _ui->checkBox_password->setChecked(false);
+            _ui->lineEdit_password->setPlaceholderText(QString());
+            _ui->lineEdit_password->setEnabled(false);
+        }
+    } else if (!selectionUnchanged) {
         if (share && share->isPasswordSet()) {
             _ui->checkBox_password->setChecked(true);
             _ui->lineEdit_password->setPlaceholderText("********");
-            _ui->lineEdit_password->setEnabled(true);
-        } else if (createNew && _passwordRequired) {
-            _ui->checkBox_password->setChecked(true);
-            _ui->lineEdit_password->setPlaceholderText(tr("Please Set Password"));
             _ui->lineEdit_password->setEnabled(true);
         } else {
             _ui->checkBox_password->setChecked(false);
@@ -357,37 +378,31 @@ void ShareLinkWidget::slotShareSelectionChanged()
         _ui->lineEdit_password->setText(QString());
         _ui->pushButton_setPassword->setEnabled(false);
     }
+    // The following is done to work with old shares when the pw requirement
+    // is enabled on the server later: users can add pws to old shares.
+    _ui->checkBox_password->setEnabled(!_ui->checkBox_password->isChecked() || !passwordRequired);
 
     // Expiry state
     _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
-    if (share && share->getExpireDate().isValid()) {
-        _ui->checkBox_expire->setChecked(true);
-        _ui->calendar->setDate(share->getExpireDate());
-        _ui->calendar->setEnabled(true);
-    } else if (createNew) {
-        const QDate defaultExpire = capabilityDefaultExpireDate();
-        if (defaultExpire.isValid())
-            _ui->calendar->setDate(defaultExpire);
-        const bool enabled = _expiryRequired || defaultExpire.isValid();
-        _ui->checkBox_expire->setChecked(enabled);
-        _ui->calendar->setEnabled(enabled);
-    } else {
-        _ui->checkBox_expire->setChecked(false);
-        _ui->calendar->setEnabled(false);
-    }
-
-    // Public upload state (box is hidden for files)
-    if (!_isFile) {
-        if (share && share->getPublicUpload()) {
-            if (share->getShowFileListing()) {
-                _ui->radio_readWrite->setChecked(true);
-            } else {
-                _ui->radio_uploadOnly->setChecked(true);
-            }
+    if (!selectionUnchanged) {
+        if (share && share->getExpireDate().isValid()) {
+            _ui->checkBox_expire->setChecked(true);
+            _ui->calendar->setDate(share->getExpireDate());
+            _ui->calendar->setEnabled(true);
+        } else if (createNew) {
+            const QDate defaultExpire = capabilityDefaultExpireDate();
+            if (defaultExpire.isValid())
+                _ui->calendar->setDate(defaultExpire);
+            const bool enabled = _expiryRequired || defaultExpire.isValid();
+            _ui->checkBox_expire->setChecked(enabled);
+            _ui->calendar->setEnabled(enabled);
         } else {
-            _ui->radio_readOnly->setChecked(true);
+            _ui->checkBox_expire->setChecked(false);
+            _ui->calendar->setEnabled(false);
         }
     }
+    // Allows checking expiry on old shares created before it was required.
+    _ui->checkBox_expire->setEnabled(!_ui->checkBox_expire->isChecked() || !_expiryRequired);
 
     // Name and create button
     _ui->create->setVisible(createNew);
@@ -656,6 +671,9 @@ void ShareLinkWidget::slotPermissionsClicked()
         _ui->errorLabel->hide();
 
         current->setPermissions(uiPermissionState());
+    } else {
+        // Password may now be required, update ui.
+        slotShareSelectionChanged();
     }
 }
 
@@ -691,6 +709,10 @@ void ShareLinkWidget::slotServerError(int code, const QString &message)
     _pi_password->stopAnimation();
     _pi_editing->stopAnimation();
 
+    // Reset UI state
+    _selectedShareId.clear();
+    slotShareSelectionChanged();
+
     qCWarning(lcSharing) << "Error from server" << code << message;
     displayError(message);
 }
@@ -699,7 +721,6 @@ void ShareLinkWidget::slotPasswordSetError(int code, const QString &message)
 {
     slotServerError(code, message);
 
-    _ui->checkBox_password->setEnabled(!_passwordRequired);
     _ui->lineEdit_password->setEnabled(true);
     _ui->lineEdit_password->setFocus();
 }
