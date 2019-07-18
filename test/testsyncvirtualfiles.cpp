@@ -1162,6 +1162,18 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::OnlineOnly);
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename" DVSUFFIX), PinState::OnlineOnly);
+
+        // When a file is hydrated or dehydrated due to pin state it retains its pin state
+        vfs->setPinState("onlinerenamed2/file1rename" DVSUFFIX, PinState::AlwaysLocal);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename"));
+        QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::AlwaysLocal);
+
+        vfs->setPinState("onlinerenamed2", PinState::Unspecified);
+        vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename" DVSUFFIX));
+        QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename" DVSUFFIX), PinState::OnlineOnly);
     }
 };
 
