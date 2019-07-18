@@ -70,6 +70,7 @@ namespace {
         "  -h --help            : show this help screen.\n"
         "  --logwindow          : open a window to show log output.\n"
         "  --logfile <filename> : write log output to file <filename>.\n"
+        "  --logfile -          : write log output to stdout.\n"
         "  --logdir <name>      : write each sync log output in a new file\n"
         "                         in folder <name>.\n"
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
