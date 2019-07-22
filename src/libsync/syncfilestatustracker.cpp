@@ -105,7 +105,8 @@ static inline bool showWarningInSocketApi(const SyncFileItem &item)
     return item._instruction == CSYNC_INSTRUCTION_IGNORE
         || status == SyncFileItem::FileIgnored
         || status == SyncFileItem::Conflict
-        || status == SyncFileItem::Restoration;
+        || status == SyncFileItem::Restoration
+        || status == SyncFileItem::FileLocked;
 }
 
 SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)

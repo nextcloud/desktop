@@ -103,10 +103,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                    || a._status == SyncFileItem::BlacklistedError) {
                    return QIcon(QLatin1String(":/client/resources/state-error.svg"));
                } else if(a._status == SyncFileItem::SoftError
-                         || a._status == SyncFileItem::FileIgnored
                          || a._status == SyncFileItem::Conflict
-                         || a._status == SyncFileItem::Restoration){
+                         || a._status == SyncFileItem::Restoration
+                         || a._status == SyncFileItem::FileLocked){
                    return QIcon(QLatin1String(":/client/resources/state-warning.svg"));
+               } else if(a._status == SyncFileItem::FileIgnored){
+                   return QIcon(QLatin1String(":/client/resources/state-info.svg"));
                }
                return QIcon(QLatin1String(":/client/resources/state-sync.svg"));
         }
