@@ -1380,7 +1380,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Używaj &amp;monochromatycznych ikon</translation>
+        <translation>Używaj monochromatycznych ikon</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
