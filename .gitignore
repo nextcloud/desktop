@@ -171,3 +171,4 @@ CPackConfig.cmake
 CPackOptions.cmake
 CPackSourceConfig.cmake
 
+compile_commands.json

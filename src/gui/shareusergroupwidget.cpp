@@ -190,11 +190,21 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     layout->setContentsMargins(0, 0, 0, 0);
     int x = 0;
     int height = 0;
+    QList<QString> linkOwners({});
 
     foreach (const auto &share, shares) {
         // We don't handle link shares, only TypeUser or TypeGroup
         if (share->getShareType() == Share::TypeLink) {
+            if(!share->getUidOwner().isEmpty() &&
+                    share->getUidOwner() != share->account()->davUser()){
+                linkOwners.append(share->getOwnerDisplayName());
+             }
             continue;
+        }
+
+        // the owner of the file that shared it first
+        if(x == 0 && !share->getUidOwner().isEmpty()){
+            _ui->mainOwnerLabel->setText(QString("Shared with you by ").append(share->getOwnerDisplayName()));
         }
 
         ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _parentScrollArea);
@@ -209,7 +219,18 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
     }
 
-    scrollArea->setFrameShape(x > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
+    foreach (const QString &owner, linkOwners) {
+        auto ownerLabel = new QLabel(QString(owner + " shared via link"));
+        layout->addWidget(ownerLabel);
+        ownerLabel->setVisible(true);
+
+        x++;
+        if (x <= 6) {
+            height = newViewPort->sizeHint().height();
+        }
+    }
+
+    scrollArea->setFrameShape(x > 6 ? QFrame::StyledPanel : QFrame::NoFrame);
     scrollArea->setVisible(!shares.isEmpty());
     scrollArea->setFixedHeight(height);
     scrollArea->setWidget(newViewPort);

@@ -99,6 +99,7 @@ protected slots:
 
     // Encryption Related Stuff.
     void slotShowMnemonic(const QString &mnemonic);
+    void slotNewMnemonicGenerated();
 
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
     void slotEncryptionFlagError(const QByteArray &folderId, int httpReturnCode);

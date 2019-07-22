@@ -72,12 +72,16 @@ public:
     int numErrorItems() const { return _numErrorItems; }
     bool hasUnresolvedConflicts() const { return _numNewConflictItems + _numOldConflictItems > 0; }
 
+    int numLockedItems() const { return _numLockedItems; }
+    bool hasLockedFiles() const { return _numLockedItems > 0; }
+
     const SyncFileItemPtr &firstItemNew() const { return _firstItemNew; }
     const SyncFileItemPtr &firstItemDeleted() const { return _firstItemDeleted; }
     const SyncFileItemPtr &firstItemUpdated() const { return _firstItemUpdated; }
     const SyncFileItemPtr &firstItemRenamed() const { return _firstItemRenamed; }
     const SyncFileItemPtr &firstNewConflictItem() const { return _firstNewConflictItem; }
     const SyncFileItemPtr &firstItemError() const { return _firstItemError; }
+    const SyncFileItemPtr &firstItemLocked() const { return _firstItemLocked; }
 
     void processCompletedItem(const SyncFileItemPtr &item);
 
@@ -101,6 +105,7 @@ private:
     int _numNewConflictItems;
     int _numOldConflictItems;
     int _numErrorItems;
+    int _numLockedItems;
 
     SyncFileItemPtr _firstItemNew;
     SyncFileItemPtr _firstItemDeleted;
@@ -108,6 +113,7 @@ private:
     SyncFileItemPtr _firstItemRenamed;
     SyncFileItemPtr _firstNewConflictItem;
     SyncFileItemPtr _firstItemError;
+    SyncFileItemPtr _firstItemLocked;
 };
 }
 
