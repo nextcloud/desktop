@@ -279,7 +279,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>Enable encryption</source>
-        <translation>Activar xifratge</translation>
+        <translation>Activa el xifratge</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
