@@ -44,6 +44,7 @@ public:
     void dehydratePlaceholder(const SyncFileItem &item) override;
     void convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &) override;
 
+    bool needsMetadataUpdate(const SyncFileItem &item) override { return false; }
     bool isDehydratedPlaceholder(const QString &filePath) override;
     bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) override;
 
