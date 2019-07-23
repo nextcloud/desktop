@@ -2782,17 +2782,17 @@ Nedoporučuje se jí používat.</translation>
         <translation>Sdílet s uživateli nebo skupinami…</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="260"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="259"/>
         <source>Copy link</source>
         <translation>Zkopírovat odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="269"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>Žádné výsledky pro „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="356"/>
         <source>I shared something with you</source>
         <translation>Něco jsem vám nasdílel</translation>
     </message>
@@ -2810,22 +2810,27 @@ Nedoporučuje se jí používat.</translation>
         <translation>lze upravovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="385"/>
         <source>Can reshare</source>
         <translation>Může sdílet dál</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="396"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="395"/>
+        <source>Unshare</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
         <source>Can create</source>
         <translation>Může vytvářet</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="402"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="410"/>
         <source>Can change</source>
         <translation>Může měnit</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="408"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="416"/>
         <source>Can delete</source>
         <translation>Může mazat</translation>
     </message>
@@ -3497,11 +3502,6 @@ Nedoporučuje se jí používat.</translation>
         <translation>Nastavení…</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
-        <source>Details...</source>
-        <translation>Podrobnosti…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
         <source>Help</source>
         <translation>Nápověda</translation>
@@ -3611,6 +3611,11 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account...</source>
         <translation>Nový účet…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
+        <source>View more activity...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>

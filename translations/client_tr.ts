@@ -2782,17 +2782,17 @@ Kullanmanız önerilmez.</translation>
         <translation>Kullanıcı ya da gruplarla paylaş...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="260"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="259"/>
         <source>Copy link</source>
         <translation>Bağlantıyı kopyala</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="269"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>&apos;%1&apos; için bir sonuç bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="356"/>
         <source>I shared something with you</source>
         <translation>Sizinle bir şey paylaştım</translation>
     </message>
@@ -2810,22 +2810,27 @@ Kullanmanız önerilmez.</translation>
         <translation>düzenleyebilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="385"/>
         <source>Can reshare</source>
         <translation>Yeniden paylaşabilsin</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="396"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="395"/>
+        <source>Unshare</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
         <source>Can create</source>
         <translation>Ekleyebilsin</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="402"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="410"/>
         <source>Can change</source>
         <translation>Değiştirebilsin</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="408"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="416"/>
         <source>Can delete</source>
         <translation>Silebilsin</translation>
     </message>
@@ -3497,11 +3502,6 @@ Kullanmanız önerilmez.</translation>
         <translation>Ayarlar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
-        <source>Details...</source>
-        <translation>Ayrıntılar...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
         <source>Help</source>
         <translation>Yardım</translation>
@@ -3611,6 +3611,11 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account...</source>
         <translation>Hesap ekle...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
+        <source>View more activity...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>

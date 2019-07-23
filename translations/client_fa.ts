@@ -2770,17 +2770,17 @@ It is not advisable to use it.</source>
         <translation>اشتراک گذاری با کاربران یا گروه ها ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="260"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="259"/>
         <source>Copy link</source>
         <translation>کپی کردن آدرس لینک</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="269"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>هیچ نتیجه ای برای &apos;1%&apos; وجود ندارد</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="356"/>
         <source>I shared something with you</source>
         <translation>من چیزی را با شما به اشتراک گذاشتم</translation>
     </message>
@@ -2798,22 +2798,27 @@ It is not advisable to use it.</source>
         <translation>می توان ویرایش کرد</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="385"/>
         <source>Can reshare</source>
         <translation>امکان اشتراک گذاری وجود دارد</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="396"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="395"/>
+        <source>Unshare</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
         <source>Can create</source>
         <translation>امکان ایجاد وجود دارد</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="402"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="410"/>
         <source>Can change</source>
         <translation>امکان تغییر وجود دارد</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="408"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="416"/>
         <source>Can delete</source>
         <translation>امکان حذف وجود دار</translation>
     </message>
@@ -3484,11 +3489,6 @@ It is not advisable to use it.</source>
         <translation>تنظیمات...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
-        <source>Details...</source>
-        <translation>جزئیات...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
         <source>Help</source>
         <translation>راه‌نما</translation>
@@ -3598,6 +3598,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account...</source>
         <translation>حساب جدید...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
+        <source>View more activity...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>

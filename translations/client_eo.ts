@@ -2782,17 +2782,17 @@ Uzi ĝin ne konsilindas.</translation>
         <translation>Kunhavigi kun uzantoj aŭ grupoj...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="260"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="259"/>
         <source>Copy link</source>
         <translation>Kopii ligilon</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="269"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>Neniu rezulto por „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="356"/>
         <source>I shared something with you</source>
         <translation>Mi kunhavigis ion kun vi</translation>
     </message>
@@ -2810,22 +2810,27 @@ Uzi ĝin ne konsilindas.</translation>
         <translation>povas redakti</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="385"/>
         <source>Can reshare</source>
         <translation>Eblas rekunhavigi</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="396"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="395"/>
+        <source>Unshare</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
         <source>Can create</source>
         <translation>Povas krei</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="402"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="410"/>
         <source>Can change</source>
         <translation>Eblas ŝanĝi</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="408"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="416"/>
         <source>Can delete</source>
         <translation>Povas forigi</translation>
     </message>
@@ -3496,11 +3501,6 @@ Uzi ĝin ne konsilindas.</translation>
         <translation>Agordoj...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
-        <source>Details...</source>
-        <translation>Detaloj...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
         <source>Help</source>
         <translation>Helpo</translation>
@@ -3610,6 +3610,11 @@ Uzi ĝin ne konsilindas.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account...</source>
         <translation>Nova konto...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
+        <source>View more activity...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
