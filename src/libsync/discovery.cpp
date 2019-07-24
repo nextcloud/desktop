@@ -873,7 +873,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         }
 
         // Verify the checksum where possible
-        if (!base._checksumHeader.isEmpty() && item->_type == ItemTypeFile) {
+        if (!base._checksumHeader.isEmpty() && item->_type == ItemTypeFile && base._type == ItemTypeFile) {
             if (computeLocalChecksum(base._checksumHeader, _discoveryData->_localDir + path._original, item)) {
                 qCInfo(lcDisco) << "checking checksum of potential rename " << path._original << item->_checksumHeader << base._checksumHeader;
                 if (item->_checksumHeader != base._checksumHeader) {
