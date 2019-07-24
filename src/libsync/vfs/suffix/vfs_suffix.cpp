@@ -89,6 +89,11 @@ void VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
         setPinState(item._renameTarget, *pin);
         setPinState(item._file, PinState::Inherited);
     }
+
+    // Ensure the pin state isn't contradictory
+    pin = pinState(item._renameTarget);
+    if (pin && *pin == PinState::AlwaysLocal)
+        setPinState(item._renameTarget, PinState::Unspecified);
 }
 
 void VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)

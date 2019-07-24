@@ -1015,11 +1015,11 @@ void PropagateDownloadFile::downloadFinished()
     if (_conflictRecord.isValid())
         propagator()->_journal->setConflictRecord(_conflictRecord);
 
-    if (_item->_type == ItemTypeVirtualFileDownload) {
+    auto vfs = propagator()->syncOptions()._vfs;
+    if (vfs && vfs->mode() == Vfs::WithSuffix) {
         // If the virtual file used to have a different name and db
-        // entry, wipe both now.
-        auto vfs = propagator()->syncOptions()._vfs;
-        if (vfs && vfs->mode() == Vfs::WithSuffix) {
+        // entry, remove it transfer its old pin state.
+        if (_item->_type == ItemTypeVirtualFileDownload) {
             QString virtualFile = _item->_file + vfs->fileSuffix();
             auto fn = propagator()->getFilePath(virtualFile);
             qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
@@ -1033,6 +1033,11 @@ void PropagateDownloadFile::downloadFinished()
                 vfs->setPinState(virtualFile, PinState::Inherited);
             }
         }
+
+        // Ensure the pin state isn't contradictory
+        auto pin = vfs->pinState(_item->_file);
+        if (pin && *pin == PinState::OnlineOnly)
+            vfs->setPinState(_item->_file, PinState::Unspecified);
     }
 
     updateMetadata(isConflict);

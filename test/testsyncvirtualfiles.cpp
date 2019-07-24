@@ -718,11 +718,11 @@ private slots:
         // Case 4: foo -> bar.oc (db unchanged)
         fakeFolder.localModifier().rename("case4", "case4-rename" DVSUFFIX);
 
-        // Case 5: foo -> bar (db dehydrate)
+        // Case 5: foo.oc -> bar.oc (db hydrate)
         fakeFolder.localModifier().rename("case5" DVSUFFIX, "case5-rename" DVSUFFIX);
         triggerDownload(fakeFolder, "case5");
 
-        // Case 6: foo.oc -> bar.oc (db hydrate)
+        // Case 6: foo -> bar (db dehydrate)
         fakeFolder.localModifier().rename("case6", "case6-rename");
         markForDehydration(fakeFolder, "case6");
 
@@ -1174,6 +1174,45 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("onlinerenamed2/file1rename" DVSUFFIX));
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename" DVSUFFIX), PinState::OnlineOnly);
+    }
+
+    void testIncompatiblePins()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        auto vfs = setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        auto setPin = [&] (const QByteArray &path, PinState state) {
+            fakeFolder.syncJournal().internalPinStates().setForPath(path, state);
+        };
+
+        fakeFolder.remoteModifier().mkdir("local");
+        fakeFolder.remoteModifier().mkdir("online");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        setPin("local", PinState::AlwaysLocal);
+        setPin("online", PinState::OnlineOnly);
+
+        fakeFolder.localModifier().insert("local/file1");
+        fakeFolder.localModifier().insert("online/file1");
+        QVERIFY(fakeFolder.syncOnce());
+
+        markForDehydration(fakeFolder, "local/file1");
+        triggerDownload(fakeFolder, "online/file1");
+
+        // the sync sets the changed files pin states to unspecified
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentLocalState().find("online/file1"));
+        QVERIFY(fakeFolder.currentLocalState().find("local/file1" DVSUFFIX));
+        QCOMPARE(*vfs->pinState("online/file1"), PinState::Unspecified);
+        QCOMPARE(*vfs->pinState("local/file1" DVSUFFIX), PinState::Unspecified);
+
+        // no change on another sync
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("online/file1"));
+        QVERIFY(fakeFolder.currentLocalState().find("local/file1" DVSUFFIX));
     }
 };
 
