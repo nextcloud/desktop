@@ -712,8 +712,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 if (dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) {
                     qCInfo(lcDisco) << "Base file was renamed to virtual file:" << item->_file;
                     item->_direction = SyncFileItem::Down;
-                    item->_instruction = CSYNC_INSTRUCTION_NEW;
-                    item->_type = ItemTypeVirtualFile;
+                    item->_instruction = CSYNC_INSTRUCTION_SYNC;
+                    item->_type = ItemTypeVirtualFileDehydration;
+                    addVirtualFileSuffix(item->_file);
+                    item->_renameTarget = item->_file;
                 } else {
                     qCInfo(lcDisco) << "Virtual file with non-virtual db entry, ignoring:" << item->_file;
                     item->_instruction = CSYNC_INSTRUCTION_IGNORE;
@@ -1050,8 +1052,10 @@ void ProcessDirectoryJob::processFileFinalize(
         }
         if (item->_type == ItemTypeVirtualFileDehydration
             && item->_instruction == CSYNC_INSTRUCTION_SYNC) {
-            item->_renameTarget = item->_file;
-            addVirtualFileSuffix(item->_renameTarget);
+            if (item->_renameTarget.isEmpty()) {
+                item->_renameTarget = item->_file;
+                addVirtualFileSuffix(item->_renameTarget);
+            }
         }
     }
 
