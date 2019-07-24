@@ -2817,7 +2817,7 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="395"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Freigabe aufheben</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
@@ -3615,7 +3615,7 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity...</source>
-        <translation type="unfinished"/>
+        <translation>Weitere Aktivitäten anzeigen…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>

@@ -2817,7 +2817,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="395"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşımdan Kaldır</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
@@ -3615,7 +3615,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity...</source>
-        <translation type="unfinished"/>
+        <translation>Diğer işlemleri görüntüle...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>

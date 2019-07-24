@@ -2819,7 +2819,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="395"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Deixar de compartir </translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
@@ -3617,7 +3617,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity...</source>
-        <translation type="unfinished"/>
+        <translation>Ver máis actividades…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
