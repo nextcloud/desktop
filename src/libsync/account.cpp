@@ -36,9 +36,15 @@
 #include <QAuthenticator>
 #include <QStandardPaths>
 
+#include <keychain.h>
+#include "creds/abstractcredentials.h"
+
+using namespace QKeychain;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccount, "nextcloud.sync.account", QtInfoMsg)
+const char app_password[] = "_app-password";
 
 Account::Account(QObject *parent)
     : QObject(parent)
@@ -53,16 +59,17 @@ AccountPtr Account::create()
     AccountPtr acc = AccountPtr(new Account);
     acc->setSharedThis(acc);
 
-		//TODO: This probably needs to have a better
-		// coupling, but it should work for now.
-		acc->e2e()->setAccount(acc);
+        //TODO: This probably needs to have a better
+        // coupling, but it should work for now.
+        acc->e2e()->setAccount(acc);
+
     return acc;
 }
 
 ClientSideEncryption* Account::e2e()
 {
-	// Qt expects everything in the connect to be a pointer, so return a pointer.
-	return &_e2e;
+    // Qt expects everything in the connect to be a pointer, so return a pointer.
+    return &_e2e;
 }
 
 Account::~Account()
@@ -432,6 +439,9 @@ void Account::slotCredentialsAsked()
 
 void Account::handleInvalidCredentials()
 {
+    // Retrieving password will trigger remote wipe check job
+    retrieveAppPassword();
+
     emit invalidCredentials();
 }
 
@@ -501,6 +511,65 @@ void Account::setNonShib(bool nonShib)
     } else {
         _davPath = Theme::instance()->webDavPath();
     }
+}
+
+void Account::setAppPassword(QString appPassword){
+    const QString kck = AbstractCredentials::keychainKey(
+                url().toString(),
+                davUser() + app_password,
+                id()
+    );
+
+    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    job->setBinaryData(appPassword.toLatin1());
+    connect(job, &WritePasswordJob::finished, [](Job *) {
+        qCInfo(lcAccount) << "appPassword stored in keychain";
+    });
+    job->start();
+}
+
+void Account::retrieveAppPassword(){
+    const QString kck = AbstractCredentials::keychainKey(
+                url().toString(),
+                credentials()->user() + app_password,
+                id()
+    );
+
+    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+        ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
+        QString pwd("");
+        // Error or no valid public key error out
+        if (readJob->error() == NoError &&
+                readJob->binaryData().length() > 0) {
+            pwd = readJob->binaryData();
+        }
+
+        emit appPasswordRetrieved(pwd);
+    });
+    job->start();
+}
+
+void Account::deleteAppPassword(){
+    const QString kck = AbstractCredentials::keychainKey(
+                url().toString(),
+                credentials()->user() + app_password,
+                id()
+    );
+
+    if (kck.isEmpty()) {
+        qCDebug(lcAccount) << "appPassword is empty";
+        return;
+    }
+
+    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    job->start();
 }
 
 } // namespace OCC
