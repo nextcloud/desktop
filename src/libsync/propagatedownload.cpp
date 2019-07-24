@@ -1027,10 +1027,10 @@ void PropagateDownloadFile::downloadFinished()
             propagator()->_journal->deleteFileRecord(virtualFile);
 
             // Move the pin state to the new location
-            auto pin = propagator()->_journal->internalPinStates().rawForPath(_item->_file.toUtf8());
+            auto pin = propagator()->_journal->internalPinStates().rawForPath(virtualFile.toUtf8());
             if (pin && *pin != PinState::Inherited) {
-                vfs->setPinState(virtualFile, *pin);
-                vfs->setPinState(_item->_file, PinState::Inherited);
+                vfs->setPinState(_item->_file, *pin);
+                vfs->setPinState(virtualFile, PinState::Inherited);
             }
         }
     }

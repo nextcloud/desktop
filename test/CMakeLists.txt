@@ -59,6 +59,9 @@ owncloud_add_test(RemoteDiscovery "syncenginetestutils.h")
 owncloud_add_test(Permissions "syncenginetestutils.h")
 owncloud_add_test(SelectiveSync "syncenginetestutils.h")
 owncloud_add_test(DatabaseError "syncenginetestutils.h")
+# For unknown reasons the DatabaseErrorTest occasionally aborts during drone execution
+set_tests_properties(DatabaseErrorTest PROPERTIES LABELS "nodrone" )
+
 owncloud_add_test(LockedFiles "syncenginetestutils.h;../src/gui/lockwatcher.cpp")
 
 owncloud_add_test(FolderWatcher "${FolderWatcher_SRC}")

@@ -342,8 +342,13 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 rec._checksumHeader = prev._checksumHeader;
             rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
 
+            // Ensure it's a placeholder file on disk
+            if (item->_type == ItemTypeFile) {
+                _syncOptions._vfs->convertToPlaceholder(filePath, *item);
+            }
+
             // Update on-disk virtual file metadata
-            if (item->_type == ItemTypeVirtualFile && _syncOptions._vfs) {
+            if (item->_type == ItemTypeVirtualFile) {
                 QString error;
                 if (!_syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId, &error)) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;

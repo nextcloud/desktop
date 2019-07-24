@@ -108,6 +108,9 @@ protected slots:
     void changeDetected(const QString &path);
     void changeDetected(const QStringList &paths);
 
+private slots:
+    void startNotificationTestWhenReady();
+
 protected:
     QHash<QString, int> _pendingPathes;
 

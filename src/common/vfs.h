@@ -166,6 +166,13 @@ public:
      */
     virtual void dehydratePlaceholder(const SyncFileItem &item) = 0;
 
+    /** Discovery hook: even unchanged files may need UPDATE_METADATA.
+     *
+     * For instance cfapi vfs wants local hydrated non-placeholder files to
+     * become hydrated placeholder files.
+     */
+    virtual bool needsMetadataUpdate(const SyncFileItem &item) = 0;
+
     /** Convert a new file to a hydrated placeholder.
      *
      * Some VFS integrations expect that every file, including those that have all
@@ -287,6 +294,7 @@ public:
     void dehydratePlaceholder(const SyncFileItem &) override {}
     void convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override {}
 
+    bool needsMetadataUpdate(const SyncFileItem &item) override { return false; }
     bool isDehydratedPlaceholder(const QString &) override { return false; }
     bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }
 

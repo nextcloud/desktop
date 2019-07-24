@@ -49,7 +49,7 @@ pipeline:
       - cd clang-build
       - useradd -m -s /bin/bash tester
       - chown -R tester:tester .
-      - su-exec tester ctest --output-on-failure
+      - su-exec tester ctest --output-on-failure -LE nodrone
 
   prepare-gcc:
     image: owncloudci/client:latest
@@ -79,7 +79,7 @@ pipeline:
       - cd gcc-build
       - useradd -m -s /bin/bash tester
       - chown -R tester:tester .
-      - su-exec tester ctest --output-on-failure
+      - su-exec tester ctest --output-on-failure -LE nodrone
 
   cache-restore:
     image: plugins/s3-cache:1

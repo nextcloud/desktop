@@ -36,6 +36,9 @@ public:
     void startWatching();
     void doNotifyParent(const QStringList &);
 
+    /// On OSX the watcher is ready when the ctor finished.
+    bool _ready = 1;
+
 private:
     FolderWatcher *_parent;
 

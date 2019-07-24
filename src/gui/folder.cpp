@@ -651,10 +651,9 @@ bool Folder::newFilesAreVirtual() const
     return pinState && *pinState == PinState::OnlineOnly;
 }
 
-void Folder::setNewFilesAreVirtual(bool enabled)
+void Folder::setRootPinState(PinState state)
 {
-    const auto newPin = enabled ? PinState::OnlineOnly : PinState::AlwaysLocal;
-    _vfs->setPinState(QString(), newPin);
+    _vfs->setPinState(QString(), state);
 
     // We don't actually need discovery, but it's important to recurse
     // into all folders, so the changes can be applied.

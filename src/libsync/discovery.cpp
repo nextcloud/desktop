@@ -728,9 +728,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_direction = SyncFileItem::Down;
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
                 item->_type = ItemTypeVirtualFileDehydration;
-            } else if (!serverModified && dbEntry._inode != localEntry.inode) {
+            } else if (!serverModified
+                && (dbEntry._inode != localEntry.inode
+                    || _discoveryData->_syncOptions._vfs->needsMetadataUpdate(*item))) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-                item->_direction = SyncFileItem::Down; // Does not matter
+                item->_direction = SyncFileItem::Down;
             }
         } else if (!typeChange && isVfsWithSuffix()
             && dbEntry.isVirtualFile() && !localEntry.isVirtualFile

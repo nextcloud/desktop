@@ -268,7 +268,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 // Migrate the old "usePlaceholders" setting to the root folder pin state
                 if (settings.value(QLatin1String(versionC), 1).toInt() == 1
                     && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
-                    f->setNewFilesAreVirtual(true);
+                    f->setRootPinState(PinState::OnlineOnly);
                 }
 
                 // Migration: Mark folders that shall be saved in a backwards-compatible way
