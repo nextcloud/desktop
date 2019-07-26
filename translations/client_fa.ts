@@ -188,8 +188,8 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="247"/>
         <location filename="../src/gui/accountsettings.cpp" line="511"/>
-        <location filename="../src/gui/accountsettings.cpp" line="616"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
+        <location filename="../src/gui/accountsettings.cpp" line="618"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1057"/>
         <source>Cancel</source>
         <translation>منصرف شدن</translation>
     </message>
@@ -259,12 +259,12 @@
         <translation>حذف اتصال همگام سازی پوشه</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="607"/>
+        <location filename="../src/gui/accountsettings.cpp" line="609"/>
         <source>Disable virtual file support?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="610"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -273,97 +273,97 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="615"/>
+        <location filename="../src/gui/accountsettings.cpp" line="617"/>
         <source>Disable support</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="717"/>
+        <location filename="../src/gui/accountsettings.cpp" line="722"/>
         <source>Sync Running</source>
         <translation>همگام سازی در حال اجراست</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="718"/>
+        <location filename="../src/gui/accountsettings.cpp" line="723"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>عملیات همگام سازی در حال اجراست.&lt;br/&gt;آیا دوست دارید آن را متوقف کنید؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="813"/>
+        <location filename="../src/gui/accountsettings.cpp" line="818"/>
         <source>%1 in use</source>
         <translation>1% در استفاده</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="840"/>
+        <location filename="../src/gui/accountsettings.cpp" line="845"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>1% به عنوان &lt;i&gt;2%&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="848"/>
+        <location filename="../src/gui/accountsettings.cpp" line="853"/>
         <source>Connected to %1.</source>
         <translation>متصل به %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="850"/>
+        <location filename="../src/gui/accountsettings.cpp" line="855"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>سرور %1 بصورت موقت خارج از دسترس است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="852"/>
+        <location filename="../src/gui/accountsettings.cpp" line="857"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>سرور 1% اکنون در حالت تعمیر است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="854"/>
+        <location filename="../src/gui/accountsettings.cpp" line="859"/>
         <source>Signed out from %1.</source>
         <translation>از 1% خارج شد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="868"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>دریافت مجوز از مرورگر. &lt;a href=&apos;%1&apos;&gt;اینجا کلیک کنید&lt;/a&gt; تا مرورگر دوباره باز شود.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="867"/>
+        <location filename="../src/gui/accountsettings.cpp" line="872"/>
         <source>Connecting to %1...</source>
         <translation>اتصال به %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="870"/>
+        <location filename="../src/gui/accountsettings.cpp" line="875"/>
         <source>No connection to %1 at %2.</source>
         <translation>اتصال به 1% در 2% وجود ندارد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="899"/>
+        <location filename="../src/gui/accountsettings.cpp" line="904"/>
         <source>Log in</source>
         <translation>ورود</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="995"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها بسیار بزرگ هستند:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="997"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها مخازن خارجی هستند:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="998"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها بسیار بزرگ یا مخازن خارجی هستند:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1049"/>
         <source>Confirm Account Removal</source>
         <translation>تائید حذف حساب‌کاربری</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;آیا شما واقعا می خواهید اتصال به حساب &lt;i&gt;1%&lt;/i&gt;را  حذف کنید؟&lt;/p&gt; &lt;p&gt;&lt;b&gt;توجه:&lt;/b&gt; این هیچ فایلی را حذف نخواهد کرد.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1056"/>
         <source>Remove connection</source>
         <translation>حذف ارتباط</translation>
     </message>
@@ -374,7 +374,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="201"/>
-        <location filename="../src/gui/accountsettings.cpp" line="901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="906"/>
         <source>Log out</source>
         <translation>خروج</translation>
     </message>
@@ -419,27 +419,27 @@ This action will abort any currently running synchronization.</source>
         <translation>&lt;p&gt;آیا شما واقعا می خواهید همگام سازی پوشه &lt;i&gt;1%&lt;/i&gt; را متوقف نمایید؟&lt;/p&gt;&lt;p&gt;&lt;b&gt;توجه:&lt;/b&gt;این هیچ فایلی را حذف &lt;b&gt;نخواهد&lt;/b&gt; کرد. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="805"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>1% (%3%) از 2% در استفاده. برخی پوشه‌ها، شامل شبکه نصب شده یا پوشه های مشترک، ممکن است محدودیت های متفاوت داشته باشند.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="801"/>
+        <location filename="../src/gui/accountsettings.cpp" line="806"/>
         <source>%1 of %2 in use</source>
         <translation>1% از 2% در استفاده</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
+        <location filename="../src/gui/accountsettings.cpp" line="815"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>در حال حاضر هیچ اطلاعات کاربرد ذخیره سازی در دسترس نیست.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="881"/>
         <source>No %1 connection configured.</source>
         <translation>بدون %1 اتصال پیکربندی شده.</translation>
     </message>
@@ -656,42 +656,42 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="125"/>
+        <location filename="../src/gui/application.cpp" line="126"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="127"/>
+        <location filename="../src/gui/application.cpp" line="128"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="133"/>
+        <location filename="../src/gui/application.cpp" line="134"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="140"/>
+        <location filename="../src/gui/application.cpp" line="141"/>
         <source>Quit</source>
         <translation>خروج</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="141"/>
+        <location filename="../src/gui/application.cpp" line="142"/>
         <source>Continue</source>
         <translation>ادامه</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="290"/>
+        <location filename="../src/gui/application.cpp" line="291"/>
         <source>Error accessing the configuration file</source>
         <translation>خطای دسترسی به پرونده پیکربندی</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="291"/>
+        <location filename="../src/gui/application.cpp" line="292"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>خطایی هنگام دسترسی به پرونده پیکربندی در 1% وحود دارد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="294"/>
+        <location filename="../src/gui/application.cpp" line="295"/>
         <source>Quit ownCloud</source>
         <translation>خروج از ownCloud</translation>
     </message>
@@ -866,41 +866,41 @@ This action will abort any currently running synchronization.</source>
         <translation>فعالیت همگام سازی</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="810"/>
+        <location filename="../src/gui/folder.cpp" line="806"/>
         <source>Could not read system exclude file</source>
         <translation>نمی توان پرونده خارجی سیستم را خواند.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1058"/>
+        <location filename="../src/gui/folder.cpp" line="1054"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>یک پوشه جدید بزرگتر از 1% MB اضافه شده است: 2%.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1061"/>
+        <location filename="../src/gui/folder.cpp" line="1057"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>یک پوشه از یک مخزن خارجی اضافه شده است.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1062"/>
+        <location filename="../src/gui/folder.cpp" line="1058"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>اگر می خواهید این را دانلود کنید لطفا به تنظیمات بروید تا آن را انتخاب کنید.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1122"/>
+        <location filename="../src/gui/folder.cpp" line="1118"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1125"/>
+        <location filename="../src/gui/folder.cpp" line="1121"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1136"/>
+        <location filename="../src/gui/folder.cpp" line="1132"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -909,7 +909,7 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -920,7 +920,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 اگر شما تصمیم بگیرید پرونده ها را حذف کنید، آن ها در دسترس شما نخواهند بود، مگر اینکه مالک باشید.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1216"/>
+        <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -929,17 +929,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 اگر این یک اتفاق بوده و شما تصمیم دارید پرونده هایتان را نگه دارید، آن ها از سرور مجددا همگام سازی خواهند شد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1220"/>
+        <location filename="../src/gui/folder.cpp" line="1216"/>
         <source>Remove All Files?</source>
         <translation>حذف تمام فایل ها؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1223"/>
+        <location filename="../src/gui/folder.cpp" line="1219"/>
         <source>Remove all files</source>
         <translation>حذف تمام فایل ها</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1224"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>Keep files</source>
         <translation>نگه داشتن فایل ها</translation>
     </message>
@@ -1223,7 +1223,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="94"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="115"/>
         <source>The watcher did not receive a test notification.</source>
         <translation type="unfinished"/>
     </message>
@@ -1502,21 +1502,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <location filename="../src/gui/generalsettings.cpp" line="206"/>
         <source>Cancel</source>
         <translation>لغو</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::GetOrCreatePublicLinkShare</name>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="561"/>
-        <source>Sharing error</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="562"/>
-        <source>Could not retrieve or create the public link share. Error:
-
-%1</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2513,62 +2498,62 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="687"/>
-        <location filename="../src/libsync/discovery.cpp" line="1180"/>
+        <location filename="../src/libsync/discovery.cpp" line="1186"/>
         <source>Not allowed to remove, restoring</source>
         <translation>حذف مجاز نیست، در حال بازگردادن</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1106"/>
+        <location filename="../src/libsync/discovery.cpp" line="1112"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>به علت لیست سیاه &quot;انتخاب کنید چه چیزی همگام سازی شود&quot; رد شد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1139"/>
+        <location filename="../src/libsync/discovery.cpp" line="1145"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>با توجه به عدم اجازه‌ی شما به ایجاد زیرپوشه به پوشه مجاز نیست</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1144"/>
+        <location filename="../src/libsync/discovery.cpp" line="1150"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>مجاز نیستید زیرا شما اجازه افزودن پرونده به آن پوشه را ندارید</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1158"/>
+        <location filename="../src/libsync/discovery.cpp" line="1164"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>آپلود این فایل با توجه به فقط-خواندنی بودن آن در سرور مجاز نیست، در حال بازگرداندن</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1294"/>
+        <location filename="../src/libsync/discovery.cpp" line="1300"/>
         <source>Error while reading the database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1340"/>
+        <location filename="../src/libsync/discovery.cpp" line="1346"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1384"/>
+        <location filename="../src/libsync/discovery.cpp" line="1390"/>
         <source>Error while opening directory %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1386"/>
+        <location filename="../src/libsync/discovery.cpp" line="1392"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1394"/>
+        <location filename="../src/libsync/discovery.cpp" line="1400"/>
         <source>Directory not found: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1418"/>
+        <location filename="../src/libsync/discovery.cpp" line="1424"/>
         <source>Filename encoding is not valid</source>
         <translation>رمزگذاری نام فایل معتبر نیست</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1436"/>
+        <location filename="../src/libsync/discovery.cpp" line="1442"/>
         <source>Error while reading directory %1</source>
         <translation type="unfinished"/>
     </message>
@@ -2630,7 +2615,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>پرونده از زمان کشف تغییر کرده است.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1039"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1051"/>
         <source>Error writing metadata to the database</source>
         <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
@@ -3386,127 +3371,127 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>اشتراک‌گذاری با %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="522"/>
+        <location filename="../src/gui/socketapi.cpp" line="523"/>
         <source>Context menu share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="527"/>
+        <location filename="../src/gui/socketapi.cpp" line="528"/>
         <source>Context menu share %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="707"/>
+        <location filename="../src/gui/socketapi.cpp" line="717"/>
         <source>Confirm deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="709"/>
+        <location filename="../src/gui/socketapi.cpp" line="719"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="710"/>
+        <location filename="../src/gui/socketapi.cpp" line="720"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="749"/>
+        <location filename="../src/gui/socketapi.cpp" line="759"/>
         <source>Select new location...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="759"/>
+        <location filename="../src/gui/socketapi.cpp" line="769"/>
         <source>Error</source>
         <translation>خطا</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="760"/>
+        <location filename="../src/gui/socketapi.cpp" line="770"/>
         <source>Moving file failed:
 
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="767"/>
+        <location filename="../src/gui/socketapi.cpp" line="777"/>
         <source>I shared something with you</source>
         <translation>من چیزی را با شما به اشتراک گذاشتم</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="780"/>
-        <location filename="../src/gui/socketapi.cpp" line="811"/>
+        <location filename="../src/gui/socketapi.cpp" line="790"/>
+        <location filename="../src/gui/socketapi.cpp" line="821"/>
         <source>Share...</source>
         <translation>اشتراک گذاری...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="782"/>
-        <location filename="../src/gui/socketapi.cpp" line="827"/>
+        <location filename="../src/gui/socketapi.cpp" line="792"/>
+        <location filename="../src/gui/socketapi.cpp" line="837"/>
         <source>Copy private link to clipboard</source>
         <translation>لینک خصوصی را در کلیپ بورد کپی کنید</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="783"/>
+        <location filename="../src/gui/socketapi.cpp" line="793"/>
         <source>Send private link by email...</source>
         <translation>لینک خصوصی را پست الکترونیکی ارسال کنید...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="819"/>
         <source>Resharing this file is not allowed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="819"/>
         <source>Resharing this folder is not allowed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="821"/>
-        <location filename="../src/gui/socketapi.cpp" line="823"/>
+        <location filename="../src/gui/socketapi.cpp" line="831"/>
+        <location filename="../src/gui/socketapi.cpp" line="833"/>
         <source>Copy public link to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="914"/>
+        <location filename="../src/gui/socketapi.cpp" line="924"/>
         <source>Open in browser</source>
         <translation>باز کردن در مرورگر</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="922"/>
+        <location filename="../src/gui/socketapi.cpp" line="932"/>
         <source>Show file versions in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="945"/>
+        <location filename="../src/gui/socketapi.cpp" line="955"/>
         <source>Rename...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="948"/>
+        <location filename="../src/gui/socketapi.cpp" line="958"/>
         <source>Rename and upload...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="953"/>
+        <location filename="../src/gui/socketapi.cpp" line="963"/>
         <source>Move and rename...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="956"/>
+        <location filename="../src/gui/socketapi.cpp" line="966"/>
         <source>Move, rename and upload...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="959"/>
+        <location filename="../src/gui/socketapi.cpp" line="969"/>
         <source>Delete local changes</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="964"/>
+        <location filename="../src/gui/socketapi.cpp" line="974"/>
         <source>Move and upload...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="965"/>
+        <location filename="../src/gui/socketapi.cpp" line="975"/>
         <source>Delete</source>
         <translation>حذف</translation>
     </message>
@@ -3723,58 +3708,58 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>1% (به علت خطای قبلی از بین رفته است، دوباره در 2% امتحان کنید)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="454"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>تنها 1% موجود است، حداقل 2% برای شروع مورد نیاز است</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="482"/>
+        <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>پایگاه داده محلی باز یا ساخته نمی شود. اطمینان حاصل کنید که دسترسی به نوشتن در پوشه همگام سازی دارید.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>فضای دیسک کم است: دانلودهایی که فضای آزاد را به کمتر از 1% کاهش می دهند رد می شوند.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1025"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>برای بعضی از بارگذاری ها در سرور فضای کافی موجود نیست.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="372"/>
+        <location filename="../src/libsync/syncengine.cpp" line="377"/>
         <source>Unresolved conflict.</source>
         <translation>ناسازگاری حل نشده.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="350"/>
+        <location filename="../src/libsync/syncengine.cpp" line="355"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="498"/>
+        <location filename="../src/libsync/syncengine.cpp" line="503"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="510"/>
+        <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>نمی توان لیست سیاه را از پایگاه داده محلی خواند</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="541"/>
+        <location filename="../src/libsync/syncengine.cpp" line="546"/>
         <source>Unable to read from the sync journal.</source>
         <translation>نمی توان از مجله همگام ساز خواند.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="625"/>
+        <location filename="../src/libsync/syncengine.cpp" line="630"/>
         <source>Cannot open the sync journal</source>
         <translation>نمی توان مجله همگام ساز را باز کرد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1001"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
@@ -4601,23 +4586,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
-        <source>Currently always available locally</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
-        <source>Currently available locally</source>
+        <source>Always available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
-        <source>Currently some available online only</source>
+        <source>Some available online only</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="82"/>
         <location filename="../src/gui/guiutility.cpp" line="84"/>
-        <source>Currently available online only</source>
+        <source>Available online only</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <source>Currently available locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
