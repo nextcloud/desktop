@@ -31,6 +31,7 @@ namespace OCC {
 
 static const char updateAvailableC[] = "Updater/updateAvailable";
 static const char updateTargetVersionC[] = "Updater/updateTargetVersion";
+static const char updateTargetVersionStringC[] = "Updater/updateTargetVersionString";
 static const char seenVersionC[] = "Updater/seenVersion";
 static const char autoUpdateAttemptedC[] = "Updater/autoUpdateAttempted";
 
@@ -294,6 +295,7 @@ void NSISUpdater::wipeUpdateData()
         QFile::remove(updateFileName);
     settings.remove(updateAvailableC);
     settings.remove(updateTargetVersionC);
+    settings.remove(updateTargetVersionStringC);
     settings.remove(autoUpdateAttemptedC);
 }
 
@@ -322,6 +324,7 @@ void NSISUpdater::slotDownloadFinished()
     setDownloadState(DownloadComplete);
     qCInfo(lcUpdater) << "Downloaded" << url.toString() << "to" << _targetFile;
     settings.setValue(updateTargetVersionC, updateInfo().version());
+    settings.setValue(updateTargetVersionStringC, updateInfo().versionString());
     settings.setValue(updateAvailableC, _targetFile);
 }
 
@@ -409,7 +412,7 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     msgBox->open();
 }
 
-void NSISUpdater::showUpdateErrorDialog()
+void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 {
     QDialog *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
@@ -433,7 +436,7 @@ void NSISUpdater::showUpdateErrorDialog()
     QString txt = tr("<p>A new version of the %1 Client is available but the updating process failed.</p>"
                      "<p><b>%2</b> has been downloaded. The installed version is %3.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
-                          Utility::escape(updateInfo().versionString()), Utility::escape(clientVersion()));
+                          Utility::escape(targetVersion), Utility::escape(clientVersion()));
 
     lbl->setText(txt);
     lbl->setTextFormat(Qt::RichText);
@@ -486,7 +489,7 @@ bool NSISUpdater::handleStartup()
                 return false;
             } else {
                 // auto update failed. Ask user what to do
-                showUpdateErrorDialog();
+                showUpdateErrorDialog(settings.value(updateTargetVersionStringC).toString());
                 return false;
             }
         } else {
