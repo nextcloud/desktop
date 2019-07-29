@@ -463,8 +463,6 @@ void NSISUpdater::showUpdateErrorDialog()
         qApp->quit();
     });
     connect(getupdate, &QAbstractButton::clicked, this, [this]() {
-        wipeUpdateData();
-        slotSetSeenVersion();
         slotOpenUpdateUrl();
     });
 
