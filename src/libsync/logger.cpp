@@ -269,7 +269,7 @@ void Logger::enterNextLogFile()
 
         // Expire old log files and deal with conflicts
         QStringList files = dir.entryList(QStringList("*owncloud.log.*"),
-            QDir::Files);
+            QDir::Files, QDir::Name);
         QRegExp rx(R"(.*owncloud\.log\.(\d+).*)");
         int maxNumber = -1;
         foreach (const QString &s, files) {
@@ -288,10 +288,15 @@ void Logger::enterNextLogFile()
         auto previousLog = _logFile.fileName();
         setLogFile(dir.filePath(newLogName));
 
-        if (!previousLog.isEmpty()) {
-            QString compressedName = previousLog + ".gz";
-            if (compressLog(previousLog, compressedName)) {
-                QFile::remove(previousLog);
+        // Compress the previous log file. On a restart this can be the most recent
+        // log file.
+        auto logToCompress = previousLog;
+        if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(".gz"))
+            logToCompress = dir.absoluteFilePath(files.last());
+        if (!logToCompress.isEmpty()) {
+            QString compressedName = logToCompress + ".gz";
+            if (compressLog(logToCompress, compressedName)) {
+                QFile::remove(logToCompress);
             } else {
                 QFile::remove(compressedName);
             }
