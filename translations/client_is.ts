@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Virkja dulritun</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
