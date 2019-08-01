@@ -3741,12 +3741,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1020"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1027"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3781,7 +3781,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1003"/>
         <source>Aborted</source>
         <translation type="unfinished"></translation>
     </message>
