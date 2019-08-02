@@ -759,10 +759,6 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item)
 {
     _progressInfo->setProgressComplete(*item);
 
-    if (item->_status == SyncFileItem::FatalError) {
-        syncError(item->_errorString);
-    }
-
     emit transmissionProgress(*_progressInfo);
     emit itemCompleted(item);
 }

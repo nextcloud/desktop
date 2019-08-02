@@ -494,18 +494,19 @@ class GetOrCreatePublicLinkShare : public QObject
 {
     Q_OBJECT
 public:
-    GetOrCreatePublicLinkShare(const AccountPtr &account, const QString &localFile,
-        std::function<void(const QString &link)> targetFun, QObject *parent)
+    GetOrCreatePublicLinkShare(const AccountPtr &account,
+        const QString &serverPath, QObject *parent)
         : QObject(parent)
         , _account(account)
         , _shareManager(account)
-        , _localFile(localFile)
-        , _targetFun(targetFun)
+        , _serverPath(serverPath)
     {
         connect(&_shareManager, &ShareManager::sharesFetched,
             this, &GetOrCreatePublicLinkShare::sharesFetched);
         connect(&_shareManager, &ShareManager::linkShareCreated,
             this, &GetOrCreatePublicLinkShare::linkShareCreated);
+        connect(&_shareManager, &ShareManager::linkShareCreationForbidden,
+            this, &GetOrCreatePublicLinkShare::linkShareCreationForbidden);
         connect(&_shareManager, &ShareManager::serverError,
             this, &GetOrCreatePublicLinkShare::serverError);
     }
@@ -513,7 +514,7 @@ public:
     void run()
     {
         qCDebug(lcPublicLink) << "Fetching shares";
-        _shareManager.fetchShares(_localFile);
+        _shareManager.fetchShares(_serverPath);
     }
 
 private slots:
@@ -544,7 +545,7 @@ private slots:
         // otherwise create a new one
         qCDebug(lcPublicLink) << "Creating new share";
         QString noPassword;
-        _shareManager.createLinkShare(_localFile, shareName, noPassword, expireDate);
+        _shareManager.createLinkShare(_serverPath, shareName, noPassword, expireDate);
     }
 
     void linkShareCreated(const QSharedPointer<LinkShare> &share)
@@ -553,29 +554,34 @@ private slots:
         success(share->getLink().toString());
     }
 
+    void linkShareCreationForbidden(const QString &message)
+    {
+        qCInfo(lcPublicLink) << "Could not create link share:" << message;
+        emit error(message);
+        deleteLater();
+    }
+
     void serverError(int code, const QString &message)
     {
         qCWarning(lcPublicLink) << "Share fetch/create error" << code << message;
-        QMessageBox::warning(
-            0,
-            tr("Sharing error"),
-            tr("Could not retrieve or create the public link share. Error:\n\n%1").arg(message),
-            QMessageBox::Ok,
-            QMessageBox::NoButton);
+        emit error(message);
         deleteLater();
     }
+
+signals:
+    void done(const QString &link);
+    void error(const QString &message);
 
 private:
     void success(const QString &link)
     {
-        _targetFun(link);
+        emit done(link);
         deleteLater();
     }
 
     AccountPtr _account;
     ShareManager _shareManager;
-    QString _localFile;
-    std::function<void(const QString &url)> _targetFun;
+    QString _serverPath;
 };
 
 #else
@@ -584,14 +590,16 @@ class GetOrCreatePublicLinkShare : public QObject
 {
     Q_OBJECT
 public:
-    GetOrCreatePublicLinkShare(const AccountPtr &, const QString &,
-        std::function<void(const QString &link)>, QObject *)
+    GetOrCreatePublicLinkShare(const AccountPtr &, const QString &, QObject *)
     {
     }
 
     void run()
     {
     }
+signals:
+    void done(const QString &link);
+    void error(int code, const QString &message);
 };
 
 #endif
@@ -603,7 +611,11 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
         return;
 
     AccountPtr account = fileData.folder->accountState()->account();
-    auto job = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
+    auto job = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, this);
+    connect(job, &GetOrCreatePublicLinkShare::done, this,
+            [](const QString &url) { copyUrlToClipboard(url); });
+    connect(job, &GetOrCreatePublicLinkShare::error, this,
+            [=]() { emit shareCommandReceived(fileData.serverRelativePath, fileData.localPath, ShareDialogStartPage::PublicLinks); });
     job->run();
 }
 

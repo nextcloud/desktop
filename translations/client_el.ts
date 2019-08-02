@@ -4,28 +4,28 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="393"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η δημιουργία καταλόγων σε απορρίμματα</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="407"/>
         <location filename="../src/common/filesystembase.cpp" line="413"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία μετακίνησης του &apos;%1&apos; σε &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="450"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Η μετακίνηση στα απορρίμματα δεν υποστηρίζεται σε αυτήν την πλατφόρμα</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα μετακίνησης &apos;%1&apos;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation>Αδυναμία διαγραφής του φακέλου &apos;%1&apos;</translation>
+        <translation>Αδυναμία αφαίρεσης του φακέλου &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -84,17 +84,17 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Δεν ελήφθη E-Tag από το διακομιστή, ελέγξτε το διακομιστή μεσολάβησης/πύλη</translation>
+        <translation>Δεν ελήφθη ηλεκτρονική ετικέτα από το διακομιστή, ελέγξτε το διακομιστή μεσολάβησης/πύλη</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Ελήφθη διαφορετικό E-Tag για συνέχιση. Επανάληψη την επόμενη φορά.</translation>
+        <translation>Ελήφθη διαφορετική ηλεκτρονική ετικέτα για συνέχιση. Επανάληψη την επόμενη φορά.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Λάβαμε μια μη αναμενόμενη λήψη περιεχομένου-μήκους.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
@@ -135,12 +135,12 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="297"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation type="unfinished"/>
+        <translation>Άγνωστο σφάλμα: η απάντηση δικτύου διαγράφηκε</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="449"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής απάντησε &quot;%1 %2&quot; σε &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -188,8 +188,8 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="247"/>
         <location filename="../src/gui/accountsettings.cpp" line="511"/>
-        <location filename="../src/gui/accountsettings.cpp" line="616"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
+        <location filename="../src/gui/accountsettings.cpp" line="618"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1057"/>
         <source>Cancel</source>
         <translation>Άκυρο</translation>
     </message>
@@ -259,111 +259,115 @@
         <translation>Αφαίρεση σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="607"/>
+        <location filename="../src/gui/accountsettings.cpp" line="609"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Απενεργοποίηση υποστήριξης εικονικού αρχείου;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="610"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτή η ενέργεια θα απενεργοποιήσει την υποστήριξη εικονικού αρχείου. Κατά συνέπεια, τα περιεχόμενα φακέλων που επισημαίνονται επί του παρόντος ως «διαθέσιμα μόνο σε σύνδεση» θα μεταφορτωθούν.
+
+Το μόνο πλεονέκτημα της απενεργοποίησης της υποστήριξης εικονικού αρχείου είναι ότι η λειτουργία επιλεκτικού συγχρονισμού θα είναι και πάλι διαθέσιμη.
+
+Αυτή η ενέργεια θα ακυρώσει οποιονδήποτε τρέχοντα συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="615"/>
+        <location filename="../src/gui/accountsettings.cpp" line="617"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Απενεργοποίηση υποστήριξης</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="717"/>
+        <location filename="../src/gui/accountsettings.cpp" line="722"/>
         <source>Sync Running</source>
         <translation>Εκτελείται Συγχρονισμός </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="718"/>
+        <location filename="../src/gui/accountsettings.cpp" line="723"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Η λειτουργία συγχρονισμού εκτελείται.&lt;br/&gt; Θέλετε να την τερματίσετε;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="813"/>
+        <location filename="../src/gui/accountsettings.cpp" line="818"/>
         <source>%1 in use</source>
         <translation>%1 σε χρήση</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="840"/>
+        <location filename="../src/gui/accountsettings.cpp" line="845"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 ως &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="848"/>
+        <location filename="../src/gui/accountsettings.cpp" line="853"/>
         <source>Connected to %1.</source>
         <translation>Συνδεδεμένο με %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="850"/>
+        <location filename="../src/gui/accountsettings.cpp" line="855"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Ο διακομιστής %1 δεν είναι διαθέσιμος προσωρινά.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="852"/>
+        <location filename="../src/gui/accountsettings.cpp" line="857"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής %1 είναι προς το παρόν σε κατάσταση συντήρησης.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="854"/>
+        <location filename="../src/gui/accountsettings.cpp" line="859"/>
         <source>Signed out from %1.</source>
         <translation>Αποσυνδέθηκε από %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="868"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Γίνεται εύρεση πιστοποίησης από τον περιηγητή. &lt;a href=&apos;%1&apos;&gt;Κάντε κλικ εδώ&lt;/a&gt; για να ανοίξετε ξανά τον περιηγητή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="867"/>
+        <location filename="../src/gui/accountsettings.cpp" line="872"/>
         <source>Connecting to %1...</source>
         <translation>Σύνδεση σε %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="870"/>
+        <location filename="../src/gui/accountsettings.cpp" line="875"/>
         <source>No connection to %1 at %2.</source>
         <translation>Δεν υπάρχει σύνδεση με το %1 στο %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="899"/>
+        <location filename="../src/gui/accountsettings.cpp" line="904"/>
         <source>Log in</source>
         <translation>Είσοδος</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="995"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Υπάρχουν φάκελοι που δεν συγχρονίστηκαν επειδή είναι πολύ μεγάλοι:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="997"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1002"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Υπάρχουν φάκελοι που δεν συγχρονίστηκαν επειδή είναι εξωτερικοί αποθηκευτικοί χώροι:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="998"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Υπάρχουν φάκελοι που δεν συγχρονίστηκαν επειδή είναι πολύ μεγάλοι ή αποθηκευτικοί χώροι:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1049"/>
         <source>Confirm Account Removal</source>
         <translation>Επιβεβαίωση Αφαίρεσης Λογαριασμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Θέλετε πραγματικά να αφαιρέσετε τη σύνδεση με το λογαριασμό &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1056"/>
         <source>Remove connection</source>
         <translation>Αφαίρεση σύνδεσης</translation>
     </message>
@@ -374,19 +378,19 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="201"/>
-        <location filename="../src/gui/accountsettings.cpp" line="901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="906"/>
         <source>Log out</source>
         <translation>Αποσύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="276"/>
         <source>Open local folder</source>
-        <translation type="unfinished"/>
+        <translation>Άνοιγμα τοπικού φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="284"/>
         <source>Open folder in browser</source>
-        <translation type="unfinished"/>
+        <translation>Άνοιγμα φακέλου στον περιηγητή</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="335"/>
@@ -401,17 +405,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="342"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Διαθεσιμότητα</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="359"/>
         <source>Disable virtual file support...</source>
-        <translation type="unfinished"/>
+        <translation>Απενεργοποίηση υποστήριξης εικονικού αρχείου...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="367"/>
         <source>Enable virtual file support (experimental)...</source>
-        <translation type="unfinished"/>
+        <translation>Ενεργοποίησης υποστήριξης εικονικού αρχείου (πειραματικό στάδιο)...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="504"/>
@@ -419,27 +423,27 @@ This action will abort any currently running synchronization.</source>
         <translation>&lt;p&gt;Θέλετε πραγματικά να σταματήσετε το συγχρονισμό του φακέλου &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="805"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) από %2 σε χρήση. Μερικοί φάκελοι, συμπεριλαμβανομένων των δικτυακών ή των κοινόχρηστων μπορεί να έχουν διαφορετικά όρια.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="801"/>
+        <location filename="../src/gui/accountsettings.cpp" line="806"/>
         <source>%1 of %2 in use</source>
         <translation>%1 από %2 σε χρήση</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
+        <location filename="../src/gui/accountsettings.cpp" line="815"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Προς το παρόν δεν υπάρχουν πληροφορίες χρήσης χώρου αποθήκευσης διαθέσιμες.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Η έκδοση διακομιστή %1 δεν υποστηρίζεται! Προχωρήστε με δική σας ευθύνη.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="881"/>
         <source>No %1 connection configured.</source>
         <translation>Δεν έχει ρυθμιστεί σύνδεση με το %1.</translation>
     </message>
@@ -469,7 +473,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="127"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Λειτουργία συντήρησης</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="129"/>
@@ -484,7 +488,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="133"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Ερώτημα διαπιστευτηρίων</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="135"/>
@@ -640,7 +644,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="71"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Συνίσταται ένα κρυπτογραφημένο πακέτο pkcs12 καθώς ένα αντίγραφο θα αποθηκευτεί στο αρχείο ρυθμίσεων.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -656,42 +660,42 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="125"/>
+        <location filename="../src/gui/application.cpp" line="126"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Η συνέχιση θα σημαίνει τη &lt;b&gt;διαγραφή αυτών των ρυθμίσεων&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="127"/>
+        <location filename="../src/gui/application.cpp" line="128"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Η συνέχιση θα σημαίνει την &lt;b&gt;παράβλεψη αυτών των ρυθμίσεων&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="133"/>
+        <location filename="../src/gui/application.cpp" line="134"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ορισμένες ρυθμίσεις έχουν ρυθμιστεί σε νεότερες εκδόσεις αυτού του πελάτη και χρησιμοποιούν λειτουργίες που δεν είναι διαθέσιμες σε αυτή την έκδοση. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; Έχει ήδη δημιουργηθεί ήδη αντίγραφο ασφαλείας του τρέχοντος αρχείου ρυθμίσεων στο &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="140"/>
+        <location filename="../src/gui/application.cpp" line="141"/>
         <source>Quit</source>
         <translation>Έξοδος</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="141"/>
+        <location filename="../src/gui/application.cpp" line="142"/>
         <source>Continue</source>
         <translation>Συνέχεια</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="290"/>
+        <location filename="../src/gui/application.cpp" line="291"/>
         <source>Error accessing the configuration file</source>
         <translation>Σφάλμα πρόσβασης στο αρχείο ρυθμίσεων</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="291"/>
+        <location filename="../src/gui/application.cpp" line="292"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Υπήρξε σφάλμα κατά την πρόσβαση του αρχείου ρυθμίσεων στο %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="294"/>
+        <location filename="../src/gui/application.cpp" line="295"/>
         <source>Quit ownCloud</source>
         <translation>Έξοδος ownCloud</translation>
     </message>
@@ -766,7 +770,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="378"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="400"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα διακομιστή: Η απάντηση PROPFIND δεν έχει μορφοποιηθεί με XML!</translation>
     </message>
 </context>
 <context>
@@ -817,13 +821,13 @@ This action will abort any currently running synchronization.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="419"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 και %n άλλο(-α) αρχείο(-α) έχουν προστεθεί.</numerusform><numerusform>%1 και %n άλλο(-α) αρχείο(-α) έχουν προστεθεί.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="421"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 προστέθηκαν.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="426"/>
@@ -866,50 +870,54 @@ This action will abort any currently running synchronization.</source>
         <translation>Δραστηριότητα Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="810"/>
+        <location filename="../src/gui/folder.cpp" line="806"/>
         <source>Could not read system exclude file</source>
         <translation>Αδυναμία ανάγνωσης αρχείου αποκλεισμού συστήματος</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1058"/>
+        <location filename="../src/gui/folder.cpp" line="1054"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Προστέθηκε ένας νέος φάκελος μεγαλύτερος από %1 MB: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1061"/>
+        <location filename="../src/gui/folder.cpp" line="1057"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Προστέθηκε ένας φάκελος από εξωτερικό αποθηκευτικό χώρο.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1062"/>
+        <location filename="../src/gui/folder.cpp" line="1058"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Μεταβείτε στις ρυθμίσεις για να το επιλέξετε εάν επιθυμείτε να το κατεβάσετε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1122"/>
+        <location filename="../src/gui/folder.cpp" line="1118"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Ο φάκελος %1 δημιουργήθηκε αλλά εξαιρέθηκε προηγουμένως από συγχρονισμό. Τα δεδομένα στο εσωτερικό του δεν θα συγχρονιστούν.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1125"/>
+        <location filename="../src/gui/folder.cpp" line="1121"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο %1 δημιουργήθηκε αλλά εξαιρέθηκε προηγουμένως από συγχρονισμό. Δεν θα συγχρονιστεί.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1136"/>
+        <location filename="../src/gui/folder.cpp" line="1132"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η αξιόπιστη παρακολούθηση των αλλαγών στους συγχρονισμένους φακέλους.
+
+Αυτό σημαίνει ότι ο πελάτης συγχρονισμού ενδέχεται να μην μεταφορτώνει άμεσα τις τοπικές αλλαγές και αντίθετα, θα ανιχνεύει μόνο τοπικές αλλαγές και θα τις ανεβάζει περιστασιακά (κάθε δύο ώρες από προεπιλογή).
+
+%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -920,7 +928,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 Εφόσον επιλέξετε να διαγράψετε τα αρχεία, δε θα είναι διαθέσιμα σε εσάς, εκτός εάν είστε ο ιδιοκτήτης τους.  </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1216"/>
+        <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -929,17 +937,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Αν αυτό ήταν ένα ατύχημα και αποφασίσατε να διατηρήσετε τα αρχεία σας, θα συγχρονιστούν εκ νέου από το διακομιστή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1220"/>
+        <location filename="../src/gui/folder.cpp" line="1216"/>
         <source>Remove All Files?</source>
         <translation>Αφαίρεση Όλων των Αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1223"/>
+        <location filename="../src/gui/folder.cpp" line="1219"/>
         <source>Remove all files</source>
         <translation>Αφαίρεση όλων των αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1224"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>Keep files</source>
         <translation>Διατήρηση αρχείων</translation>
     </message>
@@ -989,7 +997,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1335"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Επιτυχημένος συγχρονισμός, ανεπίλυτες συγκρούσεις.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1337"/>
@@ -1024,7 +1032,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1372"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Η επιλεγμένη διαδρομή δεν υπάρχει!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1376"/>
@@ -1097,7 +1105,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Η υποστήριξη για το εικονικό αρχείο είναι ενεργοποιημένη.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
@@ -1112,22 +1120,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="209"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτές είναι οι ανεπίλυτες διενέξεις. Κάντε κλικ για λεπτομέρειες.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="898"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Έλεγχος για αλλαγές στο απομακρυσμένο &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="902"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Έλεγχος για αλλαγές στο τοπικό &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="909"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Συνδυασμός αλλαγών</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
@@ -1162,12 +1170,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
@@ -1223,9 +1231,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="94"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="115"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Ο παρατηρητής δεν έλαβε μια ειδοποίηση δοκιμής.</translation>
     </message>
 </context>
 <context>
@@ -1233,7 +1241,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="90"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτό το πρόβλημα συμβαίνει συνήθως όταν εξαντληθούν τα ρολόγια inotify. Ελέγξτε τις Συχνές Ερωτήσεις (FAQ) για λεπτομέρειες.</translation>
     </message>
 </context>
 <context>
@@ -1320,7 +1328,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="486"/>
         <source>Use virtual files instead of downloading content immediately (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Χρησιμοποιήστε εικονικά αρχεία αντί για άμεση λήψη περιεχομένου (πειραματικά)</translation>
     </message>
 </context>
 <context>
@@ -1341,22 +1349,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="149"/>
         <source>Unable to parse zsync.</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία ανάλυσης zsync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="171"/>
         <source>Failed to get zsync byte ranges.</source>
-        <translation type="unfinished"/>
+        <translation>Αποτυχία λήψης περιοχών bytes zsync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="194"/>
         <source>Failed to initialize zsync receive structure.</source>
-        <translation type="unfinished"/>
+        <translation>Αποτυχία αρχικοποίησης της δομής λήψης zsync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="319"/>
         <source>We received a different E-Tag for delta. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Λάβαμε μια διαφορετική ηλεκτρονική ετικέτα για το delta. Να γίνει επανάληψη την επόμενη φορά.</translation>
     </message>
 </context>
 <context>
@@ -1387,12 +1395,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="260"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>σταθερή</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="265"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="53"/>
@@ -1439,7 +1447,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>Enable Delta-Synchronization for files larger than</source>
-        <translation type="unfinished"/>
+        <translation>Ενεργοποίηση συγχρονισμού Delta για αρχεία μεγαλύτερα από</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="216"/>
@@ -1449,12 +1457,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="243"/>
         <source>&amp;Update Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ενημέρωση καναλιού</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="349"/>
         <source>•</source>
-        <translation type="unfinished"/>
+        <translation>•</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
@@ -1464,7 +1472,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση φακέλων συγχρονισμού στο &amp;Πίνακα περιήγησης του διαχειριστή αρχείων</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="157"/>
@@ -1479,44 +1487,31 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν μπορείτε να απενεργοποιήσετε την αυτόματη εκκίνηση επειδή είναι ενεργοποιημένη η αυτόματη εκκίνηση σε επίπεδο συστήματος.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="191"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Αλλαγή καναλιού ενημέρωσης;</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="192"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Το κανάλι ενημέρωσης καθορίζει ποιες ενημερώσεις πελατών θα προσφέρονται για εγκατάσταση. Το &quot;σταθερό&quot; κανάλι περιέχει μόνο αναβαθμίσεις που θεωρούνται αξιόπιστες, ενώ οι εκδόσεις στο κανάλι &quot;beta&quot; ενδέχεται να περιέχουν νεότερες λειτουργίες και διορθώσεις σφαλμάτων, αλλά δεν έχουν ακόμη δοκιμαστεί πλήρως.
+
+Σημειώστε ότι αυτό επιλέγει μόνο από ποιες αναβαθμίσεις έχουν ληφθεί και ότι δεν υπάρχουν υποβαθμίσεις: Έτσι, η επιστροφή από το κανάλι beta στο σταθερό κανάλι συνήθως δεν μπορεί να γίνει αμέσως και σημαίνει αναμονή για μια σταθερή έκδοση που είναι νεότερη από την τρέχουσα beta έκδοση.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Αλλαγή καναλιού ενημέρωσης</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="206"/>
         <source>Cancel</source>
         <translation>Ακύρωση</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::GetOrCreatePublicLinkShare</name>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="561"/>
-        <source>Sharing error</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="562"/>
-        <source>Could not retrieve or create the public link share. Error:
-
-%1</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1629,7 +1624,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>Λίστα των θεμάτων</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1656,22 +1651,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση αγνοημένων αρχείων</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="137"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Υπήρχαν πάρα πολλά ζητήματα. Δεν θα είναι ορατά όλες εδώ.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="147"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
-        <translation type="unfinished"/>
+        <translation>Υπήρχαν συγκρούσεις. Ελέγξτε την τεκμηρίωση σχετικά με τον τρόπο επίλυσής τους.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="180"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Αντιγραφή λίστας ζητημάτων στο πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="183"/>
@@ -1691,12 +1686,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="94"/>
         <source>Issue</source>
-        <translation type="unfinished"/>
+        <translation>Θέμα</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="126"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Υπήρχαν συγκρούσεις. &lt;a href=&quot;%1&quot;&gt;Ελέγξτε την τεκμηρίωση σχετικά με τον τρόπο επίλυσής τους.&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -1719,23 +1714,26 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ο πελάτης μπορεί να γράψει τα αρχεία καταγραφής σφαλμάτων σε έναν προσωρινό φάκελο. Αυτά τα αρχεία καταγραφής είναι πολύ χρήσιμα για τη διάγνωση προβλημάτων.
+Καθώς τα αρχεία καταγραφής μπορούν να έχουν μεγάλο μέγεθος, ο πελάτης θα ξεκινήσει έναν νέο για κάθε εκτέλεση συγχρονισμού και θα συμπιέσει τα παλαιότερα. Συνιστάται επίσης να ενεργοποιήσετε τη διαγραφή αρχείων καταγραφής μετά από μερικές ώρες, για να αποφύγετε την κατανάλωση υπερβολικού χώρου στο δίσκο.
+Εάν είναι ενεργοποιημένη, τα αρχεία καταγραφής θα εγγραφούν στο %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="66"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Ενεργοποίηση της καταγραφής σε προσωρινό φάκελο</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="72"/>
         <source>Delete logs older than %1 hours</source>
-        <translation type="unfinished"/>
+        <translation>Αρχεία καταγραφής παλαιότερα των %1 ωρών, να διαγράφονται</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>These settings persist across client restarts.
 Note that using any logging command line options will override the settings.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτές οι ρυθμίσεις παραμένουν σε όλες τις επανεκκινήσεις πελάτη.
+Σημειώστε ότι η χρήση οποιασδήποτε επιλογής γραμμής εντολών καταγραφής θα παρακάμψει τις ρυθμίσεις.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="85"/>
@@ -1787,27 +1785,27 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Απέτυχε η ενημέρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="433"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Μια νέα έκδοση του πελάτη %1 είναι διαθέσιμη αλλά η διαδικασία ενημέρωσης απέτυχε.&lt;/p&gt;&lt;p&gt;Το &lt;b&gt;%2&lt;/b&gt; έχει ληφθεί. Η εγκατεστημένη έκδοση είναι %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Να γίνει ερώτηση ξανά αργότερα</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="448"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Επανεκκίνηση και ενημέρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Χειροκίνητη ενημέρωση</translation>
     </message>
 </context>
 <context>
@@ -1948,37 +1946,37 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα που επέστρεψε από το διακομιστή: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Παρουσιάστηκε ένα σφάλμα κατά την πρόσβαση στο τελικό σημείο του &apos;διακριτικού&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>Εκκαθάριση του JSON από την ανακατεύθυνση OAuth2</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία ανάλυσης του JSON που επέστρεψε από το διακομιστή: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Η απάντηση από το διακομιστή δεν περιείχε όλα τα αναμενόμενα πεδία</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Σφάλμα εισόδου&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Λάθος χρήστης&lt;/h1&gt;&lt;p&gt; Συνδεθήκατε με το χρήστη &lt;em&gt;%1&lt;/em&gt;, αλλά πρέπει να συνδεθείτε με το χρήστη &lt;em&gt;%2&lt;/em&gt;. &lt;br&gt;Παρακαλούμε αποσυνδεθείτε από τον %3 σε άλλη καρτέλα, στη συνέχεια &lt;a href=&apos;%4&apos;&gt;κάντε κλικ εδώ&lt;/a&gt; και συνδεθείτε ως χρήστης %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2008,17 +2006,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Downloading %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Γίνεται λήψη %1. Παρακαλούμε περιμένετε...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 διαθέσιμη. Κάντε επανεκκίνηση της εφαρμογής για να ξεκινήσετε την ενημέρωση.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Υπάρχει διαθέσιμο νέο %1. Χρησιμοποιήστε το εργαλείο ενημέρωσης του συστήματος για να το εγκαταστήσετε.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2146,7 +2144,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Είσοδος στο πρόγραμμα περιήγησης</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
@@ -2191,7 +2189,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="315"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία φόρτωσης πιστοποιητικού. Ίσως είναι εσφαλμένο το συνθηματικό;</translation>
     </message>
 </context>
 <context>
@@ -2239,7 +2237,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="302"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής ανέφερε το παρακάτω σφάλμα:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
@@ -2355,7 +2353,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="243"/>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="261"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Ενεργοποίηση πειραματικής λειτουργίας;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="244"/>
@@ -2366,7 +2364,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Όταν είναι ενεργοποιημένη η λειτουργία &quot;εικονικά αρχεία&quot; δεν θα ληφθούν αρχικά αρχεία. Αντί για αυτό θα δημιουργηθεί ένα αρχείο σύστασης για κάθε αρχείο που υπάρχει στον διακομιστή. Όταν ανοίξει ένα αρχείο, το περιεχόμενό του θα φορτωθεί αυτόματα. Εναλλακτικά, τα αρχεία μπορούν να μεταφορτωθούν με μη αυτόματο τρόπο χρησιμοποιώντας το μενού περιβάλλοντος.
+
+Η λειτουργία εικονικών αρχείων είναι αμοιβαία αποκλειστική με επιλεκτικό συγχρονισμό. Οι φάκελοι που δεν έχουν επιλεγεί προς το παρόν θα μεταφραστούν σε φακέλους μόνο σε σύνδεση και οι επιλεγμένες ρυθμίσεις συγχρονισμού θα επαναρυθμιστούν.
+
+Εάν μεταβείτε σε αυτήν τη λειτουργία, θα ακυρωθεί οποιοσδήποτε τρέχων συγχρονισμός.
+
+Πρόκειται για μια νέα, πειραματική λειτουργία. Αν αποφασίσετε να τη χρησιμοποιήσετε, αναφέρετε τυχόν ζητήματα που προκύπτουν.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
@@ -2377,17 +2381,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Όταν είναι ενεργοποιημένη η λειτουργία &quot;εικονικά αρχεία&quot; δεν θα ληφθούν αρχικά αρχεία. Αντ &apos;αυτού, θα δημιουργηθεί ένα μικροσκοπικό αρχείο &quot;%1&quot; για κάθε αρχείο που υπάρχει στο διακομιστή. Τα περιεχόμενα μπορεί να ληφθούν εκτελώντας αυτά τα αρχεία ή χρησιμοποιώντας το μενού περιβάλλοντος.
+
+Η λειτουργία εικονικών αρχείων είναι αμοιβαία αποκλειστική με επιλεκτικό συγχρονισμό. Οι φάκελοι που δεν έχουν επιλεγεί προς το παρόν θα μεταφραστούν σε φακέλους στο διαδίκτυο και οι επιλεγμένες ρυθμίσεις συγχρονισμού θα επαναρυθμιστούν.
+
+Εάν μεταβείτε σε αυτήν τη λειτουργία, θα ακυρωθεί οποιοσδήποτε τρέχων συγχρονισμός.
+
+Πρόκειται για μια νέα, πειραματική λειτουργία. Αν αποφασίσετε να την χρησιμοποιήσετε, αναφέρετε τυχόν ζητήματα που προκύπτουν.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="276"/>
         <source>Enable experimental mode</source>
-        <translation type="unfinished"/>
+        <translation>Ενεργοποίηση πειραματικής κατάστασης</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="277"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Μείνετε ασφαλείς</translation>
     </message>
 </context>
 <context>
@@ -2471,108 +2481,108 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="256"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Σύγκρουση: Έγινε λήψη της έκδοσης του διακομιστή, το τοπικό αντίγραφο μετονομάστηκε και δεν μεταφορτώθηκε.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="260"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Το όνομα αρχείου δεν μπορεί να κωδικοποιηθεί στο σύστημα αρχείων σας.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="263"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Το όνομα αρχείου είναι στην μαύρη λίστα του διακομιστή.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="316"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο έχει επέκταση που προορίζεται για εικονικά αρχεία.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="377"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>μέγεθος</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="379"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>δικαιώματα</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="381"/>
         <source>etag</source>
-        <translation type="unfinished"/>
+        <translation>ηλεκτρονική ετικέτα</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>id αρχείου</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>ο διακομιστής ανέφερε όχι %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="687"/>
-        <location filename="../src/libsync/discovery.cpp" line="1180"/>
+        <location filename="../src/libsync/discovery.cpp" line="1186"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Δεν επιτρέπεται η αφαίρεση, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1106"/>
+        <location filename="../src/libsync/discovery.cpp" line="1112"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Αγνοήθηκε εξαιτίας της μαύρης λίστας &quot;διάλεξε τι να συγχρονιστεί&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1139"/>
+        <location filename="../src/libsync/discovery.cpp" line="1145"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε υποφακέλους σε αυτό τον φάκελο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1144"/>
+        <location filename="../src/libsync/discovery.cpp" line="1150"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε αρχεία σε αυτόν τον φάκελο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1158"/>
+        <location filename="../src/libsync/discovery.cpp" line="1164"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Δεν επιτρέπεται να μεταφορτώσετε αυτό το αρχείο επειδή είναι μόνο για ανάγνωση στο διακομιστή, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1294"/>
+        <location filename="../src/libsync/discovery.cpp" line="1300"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα κατά την ανάγνωση της βάσης δεδομένων</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1340"/>
+        <location filename="../src/libsync/discovery.cpp" line="1346"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής απάντησε με σφάλμα κατά την ανάγνωση του καταλόγου &apos;%1&apos; : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1384"/>
+        <location filename="../src/libsync/discovery.cpp" line="1390"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα κατά το άνοιγμα του καταλόγου %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1386"/>
+        <location filename="../src/libsync/discovery.cpp" line="1392"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Ο κατάλογος δεν είναι προσβάσιμος από τον πελάτη, άρνηση πρόσβασης</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1394"/>
+        <location filename="../src/libsync/discovery.cpp" line="1400"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Δεν βρέθηκε ο κατάλογος: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1418"/>
+        <location filename="../src/libsync/discovery.cpp" line="1424"/>
         <source>Filename encoding is not valid</source>
         <translation>Η κωδικοποίηση του ονόματος αρχείου δεν είναι έγκυρη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1436"/>
+        <location filename="../src/libsync/discovery.cpp" line="1442"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα κατά την ανάγνωση του καταλόγου %1</translation>
     </message>
 </context>
 <context>
@@ -2593,7 +2603,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="491"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Η λήψη θα μειώσει τον ελεύθερο χώρο τοπικού δίσκου κάτω από το όριο</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="495"/>
@@ -2603,7 +2613,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="629"/>
         <source>Download slot finished, but there was no reply!</source>
-        <translation type="unfinished"/>
+        <translation>Ολοκληρώθηκε η υποδοχή λήψης, αλλά δεν υπήρξε απάντηση!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="682"/>
@@ -2632,7 +2642,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Το αρχείο έχει αλλάξει από όταν ανακαλύφθηκε</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1039"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1051"/>
         <source>Error writing metadata to the database</source>
         <translation>Σφάλμα εγγραφής μεταδεδομένων στην βάση δεδομένων</translation>
     </message>
@@ -2697,7 +2707,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="261"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα στη ρύθμιση της κατάστασης pin</translation>
     </message>
 </context>
 <context>
@@ -2726,7 +2736,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="142"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία μετονομασίας %1 σε %2, σφάλμα: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="191"/>
@@ -2742,7 +2752,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="233"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα στη ρύθμιση της κατάστασης pin</translation>
     </message>
 </context>
 <context>
@@ -2771,7 +2781,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="207"/>
         <location filename="../src/libsync/propagateupload.cpp" line="575"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Η μεταφόρτωση του %1 υπερβαίνει το μέγεθος του φακέλου</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="660"/>
@@ -2784,12 +2794,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="76"/>
         <source>Failed to get zsync byte ranges.</source>
-        <translation type="unfinished"/>
+        <translation>Αποτυχία λήψης περιοχών bytes zsync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="634"/>
         <source>Failed to generate zsync file.</source>
-        <translation type="unfinished"/>
+        <translation>Αποτυχία δημιουργίας αρχείου zsync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="701"/>
@@ -3116,27 +3126,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="207"/>
         <source>Upload only (File Drop)</source>
-        <translation type="unfinished"/>
+        <translation>Μόνο μεταφόρτωση (File Drop)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
         <source>Receive files from others without revealing the contents of the folder.</source>
-        <translation type="unfinished"/>
+        <translation>Λήψη αρχείων από άλλους χωρίς να αποκαλύπτεται το περιεχόμενο του φακέλου.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="297"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Όνομα:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="304"/>
         <source>Enter name of new share...</source>
-        <translation type="unfinished"/>
+        <translation>Εισάγετε όνομα του νέου κοινόχρηστου...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="311"/>
         <source>&amp;Create</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Δημιουργία</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="364"/>
@@ -3161,22 +3171,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="181"/>
         <source>Recipients can view or download contents.</source>
-        <translation type="unfinished"/>
+        <translation>Οι παραλήπτες μπορούν να προβάλλουν ή να κατεβάζουν περιεχόμενο.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="230"/>
         <source>Download / View</source>
-        <translation type="unfinished"/>
+        <translation>Λήψη / Προβολή</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="237"/>
         <source>Download / View / Upload</source>
-        <translation type="unfinished"/>
+        <translation>Λήψη / Προβολή / Μεταφόρτωση</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="250"/>
         <source>Recipients can view, download, edit, delete and upload contents.</source>
-        <translation type="unfinished"/>
+        <translation>Οι παραλήπτες μπορούν να προβάλλουν, να κατεβάζουν, να επεξεργάζονται, να διαγράφουν και να μεταφορτώνουν περιεχόμενα.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
@@ -3197,12 +3207,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="94"/>
         <source>Link shares have been disabled</source>
-        <translation type="unfinished"/>
+        <translation>Οι σύνδεσμοι των κοινόχρηστων έχουν απενεργοποιηθεί</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="108"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>Δημιουργία δημόσιου συνδέσμου κοινόχρηστου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
@@ -3223,7 +3233,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Αντιγραφή συνδέσμου στο πρόχειρο (άμεση λήψη)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
@@ -3233,27 +3243,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Αποστολή συνδέσμου με ηλεκτρονικό ταχυδρομείο (απευθείας λήψη)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="286"/>
         <source>Create new...</source>
-        <translation type="unfinished"/>
+        <translation>Δημιουργία νέου...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="562"/>
         <source>I shared %1 with you</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιράστηκα %1 με εσένα</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="576"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Επιβεβαίωση διαγραφής συνδέσμου κοινόχρηστου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="577"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Θέλετε πραγματικά να διαγράψετε τον σύνδεσμο κοινόχρηστου &lt;i&gt;%1&lt;/i&gt;; &lt;/p&gt;&lt;p&gt;Σημείωση: Αυτή η ενέργεια δεν μπορεί να ανακληθεί.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="584"/>
@@ -3269,7 +3279,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="270"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>Διαγραφή συνδέσμου κοινόχρηστου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="350"/>
@@ -3293,12 +3303,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can direct people to this shared file or folder &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;by giving them a private link&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Μπορείτε να κατευθύνετε άτομα σε αυτό το κοινόχρηστο αρχείο ή φάκελο &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;δίνοντάς τους έναν ιδιωτικό σύνδεσμο&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="210"/>
         <source>The item is not shared with any users or groups</source>
-        <translation type="unfinished"/>
+        <translation>Το στοιχείο δεν διαμοιράζεται με κανέναν χρήστη ή ομάδα</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="241"/>
@@ -3323,7 +3333,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="343"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιράστηκα κάτι μαζί σου</translation>
     </message>
 </context>
 <context>
@@ -3388,127 +3398,129 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Διαμοιρασμός με %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="522"/>
+        <location filename="../src/gui/socketapi.cpp" line="523"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Μενού περιβάλλοντος κοινόχρηστου</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="527"/>
+        <location filename="../src/gui/socketapi.cpp" line="528"/>
         <source>Context menu share %1</source>
-        <translation type="unfinished"/>
+        <translation>Μενού περιβάλλοντος κοινόχρηστου %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="707"/>
+        <location filename="../src/gui/socketapi.cpp" line="717"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Επιβεβαίωση διαγραφής</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="709"/>
+        <location filename="../src/gui/socketapi.cpp" line="719"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Θέλετε να διαγράψετε μονίμως τον κατάλογο &lt;i&gt;%1&lt;/i&gt; και όλα τα περιεχόμενά του;</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="710"/>
+        <location filename="../src/gui/socketapi.cpp" line="720"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="749"/>
-        <source>Select new location...</source>
-        <translation type="unfinished"/>
+        <translation>Θέλετε να διαγράψετε οριστικά το αρχείο &lt;i&gt;%1&lt;/i&gt;;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="759"/>
+        <source>Select new location...</source>
+        <translation>Επιλογή νέας τοποθεσίας...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="769"/>
         <source>Error</source>
         <translation>Σφάλμα</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="760"/>
+        <location filename="../src/gui/socketapi.cpp" line="770"/>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Αποτυχία μετακίνησης αρχείου:
+
+%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="767"/>
+        <location filename="../src/gui/socketapi.cpp" line="777"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιράστηκα κάτι μαζί σου</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="780"/>
-        <location filename="../src/gui/socketapi.cpp" line="811"/>
+        <location filename="../src/gui/socketapi.cpp" line="790"/>
+        <location filename="../src/gui/socketapi.cpp" line="821"/>
         <source>Share...</source>
         <translation>Διαμοιρασμός</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="782"/>
-        <location filename="../src/gui/socketapi.cpp" line="827"/>
+        <location filename="../src/gui/socketapi.cpp" line="792"/>
+        <location filename="../src/gui/socketapi.cpp" line="837"/>
         <source>Copy private link to clipboard</source>
         <translation>Αντιγραφή ιδιωτικού συνδέσμου στο πρόχειρο</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="783"/>
+        <location filename="../src/gui/socketapi.cpp" line="793"/>
         <source>Send private link by email...</source>
         <translation>Αποστολή ιδιωτικού συνδέσμου με αλληλογραφία...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="819"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Δεν επιτρέπεται να διαμοιράσετε ξανά αυτό το αρχείο</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="819"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Δεν επιτρέπεται να διαμοιράσετε ξανά αυτόν τον φάκελο</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="821"/>
-        <location filename="../src/gui/socketapi.cpp" line="823"/>
+        <location filename="../src/gui/socketapi.cpp" line="831"/>
+        <location filename="../src/gui/socketapi.cpp" line="833"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Αντιγραφή δημόσιου συνδέσμου στο πρόχειρο</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="914"/>
+        <location filename="../src/gui/socketapi.cpp" line="924"/>
         <source>Open in browser</source>
         <translation>Άνοιγμα στον περιηγητή ιστού</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="922"/>
+        <location filename="../src/gui/socketapi.cpp" line="932"/>
         <source>Show file versions in browser</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση εκδόσεων αρχείου στον περιηγητή</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="945"/>
+        <location filename="../src/gui/socketapi.cpp" line="955"/>
         <source>Rename...</source>
-        <translation type="unfinished"/>
+        <translation>Μετονομασία...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="948"/>
+        <location filename="../src/gui/socketapi.cpp" line="958"/>
         <source>Rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Μετονομασία και μεταφόρτωση...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="953"/>
+        <location filename="../src/gui/socketapi.cpp" line="963"/>
         <source>Move and rename...</source>
-        <translation type="unfinished"/>
+        <translation>Μετακίνηση και μετονομασία...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="956"/>
+        <location filename="../src/gui/socketapi.cpp" line="966"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Μετακίνηση, μετονομασία και μεταφόρτωση...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="959"/>
+        <location filename="../src/gui/socketapi.cpp" line="969"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Διαγραφή τοπικών αλλαγών</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="964"/>
+        <location filename="../src/gui/socketapi.cpp" line="974"/>
         <source>Move and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Μετακίνηση και μεταφόρτωση...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="965"/>
+        <location filename="../src/gui/socketapi.cpp" line="975"/>
         <source>Delete</source>
         <translation>Διαγραφή</translation>
     </message>
@@ -3615,7 +3627,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Έκδοση διακομιστή: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -3630,7 +3642,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>Η σύνδεση δεν είναι ασφαλής</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
@@ -3723,63 +3735,63 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="186"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (έχει παραλειφθεί λόγω προηγούμενου σφάλματος, θα γίνει προσπάθεια ξανά σε %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="454"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Μόνο %1 είναι διαθέσιμα, απαιτούνται τουλάχιστον %2 για την εκκίνηση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="482"/>
+        <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν είναι δυνατό το άνοιγμα ή η δημιουργία της τοπικής βάσης δεδομένων συγχρονισμού. Βεβαιωθείτε ότι έχετε πρόσβαση εγγραφής στο φάκελο συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Ο χώρος στο δίσκο είναι χαμηλός: Λήψεις που θα μειώσουν τον ελεύθερο χώρο κάτω από το %1 έχουν παραβλεφθεί.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1025"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Ανεπαρκής διαθέσιμος χώρος στο διακομιστή για κάποιες μεταφορτώσεις.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="372"/>
+        <location filename="../src/libsync/syncengine.cpp" line="377"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Ανεπίλυτη σύγκρουση.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="350"/>
+        <location filename="../src/libsync/syncengine.cpp" line="355"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η ενημέρωση των μεταδεδομένων εικονικού αρχείου: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="498"/>
+        <location filename="../src/libsync/syncengine.cpp" line="503"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Γίνεται χρήση εικονικών αρχεία με κατάληξη, αλλά η κατάληξη δεν έχει οριστεί</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="510"/>
+        <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Αδυναμία ανάγνωσης της μαύρης λίστας από την τοπική βάση δεδομένων</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="541"/>
+        <location filename="../src/libsync/syncengine.cpp" line="546"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Αδυναμία ανάγνωσης από το ημερολόγιο συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="625"/>
+        <location filename="../src/libsync/syncengine.cpp" line="630"/>
         <source>Cannot open the sync journal</source>
         <translation>Αδυναμία ανοίγματος του αρχείου συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1001"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Ματαιώθηκε</translation>
     </message>
 </context>
 <context>
@@ -3803,7 +3815,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="343"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Έκδοση %2. Για περισσότερες πληροφορίες επισκεφθείτε τη διεύθυνση &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt; Για γνωστά ζητήματα και βοήθεια, παρακαλούμε επισκεφθείτε τη διεύθυνση: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt; Από τους Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt και άλλους.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="350"/>
@@ -3839,22 +3851,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="186"/>
         <source>Failed to open input file %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Αποτυχία ανοίγματος αρχείου εισόδου %1: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="195"/>
         <source>Failed to open input file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Αποτυχία ανοίγματος αρχείου εισόδου: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="208"/>
         <source>Failed to write block sums:</source>
-        <translation type="unfinished"/>
+        <translation>Αποτυχία εγγραφής αθροισμάτων block:</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="229"/>
         <source>Failed to write zsync metadata file:</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία εγγραφής στο αρχείο μεταδεδομένων zsync:</translation>
     </message>
 </context>
 <context>
@@ -3862,12 +3874,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="115"/>
         <source>Unable to parse zsync file.</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία ανάλυσης αρχείου zsync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="132"/>
         <source>Unable to open file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία ανοίγματος αρχείου: %1</translation>
     </message>
 </context>
 <context>
@@ -3929,7 +3941,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="209"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής στο λογαριασμό %1 εκτελεί μια μη υποστηριζόμενη έκδοση %2. Η χρήση αυτού του πελάτη με μη υποστηριζόμενες εκδόσεις διακομιστών δεν είναι δοκιμασμένη και δυνητικά επικίνδυνη. Προχωρήστε με δική σας ευθύνη.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="797"/>
@@ -4005,7 +4017,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Ανεπίλυτες συγκρούσεις</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="338"/>
@@ -4076,12 +4088,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="864"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Έλεγχος για αλλαγές στο απομακρυσμένο &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="867"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Έλεγχος για αλλαγές στο τοπικό &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="882"/>
@@ -4172,12 +4184,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="394"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="397"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Όταν αυτή η επιλογή είναι επιλεγμένη, ο οδηγός θα κλείσει χωρίς συγχρονισμό οτιδήποτε. Μπορείτε να χρησιμοποιήσετε το κουμπί &amp;quot;Προσθήκη σύνδεσης  συγχρονισμού φακέλων&amp;quot; από τις ρυθμίσεις λογαριασμού για να επιλέξετε το ζεύγος τοπικών και απομακρυσμένων φακέλων που θέλετε να συγχρονίσετε&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
         <source>Manually create folder sync connections </source>
-        <translation type="unfinished"/>
+        <translation>Χειροκίνητη δημιουργία συνδέσεων συγχρονισμού φακέλων</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="150"/>
@@ -4197,12 +4209,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>Να γίνει σ&amp;υγρονισμός όλων από τον διακομιστή (συνίσταται)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
         <source>Use virtual files instead of downloading content immediately (e&amp;xperimental)</source>
-        <translation type="unfinished"/>
+        <translation>Να γίνει χρήση εικονικών αρχεία αντί για άμεση λήψη περιεχομένου (π&amp;ειραματικά)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="460"/>
@@ -4238,17 +4250,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Παρακαλούμε μεταβείτε στο πρόγραμμα περιήγησής σας για να συνεχίσετε.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Παρουσιάστηκε σφάλμα κατά τη σύνδεση. Παρακαλούμε δοκιμάστε αργότερα.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Άνοιγμα ξανά του προγράμματος πλοήγησης</translation>
     </message>
 </context>
 <context>
@@ -4432,12 +4444,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Το εικονικό αρχείο δημιουργήθηκε</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Αντικαταστάθηκε από εικονικό αρχείο</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -4590,7 +4602,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="37"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Παρουσιάστηκε ένα σφάλμα κατά την εκκίνηση του περιηγητή για την μετάβαση στη διεύθυνση URL %1. Ίσως δεν έχει ρυθμιστεί προεπιλεγμένο πρόγραμμα περιήγησης;</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="60"/>
@@ -4604,34 +4616,34 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
-        <source>Currently always available locally</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
-        <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <source>Always available locally</source>
+        <translation>Πάντα διαθέσιμο τοπικά</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
-        <source>Currently some available online only</source>
-        <translation type="unfinished"/>
+        <source>Some available online only</source>
+        <translation>Μερικά διαθέσιμα μόνο σε σύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="82"/>
         <location filename="../src/gui/guiutility.cpp" line="84"/>
-        <source>Currently available online only</source>
-        <translation type="unfinished"/>
+        <source>Available online only</source>
+        <translation>Διαθέσιμο μόνο σε σύνδεση</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <source>Currently available locally</source>
+        <translation>Διατίθεται επί του παρόντος τοπικά</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Να είναι πάντα διαθέσιμα τοπικά</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="96"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Ελευθερώστε τοπικό αποθηκευτικό χώρο</translation>
     </message>
 </context>
 </TS>

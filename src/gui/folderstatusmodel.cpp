@@ -1097,7 +1097,9 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
         && (state == SyncResult::Success || state == SyncResult::Problem)) {
         // There is a new or a removed folder. reset all data
         auto &info = _folders[folderIndex];
-        info.resetSubs(this, index(folderIndex));
+        auto idx = index(folderIndex);
+        info.resetSubs(this, idx);
+        fetchMore(idx);
     }
 }
 
