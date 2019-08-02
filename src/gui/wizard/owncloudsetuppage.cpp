@@ -392,6 +392,12 @@ void OwncloudSetupPage::slotCertificateAccepted()
         // cert will come via the HttpCredentials
         sslConfiguration.setLocalCertificate(_ocWizard->_clientSslCertificate);
         sslConfiguration.setPrivateKey(_ocWizard->_clientSslKey);
+
+        // Be sure to merge the CAs
+        auto ca = sslConfiguration.systemCaCertificates();
+        ca.append(clientCaCertificates);
+        sslConfiguration.setCaCertificates(ca);
+
         acc->setSslConfiguration(sslConfiguration);
 
         // Make sure TCP connections get re-established
