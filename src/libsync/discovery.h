@@ -111,13 +111,17 @@ private:
         QString _target; // Path that will be the result after the sync (and will be in the DB)
         QString _server; // Path on the server (before the sync)
         QString _local; // Path locally (before the sync)
+        static QString pathAppend(const QString &base, const QString &name)
+        {
+            return base.isEmpty() ? name : base + QLatin1Char('/') + name;
+        }
         PathTuple addName(const QString &name) const
         {
             PathTuple result;
-            result._original = _original.isEmpty() ? name : _original + QLatin1Char('/') + name;
+            result._original = pathAppend(_original, name);
             auto buildString = [&](const QString &other) {
                 // Optimize by trying to keep all string implicitly shared if they are the same (common case)
-                return other == _original ? result._original : other.isEmpty() ? name : other + QLatin1Char('/') + name;
+                return other == _original ? result._original : pathAppend(other, name);
             };
             result._target = buildString(_target);
             result._server = buildString(_server);

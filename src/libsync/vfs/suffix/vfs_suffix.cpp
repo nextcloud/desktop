@@ -41,6 +41,20 @@ QString VfsSuffix::fileSuffix() const
     return QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
 }
 
+void VfsSuffix::startImpl(const VfsSetupParams &params)
+{
+    // It is unsafe for the database to contain any ".owncloud" file entries
+    // that are not marked as a virtual file. These could be real .owncloud
+    // files that were synced before vfs was enabled.
+    QByteArrayList toWipe;
+    params.journal->getFilesBelowPath("", [&toWipe](const SyncJournalFileRecord &rec) {
+        if (!rec.isVirtualFile() && rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
+            toWipe.append(rec._path);
+    });
+    for (const auto &path : toWipe)
+        params.journal->deleteFileRecord(path);
+}
+
 void VfsSuffix::stop()
 {
 }

@@ -67,12 +67,14 @@ void ProcessDirectoryJob::process()
 
     QString localDir;
 
-    //
     // Build lookup tables for local, remote and db entries.
-    // For suffix-virtual files, the key will always be the base file name
+    // For suffix-virtual files, the key will normally be the base file name
     // without the suffix.
-    //
+    // However, if foo and foo.owncloud exists locally, there'll be "foo"
+    // with local, db, server entries and "foo.owncloud" with only a local
+    // entry.
     struct Entries {
+        QString nameOverride;
         SyncJournalFileRecord dbEntry;
         RemoteInfo serverEntry;
         LocalInfo localEntry;
@@ -98,17 +100,36 @@ void ProcessDirectoryJob::process()
     }
 
     for (auto &e : _localNormalQueryEntries) {
-        // Normally for vfs-suffix files the local entries need the suffix removed.
-        // However, don't do it if "foo.owncloud" exists on the server or in the db
-        // (as a non-virtual file): we don't want to create two entries.
-        auto name = e.name;
-        if (e.isVirtualFile && isVfsWithSuffix() && entries.find(name) == entries.end()) {
-            chopVirtualFileSuffix(name);
-            // If there is both a virtual file and a real file, we must keep the real file
-            if (entries[name].localEntry.isValid())
+        entries[e.name].localEntry = e;
+    }
+    if (isVfsWithSuffix()) {
+        // For vfs-suffix the local data for suffixed files should usually be associated
+        // with the non-suffixed name. Unless both names exist locally or there's
+        // other data about the suffixed file.
+        // This is done in a second path in order to not depend on the order of
+        // _localNormalQueryEntries.
+        for (auto &e : _localNormalQueryEntries) {
+            if (!e.isVirtualFile)
                 continue;
+            auto &suffixedEntry = entries[e.name];
+            bool hasOtherData = suffixedEntry.serverEntry.isValid() || suffixedEntry.dbEntry.isValid();
+
+            auto nonvirtualName = e.name;
+            chopVirtualFileSuffix(nonvirtualName);
+            auto &nonvirtualEntry = entries[nonvirtualName];
+            // If the non-suffixed entry has no data, move it
+            if (!nonvirtualEntry.localEntry.isValid()) {
+                std::swap(nonvirtualEntry.localEntry, suffixedEntry.localEntry);
+                if (!hasOtherData)
+                    entries.erase(e.name);
+            } else if (!hasOtherData) {
+                // Normally a lone local suffixed file would be processed under the
+                // unsuffixed name. In this special case it's under the suffixed name.
+                // To avoid lots of special casing, make sure PathTuple::addName()
+                // will be called with the unsuffixed name anyway.
+                suffixedEntry.nameOverride = nonvirtualName;
+            }
         }
-        entries[name].localEntry = std::move(e);
     }
     _localNormalQueryEntries.clear();
 
@@ -119,23 +140,23 @@ void ProcessDirectoryJob::process()
         const auto &e = f.second;
 
         PathTuple path;
-        path = _currentFolder.addName(f.first);
+        path = _currentFolder.addName(e.nameOverride.isEmpty() ? f.first : e.nameOverride);
 
         if (isVfsWithSuffix()) {
-            // If the file is virtual in the db, adjust path._original
-            if (e.dbEntry.isVirtualFile()) {
-                ASSERT(hasVirtualFileSuffix(e.dbEntry._path));
-                addVirtualFileSuffix(path._original);
-            } else if (e.localEntry.isVirtualFile && !e.dbEntry.isValid()) {
-                // We don't have a db entry - but it should be at this path
-                addVirtualFileSuffix(path._original);
-            }
+            // Without suffix vfs the paths would be good. But since the dbEntry and localEntry
+            // can have different names from f.first when suffix vfs is on, make sure the
+            // corresponding _original and _local paths are right.
 
-            // If the file is virtual locally, adjust path._local
-            if (e.localEntry.isVirtualFile) {
-                ASSERT(hasVirtualFileSuffix(e.localEntry.name));
-                addVirtualFileSuffix(path._local);
-            } else if (e.dbEntry.isVirtualFile() && _queryLocal == ParentNotChanged) {
+            if (e.dbEntry.isValid()) {
+                path._original = e.dbEntry._path;
+            } else if (e.localEntry.isVirtualFile) {
+                // We don't have a db entry - but it should be at this path
+                path._original = PathTuple::pathAppend(_currentFolder._original,  e.localEntry.name);
+            }
+            if (e.localEntry.isValid()) {
+                path._local = PathTuple::pathAppend(_currentFolder._local, e.localEntry.name);
+            } else if (e.dbEntry.isVirtualFile()) {
+                // We don't have a local entry - but it should be at this path
                 addVirtualFileSuffix(path._local);
             }
         }
