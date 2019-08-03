@@ -2066,7 +2066,7 @@ Niezalecane jest jego użycie.</translation>
         <translation>Błędny adres URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Nie udało się załadować certyfikatu. Być może hasło jest nieprawidłowe?</translation>
     </message>

@@ -2066,7 +2066,7 @@ It is not advisable to use it.</source>
         <translation>Неисправна адреса</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Не могу да учитам сертификат. Можда је лозинка погрешна?</translation>
     </message>

@@ -2053,7 +2053,7 @@ It is not advisable to use it.</source>
         <translation>آدرس غیر معتبر</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>امکان بارگزاری گواهی وجود ندارد، ممکن است رمز عبور اشتباه باشد؟</translation>
     </message>

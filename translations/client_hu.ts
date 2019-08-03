@@ -2065,7 +2065,7 @@ Használata nem ajánlott.</translation>
         <translation>Érvénytelen URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>A tanúsítvány nem tölthető be. Lehet, hogy hibás a jelszó?</translation>
     </message>

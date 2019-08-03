@@ -2065,7 +2065,7 @@ Tidak disarankan untuk digunakan.</translation>
         <translation>URL tidak valid</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Tidak dapat memuat sertifikat. Mungkin salah kata sandi?</translation>
     </message>

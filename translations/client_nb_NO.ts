@@ -2056,7 +2056,7 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Ugyldig addresse</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Sertifikatet kunne ikke lastes. Kanskje feil passord?</translation>
     </message>

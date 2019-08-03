@@ -2068,7 +2068,7 @@ No és aconsellable fer-la servir.</translation>
         <translation>URL no vàlida</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>No s&apos;ha pogut carregar el certificat. Potser la contrasenya és incorrecta?</translation>
     </message>

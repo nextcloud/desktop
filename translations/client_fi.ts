@@ -2050,7 +2050,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Virheellinen URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Varmennetta ei voitu ladata. Kenties salasana oli väärin.</translation>
     </message>
