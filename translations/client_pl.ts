@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Wybierz zdalny folder docelowy</translation>
+        <translation>Wybierz zdalny katalog docelowy</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -217,7 +217,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Niezaznaczone katalogi zostaną &lt;b&gt;usunięte&lt;/b&gt; z lokalnego systemu plików i nie będą już więcej synchronizowane na tym komputerze.</translation>
+        <translation>Niezaznaczone foldery zostaną &lt;b&gt;usunięte&lt;/b&gt; z lokalnego systemu plików i nie będą już więcej synchronizowane na tym komputerze.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="77"/>
@@ -314,12 +314,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="692"/>
         <source>Folder creation failed</source>
-        <translation>Nie udało się stworzyć katalogu</translation>
+        <translation>Utworzenie folderu nie powiodło się</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="693"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation>&lt;p&gt;Nie można stworzyć lokalnego katalogu &lt;i&gt;%1&lt;/i&gt;.</translation>
+        <translation>&lt;p&gt;Nie można utworzyć folderu lokalnego &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="746"/>
@@ -430,7 +430,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="547"/>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Open folder</source>
-        <translation>Otwórz katalog</translation>
+        <translation>Otwórz folder</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="218"/>
@@ -742,7 +742,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="144"/>
         <source>%1 should be a folder but is not.</source>
-        <translation>%1 powinien być katalogiem, ale nie jest.</translation>
+        <translation>%1 powinien być folderem, ale nie jest.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="147"/>
@@ -882,7 +882,7 @@ These deletes will be synchronized to your local sync folder, making such files 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Wszystkie pliki z folderu &apos;%1&apos; zostały usunięte z serwera.
-W momencie synchronizacji zostaną usunięte z lokalnego katalogu, co spowoduje ich niedostępność, chyba, że posiadasz prawo do ich przywrócenia.
+W momencie synchronizacji zostaną usunięte z lokalnego folderu, co spowoduje ich niedostępność, chyba że posiadasz prawo do ich przywrócenia.
 Jeśli zdecydujesz się zachować te pliki, zostaną one zsynchronizowane z serwerem, jeżeli posiadasz odpowiednie uprawnienia.
 Jeśli zdecydujesz je usunąć, nie będą więcej dostępne, chyba że jesteś ich właścicielem. </translation>
     </message>
@@ -1015,12 +1015,12 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/folderman.cpp" line="1258"/>
         <source>The selected path is not a folder!</source>
-        <translation>Wybrana ścieżka nie jest katalogiem!</translation>
+        <translation>Wybrana ścieżka nie jest folderem!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1262"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Nie masz uprawnień, aby zapisywać w tym  katalogu!</translation>
+        <translation>Nie masz uprawnień, aby zapisywać w tym folderze!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1318"/>
@@ -1061,7 +1061,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="144"/>
         <source>You need to be connected to add a folder</source>
-        <translation>Musisz być podłączony, by dodać folder.</translation>
+        <translation>Musisz być podłączony, aby dodać folder</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="146"/>
@@ -1237,7 +1237,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="135"/>
         <source>Select the source folder</source>
-        <translation>Wybierz katalog źródłowy</translation>
+        <translation>Wybierz folder źródłowy</translation>
     </message>
 </context>
 <context>
@@ -1245,12 +1245,12 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="183"/>
         <source>Create Remote Folder</source>
-        <translation>Dodaj zdalny katalog</translation>
+        <translation>Dodaj katalog zdalny</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Wpisz nazwę dla nowego katalogu, utworzonego poniżej &apos;%1&apos;:</translation>
+        <translation>Wpisz nazwę dla nowego folderu, utworzonego poniżej &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
@@ -1280,7 +1280,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="447"/>
         <source>This folder is already being synced.</source>
-        <translation>Ten katalog jest już synchronizowany.</translation>
+        <translation>Ten folder jest już synchronizowany.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="449"/>
@@ -1511,9 +1511,9 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Pliki lub katalogi pasujące do szablonu nie będą zsynchronizowane.
+        <translation>Pliki lub foldery pasujące do szablonu nie będą zsynchronizowane.
 
-Elementy, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawnienia katalogu dopuszczają usuwanie. Jest to przydatne dla metadanych.</translation>
+Elementy, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawnienia folderu dopuszczają usuwanie. Jest to przydatne dla metadanych.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
@@ -1898,7 +1898,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Setup local folder options</source>
-        <translation>Ustawienia opcji lokalnych katalogów</translation>
+        <translation>Ustaw opcje folderu lokalnego</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
@@ -1908,7 +1908,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="157"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 katalog &apos;%2&apos; jest zsynchronizowany do katalogu lokalnego &apos;%3&apos;</translation>
+        <translation>%1 folder &apos;%2&apos; jest zsynchronizowany do folderu lokalnego &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="160"/>
@@ -1918,7 +1918,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="165"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uwaga:&lt;/strong&gt; katalog lokalny nie jest pusty. Bądź ostrożny !&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uwaga:&lt;/strong&gt; folder lokalny nie jest pusty. Bądź ostrożny !&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="174"/>
@@ -1939,7 +1939,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>W katalogu lokalnym nie ma wystarczającej ilości wolnego miejsca!</translation>
+        <translation>W folderze lokalnym nie ma wystarczającej ilości wolnego miejsca!</translation>
     </message>
 </context>
 <context>
@@ -2146,7 +2146,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
         <source>No remote folder specified!</source>
-        <translation>Nie określono folderu zdalnego!</translation>
+        <translation>Nie określono katalogu zdalnego!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="495"/>
@@ -2161,34 +2161,34 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Zdalny folder %1 został utworzony pomyślnie.</translation>
+        <translation>Zdalny katalog %1 został utworzony pomyślnie.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Zdalny folder %1 już istnieje. Podłączam go do synchronizowania.</translation>
+        <translation>Zdalny katalog %1 już istnieje. Podłączam go do synchronizowania.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="528"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="530"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Tworzenie folderu spowodowało kod błędu HTTP %1</translation>
+        <translation>Tworzenie katalogu spowodowało kod błędu HTTP %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="532"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Nie udało się utworzyć zdalnego folderu ponieważ podane dane dostępowe są nieprawidłowe!&lt;br/&gt;Wróć i sprawdź podane dane dostępowe.&lt;/p&gt;</translation>
+        <translation>Nie udało się utworzyć zdalnego katalogu ponieważ podane poświadczenia są nieprawidłowe!&lt;br/&gt;Wróć i sprawdź swoje poświadczenia.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="536"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Tworzenie folderu zdalnego nie powiodło się. Prawdopodobnie dostarczone poświadczenia są błędne.&lt;/font&gt;&lt;br/&gt;Wróć i sprawdź poświadczenia.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Tworzenie katalogu zdalnego nie powiodło się. Prawdopodobnie dostarczone poświadczenia są błędne.&lt;/font&gt;&lt;br/&gt;Wróć i sprawdź poświadczenia.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="542"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Tworzenie folderu zdalnego %1 nie powiodło się z powodu błędu &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Tworzenie katalogu zdalnego %1 nie powiodło się z powodu błędu &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="559"/>
@@ -2560,7 +2560,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Odznacz foldery zdalne, których nie chcesz synchronizować.</translation>
+        <translation>Odznacz katalogi zdalne, których nie chcesz synchronizować.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -3144,12 +3144,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>An error occurred while opening a folder</source>
-        <translation>Wystąpił błąd podczas otwierania katalogu</translation>
+        <translation>Wystąpił błąd podczas otwierania folderu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Error while reading folder.</source>
-        <translation>Błąd podczas odczytu katalogu.</translation>
+        <translation>Błąd podczas odczytu folderu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="244"/>
@@ -3159,7 +3159,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="516"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Plik / katalog zostanie zignorowany, ponieważ jest ukryty.</translation>
+        <translation>Plik/folder zostanie zignorowany, ponieważ jest ukryty.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="519"/>
@@ -3707,7 +3707,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>Zacznij od &amp;czystej synchronizacji (usuwa lokalny katalog !)</translation>
+        <translation>Zacznij od &amp;czystej synchronizacji (usuwa lokalny folder!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
