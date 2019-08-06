@@ -4,83 +4,83 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;-(e)an aldaketak begiratzen</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatzen %2-tik %1 (%3 falta da)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatzen %2-tik %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatzen %1 (%2 falta da)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation>%1 sinkronizatzen</translation>
+        <translation>Sinkronizatzen %1 </translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>Azken aldian ez aldaketarik egon.</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazioa pausatua</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="184"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatzen</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>Ireki webgunea</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Azken aldian aldatuta</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pausatu sinkronizazioa</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Laguntza</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ezarpenak</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Amaitu saioa</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Irten sinkronizazio bezerotik</translation>
     </message>
 </context>
 <context>
@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="23"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Elkarrizketa</translation>
     </message>
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="58"/>
@@ -101,18 +101,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da direktoriorik egin zakarrontzian</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da &apos;%1&apos; &apos;%2&apos;-ra mugitu</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Plataforma honetan ezin da mugitu zakarrontzira</translation>
     </message>
 </context>
 <context>
@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Zerbitzariak erantzun du &quot;%1 %2&quot;  &quot;%3 %4&quot;-ra</translation>
     </message>
 </context>
 <context>
@@ -194,7 +194,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Zure nortasun kriptografikoa babesteko,  hiztegietako 12 hitzen mnemoniko batekin zifratzen dugu. Mesedez, kontuan hartu horiek eta gorde itzazu. Beharrezkoak izango dira zure kontuan beste gailu batzuk gehitzeko (telefono mugikorra edo ordenagailu eramangarria adibidez).</translation>
     </message>
 </context>
 <context>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Erakutsi E2E mnemoteknikoa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="563"/>
@@ -419,7 +419,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1160"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ziur zaude  &lt;i&gt;%1&lt;/i&gt;kontuaren konexioa kendu nahi duzula?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt; Honek&lt;b&gt;ez&lt;/b&gt; du fitxategirik ezabatuko.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1166"/>
@@ -451,7 +451,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="747"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ziur zaude &lt;i&gt;%1&lt;/i&gt;karpetaren sinkronizazioa gelditu nahi duzula?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt; Honek &lt;b&gt;ez&lt;/b&gt; du fitxategirik ezabatuko.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="912"/>
@@ -570,12 +570,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="188"/>
         <source>Synced</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatuta</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="223"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Saiatu berriro denak kargatzen</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="338"/>
@@ -781,17 +781,17 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="373"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 eta beste fitxategi %n ezabatu dira.</numerusform><numerusform>%1 eta beste %n fitxategi ezabatu dira.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 eta beste  fitxategi %n deskargatu dira.</numerusform><numerusform>%1 eta beste %n fitxategi deskargatu dira.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 eta beste  fitxategi %n eguneratu dira.</numerusform><numerusform>%1 eta beste %n fitxategi eguneratu dira.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
@@ -850,7 +850,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="961"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Jo ezarpenetara aukeratzeko deskargatu nahi ote duzun.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1016"/>
@@ -1037,7 +1037,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="255"/>
         <source>Synchronized with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatuta karpeta lokalarekin</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="302"/>
@@ -1123,7 +1123,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1008"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>igo %1/s</translation>
+        <translation>Kargatu %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
@@ -1338,7 +1338,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Erakutsi zerbitzariaren jakinarazpenak</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1348,7 +1348,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="195"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Eskatu baimena handiagoak diren karpetak sinkronizatu baino lehen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="215"/>
@@ -1359,7 +1359,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="239"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Eskatu baimena kanpoko biltegiak sinkronizatu baino lehen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -1717,7 +1717,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Deskargatzeko Banda Zabalera</translation>
+        <translation>Deskargako banda zabalera</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
@@ -1746,7 +1746,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
         <source>Upload Bandwidth</source>
-        <translation>Igotzeko Banda Zabalera</translation>
+        <translation>Kargako banda zabalera</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
@@ -1824,7 +1824,8 @@ Logs will be written to %1</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>%1-etarako eguneraketa bat instalatzeko prest dago. Instalatzaileak
+pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -1834,7 +1835,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da eguneraketa deskargatu. Egin klik  &lt;a href=&apos;%1&apos;&gt;hemen&lt;/a&gt; eguneraketa eskuz deskargatzeko.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -2413,7 +2414,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="214"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>%1 fitxategia ezin da kargatu izen bereko beste fitxategi bat dagoelako -soilik kasuan ezberdina-</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="348"/>
@@ -2429,12 +2430,12 @@ Ez da gomendagarria erabltzea.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
         <location filename="../src/libsync/propagateupload.cpp" line="602"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>%1-aren kargak karpetaren kuota gainditzen du</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategia kendu da (hasi karga) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="684"/>
@@ -2711,12 +2712,12 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation type="unfinished"/>
+        <translation>Onartu karga eta edizioa</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategia jaregin (karga bakarrik)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="183"/>
@@ -3182,7 +3183,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1697"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago nahiko toki erabilgarririk zerbitzarian hainbat kargatarako.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
@@ -3333,7 +3334,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1382"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago baimenik fitxategi hau kargatzek zerbitzarian irakurtzeko soilik delako, leheneratzen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1398"/>
@@ -3694,7 +3695,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Eskatu baimena handiagoak diren karpetak sinkronizatu baino lehen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
@@ -3705,7 +3706,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>Eskatu baimena kanpoko biltegiak sinkronizatu baino lehen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
@@ -4021,7 +4022,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation>Igoa</translation>
+        <translation>Kargatuta</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -4072,7 +4073,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>
         <source>uploading</source>
-        <translation>igotzen</translation>
+        <translation>kargatzen</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="70"/>
