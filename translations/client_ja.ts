@@ -631,7 +631,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="193"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>％1の構成ファイルにアクセス中にエラーが発生しました。 ユーザーがファイルにアクセスできることを確認してください。</translation>
+        <translation>％1の設定ファイルのアクセス中にエラーが発生しました。 ユーザーがファイルにアクセスできることを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="196"/>
@@ -855,13 +855,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1016"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>フォルダ％1が作成されましたが、以前は同期から除外されていました。 その中のデータは同期されません</translation>
+        <translation>フォルダ％1は作成されましたが、以前に同期から除外されました。 中のデータは同期されません。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1019"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>ファイル％1は作成されましたが、以前は同期から除外されていました。 
-このファイルは同期されません。</translation>
+        <translation>ファイル％1は作成されましたが、以前に同期から除外されました。 このファイルは同期されません。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1030"/>
@@ -1568,7 +1567,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation>&lt;p&gt; GNU General Public License (GPL)バージョン2.0以降のバージョンでライセンスされています。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;GNU General Public License (GPL)バージョン2.0以降のバージョンでライセンスされています。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3808,7 +3807,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;分のサーバーをホストする&lt;/span&gt;&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;自分のサーバーをホストする&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>

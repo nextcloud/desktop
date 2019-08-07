@@ -456,7 +456,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="912"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%2-tik %1 (%3%) erabiltzen ari da. Zenbait karpetek, sarean muntatutako edo partekatutako karpetak barne, muga desberdinak izan ditzakete.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="913"/>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Egiaztagiria eta gakoa (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -631,12 +631,12 @@
     <message>
         <location filename="../src/gui/application.cpp" line="193"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>% 1 konfigurazio fitxategian sartzean akats bat gertatu da. Egiaztatu zure erabiltzaileak fitxategi hau atzitzeko baimena duela.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="196"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>%1etik Irten</translation>
     </message>
 </context>
 <context>
@@ -675,12 +675,12 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="999"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Sartu zure muturretik muturrerako zifratzeko pasahitza:&lt;br&gt;&lt;br&gt;Erabiltzailea: %2&lt;br&gt;Kontua: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1007"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Sartu muturretik muturrerako (E2E) pasahitza</translation>
     </message>
 </context>
 <context>
@@ -796,27 +796,27 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 fitxategiak %2 izen berria hartu du eta beste  fitxategi %n berrizendatu da.</numerusform><numerusform>%1 fitxategiak %2 izen berria hartu du eta beste %n fitxategi berrizendatu dira.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 fitxategia %2-ra mugitu da eta beste  fitxategi %n mugitu da.</numerusform><numerusform>%1 fitxategia %2-ra mugitu da eta beste %n fitxategi mugitu dira.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 eta beste  fitxategi %n sinkronizazio gatazkak izan dituzte.</numerusform><numerusform>%1 eta beste %n fitxategi sinkronizazio gatazkak izan dituzte.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="410"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 sinkronizazio gatazka izan du. Begiratu gatazkaren fitxategia!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 eta beste  fitxateg %ni ezin izan dira sinkronizatu erroreak direla eta. Ikusi egunkaria xehetasun gehiago izateko.</numerusform><numerusform>%1 eta beste %n fitxategi ezin izan dira sinkronizatu erroreak direla eta. Ikusi egunkaria xehetasun gehiago izateko.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="417"/>
@@ -855,12 +855,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1016"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>%1 karpeta sortu zen baina sinkronizaziotik kanpo ezarri zen. Haren barneko fitxategiak ez dira sinkronizatuko.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1019"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>%1 fitxategia sortu zen baina sinkronizaziotik kanpo ezarri zen. Fitxategia ez da sinkronizatuko.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1030"/>
@@ -869,7 +869,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatutako karpeten aldaketen segimendua ezin izan da egin fidagarritasunez.
+
+Honek esan nahi du sinkronizazio bezeroak agian ez duela berehalakoan kargatuko tokiko aldaketak eta haren ordez tokiko aldaketak bilatu eta tarteka kargatuko ditu (berez, bi orduero).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1075"/>
@@ -877,7 +881,10 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio &apos;%1&apos; karpetako fitxategi guztiak ezabatu dira zerbitzarian.
+Ezabaketa horiek zure tokiko sinkronizazio karpetan sinkronizatuko dira, hartara ezingo dituzu fitxategiok erabili leheneratzeko eskubidea izan ezean.
+Fitxategiok mantentzea erabakitzen baduzu, birsinkronizatuko dira zerbitzarian, horretarako eskubiderik baduzu.
+Fitxategiok ezabatzea erabakitzen baduzu, ezingo dituzu berriro erabili, horien jabea izan ezean.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
@@ -892,31 +899,36 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folder.cpp" line="1088"/>
         <source>Keep local files</source>
-        <translation type="unfinished"/>
+        <translation>Mantendu tokiko fitxategiak</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Zure tokiko &apos;%1&apos; sinkronizazio karpetako fitxategi guztiak ezabatu dira. Ezabaketa hauek zerbitzarian sinkronizatuko dira, beraz ezingo dituzu fitxategiok erabili leheneratu ezean.
+Ziur zaude ekintza hauek zerbitzarian sinkronizatu nahi dituzula?
+Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hauek zerbitzarian bir-sinkronizatuko dira.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1105"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio honek &apos;%1&apos; sinkronizazio karpetako fitxategiak aurreko egoerara berrezarriko ditu.
+Hau izan daiteke babeskopia bat zerbitzarian leheneratu delako.
+Sinkronizazio honekin segitzen baduzu litekeena da aurreko egoerako fitxategiek oraingoak berridaztea.
+Nahi al duzu zure tokiko fitxategi berrienak gatazkako fitxategi gisa mantentzea?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1110"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Babes-kopia hauteman da</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1113"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazio normala</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1114"/>
@@ -969,12 +981,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizazioa behar bezala burutu da, konpondu gabeko gatazkak.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
         <source>Last Sync was successful.</source>
-        <translation>Azkeneko sinkronizazioa ongi burutu zen.</translation>
+        <translation>Azkeneko sinkronizazioa behar bezala burutu da.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1228"/>
@@ -984,7 +996,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1231"/>
         <source>User Abort.</source>
-        <translation>Erabiltzaileak bertan behera utzi.</translation>
+        <translation>Erabiltzaileak bertan behera utzi du.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1234"/>
@@ -999,7 +1011,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1248"/>
         <source>No valid folder selected!</source>
-        <translation>Ez da karpeta egokirik hautatu!</translation>
+        <translation>Ez da baliozko karpetarik hautatu!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1258"/>
@@ -1014,17 +1026,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1318"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Dagoeneko sinkronizazio bat dago zerbitzaritik karpeta lokal honetara. Aukeratu tokiko beste karpeta bat!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1298"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Tokiko &apos;%1&apos; karpetak badu dagoeneko sinkronizatutako karpeta bat. Hautatu beste bat!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1304"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Tokiko &apos;%1&apos; karpeta dagoeneko sinkronizatutako karpeta batean dago. Hautatu beste bat!</translation>
     </message>
 </context>
 <context>
@@ -1128,12 +1140,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Begiratzen ea aldaketarik dagoen urrutiko  &apos;%1&apos;-(e)an</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Begiratzen ea aldaketarik dagoen tokiko  &apos;%1&apos;-(e)an</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
@@ -1161,13 +1173,13 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%5 falta da,%2tik %1 , %4tik %3 fitxategi</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%2tik %1 , %4tik %3 fitxategi</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
@@ -1195,7 +1207,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Arazo hau normalean inotify erlojuak agortu direnean gertatzen da. Begiratu ohiko galderetan zehaztasunetarako.</translation>
     </message>
 </context>
 <context>
@@ -1323,7 +1335,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Legezko oharra</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1333,7 +1345,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="72"/>
         <source>For System Tray</source>
-        <translation type="unfinished"/>
+        <translation>Sistemaren erretilurako</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -1374,17 +1386,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editatu eta baztertutako fitxategiak</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Erakutsi sinkronizatutako karpetak arakatzailearen nabigazio panelean</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Erakutsi kraskaduraren txostena</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
@@ -1405,7 +1417,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Arreta eskatzen duten zerbitzariaren jakinarazpenak.</translation>
     </message>
 </context>
 <context>
@@ -1420,7 +1432,9 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da berreskuratu edo sortu esteka publikoaren partekatzea. Errorea:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1428,12 +1442,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Sartu %1 pasahitza:&lt;br&gt;&lt;br&gt;Erabiltzailea: %2&lt;br&gt;Kontua: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Giltzatako irakurketa errorea: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1443,7 +1457,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Egin klik hemen&lt;/a&gt; eskatzeko aplikazio pasahitz bat web interfazetik.</translation>
     </message>
 </context>
 <context>
@@ -1456,7 +1470,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ezikusien ezarpen orokorrak </translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -1466,7 +1480,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation type="unfinished"/>
+        <translation>Ezikusitako fitxategiak ereduen arabera</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="119"/>
@@ -1543,7 +1557,7 @@ Ezabatzeko baimena duten itemak ezabatuko dira hauek karpeta bat ezabatzea uzten
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TestuEtiketa</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
@@ -2048,7 +2062,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="281"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Baliogabeko URLa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
@@ -2654,7 +2668,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="104"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1 partekatzen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="80"/>
@@ -2737,7 +2751,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="224"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Gehitu beste esteka bat</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="402"/>
@@ -2803,7 +2817,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="395"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Ez partekatu</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
@@ -2873,7 +2887,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="612"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Zerbait partekatu dut zurekin</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
@@ -3559,7 +3573,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>Ez dira ezarri sinkronizatzeko karpetak</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="413"/>
@@ -3888,17 +3902,17 @@ Ez da gomendagarria erabltzea.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>%n minute ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>duela  minutu %n</numerusform><numerusform>duela %n minutu</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="466"/>
         <source>%n minutes ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>duela  minutu %n</numerusform><numerusform>duela %n minutu</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="470"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Duela zenbait denbora</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="153"/>
@@ -3937,7 +3951,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>hilabete %n </numerusform><numerusform>%n hilabete</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
@@ -3947,12 +3961,12 @@ Ez da gomendagarria erabltzea.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>ordu %n</numerusform><numerusform>%n ordu</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>minutu %n</numerusform><numerusform>%n minutu</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
