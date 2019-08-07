@@ -94,21 +94,9 @@ public:
     QByteArray checksumType() const;
 
     /**
-     * Computes the checksum for given device.
-     *
-     * done() is emitted when the calculation finishes.
-     *
-     * Does not take ownership of the device.
-     * Does not call open() on the device.
-     */
-    void start(QIODevice *device);
-
-    /**
      * Computes the checksum for the given file path.
      *
      * done() is emitted when the calculation finishes.
-     *
-     * Convenience wrapper for start(QIODevice*) above.
      */
     void start(const QString &filePath);
 
@@ -131,9 +119,6 @@ private slots:
 private:
     QByteArray _checksumType;
 
-    // The convenience wrapper may open a file and must close it too
-    std::unique_ptr<QFile> _file;
-
     // watcher for the checksum calculation thread
     QFutureWatcher<QByteArray> _watcher;
 };
@@ -154,16 +139,6 @@ public:
      * If no checksum is there, or if a correct checksum is there, the signal validated()
      * will be emitted. In case of any kind of error, the signal validationFailed() will
      * be emitted.
-     *
-     * Does not take ownership of the device.
-     * Does not call open() on the device.
-     */
-    void start(QIODevice *device, const QByteArray &checksumHeader);
-
-    /**
-     * Same as above but opening a file by path.
-     *
-     * Convenience function for start(QIODevice*) above
      */
     void start(const QString &filePath, const QByteArray &checksumHeader);
 
