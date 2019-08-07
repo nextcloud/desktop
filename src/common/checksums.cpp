@@ -225,24 +225,25 @@ QByteArray ComputeChecksum::checksumType() const
 void ComputeChecksum::start(const QString &filePath)
 {
     qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of" << filePath << "in a thread";
-    _file.reset(new QFile(filePath));
-    if (!_file->open(QIODevice::ReadOnly)) {
-        qCWarning(lcChecksums) << "Could not open file" << filePath << "for reading to compute a checksum" << _file->errorString();
+    // make_unique() would be more appropriate, but QtConcurrent requires
+    // copyable types.
+    auto file = std::make_shared<QFile>(filePath);
+    if (!file->open(QIODevice::ReadOnly)) {
+        qCWarning(lcChecksums) << "Could not open file" << filePath << "for reading to compute a checksum" << file->errorString();
         emit done(QByteArray(), QByteArray());
         return;
     }
-    start(_file.get());
-}
 
-void ComputeChecksum::start(QIODevice *device)
-{
-    qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of iodevice in a thread";
-
-    // Calculate the checksum in a different thread first.
     connect(&_watcher, &QFutureWatcherBase::finished,
         this, &ComputeChecksum::slotCalculationDone,
         Qt::UniqueConnection);
-    _watcher.setFuture(QtConcurrent::run(ComputeChecksum::computeNow, device, checksumType()));
+
+    // Capturing "file" extends its lifetime to the lifetime of the new thread.
+    // Bug: The thread will keep running even if ComputeChecksum is deleted.
+    auto type = checksumType();
+    _watcher.setFuture(QtConcurrent::run([file, type]() {
+        return ComputeChecksum::computeNow(file.get(), type);
+    }));
 }
 
 QByteArray ComputeChecksum::computeNowOnFile(const QString &filePath, const QByteArray &checksumType)
@@ -289,9 +290,6 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, const QByteArray &chec
 
 void ComputeChecksum::slotCalculationDone()
 {
-    // Close the file and delete the instance
-    _file.reset(nullptr);
-
     QByteArray checksum = _watcher.future().result();
     if (!checksum.isNull()) {
         emit done(_checksumType, checksum);
@@ -331,12 +329,6 @@ void ValidateChecksumHeader::start(const QString &filePath, const QByteArray &ch
 {
     if (auto calculator = prepareStart(checksumHeader))
         calculator->start(filePath);
-}
-
-void ValidateChecksumHeader::start(QIODevice *device, const QByteArray &checksumHeader)
-{
-    if (auto calculator = prepareStart(checksumHeader))
-        calculator->start(device);
 }
 
 void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumType,
