@@ -35,7 +35,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation>Brak zmienianych ostatnio plików</translation>
+        <translation>Brak ostatnio zmienionych plików</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation>Przeniesienie do kosza na tej platformie nie jest możliwe</translation>
+        <translation>Przeniesienie do kosza nie jest możliwe na tej platformie</translation>
     </message>
 </context>
 <context>
@@ -194,7 +194,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Aby chronić Twoją tożsamość kryptograficzną, szyfrujemy ją kluczem składającym się z 12 wyrazów. Hasło zachowaj w bezpiecznym miejscu. Będzie ono potrzebne do dodania innych urządzeń do twojego konta (takich jak twój telefon komórkowy lub laptop).</translation>
+        <translation>Aby chronić Twoją tożsamość kryptograficzną, szyfrujemy ją kluczem składającym się z 12 wyrazów. Hasło zachowaj w bezpiecznym miejscu. Będzie ono potrzebne do dodania innych urządzeń do Twojego konta (takich jak twój telefon komórkowy lub laptop).</translation>
     </message>
 </context>
 <context>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="84"/>
         <source>Synchronize none</source>
-        <translation>Nie synchronizuj niczego</translation>
+        <translation>Brak synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="91"/>
@@ -294,7 +294,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>Choose what to sync</source>
-        <translation>Wybierz co synchronizować</translation>
+        <translation>Wybierz elementy do synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="610"/>
@@ -309,12 +309,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="621"/>
         <source>Remove folder sync connection</source>
-        <translation>Usuń folder połączenia synchronizacji</translation>
+        <translation>Usuń folder synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="692"/>
         <source>Folder creation failed</source>
-        <translation>Utworzenie folderu nie powiodło się</translation>
+        <translation>Utworzenie katalogu nie powiodło się</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="693"/>
@@ -324,12 +324,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="746"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Usuń folder połączenia synchronizacji</translation>
+        <translation>Potwierdź usunięcie folderu synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="753"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Usuń folder połączenia synchronizacji</translation>
+        <translation>Usuń folder synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="835"/>
@@ -339,12 +339,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="836"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Operacja synchronizacji jest uruchomiona.&lt;br&gt;Czy chcesz ją zakończyć?</translation>
+        <translation>Operacja synchronizacji jest uruchomiona.&lt;br/&gt;Czy chcesz ją zakończyć?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="925"/>
         <source>%1 in use</source>
-        <translation>%1 w użyciu</translation>
+        <translation>Wykorzystane: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="952"/>
@@ -399,17 +399,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1110"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Te foldery nie zostały zsynchronizowane ponieważ są zbyt duze:</translation>
+        <translation>Te katalogi nie zostały zsynchronizowane ponieważ są zbyt duże:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1112"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Te foldery nie zostały zsynchronizowane ponieważ znajdują się w pamięci zewnętrznej:</translation>
+        <translation>Te katalogi nie zostały zsynchronizowane, ponieważ znajdują się w magazynach zewnętrznych: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1113"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Te foldery nie zostały zsynchronizowane ponieważ są zbyt duże lub znajdują się w pamięci zewnętrznej:</translation>
+        <translation>Te katalogi nie zostały zsynchronizowane, ponieważ są zbyt duże lub znajdują się w magazynach zewnętrznych: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1159"/>
@@ -419,7 +419,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1160"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Czy na pewno chcesz usunąć połączenie z kontem &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt;  ta operacja &lt;b&gt;nie&lt;/b&gt; usunie plików klienta.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Czy na pewno chcesz usunąć połączenie z kontem &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt; Ta operacja &lt;b&gt;nie&lt;/b&gt; usunie plików klienta.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1166"/>
@@ -461,7 +461,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="913"/>
         <source>%1 of %2 in use</source>
-        <translation>%1 z %2 w użyciu</translation>
+        <translation>Wykorzystane: %1 z %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="922"/>
@@ -917,7 +917,7 @@ This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation>Ta synchronizacja spowoduje zresetowanie plików do wcześniejszego czasu w folderze synchronizacji &apos;%1&apos;.
 Przyczyną może być przywrócenie plików z kopii zapasowej na serwerze.
-Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pliki zostaną zastąpione starszym plikiem we wcześniejszym stanie. Czy chcesz zachować najnowsze pliki lokalne?</translation>
+Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pliki zostaną zastąpione starszym plikiem we wcześniejszym stanie. Czy chcesz zachować najnowsze pliki lokalne?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1110"/>
@@ -1043,7 +1043,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="48"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Dodaj folder połączenia synchronizacji</translation>
+        <translation>Dodaj folder synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="255"/>
@@ -1214,7 +1214,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="550"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Dodaj folder połączenia synchronizacji</translation>
+        <translation>Dodaj folder synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="552"/>
@@ -1370,7 +1370,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/generalsettings.ui" line="239"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Zapytaj o potwierdzenie przed synchronizacją zewnętrznych skladowisk plikow</translation>
+        <translation>Zapytaj o potwierdzenie przed synchronizacją zewnętrznych magazynów</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -1385,7 +1385,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Edytuj pliki &amp;ignorowane (pomijane)</translation>
+        <translation>Edytuj &amp;ignorowane pliki (pomijane)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
@@ -1469,12 +1469,12 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>Ustawienia plików ignorowanych (pomijanych)</translation>
+        <translation>Ustawienia ignorowanych plików (pomijanych)</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation>Synchronizuj pliki ukryte</translation>
+        <translation>Synchronizuj ukryte pliki</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
@@ -1669,7 +1669,7 @@ Logi będą zapisane w %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Nowa wersja klienta %1 jest dostępna.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;jest dostępna do pobrania. Zainstalowana wersja to %3.&lt;p&gt;</translation>
+        <translation>&lt;p&gt;Nowa wersja klienta %1 jest dostępna.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;jest dostępna do pobrania. Zainstalowana wersja to %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
@@ -1767,7 +1767,7 @@ Logi będą zapisane w %1</translation>
         <location filename="../src/gui/networksettings.ui" line="253"/>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation>Limit automatyczniy</translation>
+        <translation>Limit automatyczny</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
@@ -2003,7 +2003,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation>Zaloguj się w twojej przeglądarce</translation>
+        <translation>Zaloguj się w przeglądarce</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
@@ -2031,17 +2031,17 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation>Poufna współpraca &amp; wymiana plików</translation>
+        <translation>Bezpieczna współpraca i wymiana plików</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>Łatwy w użytkowaniu panel poczty internetowej, kalendarz &amp; kontakty</translation>
+        <translation>Łatwy w użyciu klient poczty, kalendarz i kontakty</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Udostępnianie ekranu, rozmowy &amp; konferencje w sieci</translation>
+        <translation>Udostępnianie ekranu, spotkania i konferencje online</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
@@ -3432,7 +3432,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="124"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation>Zostałeś wylogowany z %1 jako użytkownik %2. Zaloguj się ponownie</translation>
+        <translation>Zostałeś wylogowany z %1 jako użytkownik %2. Zaloguj się ponownie.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="141"/>
@@ -3586,7 +3586,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Pause all folders</source>
-        <translation>Wstrzymaj wszystkie katalogi</translation>
+        <translation>Wstrzymaj wszystkie foldery</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="694"/>
@@ -3723,7 +3723,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation>Pytaj o potwierdzenie przed synchronizacją napędów zewnętrznych</translation>
+        <translation>Zapytaj o potwierdzenie przed synchronizacją z&amp;ewnętrznych magazynów</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
@@ -3856,7 +3856,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>Twoje całe konto zostało zsynchronizowane z twoim lokalnym folderem</translation>
+        <translation>Twoje całe konto zostało zsynchronizowane z folderem lokalnym</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
@@ -4045,7 +4045,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Pobrano wersję z serwera, zmienona wersja lokalna została skopiowana do pliku konfliktu</translation>
+        <translation>Pobrano wersję z serwera, zmieniona wersja lokalna została skopiowana do pliku konfliktu</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
