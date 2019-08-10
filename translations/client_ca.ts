@@ -2749,7 +2749,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Unshare</source>
-        <translation>Descomparteix</translation>
+        <translation>Deixa de compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="224"/>
