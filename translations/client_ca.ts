@@ -1959,7 +1959,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation>Seleccioneu una URL diferent</translation>
+        <translation>Seleccioneu un URL diferent</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
@@ -2055,7 +2055,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="184"/>
         <source>This url is secure. You can use it.</source>
-        <translation>Aquesta url és segura. Podeu fer-la servir.</translation>
+        <translation>Aquest URL és segur. Podeu fer-lo servir.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="223"/>
@@ -2065,7 +2065,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="281"/>
         <source>Invalid URL</source>
-        <translation>URL no vàlida</translation>
+        <translation>L&apos;URL no és vàlid</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
@@ -2098,7 +2098,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation>La sol·licitud autenticada al servidor s&apos;ha redirigit a &apos;%1&apos;. L’URL no és bona, el servidor està mal configurat.</translation>
+        <translation>La sol·licitud autenticada al servidor s&apos;ha redirigit a &apos;%1&apos;. L’URL no és bo, el servidor està mal configurat.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
@@ -2113,7 +2113,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
         <source>Invalid URL</source>
-        <translation>URL no vàlida</translation>
+        <translation>L&apos;URL no és vàlid</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
@@ -4184,7 +4184,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>S&apos;ha produït un error en iniciar el navegador per anar a la URL %1. Potser no s’ha configurat cap navegador predeterminat?</translation>
+        <translation>S&apos;ha produït un error en iniciar el navegador per anar a l&apos;URL %1. Potser no s’ha configurat cap navegador predeterminat?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
