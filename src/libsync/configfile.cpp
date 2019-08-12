@@ -92,8 +92,6 @@ static const char moveToTrashC[] = "moveToTrash";
 static const char deltaSyncEnabledC[] = "DeltaSync/enabled";
 static const char deltaSyncMinimumFileSizeC[] = "DeltaSync/minFileSize";
 
-static const char maxLogLinesC[] = "Logging/maxLogLines";
-
 const char certPath[] = "http_certificatePath";
 const char certPasswd[] = "http_certificatePasswd";
 QString ConfigFile::_confDir = QString();
@@ -566,19 +564,6 @@ void ConfigFile::setUpdateChannel(const QString &channel)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(updateChannelC), channel);
-}
-
-int ConfigFile::maxLogLines() const
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(maxLogLinesC), DEFAULT_MAX_LOG_LINES).toInt();
-}
-
-void ConfigFile::setMaxLogLines(int lines)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(maxLogLinesC), lines);
-    settings.sync();
 }
 
 void ConfigFile::setProxyType(int proxyType,
