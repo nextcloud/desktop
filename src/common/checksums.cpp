@@ -225,14 +225,6 @@ QByteArray ComputeChecksum::checksumType() const
 void ComputeChecksum::start(const QString &filePath)
 {
     qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of" << filePath << "in a thread";
-    // make_unique() would be more appropriate, but QtConcurrent requires
-    // copyable types.
-    auto file = std::make_shared<QFile>(filePath);
-    if (!file->open(QIODevice::ReadOnly)) {
-        qCWarning(lcChecksums) << "Could not open file" << filePath << "for reading to compute a checksum" << file->errorString();
-        emit done(QByteArray(), QByteArray());
-        return;
-    }
 
     connect(&_watcher, &QFutureWatcherBase::finished,
         this, &ComputeChecksum::slotCalculationDone,
@@ -241,8 +233,13 @@ void ComputeChecksum::start(const QString &filePath)
     // Capturing "file" extends its lifetime to the lifetime of the new thread.
     // Bug: The thread will keep running even if ComputeChecksum is deleted.
     auto type = checksumType();
-    _watcher.setFuture(QtConcurrent::run([file, type]() {
-        return ComputeChecksum::computeNow(file.get(), type);
+    _watcher.setFuture(QtConcurrent::run([filePath, type]() {
+        QFile file(filePath);
+        if (!file.open(QIODevice::ReadOnly)) {
+            qCWarning(lcChecksums) << "Could not open file" << filePath << "for reading to compute a checksum" << file.errorString();
+            return QByteArray();
+        }
+        return ComputeChecksum::computeNow(&file, type);
     }));
 }
 
