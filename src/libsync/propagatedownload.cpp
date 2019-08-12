@@ -464,6 +464,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         computeChecksum->setChecksumType(parseChecksumHeaderType(_item->_checksumHeader));
         connect(computeChecksum, &ComputeChecksum::done,
             this, &PropagateDownloadFile::conflictChecksumComputed);
+        propagator()->_activeJobList.append(this);
         computeChecksum->start(propagator()->getFilePath(_item->_file));
         return;
     }
@@ -473,6 +474,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
 
 void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
 {
+    propagator()->_activeJobList.removeOne(this);
     if (makeChecksumHeader(checksumType, checksum) == _item->_checksumHeader) {
         // No download necessary, just update fs and journal metadata
         qCDebug(lcPropagateDownload) << _item->_file << "remote and local checksum match";
