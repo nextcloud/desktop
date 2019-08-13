@@ -22,6 +22,8 @@
 #include <QtGlobal>
 #include <qmetaobject.h>
 
+#include <iostream>
+
 #include <zlib.h>
 
 #ifdef Q_OS_WIN
@@ -41,6 +43,8 @@ static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, cons
         }
     } else if (!logger->isNoop()) {
         logger->doLog(qFormatLogMessage(type, ctx, message));
+    } else if(type >= QtCriticalMsg) {
+        std::cerr << qPrintable(qFormatLogMessage(type, ctx, message)) << std::endl;
     }
 
 #if defined(Q_OS_WIN)
