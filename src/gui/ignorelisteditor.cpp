@@ -110,7 +110,7 @@ void IgnoreListEditor::slotRemoveCurrentItem()
 
 void IgnoreListEditor::slotRemoveAllItems()
 {
-    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(0);
     if (qobject_cast<GeneralSettings *>(parent()))
         setupTableReadOnlyItems();
 }
