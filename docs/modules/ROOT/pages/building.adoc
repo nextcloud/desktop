@@ -18,13 +18,7 @@ Build instructions are subject to change as development proceeds.
 
 NOTE: Please check the version for which you want to build.
 
-These instructions are updated to work with version of the ownCloud Client.
-
-[[compiling-via-ownbrander]]
-== Compiling via ownBrander
-
-If you don’t want to go through the trouble of doing all the compile work manually, you can use
-https://doc.owncloud.org/branded_clients/[ownBrander] to create installer images for all platforms.
+These instructions are updated to work with the latest version of the ownCloud Client.
 
 [[getting-source-code]]
 == Getting the Source Code
@@ -421,3 +415,9 @@ The following are known CMake parameters:
 * `WITH_DOC=TRUE`: Creates doc and man pages through running `make`; also adds install statements, providing the ability to install using `make install`.
 * `CMAKE_PREFIX_PATH=/path/to/Qt5.10.1/5.10.1/yourarch/lib/cmake/`: Builds using that Qt version.
 * `CMAKE_INSTALL_PREFIX=path`: Set an install prefix. This is mandatory on Mac OS.
+
+[[compiling-via-ownbrander]]
+== Compiling via ownBrander
+
+If you don’t want to go through the trouble of doing all the compile work manually, you can use
+https://doc.owncloud.org/branded_clients/[ownBrander] to create installer images for all platforms.
