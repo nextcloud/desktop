@@ -35,7 +35,7 @@ class IgnoreListEditor : public QDialog
     Q_OBJECT
 
 public:
-    explicit IgnoreListEditor(QWidget *parent = nullptr);
+    IgnoreListEditor(QString ignoreFile, QWidget *parent = nullptr);
     ~IgnoreListEditor();
 
     bool ignoreHiddenFiles();
@@ -54,6 +54,7 @@ private:
     int addPattern(const QString &pattern, bool deletable, bool readOnly);
     QString readOnlyTooltip;
     Ui::IgnoreListEditor *ui;
+    QString m_ignoreFile;
 };
 
 } // namespace OCC

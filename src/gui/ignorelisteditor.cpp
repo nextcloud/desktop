@@ -14,8 +14,9 @@
 
 #include "configfile.h"
 
-#include "ignorelisteditor.h"
 #include "folderman.h"
+#include "generalsettings.h"
+#include "ignorelisteditor.h"
 #include "ui_ignorelisteditor.h"
 
 #include <QFile>
@@ -31,9 +32,10 @@ static int patternCol = 0;
 static int deletableCol = 1;
 static int readOnlyRows = 3;
 
-IgnoreListEditor::IgnoreListEditor(QWidget *parent)
+IgnoreListEditor::IgnoreListEditor(QString ignoreFile, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::IgnoreListEditor)
+    , m_ignoreFile(std::move(ignoreFile))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
@@ -43,12 +45,16 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
                                      "Items where deletion is allowed will be deleted if they prevent a "
                                      "directory from being removed. "
                                      "This is useful for meta data."));
+    //FIXME This is not true. The entries are hardcoded below in setupTableReadOnlyItems
     readOnlyTooltip = tr("This entry is provided by the system at '%1' "
                          "and cannot be modified in this view.")
                           .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
 
-    setupTableReadOnlyItems();
-    readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
+    //TODO this is a bit hacky but is an easy way to figure out if this is created from the
+    //GeneralSettings or not. Until it gets refactored into a separate widged.
+    if (qobject_cast<GeneralSettings *>(parent))
+        setupTableReadOnlyItems();
+    readIgnoreFile(m_ignoreFile, false);
 
     connect(this, &QDialog::accepted, this, &IgnoreListEditor::slotUpdateLocalIgnoreList);
     ui->removePushButton->setEnabled(false);
@@ -105,17 +111,16 @@ void IgnoreListEditor::slotRemoveCurrentItem()
 void IgnoreListEditor::slotRemoveAllItems()
 {
     ui->tableWidget->clearContents();
-    setupTableReadOnlyItems();
+    if (qobject_cast<GeneralSettings *>(parent()))
+        setupTableReadOnlyItems();
 }
 
 void IgnoreListEditor::slotUpdateLocalIgnoreList()
 {
-    ConfigFile cfgFile;
-    QString ignoreFile = cfgFile.excludeFile(ConfigFile::UserScope);
-    QFile ignores(ignoreFile);
+    QFile ignores(m_ignoreFile);
     if (ignores.open(QIODevice::WriteOnly)) {
         // rewrites the whole file since now the user can also remove system patterns
-        QFile::resize(ignoreFile, 0);
+        QFile::resize(m_ignoreFile, 0);
         for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
             QTableWidgetItem *patternItem = ui->tableWidget->item(row, patternCol);
             QTableWidgetItem *deletableItem = ui->tableWidget->item(row, deletableCol);
@@ -131,7 +136,7 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
         }
     } else {
         QMessageBox::warning(this, tr("Could not open file"),
-            tr("Cannot write changes to '%1'.").arg(ignoreFile));
+            tr("Cannot write changes to '%1'.").arg(m_ignoreFile));
     }
     ignores.close(); //close the file before reloading stuff.
 
@@ -170,7 +175,8 @@ void IgnoreListEditor::slotAddPattern()
 void IgnoreListEditor::slotRestoreDefaults(QAbstractButton *button){
     if(ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole){
         ConfigFile cfgFile;
-        setupTableReadOnlyItems();
+        if (qobject_cast<GeneralSettings *>(parent()))
+            setupTableReadOnlyItems();
         readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), false);
     }
 }
