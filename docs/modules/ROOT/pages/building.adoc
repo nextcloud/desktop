@@ -54,6 +54,9 @@ echo 'deb-src http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/D
 ....
 ====
 
+The above registers the source repository of the released client. There is also `.../desktop:/testing/...` and e.g. `.../desktop:/daily:/2.7/...` for beta versions or daily snapshots.
+
+
 Install the dependencies using the following commands for your specific Linux distribution.
 Make sure the repositories for source packages are enabled.
 These are:
