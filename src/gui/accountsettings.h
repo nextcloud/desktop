@@ -89,7 +89,7 @@ protected slots:
     void slotOpenAccountWizard();
     void slotAccountAdded(AccountState *);
     void refreshSelectiveSyncStatus();
-    void slotMarkSubfolderEncrpted(const FolderStatusModel::SubFolderInfo* folderInfo);
+    void slotMarkSubfolderEncrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
     void slotMarkSubfolderDecrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
     void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);
     void slotCustomContextMenuRequested(const QPoint &);
@@ -112,7 +112,7 @@ protected slots:
     void slotUploadMetadataSuccess(const QByteArray& folderId);
     void slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode);
 
-    // Remove Encryotion Bit.
+    // Remove Encryption Bit.
     void slotLockForDecryptionSuccess(const QByteArray& folderId, const QByteArray& token);
     void slotLockForDecryptionError(const QByteArray& folderId, int httpReturnCode);
     void slotDeleteMetadataSuccess(const QByteArray& folderId);
