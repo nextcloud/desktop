@@ -541,12 +541,29 @@ void AccountSettings::slotLockForDecryptionError(const QByteArray& fileId, int h
     qDebug() << "Error Locking for decryption";
 }
 
-void AccountSettings::slotOpenIgnoredFilesDialog(const FolderStatusModel::SubFolderInfo* folderInfo)
+void AccountSettings::slotEditCurrentIgnoredFiles()
 {
-    const auto syncPath = folderInfo->_folder->path();
-    const auto folderPath = folderInfo->_path;
-    const QString ignoreFile = syncPath + folderPath + ".sync-exclude.lst";
+    Folder *f = FolderMan::instance()->folder(selectedFolderAlias());
+    if (f == nullptr)
+        return;
+    openIgnoredFilesDialog(f->path());
+}
 
+void AccountSettings::slotEditCurrentLocalIgnoredFiles()
+{
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder)
+        return;
+    QString fileName = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
+    openIgnoredFilesDialog(fileName);
+}
+
+void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
+{
+    Q_ASSERT(absFolderPath.startsWith('/'));
+    Q_ASSERT(absFolderPath.endsWith('/'));
+
+    const QString ignoreFile = absFolderPath + ".sync-exclude.lst";
     auto layout = new QVBoxLayout();
     auto ignoreListWidget = new IgnoreListTableWidget(this);
     ignoreListWidget->readIgnoreFile(ignoreFile);
@@ -599,7 +616,7 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
     }
 
     ac = menu.addAction(tr("Edit Ignored Files"));
-    connect(ac, &QAction::triggered, [this, &info] { slotOpenIgnoredFilesDialog(info); });
+    connect(ac, &QAction::triggered, this, &AccountSettings::slotEditCurrentLocalIgnoredFiles);
 
     menu.exec(QCursor::pos());
 }
@@ -633,6 +650,9 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     QAction *ac = menu->addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentFolder);
+
+    ac = menu->addAction(tr("Edit Ignored Files"));
+    connect(ac, &QAction::triggered, this, &AccountSettings::slotEditCurrentIgnoredFiles);
 
     if (!ui->_folderList->isExpanded(index)) {
         ac = menu->addAction(tr("Choose what to sync"));

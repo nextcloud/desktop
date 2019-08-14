@@ -80,6 +80,8 @@ protected slots:
     void slotRemoveCurrentFolder();
     void slotOpenCurrentFolder(); // sync folder
     void slotOpenCurrentLocalSubFolder(); // selected subfolder in sync folder
+    void slotEditCurrentIgnoredFiles();
+    void slotEditCurrentLocalIgnoredFiles();
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotDeleteAccount();
@@ -89,7 +91,6 @@ protected slots:
     void refreshSelectiveSyncStatus();
     void slotMarkSubfolderEncrpted(const FolderStatusModel::SubFolderInfo* folderInfo);
     void slotMarkSubfolderDecrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
-    void slotOpenIgnoredFilesDialog(const FolderStatusModel::SubFolderInfo* folderInfo);
     void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);
@@ -126,6 +127,7 @@ private:
         QStringList errors = QStringList());
     bool event(QEvent *) override;
     void createAccountToolbox();
+    void openIgnoredFilesDialog(const QString & absFolderPath);
 
     /// Returns the alias of the selected folder, empty string if none
     QString selectedFolderAlias() const;
