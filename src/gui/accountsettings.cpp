@@ -35,10 +35,12 @@
 #include "filesystem.h"
 #include "clientsideencryptionjobs.h"
 #include "syncresult.h"
+#include "ignorelisttablewidget.h"
 
 #include <math.h>
 
 #include <QDesktopServices>
+#include <QDialogButtonBox>
 #include <QDir>
 #include <QListWidgetItem>
 #include <QMessageBox>
@@ -539,6 +541,34 @@ void AccountSettings::slotLockForDecryptionError(const QByteArray& fileId, int h
     qDebug() << "Error Locking for decryption";
 }
 
+void AccountSettings::slotOpenIgnoredFilesDialog(const FolderStatusModel::SubFolderInfo* folderInfo)
+{
+    const auto syncPath = folderInfo->_folder->path();
+    const auto folderPath = folderInfo->_path;
+    const QString ignoreFile = syncPath + folderPath + ".sync-exclude.lst";
+
+    auto layout = new QVBoxLayout();
+    auto ignoreListWidget = new IgnoreListTableWidget(this);
+    ignoreListWidget->readIgnoreFile(ignoreFile);
+    layout->addWidget(ignoreListWidget);
+
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    layout->addWidget(buttonBox);
+
+    auto dialog = new QDialog();
+    dialog->setLayout(layout);
+
+    connect(buttonBox, &QDialogButtonBox::clicked, [=](QAbstractButton * button) {
+        if (buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
+            ignoreListWidget->slotWriteIgnoreFile(ignoreFile);
+        dialog->close();
+    });
+    connect(buttonBox, &QDialogButtonBox::rejected,
+            dialog,    &QDialog::close);
+
+    dialog->open();
+}
+
 void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index, const QPoint& pos)
 {
     Q_UNUSED(pos);
@@ -567,6 +597,10 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
             // connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info); });
         }
     }
+
+    ac = menu.addAction(tr("Edit Ignored Files"));
+    connect(ac, &QAction::triggered, [this, &info] { slotOpenIgnoredFilesDialog(info); });
+
     menu.exec(QCursor::pos());
 }
 
