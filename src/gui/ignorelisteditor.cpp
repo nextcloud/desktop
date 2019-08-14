@@ -47,6 +47,14 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
 
     connect(this, &QDialog::accepted, [=]() {
         ui->ignoreTableWidget->slotWriteIgnoreFile(userConfig);
+        /* handle the hidden file checkbox */
+
+        /* the ignoreHiddenFiles flag is a folder specific setting, but for now, it is
+        * handled globally. Save it to every folder that is defined.
+        * TODO this can now be fixed, simply attach this IgnoreListEditor to top-level account
+        * settings
+        */
+        FolderMan::instance()->setIgnoreHiddenFiles(ignoreHiddenFiles());
     });
     connect(ui->buttonBox, &QDialogButtonBox::clicked,
             this, &IgnoreListEditor::slotRestoreDefaults);

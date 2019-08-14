@@ -343,15 +343,15 @@ bool ExcludedFiles::isExcluded(
         return true;
     }
 
+    //TODO this seems a waste, hidden files are ignored before hitting this function it seems
     if (excludeHidden) {
         QString path = filePath;
         // Check all path subcomponents, but to *not* check the base path:
         // We do want to be able to sync with a hidden folder as the target.
         while (path.size() > basePath.size()) {
             QFileInfo fi(path);
-            //TODO probably not ignore `.sync-exclude.lst` files as it makes sense for them to be
-            //synced
-            if (fi.isHidden() || fi.fileName().startsWith(QLatin1Char('.'))) {
+            if (fi.fileName() != ".sync-exclude.lst"
+                && (fi.isHidden() || fi.fileName().startsWith(QLatin1Char('.')))) {
                 return true;
             }
 
