@@ -335,10 +335,16 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     qint64 infoVersion = Helper::stringVersionToInt(info.version());
     qint64 seenVersion = Helper::stringVersionToInt(settings.value(seenVersionC).toString());
     qint64 currVersion = Helper::currentVersionToInt();
-    if (info.version().isEmpty()
-        || infoVersion <= currVersion
-        || infoVersion <= seenVersion) {
+    if (info.version().isEmpty())
+    {
+        qCInfo(lcUpdater) << "No version information available at the moment";
+        setDownloadState(UpToDate);
+    } else if (infoVersion <= currVersion
+               || infoVersion <= seenVersion) {
         qCInfo(lcUpdater) << "Client is on latest version!";
+        qCInfo(lcUpdater) << "Your version:" << currVersion;
+        qCInfo(lcUpdater) << "Skipped version:" << seenVersion;
+        qCInfo(lcUpdater) << "Available version:" << infoVersion;
         setDownloadState(UpToDate);
     } else {
         QString url = info.downloadUrl();
