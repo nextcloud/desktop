@@ -130,6 +130,10 @@ public slots:
      * Reloads the exclude patterns from the registered paths.
      */
     bool reloadExcludeFiles();
+    /**
+     * Loads the exclude patterns from file the registered base paths.
+     */
+    bool loadExcludeFile(const QByteArray & basePath, const QString & file);
 
 private:
     /**

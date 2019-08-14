@@ -304,32 +304,47 @@ void ExcludedFiles::setWildcardsMatchSlash(bool onoff)
     prepare();
 }
 
+bool ExcludedFiles::loadExcludeFile(const QByteArray & basePath, const QString & file)
+{
+    QFile f(file);
+    if (!f.open(QIODevice::ReadOnly))
+        return false;
+
+    while (!f.atEnd()) {
+        QByteArray line = f.readLine().trimmed();
+        if (line.isEmpty() || line.startsWith('#'))
+            continue;
+        csync_exclude_expand_escapes(line);
+        _allExcludes[basePath].append(line);
+    }
+    prepare(basePath);
+    return true;
+}
+
 bool ExcludedFiles::reloadExcludeFiles()
 {
     _allExcludes.clear();
+    // clear all regex
+    _bnameTraversalRegexFile.clear();
+    _bnameTraversalRegexDir.clear();
+    _fullTraversalRegexFile.clear();
+    _fullTraversalRegexDir.clear();
+    _fullRegexFile.clear();
+    _fullRegexDir.clear();
+
     bool success = true;
     for (auto basePath : _excludeFiles.keys()) {
         for (auto file : _excludeFiles.value(basePath)) {
-            QFile f(file);
-            if (!f.open(QIODevice::ReadOnly)) {
-                success = false;
-                continue;
-            }
-            while (!f.atEnd()) {
-                QByteArray line = f.readLine().trimmed();
-                if (line.isEmpty() || line.startsWith('#'))
-                    continue;
-                csync_exclude_expand_escapes(line);
-                _allExcludes[basePath].append(line);
-            }
+            success = loadExcludeFile(basePath, file);
         }
     }
 
     auto endManual = _manualExcludes.cend();
-    for (auto kv = _manualExcludes.cbegin(); kv != endManual; ++kv)
+    for (auto kv = _manualExcludes.cbegin(); kv != endManual; ++kv) {
         _allExcludes[kv.key()].append(kv.value());
+        prepare(kv.key());
+    }
 
-    prepare();
     return success;
 }
 
@@ -387,8 +402,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemTy
         QFileInfo fi = QFileInfo(_localPath + path + "/.sync-exclude.lst");
         if (fi.isReadable()) {
             addInTreeExcludeFilePath(fi.absoluteFilePath());
-            //really we only need to load this file and prepare(this basePath)
-            reloadExcludeFiles();
+            loadExcludeFile(fi.absolutePath().toUtf8(), fi.absoluteFilePath());
         }
     }
 
