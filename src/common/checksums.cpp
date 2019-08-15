@@ -18,6 +18,7 @@
 #include "config.h"
 #include "filesystembase.h"
 #include "common/checksums.h"
+#include "asserts.h"
 
 #include <QLoggingCategory>
 #include <qtconcurrentrun.h>
@@ -225,21 +226,42 @@ QByteArray ComputeChecksum::checksumType() const
 void ComputeChecksum::start(const QString &filePath)
 {
     qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of" << filePath << "in a thread";
+    startImpl(std::make_unique<QFile>(filePath));
+}
 
+void ComputeChecksum::start(std::unique_ptr<QIODevice> device)
+{
+    ENFORCE(device);
+    qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of device" << device.get() << "in a thread";
+    ASSERT(!device->parent());
+
+    startImpl(std::move(device));
+}
+
+void ComputeChecksum::startImpl(std::unique_ptr<QIODevice> device)
+{
     connect(&_watcher, &QFutureWatcherBase::finished,
         this, &ComputeChecksum::slotCalculationDone,
         Qt::UniqueConnection);
 
-    // Capturing "file" extends its lifetime to the lifetime of the new thread.
+    // We'd prefer to move the unique_ptr into the lambda, but that's
+    // awkward with the C++ standard we're on
+    auto sharedDevice = QSharedPointer<QIODevice>(device.release());
+
     // Bug: The thread will keep running even if ComputeChecksum is deleted.
     auto type = checksumType();
-    _watcher.setFuture(QtConcurrent::run([filePath, type]() {
-        QFile file(filePath);
-        if (!file.open(QIODevice::ReadOnly)) {
-            qCWarning(lcChecksums) << "Could not open file" << filePath << "for reading to compute a checksum" << file.errorString();
+    _watcher.setFuture(QtConcurrent::run([sharedDevice, type]() {
+        if (!sharedDevice->open(QIODevice::ReadOnly)) {
+            if (auto file = qobject_cast<QFile *>(sharedDevice.data())) {
+                qCWarning(lcChecksums) << "Could not open file" << file->fileName()
+                        << "for reading to compute a checksum" << file->errorString();
+            } else {
+                qCWarning(lcChecksums) << "Could not open device" << sharedDevice.data()
+                        << "for reading to compute a checksum" << sharedDevice->errorString();
+            }
             return QByteArray();
         }
-        return ComputeChecksum::computeNow(&file, type);
+        return ComputeChecksum::computeNow(sharedDevice.data(), type);
     }));
 }
 
@@ -326,6 +348,12 @@ void ValidateChecksumHeader::start(const QString &filePath, const QByteArray &ch
 {
     if (auto calculator = prepareStart(checksumHeader))
         calculator->start(filePath);
+}
+
+void ValidateChecksumHeader::start(std::unique_ptr<QIODevice> device, const QByteArray &checksumHeader)
+{
+    if (auto calculator = prepareStart(checksumHeader))
+        calculator->start(std::move(device));
 }
 
 void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumType,
