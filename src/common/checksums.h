@@ -101,6 +101,16 @@ public:
     void start(const QString &filePath);
 
     /**
+     * Computes the checksum for the given device.
+     *
+     * done() is emitted when the calculation finishes.
+     *
+     * The device ownership transfers into the thread that
+     * will compute the checksum. It must not have a parent.
+     */
+    void start(std::unique_ptr<QIODevice> device);
+
+    /**
      * Computes the checksum synchronously.
      */
     static QByteArray computeNow(QIODevice *device, const QByteArray &checksumType);
@@ -117,6 +127,8 @@ private slots:
     void slotCalculationDone();
 
 private:
+    void startImpl(std::unique_ptr<QIODevice> device);
+
     QByteArray _checksumType;
 
     // watcher for the checksum calculation thread
@@ -134,13 +146,23 @@ public:
     explicit ValidateChecksumHeader(QObject *parent = 0);
 
     /**
-     * Check a device's actual checksum against the provided checksumHeader
+     * Check a file's actual checksum against the provided checksumHeader
      *
      * If no checksum is there, or if a correct checksum is there, the signal validated()
      * will be emitted. In case of any kind of error, the signal validationFailed() will
      * be emitted.
      */
     void start(const QString &filePath, const QByteArray &checksumHeader);
+
+    /**
+     * Check a device's actual checksum against the provided checksumHeader
+     *
+     * Like the other start() but works on an device.
+     *
+     * The device ownership transfers into the thread that
+     * will compute the checksum. It must not have a parent.
+     */
+    void start(std::unique_ptr<QIODevice> device, const QByteArray &checksumHeader);
 
 signals:
     void validated(const QByteArray &checksumType, const QByteArray &checksum);
