@@ -3408,7 +3408,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="201"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Εντοπίστηκε μη έγκυρο πιστοποιητικό</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="202"/>
