@@ -122,6 +122,7 @@ QString Updater::getSystemInfo()
 Updater *Updater::create()
 {
     auto url = updateUrl();
+    qCDebug(lcUpdater) << url;
     if (url.isEmpty()) {
         qCWarning(lcUpdater) << "Not a valid updater URL, will not do update check";
         return 0;

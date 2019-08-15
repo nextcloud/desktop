@@ -192,20 +192,20 @@ using namespace OCC::Utility;
 
         file->seek(0);
         _successDown = false;
-        vali->start(file, adler);
+        vali->start(_testfile, adler);
 
         QTRY_VERIFY(_successDown);
 
         _expectedError = QLatin1String("The downloaded file does not match the checksum, it will be resumed.");
         _errorSeen = false;
         file->seek(0);
-        vali->start(file, "Adler32:543345");
+        vali->start(_testfile, "Adler32:543345");
         QTRY_VERIFY(_errorSeen);
 
         _expectedError = QLatin1String("The checksum header contained an unknown checksum type 'Klaas32'");
         _errorSeen = false;
         file->seek(0);
-        vali->start(file, "Klaas32:543345");
+        vali->start(_testfile, "Klaas32:543345");
         QTRY_VERIFY(_errorSeen);
 
         delete vali;
