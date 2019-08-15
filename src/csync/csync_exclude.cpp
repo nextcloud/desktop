@@ -730,6 +730,15 @@ void ExcludedFiles::prepare(const BasePathByteArray & basePath)
         auto &fullFileDir = removeExcluded ? fullFileDirRemove : fullFileDirKeep;
         auto &fullDir = removeExcluded ? fullDirRemove : fullDirKeep;
 
+        if (fullPath) {
+            // The full pattern is matched against a path relative to _localPath, however exclude is
+            // relative to basePath at this point.
+            // We know for sure that both _localPath and basePath are absolute and that basePath is
+            // contained in _localPath. So we can simply remove it from the begining.
+            auto relPath = basePath.mid(_localPath.size());
+            // Make exclude relative to _localPath
+            exclude.prepend(relPath);
+        }
         auto regexExclude = convertToRegexpSyntax(QString::fromUtf8(exclude), _wildcardsMatchSlash);
         if (!fullPath) {
             regexAppend(bnameFileDir, bnameDir, regexExclude, matchDirOnly);
