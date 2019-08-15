@@ -281,6 +281,11 @@ void ExcludedFiles::setExcludeConflictFiles(bool onoff)
     _excludeConflictFiles = onoff;
 }
 
+void ExcludedFiles::addManualExclude(const QByteArray &expr)
+{
+    addManualExclude(expr, _localPath.toUtf8());
+}
+
 void ExcludedFiles::addManualExclude(const QByteArray &expr, const QByteArray &basePath)
 {
     Q_ASSERT(basePath.startsWith('/'));

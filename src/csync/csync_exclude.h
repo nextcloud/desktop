@@ -101,7 +101,8 @@ public:
      * Primarily used in tests. Patterns added this way are preserved when
      * reloadExcludeFiles() is called.
      */
-    void addManualExclude(const QByteArray &expr, const QByteArray &basePath = "/");
+    void addManualExclude(const QByteArray &expr);
+    void addManualExclude(const QByteArray &expr, const QByteArray &basePath);
 
     /**
      * Removes all manually added exclude patterns.
