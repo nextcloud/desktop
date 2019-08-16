@@ -49,6 +49,14 @@ configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library("${csync_NAME}" SHARED ${common_SOURCES} ${csync_SRCS})
 
+if (WIN32)
+    add_library(ocwinrt SHARED ../common/winrthelper/winrthelper.cpp)
+    set_target_properties(ocwinrt PROPERTIES CXX_STANDARD 17
+                                             OUTPUT_NAME "${APPLICATION_EXECUTABLE}_winrt")
+    target_link_libraries(ocwinrt PUBLIC runtimeobject)
+endif()
+
+
 target_include_directories(
   "${csync_NAME}"
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/std

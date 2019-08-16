@@ -29,10 +29,29 @@
 
 #include <QLibrary>
 
+#include "common/result.h"
+#include "common/winrthelper/winrthelper.h"
+
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 
-static const char systemRunPathC[] = "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+namespace {
+const char systemRunPathC[] = "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+const QString rtHelperNameC()
+{
+    return QStringLiteral(APPLICATION_EXECUTABLE "_winrt");
+}
+
+template <typename T>
+static OCC::Result<std::function<T>, bool> funcLoadHelper(const QString &lib, const char *function)
+{
+    void *f = QLibrary::resolve(lib, function);
+    if (!f) {
+        return false;
+    }
+    return std::function<T> { reinterpret_cast<T *>(f) };
+}
+}
 
 namespace OCC {
 
@@ -100,9 +119,11 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     }
 }
 
+
 static inline bool hasDarkSystray_private()
 {
-    return true;
+    static auto func = funcLoadHelper<bool()>(rtHelperNameC(), "hasDarkSystray");
+    return func ? (*func)() : false;
 }
 
 QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName)
