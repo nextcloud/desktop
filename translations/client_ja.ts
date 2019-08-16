@@ -3418,7 +3418,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="202"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>ホスト &quot;％1&quot;が無効な証明書を提供しました。 続けますか？</translation>
+        <translation>ホスト &quot;％1&quot;によって無効な証明書が提供されました。 続けますか？</translation>
     </message>
 </context>
 <context>
