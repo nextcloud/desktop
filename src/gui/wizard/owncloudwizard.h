@@ -40,6 +40,7 @@ class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
 class WebViewPage;
+class Flow2AuthCredsPage;
 
 /**
  * @brief The OwncloudWizard class
@@ -107,6 +108,7 @@ private:
     OwncloudWizardResultPage *_resultPage;
     AbstractCredentialsWizardPage *_credentialsPage;
     WebViewPage *_webViewPage;
+    Flow2AuthCredsPage *_flow2CredsPage;
 
     QStringList _setupLog;
 
