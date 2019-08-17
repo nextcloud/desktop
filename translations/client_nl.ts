@@ -882,9 +882,9 @@ These deletes will be synchronized to your local sync folder, making such files 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Alle bestanden in de syncmap &apos;%1&apos; werden verwijderd van de server.
-Deze verwijderingen worden gesynchroniseerd naar uw lokale syncmap, waardoor deze bestanden niet meer beschikbaar zijn, tenzij u het recht hebt om ze te herstellen. 
-Als u de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server als u die autorisatie hebt.
-Als u de bestanden wilt verwijderen, worden ze niet beschikbaar, tenzij u de eigenaar bent.</translation>
+Deze verwijderingen worden gesynchroniseerd naar je lokale syncmap, waardoor deze bestanden niet meer beschikbaar zijn, tenzij je het recht hebt om ze te herstellen. 
+Als je de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server als je die autorisatie hebt.
+Als je de bestanden wilt verwijderen, worden ze niet beschikbaar, tenzij je de eigenaar bent.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
@@ -906,17 +906,17 @@ Als u de bestanden wilt verwijderen, worden ze niet beschikbaar, tenzij u de eig
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Alle bestanden in de lokale syncmap &apos;%1&apos; werden verwijderd van de server. Deze verwijderingen worden gesynchroniseerd naar uw server, Weet u zeker dat ik deze acties wilt synchroniseren met de server? 
-Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server.</translation>
+        <translation>Alle bestanden in je lokale syncmap &apos;%1&apos; werden verwijderd. Deze verwijderingen worden gesynchroniseerd naar je server, waardoor de bestanden niet beschikbaar zijn, tenzij ze worden teruggezet. Weet je zeker dat je deze acties wilt synchroniseren met de server? 
+Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1105"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation>Deze synchronisatie zou uw bestanden terug zetten naar een eerdere staat van de synchronisatie map &apos;%1&apos;.
+        <translation>Deze synchronisatie zou je bestanden terugzetten naar een eerdere staat van de synchronisatie map &apos;%1&apos;.
 Dit kan komen doordat een backup is hersteld op de server.
-Doorgaan met deze synchronisatie overschrijft al uw bestanden door een eerdere versie. Wilt u uw lokale meer recente bestanden behouden als conflict bestanden?</translation>
+Doorgaan met deze synchronisatie overschrijft al je bestanden door een eerdere versie. Wilt je jouw lokale meer recente bestanden behouden als conflict bestanden?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1110"/>
@@ -2110,7 +2110,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Toegang door server verboden. Om te verifiëren dat u toegang mag hebben, &lt;a href=&quot;%1&quot;&gt;klik hier&lt;/a&gt; om met uw browser toegang tot de service te krijgen.</translation>
+        <translation>Toegang door server verboden. Om te verifiëren dat je toegang mag hebben, &lt;a href=&quot;%1&quot;&gt;klik hier&lt;/a&gt; om met je browser toegang tot de service te krijgen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
@@ -3529,7 +3529,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="234"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>De server van account %1 gebruikt een oude versie %2. Het gebruik van deze clientsoftware met niet-ondersteunde server versies is niet getest en mogelijk gevaarlijk. Verdergaan is voor uw eigen risico.</translation>
+        <translation>De server van account %1 gebruikt een oude versie %2. Het gebruik van deze clientsoftware met niet-ondersteunde server versies is niet getest en mogelijk gevaarlijk. Verdergaan is op eigen risico.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
@@ -3860,7 +3860,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>Uw volledige account is gesynchroniseerd met de lokale map</translation>
+        <translation>Je volledige account is gesynchroniseerd met de lokale map</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
