@@ -95,10 +95,6 @@ echo "* Run cmake to compile and install."
 start "cmake build" /D "%MY_BUILD_PATH%" /B /wait cmake --build . --config %BUILD_TYPE% --target install
 if %ERRORLEVEL% neq 0 goto onError
 
-echo "* git checkout master at %MY_REPO%/."
-start "git checkout master" /D "%MY_REPO%/" /B /wait git checkout master
-if %ERRORLEVEL% neq 0 goto onError
-
 Rem ******************************************************************************************
 
 echo "*** Finished Build: zlib %BUILD_TYPE% %BUILD_ARCH% (GIT_REVISION=%GIT_REVISION%) (%~nx0)"

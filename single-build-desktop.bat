@@ -139,10 +139,6 @@ echo "* Run windeployqt to collect all nextcloud.exe dependencies and output it 
 start "windeployqt" /B /wait windeployqt.exe --%WINDEPLOYQT_BUILD_TYPE% --compiler-runtime "%MY_INSTALL_PATH%/bin/nextcloud.exe" --dir "%MY_QT_DEPLOYMENT_PATH%/"
 if %ERRORLEVEL% neq 0 goto onError
 
-echo "* git checkout master at %MY_REPO%/."
-start "git checkout master" /D "%MY_REPO%/" /B /wait git checkout master
-if %ERRORLEVEL% neq 0 goto onError
-
 Rem ******************************************************************************************
 
 echo "*** Finished Build: desktop %BUILD_TYPE% %BUILD_ARCH% (GIT_REVISION=%GIT_REVISION%) (%~nx0)"

@@ -104,10 +104,6 @@ echo "* Copy qt5keychain.dll to %QT_BIN_PATH%/ for windeployqt to find it."
 start "copy qt5keychain.dll for windeployqt" /B /wait cp -f "%MY_INSTALL_PATH%/bin/qt5keychain.dll" "%QT_BIN_PATH%/"
 if %ERRORLEVEL% neq 0 goto onError
 
-echo "* git checkout master at %MY_REPO%/."
-start "git checkout master" /D "%MY_REPO%/" /B /wait git checkout master
-if %ERRORLEVEL% neq 0 goto onError
-
 Rem ******************************************************************************************
 
 echo "*** Finished Build: qtkeychain %BUILD_TYPE% %BUILD_ARCH% (GIT_REVISION=%GIT_REVISION%) (%~nx0)"
