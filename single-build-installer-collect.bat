@@ -156,10 +156,23 @@ del "%PROJECT_PATH%"\tmp
 echo "* LIBCRYPTO_DLL_FILENAME=%LIBCRYPTO_DLL_FILENAME%"
 
 echo "* copy %OPENSSL_ROOT_DIR%/bin/%LIBCRYPTO_DLL_FILENAME%."
-start "copy zlib.dll" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%OPENSSL_ROOT_DIR%/bin/%LIBCRYPTO_DLL_FILENAME%" "%MY_COLLECT_PATH%/"
+start "copy %LIBCRYPTO_DLL_FILENAME%" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%OPENSSL_ROOT_DIR%/bin/%LIBCRYPTO_DLL_FILENAME%" "%MY_COLLECT_PATH%/"
 if %ERRORLEVEL% neq 0 goto onError
 
-Rem The current Win**OpenSSL-1_1_1b is built with VC 2017 runtime dependencies,
+Rem OpenSSL's libssl
+echo "* get libssl's dll filename from %OPENSSL_ROOT_DIR%/bin/."
+start "get libssl's dll filename" /D "%OPENSSL_ROOT_DIR%/bin/" /B /wait ls libssl*.dll > "%PROJECT_PATH%"/tmp
+if %ERRORLEVEL% neq 0 goto onError
+set /p LIBSSL_DLL_FILENAME= < "%PROJECT_PATH%"\tmp
+if %ERRORLEVEL% neq 0 goto onError
+del "%PROJECT_PATH%"\tmp
+echo "* LIBSSL_DLL_FILENAME=%LIBSSL_DLL_FILENAME%"
+
+echo "* copy %OPENSSL_ROOT_DIR%/bin/%LIBSSL_DLL_FILENAME%."
+start "copy %LIBSSL_DLL_FILENAME%" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%OPENSSL_ROOT_DIR%/bin/%LIBSSL_DLL_FILENAME%" "%MY_COLLECT_PATH%/"
+if %ERRORLEVEL% neq 0 goto onError
+
+Rem The current Win**OpenSSL-1_1_1* is built with VC 2017 runtime dependencies,
 Rem so we don't need to copy from there any more.
 Rem However, if a future version of libcrypto requires a different VC runtime,
 Rem also copy e.g.: %OPENSSL_ROOT_DIR%/bin/msvcr120.dll
@@ -169,10 +182,16 @@ echo "* copy zlib%DLL_SUFFIX%.dll."
 start "copy zlib%DLL_SUFFIX%.dll" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%ZLIB_PATH%/bin/zlib%DLL_SUFFIX%.dll" "%MY_COLLECT_PATH%/"
 if %ERRORLEVEL% neq 0 goto onError
 
-Rem extra dll's and other resources (e.g.: libeay32.dll, ssleay32.dll)
-echo "* copy extra resources (dll's, etc.) from %EXTRA_DEPLOY_PATH%/."
-start "copy %EXTRA_DEPLOY_PATH%/" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%EXTRA_DEPLOY_PATH%/"* "%MY_COLLECT_PATH%/"
+Rem deploy-extra: optional extra dll's and other resources
+echo "* copy optional extra resources (dll's, etc.) from %EXTRA_DEPLOY_PATH%/."
+( dir /b /a "%EXTRA_DEPLOY_PATH%" | findstr . ) > nul && (
+    start "copy %EXTRA_DEPLOY_PATH%/" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%EXTRA_DEPLOY_PATH%/"* "%MY_COLLECT_PATH%/"
+) || (
+    echo "* NOTE: nothing found to copy from %EXTRA_DEPLOY_PATH%/."
+    goto skipDeployExtra
+)
 if %ERRORLEVEL% neq 0 goto onError
+:skipDeployExtra
 
 Rem ******************************************************************************************
 rem 			"code signing"
@@ -200,9 +219,6 @@ if "%USE_CODE_SIGNING%" == "0" (
             "shellext/OCContextMenu.dll"
             "shellext/OCOverlays.dll"
             "shellext/OCUtil.dll"
-            "%LIBCRYPTO_DLL_FILENAME%"
-            "libeay32.dll"
-            "ssleay32.dll"
             "nextcloud.exe"
             "nextcloudcmd.exe"
             "nextcloudsync.dll"
@@ -211,6 +227,8 @@ if "%USE_CODE_SIGNING%" == "0" (
             "ocsync.dll"
             "OCUtil.dll"
             "qt5keychain.dll"
+            "%LIBCRYPTO_DLL_FILENAME%"
+            "%LIBSSL_DLL_FILENAME%"
             "zlib%DLL_SUFFIX%.dll"
         ) do (
             start "sign %%~G" /D "%PROJECT_PATH%/" /B /wait %~dp0/sign.bat "%MY_COLLECT_PATH%/%%~G"

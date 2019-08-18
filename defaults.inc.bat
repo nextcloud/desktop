@@ -24,7 +24,7 @@ rem Comma separated list of build targets (default: Win64, Win32)
 if "%BUILD_TARGETS%" == ""                  set BUILD_TARGETS=Win64,Win32
 
 if "%PROJECT_PATH%" == ""                   set PROJECT_PATH=c:/Nextcloud/client-building
-if "%QT_PATH%" == ""                        set QT_PATH=c:/Qt/5.12.3
+if "%QT_PATH%" == ""                        set QT_PATH=c:/Qt/5.12.4
 
                                             set PATH=c:/Nextcloud/tools/cmake/bin;c:/Nextcloud/tools;C:/Program Files (x86)/NSIS;%PATH%
 
@@ -61,7 +61,7 @@ Rem Git tags for checkout
 if "%TAG_QTKEYCHAIN%" == ""                 set TAG_QTKEYCHAIN=master
 if "%TAG_ZLIB%" == ""                       set TAG_ZLIB=master
 
-Rem Desktop Client (master for daily build or e.g.: stable-2.5.2)
+Rem Desktop Client (master for daily build or e.g.: stable-2.5.3)
 Rem You may query the available tags with "git tag" within ./desktop
 if "%TAG_DESKTOP%" == ""                    set TAG_DESKTOP=master
 

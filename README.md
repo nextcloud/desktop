@@ -2,6 +2,21 @@
 
 This allows you to easily build the desktop client for 64-bit and 32-bit Windows.
 
+## Update: 2019-08-18
+
+Qt 5.12.4 for Windows doesn't require the old 1.0.x DLL's anymore (libeay32.dll + ssleay32.dll)
+and is linked against OpenSSL 1.1.1c
+
+This finally removes the odd mixture of diverging DLL versions.
+Now the Desktop Client finally uses OpenSSL 1.1.1 components only, reports the correct
+library version and also supports TLS 1.3 :-)
+
+See here for details: https://blog.qt.io/blog/2019/06/17/qt-5-12-4-released-support-openssl-1-1-1/
+
+- Code Signing of the client binaries (exe + dll's), the installer and the uninstaller
+- Uploading the generated installer package via SSH connection (scp)
+- Script file to be invoked by the Windows Task Scheduler for automatic builds (e.g.: daily)
+
 ## Included and fully automated
 - Build client for 64-bit and 32-bit Windows (+ installer package containing both)
 - Code Signing of the client binaries (exe + dll's), the installer and the uninstaller
@@ -43,7 +58,7 @@ Optional:
 - [ ] Git bash (it comes with Git):
       https://git-scm.com/download/win
 
-- [ ] Qt 5.12.13 (select in the wizard: MSVC 2017 64-bit AND 32-bit and all the "Qt ..." options, not required: Debug Info Files):
+- [ ] Qt 5.12.4 (select in the wizard: MSVC 2017 64-bit AND 32-bit and all the "Qt ..." options, not required: Debug Info Files):
       https://www.qt.io/download
 
       Install to: C:\Qt
@@ -56,15 +71,15 @@ Optional:
       Put the generated png2ico.exe to: C:\Nextcloud\tools\
 
 - [ ] OpenSSL: Windows Build:
-      https://slproweb.com/products/Win32OpenSSL.html     (e.g.: Win64 AND Win32 OpenSSL v1.1.1b)
+      https://slproweb.com/products/Win32OpenSSL.html     (e.g.: Win64 AND Win32 OpenSSL v1.1.1c)
 
       Install to:
       - C:\OpenSSL\Win64
       - C:\OpenSSL\Win32
 
-- [ ] OpenSSL: Pre-compiled Win32/64 libraries without external dependencies:
-      https://indy.fulgan.com/SSL/                        (e.g.: openssl-1.0.2r-x64_86-win64.zip
-                                                            AND: openssl-1.0.2r-i386-win32.zip)
+    Note: Qt 5.12.4 also includes the option to install OpenSSL 1.1.1c libraries from the Maintenance tool wizard.
+          You may also use these libraries instead of the ones above but then you have to modify the paths in defaults.inc.bat
+          and be sure to check for updates on a regular basis!
 
 ## NSIS (Nullsoft Scriptable Install System)
 - Install NSIS: https://nsis.sourceforge.io/Download/
@@ -178,7 +193,7 @@ also set the required environment variables you normally would have to specify m
 Exception: build-installer-exe.bat doesn't need a loop since it builds a combined
 installer package, so there is no single-build-installer-exe.bat.
 
-Of course you could do this, calling syntax to only build for 32-bit would be e.g.:
+Of course you could do this, e.g. calling syntax to only build for 32-bit would be:
 ```
 ./single-build-desktop.bat Release Win32
 ```
@@ -208,7 +223,7 @@ collect and the CMake options and generators they use.
 
 - task-build-log.bat
   - is intended to by used in conjunction with the Windows Task Scheduler but may also be run
-    manually insted of build.bat, which shows all the output in the console window only
+    manually instead of build.bat, which shows all the output in the console window only
 
 - task-build-job.sh
   - is the actual script to be specified in the Windows Task Scheduler to be run by Git Bash
@@ -259,9 +274,8 @@ OR:
     - zlib.dll
   - the pre-compiled OpenSSL binaries (since they are not signed but integrity is crucial)
     - libcrypto*.dll
-    - libeay32.dll
-    - ssleay32.dll
-  - we don't sign Qt, but this could be an option (not signed at all as of now)
+    - libssl*.dll
+  - we don't sign Qt, as of version 5.12.4 binaries are now signed by the Qt team
   - VC Runtime DLL's are already signed by Microsoft
 
 ## License
