@@ -22,21 +22,9 @@
 namespace OCC {
 
 /**
- * Job that does the authorization grant and fetch the access token
+ * Job that does the authorization, grants and fetches the access token via Login Flow v2
  *
- * Normal workflow:
- *
- *   --> start()
- *       |
- *       +----> openBrowser() open the browser to the login page, redirects to http://localhost:xxx
- *       |
- *       +----> _server starts listening on a TCP port waiting for an HTTP request with a 'code'
- *                |
- *                v
- *             request the access_token and the refresh_token via 'apps/oauth2/api/v1/token'
- *                |
- *                v
- *              emit result(...)
+ * See: https://docs.nextcloud.com/server/latest/developer_manual/client_apis/LoginFlow/index.html#login-flow-v2
  *
  */
 class Flow2Auth : public QObject
@@ -55,7 +43,7 @@ public:
         Error };
     Q_ENUM(Result);
     void start();
-    bool openBrowser();
+    void openBrowser();
     QUrl authorisationLink() const;
 
 signals:
@@ -63,6 +51,7 @@ signals:
      * The state has changed.
      * when logged in, token has the value of the token.
      */
+	// TODO: Remove refreshToken
     void result(Flow2Auth::Result result, const QString &user = QString(), const QString &token = QString(), const QString &refreshToken = QString());
 
 private slots:
@@ -74,9 +63,6 @@ private:
     QString _pollToken;
     QString _pollEndpoint;
     QTimer _pollTimer;
-
-public:
-    QString _expectedUser;
 };
 
 
