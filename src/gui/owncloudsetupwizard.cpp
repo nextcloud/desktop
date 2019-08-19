@@ -105,10 +105,9 @@ void OwncloudSetupWizard::startWizard()
 {
     AccountPtr account = AccountManager::createAccount();
     account->setCredentials(CredentialsFactory::create("dummy"));
-    account->setUrl(QUrl("https://127.0.0.1:8443/"));//Theme::instance()->overrideServerUrl());
+    account->setUrl(Theme::instance()->overrideServerUrl());
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
-//    _ocWizard->setOCUrl("https://127.0.0.1:8443/"); //account->url().toString());
 
     _remoteFolder = Theme::instance()->defaultServerFolder();
     // remoteFolder may be empty, which means /

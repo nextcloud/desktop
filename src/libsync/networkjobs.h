@@ -413,7 +413,7 @@ public:
         OAuth,
         Shibboleth,
         WebViewFlow,
-		LoginFlowV2
+        LoginFlowV2
     };
 
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = nullptr);

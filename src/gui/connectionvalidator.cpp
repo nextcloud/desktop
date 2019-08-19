@@ -233,9 +233,6 @@ void ConnectionValidator::checkServerCapabilities()
     QObject::connect(configJob, &JsonApiJob::jsonReceived, _account.data(),
         [=](const QJsonDocument &json) {
             ocsConfigReceived(json, account);
-
-            /*int size = 0;
-            MessageBoxA(0, json.rawData(&size), "bla", MB_ICONINFORMATION);*/
         });
     configJob->start();
 }
