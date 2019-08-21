@@ -248,6 +248,7 @@ steps:
   pull: always
   image: rabits/qt:5.12-desktop
   commands:
+  - env
   - "cd \"translations\""
   - make l10n-read
   environment:
@@ -258,6 +259,7 @@ steps:
   pull: always
   image: owncloudci/transifex:latest
   commands:
+  - env
   - "cd \"translations\""
   - make l10n-push
   environment:
@@ -268,6 +270,7 @@ steps:
   pull: always
   image: owncloudci/transifex:latest
   commands:
+  - env
   - "cd \"translations\""
   - make l10n-pull
   environment:
@@ -278,6 +281,7 @@ steps:
   pull: always
   image: owncloudci/transifex:latest
   commands:
+  - env
   - "cd \"translations\""
   - make l10n-write
   environment:
@@ -288,6 +292,7 @@ steps:
   pull: always
   image: owncloudci/transifex:latest
   commands:
+  - env
   - "cd \"translations\""
   - make l10n-clean
   environment:
@@ -324,6 +329,7 @@ steps:
   pull: always
   image: owncloudci/transifex:latest
   commands:
+  - env
   - "cd \"admin/win/nsi/l10n\""
   - make l10n-read
   environment:
@@ -334,6 +340,7 @@ steps:
   pull: always
   image: owncloudci/transifex:latest
   commands:
+  - env
   - "cd \"admin/win/nsi/l10n\""
   - make l10n-push
   environment:
@@ -344,6 +351,7 @@ steps:
   pull: always
   image: owncloudci/transifex:latest
   commands:
+  - env
   - "cd \"admin/win/nsi/l10n\""
   - make l10n-pull
   environment:
@@ -354,6 +362,7 @@ steps:
   pull: always
   image: python:2.7-stretch
   commands:
+  - env
   - "cd \"admin/win/nsi/l10n\""
   - make l10n-write
   environment:
@@ -364,6 +373,7 @@ steps:
   pull: always
   image: owncloudci/transifex:latest
   commands:
+  - env
   - "cd \"admin/win/nsi/l10n\""
   - make l10n-clean
   environment:

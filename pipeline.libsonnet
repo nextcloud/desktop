@@ -214,6 +214,7 @@ local drone = {
         TX_TOKEN: drone.from_secret('tx_token'),
       },
       commands:  [
+        'env',
         'cd "' + path +'"',
         'make ' + target,
       ],
