@@ -212,6 +212,56 @@ local drone = {
       },
     },
 
+  update_translations(name, branch, path, read_image='owncloudci/transifex:latest', write_image='owncloudci/transifex:latest', trigger={},)::
+    local make(target, image='owncloudci/transifex:latest') = {
+      name: target,
+      image: image,
+      pull: true,
+      environment: {
+        TX_TOKEN: drone.from_secret('tx_token'),
+      },
+      commands:  [
+        'cd "' + path +'"',
+        'make ' + target,
+      ],
+    };
+
+    {
+      kind: 'pipeline',
+      name: 'translations-' + name,
+      platform: {
+        os: 'linux',
+        arch: 'amd64',
+      },
+
+      steps: [
+        make('l10n-read', read_image),
+        make('l10n-push'),
+        make('l10n-pull'),
+        make('l10n-write', write_image),
+        make('l10n-clean'),
+        {
+          name: 'commit',
+          image: 'appleboy/drone-git-push',
+          pull: 'always',
+          settings: {
+            ssh_key: drone.from_secret('translations_push_ssh_key'),
+            author_name: 'ownClouders',
+            author_email: 'devops@owncloud.com',
+            remote_name: 'origin',
+            branch:  "${DRONE_BRANCH}",
+
+            empty_commit: false,
+            commit: true,
+            commit_message: '[tx] updated from transifex',
+            no_verify: true,
+          },
+        },
+      ],
+
+      trigger: trigger,
+    },
+
   notification(depends_on=[], include_events=[], exclude_events=[])::
     {
       kind: 'pipeline',
