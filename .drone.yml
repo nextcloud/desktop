@@ -210,7 +210,7 @@ trigger:
 
 ---
 kind: pipeline
-name: notifications
+name: notifications-build
 
 platform:
   os: linux
@@ -389,7 +389,7 @@ steps:
 
 ---
 kind: pipeline
-name: notifications
+name: notifications-translations
 
 platform:
   os: linux

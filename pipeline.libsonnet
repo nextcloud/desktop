@@ -255,10 +255,10 @@ local drone = {
       trigger: trigger,
     },
 
-  notification(depends_on=[], include_events=[], exclude_events=[])::
+  notification(name, depends_on=[], include_events=[], exclude_events=[])::
     {
       kind: 'pipeline',
-      name: 'notifications',
+      name: 'notifications-' + name,
       platform: {
         os: 'linux',
         arch: 'amd64',
