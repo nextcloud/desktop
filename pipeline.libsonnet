@@ -256,7 +256,7 @@ local drone = {
             commit_message: '[tx] updated from transifex',
             no_verify: true,
           },
-        },
+        } + drone.whenOnline,
       ],
 
       trigger: trigger,
