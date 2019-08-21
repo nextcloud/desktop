@@ -48,7 +48,7 @@ local drone = {
         {
           name: 'cmake',
           image: 'owncloudci/client',
-          pull: true,
+          pull: 'always',
           environment: {
             LC_ALL: 'C.UTF-8'
           },
@@ -61,7 +61,7 @@ local drone = {
         {
           name: build_command,
           image: 'owncloudci/client',
-          pull: true,
+          pull: 'always',
           environment: {
             LC_ALL: 'C.UTF-8'
           },
@@ -73,7 +73,7 @@ local drone = {
         {
           name: 'ctest',
           image: 'owncloudci/client',
-          pull: true,
+          pull: 'always',
           environment: {
             LC_ALL: 'C.UTF-8'
           },
@@ -107,7 +107,7 @@ local drone = {
         {
           name: 'cache-restore',
           image: 'plugins/s3-cache:1',
-          pull: true,
+          pull: 'always',
           settings: {
             endpoint: drone.from_secret('cache_s3_endpoint'),
             access_key: drone.from_secret('cache_s3_access_key'),
@@ -118,7 +118,7 @@ local drone = {
         {
           name: 'docs-deps',
           image: 'owncloudci/nodejs:11',
-          pull: true,
+          pull: 'always',
           commands: [
             'cd docs/',
             'yarn install',
@@ -127,7 +127,7 @@ local drone = {
         {
           name: 'docs-validate',
           image: 'owncloudci/nodejs:11',
-          pull: true,
+          pull: 'always',
           commands: [
             'cd docs/',
             'yarn validate',
@@ -136,7 +136,7 @@ local drone = {
         {
           name: 'docs-build',
           image: 'owncloudci/nodejs:11',
-          pull: true,
+          pull: 'always',
           commands: [
             'cd docs/',
             'yarn antora',
@@ -145,7 +145,7 @@ local drone = {
         {
           name: 'docs-pdf',
           image: 'owncloudci/asciidoctor:latest',
-          pull: true,
+          pull: 'always',
           commands: [
             'cd docs/',
             'make pdf',
@@ -154,7 +154,7 @@ local drone = {
         {
           name: 'docs-artifacts',
           image: 'owncloud/ubuntu:latest',
-          pull: true,
+          pull: 'always',
           commands: [
             'tree docs/public/',
           ],
@@ -162,7 +162,7 @@ local drone = {
         {
           name: 'cache-rebuild',
           image: 'plugins/s3-cache:1',
-          pull: true,
+          pull: 'always',
           settings: {
             endpoint: drone.from_secret('cache_s3_endpoint'),
             access_key: drone.from_secret('cache_s3_access_key'),
@@ -175,7 +175,7 @@ local drone = {
         {
           name: 'cache-flush',
           image: 'plugins/s3-cache:1',
-          pull: true,
+          pull: 'always',
           settings: {
             endpoint: drone.from_secret('cache_s3_endpoint'),
             access_key: drone.from_secret('cache_s3_access_key'),
@@ -188,7 +188,7 @@ local drone = {
         {
           name: 'upload-pdf',
           image: 'plugins/s3-sync:1',
-          pull: true,
+          pull: 'always',
           environment: {
             AWS_ACCESS_KEY_ID: drone.from_secret('aws_access_key_id'),
             AWS_SECRET_ACCESS_KEY: drone.from_secret('aws_secret_access_key'),
@@ -216,7 +216,7 @@ local drone = {
     local make(target, image='owncloudci/transifex:latest') = {
       name: target,
       image: image,
-      pull: true,
+      pull: 'always',
       environment: {
         TX_TOKEN: drone.from_secret('tx_token'),
       },
@@ -277,7 +277,7 @@ local drone = {
         {
           name: 'notification',
           image: 'plugins/slack',
-          pull: true,
+          pull: 'always',
           settings: {
             webhook: drone.from_secret('slack_webhook'),
             channel: 'desktop',
