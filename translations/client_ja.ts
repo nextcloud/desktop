@@ -873,7 +873,7 @@ This means that the synchronization client might not upload local changes immedi
 
 これは、同期クライアントはすぐにローカルの変更をアップロードしない場合がありますが、代わりにローカルの変更をスキャンし（デフォルトでは2時間ごとに）時折それらをアップロードすることを意味します。
 
-％1</translation>
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1075"/>
@@ -881,7 +881,7 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>同期フォルダ &apos;％1&apos;フォルダ内のすべてのファイルがサーバー上で削除されました。
+        <translation>同期フォルダ &apos;%1&apos;フォルダ内のすべてのファイルがサーバー上で削除されました。
 これらの削除はローカルの同期フォルダと同期され、復元する権利がない限り、ファイルは使用できなくなります。
 ファイルを保持したい場合、ファイルを保持する権限があれば、ファイルはサーバーと再同期されます。
 ファイルを削除したい場合、あなたが所有者でなければ利用できません。</translation>
