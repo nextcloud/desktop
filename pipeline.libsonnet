@@ -246,7 +246,7 @@ local drone = {
           image: 'appleboy/drone-git-push',
           pull: 'always',
           settings: {
-            ssh_key: drone.from_secret('translations_push_ssh_key'),
+            ssh_key: drone.from_secret('git_push_ssh_key'),
             author_name: 'ownClouders',
             author_email: 'devops@owncloud.com',
             remote_name: 'origin',

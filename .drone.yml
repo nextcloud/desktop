@@ -324,7 +324,7 @@ steps:
     no_verify: true
     remote_name: origin
     ssh_key:
-      from_secret: translations_push_ssh_key
+      from_secret: git_push_ssh_key
   when:
     instance:
     - drone.owncloud.com
@@ -409,7 +409,7 @@ steps:
     no_verify: true
     remote_name: origin
     ssh_key:
-      from_secret: translations_push_ssh_key
+      from_secret: git_push_ssh_key
   when:
     instance:
     - drone.owncloud.com
