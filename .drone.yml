@@ -226,6 +226,9 @@ platform:
   os: linux
   arch: amd64
 
+clone:
+  disable: true
+
 steps:
 - name: notification
   pull: always
@@ -422,6 +425,9 @@ name: notifications-translations
 platform:
   os: linux
   arch: amd64
+
+clone:
+  disable: true
 
 steps:
 - name: notification
