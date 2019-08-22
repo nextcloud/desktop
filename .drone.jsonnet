@@ -16,11 +16,14 @@ local translations_trigger = {
   pipeline.build_and_test_client('gcc', 'g++', 'Release', 'Unix Makefiles'),
   pipeline.build_and_test_client('clang', 'clang++', 'Debug', 'Ninja'),
   pipeline.build_client_docs(),
-  pipeline.notification(name='build', depends_on=[
-    'gcc-release-make',
-    'clang-debug-ninja',
-    'build-docs',
-  ]),
+  pipeline.notification(
+    name='build',
+    depends_on=[
+      'gcc-release-make',
+      'clang-debug-ninja',
+      'build-docs',
+    ]
+  ),
 
  # Sync translations
   pipeline.update_translations(
@@ -37,8 +40,12 @@ local translations_trigger = {
     write_image='python:2.7-stretch',
     trigger=translations_trigger
   ),
-  pipeline.notification(name='translations', depends_on=[
-    'translations-client',
-    'translations-nsis'
-  ]),
+  pipeline.notification(
+    name='translations',
+    trigger=translations_trigger,
+    depends_on=[
+      'translations-client',
+      'translations-nsis'
+    ],
+  ),
 ]

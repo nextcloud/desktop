@@ -433,6 +433,8 @@ steps:
       from_secret: slack_webhook
 
 trigger:
+  cron:
+  - translations
   status:
   - success
   - failure

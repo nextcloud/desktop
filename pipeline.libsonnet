@@ -263,7 +263,7 @@ local drone = {
       trigger: trigger,
     },
 
-  notification(name, depends_on=[], include_events=[], exclude_events=[])::
+  notification(name, depends_on=[], trigger={})::
     {
       kind: 'pipeline',
       name: 'notifications-' + name,
@@ -289,12 +289,8 @@ local drone = {
         status: [
           'success',
           'failure',
-        ],
-        event: {
-          exclude: exclude_events,
-          include: include_events,
-        },
-      },
+        ]
+      } + trigger,
       depends_on: depends_on,
     },
 }
