@@ -39,6 +39,13 @@ local drone = {
 
       steps: [
         {
+          name: 'submodules',
+          image: 'docker:git',
+          commands: [
+            'git submodule update --recursive --remote',
+          ],
+        },
+        {
           name: 'cmake',
           image: 'owncloudci/client',
           pull: 'always',

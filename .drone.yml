@@ -7,6 +7,11 @@ platform:
   arch: amd64
 
 steps:
+- name: submodules
+  image: docker:git
+  commands:
+  - git submodule update --recursive --remote
+
 - name: cmake
   pull: always
   image: owncloudci/client
@@ -52,6 +57,11 @@ platform:
   arch: amd64
 
 steps:
+- name: submodules
+  image: docker:git
+  commands:
+  - git submodule update --recursive --remote
+
 - name: cmake
   pull: always
   image: owncloudci/client
