@@ -254,7 +254,7 @@ local drone = {
 
             empty_commit: false,
             commit: true,
-            commit_message: '[tx] updated from transifex',
+            commit_message: '[tx] updated ' + name + ' translations from transifex',
             no_verify: true,
           },
         } + drone.whenOnline,

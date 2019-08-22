@@ -320,7 +320,7 @@ steps:
     author_name: ownClouders
     branch: ${DRONE_BRANCH}
     commit: true
-    commit_message: "[tx] updated from transifex"
+    commit_message: "[tx] updated client translations from transifex"
     no_verify: true
     remote_name: origin
     ssh_key:
@@ -405,7 +405,7 @@ steps:
     author_name: ownClouders
     branch: ${DRONE_BRANCH}
     commit: true
-    commit_message: "[tx] updated from transifex"
+    commit_message: "[tx] updated nsis translations from transifex"
     no_verify: true
     remote_name: origin
     ssh_key:
