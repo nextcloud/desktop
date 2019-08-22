@@ -212,7 +212,7 @@ local drone = {
       },
     },
 
-  update_translations(name, path, read_image='owncloudci/transifex:latest', write_image='owncloudci/transifex:latest', trigger={},)::
+  update_translations(name, path, read_image='owncloudci/transifex:latest', write_image='owncloudci/transifex:latest', trigger={}, depends_on=[])::
     local make(target, image='owncloudci/transifex:latest') = {
       name: target,
       image: image,
@@ -261,6 +261,7 @@ local drone = {
       ],
 
       trigger: trigger,
+      depends_on: depends_on,
     },
 
   notification(name, depends_on=[], trigger={})::

@@ -418,6 +418,9 @@ trigger:
   cron:
   - translations
 
+depends_on:
+- translations-client
+
 ---
 kind: pipeline
 name: notifications-translations

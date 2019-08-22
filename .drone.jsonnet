@@ -36,7 +36,8 @@ local translations_trigger = {
     'nsis',
     'admin/win/nsi/l10n',
     write_image='python:2.7-stretch',
-    trigger=translations_trigger
+    trigger=translations_trigger,
+    depends_on=['translations-client'], // needs to run after translations-client because drone-git-push does not rebase before pushing
   ),
   pipeline.notification(
     name='translations',
