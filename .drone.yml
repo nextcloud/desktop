@@ -10,7 +10,7 @@ steps:
 - name: submodules
   image: docker:git
   commands:
-  - git submodule update --recursive --remote
+  - git submodule update --init --recursive
 
 - name: cmake
   pull: always
@@ -60,7 +60,7 @@ steps:
 - name: submodules
   image: docker:git
   commands:
-  - git submodule update --recursive --remote
+  - git submodule update --init --recursive
 
 - name: cmake
   pull: always

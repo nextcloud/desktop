@@ -42,7 +42,7 @@ local drone = {
           name: 'submodules',
           image: 'docker:git',
           commands: [
-            'git submodule update --recursive --remote',
+            'git submodule update --init --recursive',
           ],
         },
         {
