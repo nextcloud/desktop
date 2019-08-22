@@ -333,8 +333,16 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     qint64 infoVersion = Helper::stringVersionToInt(info.version());
-    qint64 seenVersion = Helper::stringVersionToInt(settings.value(seenVersionC).toString());
+    auto seenString = settings.value(seenVersionC).toString();
+    qint64 seenVersion = Helper::stringVersionToInt(seenString);
     qint64 currVersion = Helper::currentVersionToInt();
+    qCInfo(lcUpdater) << "Version info arrived:"
+            << "Your version:" << currVersion
+            << "Skipped version:" << seenVersion << seenString
+            << "Available version:" << infoVersion << info.version()
+            << "Available version string:" << info.versionString()
+            << "Web url:" << info.web()
+            << "Download url:" << info.downloadUrl();
     if (info.version().isEmpty())
     {
         qCInfo(lcUpdater) << "No version information available at the moment";
@@ -342,9 +350,6 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     } else if (infoVersion <= currVersion
                || infoVersion <= seenVersion) {
         qCInfo(lcUpdater) << "Client is on latest version!";
-        qCInfo(lcUpdater) << "Your version:" << currVersion;
-        qCInfo(lcUpdater) << "Skipped version:" << seenVersion;
-        qCInfo(lcUpdater) << "Available version:" << infoVersion;
         setDownloadState(UpToDate);
     } else {
         QString url = info.downloadUrl();
@@ -489,18 +494,24 @@ bool NSISUpdater::handleStartup()
     QString updateFileName = settings.value(updateAvailableC).toString();
     // has the previous run downloaded an update?
     if (!updateFileName.isEmpty() && QFile(updateFileName).exists()) {
+        qCInfo(lcUpdater) << "An updater file is available";
         // did it try to execute the update?
         if (settings.value(autoUpdateAttemptedC, false).toBool()) {
             if (updateSucceeded()) {
                 // success: clean up
+                qCInfo(lcUpdater) << "The requested update attempt has succeeded"
+                        << Helper::currentVersionToInt();
                 wipeUpdateData();
                 return false;
             } else {
                 // auto update failed. Ask user what to do
+                qCInfo(lcUpdater) << "The requested update attempt has failed"
+                        << settings.value(updateTargetVersionC).toString();
                 showUpdateErrorDialog(settings.value(updateTargetVersionStringC).toString());
                 return false;
             }
         } else {
+            qCInfo(lcUpdater) << "Triggering an update";
             return performUpdate();
         }
     }
