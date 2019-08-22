@@ -28,14 +28,12 @@ local translations_trigger = {
  # Sync translations
   pipeline.update_translations(
     'client',
-    '2.6-l10n',
     'translations',
     read_image='rabits/qt:5.12-desktop',
     trigger=translations_trigger
   ),
   pipeline.update_translations(
     'nsis',
-    '2.6-l10n',
     'admin/win/nsi/l10n',
     write_image='python:2.7-stretch',
     trigger=translations_trigger
