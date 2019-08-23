@@ -70,7 +70,9 @@ void OwncloudOAuthCredsPage::initializePage()
     _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
     _asyncAuth->start();
-    wizard()->hide();
+
+    // Don't hide the wizard (avoid user confusion)!
+    //wizard()->hide();
 }
 
 void OCC::OwncloudOAuthCredsPage::cleanupPage()

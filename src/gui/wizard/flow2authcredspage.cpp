@@ -71,7 +71,9 @@ void Flow2AuthCredsPage::initializePage()
     _asyncAuth.reset(new Flow2Auth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
     _asyncAuth->start();
-    wizard()->hide();
+
+    // Don't hide the wizard (avoid user confusion)!
+    //wizard()->hide();
 }
 
 void OCC::Flow2AuthCredsPage::cleanupPage()
