@@ -102,7 +102,7 @@ bool WebFlowCredentials::ready() const {
 void WebFlowCredentials::fetchFromKeychain() {
     _wasFetched = true;
 
-    // Make sure we get the user fromt he config file
+    // Make sure we get the user from the config file
     fetchUser();
 
     if (ready()) {
