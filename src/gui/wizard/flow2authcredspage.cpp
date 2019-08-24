@@ -81,17 +81,25 @@ void OCC::Flow2AuthCredsPage::cleanupPage()
     // The next or back button was activated, show the wizard again
     wizard()->show();
     _asyncAuth.reset();
+
+    // Forget sensitive data
+    _appPassword.clear();
+    _user.clear();
 }
 
 void Flow2AuthCredsPage::asyncAuthResult(Flow2Auth::Result r, const QString &user,
-    const QString &token, const QString &refreshToken)
+    const QString &appPassword)
 {
     switch (r) {
     case Flow2Auth::NotSupported: {
-        /* Flow2Auth not supported (can't open browser), fallback to HTTP credentials */
-        OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+        /* Flow2Auth not supported (can't open browser) */
+        _ui.errorLabel->setText(tr("Unable to open the Browser, please copy the link to your Browser."));
+        _ui.errorLabel->show();
+
+        /* Don't fallback to HTTP credentials */
+        /*OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
         ocWizard->back();
-        ocWizard->setAuthType(DetermineAuthTypeJob::Basic);
+        ocWizard->setAuthType(DetermineAuthTypeJob::Basic);*/
         break;
     }
     case Flow2Auth::Error:
@@ -100,9 +108,8 @@ void Flow2AuthCredsPage::asyncAuthResult(Flow2Auth::Result r, const QString &use
         wizard()->show();
         break;
     case Flow2Auth::LoggedIn: {
-        _token = token;
         _user = user;
-        _refreshToken = refreshToken;
+        _appPassword = appPassword;
         OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
         Q_ASSERT(ocWizard);
         emit connectToOCUrl(ocWizard->account()->url().toString());
@@ -125,7 +132,7 @@ AbstractCredentials *Flow2AuthCredsPage::getCredentials() const
 {
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
-    return new HttpCredentialsGui(_user, _token, _refreshToken,
+    return new HttpCredentialsGui(_user, _appPassword, QString(),
         ocWizard->_clientSslCertificate, ocWizard->_clientSslKey);
 }
 

@@ -1,5 +1,4 @@
 /*
- * Copyright (C) by Olivier Goffart <ogoffart@woboq.com>
  * Copyright (C) by Michael Schuster <michael@nextcloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -13,49 +12,41 @@
  * for more details.
  */
 
-#pragma once
+#ifndef FLOW2AUTHWIDGET_H
+#define FLOW2AUTHWIDGET_H
 
-#include <QList>
-#include <QMap>
-#include <QNetworkCookie>
 #include <QUrl>
-#include <QPointer>
+#include <QWidget>
 
-#include "wizard/abstractcredswizardpage.h"
-#include "accountfwd.h"
 #include "creds/flow2auth.h"
 
-#include "ui_flow2authcredspage.h"
-
+#include "ui_flow2authwidget.h"
 
 namespace OCC {
 
-
-class Flow2AuthCredsPage : public AbstractCredentialsWizardPage
+class Flow2AuthWidget : public QWidget
 {
     Q_OBJECT
 public:
-    Flow2AuthCredsPage();
+    Flow2AuthWidget(Account *account, QWidget *parent = nullptr);
+    virtual ~Flow2AuthWidget();
 
-    AbstractCredentials *getCredentials() const override;
-
-    void initializePage() override;
-    void cleanupPage() override;
-    int nextId() const override;
-    void setConnected();
-    bool isComplete() const override;
+    void setError(const QString &error);
 
 public Q_SLOTS:
     void asyncAuthResult(Flow2Auth::Result, const QString &user, const QString &appPassword);
 
 signals:
-    void connectToOCUrl(const QString &);
+    void urlCatched(const QString user, const QString pass, const QString host);
 
-public:
+private:
+    Account *_account;
     QString _user;
     QString _appPassword;
     QScopedPointer<Flow2Auth> _asyncAuth;
-    Ui_Flow2AuthCredsPage _ui;
+    Ui_Flow2AuthWidget _ui;
 };
 
-} // namespace OCC
+}
+
+#endif // FLOW2AUTHWIDGET_H

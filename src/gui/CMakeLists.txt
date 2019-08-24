@@ -39,6 +39,7 @@ set(client_UI_SRCS
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudoauthcredspage.ui
     wizard/flow2authcredspage.ui
+    wizard/flow2authwidget.ui
     wizard/owncloudsetupnocredspage.ui
     wizard/owncloudwizardresultpage.ui
     wizard/webview.ui
@@ -114,6 +115,7 @@ set(client_SRCS
     wizard/owncloudhttpcredspage.cpp
     wizard/owncloudoauthcredspage.cpp
     wizard/flow2authcredspage.cpp
+    wizard/flow2authwidget.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp

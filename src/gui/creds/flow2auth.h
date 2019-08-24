@@ -49,10 +49,9 @@ public:
 signals:
     /**
      * The state has changed.
-     * when logged in, token has the value of the token.
+     * when logged in, appPassword has the value of the app password.
      */
-	// TODO: Remove refreshToken
-    void result(Flow2Auth::Result result, const QString &user = QString(), const QString &token = QString(), const QString &refreshToken = QString());
+    void result(Flow2Auth::Result result, const QString &user = QString(), const QString &appPassword = QString());
 
 private slots:
     void slotPollTimerTimeout();

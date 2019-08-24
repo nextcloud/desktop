@@ -34,9 +34,9 @@ Flow2Auth::~Flow2Auth()
 
 void Flow2Auth::start()
 {
-	// Note: All startup code is in openBrowser() to allow reinitiate a new request with
-	//       fresh tokens. Opening the same pollEndpoint link twice triggers an expiration
-	//       message by the server (security, intended design).
+    // Note: All startup code is in openBrowser() to allow reinitiate a new request with
+    //       fresh tokens. Opening the same pollEndpoint link twice triggers an expiration
+    //       message by the server (security, intended design).
     openBrowser();
 }
 
@@ -91,6 +91,7 @@ void Flow2Auth::openBrowser()
         _pollEndpoint = pollEndpoint;
 
 
+        // Start polling
         ConfigFile cfg;
         std::chrono::milliseconds polltime = cfg.remotePollInterval();
         qCInfo(lcFlow2auth) << "setting remote poll timer interval to" << polltime.count() << "msec";
@@ -99,10 +100,10 @@ void Flow2Auth::openBrowser()
         _pollTimer.start();
 
 
-		if (!QDesktopServices::openUrl(authorisationLink())) {
-            // TODO: Ask the user to copy and open the link instead of failing here!
-
-            // We cannot open the browser, then we claim we don't support OAuth.
+        // Try to open Browser
+        if (!QDesktopServices::openUrl(authorisationLink())) {
+            // We cannot open the browser, then we claim we don't support Flow2Auth.
+            // Our UI callee should ask the user to copy and open the link.
             emit result(NotSupported, QString());
         }
     });
@@ -110,7 +111,7 @@ void Flow2Auth::openBrowser()
 
 void Flow2Auth::slotPollTimerTimeout()
 {
-	_pollTimer.stop();
+    _pollTimer.stop();
 
     // Step 2: Poll
     QNetworkRequest req;
@@ -122,6 +123,7 @@ void Flow2Auth::slotPollTimerTimeout()
 
     auto job = _account->sendRequest("POST", _pollEndpoint, req, requestBody);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
         QJsonParseError jsonParseError;
@@ -149,15 +151,25 @@ void Flow2Auth::slotPollTimerTimeout()
             }
             qCDebug(lcFlow2auth) << "Error when polling for the appPassword" << json << errorReason;
 
-			_pollTimer.start();
+            // Forget sensitive data
+            appPassword.clear();
+            loginName.clear();
+
+            // Failed: poll again
+            _pollTimer.start();
             return;
         }
 
-        qCInfo(lcFlow2auth) << "Success getting the appPassword for user: " << loginName << " on server: " << serverUrl;
-        
-		_account->setUrl(serverUrl);
+        // Success
+        qCInfo(lcFlow2auth) << "Success getting the appPassword for user: " << loginName << ", server: " << serverUrl.toString();
 
-		emit result(LoggedIn, loginName, appPassword);
+        _account->setUrl(serverUrl);
+
+        emit result(LoggedIn, loginName, appPassword);
+
+        // Forget sensitive data
+        appPassword.clear();
+        loginName.clear();
     });
 }
 

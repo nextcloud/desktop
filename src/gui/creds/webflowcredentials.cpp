@@ -114,12 +114,17 @@ void WebFlowCredentials::fetchFromKeychain() {
 }
 
 void WebFlowCredentials::askFromUser() {
-    _askDialog = new WebFlowCredentialsDialog();
+    // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
+    bool useFlow2 = (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0));
 
-    QUrl url = _account->url();
-    QString path = url.path() + "/index.php/login/flow";
-    url.setPath(path);
-    _askDialog->setUrl(url);
+    _askDialog = new WebFlowCredentialsDialog(_account, useFlow2);
+
+    if (!useFlow2) {
+        QUrl url = _account->url();
+        QString path = url.path() + "/index.php/login/flow";
+        url.setPath(path);
+        _askDialog->setUrl(url);
+    }
 
     QString msg = tr("You have been logged out of %1 as user %2. Please login again")
             .arg(_account->displayName(), _user);
@@ -142,10 +147,12 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
                 .arg(_user);
         _askDialog->setError(msg);
 
-        QUrl url = _account->url();
-        QString path = url.path() + "/index.php/login/flow";
-        url.setPath(path);
-        _askDialog->setUrl(url);
+        if (!_askDialog->isUsingFlow2()) {
+            QUrl url = _account->url();
+            QString path = url.path() + "/index.php/login/flow";
+            url.setPath(path);
+            _askDialog->setUrl(url);
+        }
 
         return;
     }
