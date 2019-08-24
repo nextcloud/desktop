@@ -4,83 +4,83 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>กำลังตรวจสอบการเปลี่ยนแปลงใน &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>กำลังประสานข้อมูล %1 จาก %2 (เหลือ %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>กำลังประสานข้อมูล %1 จากทั้งหมด %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>กำลังประสานข้อมูล %1 (เหลือ %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>กำลังประสานข้อมูล %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีไฟล์ที่ถูกเปลี่ยนแปลงล่าสุด</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>การประสานข้อมูลถูกหยุดชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="184"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>กำลังประสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>เปิดเว็บไซต์</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>การเปลี่ยนแปลงล่าสุด</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>หยุดการประสานข้อมูลชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>ช่วยเหลือ</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>ตั้งค่า</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>ออกจากระบบ</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>ปิดการประสานข้อมูลไคลเอนต์</translation>
     </message>
 </context>
 <context>
@@ -88,12 +88,12 @@
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="23"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>กล่องโต้ตอบ</translation>
     </message>
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="58"/>
         <source>Label</source>
-        <translation type="unfinished"/>
+        <translation>ป้ายกำกับ</translation>
     </message>
 </context>
 <context>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"/>
+        <translation>เปิดใช้งานการเข้ารหัส</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
@@ -289,7 +289,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="563"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>เข้ารหัส</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="604"/>
@@ -636,7 +636,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="196"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>ออก %1</translation>
     </message>
 </context>
 <context>
