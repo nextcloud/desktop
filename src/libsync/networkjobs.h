@@ -412,7 +412,8 @@ public:
         Basic, // also the catch-all fallback for backwards compatibility reasons
         OAuth,
         Shibboleth,
-        WebViewFlow
+        WebViewFlow,
+        LoginFlowV2
     };
 
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = nullptr);

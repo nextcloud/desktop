@@ -40,6 +40,7 @@ class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
 class WebViewPage;
+class Flow2AuthCredsPage;
 
 /**
  * @brief The OwncloudWizard class
@@ -103,6 +104,7 @@ private:
 #ifndef NO_SHIBBOLETH
     OwncloudShibbolethCredsPage *_shibbolethCredsPage;
 #endif
+    Flow2AuthCredsPage *_flow2CredsPage;
     OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage;
     AbstractCredentialsWizardPage *_credentialsPage;
