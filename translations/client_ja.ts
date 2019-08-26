@@ -239,6 +239,21 @@
         <translation>同期フォルダー接続を削除</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="367"/>
+        <source>Enable virtual file support %1...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="367"/>
+        <source>(tech preview)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="367"/>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="446"/>
         <source>Folder creation failed</source>
         <translation>フォルダーの作成に失敗しました</translation>
@@ -406,11 +421,6 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="359"/>
         <source>Disable virtual file support...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="367"/>
-        <source>Enable virtual file support (experimental)...</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1239,12 +1249,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="571"/>
+        <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>Add Folder Sync Connection</source>
         <translation>同期フォルダーを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="573"/>
+        <location filename="../src/gui/folderwizard.cpp" line="574"/>
         <source>Add Sync Connection</source>
         <translation>同期接続を追加</translation>
     </message>
@@ -1319,7 +1329,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="486"/>
-        <source>Use virtual files instead of downloading content immediately (experimental)</source>
+        <source>Use virtual files instead of downloading content immediately %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="487"/>
+        <source>(tech preview)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="487"/>
+        <source>(experimental)</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1729,12 +1749,12 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="169"/>
+        <location filename="../src/libsync/logger.cpp" line="173"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="170"/>
+        <location filename="../src/libsync/logger.cpp" line="174"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;ファイル &apos;%1&apos;&lt;br/&gt;を書き込み用で開けませんでした。&lt;br/&gt;&lt;br/&gt;ログ出力を&lt;b&gt;保存できません&lt;/b&gt;でした！&lt;/nobr&gt;</translation>
     </message>
@@ -1742,53 +1762,53 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="380"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="391"/>
         <source>New Version Available</source>
         <translation>新しいバージョンが利用可能です</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="386"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="397"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 クライアントの新しいバージョンが利用可能です。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; がダウンロード可能です。インストールされているバージョンは %3 です。&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="410"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>Skip this version</source>
         <translation>今回のバージョンをスキップ</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="400"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="411"/>
         <source>Skip this time</source>
         <translation>今回はスキップ</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="401"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <source>Get update</source>
         <translation>アップデートを取得</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="430"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="441"/>
         <source>Update Failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="436"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="450"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>Ask again later</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="451"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>Restart and update</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="452"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Update manually</source>
         <translation type="unfinished"/>
     </message>
@@ -2041,28 +2061,43 @@ for additional privileges during the process.</source>
         <translation>接続...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="173"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="82"/>
+        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="83"/>
+        <source>(tech preview)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="83"/>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="176"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 フォルダー &apos;%2&apos; はローカルフォルダー &apos;%3&apos; と同期しています</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="176"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="179"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; フォルダーを同期</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="181"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="184"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;警告:&lt;/strong&gt; ローカルフォルダーは空ではありません。解決方法を選択してください！&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="312"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="315"/>
         <source>Local Sync Folder</source>
         <translation>ローカル同期フォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="348"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="381"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="351"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="384"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2334,23 +2369,38 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="243"/>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="261"/>
-        <source>Enable experimental feature?</source>
+        <source>Enable technical preview feature?</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="244"/>
-        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead a placeholder file will be created for each file that exists on the server. When a file is opened its contents will be downloaded automatically. Alternatively files can be downloaded manually by using their context menu.
+        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead a virtual file will be created for each file that exists on the server. When a file is opened its contents will be downloaded automatically. Alternatively, files can be downloaded manually by using their context menu.
 
-The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
-
-Switching to this mode will abort any currently running synchronization.
-
-This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
+The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="252"/>
+        <source>Enable virtual files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="253"/>
+        <source>Continue to use selective sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="258"/>
+        <source>Enable experimental feature?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="272"/>
+        <source>Enable experimental placeholder mode</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="259"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2361,12 +2411,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="276"/>
-        <source>Enable experimental mode</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="273"/>
         <source>Stay safe</source>
         <translation type="unfinished"/>
     </message>
@@ -2567,53 +2612,53 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="442"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>ファイル %1 はローカルファイル名が衝突しているためダウンロードできません！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="491"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="495"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="495"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
         <source>Free space on disk is less than %1</source>
         <translation>ディスク空き容量が %1 よりも少なくなっています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="629"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="633"/>
         <source>Download slot finished, but there was no reply!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="682"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="686"/>
         <source>File was deleted from server</source>
         <translation>ファイルはサーバーから削除されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="753"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="757"/>
         <source>The file could not be downloaded completely.</source>
         <translation>このファイルのダウンロードは完了しませんでした</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="760"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="764"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>サーバーが通知しているファイルは %1 であるべきですが、ダウンロードファイルは空でした。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="944"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>%1 はローカルファイル名が衝突しているため保存できません！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="363"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="985"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="989"/>
         <source>File has changed since discovery</source>
         <translation>ファイルは発見以降に変更されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1051"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1055"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -3800,17 +3845,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="319"/>
+        <location filename="../src/common/checksums.cpp" line="336"/>
         <source>The checksum header is malformed.</source>
         <translation>ヘッダーのチェックサムが異常です。</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="346"/>
+        <location filename="../src/common/checksums.cpp" line="363"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>チェックサムヘッダーに &apos;%1&apos; という未知のチェックサムが含まれていました</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="350"/>
+        <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>ダウンロードしたファイルがチェックサムエラーです。再ダウンロードします。</translation>
     </message>
@@ -4178,11 +4223,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
-        <source>Use virtual files instead of downloading content immediately (e&amp;xperimental)</source>
         <translation type="unfinished"/>
     </message>
     <message>

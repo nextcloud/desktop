@@ -239,6 +239,21 @@
         <translation>Αφαίρεση σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="367"/>
+        <source>Enable virtual file support %1...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="367"/>
+        <source>(tech preview)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="367"/>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="446"/>
         <source>Folder creation failed</source>
         <translation>Αποτυχία αφαίρεσης φακέλου</translation>
@@ -411,11 +426,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/accountsettings.cpp" line="359"/>
         <source>Disable virtual file support...</source>
         <translation>Απενεργοποίηση υποστήριξης εικονικού αρχείου...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="367"/>
-        <source>Enable virtual file support (experimental)...</source>
-        <translation>Ενεργοποίησης υποστήριξης εικονικού αρχείου (πειραματικό στάδιο)...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="504"/>
@@ -1247,12 +1257,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="571"/>
+        <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>Add Folder Sync Connection</source>
         <translation>Προσθήκη Σύνδεσης Συγχρονισμού Φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="573"/>
+        <location filename="../src/gui/folderwizard.cpp" line="574"/>
         <source>Add Sync Connection</source>
         <translation>Προσθήκη Σύνδεσης Συγχρονισμού</translation>
     </message>
@@ -1327,8 +1337,18 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="486"/>
-        <source>Use virtual files instead of downloading content immediately (experimental)</source>
-        <translation>Χρησιμοποιήστε εικονικά αρχεία αντί για άμεση λήψη περιεχομένου (πειραματικά)</translation>
+        <source>Use virtual files instead of downloading content immediately %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="487"/>
+        <source>(tech preview)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="487"/>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1584,7 +1604,9 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Τα αρχεία ή οι φάκελοι που ταιριάζουν με ένα μοτίβο δεν θα συγχρονιστούν. Οι αλλαγές αρχίζουν να ισχύουν την επόμενη φορά που θα συγχρονίζονται οι φάκελοι.
+
+Τα στοιχεία όπου επιτρέπεται η διαγραφή θα διαγραφούν αν αποτρέψουν την αφαίρεση ενός καταλόγου. Αυτό είναι χρήσιμο για μεταδεδομένα.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="125"/>
@@ -1742,12 +1764,12 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="169"/>
+        <location filename="../src/libsync/logger.cpp" line="173"/>
         <source>Error</source>
         <translation>Σφάλμα</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="170"/>
+        <location filename="../src/libsync/logger.cpp" line="174"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Το αρχείο &apos;%1&apos;&lt;br/&gt;δεν μπορεί να ανοιχθεί για εγγραφή.&lt;br/&gt;&lt;br/&gt;Το αρχείο καταγραφής &lt;b&gt;δεν&lt;/b&gt; μπορεί να αποθηκευτεί!&lt;/nobr&gt; </translation>
     </message>
@@ -1755,53 +1777,53 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="380"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="391"/>
         <source>New Version Available</source>
         <translation>Νέα Έκδοση Διαθέσιμη </translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="386"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="397"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Μια νέα έκδοση του %1 Δέκτη είναι διαθέσιμη.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; είναι διαθέσιμη για λήψη. Η εγκατεστημένη έκδοση είναι %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="410"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>Skip this version</source>
         <translation>Παράλειψη αυτής της έκδοσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="400"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="411"/>
         <source>Skip this time</source>
         <translation>Παράλειψη αυτή τη φορά</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="401"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <source>Get update</source>
         <translation>Λήψη ενημέρωσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="430"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="441"/>
         <source>Update Failed</source>
         <translation>Απέτυχε η ενημέρωση</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="436"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Μια νέα έκδοση του πελάτη %1 είναι διαθέσιμη αλλά η διαδικασία ενημέρωσης απέτυχε.&lt;/p&gt;&lt;p&gt;Το &lt;b&gt;%2&lt;/b&gt; έχει ληφθεί. Η εγκατεστημένη έκδοση είναι %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="450"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>Ask again later</source>
         <translation>Να γίνει ερώτηση ξανά αργότερα</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="451"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>Restart and update</source>
         <translation>Επανεκκίνηση και ενημέρωση</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="452"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Update manually</source>
         <translation>Χειροκίνητη ενημέρωση</translation>
     </message>
@@ -2055,28 +2077,43 @@ for additional privileges during the process.</source>
         <translation>Σύνδεση...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="173"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="82"/>
+        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="83"/>
+        <source>(tech preview)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="83"/>
+        <source>(experimental)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="176"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>Ο %1 φάκελος &apos;%2&apos; είναι συγχρονισμένος με τον τοπικό φάκελο &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="176"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="179"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>Συγχρονισμός φακέλου &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="181"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="184"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Προσοχή:&lt;/strong&gt; Ο τοπικός φάκελος δεν είναι άδειος. Επιλέξτε μια επίλυση!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="312"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="315"/>
         <source>Local Sync Folder</source>
         <translation>Τοπικός Φάκελος Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="348"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="381"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="351"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="384"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2349,29 +2386,38 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="243"/>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="261"/>
+        <source>Enable technical preview feature?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="244"/>
+        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead a virtual file will be created for each file that exists on the server. When a file is opened its contents will be downloaded automatically. Alternatively, files can be downloaded manually by using their context menu.
+
+The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="252"/>
+        <source>Enable virtual files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="253"/>
+        <source>Continue to use selective sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="258"/>
         <source>Enable experimental feature?</source>
         <translation>Ενεργοποίηση πειραματικής λειτουργίας;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="244"/>
-        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead a placeholder file will be created for each file that exists on the server. When a file is opened its contents will be downloaded automatically. Alternatively files can be downloaded manually by using their context menu.
-
-The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
-
-Switching to this mode will abort any currently running synchronization.
-
-This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Όταν είναι ενεργοποιημένη η λειτουργία &quot;εικονικά αρχεία&quot; δεν θα ληφθούν αρχικά αρχεία. Αντί για αυτό θα δημιουργηθεί ένα αρχείο σύστασης για κάθε αρχείο που υπάρχει στον διακομιστή. Όταν ανοίξει ένα αρχείο, το περιεχόμενό του θα φορτωθεί αυτόματα. Εναλλακτικά, τα αρχεία μπορούν να μεταφορτωθούν με μη αυτόματο τρόπο χρησιμοποιώντας το μενού περιβάλλοντος.
-
-Η λειτουργία εικονικών αρχείων είναι αμοιβαία αποκλειστική με επιλεκτικό συγχρονισμό. Οι φάκελοι που δεν έχουν επιλεγεί προς το παρόν θα μεταφραστούν σε φακέλους μόνο σε σύνδεση και οι επιλεγμένες ρυθμίσεις συγχρονισμού θα επαναρυθμιστούν.
-
-Εάν μεταβείτε σε αυτήν τη λειτουργία, θα ακυρωθεί οποιοσδήποτε τρέχων συγχρονισμός.
-
-Πρόκειται για μια νέα, πειραματική λειτουργία. Αν αποφασίσετε να τη χρησιμοποιήσετε, αναφέρετε τυχόν ζητήματα που προκύπτουν.</translation>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="272"/>
+        <source>Enable experimental placeholder mode</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="259"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2388,12 +2434,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 Πρόκειται για μια νέα, πειραματική λειτουργία. Αν αποφασίσετε να την χρησιμοποιήσετε, αναφέρετε τυχόν ζητήματα που προκύπτουν.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="276"/>
-        <source>Enable experimental mode</source>
-        <translation>Ενεργοποίηση πειραματικής κατάστασης</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="273"/>
         <source>Stay safe</source>
         <translation>Μείνετε ασφαλείς</translation>
     </message>
@@ -2594,53 +2635,53 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="442"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="444"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Το αρχείο %1 δεν είναι δυνατό να ληφθεί λόγω διένεξης με το όνομα ενός τοπικού αρχείου!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="491"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="495"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Η λήψη θα μειώσει τον ελεύθερο χώρο τοπικού δίσκου κάτω από το όριο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="495"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
         <source>Free space on disk is less than %1</source>
         <translation>Ο διαθέσιμος χώρος στο δίσκο είναι λιγότερος από %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="629"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="633"/>
         <source>Download slot finished, but there was no reply!</source>
         <translation>Ολοκληρώθηκε η υποδοχή λήψης, αλλά δεν υπήρξε απάντηση!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="682"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="686"/>
         <source>File was deleted from server</source>
         <translation>Το αρχείο διαγράφηκε από τον διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="753"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="757"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Η λήψη του αρχείου δεν ολοκληρώθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="760"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="764"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Το ληφθέν αρχείο είναι άδειο, παρόλο που ο διακομιστής ανακοίνωσε ότι θα έπρεπε να ήταν% 1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="944"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Το αρχείο %1 δεν είναι δυνατό να αποθηκευτεί λόγω διένεξης με το όνομα ενός τοπικού ονόματος αρχείου!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="363"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="985"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="989"/>
         <source>File has changed since discovery</source>
         <translation>Το αρχείο έχει αλλάξει από όταν ανακαλύφθηκε</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1051"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1055"/>
         <source>Error writing metadata to the database</source>
         <translation>Σφάλμα εγγραφής μεταδεδομένων στην βάση δεδομένων</translation>
     </message>
@@ -3829,17 +3870,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="319"/>
+        <location filename="../src/common/checksums.cpp" line="336"/>
         <source>The checksum header is malformed.</source>
         <translation>Η κεφαλίδα του αθροίσματος ελέγχου δεν είναι σωστά διαμορφωμένη.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="346"/>
+        <location filename="../src/common/checksums.cpp" line="363"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>Το checksum header περιέχει άγνωστο τύπο checksum &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="350"/>
+        <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>Το αρχείο που μεταφορτώθηκε δεν επαληθεύει το άθροισμα ελέγχου, θα συγχρονιστεί πάλι.</translation>
     </message>
@@ -4208,11 +4249,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
         <translation>Να γίνει σ&amp;υγρονισμός όλων από τον διακομιστή (συνίσταται)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
-        <source>Use virtual files instead of downloading content immediately (e&amp;xperimental)</source>
-        <translation>Να γίνει χρήση εικονικών αρχεία αντί για άμεση λήψη περιεχομένου (π&amp;ειραματικά)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="460"/>
