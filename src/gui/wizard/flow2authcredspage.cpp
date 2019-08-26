@@ -23,8 +23,8 @@
 #include "cookiejar.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
-#include "creds/httpcredentialsgui.h"
 #include "creds/credentialsfactory.h"
+#include "creds/webflowcredentials.h"
 
 namespace OCC {
 
@@ -132,8 +132,12 @@ AbstractCredentials *Flow2AuthCredsPage::getCredentials() const
 {
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
-    return new HttpCredentialsGui(_user, _appPassword, QString(),
-        ocWizard->_clientSslCertificate, ocWizard->_clientSslKey);
+    return new WebFlowCredentials(
+                _user,
+                _appPassword,
+                ocWizard->_clientSslCertificate,
+                ocWizard->_clientSslKey
+    );
 }
 
 bool Flow2AuthCredsPage::isComplete() const
