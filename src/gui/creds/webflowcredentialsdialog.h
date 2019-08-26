@@ -24,7 +24,7 @@ public:
     void setInfo(const QString &msg);
     void setError(const QString &error);
 
-    const bool isUsingFlow2() const {
+    bool isUsingFlow2() const {
         return _useFlow2;
     }
 

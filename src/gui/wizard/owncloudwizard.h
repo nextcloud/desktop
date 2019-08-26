@@ -104,11 +104,11 @@ private:
 #ifndef NO_SHIBBOLETH
     OwncloudShibbolethCredsPage *_shibbolethCredsPage;
 #endif
+    Flow2AuthCredsPage *_flow2CredsPage;
     OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage;
     AbstractCredentialsWizardPage *_credentialsPage;
     WebViewPage *_webViewPage;
-    Flow2AuthCredsPage *_flow2CredsPage;
 
     QStringList _setupLog;
 

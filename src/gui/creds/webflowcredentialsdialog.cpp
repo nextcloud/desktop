@@ -41,14 +41,13 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     _errorLabel->hide();
     _layout->addWidget(_errorLabel);
 
-    Theme *theme = Theme::instance();
     WizardCommon::initErrorLabel(_errorLabel);
 
     setLayout(_layout);
 }
 
 void WebFlowCredentialsDialog::closeEvent(QCloseEvent* e) {
-    Q_UNUSED(e);
+    Q_UNUSED(e)
 
     if (_webView) {
         // Force calling WebView::~WebView() earlier so that _profile and _page are
