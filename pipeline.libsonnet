@@ -240,6 +240,16 @@ local drone = {
         make('l10n-pull'),
         make('l10n-write', write_image),
         make('l10n-clean'),
+        # keep time window for commit races as small as possible
+        {
+          name: 'update-repo-before-commit',
+          image: 'docker:git',
+          commands: [
+            'git stash',
+            'git pull --ff-only origin +refs/heads/$${DRONE_BRANCH}',
+            '[ "$(git stash list)" = "" ] || git stash pop',
+          ],
+        },
         {
           name: 'commit',
           image: 'appleboy/drone-git-push',

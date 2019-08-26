@@ -307,6 +307,13 @@ steps:
     TX_TOKEN:
       from_secret: tx_token
 
+- name: update-repo-before-commit
+  image: docker:git
+  commands:
+  - git stash
+  - git pull --ff-only origin +refs/heads/$${DRONE_BRANCH}
+  - "[ \"$(git stash list)\" = \"\" ] || git stash pop"
+
 - name: commit
   pull: always
   image: appleboy/drone-git-push
@@ -386,6 +393,13 @@ steps:
   environment:
     TX_TOKEN:
       from_secret: tx_token
+
+- name: update-repo-before-commit
+  image: docker:git
+  commands:
+  - git stash
+  - git pull --ff-only origin +refs/heads/$${DRONE_BRANCH}
+  - "[ \"$(git stash list)\" = \"\" ] || git stash pop"
 
 - name: commit
   pull: always
