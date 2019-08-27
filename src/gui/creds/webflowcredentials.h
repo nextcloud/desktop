@@ -30,7 +30,12 @@ public:
     static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
 
     explicit WebFlowCredentials();
-    WebFlowCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
+    WebFlowCredentials(
+            const QString &user,
+            const QString &password,
+            const QSslCertificate &certificate = QSslCertificate(),
+            const QSslKey &key = QSslKey(),
+            const QList<QSslCertificate> &caCertificates = QList<QSslCertificate>());
 
     QString authType() const override;
     QString user() const override;
@@ -58,10 +63,12 @@ private slots:
 
     void slotReadClientCertPEMJobDone(QKeychain::Job *incomingJob);
     void slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob);
+    void slotReadClientCaCertsPEMJobDone(QKeychain::Job *incommingJob);
     void slotReadPasswordJobDone(QKeychain::Job *incomingJob);
 
     void slotWriteClientCertPEMJobDone();
     void slotWriteClientKeyPEMJobDone();
+    void slotWriteClientCaCertsPEMJobDone();
     void slotWriteJobDone(QKeychain::Job *);
 
 protected:
@@ -69,7 +76,8 @@ protected:
      *
      * Goes through
      *   slotReadClientCertPEMJobDone to
-     *   slotReadClientCertPEMJobDone to
+     *   slotReadClientKeyPEMJobDone to
+     *   slotReadClientCaCertsPEMJobDone to
      *   slotReadJobDone
      */
     void fetchFromKeychainHelper();
@@ -83,6 +91,7 @@ protected:
     QString _password;
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
+    QList<QSslCertificate> _clientSslCaCertificates;
 
     bool _ready;
     bool _credentialsValid;

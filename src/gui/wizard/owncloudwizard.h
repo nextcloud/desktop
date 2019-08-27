@@ -78,6 +78,7 @@ public:
     // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
+    QList<QSslCertificate> _clientSslCaCertificates;
 
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);

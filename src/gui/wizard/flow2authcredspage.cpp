@@ -136,7 +136,8 @@ AbstractCredentials *Flow2AuthCredsPage::getCredentials() const
                 _user,
                 _appPassword,
                 ocWizard->_clientSslCertificate,
-                ocWizard->_clientSslKey
+                ocWizard->_clientSslKey,
+                ocWizard->_clientSslCaCertificates
     );
 }
 

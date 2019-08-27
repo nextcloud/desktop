@@ -377,12 +377,13 @@ QString subjectInfoHelper(const QSslCertificate &cert, const QByteArray &qa)
 //called during the validation of the client certificate.
 void OwncloudSetupPage::slotCertificateAccepted()
 {
-    QList<QSslCertificate> clientCaCertificates;
     QFile certFile(addCertDial->getCertificatePath());
     certFile.open(QFile::ReadOnly);
-    if (QSslCertificate::importPkcs12(&certFile,
-            &_ocWizard->_clientSslKey, &_ocWizard->_clientSslCertificate,
-            &clientCaCertificates,
+    if (QSslCertificate::importPkcs12(
+            &certFile,
+            &_ocWizard->_clientSslKey,
+            &_ocWizard->_clientSslCertificate,
+            &_ocWizard->_clientSslCaCertificates,
             addCertDial->getCertificatePasswd().toLocal8Bit())) {
         AccountPtr acc = _ocWizard->account();
 
@@ -397,7 +398,7 @@ void OwncloudSetupPage::slotCertificateAccepted()
 
         // Be sure to merge the CAs
         auto ca = sslConfiguration.systemCaCertificates();
-        ca.append(clientCaCertificates);
+        ca.append(_ocWizard->_clientSslCaCertificates);
         sslConfiguration.setCaCertificates(ca);
 
         acc->setSslConfiguration(sslConfiguration);

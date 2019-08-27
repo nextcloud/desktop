@@ -29,6 +29,7 @@ namespace {
     const char userC[] = "user";
     const char clientCertificatePEMC[] = "_clientCertificatePEM";
     const char clientKeyPEMC[] = "_clientKeyPEM";
+    const char clientCaCertificatesPEMC[] = "_clientCaCertificatesPEM";
 } // ns
 
 class WebFlowCredentialsAccessManager : public AccessManager
@@ -56,6 +57,12 @@ protected:
             QSslConfiguration sslConfiguration = req.sslConfiguration();
             sslConfiguration.setLocalCertificate(_cred->_clientSslCertificate);
             sslConfiguration.setPrivateKey(_cred->_clientSslKey);
+
+            // Merge client side CA with system CA
+            auto ca = sslConfiguration.systemCaCertificates();
+            ca.append(_cred->_clientSslCaCertificates);
+            sslConfiguration.setCaCertificates(ca);
+
             req.setSslConfiguration(sslConfiguration);
         }
 
@@ -70,7 +77,7 @@ private:
 
 static void addSettingsToJob(Account *account, QKeychain::Job *job)
 {
-    Q_UNUSED(account);
+    Q_UNUSED(account)
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
     settings->setParent(job); // make the job parent to make setting deleted properly
     job->setSettings(settings.release());
@@ -85,11 +92,12 @@ WebFlowCredentials::WebFlowCredentials()
 
 }
 
-WebFlowCredentials::WebFlowCredentials(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key)
+WebFlowCredentials::WebFlowCredentials(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key, const QList<QSslCertificate> &caCertificates)
     : _user(user)
     , _password(password)
     , _clientSslKey(key)
     , _clientSslCertificate(certificate)
+    , _clientSslCaCertificates(caCertificates)
     , _ready(true)
     , _credentialsValid(true)
     , _keychainMigration(false)
@@ -163,7 +171,7 @@ void WebFlowCredentials::askFromUser() {
 }
 
 void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
-    Q_UNUSED(host);
+    Q_UNUSED(host)
 
     if (_user != user) {
         qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
@@ -247,6 +255,28 @@ void WebFlowCredentials::slotWriteClientCertPEMJobDone()
 
 void WebFlowCredentials::slotWriteClientKeyPEMJobDone()
 {
+    // write ca certs if there are any
+    if (!_clientSslCaCertificates.isEmpty()) {
+        WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+        addSettingsToJob(_account, job);
+        job->setInsecureFallback(false);
+        connect(job, &Job::finished, this, &WebFlowCredentials::slotWriteClientCaCertsPEMJobDone);
+        job->setKey(keychainKey(_account->url().toString(), _user + clientCaCertificatesPEMC, _account->id()));
+
+        QByteArray certs;
+        for(auto cert:_clientSslCaCertificates) {
+            certs += cert.toPem();
+        }
+
+        job->setBinaryData(certs);
+        job->start();
+    } else {
+        slotWriteClientCaCertsPEMJobDone();
+    }
+}
+
+void WebFlowCredentials::slotWriteClientCaCertsPEMJobDone()
+{
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
@@ -314,7 +344,7 @@ QString WebFlowCredentials::fetchUser() {
 }
 
 void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator) {
-    Q_UNUSED(reply);
+    Q_UNUSED(reply)
 
     if (!_ready) {
         return;
@@ -412,6 +442,31 @@ void WebFlowCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob
         }
         if (_clientSslKey.isNull()) {
             qCWarning(lcWebFlowCredentials) << "Could not load SSL key into Qt!";
+        }
+    }
+
+    // Now fetch the actual server password
+    const QString kck = keychainKey(
+        _account->url().toString(),
+        _user + clientCaCertificatesPEMC,
+        _keychainMigration ? QString() : _account->id());
+
+    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    addSettingsToJob(_account, job);
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    connect(job, &Job::finished, this, &WebFlowCredentials::slotReadClientCaCertsPEMJobDone);
+    job->start();
+}
+
+void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(QKeychain::Job *incomingJob) {
+    // Store key in memory
+    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incomingJob);
+
+    if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
+        QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(readJob->binaryData(), QSsl::Pem);
+        if (sslCertificateList.length() >= 1) {
+            _clientSslCaCertificates = sslCertificateList;
         }
     }
 
