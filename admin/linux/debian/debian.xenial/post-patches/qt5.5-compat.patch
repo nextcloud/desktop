@@ -50,3 +50,80 @@
  void KMessageWidgetPrivate::createLayout()
  {
      delete content->layout();
+--- nextcloud-client-2.5.3.orig/src/gui/wizard/flow2authcredspage.h	2019-08-27 16:25:27.984816278 +0200
++++ nextcloud-client-2.5.3/src/gui/wizard/flow2authcredspage.h	2019-08-27 16:26:33.337648163 +0200
+@@ -56,6 +56,9 @@
+     QString _appPassword;
+     QScopedPointer<Flow2Auth> _asyncAuth;
+     Ui_Flow2AuthCredsPage _ui;
++
++protected slots:
++    void copyLinkToClipboard();
+ };
+ 
+ } // namespace OCC
+--- nextcloud-client-2.5.3.orig/src/gui/wizard/flow2authcredspage.cpp	2019-08-27 16:25:21.912746258 +0200
++++ nextcloud-client-2.5.3/src/gui/wizard/flow2authcredspage.cpp	2019-08-27 16:28:09.111038604 +0200
+@@ -54,10 +54,8 @@
+     _ui.openLinkButton->setContextMenuPolicy(Qt::CustomContextMenu);
+     QObject::connect(_ui.openLinkButton, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
+         auto menu = new QMenu(_ui.openLinkButton);
+-        menu->addAction(tr("Copy link to clipboard"), this, [this] {
+-            if (_asyncAuth)
+-                QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+-        });
++        auto action = menu->addAction(tr("Copy link to clipboard"));
++        connect(action, &QAction::triggered, this, &Flow2AuthCredsPage::copyLinkToClipboard);
+         menu->setAttribute(Qt::WA_DeleteOnClose);
+         menu->popup(_ui.openLinkButton->mapToGlobal(pos));
+     });
+@@ -145,4 +143,10 @@
+     return false; /* We can never go forward manually */
+ }
+ 
++void Flow2AuthCredsPage::copyLinkToClipboard()
++{
++    if (_asyncAuth)
++      QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
++}
++
+ } // namespace OCC
+--- nextcloud-client-2.5.3.orig/src/gui/wizard/flow2authwidget.h	2019-08-27 17:28:25.089315731 +0200
++++ nextcloud-client-2.5.3/src/gui/wizard/flow2authwidget.h	2019-08-27 17:28:31.573123108 +0200
+@@ -45,6 +45,9 @@
+     QString _appPassword;
+     QScopedPointer<Flow2Auth> _asyncAuth;
+     Ui_Flow2AuthWidget _ui;
++
++protected slots:
++    void copyLinkToClipboard();
+ };
+ 
+ }
+--- nextcloud-client-2.5.3.orig/src/gui/wizard/flow2authwidget.cpp	2019-08-27 17:28:29.417186804 +0200
++++ nextcloud-client-2.5.3/src/gui/wizard/flow2authwidget.cpp	2019-08-27 19:24:11.562630153 +0200
+@@ -58,10 +58,8 @@
+     _ui.openLinkButton->setContextMenuPolicy(Qt::CustomContextMenu);
+     QObject::connect(_ui.openLinkButton, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
+         auto menu = new QMenu(_ui.openLinkButton);
+-        menu->addAction(tr("Copy link to clipboard"), this, [this] {
+-            if (_asyncAuth)
+-                QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+-        });
++        auto action = menu->addAction(tr("Copy link to clipboard"));
++        connect(action, &QAction::triggered, this, &Flow2AuthWidget::copyLinkToClipboard);
+         menu->setAttribute(Qt::WA_DeleteOnClose);
+         menu->popup(_ui.openLinkButton->mapToGlobal(pos));
+     });
+@@ -110,4 +108,11 @@
+     _user.clear();
+ }
+ 
++void Flow2AuthWidget::copyLinkToClipboard()
++{
++    if (_asyncAuth)
++      QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
++}
++
++
+ }
