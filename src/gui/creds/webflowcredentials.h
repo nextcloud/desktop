@@ -3,6 +3,7 @@
 
 #include <QSslCertificate>
 #include <QSslKey>
+#include <QNetworkRequest>
 
 #include "creds/abstractcredentials.h"
 
@@ -22,7 +23,12 @@ class WebFlowCredentialsDialog;
 class WebFlowCredentials : public AbstractCredentials
 {
     Q_OBJECT
+    friend class WebFlowCredentialsAccessManager;
+
 public:
+    /// Don't add credentials if this is set on a QNetworkRequest
+    static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
+
     explicit WebFlowCredentials();
     WebFlowCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
 
@@ -48,11 +54,27 @@ private slots:
     void slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);
     void slotFinished(QNetworkReply *reply);
 
-    void slotReadPasswordJobDone(QKeychain::Job *incomingJob);
     void slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host);
 
-private:
+    void slotReadClientCertPEMJobDone(QKeychain::Job *incomingJob);
+    void slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob);
+    void slotReadPasswordJobDone(QKeychain::Job *incomingJob);
+
+    void slotWriteClientCertPEMJobDone();
+    void slotWriteClientKeyPEMJobDone();
+    void slotWriteJobDone(QKeychain::Job *);
+
+protected:
+    /** Reads data from keychain locations
+     *
+     * Goes through
+     *   slotReadClientCertPEMJobDone to
+     *   slotReadClientCertPEMJobDone to
+     *   slotReadJobDone
+     */
     void fetchFromKeychainHelper();
+
+    /// Wipes legacy keychain locations
     void deleteOldKeychainEntries();
 
     QString fetchUser();
@@ -65,6 +87,7 @@ private:
     bool _ready;
     bool _credentialsValid;
     bool _keychainMigration;
+    bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
     WebFlowCredentialsDialog *_askDialog;
 };
