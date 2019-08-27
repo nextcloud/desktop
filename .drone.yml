@@ -38,7 +38,7 @@ steps:
   - cd "build-gcc-release-make"
   - useradd -m -s /bin/bash tester
   - chown -R tester:tester .
-  - su-exec tester ctest --output-on-failure
+  - su-exec tester ctest --output-on-failure -LE nodrone
   environment:
     LC_ALL: C.UTF-8
 
@@ -88,7 +88,7 @@ steps:
   - cd "build-clang-debug-ninja"
   - useradd -m -s /bin/bash tester
   - chown -R tester:tester .
-  - su-exec tester ctest --output-on-failure
+  - su-exec tester ctest --output-on-failure -LE nodrone
   environment:
     LC_ALL: C.UTF-8
 

@@ -81,7 +81,7 @@ local drone = {
             'cd "'+build_dir+'"',
             'useradd -m -s /bin/bash tester',
             'chown -R tester:tester .',
-            'su-exec tester ctest --output-on-failure',
+            'su-exec tester ctest --output-on-failure -LE nodrone',
           ],
         },
       ],
