@@ -116,6 +116,52 @@
     </message>
 </context>
 <context>
+    <name>Flow2AuthCredsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authcredspage.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
+        <source>Please switch to your browser to proceed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authcredspage.ui" line="46"/>
+        <source>An error occurred while connecting. Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
+        <source>Re-open Browser (or right-click to copy link)</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="48"/>
+        <source>Please switch to your browser to proceed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="58"/>
+        <source>An error occurred while connecting. Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
+        <source>Re-open Browser (or right-click to copy link)</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="14"/>
@@ -730,6 +776,69 @@
         <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>The server file discovery reply is missing data.</source>
         <translation>A kiszolgáló fájlkutatási válaszából adatok hiányoznak.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::Flow2Auth</name>
+    <message>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="72"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="141"/>
+        <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="75"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="144"/>
+        <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="78"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="147"/>
+        <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="81"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="150"/>
+        <source>The reply from the server did not contain all expected fields</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::Flow2AuthCredsPage</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="46"/>
+        <source>Connect to %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="47"/>
+        <source>Login in your browser (Login Flow v2)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="57"/>
+        <source>Copy link to clipboard</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="96"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::Flow2AuthWidget</name>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="61"/>
+        <source>Copy link to clipboard</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="80"/>
+        <source>Unable to open the Browser, please copy the link to your Browser.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2060,12 +2169,12 @@ Használata nem ajánlott.</translation>
         <translation>&amp;Következő &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="281"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="283"/>
         <source>Invalid URL</source>
         <translation>Érvénytelen URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="409"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="411"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>A tanúsítvány nem tölthető be. Lehet, hogy hibás a jelszó?</translation>
     </message>
@@ -2223,12 +2332,12 @@ Használata nem ajánlott.</translation>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="89"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 kapcsolódási varázsló</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="102"/>
         <source>Skip folders configuration</source>
         <translation>Mappák konfigurációjának kihagyása</translation>
     </message>
@@ -3429,12 +3538,12 @@ Használata nem ajánlott.</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="124"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="129"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation>Kijelentkezett a(z) %1 fiókjából, mint %2 felhasználó. Jelentkezzen be újra</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="141"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="146"/>
         <source>Please login with the user: %1</source>
         <translation>Jelentkezzen be a következő felhasználóval: %1</translation>
     </message>
