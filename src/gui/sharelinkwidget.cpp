@@ -149,12 +149,13 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         _expiryRequired = true;
     }
 
-    // File can't have public upload set; we also hide it if the capability isn't there
-    _ui->widget_editing->setVisible(
-        !_isFile && _account->capabilities().sharePublicLinkAllowUpload());
-    _ui->radio_uploadOnly->setVisible(
-        _account->capabilities().sharePublicLinkSupportsUploadOnly());
-
+    // Hide permissions that are unavailable for files or disabled by capability.
+    bool rwVisible = !_isFile && _account->capabilities().sharePublicLinkAllowUpload();
+    bool uploadOnlyVisible = rwVisible && _account->capabilities().sharePublicLinkSupportsUploadOnly();
+    _ui->radio_readWrite->setVisible(rwVisible);
+    _ui->label_readWrite->setVisible(rwVisible);
+    _ui->radio_uploadOnly->setVisible(uploadOnlyVisible);
+    _ui->label_uploadOnly->setVisible(uploadOnlyVisible);
 
     // Prepare sharing menu
 
@@ -376,17 +377,15 @@ void ShareLinkWidget::slotShareSelectionChanged()
         _ui->calendar->setEnabled(false);
     }
 
-    // Public upload state (box is hidden for files)
-    if (!_isFile) {
-        if (share && share->getPublicUpload()) {
-            if (share->getShowFileListing()) {
-                _ui->radio_readWrite->setChecked(true);
-            } else {
-                _ui->radio_uploadOnly->setChecked(true);
-            }
+    // Public upload state
+    if (share && share->getPublicUpload()) {
+        if (share->getShowFileListing()) {
+            _ui->radio_readWrite->setChecked(true);
         } else {
-            _ui->radio_readOnly->setChecked(true);
+            _ui->radio_uploadOnly->setChecked(true);
         }
+    } else {
+        _ui->radio_readOnly->setChecked(true);
     }
 
     // Name and create button
