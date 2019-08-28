@@ -156,12 +156,22 @@ class DiscoveryPhase : public QObject
     QMap<QString, QString> _renamedItemsRemote;
     QMap<QString, QString> _renamedItemsLocal;
 
+    // set of paths that should not be removed even though they are removed locally:
+    // there was a move to an invalid destination and now the source should be restored
+    //
+    // This applies recursively to subdirectories.
+    // All entries should have a trailing slash (even files), so lookup with
+    // lowerBound() is reliable.
+    //
+    // The value of this map doesn't matter.
+    QMap<QString, bool> _forbiddenDeletes;
+
     /** Returns whether the db-path has been renamed locally or on the remote.
      *
      * Useful for avoiding processing of items that have already been claimed in
      * a rename (would otherwise be discovered as deletions).
      */
-    bool isRenamed(const QString &p) { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
+    bool isRenamed(const QString &p) const { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
 
     int _currentlyActiveJobs = 0;
 
@@ -218,6 +228,7 @@ public:
 
     // output
     QByteArray _dataFingerprint;
+    bool _anotherSyncNeeded = false;
 
 signals:
     void fatalError(const QString &errorString);

@@ -644,7 +644,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // conflict we don't need to recurse into it. (local c1.owncloud, c1/ ; remote: c1)
         if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT && !item->isDirectory())
             recurse = false;
-        if (_queryLocal != NormalQuery && _queryServer != NormalQuery && !item->_isRestoration)
+        if (_queryLocal != NormalQuery && _queryServer != NormalQuery)
             recurse = false;
 
         auto recurseQueryLocal = _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist;
@@ -679,13 +679,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_type = ItemTypeVirtualFile;
         } else if (!serverModified) {
             // Removed locally: also remove on the server.
-            if (_dirItem && _dirItem->_isRestoration && _dirItem->_instruction == CSYNC_INSTRUCTION_NEW) {
-                // Also restore everything
-                item->_instruction = CSYNC_INSTRUCTION_NEW;
-                item->_direction = SyncFileItem::Down;
-                item->_isRestoration = true;
-                item->_errorString = tr("Not allowed to remove, restoring");
-            } else if (!dbEntry._serverHasIgnoredFiles) {
+            if (!dbEntry._serverHasIgnoredFiles) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Up;
             }
@@ -890,20 +884,48 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return false;
         }
 
-        // Check local permission if we are allowed to put move the file here
-        // Technically we should use the one from the server, but we'll assume it is the same
-        if (!checkMovePermissions(base._remotePerm, originalPath, item->isDirectory())) {
-            qCInfo(lcDisco) << "Not a move, no permission to rename base file";
-            return false;
-        }
-
         return true;
     };
 
-    // Finally make it a NEW or a RENAME
+    // If it's not a move it's just a local-NEW
     if (!moveCheck()) {
        postProcessLocalNew();
     } else {
+        // Check local permission if we are allowed to put move the file here
+        // Technically we should use the permissions from the server, but we'll assume it is the same
+        auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
+        if (!movePerms.sourceOk || !movePerms.destinationOk) {
+            qCInfo(lcDisco) << "Move without permission to rename base file, "
+                            << "source:" << movePerms.sourceOk
+                            << ", target:" << movePerms.destinationOk
+                            << ", targetNew:" << movePerms.destinationNewOk;
+
+            // If we can create the destination, do that.
+            // Permission errors on the destination will be handled by checkPermissions later.
+            postProcessLocalNew();
+            finalize();
+
+            // If the destination upload will work, we're fine with the source deletion.
+            // If the source deletion can't work, checkPermissions will error.
+            if (movePerms.destinationNewOk)
+                return;
+
+            // Here we know the new location can't be uploaded: must prevent the source delete.
+            // Two cases: either the source item was already processed or not.
+            auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
+            if (wasDeletedOnClient.first) {
+                // More complicated. The REMOVE is canceled. Restore will happen next sync.
+                qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
+                _discoveryData->_statedb->deleteFileRecord(originalPath, true);
+                _discoveryData->_anotherSyncNeeded = true;
+            } else {
+                // Signal to future checkPermissions() to forbid the REMOVE and set to restore instead
+                qCInfo(lcDisco) << "Preventing future remove on source" << originalPath;
+                _discoveryData->_forbiddenDeletes[originalPath + '/'] = true;
+            }
+            return;
+        }
+
         auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
 
         auto processRename = [item, originalPath, base, this](PathTuple &path) {
@@ -1072,8 +1094,12 @@ void ProcessDirectoryJob::processFileFinalize(
 
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-    if (!checkPermissions(item))
+    if (checkPermissions(item)) {
+        if (item->_isRestoration && item->isDirectory())
+            recurse = true;
+    } else {
         recurse = false;
+    }
     if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer, this);
         if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
@@ -1173,6 +1199,20 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
         break;
     }
     case CSYNC_INSTRUCTION_REMOVE: {
+        QString fileSlash = item->_file + '/';
+        auto forbiddenIt = _discoveryData->_forbiddenDeletes.upperBound(fileSlash);
+        if (forbiddenIt != _discoveryData->_forbiddenDeletes.begin())
+            forbiddenIt -= 1;
+        if (forbiddenIt != _discoveryData->_forbiddenDeletes.end()
+            && fileSlash.startsWith(forbiddenIt.key())) {
+
+            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file;
+            item->_instruction = CSYNC_INSTRUCTION_NEW;
+            item->_direction = SyncFileItem::Down;
+            item->_isRestoration = true;
+            item->_errorString = tr("Moved to invalid target, restoring");
+            return true; // restore sub items
+        }
         const auto perms = item->_remotePerm;
         if (perms.isNull()) {
             // No permissions set
@@ -1195,8 +1235,9 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
 }
 
 
-bool ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath,
+auto ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath,
                                                bool isDirectory)
+    -> MovePermissionResult
 {
     auto destPerms = !_rootPermissions.isNull() ? _rootPermissions
                                                 : _dirItem ? _dirItem->_remotePerm : _rootPermissions;
@@ -1206,12 +1247,15 @@ bool ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const 
         && srcPath.lastIndexOf('/') == _currentFolder._original.size();
     // Check if we are allowed to move to the destination.
     bool destinationOK = true;
-    if (isRename || destPerms.isNull()) {
-        // no need to check for the destination dir permission
-        destinationOK = true;
+    bool destinationNewOK = true;
+    if (destPerms.isNull()) {
     } else if (isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
-        destinationOK = false;
+        destinationNewOK = false;
     } else if (!isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddFile)) {
+        destinationNewOK = false;
+    }
+    if (!isRename && !destinationNewOK) {
+        // no need to check for the destination dir permission for renames
         destinationOK = false;
     }
 
@@ -1223,16 +1267,7 @@ bool ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const 
         // We are not allowed to move or rename this file
         sourceOK = false;
     }
-    if (!sourceOK || !destinationOK) {
-        qCInfo(lcDisco) << "Not a move because permission does not allow it." << sourceOK << destinationOK;
-        if (!sourceOK) {
-            // This is the behavior that we had in the client <= 2.5.
-            // but that might not be needed anymore
-            _discoveryData->_statedb->avoidRenamesOnNextSync(srcPath);
-        }
-        return false;
-    }
-    return true;
+    return MovePermissionResult{sourceOK, destinationOK, destinationNewOK};
 }
 
 void ProcessDirectoryJob::subJobFinished()

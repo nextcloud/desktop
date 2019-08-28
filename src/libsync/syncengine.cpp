@@ -668,6 +668,10 @@ void SyncEngine::slotDiscoveryFinished()
         restoreOldFiles(_syncItems);
     }
 
+    if (_discoveryPhase->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
+        _anotherSyncNeeded = ImmediateFollowUp;
+    }
+
     // Sort items per destination
     std::sort(_syncItems.begin(), _syncItems.end());
 

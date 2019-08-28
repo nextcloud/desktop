@@ -167,11 +167,21 @@ private:
      */
     bool checkPermissions(const SyncFileItemPtr &item);
 
+    struct MovePermissionResult
+    {
+        // whether moving/renaming the source is ok
+        bool sourceOk = false;
+        // whether the destination accepts (always true for renames)
+        bool destinationOk = false;
+        // whether creating a new file/dir in the destination is ok
+        bool destinationNewOk = false;
+    };
+
     /**
      * Check if the move is of a specified file within this directory is allowed.
      * Return true if it is allowed, false otherwise
      */
-    bool checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath, bool isDirectory);
+    MovePermissionResult checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath, bool isDirectory);
 
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();

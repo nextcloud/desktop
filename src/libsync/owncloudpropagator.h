@@ -192,7 +192,7 @@ public:
             return false;
         }
         const char *instruction_str = csync_instruction_str(_item->_instruction);
-        qCInfo(lcPropagator) << "Starting" << instruction_str << "propagation of" << _item->_file << "by" << this;
+        qCInfo(lcPropagator) << "Starting" << instruction_str << "propagation of" << _item->destination() << "by" << this;
 
         _state = Running;
         QMetaObject::invokeMethod(this, "start"); // We could be in a different thread (neon jobs)

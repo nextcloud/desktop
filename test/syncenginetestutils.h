@@ -608,6 +608,8 @@ public:
         QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isEmpty());
         fileInfo = remoteRootFileInfo.find(fileName);
+        if (!fileInfo)
+            qWarning() << "Could not find file" << fileName << "on the remote";
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
 
