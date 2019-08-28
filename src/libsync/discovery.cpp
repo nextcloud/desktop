@@ -890,99 +890,101 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     // If it's not a move it's just a local-NEW
     if (!moveCheck()) {
        postProcessLocalNew();
-    } else {
-        // Check local permission if we are allowed to put move the file here
-        // Technically we should use the permissions from the server, but we'll assume it is the same
-        auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
-        if (!movePerms.sourceOk || !movePerms.destinationOk) {
-            qCInfo(lcDisco) << "Move without permission to rename base file, "
-                            << "source:" << movePerms.sourceOk
-                            << ", target:" << movePerms.destinationOk
-                            << ", targetNew:" << movePerms.destinationNewOk;
+       finalize();
+       return;
+    }
 
-            // If we can create the destination, do that.
-            // Permission errors on the destination will be handled by checkPermissions later.
-            postProcessLocalNew();
-            finalize();
+    // Check local permission if we are allowed to put move the file here
+    // Technically we should use the permissions from the server, but we'll assume it is the same
+    auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
+    if (!movePerms.sourceOk || !movePerms.destinationOk) {
+        qCInfo(lcDisco) << "Move without permission to rename base file, "
+                        << "source:" << movePerms.sourceOk
+                        << ", target:" << movePerms.destinationOk
+                        << ", targetNew:" << movePerms.destinationNewOk;
 
-            // If the destination upload will work, we're fine with the source deletion.
-            // If the source deletion can't work, checkPermissions will error.
-            if (movePerms.destinationNewOk)
-                return;
+        // If we can create the destination, do that.
+        // Permission errors on the destination will be handled by checkPermissions later.
+        postProcessLocalNew();
+        finalize();
 
-            // Here we know the new location can't be uploaded: must prevent the source delete.
-            // Two cases: either the source item was already processed or not.
-            auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
-            if (wasDeletedOnClient.first) {
-                // More complicated. The REMOVE is canceled. Restore will happen next sync.
-                qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
-                _discoveryData->_statedb->deleteFileRecord(originalPath, true);
-                _discoveryData->_anotherSyncNeeded = true;
-            } else {
-                // Signal to future checkPermissions() to forbid the REMOVE and set to restore instead
-                qCInfo(lcDisco) << "Preventing future remove on source" << originalPath;
-                _discoveryData->_forbiddenDeletes[originalPath + '/'] = true;
-            }
+        // If the destination upload will work, we're fine with the source deletion.
+        // If the source deletion can't work, checkPermissions will error.
+        if (movePerms.destinationNewOk)
             return;
-        }
 
+        // Here we know the new location can't be uploaded: must prevent the source delete.
+        // Two cases: either the source item was already processed or not.
         auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
-
-        auto processRename = [item, originalPath, base, this](PathTuple &path) {
-            auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
-            _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
-            item->_renameTarget = path._target;
-            path._server = adjustedOriginalPath;
-            item->_file = path._server;
-            path._original = originalPath;
-            item->_originalFile = path._original;
-            item->_modtime = base._modtime;
-            item->_inode = base._inode;
-            item->_instruction = CSYNC_INSTRUCTION_RENAME;
-            item->_direction = SyncFileItem::Up;
-            item->_fileId = base._fileId;
-            item->_remotePerm = base._remotePerm;
-            item->_etag = base._etag;
-            item->_type = base._type;
-
-            // Discard any download/dehydrate tags on the base file.
-            // They could be preserved and honored in a follow-up sync,
-            // but it complicates handling a lot and will happen rarely.
-            if (item->_type == ItemTypeVirtualFileDownload)
-                item->_type = ItemTypeVirtualFile;
-            if (item->_type == ItemTypeVirtualFileDehydration)
-                item->_type = ItemTypeFile;
-
-            qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
-        };
         if (wasDeletedOnClient.first) {
-            recurseQueryServer = wasDeletedOnClient.second == base._etag ? ParentNotChanged : NormalQuery;
-            processRename(path);
+            // More complicated. The REMOVE is canceled. Restore will happen next sync.
+            qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
+            _discoveryData->_statedb->deleteFileRecord(originalPath, true);
+            _discoveryData->_anotherSyncNeeded = true;
         } else {
-            // We must query the server to know if the etag has not changed
-            _pendingAsyncJobs++;
-            QString serverOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
-            if (base.isVirtualFile() && isVfsWithSuffix())
-                chopVirtualFileSuffix(serverOriginalPath);
-            auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
-                if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
-                    qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
-                    // Can't be a rename, leave it as a new.
-                    postProcessLocalNew();
-                } else {
-                    // In case the deleted item was discovered in parallel
-                    _discoveryData->findAndCancelDeletedJob(originalPath);
-                    processRename(path);
-                    recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
-                }
-                processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
-                _pendingAsyncJobs--;
-                QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
-            });
-            job->start();
-            return;
+            // Signal to future checkPermissions() to forbid the REMOVE and set to restore instead
+            qCInfo(lcDisco) << "Preventing future remove on source" << originalPath;
+            _discoveryData->_forbiddenDeletes[originalPath + '/'] = true;
         }
+        return;
+    }
+
+    auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
+
+    auto processRename = [item, originalPath, base, this](PathTuple &path) {
+        auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
+        _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
+        item->_renameTarget = path._target;
+        path._server = adjustedOriginalPath;
+        item->_file = path._server;
+        path._original = originalPath;
+        item->_originalFile = path._original;
+        item->_modtime = base._modtime;
+        item->_inode = base._inode;
+        item->_instruction = CSYNC_INSTRUCTION_RENAME;
+        item->_direction = SyncFileItem::Up;
+        item->_fileId = base._fileId;
+        item->_remotePerm = base._remotePerm;
+        item->_etag = base._etag;
+        item->_type = base._type;
+
+        // Discard any download/dehydrate tags on the base file.
+        // They could be preserved and honored in a follow-up sync,
+        // but it complicates handling a lot and will happen rarely.
+        if (item->_type == ItemTypeVirtualFileDownload)
+            item->_type = ItemTypeVirtualFile;
+        if (item->_type == ItemTypeVirtualFileDehydration)
+            item->_type = ItemTypeFile;
+
+        qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
+    };
+    if (wasDeletedOnClient.first) {
+        recurseQueryServer = wasDeletedOnClient.second == base._etag ? ParentNotChanged : NormalQuery;
+        processRename(path);
+    } else {
+        // We must query the server to know if the etag has not changed
+        _pendingAsyncJobs++;
+        QString serverOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
+        if (base.isVirtualFile() && isVfsWithSuffix())
+            chopVirtualFileSuffix(serverOriginalPath);
+        auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
+        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
+            if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
+                qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
+                // Can't be a rename, leave it as a new.
+                postProcessLocalNew();
+            } else {
+                // In case the deleted item was discovered in parallel
+                _discoveryData->findAndCancelDeletedJob(originalPath);
+                processRename(path);
+                recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
+            }
+            processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
+            _pendingAsyncJobs--;
+            QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
+        });
+        job->start();
+        return;
     }
 
     finalize();
