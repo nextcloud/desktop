@@ -14,7 +14,7 @@ class QNetworkReply;
 class QAuthenticator;
 
 namespace QKeychain {
-class Job;
+    class Job;
 }
 
 namespace OCC {
@@ -32,11 +32,11 @@ public:
 
     explicit WebFlowCredentials();
     WebFlowCredentials(
-        const QString &user,
-        const QString &password,
-        const QSslCertificate &certificate = QSslCertificate(),
-        const QSslKey &key = QSslKey(),
-        const QList<QSslCertificate> &caCertificates = QList<QSslCertificate>());
+            const QString &user,
+            const QString &password,
+            const QSslCertificate &certificate = QSslCertificate(),
+            const QSslKey &key = QSslKey(),
+            const QList<QSslCertificate> &caCertificates = QList<QSslCertificate>());
 
     QString authType() const override;
     QString user() const override;

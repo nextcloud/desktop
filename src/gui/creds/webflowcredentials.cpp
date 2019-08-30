@@ -160,7 +160,7 @@ void WebFlowCredentials::askFromUser() {
     }
 
     QString msg = tr("You have been logged out of %1 as user %2. Please login again")
-                      .arg(_account->displayName(), _user);
+            .arg(_account->displayName(), _user);
     _askDialog->setInfo(msg);
 
     _askDialog->show();
@@ -177,7 +177,7 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
         qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
 
         QString msg = tr("Please login with the user: %1")
-                          .arg(_user);
+                .arg(_user);
         _askDialog->setError(msg);
 
         if (!_askDialog->isUsingFlow2()) {
@@ -439,7 +439,7 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incomingJo
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
     Q_ASSERT(!incomingJob->insecureFallback()); // If insecureFallback is set, the next test would be pointless
     if (_retryOnKeyChainError && (incomingJob->error() == QKeychain::NoBackendAvailable
-        || incomingJob->error() == QKeychain::OtherError)) {
+            || incomingJob->error() == QKeychain::OtherError)) {
         // Could be that the backend was not yet available. Wait some extra seconds.
         // (Issues #4274 and #6522)
         // (For kwallet, the error is OtherError instead of NoBackendAvailable, maybe a bug in QtKeychain)
@@ -587,20 +587,19 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
     if (_keychainMigration && _ready) {
         _keychainMigration = false;
         persist();
-        deleteKeychainEntries(true);
+        deleteKeychainEntries(true); // true: delete old entries
         qCInfo(lcWebFlowCredentials) << "Migrated old keychain entries";
     }
 }
 
-void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries)
-{
+void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
     auto startDeleteJob = [this, oldKeychainEntries](QString user) {
         DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
         addSettingsToJob(_account, job);
         job->setInsecureFallback(true);
         job->setKey(keychainKey(_account->url().toString(),
-            user,
-            oldKeychainEntries ? QString() : _account->id()));
+                                user,
+                                oldKeychainEntries ? QString() : _account->id()));
         job->start();
     };
 
