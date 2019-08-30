@@ -491,6 +491,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
 
     connect(_rootJob.data(), &PropagatorJob::finished, this, &OwncloudPropagator::emitFinished);
 
+    _jobScheduled = false;
     scheduleNextJob();
 }
 
@@ -591,6 +592,8 @@ QString OwncloudPropagator::getFilePath(const QString &tmp_file_name) const
 
 void OwncloudPropagator::scheduleNextJob()
 {
+    if (_jobScheduled) return; // don't schedule more than 1
+    _jobScheduled = true;
     QTimer::singleShot(0, this, &OwncloudPropagator::scheduleNextJobImpl);
 }
 
@@ -600,6 +603,8 @@ void OwncloudPropagator::scheduleNextJobImpl()
     // need to check how to avoid this.
     // Down-scaling on slow networks? https://github.com/owncloud/client/issues/3382
     // Making sure we do up/down at same time? https://github.com/owncloud/client/issues/1633
+
+    _jobScheduled = false;
 
     if (_activeJobList.count() < maximumActiveTransferJob()) {
         if (_rootJob->scheduleSelfOrChild()) {
