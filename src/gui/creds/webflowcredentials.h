@@ -4,6 +4,7 @@
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QNetworkRequest>
+#include <QQueue>
 
 #include "creds/abstractcredentials.h"
 
@@ -13,7 +14,7 @@ class QNetworkReply;
 class QAuthenticator;
 
 namespace QKeychain {
-    class Job;
+class Job;
 }
 
 namespace OCC {
@@ -31,11 +32,11 @@ public:
 
     explicit WebFlowCredentials();
     WebFlowCredentials(
-            const QString &user,
-            const QString &password,
-            const QSslCertificate &certificate = QSslCertificate(),
-            const QSslKey &key = QSslKey(),
-            const QList<QSslCertificate> &caCertificates = QList<QSslCertificate>());
+        const QString &user,
+        const QString &password,
+        const QSslCertificate &certificate = QSslCertificate(),
+        const QSslKey &key = QSslKey(),
+        const QList<QSslCertificate> &caCertificates = QList<QSslCertificate>());
 
     QString authType() const override;
     QString user() const override;
@@ -68,8 +69,27 @@ private slots:
 
     void slotWriteClientCertPEMJobDone();
     void slotWriteClientKeyPEMJobDone();
-    void slotWriteClientCaCertsPEMJobDone();
+    void slotWriteClientCaCertsPEMJobDone(QKeychain::Job *incomingJob);
     void slotWriteJobDone(QKeychain::Job *);
+
+private:
+    /*
+     * Windows: Workaround for CredWriteW used by QtKeychain
+     *
+     *          Saving all client CA's within one credential may result in:
+     *          Error: "Credential size exceeds maximum size of 2560"
+     */
+    void readSingleClientCaCertPEM();
+    void writeSingleClientCaCertPEM();
+
+    /*
+     * Since we're limited by Windows limits we just create our own
+     * limit to avoid evil things happening by endless recursion
+     *
+     * Better than storing the count and relying on maybe-hacked values
+     */
+    static constexpr int _clientSslCaCertificatesMaxCount = 10;
+    QQueue<QSslCertificate> _clientSslCaCertificatesWriteQueue;
 
 protected:
     /** Reads data from keychain locations
@@ -83,7 +103,7 @@ protected:
     void fetchFromKeychainHelper();
 
     /// Wipes legacy keychain locations
-    void deleteOldKeychainEntries();
+    void deleteKeychainEntries(bool oldKeychainEntries = false);
 
     QString fetchUser();
 
