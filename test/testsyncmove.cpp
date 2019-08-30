@@ -816,6 +816,23 @@ private slots:
         QCOMPARE(counter.nPUT, 0);
         QCOMPARE(counter.nMOVE, 2);
     }
+
+    // Test that deletes don't run before renames
+    void testRenameParallelism()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/file");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.localModifier().mkdir("B");
+        fakeFolder.localModifier().rename("A/file", "B/file");
+        fakeFolder.localModifier().remove("A");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)

@@ -1406,20 +1406,26 @@ namespace OCC {
 inline void addFiles(QStringList &dest, const FileInfo &fi)
 {
     if (fi.isDir) {
-        dest += QString("%1 - dir").arg(fi.name);
+        dest += QString("%1 - dir").arg(fi.path());
         foreach (const FileInfo &fi, fi.children)
             addFiles(dest, fi);
     } else {
-        dest += QString("%1 - %2 %3-bytes").arg(fi.name).arg(fi.size).arg(fi.contentChar);
+        dest += QString("%1 - %2 %3-bytes").arg(fi.path()).arg(fi.size).arg(fi.contentChar);
     }
 }
 
-inline char *toString(const FileInfo &fi)
+inline QString toStringNoElide(const FileInfo &fi)
 {
     QStringList files;
     foreach (const FileInfo &fi, fi.children)
         addFiles(files, fi);
-    return QTest::toString(QString("FileInfo with %1 files(%2)").arg(files.size()).arg(files.join(", ")));
+    files.sort();
+    return QString("FileInfo with %1 files(\n\t%2\n)").arg(files.size()).arg(files.join("\n\t"));
+}
+
+inline char *toString(const FileInfo &fi)
+{
+    return QTest::toString(toStringNoElide(fi));
 }
 
 inline void addFilesDbData(QStringList &dest, const FileInfo &fi)

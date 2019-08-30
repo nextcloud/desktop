@@ -243,10 +243,13 @@ private slots:
         //2.
         // old removed
         QVERIFY(!currentLocalState.find("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_"));
+        // but still on the server: the rename causing an error meant the deletes didn't execute
+        QVERIFY(fakeFolder.currentRemoteState().find("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_"));
         // new still there
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/moved_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
         //but not on server
         fakeFolder.localModifier().remove("readonlyDirectory_PERM_M_/moved_PERM_CK_");
+        fakeFolder.remoteModifier().remove("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_");
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
