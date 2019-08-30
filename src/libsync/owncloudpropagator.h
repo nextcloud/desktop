@@ -567,6 +567,7 @@ private:
     AccountPtr _account;
     QScopedPointer<PropagateDirectory> _rootJob;
     SyncOptions _syncOptions;
+    bool _jobScheduled = false;
 };
 
 
