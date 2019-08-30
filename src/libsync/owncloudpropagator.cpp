@@ -373,7 +373,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
      * In order to do that we loop over the items. (which are sorted by destination)
      * When we enter a directory, we can create the directory job and push it on the stack. */
 
-    _rootJob.reset(new PropagateDirectory(this));
+    _rootJob.reset(new PropagateRootDirectory(this));
     QStack<QPair<QString /* directory name */, PropagateDirectory * /* job */>> directories;
     directories.push(qMakePair(QString(), _rootJob.data()));
     QVector<PropagatorJob *> directoriesToRemove;
@@ -482,7 +482,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
     }
 
     foreach (PropagatorJob *it, directoriesToRemove) {
-        _rootJob->appendJob(it);
+        _rootJob->_dirDeletionJobs.appendJob(it);
     }
 
     connect(_rootJob.data(), &PropagatorJob::finished, this, &OwncloudPropagator::emitFinished);
@@ -989,6 +989,91 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             }
         }
     }
+    _state = Finished;
+    emit finished(status);
+}
+
+PropagateRootDirectory::PropagateRootDirectory(OwncloudPropagator *propagator)
+    : PropagateDirectory(propagator, SyncFileItemPtr(new SyncFileItem))
+    , _dirDeletionJobs(propagator)
+{
+    connect(&_dirDeletionJobs, &PropagatorJob::finished, this, &PropagateRootDirectory::slotDirDeletionJobsFinished);
+}
+
+PropagatorJob::JobParallelism PropagateRootDirectory::parallelism()
+{
+    // the root directory parallelism isn't important
+    return WaitForFinished;
+}
+
+void PropagateRootDirectory::abort(PropagatorJob::AbortType abortType)
+{
+    if (_firstJob)
+        // Force first job to abort synchronously
+        // even if caller allows async abort (asyncAbort)
+        _firstJob->abort(AbortType::Synchronous);
+
+    if (abortType == AbortType::Asynchronous) {
+        struct AbortsFinished {
+            bool subJobsFinished = false;
+            bool dirDeletionFinished = false;
+        };
+        auto abortStatus = QSharedPointer<AbortsFinished>(new AbortsFinished);
+
+        connect(&_subJobs, &PropagatorCompositeJob::abortFinished, this, [this, abortStatus]() {
+            abortStatus->subJobsFinished = true;
+            if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished)
+                emit abortFinished();
+        });
+        connect(&_dirDeletionJobs, &PropagatorCompositeJob::abortFinished, this, [this, abortStatus]() {
+            abortStatus->dirDeletionFinished = true;
+            if (abortStatus->subJobsFinished && abortStatus->dirDeletionFinished)
+                emit abortFinished();
+        });
+    }
+    _subJobs.abort(abortType);
+    _dirDeletionJobs.abort(abortType);
+}
+
+qint64 PropagateRootDirectory::committedDiskSpace() const
+{
+    return _subJobs.committedDiskSpace() + _dirDeletionJobs.committedDiskSpace();
+}
+
+bool PropagateRootDirectory::scheduleSelfOrChild()
+{
+    if (_state == Finished)
+        return false;
+
+    if (PropagateDirectory::scheduleSelfOrChild())
+        return true;
+
+    // Important: Finish _subJobs before scheduling any deletes.
+    if (_subJobs._state != Finished)
+        return false;
+
+    return _dirDeletionJobs.scheduleSelfOrChild();
+}
+
+void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
+{
+    if (status != SyncFileItem::Success
+        && status != SyncFileItem::Restoration
+        && status != SyncFileItem::Conflict) {
+        if (_state != Finished) {
+            // Synchronously abort
+            abort(AbortType::Synchronous);
+            _state = Finished;
+            emit finished(status);
+        }
+        return;
+    }
+
+    propagator()->scheduleNextJob();
+}
+
+void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status status)
+{
     _state = Finished;
     emit finished(status);
 }
