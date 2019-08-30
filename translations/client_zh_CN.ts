@@ -2173,7 +2173,7 @@ It is not advisable to use it.</source>
         <translation>无效的链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="411"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="412"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>无法载入证书。是不是密码错了？</translation>
     </message>
@@ -3537,12 +3537,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="129"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation>您已经以用户 %2 的身份从 %1 中注销，请重新登录</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="146"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="179"/>
         <source>Please login with the user: %1</source>
         <translation>请以 %1 用户身份登陆</translation>
     </message>

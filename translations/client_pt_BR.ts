@@ -120,22 +120,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formato</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, mude para o seu navegador para continuar.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao conectar. Tente novamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
         <source>Re-open Browser (or right-click to copy link)</source>
-        <translation type="unfinished"/>
+        <translation>Reabra o Navegador (ou clique com o botão direito do mouse para copiar o link)</translation>
     </message>
 </context>
 <context>
@@ -143,22 +143,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formato</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="48"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, mude para o seu navegador para continuar.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="58"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao conectar. Tente novamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
         <source>Re-open Browser (or right-click to copy link)</source>
-        <translation type="unfinished"/>
+        <translation>Reabra o Navegador (ou clique com o botão direito do mouse para copiar o link)</translation>
     </message>
 </context>
 <context>
@@ -784,25 +784,25 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="72"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="141"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Erro retornado do servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="75"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="144"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao acessar o terminal &apos;token&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="78"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="147"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível analisar o JSON retornado do servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="81"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="150"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>A resposta do servidor não continha todos os campos esperados</translation>
     </message>
 </context>
 <context>
@@ -810,22 +810,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="46"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Conectar ao %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="47"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation type="unfinished"/>
+        <translation>Faça login no seu navegador (Login Flow v2)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="57"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link para a área de transferência</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="96"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível abrir o Navegador, copie o link para o seu Navegador.</translation>
     </message>
 </context>
 <context>
@@ -833,12 +833,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="61"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link para a área de transferência</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="80"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível abrir o Navegador, copie o link para o seu Navegador.</translation>
     </message>
 </context>
 <context>
@@ -2175,7 +2175,7 @@ Não é aconselhável usá-la.</translation>
         <translation>URL inválida</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="411"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="412"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Não foi possível carregar o certificado. Senha errada?</translation>
     </message>
@@ -3539,12 +3539,12 @@ Não é aconselhável usá-la.</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="129"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation>Você foi deslogado de %1 como usuário %2. Logue-se novamente</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="146"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="179"/>
         <source>Please login with the user: %1</source>
         <translation>Por favor, faça o login com o usuário: %1</translation>
     </message>
