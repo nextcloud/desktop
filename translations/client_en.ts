@@ -740,7 +740,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1040"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1130"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2629,7 +2629,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="991"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="996"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"></translation>
     </message>
