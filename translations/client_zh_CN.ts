@@ -120,7 +120,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>表单</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
         <source>Re-open Browser (or right-click to copy link)</source>
-        <translation type="unfinished"/>
+        <translation>重新打开浏览器（或右击以复制链接）</translation>
     </message>
 </context>
 <context>
@@ -143,22 +143,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>表单</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="48"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>请切换到您的浏览器以继续。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="58"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>连接时发生错误。请重试。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
         <source>Re-open Browser (or right-click to copy link)</source>
-        <translation type="unfinished"/>
+        <translation>重新打开浏览器（或右击以复制链接）</translation>
     </message>
 </context>
 <context>
@@ -784,7 +784,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="72"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="141"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>服务器返回错误：&lt;em&gt;%i&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="75"/>
@@ -802,7 +802,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="81"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="150"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>从服务器返回的应答没有包含所有预期的字段</translation>
     </message>
 </context>
 <context>
@@ -815,12 +815,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="47"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation type="unfinished"/>
+        <translation>在您的浏览器中登录（Login Flow v2）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="57"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>复制链接到剪贴板</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="96"/>
@@ -2173,7 +2173,7 @@ It is not advisable to use it.</source>
         <translation>无效的链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="411"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="412"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>无法载入证书。是不是密码错了？</translation>
     </message>
@@ -3537,12 +3537,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="129"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation>您已经以用户 %2 的身份从 %1 中注销，请重新登录</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="146"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="179"/>
         <source>Please login with the user: %1</source>
         <translation>请以 %1 用户身份登陆</translation>
     </message>

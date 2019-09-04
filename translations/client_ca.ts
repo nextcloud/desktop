@@ -120,22 +120,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulari</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Si us plau, canvieu al navegador per continuar.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Hi ha hagut un error mentre es connectava. Si us plau, torneu-ho a provar.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
         <source>Re-open Browser (or right-click to copy link)</source>
-        <translation type="unfinished"/>
+        <translation>Torneu a obrir el navegador (o feu clic amb el botó dret per copiar l&apos;enllaç)</translation>
     </message>
 </context>
 <context>
@@ -143,22 +143,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulari</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="48"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Si us plau, canvieu al vostre navegador per continuar.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="58"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Hi ha hagut un error mentre es connectava. Si us plau, torneu-ho a provar.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
         <source>Re-open Browser (or right-click to copy link)</source>
-        <translation type="unfinished"/>
+        <translation>Torneu a obrir el navegador (o feu clic amb el botó dret per copiar l&apos;enllaç)</translation>
     </message>
 </context>
 <context>
@@ -784,25 +784,25 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="72"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="141"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït un error des del servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="75"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="144"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït un error en accedir al punt final del &quot;testimoni&quot;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="78"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="147"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut analitzar el JSON retornat des del servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="81"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="150"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>La resposta del servidor no contenia tots els camps esperats</translation>
     </message>
 </context>
 <context>
@@ -810,22 +810,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="46"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Connecta a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="47"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation type="unfinished"/>
+        <translation>Inicieu la sessió al vostre navegador (Flux d&apos;entrada v2)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="57"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copia l&apos;enllaç al porta-retalls</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="96"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>No es pot obrir el navegador; si us plau, copieu l&apos;enllaç al navegador.</translation>
     </message>
 </context>
 <context>
@@ -833,12 +833,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="61"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copia l&apos;enllaç al porta-retalls</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="80"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>No es pot obrir el navegador; si us plau, copieu l&apos;enllaç al navegador.</translation>
     </message>
 </context>
 <context>
@@ -2177,7 +2177,7 @@ No és aconsellable fer-la servir.</translation>
         <translation>L&apos;URL no és vàlid</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="411"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="412"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>No s&apos;ha pogut carregar el certificat. Potser la contrasenya és incorrecta?</translation>
     </message>
@@ -3541,12 +3541,12 @@ No és aconsellable fer-la servir.</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="129"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation>Heu tancat la sessió de %1 com a usuari %2. Si us plau, torneu a iniciar la sessió</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="146"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="179"/>
         <source>Please login with the user: %1</source>
         <translation>Si us plau, inicieu la sessió amb l’usuari: %1</translation>
     </message>

@@ -50,37 +50,37 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>Åbn websted</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Ændret for nylig</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pause synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Hjælp</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Indstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Log ud</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Luk synkroniserings-klient</translation>
     </message>
 </context>
 <context>
@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Flytning af filer til skraldespand er ikke implementeret på denne platform</translation>
     </message>
 </context>
 <context>
@@ -120,22 +120,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Venligst skift til din browser for at fortsætte</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Der opstod en fejl under forsøget på at oprette forbindelse. Prøv venligst igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
         <source>Re-open Browser (or right-click to copy link)</source>
-        <translation type="unfinished"/>
+        <translation>Åben browser igen (eller højreklik for at kopiere link)</translation>
     </message>
 </context>
 <context>
@@ -143,22 +143,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="48"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Venligst skift til din browser for at fortsætte</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="58"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Der opstod en fejl under forsøget på at oprette forbindelse. Prøv venligst igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
         <source>Re-open Browser (or right-click to copy link)</source>
-        <translation type="unfinished"/>
+        <translation>Åben browser igen (eller højreklik for at kopiere link)</translation>
     </message>
 </context>
 <context>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation type="unfinished"/>
+        <translation>Vælg en lokal mappe på din computer der ønskes synkroniseret</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -217,17 +217,17 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Forbindelsen udløb</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="251"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation type="unfinished"/>
+        <translation>Ukendt fejl: netværkets svar blev slettet</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Serveren svarede &quot;%1 %2&quot; to &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -235,12 +235,12 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="353"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>End to end krypterings huskeregel</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>For at beskytte din kryptografiske identitet krypterer vi den vha. en huskeregel med 12 ordbogs opslag. Venligst noter dem ned og opbevar sikkert. De skal bruges for at tilføje andre enheder til din konto (fx mobil eller bærbar).</translation>
     </message>
 </context>
 <context>
@@ -248,7 +248,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="190"/>
@@ -258,12 +258,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="211"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>Lagerplads: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Fravalgte mapper vil blive &lt;b&gt;fjernet&lt;/b&gt; fra dit lokale filsystem og bliver ikke længere synkroniseret til denne computer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="77"/>
@@ -320,12 +320,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="236"/>
         <source>This account supports end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Denne konto supporterer end-to-end kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Slå kryptering til</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
@@ -365,7 +365,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="693"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kunne ikke oprette lokal mappe &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="746"/>
@@ -385,12 +385,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="836"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering pågår.&lt;br/&gt;Ønsker du at afslutte den?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="925"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 i brug</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="952"/>
@@ -400,7 +400,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="958"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Server version %1 er gammel og usupporteret! Fortsæt på egen risiko.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
@@ -410,12 +410,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="962"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Serveren %1 er midlertidig utilgængelig.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="964"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Serveren %1 er i vedligeholdelsestilstand.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="966"/>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="982"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Ingen forbindelse til %1 hos %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
@@ -445,27 +445,27 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1110"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Der er mapper som ikke blev synkroniseret fordi de er for store:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1112"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Der er mapper som ikke blev synkroniseret fordi de er eksterne lagre:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1113"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Der er mapper som ikke blev synkroniseret fordi de er for store eller eksterne lagre:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1159"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Bekræft sletning af konto</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1160"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ønsker du virkelig at fjerne forbindelse til kontoen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt;Dette sletter &lt;b&gt;ikke&lt;/b&gt;nogen filer.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1166"/>
@@ -497,12 +497,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="747"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ønsker du virkelig at stoppe synkronisering af mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt;Dette sletter &lt;b&gt;ikke&lt;/b&gt;nogen filer.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="912"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) af %2 i brug. Nogle mapper, inklusiv netværksdiske eller delte mapper, har muligvis andre begrænsninger.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="913"/>
@@ -512,12 +512,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="922"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>Der er i øjeblikket ingen informationer om brug af lager tilgængelig.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="988"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Ingen %1 forbindelse konfigureret.</translation>
     </message>
 </context>
 <context>
@@ -530,7 +530,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="122"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Frakoblet</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="124"/>
@@ -560,7 +560,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Forespørger om brugeroplysninger</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="136"/>
@@ -621,12 +621,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="223"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Prøv fejlede alle fejlede uploads igen</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="338"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Konto %1 har ikke nogen aktiviteter slået til.</translation>
     </message>
 </context>
 <context>
@@ -634,17 +634,17 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>SSL klient certifikat autentifikation</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>Denne server kræver sandsynligvis et SSL klient certifikat.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Certifikat &amp; nøgle (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -672,7 +672,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="192"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Adgang til konfigurationsfilen fejlede</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="193"/>
@@ -2154,7 +2154,7 @@ It is not advisable to use it.</source>
         <translation>Ugyldig URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="411"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="412"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation type="unfinished"/>
     </message>
@@ -3516,12 +3516,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="129"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="146"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="179"/>
         <source>Please login with the user: %1</source>
         <translation type="unfinished"/>
     </message>
