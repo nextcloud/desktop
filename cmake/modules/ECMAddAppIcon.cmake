@@ -167,18 +167,17 @@ function(ecm_add_app_icon appsources)
     endif()
 
 
-    set(windows_icons_classic ${icons_at_16px}
-                              ${icons_at_24px}
-                              ${icons_at_32px}
-                              ${icons_at_48px}
-                              ${icons_at_64px}
-                              ${icons_at_128px})
-    set(windows_icons_modern  ${windows_icons_classic}
-                              ${icons_at_256px}
-                              ${icons_at_512px}
-                              ${icons_at_1024px})
+    set(windows_icons   ${icons_at_16px}
+                        ${icons_at_24px}
+                        ${icons_at_32px}
+                        ${icons_at_48px}
+                        ${icons_at_64px}
+                        ${icons_at_128px}
+                        ${icons_at_256px}
+                        ${icons_at_512px}
+                        ${icons_at_1024px})
 
-    if (NOT (windows_icons_modern OR windows_icons_classic))
+    if (NOT (windows_icons))
         message(AUTHOR_WARNING "No icons suitable for use on Windows provided")
     endif()
 
@@ -189,7 +188,7 @@ function(ecm_add_app_icon appsources)
     endif()
     set (_outfilename "${CMAKE_CURRENT_BINARY_DIR}/${_outfilebasename}")
 
-    if (WIN32 AND (windows_icons_modern OR windows_icons_classic))
+    if (WIN32 AND windows_icons)
         set(saved_CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}")
         set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_FIND_MODULE_DIR})
         find_package(Png2Ico)
@@ -247,32 +246,37 @@ function(ecm_add_app_icon appsources)
             set(${appsources} "${${appsources}};${_outfilename}.rc" PARENT_SCOPE)
 
         # standard png2ico has no rcfile argument
-        elseif(Png2Ico_FOUND AND NOT Png2Ico_HAS_RCFILE_ARGUMENT AND windows_icons_classic)
+        # NOTE: We generally use https://github.com/hiiamok/png2ImageMagickICO
+        # or similar on windows, which is why we provide resolutions >= 256px here.
+        # Standard png2ico will fail with this.
+        elseif(Png2Ico_FOUND AND NOT Png2Ico_HAS_RCFILE_ARGUMENT AND windows_icons)
             set(png2ico_args)
             list(APPEND png2ico_args "${_outfilename}.ico")
-            list(APPEND png2ico_args "${windows_icons_classic}")
+            list(APPEND png2ico_args "${windows_icons}")
+            create_windows_icon_and_rc(Png2Ico::Png2Ico "${png2ico_args}" "${windows_icons}")
 
-            create_windows_icon_and_rc(Png2Ico::Png2Ico "${png2ico_args}" "${windows_icons_classic}")
             set(${appsources} "${${appsources}};${_outfilename}.rc" PARENT_SCOPE)
 
         # png2ico from kdewin provides rcfile argument
-        elseif(Png2Ico_FOUND AND windows_icons_classic)
+        elseif(Png2Ico_FOUND AND windows_icons)
             add_custom_command(
                   OUTPUT "${_outfilename}.rc" "${_outfilename}.ico"
                   COMMAND Png2Ico::Png2Ico
                   ARGS
                       --rcfile "${_outfilename}.rc"
                       "${_outfilename}.ico"
-                      ${windows_icons_classic}
-                  DEPENDS ${windows_icons_classic}
+                      ${windows_icons}
+                  DEPENDS ${windows_icons}
                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
               )
 
             set(${appsources} "${${appsources}};${_outfilename}.rc" PARENT_SCOPE)
+
         # else none of the supported tools was found
         else()
             message(WARNING "Unable to find the png2ico or icotool utilities or icons in matching sizes - application will not have an application icon!")
         endif()
+
     elseif (APPLE AND (mac_icons OR mac_sidebar_icons))
         # first generate .iconset directory structure, then convert to .icns format using the Mac OS X "iconutil" utility,
         # to create retina compatible icon, you need png source files in pixel resolution 16x16, 32x32, 64x64, 128x128,
