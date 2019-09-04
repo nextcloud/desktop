@@ -43,6 +43,8 @@ echo "* ZLIB_LIBRARY=%ZLIB_LIBRARY%"
 echo "* Build date %BUILD_DATE%"
 echo "* VERSION_SUFFIX %VERSION_SUFFIX%"
 echo "* TAG %TAG%"
+echo "* PULL_DESKTOP %PULL_DESKTOP%"
+echo "* CHECKOUT_DESKTOP %CHECKOUT_DESKTOP%"
 
 echo "* MY_REPO=%MY_REPO%"
 echo "* MY_BUILD_PATH=%MY_BUILD_PATH%"
@@ -107,12 +109,16 @@ Rem ****************************************************************************
 rem Reference: https://ss64.com/nt/setlocal.html
 rem Reference: https://ss64.com/nt/start.html
 
+if "%PULL_DESKTOP%" == "1" (
 echo "* git pull at %MY_REPO%/."
 start "git pull" /D "%MY_REPO%/" /B /wait git pull --tags
+)
 if %ERRORLEVEL% neq 0 goto onError
 
+if "%CHECKOUT_DESKTOP%" == "1" (
 echo "* git checkout %TAG% at %MY_REPO%/."
 start "git checkout %TAG%" /D "%MY_REPO%/" /B /wait git checkout %TAG%
+)
 if %ERRORLEVEL% neq 0 goto onError
 
 echo "* save git HEAD commit hash from repo %MY_REPO%/."

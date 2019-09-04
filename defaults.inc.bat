@@ -66,6 +66,20 @@ Rem You may query the available tags with "git tag" within ./desktop
 if "%TAG_DESKTOP%" == ""                    set TAG_DESKTOP=master
 
 Rem ************************************************************************************************************************************************************************************
+
+Rem Git pull defaults
+if "%PULL_QTKEYCHAIN%" == ""                set PULL_QTKEYCHAIN=1
+if "%PULL_ZLIB%" == ""                      set PULL_ZLIB=1
+
+if "%PULL_DESKTOP%" == ""                   set PULL_DESKTOP=1
+
+Rem Git checkout defaults
+if "%CHECKOUT_QTKEYCHAIN%" == ""            set CHECKOUT_QTKEYCHAIN=1
+if "%CHECKOUT_ZLIB%" == ""                  set CHECKOUT_ZLIB=1
+
+if "%CHECKOUT_DESKTOP%" == ""               set CHECKOUT_DESKTOP=1
+
+Rem ************************************************************************************************************************************************************************************
 Rem Installer Options: 1 = build (default), 0 = don't build
 if "%BUILD_INSTALLER%" == ""                set BUILD_INSTALLER=1
 

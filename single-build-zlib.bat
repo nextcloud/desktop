@@ -25,6 +25,8 @@ echo "* CMAKE_EXTRA_FLAGS_ZLIB=%CMAKE_EXTRA_FLAGS_ZLIB%"
 echo "* PROJECT_PATH=%PROJECT_PATH%"
 
 echo "* TAG %TAG%"
+echo "* PULL_ZLIB %PULL_ZLIB%"
+echo "* CHECKOUT_ZLIB %CHECKOUT_ZLIB%"
 
 echo "* MY_REPO=%MY_REPO%"
 echo "* MY_BUILD_PATH=%MY_BUILD_PATH%"
@@ -72,12 +74,16 @@ Rem ****************************************************************************
 rem Reference: https://ss64.com/nt/setlocal.html
 rem Reference: https://ss64.com/nt/start.html
 
-echo "* git pull at %MY_REPO%/."
-start "git pull" /D "%MY_REPO%/" /B /wait git pull --tags
+if "%PULL_ZLIB%" == "1" (
+    echo "* git pull at %MY_REPO%/."
+    start "git pull" /D "%MY_REPO%/" /B /wait git pull --tags
+)
 if %ERRORLEVEL% neq 0 goto onError
 
-echo "* git checkout %TAG% at %MY_REPO%/."
-start "git checkout %TAG%" /D "%MY_REPO%/" /B /wait git checkout %TAG%
+if "%CHECKOUT_ZLIB%" == "1" (
+    echo "* git checkout %TAG% at %MY_REPO%/."
+    start "git checkout %TAG%" /D "%MY_REPO%/" /B /wait git checkout %TAG%
+)
 if %ERRORLEVEL% neq 0 goto onError
 
 echo "* save git HEAD commit hash from repo %MY_REPO%/."
