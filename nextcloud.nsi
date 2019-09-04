@@ -75,7 +75,7 @@ Var NoAutomaticUpdates
 ; Initial installer setup and definitions.
 ;-----------------------------------------------------------------------------
 
-!define INSTALLER_FILENAME "${APPLICATION_NAME}-${VERSION}-${MIRALL_VERSION_SUFFIX}-${BUILD_TIME_FILENAME}-${BUILD_TYPE}.exe"
+!define INSTALLER_FILENAME "${APPLICATION_SHORTNAME}-${VERSION}-${MIRALL_VERSION_SUFFIX}-${BUILD_TIME_FILENAME}-${BUILD_TYPE}.exe"
 Name "Nextcloud"
 BrandingText "${APPLICATION_NAME} ${VERSION} - ${BUILD_TIME}"
 ;IS_INNER_SIGN_UNINSTALLER;OutFile "${PROJECT_PATH}\client-building\daily\${INSTALLER_FILENAME}"

@@ -18,6 +18,14 @@ Rem IMPORTANT: Keep an eye on all the slashes and backslashes in the paths.
 Rem            If you intend to modify or specify them outside, keep the scheme!
 
 Rem ************************************************************************************************************************************************************************************
+Rem Branding options
+
+if "%APP_NAME%" == ""                       set APP_NAME=Nextcloud
+if "%APP_NAME_SANITIZED%" == ""             set APP_NAME_SANITIZED=Nextcloud
+
+if "%USE_BRANDING%" == ""                   set USE_BRANDING=0
+
+Rem ************************************************************************************************************************************************************************************
 Rem Build environment
 
 rem Comma separated list of build targets (default: Win64, Win32)
@@ -78,6 +86,17 @@ if "%CHECKOUT_QTKEYCHAIN%" == ""            set CHECKOUT_QTKEYCHAIN=1
 if "%CHECKOUT_ZLIB%" == ""                  set CHECKOUT_ZLIB=1
 
 if "%CHECKOUT_DESKTOP%" == ""               set CHECKOUT_DESKTOP=1
+
+Rem Banding overrides
+if "%USE_BRANDING%" == "1" (
+    set PULL_QTKEYCHAIN=0
+    set PULL_ZLIB=0
+    set PULL_DESKTOP=0
+
+    set CHECKOUT_QTKEYCHAIN=0
+    set CHECKOUT_ZLIB=0
+    set CHECKOUT_DESKTOP=0
+)
 
 Rem ************************************************************************************************************************************************************************************
 Rem Installer Options: 1 = build (default), 0 = don't build
