@@ -3988,7 +3988,7 @@ Uporaba ni priporočljiva.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="451"/>
         <source>%n hours ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>pred %n uro</numerusform><numerusform>pred %n urama</numerusform><numerusform>pred %n urami</numerusform><numerusform>pred %n urami</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="458"/>
