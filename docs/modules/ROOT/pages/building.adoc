@@ -241,7 +241,7 @@ craft nsis
 craft --package owncloud-client
 ....
 
-Now you should have a file called: `owncloud-client-master-${COMMIT_HASH}-windows-${COMPILER}.exe` in `C:\CraftRoot\tmp`.
+Now you should have a file called: `owncloud-client-master-$\{COMMIT_HASH\}-windows-$\{COMPILER\}.exe` in `C:\CraftRoot\tmp`.
 
 [NOTE]
 ====
