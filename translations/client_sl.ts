@@ -4,22 +4,22 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Preverjanje sprememb v »%1«</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 od %2  (preostaja %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 od %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
@@ -45,7 +45,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="184"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
@@ -65,17 +65,17 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Pomoč</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavitve</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Odjava</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
@@ -86,14 +86,9 @@
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="../src/gui/mnemonicdialog.ui" line="23"/>
-        <source>Dialog</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="58"/>
         <source>Label</source>
-        <translation type="unfinished"/>
+        <translation>Oznaka</translation>
     </message>
 </context>
 <context>
@@ -164,11 +159,6 @@
 <context>
     <name>FolderWizardSourcePage</name>
     <message>
-        <location filename="../src/gui/folderwizardsourcepage.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
         <translation>Izberite krajevno mapo za usklajevanje.</translation>
@@ -181,11 +171,6 @@
 </context>
 <context>
     <name>FolderWizardTargetPage</name>
-    <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
@@ -245,11 +230,6 @@
 </context>
 <context>
     <name>OCC::AccountSettings</name>
-    <message>
-        <location filename="../src/gui/accountsettings.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="190"/>
         <source>...</source>
@@ -325,7 +305,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Omogoči šifriranje</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
@@ -335,7 +315,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="563"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Šifriraj</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="604"/>
@@ -573,17 +553,17 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="131"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="179"/>
         <source>More information</source>
-        <translation type="unfinished"/>
+        <translation>Več podrobnosti</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="180"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Sprejmi</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="181"/>
@@ -593,30 +573,20 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Odpri brskalnik</translation>
     </message>
 </context>
 <context>
     <name>OCC::ActivityWidget</name>
     <message>
-        <location filename="../src/gui/activitywidget.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.ui" line="84"/>
-        <source>TextLabel</source>
-        <translation>Besedilna oznaka</translation>
-    </message>
-    <message>
         <location filename="../src/gui/activitywidget.cpp" line="56"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Sprejmi</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="188"/>
         <source>Synced</source>
-        <translation type="unfinished"/>
+        <translation>Usklajeno</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="223"/>
@@ -1251,12 +1221,12 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
@@ -1429,14 +1399,9 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
 <context>
     <name>OCC::GeneralSettings</name>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Pravno obvestilo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1644,24 +1609,14 @@ Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če prepreču
 <context>
     <name>OCC::LegalNotice</name>
     <message>
-        <location filename="../src/gui/legalnotice.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/legalnotice.ui" line="36"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Zapri</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
@@ -1787,11 +1742,6 @@ Logs will be written to %1</source>
 </context>
 <context>
     <name>OCC::NetworkSettings</name>
-    <message>
-        <location filename="../src/gui/networksettings.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
@@ -2161,7 +2111,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="283"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Neveljaven naslov URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="412"/>
@@ -2762,7 +2712,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="123"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Ikona</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="104"/>
@@ -3141,11 +3091,6 @@ Uporaba ni priporočljiva.</translation>
 </context>
 <context>
     <name>OCC::SslErrorDialog</name>
-    <message>
-        <location filename="../src/gui/sslerrordialog.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
@@ -3776,23 +3721,6 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="20"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="100"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="205"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="235"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="294"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="421"/>
-        <source>TextLabel</source>
-        <translation>Besedilna oznaka</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Server</source>
         <translation>Strežnik</translation>
@@ -3834,11 +3762,6 @@ Uporaba ni priporočljiva.</translation>
         <translation>&amp;Krajevna mapa</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="285"/>
-        <source>pbSelectLocalFolder</source>
-        <translation>pbSelectLocalFolder</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
         <translation>&amp;Ohrani krajevno shranjene podatke</translation>
@@ -3857,11 +3780,6 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OwncloudHttpCredsPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
         <translation>&amp;Uporabniško ime</translation>
@@ -3874,11 +3792,6 @@ Uporaba ni priporočljiva.</translation>
 </context>
 <context>
     <name>OwncloudOAuthCredsPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
@@ -3897,17 +3810,6 @@ Uporaba ni priporočljiva.</translation>
 </context>
 <context>
     <name>OwncloudSetupPage</name>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="20"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="38"/>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="97"/>
-        <source>TextLabel</source>
-        <translation>Besedilna oznaka</translation>
-    </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
@@ -3942,25 +3844,9 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OwncloudWizardResultPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="14"/>
-        <source>Form</source>
-        <translation>Obrazec</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="20"/>
-        <source>TextLabel</source>
-        <translation>Besedilna oznaka</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
         <translation>Naveden račun je v celoti usklajen s krajevno mapo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="120"/>
-        <source>PushButton</source>
-        <translation>Potisni gumb</translation>
     </message>
 </context>
 <context>
@@ -4095,14 +3981,6 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>WebView</name>
-    <message>
-        <location filename="../src/gui/wizard/webview.ui" line="26"/>
-        <source>Form</source>
         <translation type="unfinished"/>
     </message>
 </context>
