@@ -207,7 +207,7 @@ if "%USE_CODE_SIGNING%" == "0" (
 ) else (
     echo "** Calling vcvars64.bat to add signtool to the PATH:"
     call "%VCINSTALLDIR%\Auxiliary\Build\vcvars64.bat"
-    if %ERRORLEVEL% neq 0 goto onError
+
     for %%i in (signtool.exe) do @set SIGNTOOL=%%~$PATH:i
 
     if "!SIGNTOOL!" == "" (
