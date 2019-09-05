@@ -25,6 +25,7 @@ echo "* SFTP_PATH=%SFTP_PATH%"
 echo "* SFTP_SERVER=%SFTP_SERVER%"
 echo "* SFTP_USER=%SFTP_USER%"
 echo "* UPLOAD_BUILD=%UPLOAD_BUILD%"
+echo "* UPLOAD_DELETE=%UPLOAD_DELETE%"
 
 echo "* PATH=%PATH%"
 
@@ -57,6 +58,12 @@ set SSH_KEYFILE=%USERPROFILE%\.ssh\id_rsa
 
 echo "* Upload installer."
 start "upload" /D "%PROJECT_PATH%" /B /wait scp -i "%SSH_KEYFILE%" "%PATHTOEXEFILE%" %SFTP_USER%@%SFTP_SERVER%:"%SFTP_PATH%"/"%EXEFILENAME%" > "%PROJECT_PATH%\last_daily_upload.log" 2>&1
+if %ERRORLEVEL% neq 0 goto onError
+
+if "%UPLOAD_DELETE%" == "1" (
+    echo "* Delete installer after successful upload."
+    start "rm installer" /D "%PROJECT_PATH%" /B /wait rm "%PATHTOEXEFILE%"
+)
 if %ERRORLEVEL% neq 0 goto onError
 
 Rem ******************************************************************************************
