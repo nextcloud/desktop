@@ -29,7 +29,7 @@ namespace {
     const char userC[] = "user";
     const char clientCertificatePEMC[] = "_clientCertificatePEM";
     const char clientKeyPEMC[] = "_clientKeyPEM";
-    const char clientCaCertificatesPEMC[] = "_clientCaCertificatesPEM";
+    const char clientCaCertificatePEMC[] = "_clientCaCertificatePEM";
 } // ns
 
 class WebFlowCredentialsAccessManager : public AccessManager
@@ -253,30 +253,71 @@ void WebFlowCredentials::slotWriteClientCertPEMJobDone()
     }
 }
 
-void WebFlowCredentials::slotWriteClientKeyPEMJobDone()
+void WebFlowCredentials::writeSingleClientCaCertPEM()
 {
-    // write ca certs if there are any
-    if (!_clientSslCaCertificates.isEmpty()) {
+    // write a ca cert if there is any in the queue
+    if (!_clientSslCaCertificatesWriteQueue.isEmpty()) {
+        // grab and remove the first cert from the queue
+        auto cert = _clientSslCaCertificatesWriteQueue.dequeue();
+
+        auto index = (_clientSslCaCertificates.count() - _clientSslCaCertificatesWriteQueue.count()) - 1;
+
+        // keep the limit
+        if (index > (_clientSslCaCertificatesMaxCount - 1)) {
+            qCWarning(lcWebFlowCredentials) << "Maximum client CA cert count exceeded while writing slot" << QString::number(index) << "), cutting off after " << QString::number(_clientSslCaCertificatesMaxCount) << "certs";
+
+            _clientSslCaCertificatesWriteQueue.clear();
+
+            slotWriteClientCaCertsPEMJobDone(nullptr);
+            return;
+        }
+
         WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
         addSettingsToJob(_account, job);
         job->setInsecureFallback(false);
         connect(job, &Job::finished, this, &WebFlowCredentials::slotWriteClientCaCertsPEMJobDone);
-        job->setKey(keychainKey(_account->url().toString(), _user + clientCaCertificatesPEMC, _account->id()));
-
-        QByteArray certs;
-        for(auto cert:_clientSslCaCertificates) {
-            certs += cert.toPem();
-        }
-
-        job->setBinaryData(certs);
+        job->setKey(keychainKey(_account->url().toString(), _user + clientCaCertificatePEMC + QString::number(index), _account->id()));
+        job->setBinaryData(cert.toPem());
         job->start();
     } else {
-        slotWriteClientCaCertsPEMJobDone();
+        slotWriteClientCaCertsPEMJobDone(nullptr);
     }
 }
 
-void WebFlowCredentials::slotWriteClientCaCertsPEMJobDone()
+void WebFlowCredentials::slotWriteClientKeyPEMJobDone()
 {
+    _clientSslCaCertificatesWriteQueue.clear();
+
+    // write ca certs if there are any
+    if (!_clientSslCaCertificates.isEmpty()) {
+        // queue the certs to avoid trouble on Windows (Workaround for CredWriteW used by QtKeychain)
+        _clientSslCaCertificatesWriteQueue.append(_clientSslCaCertificates);
+
+        // first ca cert
+        writeSingleClientCaCertPEM();
+    } else {
+        slotWriteClientCaCertsPEMJobDone(nullptr);
+    }
+}
+
+void WebFlowCredentials::slotWriteClientCaCertsPEMJobDone(QKeychain::Job *incomingJob)
+{
+    // errors / next ca cert?
+    if (incomingJob && !_clientSslCaCertificates.isEmpty()) {
+        WritePasswordJob *writeJob = static_cast<WritePasswordJob *>(incomingJob);
+
+        if (writeJob->error() != NoError) {
+            qCWarning(lcWebFlowCredentials) << "Error while writing client CA cert" << writeJob->errorString();
+        }
+
+        if (!_clientSslCaCertificatesWriteQueue.isEmpty()) {
+            // next ca cert
+            writeSingleClientCaCertPEM();
+            return;
+        }
+    }
+
+    // done storing ca certs, time for the password
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
@@ -311,7 +352,7 @@ void WebFlowCredentials::invalidateToken() {
     QTimer::singleShot(0, _account, &Account::clearQNAMCache);
 }
 
-void WebFlowCredentials::forgetSensitiveData(){
+void WebFlowCredentials::forgetSensitiveData() {
     _password = QString();
     _ready = false;
 
@@ -329,6 +370,15 @@ void WebFlowCredentials::forgetSensitiveData(){
     job->start();
 
     invalidateToken();
+
+    /* IMPORTANT
+    /* TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
+     *
+     *       Disabled as long as selecting another cert is not supported by the UI.
+     *
+     *       Being able to specify a new certificate is important anyway: expiry etc.
+    */
+    //deleteKeychainEntries();
 }
 
 void WebFlowCredentials::setAccount(Account *account) {
@@ -445,28 +495,53 @@ void WebFlowCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob
         }
     }
 
-    // Now fetch the actual server password
-    const QString kck = keychainKey(
-        _account->url().toString(),
-        _user + clientCaCertificatesPEMC,
-        _keychainMigration ? QString() : _account->id());
+    // Start fetching client CA certs
+    _clientSslCaCertificates.clear();
 
-    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-    addSettingsToJob(_account, job);
-    job->setInsecureFallback(false);
-    job->setKey(kck);
-    connect(job, &Job::finished, this, &WebFlowCredentials::slotReadClientCaCertsPEMJobDone);
-    job->start();
+    readSingleClientCaCertPEM();
+}
+
+void WebFlowCredentials::readSingleClientCaCertPEM()
+{
+    // try to fetch a client ca cert
+    if (_clientSslCaCertificates.count() < _clientSslCaCertificatesMaxCount) {
+        const QString kck = keychainKey(
+            _account->url().toString(),
+            _user + clientCaCertificatePEMC + QString::number(_clientSslCaCertificates.count()),
+            _keychainMigration ? QString() : _account->id());
+
+        ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+        addSettingsToJob(_account, job);
+        job->setInsecureFallback(false);
+        job->setKey(kck);
+        connect(job, &Job::finished, this, &WebFlowCredentials::slotReadClientCaCertsPEMJobDone);
+        job->start();
+    } else {
+        qCWarning(lcWebFlowCredentials) << "Maximum client CA cert count exceeded while reading, ignoring after " << _clientSslCaCertificatesMaxCount;
+
+        slotReadClientCaCertsPEMJobDone(nullptr);
+    }
 }
 
 void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(QKeychain::Job *incomingJob) {
     // Store key in memory
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incomingJob);
 
-    if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
-        QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(readJob->binaryData(), QSsl::Pem);
-        if (sslCertificateList.length() >= 1) {
-            _clientSslCaCertificates = sslCertificateList;
+    if (readJob) {
+        if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
+            QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(readJob->binaryData(), QSsl::Pem);
+            if (sslCertificateList.length() >= 1) {
+                _clientSslCaCertificates.append(sslCertificateList.at(0));
+            }
+
+            // try next cert
+            readSingleClientCaCertPEM();
+            return;
+        } else {
+            if (readJob->error() != QKeychain::Error::EntryNotFound ||
+                (readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0) {
+                qCWarning(lcWebFlowCredentials) << "Unable to read client CA cert slot " << QString::number(_clientSslCaCertificates.count()) << readJob->errorString();
+            }
         }
     }
 
@@ -512,23 +587,29 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
     if (_keychainMigration && _ready) {
         _keychainMigration = false;
         persist();
-        deleteOldKeychainEntries();
+        deleteKeychainEntries(true); // true: delete old entries
         qCInfo(lcWebFlowCredentials) << "Migrated old keychain entries";
     }
 }
 
-void WebFlowCredentials::deleteOldKeychainEntries() {
-    auto startDeleteJob = [this](QString user) {
+void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
+    auto startDeleteJob = [this, oldKeychainEntries](QString user) {
         DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
         addSettingsToJob(_account, job);
         job->setInsecureFallback(true);
-        job->setKey(keychainKey(_account->url().toString(), user, QString()));
+        job->setKey(keychainKey(_account->url().toString(),
+                                user,
+                                oldKeychainEntries ? QString() : _account->id()));
         job->start();
     };
 
     startDeleteJob(_user);
     startDeleteJob(_user + clientKeyPEMC);
     startDeleteJob(_user + clientCertificatePEMC);
+
+    for (auto i = 0; i < _clientSslCaCertificates.count(); i++) {
+        startDeleteJob(_user + clientCaCertificatePEMC + QString::number(i));
+    }
 }
 
 }
