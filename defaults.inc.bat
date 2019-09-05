@@ -87,14 +87,9 @@ if "%CHECKOUT_ZLIB%" == ""                  set CHECKOUT_ZLIB=1
 
 if "%CHECKOUT_DESKTOP%" == ""               set CHECKOUT_DESKTOP=1
 
-Rem Banding overrides
+Rem Branding overrides
 if "%USE_BRANDING%" == "1" (
-    set PULL_QTKEYCHAIN=0
-    set PULL_ZLIB=0
     set PULL_DESKTOP=0
-
-    set CHECKOUT_QTKEYCHAIN=0
-    set CHECKOUT_ZLIB=0
     set CHECKOUT_DESKTOP=0
 )
 
