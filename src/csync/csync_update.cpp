@@ -124,7 +124,9 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
        * because it's a hidden file that should not be synced.
        * This code should probably be in csync_exclude, but it does not have the fs parameter.
        * Keep it here for now */
-      if (ctx->ignore_hidden_files && (fs->is_hidden)) {
+      if (ctx->ignore_hidden_files
+          && fs->is_hidden
+          && !fs->path.endsWith(".sync-exclude.lst")) {
           qCInfo(lcUpdate, "file excluded because it is a hidden file: %s", fs->path.constData());
           excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
       }

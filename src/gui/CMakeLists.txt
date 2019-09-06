@@ -22,6 +22,7 @@ set(client_UI_SRCS
     generalsettings.ui
     legalnotice.ui
     ignorelisteditor.ui
+    ignorelisttablewidget.ui
     networksettings.ui
     activitywidget.ui
     synclogdialog.ui
@@ -61,6 +62,7 @@ set(client_SRCS
     generalsettings.cpp
     legalnotice.cpp
     ignorelisteditor.cpp
+    ignorelisttablewidget.cpp
     lockwatcher.cpp
     logbrowser.cpp
     navigationpanehelper.cpp
@@ -249,7 +251,7 @@ if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
     MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 endif()
-ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASE "${APPLICATION_ICON_NAME}")
+ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
