@@ -1,75 +1,104 @@
 @echo off
+setlocal EnableDelayedExpansion
 cls
 
+echo "***** Build started. (%~nx0)"
+
 Rem ******************************************************************************************
-rem 			"enviroment Varibles"
+rem 			"Build everything"
 Rem ******************************************************************************************
 
-rem Release or Debug
-set BUILD_TYPE=Release
+call "%~dp0/defaults.inc.bat" %1
 
-if [%1] == "Release" (set BUILD_TYPE=%1)
-
-set BUILD_DATE=%date:~10,4%%date:~4,2%%date:~7,2%
-set VERSION_SUFFIX=daily
-set TAG=master
+Rem ******************************************************************************************
 
 echo "* BUILD_TYPE=%BUILD_TYPE%"
-echo "* PROJECT_PATH=%PROJECT_PATH%"
-echo "* VCINSTALLDIR=%VCINSTALLDIR%"
-echo "* PATH=%PATH%"
-echo "* Png2Ico_EXECUTABLE=%Png2Ico_EXECUTABLE%"
-echo "* QTKEYCHAIN_INCLUDE_DIR=%QTKEYCHAIN_INCLUDE_DIR%"
-echo "* QTKEYCHAIN_LIBRARY=%QTKEYCHAIN_LIBRARY%"
-echo "* OPENSSL_INCLUDE_DIR=%OPENSSL_INCLUDE_DIR%"
-echo "* OPENSSL_LIBRARIES=%OPENSSL_LIBRARIES%"
-echo "* Build date %BUILD_DATE%"
-echo "* VERSION_SUFFIX %VERSION_SUFFIX%"
-echo "* TAG %TAG%"
+echo "* BUILD_TARGETS=%BUILD_TARGETS%"
 
-Rem ******************************************************************************************
-rem 			"clean up"
-Rem ******************************************************************************************
-
-echo "* Remove old installation files %PROJECT_PATH%/install from previous build."
-start "rm -rf" /B /wait rm -rf %PROJECT_PATH%/install/*
-
-echo "* Remove old dependencies files %PROJECT_PATH%/libs from previous build."
-start "rm -rf" /B /wait rm -rf %PROJECT_PATH%/libs/*
-
-echo "* Remove %PROJECT_PATH%/desktop/build/CMakeFiles from previous build."
-start "rm -rf" /B /wait rm -rf %PROJECT_PATH%/desktop/build/*
-
-Rem ******************************************************************************************
-rem 			"git pull, build, collect dependencies"
-Rem ******************************************************************************************
-
+rem Reference: https://ss64.com/nt/setlocal.html
 rem Reference: https://ss64.com/nt/start.html
 
-echo "* git pull at %PROJECT_PATH%/desktop/."
-start "git pull" /D "%PROJECT_PATH%/desktop/" /B /wait git pull --tags
 
-echo "* git checkout %TAG% at %PROJECT_PATH%/desktop/."
-start "git checkout %TAG%" /D "%PROJECT_PATH%/desktop/" /B /wait git checkout %TAG%
+Rem ******************************************************************************************
+rem 			"check for required environment variables"
+Rem ******************************************************************************************
 
-echo "* save git HEAD commit hash from repo %PROJECT_PATH%/desktop/."
-start "git rev-parse HEAD" /D "%PROJECT_PATH%/desktop/" /B /wait git rev-parse HEAD > tmp
-set /p GIT_REVISION= < tmp
-del tmp
+call :testEnv PROJECT_PATH
+call :testEnv BUILD_TYPE
+call :testEnv BUILD_TARGETS
+call :testEnv QT_PATH
+call :testEnv OPENSSL_PATH
+call :testEnv Png2Ico_EXECUTABLE
+call :testEnv VCINSTALLDIR
+call :testEnv WIN_GIT_PATH
 
-echo "* Run cmake with CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE set at %PROJECT_PATH%/desktop/build."
-start "cmake.." /D "%PROJECT_PATH%/desktop/build" /B /wait cmake "-GVisual Studio 15 2017 Win64" .. -DMIRALL_VERSION_SUFFIX="%VERSION_SUFFIX%" -DWITH_CRASHREPORTER=OFF -DMIRALL_VERSION_BUILD="%BUILD_DATE%" -DCMAKE_INSTALL_PREFIX="%PROJECT_PATH%/install" -DCMAKE_BUILD_TYPE="%BUILD_TYPE%" -DNO_SHIBBOLETH=1 -DPng2Ico_EXECUTABLE="%Png2Ico_EXECUTABLE%" -DQTKEYCHAIN_LIBRARY="%QTKEYCHAIN_LIBRARY%" -DQTKEYCHAIN_INCLUDE_DIR="%QTKEYCHAIN_INCLUDE_DIR%" -DOPENSSL_ROOT_DIR="%OPENSSL_ROOT_DIR%" -DOPENSSL_INCLUDE_DIR="%OPENSSL_INCLUDE_DIR%" -DOPENSSL_LIBRARIES="%OPENSSL_LIBRARIES%"
+if %ERRORLEVEL% neq 0 goto onError
 
-echo "* Run cmake to compile and install."
-start "cmake build" /D "%PROJECT_PATH%/desktop/build" /B /wait cmake --build . --config %BUILD_TYPE% --target install
+Rem ******************************************************************************************
+rem 			"qtkeychain"
+Rem ******************************************************************************************
 
-echo "* Run windeployqt to collect all nextcloud.exe dependencies and output it to %PROJECT_PATH%/libs/."
-start "windeployqt" /B /wait windeployqt.exe --release %PROJECT_PATH%/install/bin/nextcloud.exe --dir %PROJECT_PATH%/libs/
+echo "***** build qtkeychain."
+start "build-qtkeychain.bat %BUILD_TYPE%" /D "%PROJECT_PATH%/" /B /wait "%~dp0/build-qtkeychain.bat" %BUILD_TYPE%
+if %ERRORLEVEL% neq 0 goto onError
 
-echo "* git checkout master at %PROJECT_PATH%/desktop/."
-start "git checkout master" /D "%PROJECT_PATH%/desktop/" /B /wait git checkout master
 
-echo "* Run NSIS script with parameters BUILD_TYPE=%BUILD_TYPE% and GIT_REVISION=%GIT_REVISION% to create installer."
-start "NSIS" /B /wait makensis.exe /DBUILD_TYPE=%BUILD_TYPE% /DMIRALL_VERSION_SUFFIX=%VERSION_SUFFIX% /DMIRALL_VERSION_BUILD=%BUILD_DATE% /DGIT_REVISION=%GIT_REVISION:~0,6% nextcloud.nsi
+Rem ******************************************************************************************
+rem 			"zlib"
+Rem ******************************************************************************************
 
-exit
+echo "***** build zlib."
+start "build-zlib.bat %BUILD_TYPE%" /D "%PROJECT_PATH%/" /B /wait "%~dp0/build-zlib.bat" %BUILD_TYPE%
+if %ERRORLEVEL% neq 0 goto onError
+
+
+Rem ******************************************************************************************
+rem 			"desktop"
+Rem ******************************************************************************************
+
+echo "***** build desktop."
+start "build-desktop.bat %BUILD_TYPE%" /D "%PROJECT_PATH%/" /B /wait "%~dp0/build-desktop.bat" %BUILD_TYPE%
+if %ERRORLEVEL% neq 0 goto onError
+
+
+Rem ******************************************************************************************
+rem 			"collect files for the installer"
+Rem ******************************************************************************************
+
+echo "***** collect files for the installer."
+start "build-installer-collect.bat %BUILD_TYPE%" /D "%PROJECT_PATH%/" /B /wait "%~dp0/build-installer-collect.bat" %BUILD_TYPE%
+if %ERRORLEVEL% neq 0 goto onError
+
+
+Rem ******************************************************************************************
+rem 			"build the installer"
+Rem ******************************************************************************************
+
+if "%BUILD_INSTALLER%" == "0" (
+    echo "** Don't build the installer (disabled by BUILD_INSTALLER)"
+) else (
+    echo "***** build the installer."
+    start "build-installer-exe.bat %BUILD_TYPE%" /D "%PROJECT_PATH%/" /B /wait "%~dp0/build-installer-exe.bat" %BUILD_TYPE%
+)
+if %ERRORLEVEL% neq 0 goto onError
+
+Rem Note: Signing and upload of the installer is triggered by NSIS. see: nextcloud.nsi
+
+
+Rem ******************************************************************************************
+
+echo "***** Build finished. (%~nx0)"
+exit 0
+
+:onError
+echo "***** Build FAILED! (%~nx0)"
+if %ERRORLEVEL% neq 0 exit %ERRORLEVEL%
+if !ERRORLEVEL! neq 0 exit !ERRORLEVEL!
+exit 1
+
+:testEnv
+if "!%*!" == "" (
+    echo "Missing environment variable: %*"
+    exit /B 1
+)
+exit /B

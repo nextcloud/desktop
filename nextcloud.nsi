@@ -1,14 +1,19 @@
-;ownCloud installer script.
+;Nextcloud installer script.
 
 !define APPLICATION_SHORTNAME "nextcloud"
 !define APPLICATION_NAME "Nextcloud"
-!define APPLICATION_VENDOR "Nextcloud GmbH"
+!define APPLICATION_VENDOR "$%APPLICATION_VENDOR%"
 !define APPLICATION_EXECUTABLE "nextcloud.exe"
 !define APPLICATION_CMD_EXECUTABLE "nextcloudcmd.exe"
 !define APPLICATION_DOMAIN "nextcloud.com"
 !define APPLICATION_LICENSE ""
 !define WIN_SETUP_BITMAP_PATH "$%PROJECT_PATH%\desktop\admin\win\nsi"
 !define CRASHREPORTER_EXECUTABLE "nextcloud_crash_reporter"
+
+; Options, see: defaults.inc.bat
+!define INSTALLER_OUTPUT_PATH "$%INSTALLER_OUTPUT_PATH%"
+!define USE_CODE_SIGNING "$%USE_CODE_SIGNING%"
+!define UPLOAD_BUILD "$%UPLOAD_BUILD%"
 
 ;-----------------------------------------------------------------------------
 ; Some installer script options (comment-out options not required)
@@ -28,28 +33,13 @@
 ;-----------------------------------------------------------------------------
 ; Some paths.
 ;-----------------------------------------------------------------------------
-!ifndef MING_PATH
-    !define MING_PATH "/usr/i686-w64-mingw32/sys-root/mingw"
-!endif
-!define MING_BIN "${MING_PATH}/bin"
-!define MING_LIB "${MING_PATH}/lib"
-!define MING_SHARE "${MING_PATH}/share"
 !define QT_PATH  "$%QT_PATH%"
-!define QT_DLL_PATH "${QT_PATH}\bin"
-!define ACCESSIBLE_DLL_PATH "${MING_LIB}/qt5/plugins/accessible"
-!define SQLITE_DLL_PATH "${QT_PATH}/plugins/sqldrivers"
-!define IMAGEFORMATS_DLL_PATH "${QT_PATH}/plugins/imageformats"
-!define PLATFORMS_DLL_PATH "${QT_PATH}/plugins/platforms"
 !define PROJECT_PATH "$%PROJECT_PATH%"
-!define BUILD_PATH "${PROJECT_PATH}\desktop\build"
-!define LIBS_PATH "${PROJECT_PATH}\libs"
-!define INSTALL_PATH "${PROJECT_PATH}\install"
+!define QT_LIBS_PATH "$%QT_LIBS_PATH%"
 !define SOURCE_PATH "${PROJECT_PATH}\desktop"
-!define VCREDISTPATH "$%VCINSTALLDIR%\Redist\MSVC\14.14.26405"
-!define OPENSSL_PATH "$%OPENSSL_PATH%"
-!define EXTRA_PATH "${PROJECT_PATH}\extra_libs" ;TODO
-!define CURRENT_PATH "${PROJECT_PATH}\client-building"
-!define P12_KEY_PATH "${PROJECT_PATH}\key"
+!define SETUP_COLLECTION_PATH "${PROJECT_PATH}\collect\${BUILD_TYPE}"
+;!define VCREDISTPATH "$%VCINSTALLDIR%\Redist\MSVC\14.14.26405"   ;now collected by windeployqt
+!define CURRENT_PATH "$%CURRENT_PATH%"
 
 !define CSYNC_LIBRARY_DIR ""
 !define CSYNC_CONFIG_DIR ""
@@ -59,15 +49,14 @@
 ;-----------------------------------------------------------------------------
 ; !finalize helpers: calls to system() after the output EXE has been generated
 ;-----------------------------------------------------------------------------
-!define SIGNTOOL "C:\Program Files (x86)/Windows Kits/10/bin/10.0.17134.0/x86/signtool.exe"
-!define P12_KEY "${P12_KEY_PATH}\${APPLICATION_VENDOR}.p12"
-!define P12_KEY_PASSWORD "$%P12_KEY_PASSWORD%"
+; code signing now happens in sign.bat
 
 ;-----------------------------------------------------------------------------
 ; Installer version
 ;-----------------------------------------------------------------------------
 
-!getdllversion "${INSTALL_PATH}\bin\nextcloud.exe" expv_
+; Safe to use Win64's exe version since we require both builds for this combined installer.
+!getdllversion "${SETUP_COLLECTION_PATH}\Win64\nextcloud.exe" expv_
 !define VER_MAJOR "${expv_1}"
 !define VER_MINOR "${expv_2}"
 !define VER_PATCH "${expv_3}"
@@ -86,20 +75,52 @@ Var NoAutomaticUpdates
 ; Initial installer setup and definitions.
 ;-----------------------------------------------------------------------------
 
-!define INSTALLER_FILENAME "${APPLICATION_NAME}-${VERSION}-${MIRALL_VERSION_SUFFIX}-${BUILD_TIME_FILENAME}.exe"
+!define INSTALLER_FILENAME "${APPLICATION_SHORTNAME}-${VERSION}-${MIRALL_VERSION_SUFFIX}-${BUILD_TIME_FILENAME}-${BUILD_TYPE}.exe"
 Name "Nextcloud"
 BrandingText "${APPLICATION_NAME} ${VERSION} - ${BUILD_TIME}"
-OutFile "${PROJECT_PATH}\client-building\daily\${INSTALLER_FILENAME}"
-InstallDir "$PROGRAMFILES\Nextcloud"
+;IS_INNER_SIGN_UNINSTALLER;OutFile "${PROJECT_PATH}\client-building\daily\${INSTALLER_FILENAME}"
+InstallDir "$PROGRAMFILES64\Nextcloud"    ; use the correct path for Win64 (on Win32 this is identical to $PROGRAMFILES)
 InstallDirRegKey HKCU "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" ""
 InstType Standard
 InstType Full
 InstType Minimal
 CRCCheck On
 SetCompressor /SOLID lzma
-RequestExecutionLevel user ;Now using the UAC plugin.
 ReserveFile NSIS.InstallOptions.ini
 ReserveFile "${NSISDIR}\Plugins\x86-unicode\InstallOptions.dll"
+
+; https://nsis.sourceforge.io/Signing_an_Uninstaller
+!ifdef IS_INNER_SIGN_UNINSTALLER
+  !echo "Inner uninstaller signing invocation"    ; just to see what's going on
+  OutFile "$%TEMP%\tempinstaller.exe"             ; not really important where this is
+  RequestExecutionLevel user                      ; don't write uninstaller with admin permissions and prevent invoking UAC
+!else
+  !echo "Outer uninstaller signing invocation"
+ 
+  ; Call makensis again against current file, defining INNER.  This writes an installer for us which, when
+  ; it is invoked, will just write the uninstaller to some location, and then exit.
+ 
+  ; Note: Keep the makensis /Defines in sync with build-installer-exe.bat !
+  !makensis '/DIS_INNER_SIGN_UNINSTALLER /DBUILD_TYPE="${BUILD_TYPE}" /DMIRALL_VERSION_SUFFIX="${MIRALL_VERSION_SUFFIX}" /DMIRALL_VERSION_BUILD="${MIRALL_VERSION_BUILD}" /DGIT_REVISION="${GIT_REVISION}" "${__FILE__}"' = 0
+ 
+  ; So now run that installer we just created as %TEMP%\tempinstaller.exe.  Since it
+  ; calls quit the return value isn't zero.
+ 
+  !system "$%TEMP%\tempinstaller.exe" = 2
+ 
+  ; That will have written an uninstaller binary for us.  Now we sign it with your
+  ; favorite code signing tool.
+ 
+  ;!system "SIGNCODE <signing options> $%TEMP%\uninstall.exe" = 0
+  !if ${USE_CODE_SIGNING} != 0
+    !system '"${CURRENT_PATH}\sign.bat" "$%TEMP%\uninstall.exe"' = 0
+  !endif
+
+  ; Good.  Now we can carry on writing the real installer.
+ 
+  OutFile "${INSTALLER_OUTPUT_PATH}\${INSTALLER_FILENAME}"
+  RequestExecutionLevel user ;Now using the UAC plugin.
+!endif
 
 ;-----------------------------------------------------------------------------
 ; Include some required header files.
@@ -134,7 +155,7 @@ ReserveFile "${NSISDIR}\Plugins\x86-unicode\InstallOptions.dll"
 !define MUI_COMPONENTSPAGE_SMALLDESC
 ; We removed this, h1 issue 191687
 ;!define MUI_FINISHPAGE_LINK "${APPLICATION_DOMAIN}"
-;!define MUI_FINISHPAGE_LINK_LOCATION "http://${APPLICATION_DOMAIN}"
+;!define MUI_FINISHPAGE_LINK_LOCATION "https://${APPLICATION_DOMAIN}"
 !define MUI_FINISHPAGE_NOREBOOTSUPPORT
 !ifdef OPTION_FINISHPAGE_RELEASE_NOTES
    !define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
@@ -161,8 +182,10 @@ Page custom PageReinstall PageLeaveReinstall
 !ifdef OPTION_FINISHPAGE
    !insertmacro MUI_PAGE_FINISH
 !endif
-!insertmacro MUI_UNPAGE_CONFIRM
-!insertmacro MUI_UNPAGE_INSTFILES
+!ifdef IS_INNER_SIGN_UNINSTALLER
+   !insertmacro MUI_UNPAGE_CONFIRM
+   !insertmacro MUI_UNPAGE_INSTFILES
+!endif
 
 ;-----------------------------------------------------------------------------
 ; Other MUI macros.
@@ -388,6 +411,7 @@ FunctionEnd
 #   INSTALLER SECTIONS                                                       #
 #                                                                            #
 ##############################################################################
+!ifndef IS_INNER_SIGN_UNINSTALLER
 Section "${APPLICATION_NAME}" SEC_APPLICATION
    SectionIn 1 2 3 RO
    SetDetailsPrint listonly
@@ -397,50 +421,30 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    SetDetailsPrint listonly
    SetOutPath "$INSTDIR"
 
-    File /r "${INSTALL_PATH}\bin\*"
-
-; exclude system file list
-    File /r "${INSTALL_PATH}\config\Nextcloud\sync-exclude.lst"
-    File "${INSTALL_PATH}\bin\nextcloud\ocsync.dll"
-
-; icon
-    File /oname=nextcloud.ico "${NSI_PATH}\installer.ico"
-
-; dependencies
-    File /r "${LIBS_PATH}\*"
-
-; extra dll's
-    File "${OPENSSL_PATH}\bin\libcrypto-1_1-x64.dll"
-    File "${OPENSSL_PATH}\bin\msvcr120.dll"
-
-; TODO needs to be done properly
-    File "${EXTRA_PATH}\ucrtbased.dll"
-    File "${EXTRA_PATH}\libeay32.dll"
-    File "${EXTRA_PATH}\ssleay32.dll"
-    File "${EXTRA_PATH}\qt.conf"
-
-    File "${QT_DLL_PATH}\Qt5Core.dll"
-    File "${QT_DLL_PATH}\Qt5Cored.dll"
-
-    File "${VCREDISTPATH}\debug_nonredist\x64\Microsoft.VC141.DebugCRT\msvcp140d.dll"
-    File "${VCREDISTPATH}\debug_nonredist\x64\Microsoft.VC141.DebugCRT\vcruntime140d.dll"
-
-; translations TODO put the translations under the folder translations
-   SetOutPath "$INSTDIR\i18n"
-    File /r "${INSTALL_PATH}\i18n\*"
+; all the files, kindly collected by our friendly build-installer-collect script :)
+   ${If} ${RunningX64}
+      File /r "${SETUP_COLLECTION_PATH}\Win64\*.*"
+   ${Else}
+      File /r "${SETUP_COLLECTION_PATH}\Win32\*.*"
+   ${Endif}
 
 ; to be executed after the installer is created
-   !finalize '"${SIGNTOOL}" sign /debug /v /n "${APPLICATION_VENDOR}" /tr http://tsa.swisssign.net /td sha256 /fd sha256 /f "${P12_KEY}" /p "${P12_KEY_PASSWORD}" "%1"'
-   !finalize '"${CURRENT_PATH}\upload.bat" "%1"'
+   !if ${USE_CODE_SIGNING} != 0
+      !finalize '"${CURRENT_PATH}\sign.bat" "%1"'
+   !endif
+   !if ${UPLOAD_BUILD} != 0
+      !finalize '"${CURRENT_PATH}\upload.bat" %1'  ; note: %1 quotes intenionally removed!
+   !endif
 SectionEnd
+!endif ;IS_INNER_SIGN_UNINSTALLER
 
 !ifdef OPTION_SECTION_SC_SHELL_EXT
    ${MementoSection} $OPTION_SECTION_SC_SHELL_EXT_SECTION SEC_SHELL_EXT
       SectionIn 1 2
       SetDetailsPrint textonly
       DetailPrint $OPTION_SECTION_SC_SHELL_EXT_DetailPrint
-      File "${VCREDISTPATH}\vcredist_x86.exe"
-      File "${VCREDISTPATH}\vcredist_x64.exe"
+      ;File "${VCREDISTPATH}\vcredist_x86.exe"  ;now collected by windeployqt
+      ;File "${VCREDISTPATH}\vcredist_x64.exe"  ;now collected by windeployqt
       Call InstallRedistributables
       CreateDirectory "$INSTDIR\shellext"
       !define LIBRARY_COM
@@ -448,14 +452,14 @@ SectionEnd
       !define LIBRARY_IGNORE_VERSION
       ${If} ${RunningX64}
          !define LIBRARY_X64
-         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll" "$INSTDIR\shellext\OCUtil_x64.dll" "$INSTDIR\shellext"
-         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCOverlays_x64.dll" "$INSTDIR\shellext\OCOverlays_x64.dll" "$INSTDIR\shellext"
-         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCContextMenu_x64.dll" "$INSTDIR\shellext\OCContextMenu_x64.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SETUP_COLLECTION_PATH}\Win64\shellext\OCUtil.dll" "$INSTDIR\shellext\OCUtil.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SETUP_COLLECTION_PATH}\Win64\shellext\OCOverlays.dll" "$INSTDIR\shellext\OCOverlays.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SETUP_COLLECTION_PATH}\Win64\shellext\OCContextMenu.dll" "$INSTDIR\shellext\OCContextMenu.dll" "$INSTDIR\shellext"
          !undef LIBRARY_X64
      ${Else}
-         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCUtil_x86.dll" "$INSTDIR\shellext\OCUtil_x86.dll" "$INSTDIR\shellext"
-         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCOverlays_x86.dll" "$INSTDIR\shellext\OCOverlays_x86.dll" "$INSTDIR\shellext"
-         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\Win32\OCContextMenu_x86.dll" "$INSTDIR\shellext\OCContextMenu_x86.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SETUP_COLLECTION_PATH}\Win32\shellext\OCUtil.dll" "$INSTDIR\shellext\OCUtil.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SETUP_COLLECTION_PATH}\Win32\shellext\OCOverlays.dll" "$INSTDIR\shellext\OCOverlays.dll" "$INSTDIR\shellext"
+         !insertmacro InstallLib REGDLL NOTSHARED REBOOT_PROTECTED "${SETUP_COLLECTION_PATH}\Win32\shellext\OCContextMenu.dll" "$INSTDIR\shellext\OCContextMenu.dll" "$INSTDIR\shellext"
       ${Endif}
       !undef LIBRARY_COM
       !undef LIBRARY_SHELL_EXTENSION
@@ -521,7 +525,11 @@ Section -post
    SetDetailsPrint textonly
    DetailPrint $UNINSTALLER_FILE_Detail
    SetDetailsPrint listonly
-   WriteUninstaller $INSTDIR\uninstall.exe
+   !ifndef IS_INNER_SIGN_UNINSTALLER
+      ; this packages the signed uninstaller
+      SetOutPath $INSTDIR
+      File $%TEMP%\uninstall.exe
+   !endif
 
    ;Registry keys required for installer version handling and uninstaller.
    SetDetailsPrint textonly
@@ -544,8 +552,8 @@ Section -post
    WriteRegStr ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "DisplayVersion" "${VERSION}"
    WriteRegDWORD ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "VersionMajor" "${VER_MAJOR}"
    WriteRegDWORD ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "VersionMinor" "${VER_MINOR}.${VER_PATCH}.${VER_BUILD}"
-   WriteRegStr ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "URLInfoAbout" "http://${APPLICATION_DOMAIN}/"
-   WriteRegStr ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "HelpLink" "http://${APPLICATION_DOMAIN}/"
+   WriteRegStr ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "URLInfoAbout" "https://${APPLICATION_DOMAIN}/"
+   WriteRegStr ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "HelpLink" "https://${APPLICATION_DOMAIN}/"
    WriteRegDWORD ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "NoModify" "1"
    WriteRegDWORD ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "NoRepair" "1"
 
@@ -564,6 +572,9 @@ Function un.EnsureOwncloudShutdown
    !insertmacro CheckAndConfirmEndProcess "${APPLICATION_EXECUTABLE}"
 FunctionEnd
 
+!ifdef IS_INNER_SIGN_UNINSTALLER
+  ; the normal uninstaller section (it isn't needed in the "outer" installer
+  ; and will just cause warnings because there is no WriteUninstaller command)
 Section Uninstall
    IfFileExists "$INSTDIR\${APPLICATION_EXECUTABLE}" owncloud_installed
       MessageBox MB_YESNO $UNINSTALL_MESSAGEBOX /SD IDYES IDYES owncloud_installed
@@ -617,14 +628,14 @@ Section Uninstall
       ${If} ${HasSection} SEC_SHELL_EXT
         DetailPrint "Uninstalling x64 overlay DLLs"
         !define LIBRARY_X64
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCContextMenu_x64.dll"
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCOverlays_x64.dll"
-        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCUtil_x64.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCContextMenu.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCOverlays.dll"
+        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCUtil.dll"
         !undef LIBRARY_X64
         DetailPrint "Uninstalling x86 overlay DLLs"
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCContextMenu_x86.dll"
-        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCOverlays_x86.dll"
-        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCUtil_x86.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCContextMenu.dll"
+        !insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCOverlays.dll"
+        !insertmacro UnInstallLib DLL NOTSHARED REBOOT_PROTECTED "$INSTDIR\shellext\OCUtil.dll"
       ${EndIf}
       !undef LIBRARY_COM
       !undef LIBRARY_SHELL_EXTENSION
@@ -670,6 +681,7 @@ Section Uninstall
    SetDetailsPrint textonly
    DetailPrint $UNINSTALLER_FINISHED_Detail
 SectionEnd
+!endif ;IS_INNER_SIGN_UNINSTALLER
 
 ##############################################################################
 #                                                                            #
@@ -678,6 +690,15 @@ SectionEnd
 ##############################################################################
 
 Function .onInit
+   !ifdef IS_INNER_SIGN_UNINSTALLER
+      ; If INNER is defined, then we aren't supposed to do anything except write out
+      ; the uninstaller.  This is better than processing a command line option as it means
+      ; this entire code path is not present in the final (real) installer.
+      SetSilent silent
+      WriteUninstaller "$%TEMP%\uninstall.exe"
+      Quit  ; just bail out quickly when running the "inner" installer
+   !endif
+
    SetOutPath $INSTDIR
 
    ${GetParameters} $R0
@@ -690,6 +711,14 @@ Function .onInit
    ${GetOptions} $R0 "/noautoupdate" $R0
    ${IfNot} ${Errors}
       StrCpy $NoAutomaticUpdates "yes"
+   ${EndIf}
+
+
+   ;Define App Section name based on arch
+   ${If} ${RunningX64}
+      SectionSetText $R0 "${APPLICATION_NAME} (64-bit)"
+   ${Else}
+      SectionSetText $R0 "${APPLICATION_NAME} (32-bit)"
    ${EndIf}
 
 
