@@ -71,6 +71,23 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 {
     QNetworkRequest newRequest(request);
 
+    /*
+     * SUPPORT HOTFIX - 2019-09-05
+     *
+     * Remove double-slashes in URLs like http://localhost/remote.php/webdav//
+    */
+    /*auto strUrl = newRequest.url().toString();
+    if (strUrl.endsWith("//")) {
+        qWarning(lcAccessManager) << "Removing double-slashes in URL" << strUrl;
+
+        while (strUrl.endsWith("//")) {
+            strUrl.chop(1);
+        }
+
+        newRequest.setUrl(QUrl(strUrl));
+    }*/
+    /* END HOTFIX */
+
     if (newRequest.hasRawHeader("cookie")) {
         // This will set the cookie into the QNetworkCookieJar which will then override the cookie header
         setRawCookie(request.rawHeader("cookie"), request.url());
