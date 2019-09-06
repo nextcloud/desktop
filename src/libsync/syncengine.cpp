@@ -396,7 +396,11 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     // if the item is on blacklist, the instruction was set to ERROR
     checkErrorBlacklisting(*item);
     _needsUpdate = true;
-    _syncItems.append(item);
+
+    // Insert sorted
+    auto it = std::lower_bound( _syncItems.begin(), _syncItems.end(), item ); // the _syncItems is sorted
+    _syncItems.insert( it, item );
+
     slotNewItem(item);
 
     if (item->isDirectory()) {
@@ -672,13 +676,16 @@ void SyncEngine::slotDiscoveryFinished()
         _anotherSyncNeeded = ImmediateFollowUp;
     }
 
-    // Sort items per destination
-    std::sort(_syncItems.begin(), _syncItems.end());
+    Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
+
+    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QLatin1String("Reconcile (aboutToPropagate)")) << "ms";
 
     _localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
     emit aboutToPropagate(_syncItems);
+
+    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate OK) #################################################### "<< _stopWatch.addLapTime(QLatin1String("Reconcile (aboutToPropagate OK)")) << "ms";
 
     // it's important to do this before ProgressInfo::start(), to announce start of new sync
     _progressInfo->_status = ProgressInfo::Propagation;
