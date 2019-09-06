@@ -56,6 +56,10 @@ public:
     QString _appPassword;
     QScopedPointer<Flow2Auth> _asyncAuth;
     Ui_Flow2AuthCredsPage _ui;
+
+protected slots:
+    void slotOpenBrowser();
+    void slotCopyLinkToClipboard();
 };
 
 } // namespace OCC
