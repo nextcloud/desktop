@@ -50,21 +50,8 @@ Flow2AuthWidget::Flow2AuthWidget(Account *account, QWidget *parent)
 
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    connect(_ui.openLinkButton, &QCommandLinkButton::clicked, [this] {
-        _ui.errorLabel->hide();
-        if (_asyncAuth)
-            _asyncAuth->openBrowser();
-    });
-    _ui.openLinkButton->setContextMenuPolicy(Qt::CustomContextMenu);
-    QObject::connect(_ui.openLinkButton, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
-        auto menu = new QMenu(_ui.openLinkButton);
-        menu->addAction(tr("Copy link to clipboard"), this, [this] {
-            if (_asyncAuth)
-                QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
-        });
-        menu->setAttribute(Qt::WA_DeleteOnClose);
-        menu->popup(_ui.openLinkButton->mapToGlobal(pos));
-    });
+    connect(_ui.openLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthWidget::slotOpenBrowser);
+    connect(_ui.copyLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthWidget::slotCopyLinkToClipboard);
 
     _asyncAuth.reset(new Flow2Auth(_account, this));
     connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthWidget::asyncAuthResult, Qt::QueuedConnection);
@@ -110,4 +97,19 @@ Flow2AuthWidget::~Flow2AuthWidget() {
     _user.clear();
 }
 
+void Flow2AuthWidget::slotOpenBrowser()
+{
+    if (_ui.errorLabel)
+        _ui.errorLabel->hide();
+
+    if (_asyncAuth)
+        _asyncAuth->openBrowser();
 }
+
+void Flow2AuthWidget::slotCopyLinkToClipboard()
+{
+    if (_asyncAuth)
+        QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+}
+
+} // namespace OCC
