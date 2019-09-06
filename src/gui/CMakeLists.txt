@@ -271,8 +271,9 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
         endforeach(_file)
         install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
     else()
+        file(GLOB_RECURSE VISUAL_ELEMENTS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-w10startmenu*")
+        install(FILES ${VISUAL_ELEMENTS} DESTINATION visualelements)
         install(FILES ${client_I18N} DESTINATION i18n)
-        install(FILES ${visualElements} DESTINATION visualelements)
     endif()
 
     # we may not add MACOSX_BUNDLE here, if not building one
