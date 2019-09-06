@@ -184,6 +184,7 @@ void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 void GeneralSettings::slotIgnoreFilesEditor()
 {
     if (_ignoreEditor.isNull()) {
+        ConfigFile cfgFile;
         _ignoreEditor = new IgnoreListEditor(this);
         _ignoreEditor->setAttribute(Qt::WA_DeleteOnClose, true);
         _ignoreEditor->open();
