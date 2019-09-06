@@ -97,7 +97,7 @@ public:
     Q_ENUM(Status);
 
     // How often should the Application ask this object to check for the connection?
-    enum { DefaultCallingIntervalMsec = 32 * 1000 };
+    enum { DefaultCallingIntervalMsec = 62 * 1000 };
 
 public slots:
     /// Checks the server and the authentication.
