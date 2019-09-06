@@ -45,6 +45,10 @@ private:
     QString _appPassword;
     QScopedPointer<Flow2Auth> _asyncAuth;
     Ui_Flow2AuthWidget _ui;
+
+protected slots:
+    void slotOpenBrowser();
+    void slotCopyLinkToClipboard();
 };
 
 }
