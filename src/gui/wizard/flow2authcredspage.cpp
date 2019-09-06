@@ -46,21 +46,8 @@ Flow2AuthCredsPage::Flow2AuthCredsPage()
     setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(Theme::instance()->appNameGUI())));
     setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Login in your browser (Login Flow v2)")));
 
-    connect(_ui.openLinkButton, &QCommandLinkButton::clicked, [this] {
-        _ui.errorLabel->hide();
-        if (_asyncAuth)
-            _asyncAuth->openBrowser();
-    });
-    _ui.openLinkButton->setContextMenuPolicy(Qt::CustomContextMenu);
-    QObject::connect(_ui.openLinkButton, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
-        auto menu = new QMenu(_ui.openLinkButton);
-        menu->addAction(tr("Copy link to clipboard"), this, [this] {
-            if (_asyncAuth)
-                QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
-        });
-        menu->setAttribute(Qt::WA_DeleteOnClose);
-        menu->popup(_ui.openLinkButton->mapToGlobal(pos));
-    });
+    connect(_ui.openLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthCredsPage::slotOpenBrowser);
+    connect(_ui.copyLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthCredsPage::slotCopyLinkToClipboard);
 }
 
 void Flow2AuthCredsPage::initializePage()
@@ -144,6 +131,21 @@ AbstractCredentials *Flow2AuthCredsPage::getCredentials() const
 bool Flow2AuthCredsPage::isComplete() const
 {
     return false; /* We can never go forward manually */
+}
+
+void Flow2AuthCredsPage::slotOpenBrowser()
+{
+    if (_ui.errorLabel)
+        _ui.errorLabel->hide();
+
+    if (_asyncAuth)
+        _asyncAuth->openBrowser();
+}
+
+void Flow2AuthCredsPage::slotCopyLinkToClipboard()
+{
+    if (_asyncAuth)
+        QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
 }
 
 } // namespace OCC
