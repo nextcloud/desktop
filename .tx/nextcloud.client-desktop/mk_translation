@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[hr]=@APPLICATION_ICON_NAME@
-Name[hr]=@APPLICATION_NAME@ klijent za sink. računala
-Comment[hr]=@APPLICATION_NAME@ klijent za sinkronizaciju računala
-GenericName[hr]=Sinkronizacija mapa
+Icon[mk]=@APPLICATION_ICON_NAME@
+Name[mk]=@APPLICATION_NAME@ клиент за синхронизација на компјутер
+Comment[mk]=@APPLICATION_NAME@ клиент за синхронизација на компјутер
+GenericName[mk]=Папка за синхронизација
