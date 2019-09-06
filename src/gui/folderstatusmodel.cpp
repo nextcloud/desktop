@@ -778,14 +778,14 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
 
         parentInfo->resetSubs(this, idx);
 
-        if (r->error() == QNetworkReply::ContentNotFoundError) {
+        /*if (r->error() == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
             ASSERT(!parentInfo->hasLabel());
             beginInsertRows(idx, 0, 0);
             parentInfo->_hasError = true;
             endInsertRows();
-        }
+        }*/
     }
 }
 
