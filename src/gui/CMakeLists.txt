@@ -22,6 +22,7 @@ set(client_UI_SRCS
     generalsettings.ui
     legalnotice.ui
     ignorelisteditor.ui
+    ignorelisttablewidget.ui
     networksettings.ui
     activitywidget.ui
     synclogdialog.ui
@@ -61,6 +62,7 @@ set(client_SRCS
     generalsettings.cpp
     legalnotice.cpp
     ignorelisteditor.cpp
+    ignorelisttablewidget.cpp
     lockwatcher.cpp
     logbrowser.cpp
     navigationpanehelper.cpp
