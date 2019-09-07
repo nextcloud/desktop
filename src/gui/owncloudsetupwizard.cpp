@@ -467,7 +467,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
     }
     if (nextStep) {
         /*
-         * BEGIN - Sanitize URL paths to eliminate double-slashes
+         * BEGIN - Sanitize URL paths to elaminate double-slashes
          *
          *         Purpose: Don't rely on unsafe paths, be extra careful.
          *
@@ -497,7 +497,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
 
         qCInfo(lcWizard) << "Sanitized to URL path:" << _ocWizard->account()->url().toString() + '/' + newUrlPath;
         /*
-         * END - Sanitize URL paths to eliminate double-slashes
+         * END - Sanitize URL paths to elaminate double-slashes
         */
 
         EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), newUrlPath, this);
