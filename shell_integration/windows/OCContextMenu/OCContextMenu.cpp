@@ -89,7 +89,7 @@ IFACEMETHODIMP OCContextMenu::Initialize(
         HDROP hDrop = static_cast<HDROP>(GlobalLock(stm.hGlobal));
         if (hDrop) {
             UINT nFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
-            for (int i = 0; i < nFiles; ++i) {
+            for (UINT i = 0; i < nFiles; ++i) {
                 // Get the path of the file.
                 wchar_t buffer[MAX_PATH];
 
