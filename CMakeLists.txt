@@ -203,8 +203,8 @@ if( WIN32 )
 add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
 add_definitions( -DNOMINMAX )
 # Get APIs from from Vista onwards.
-add_definitions( -D_WIN32_WINNT=0x0600)
-add_definitions( -DWINVER=0x0600)
+add_definitions( -D_WIN32_WINNT=0x0601)
+add_definitions( -DWINVER=0x0601)
 endif( WIN32 )
 
 if (APPLE)
