@@ -36,6 +36,7 @@
 #include <QSettings>
 #include <QNetworkProxy>
 #include <QStandardPaths>
+#include <QOperatingSystemVersion>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 5000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
@@ -174,7 +175,7 @@ bool ConfigFile::showInExplorerNavigationPane() const
 {
     const bool defaultValue =
 #ifdef Q_OS_WIN
-        QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10
+        QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::Windows10)
 #else
         false
 #endif

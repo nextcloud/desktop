@@ -88,7 +88,7 @@ QSize SlideShow::sizeHint() const
     QFontMetrics fm = fontMetrics();
     QSize labelSize(0, fm.height());
     for (const QString &label : _labels) {
-        labelSize.setWidth(std::max(fm.width(label), labelSize.width()));
+        labelSize.setWidth(std::max(fm.horizontalAdvance(label), labelSize.width()));
     }
     QSize pixmapSize;
     for (const QPixmap &pixmap : _pixmaps) {

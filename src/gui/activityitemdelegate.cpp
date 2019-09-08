@@ -106,7 +106,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     // subject text rect
     QRect actionTextBox = actionIconRect;
-    int actionTextBoxWidth = fm.width(actionText);
+    int actionTextBoxWidth = fm.horizontalAdvance(actionText);
     actionTextBox.setTop(option.rect.top() + margin + offset/2);
     actionTextBox.setHeight(fm.height());
     actionTextBox.setLeft(actionIconRect.right() + margin);
@@ -114,7 +114,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     // message text rect
     QRect messageTextBox = actionTextBox;
-    int messageTextWidth = fm.width(messageText);
+    int messageTextWidth = fm.horizontalAdvance(messageText);
     int messageTextTop = option.rect.top() + fm.height() + margin;
     if(actionText.isEmpty()) messageTextTop = option.rect.top() + margin + offset/2;
     messageTextBox.setTop(messageTextTop);
@@ -129,7 +129,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // time box rect
     QRect timeBox = messageTextBox;
     QString timeStr = tr("%1").arg(timeText);
-    int timeTextWidth = fm.width(timeStr);
+    int timeTextWidth = fm.horizontalAdvance(timeStr);
     int timeTop = option.rect.top() + fm.height() + fm.height() + margin + offset/2;
     if(messageText.isEmpty() || actionText.isEmpty())
         timeTop = option.rect.top() + fm.height() + margin;
@@ -180,7 +180,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         if(objectType == _remote_share) primaryButton.text = tr("Accept");
         if(objectType == _call) primaryButton.text = tr("Join");
 
-        primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
+        primaryButton.rect.setLeft(left - margin * 2 - fm.horizontalAdvance(primaryButton.text));
 
         // save info to be able to filter mouse clicks
         _buttonHeight = buttonSize;
@@ -196,7 +196,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // Primary button will be 'open browser'
         primaryButton.text = tr("Open Browser");
-        primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
+        primaryButton.rect.setLeft(left - margin * 2 - fm.horizontalAdvance(primaryButton.text));
 
         // save info to be able to filter mouse clicks
         _buttonHeight = buttonSize;
