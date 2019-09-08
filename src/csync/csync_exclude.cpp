@@ -73,7 +73,7 @@ static void csync_exclude_expand_escapes(QByteArray &input)
             line[o++] = line[i];
         }
     }
-    input.resize(Utility::convertSizeToUint(o));
+    input.resize(OCC::Utility::convertSizeToUint(o));
 }
 
 // See http://support.microsoft.com/kb/74496 and
