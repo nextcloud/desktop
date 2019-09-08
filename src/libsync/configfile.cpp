@@ -175,7 +175,11 @@ bool ConfigFile::showInExplorerNavigationPane() const
 {
     const bool defaultValue =
 #ifdef Q_OS_WIN
-        QOperatingSystemVersion::current() >= QOperatingSystemVersion(QOperatingSystemVersion::Windows10)
+    #if QTLEGACY
+        QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows10;
+    #else
+        (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10);
+    #endif
 #else
         false
 #endif

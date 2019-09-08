@@ -90,10 +90,14 @@ void showInFileManager(const QString &localPath)
 {
     if (Utility::isWindows()) {
 #ifdef Q_OS_WIN
-        if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows7) {
-            return;
-        }
+        #if QTLEGACY
+            if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows7)
+        #else
+            if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
+        #endif
+                return;
 #endif
+
         QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
         QFileInfo fi(localPath);
 

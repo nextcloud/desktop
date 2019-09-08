@@ -26,6 +26,7 @@
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
 #include "ignorelisteditor.h"
+#include "common/utility.h"
 
 #include "config.h"
 
@@ -80,9 +81,13 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     // Hide on non-Windows, or WindowsVersion < 10.
     // The condition should match the default value of ConfigFile::showInExplorerNavigationPane.
 #ifdef Q_OS_WIN
-    if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10)
+    #if QTLEGACY
+        if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10)
+    #else
+        if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
+    #endif
+            _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
 #endif
-        _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
 
     /* Set the left contents margin of the layout to zero to make the checkboxes
      * align properly vertically , fixes bug #3758
