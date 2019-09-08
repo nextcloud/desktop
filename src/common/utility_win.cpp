@@ -283,4 +283,13 @@ bool Utility::registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const st
     return retCode != ERROR_NO_MORE_ITEMS;
 }
 
+DWORD Utility::convertSizeToDWORD(size_t &convertVar)
+{
+    if( convertVar > UINT_MAX ) {
+        //throw std::bad_cast();
+        convertVar = UINT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
+    }
+    return static_cast<DWORD>(convertVar);
+}
+
 } // namespace OCC
