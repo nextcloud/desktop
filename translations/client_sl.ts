@@ -645,12 +645,12 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Select a certificate</source>
-        <translation>Izberi potrdilo</translation>
+        <translation>Izbor potrdila</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>Vrste potrdil (*.p12 *.pfx)</translation>
+        <translation>Datoteke potrdil (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
