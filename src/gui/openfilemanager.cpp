@@ -22,7 +22,7 @@
 #include <QDesktopServices>
 #include <QApplication>
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5,9,0))
+#if !(QTLEGACY)
 #include <QOperatingSystemVersion>
 #endif
 
