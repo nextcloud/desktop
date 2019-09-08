@@ -57,7 +57,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   handle = (dhandle_t*)c_malloc(sizeof(dhandle_t));
 
   // the file wildcard has to be attached
-  int len_name = strlen(name);
+  size_t len_name = strlen(name);
   if( len_name ) {
       char *h = NULL;
 

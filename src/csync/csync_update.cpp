@@ -724,7 +724,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     if (ctx->current == LOCAL_REPLICA) {
         ASSERT(dirent->path.startsWith(ctx->local.uri)); // path is relative to uri
         // "len + 1" to include the slash in-between.
-        dirent->path = dirent->path.mid(strlen(ctx->local.uri) + 1);
+        size_t uriLength = strlen(ctx->local.uri);
+        dirent->path = dirent->path.mid(OCC::Utility::convertSizeToInt(uriLength) + 1);
     }
 
     previous_fs = ctx->current_fs;

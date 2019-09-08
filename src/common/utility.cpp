@@ -396,7 +396,7 @@ void Utility::crash()
     *a = 1;
 }
 
-// Use this function to retrieve uint (often required by Qt and WIN32) from size_t
+// Use this functions to retrieve uint/int (often required by Qt and WIN32) from size_t
 // without compiler warnings about possible truncation
 uint Utility::convertSizeToUint(size_t &convertVar)
 {
@@ -405,6 +405,15 @@ uint Utility::convertSizeToUint(size_t &convertVar)
         convertVar = UINT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
     }
     return static_cast<uint>(convertVar);
+}
+
+uint Utility::convertSizeToInt(size_t &convertVar)
+{
+    if( convertVar > INT_MAX ) {
+        //throw std::bad_cast();
+        convertVar = INT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
+    }
+    return static_cast<int>(convertVar);
 }
 
 // read the output of the owncloud --version command from the owncloud
