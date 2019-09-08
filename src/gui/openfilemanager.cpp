@@ -21,6 +21,7 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QApplication>
+#include <QOperatingSystemVersion>
 
 namespace OCC {
 
@@ -89,7 +90,7 @@ void showInFileManager(const QString &localPath)
 {
     if (Utility::isWindows()) {
 #ifdef Q_OS_WIN
-        if (QSysInfo::windowsVersion() <= QSysInfo::WV_2003) {
+        if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows7) {
             return;
         }
 #endif
