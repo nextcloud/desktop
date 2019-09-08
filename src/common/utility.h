@@ -60,7 +60,7 @@ namespace Utility {
 
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT DWORD convertSizeToDWORD(size_t &convertVar);
-    #define QTLEGACY (QT_VERSION_MAJOR < 5 | (QT_VERSION_MAJOR == 5 && QT_VERSION_MINOR < 9 ))
+    #define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
 #endif
 
     /**
