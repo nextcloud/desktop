@@ -35,7 +35,10 @@
 #include <QNetworkProxy>
 #include <QDir>
 #include <QScopedValueRollback>
+
+#if !(QTLEGACY)
 #include <QOperatingSystemVersion>
+#endif
 
 namespace OCC {
 
@@ -82,9 +85,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     // The condition should match the default value of ConfigFile::showInExplorerNavigationPane.
 #ifdef Q_OS_WIN
     #if QTLEGACY
-        if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10)
-    #else
         if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
+    #else
+        if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10)
     #endif
             _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
 #endif
