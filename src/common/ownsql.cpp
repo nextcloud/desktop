@@ -282,7 +282,7 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
 static bool startsWithInsensitive(const QByteArray &a, const char *b)
 {
     size_t len = strlen(b);
-    return a.size() >= len && qstrnicmp(a.constData(), b, Utility::convert(len)) == 0;
+    return a.size() >= len && qstrnicmp(a.constData(), b, Utility::convertSizeToUint(len)) == 0;
 }
 
 bool SqlQuery::isSelect()

@@ -398,10 +398,11 @@ void Utility::crash()
 
 // Use this function to retrieve uint (often required by Qt and WIN32) from size_t
 // without compiler warnings about possible truncation
-uint Utility::convert(size_t &convertVar)
+uint Utility::convertSizeToUint(size_t &convertVar)
 {
     if( convertVar > UINT_MAX ) {
-        throw std::bad_cast();
+        //throw std::bad_cast();
+        convertVar = UINT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
     }
     return static_cast<uint>(convertVar);
 }
