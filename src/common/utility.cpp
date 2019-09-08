@@ -396,6 +396,16 @@ void Utility::crash()
     *a = 1;
 }
 
+// Use this function to retrieve uint (often required by Qt and WIN32) from size_t
+// without compiler warnings about possible truncation
+uint Utility::convert(size_t &convertVar)
+{
+    if( convertVar > UINT_MAX ) {
+        throw std::bad_cast();
+    }
+    return static_cast<uint>(convertVar);
+}
+
 // read the output of the owncloud --version command from the owncloud
 // version that is on disk. This works for most versions of the client,
 // because clients that do not yet know the --version flag return the
