@@ -29,15 +29,6 @@ class NextcloudTheme : public Theme
 public:
     NextcloudTheme();
 
-#ifndef TOKEN_AUTH_ONLY
-    QVariant customMedia(CustomMediaType type) Q_DECL_OVERRIDE;
-
-    QColor wizardHeaderBackgroundColor() const Q_DECL_OVERRIDE;
-    QColor wizardHeaderTitleColor() const Q_DECL_OVERRIDE;
-    QPixmap wizardHeaderLogo() const Q_DECL_OVERRIDE;
-#endif
-
-private:
 };
 }
 #endif // NEXTCLOUD_THEME_H

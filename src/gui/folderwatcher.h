@@ -26,6 +26,7 @@
 #include <QHash>
 #include <QScopedPointer>
 #include <QSet>
+#include <QDir>
 
 class QTimer;
 
@@ -56,7 +57,7 @@ class FolderWatcher : public QObject
     Q_OBJECT
 public:
     // Construct, connect signals, call init()
-    explicit FolderWatcher(Folder *folder = 0L);
+    explicit FolderWatcher(Folder *folder = nullptr);
     virtual ~FolderWatcher();
 
     /**
@@ -119,6 +120,8 @@ private:
     QSet<QString> _lastPaths;
     Folder *_folder;
     bool _isReliable = true;
+
+    void appendSubPaths(QDir dir, QStringList& subPaths);
 
     friend class FolderWatcherPrivate;
 };

@@ -3,11 +3,11 @@
 set -xe
 shopt -s extglob
 
-PPA=ppa:nextcloud-devs/client-beta
-PPA_BETA=ppa:nextcloud-devs/client-alpha
+PPA=ppa:nextcloud-devs/client
+PPA_BETA=ppa:nextcloud-devs/client-beta
 
-OBS_PROJECT=home:ivaradi:beta
-OBS_PROJECT_BETA=home:ivaradi:alpha
+OBS_PROJECT=home:ivaradi
+OBS_PROJECT_BETA=home:ivaradi:beta
 OBS_PACKAGE=nextcloud-client
 
 pull_request=${DRONE_PULL_REQUEST:=master}
@@ -36,12 +36,11 @@ read basever kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchang
 cd "${DRONE_DIR}"
 
 echo "$kind" > kind
-kind="release"
 
 if test "$kind" = "beta"; then
-    repo=nextcloud-devs/client-alpha
-else
     repo=nextcloud-devs/client-beta
+else
+    repo=nextcloud-devs/client
 fi
 
 origsourceopt=""
@@ -52,7 +51,7 @@ if ! wget http://ppa.launchpad.net/${repo}/ubuntu/pool/main/n/nextcloud-client/n
     origsourceopt="-sa"
 fi
 
-for distribution in xenial bionic cosmic stable; do
+for distribution in xenial bionic disco eoan stable; do
     rm -rf nextcloud-client_${basever}
     cp -a ${DRONE_WORKSPACE} nextcloud-client_${basever}
 

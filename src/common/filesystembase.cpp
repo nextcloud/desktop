@@ -272,10 +272,12 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
     int fd = _open_osfhandle((intptr_t)fileHandle, _O_RDONLY);
     if (fd == -1) {
         error = "could not make fd from handle";
+        CloseHandle(fileHandle);
         return false;
     }
     if (!file->open(fd, QIODevice::ReadOnly, QFile::AutoCloseHandle)) {
         error = file->errorString();
+        _close(fd); // implicitly closes fileHandle
         return false;
     }
 

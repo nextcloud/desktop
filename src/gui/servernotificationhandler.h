@@ -27,7 +27,7 @@ class ServerNotificationHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit ServerNotificationHandler(AccountState *accountState, QObject *parent = 0);
+    explicit ServerNotificationHandler(AccountState *accountState, QObject *parent = nullptr);
     static QMap<int, QIcon> iconCache;
 
 signals:

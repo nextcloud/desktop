@@ -20,7 +20,7 @@
 
 namespace OCC {
 
-ProgressDispatcher *ProgressDispatcher::_instance = 0;
+ProgressDispatcher *ProgressDispatcher::_instance = nullptr;
 
 QString Progress::asResultString(const SyncFileItem &item)
 {
@@ -91,7 +91,8 @@ bool Progress::isWarningKind(SyncFileItem::Status kind)
     return kind == SyncFileItem::SoftError || kind == SyncFileItem::NormalError
         || kind == SyncFileItem::FatalError || kind == SyncFileItem::FileIgnored
         || kind == SyncFileItem::Conflict || kind == SyncFileItem::Restoration
-        || kind == SyncFileItem::DetailError || kind == SyncFileItem::BlacklistedError;
+        || kind == SyncFileItem::DetailError || kind == SyncFileItem::BlacklistedError
+        || kind == SyncFileItem::FileLocked;
 }
 
 bool Progress::isIgnoredKind(SyncFileItem::Status kind)

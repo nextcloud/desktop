@@ -47,7 +47,7 @@ public:
             settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
         }
     }
-    QString userAgentForUrl(const QUrl &url) const
+    QString userAgentForUrl(const QUrl &url) const override
     {
         return QWebPage::userAgentForUrl(url) + " " + Utility::userAgentString();
     }
@@ -90,7 +90,7 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget *parent)
         QWebView *debugView = new QWebView(this);
         debugView->setPage(debugPage);
         QMainWindow *window = new QMainWindow(this);
-        window->setWindowTitle(tr("SSL Chipher Debug View"));
+        window->setWindowTitle(tr("SSL Cipher Debug View"));
         window->setCentralWidget(debugView);
         window->show();
     }

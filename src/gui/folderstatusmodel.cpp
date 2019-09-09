@@ -43,7 +43,7 @@ static QString removeTrailingSlash(const QString &s)
 
 FolderStatusModel::FolderStatusModel(QObject *parent)
     : QAbstractItemModel(parent)
-    , _accountState(0)
+    , _accountState(nullptr)
     , _dirty(false)
 {
 
@@ -106,7 +106,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
 Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
 {
     if (!_accountState) {
-        return 0;
+        return nullptr;
     }
     switch (classify(index)) {
     case AddButton: {
@@ -124,7 +124,7 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
     case SubFolder:
         return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
     }
-    return 0;
+    return nullptr;
 }
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
@@ -387,19 +387,19 @@ FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex &index
 FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIndex &index) const
 {
     if (!index.isValid())
-        return 0;
+        return nullptr;
     if (auto parentInfo = static_cast<SubFolderInfo *>(index.internalPointer())) {
         if (parentInfo->hasLabel()) {
-            return 0;
+            return nullptr;
         }
         if (index.row() >= parentInfo->_subs.size()) {
-            return 0;
+            return nullptr;
         }
         return &parentInfo->_subs[index.row()];
     } else {
         if (index.row() >= _folders.count()) {
             // AddButton
-            return 0;
+            return nullptr;
         }
         return const_cast<SubFolderInfo *>(&_folders[index.row()]);
     }

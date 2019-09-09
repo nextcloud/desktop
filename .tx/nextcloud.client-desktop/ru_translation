@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[ru]=Клиент синхронизации @APPLICATION_NAME@ для ПК
 Icon[ru]=@APPLICATION_ICON_NAME@
-Name[ru]=@APPLICATION_NAME@  клиент для ПК
+Name[ru]=@APPLICATION_NAME@ для ПК
+Comment[ru]=Клиент синхронизации @APPLICATION_NAME@ для ПК
 GenericName[ru]=Синхронизация папок

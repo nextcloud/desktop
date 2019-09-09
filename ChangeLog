@@ -1,5 +1,138 @@
-ChangeLog
-=========
+2.5 Series ChangeLog
+====================
+
+version 2.5.3 (release 2019-07-22)
+* Fix empty file wording in error log (small)
+* Add Qt-5.12 to CI
+* Fix a minor typo
+* Libcloudproviders: Add missing check for Qt5DBus
+* Fix several memory leaks in cloudproviders and add translation support
+* Share link fixing
+* New drone config
+* Uses configuraion to determine if it should show empty folder popup.
+* Simplify cmake command to make copy-pastable
+* Updated default remote poll to 5 seconds #1115
+* Fix memory leak with device pointer
+* Added a nice UI for the E2E-enabled account first connect
+* This should fix issue #1000
+* Adds parameter to retrieve shares with its reshares.
+* Fixed typo
+* Fixed typo in "certificate"
+* WebView: Properly handle usernames with spaces and plus signs in it
+* Add error category for http file lock error status 423.
+* Displays the uid_owner of a shared file.
+* Minor text change in the link to help in the tab 'General'.
+
+version 2.5.2 (release 2019-04-11)
+* Handle spaces in username properly in login flow
+* Wizard: show an error message if there is no enough free space in the local folder
+* Removed whitespace from string
+* Do not add double slash to login flow url
+* Fix login flow with system proxy
+* Start with easier theming
+* Do not display dismissed notifications
+* Fixed l18n issue. Added space for separating string
+* Add invalid certiticate messagebox
+* Correct app passwords link
+* Be less verbose with logging
+* Fix typo in translation string
+* Add a command line option to launch the client in the background
+* Support Ubuntu Disco Dingo
+* Added missing Include
+* Make sure _profile and _page are deleted in the correct order
+* Fix KDEInstallDirs deprecation warnings
+* Removed Stylesheet
+
+version 2.5.1  (release 2019-01-06)
+* Fixup the port in server notification URLs
+* GUI: let Clang-Tidy modernize nullptr & override usage
+* Improve the slide show
+* Libsync: let Clang-Tidy modernize nullptr & override usage
+* SettingsDialog: fix a little glitch in the account tool button size
+* SettingsDialog: tweak color aware icons
+* More verbose error and proper app name on configuration read error
+* Fix cmake build using WITH_PROVIDERS=OFF
+* Debian/Ubuntu target repository update
+* Change man page names and contents for nextcloud
+* Share dialog alignment
+* Fixed typo
+* Change link to docs for NC 15
+* Do not fetch activities if they are not enabled
+* Do not read system exclude list if user exclude is present
+* Fix the activity loop
+* Write the actual folder to the log
+* Fix appname for Nautilus integration script
+
+version 2.5.0  (release 2018-11-14)
+* End to end encryption
+* New Web login flow
+* UI improvements: Notifications
+* UI improvements: refactoring of Activities
+* SyncJournal: Clear etag filter before sync
+* Partial local discovery: Fix scheduling logic
+* Sync hidden files by default
+* Larger Windows App Icon
+* Show a tray message when a folder watcher becomes unreliable #6119
+* Create symlinks for the small-letter application icon file names
+* In setup wizard put link to nextcloud installation
+* Web view scales vertically
+* Add a WebFlowCredentialsAccessManager
+* Mac Application Icon
+* Ensure GETFileJob notices finishing #6581
+* OAuth2: Try to refresh the token even if the credentials weren't ready.
+* Tray workarounds #6545
+* UpdateInfo: Remove unused code
+* OAuth: Remove the timeout
+* TestOAuth: Don't have global static QObject
+* Log: Adjust update/reconcile log verbosity
+* Reconcile: When detecting a local move, keep the local mtime
+* Wizard enhancement
+* FolderMan::checkPathValidityForNewFolder: make sure to work when fold…
+* Update: Report on readdir() errors #6610
+* Use encode()/decode() with Python 3 only
+* Sqlite: Update bundled version to 3.24.0
+* Do not require server replies to contain an mtime
+* Settings: Attempt to fix rename issue on old macOS
+* Support higher resolution theme icons
+* OAuth: Fix infinite loop when the refresh token is expired
+* Windows: Don't ignore files with FILE_ATTRIBUTE_TEMPORARY
+* Data-Fingerprint: Fix backup detection when fingerprint is empty
+* Nautilus: Fix GET_MENU_ITEMS with utf8 filenames #6643
+* Windows: Release handle/fd when file open fails #6699
+* SettingsDialog: Show the page for the newly created account
+* Updates submodule qtmacgoodies.
+* Fixes #665 Adds slot for confirmShare button.
+* Rename INSTALL to INSTALL.md for Preview :)
+* Add cmake temporary stuff
+* Inform user that configuration is not writable
+* Uses QByteArray to store private key.
+* Fix cmake command for linux in README too
+* Build fix: remove an unused QtSvg/QSvgRenderer include
+* Qtkeychain: 0.8.0 -> 0.9.1
+* Setup wizard: implement an animated and interactive slide show
+* Theming for general settings ui
+* Make the "Add Folder Sync Connection" button act like a button
+* Allow to use the login flow with a self signed certificate
+* Fix warning in ShareUserGroupWidget
+* Copy over config file to new location on windows
+* Update to translate strings
+* Migrate http auth to webflow
+* Margins
+* Qt 5.5 compatibility patch for Xenial
+* Fix cmake build of documentation
+* Use Nextcloud
+* Update isntaller background for OSX
+* Fix ActivityWidget palette
+* SettingsDialog: disable unnecessary wrapping for the about label
+* Added default scheme when server returns just a host
+* Removed explicit initialization; Fixed RAND_bytes not found
+* Actually open the activity view on a click for more info
+* Use a format that supports alpha channels for avatars
+* L10n. Added space for correct grammar.
+
+
+2.4 Series ChangeLog
+====================
 
 version 2.4.1 (2017-02-xx)
 * Ignore files with file names that can't be encoded for the filesystem (#6287, #5676, #5719)
@@ -114,6 +247,10 @@ version 2.4.0 (2017-12-21)
 * Compile with stack-smashing protection
 * Updater: Rudimentary support for beta channel (#6048)
 
+
+2.3 Series ChangeLog
+====================
+
 version 2.3.4 (2017-11-02)
 * Checksums: Use addData function to avoid endless loop CPU load issues with Office files
 * Packaging: Require ZLIB
@@ -184,6 +321,10 @@ version 2.3.0 (2017-03-03)
 * Improved documentation
 * Crash fixes
 
+
+2.2 Series ChangeLog
+====================
+
 version 2.2.4 (release 2016-09-27)
 * Dolphin Plugin: Use the Application name for the socket path (#5172)
 * SyncEngine: Fix renaming of folder when file are changed (#5195)
@@ -248,6 +389,10 @@ version 2.2.0 (release 2016-05-12)
  * Update of QtKeyChain to support Windows credential store
  * Packaging of dolphin overlay icon module for bleeding edge distros
 
+
+2.1 Series ChangeLog
+====================
+
 version 2.1.1 (release 2016-02-10)
  * UI improvements for HiDPI screens, error messages, RTL languages
  * Fix occurences of "Connection Closed" when a new unauthenticated TCP socket is used
@@ -281,8 +426,8 @@ version 2.1 (release 2015-12-03)
  * Improved reconnecting after network change/disconnect (#4167 #3969 ...)
  * Improved performance in Windows file system discovery
  * Removed libneon-based propagator. As a consequence, The client can no
-   longer provide bandwith limiting on Linux-distributions where it is
-   using Qt < 5.4
+* longer provide bandwith limiting on Linux-distributions where it is
+* using Qt < 5.4
  * Performance improvements in the logging functions
  * Ensured that local disk space problems are handled gracefully (#2939)
  * Improved handling of checksums: transport validation, db (#3735)
@@ -317,6 +462,10 @@ version 2.1 (release 2015-12-03)
  * Added abililty to handle storage limitations gracefully (#3736)
  * Organized patches to our base Qt version into admin/qt/patches
  * Plus: A lot of unmentioned improvements and fixes
+
+
+2.0 Series ChangeLog
+====================
 
 version 2.0.2 (release 2015-10-21)
   * csync_file_stat_s: Save a bit of memory
@@ -393,6 +542,10 @@ version 2.0.0 (release 2015-08-25)
   * Bandwidth Throttling: Provide automatic limit setting for downloads (#3084)
   * Systray: Workaround for issue with Qt 5.5.0 #3656
 
+
+1.8 Series ChangeLog
+====================
+
 version 1.8.4 (release 2015-07-13)
   * Release to ship a security release of openSSL. No source changes of the ownCloud Client code.
 
@@ -402,7 +555,7 @@ version 1.8.3 (release 2015-06-23)
   * Ignores: Force a remote discovery after ignore list change (#3172)
   * Shibboleth: Avoid crash by letting the webview use its own QNAM (#3359)
   * System Ignores: Removed *.tmp from system ignore again. If a user
-    wants to ignore *.tmp, it needs to be added to the user ignore list.
+*  wants to ignore *.tmp, it needs to be added to the user ignore list.
 
 version 1.8.2 (release 2015-06-08)
  * Improve reporting of server error messages (#3220)
@@ -415,16 +568,16 @@ version 1.8.2 (release 2015-06-08)
  * HTTP: Add the branding name to the UserAgent string
  * ConnectonValidator: Always run with new credentials (#3266)
  * Recall Feature: Admins can trigger an upload of a file from
-   client to server again (#3246)
+* client to server again (#3246)
  * Propagator: Add 'Content-Length: 0' header to MKCOL request (#3256)
  * Switch on checksum verification through branding or config
  * Add ability for checksum verification of up and download
  * Fix opening external links for some labels (#3135)
  * AccountState: Run only a single validator, allow error message
-   overriding (#3236, #3153)
+* overriding (#3236, #3153)
  * SyncJournalDB: Minor fixes and simplificatons
  * SyncEngine: Force re-read of folder Etags for upgrades from
-   1.8.0 and 1.8.1
+* 1.8.0 and 1.8.1
  * Propagator: Limit length of temporary file name (#2789)
  * ShareDialog: Password ui fixes (#3189)
  * Fix startup hang by removing QSettings lock file (#3175)
@@ -445,12 +598,12 @@ version 1.8.2 (release 2015-06-08)
 version 1.8.1 (release 2015-05-07)
  * Make "operation canceled" error a soft error
  * Do not throw an error for files that are scheduled to be removed,
-   but can not be found on the server. #2919
+* but can not be found on the server. #2919
  * Windows: Reset QNAM to proper function after hibernation. #2899 #2895 #2973
  * Fix argument verification of --confdir #2453
  * Fix a crash when accessing a dangling UploadDevice pointer #2984
  * Add-folder wizard: Make sure there is a scrollbar if folder names
-   are too long #2962
+* are too long #2962
  * Add-folder Wizard: Select the newly created folder
  * Activity: Correctly restore column sizes #3005
  * SSL Button: do not crash on empty certificate chain
@@ -458,8 +611,8 @@ version 1.8.1 (release 2015-05-07)
  * Lookup system proxy async to avoid hangs #2993 #2802
  * ShareDialog: Some GUI refinements
  * ShareDialog: On creation of a share always retrieve the share
-   This makes sure that if a default expiration date is set this is reflected
-   in the dialog. #2889
+* This makes sure that if a default expiration date is set this is reflected
+* in the dialog. #2889
  * ShareDialog: Only show share dialog if we are connected.
  * HttpCreds: Fill pw dialog with previous password. #2848 #2879
  * HttpCreds: Delete password from old location. #2186
@@ -468,7 +621,7 @@ version 1.8.1 (release 2015-05-07)
  * ProtocolWidget: Always add seconds to the DateTime locale. #2535
  * Updater: Give context as to which app is about to be updated #3040
  * Windows: Add version information for owncloud.exe. This should help us know
-   what version or build number a crash report was generated with.
+* what version or build number a crash report was generated with.
  * Fix a crash on shutdown in ~SocketApi #3057
  * SyncEngine: Show more timing measurements #3064
  * Discovery: Add warning if returned etag is 0
@@ -491,8 +644,8 @@ version 1.8.1 (release 2015-05-07)
 version 1.8.0 (release 2015-03-17)
  * Mac OS: HIDPI support
  * Support Sharing from desktop: Added a share dialog that can be
-   opened by context menu in the file managers (Win, Mac, Nautilus)
-   Supports public links with password enforcement
+* opened by context menu in the file managers (Win, Mac, Nautilus)
+* Supports public links with password enforcement
  * Enhanced usage of parallel HTTP requests for ownCloud 8 servers
  * Renamed github repository from mirall to client.
  * Mac OS: Use native notification support
@@ -505,7 +658,7 @@ version 1.8.0 (release 2015-03-17)
  * Build with Qt 5.4
  * Dropped libneon dependency if Qt 5.4 is available
  * Keep files open very short, that avoid lock problems on Windows
-   especially with office software but also others.
+* especially with office software but also others.
  * Merged some NetBSD patches
  * Selective sync support for owncloudcmd
  * Reorganize the source repository
@@ -514,13 +667,17 @@ version 1.8.0 (release 2015-03-17)
  * A huge amount of bug fixes in all areas of the client.
  * almost 700 commits since 1.7.1
 
+
+1.7 Series ChangeLog
+====================
+
 version 1.7.1 (release 2014-12-18)
  * Documentation fixes and updates
  * Nautilus Python plugin fixed for Python 3
  * GUI wording fixes plus improved log messages
  * Fix hidning of the database files in the sync directories
  * Compare http download size with the header value to avoid broken
-   downloads, bug #2528
+* downloads, bug #2528
  * Avoid initial ETag fetch job at startup, which is not needed.
  * Add chunk size http header to PUT requests
  * Fixed deteteCookie method of our CookieJar, fix for Shibboleth
@@ -543,21 +700,20 @@ version 1.7.1 (release 2014-12-18)
  * Win32: Improve reliability of Installer, fix removal of Shell Extensions
 
 version 1.7.0 (release 2014-11-07)
-
  * oC7 Sharing: Handle new sharing options of ownCloud 7 correctly.
  * Added Selective sync: Ability to unselect server folders which are
-   excluded from syncing, plus GUI and setup GUI
+* excluded from syncing, plus GUI and setup GUI
  * Added overlay icons for Windows Explorer, Mac OS Finder and GNOME Nautilus.
-   Information is provided by the client via a local socket / named pipe API
-   which provides information about the sync status of files.
+* Information is provided by the client via a local socket / named pipe API
+* which provides information about the sync status of files.
  * Improved local change detection: consider file size, detect files
-   with ongoing changes and do not upload immediately
+* with ongoing changes and do not upload immediately
  * Improved HTTP request timeout handler: all successful requests reset
-   the timeout counter
+* the timeout counter
  * Improvements for syncing command line tool: netrc support, improved
-   SSL support, non interactive mode
+* SSL support, non interactive mode
  * Permission system: ownCloud 7 delivers file and folder permissions,
-   added ability to deal with it for shared folders and more.
+* added ability to deal with it for shared folders and more.
  * Ignore handling: Do not recurse into ignored or excluded directories
  * Major sync journal database improvements for more stability and performance
  * New library interface to sqlite3
@@ -566,35 +722,40 @@ version 1.7.0 (release 2014-11-07)
  * Improved logging: more useful meta info, removed noise
  * Updated to latest Qt5 versions on Windows and OS X
  * Fixed data loss when renaming a download temporary fails and there was
-   a conflict at the same time.
+* a conflict at the same time.
  * Fixed missing warnings about reusing a sync folder when the back button
-   was used in the advanced folder setup wizard.
+* was used in the advanced folder setup wizard.
  * The 'Retry Sync' button now also restarts all downloads.
  * Clean up temporary downloads and some extra database files when wiping a
-   folder.
+* folder.
  * OS X: Sparkle update to provide pkg format properly
  * OS X: Change distribution format from dmg to pkg with new installer.
  * Windows: Fix handling of filenames with trailing dot or space
  * Windows: Don't use the wrong way to get file mtimes in the legacy propagator.
+
+
+
+1.6 Series ChangeLog
+====================
 
 version 1.6.4 (release 2014-10-22)
  * Fix startup logic, fixes bug #1989
  * Fix raise dialog on X11
  * Win32: fix overflow when computing the size of file > 4GiB
  * Use a fixed function to get files modification time, the
-   original one was broken for certain timezone issues, see
-   core bug #9781 for details
+* original one was broken for certain timezone issues, see
+* core bug #9781 for details
  * Added some missing copyright headers
  * Avoid data corruption due to wrong error handling, bug #2280
  * Do improved request timeout handling to reduce the number of
-   timed out jobs, bug #2155
-   version 1.6.3 (release 2014-09-03)
+* timed out jobs, bug #2155
+* version 1.6.3 (release 2014-09-03)
  * Fixed updater on OS X
  * Fixed memory leak in SSL button that could lead to quick memory draining
  * Fixed upload problem with files >4 GB
  * MacOSX, Linux: Bring Settings window to front properly
  * Branded clients: If no configuration is detected, try to import the data
-    from a previously configured community edition.
+*  from a previously configured community edition.
 
 version 1.6.2 (release 2014-07-28 )
  * Limit the HTTP buffer size when downloading to limit memory consumption.
@@ -602,7 +763,7 @@ version 1.6.2 (release 2014-07-28 )
  * Fix local file name clash detection for MacOSX.
  * Limit maximum wait time to ten seconds in network limiting.
  * Fix data corruption while trying to resume and the server does
-   not support it.
+* not support it.
  * HTTP Credentials: Read password from legacy place if not found.
  * Shibboleth: Fix the waiting curser that would not disapear (#1915)
  * Limit memory usage to avoid mem wasting and crashes
@@ -616,18 +777,18 @@ version 1.6.1 (release 2014-06-26 )
  * Fix openSSL problems for windows deployment
  * Fix syncing a folder with '#' in the name
  * Fix #1845: do not update parent directory etag before sub
-   directories are removed
+* directories are removed
  * Fix reappearing directories if dirs are removed during its
-   upload
+* upload
  * Fix app version in settings dialog, General tab
  * Fix crash in FolderWizard when going offline
  * Shibboleth fixes
  * More specific error messages (file remove during upload, open
-   local sync file)
+* local sync file)
  * Use QSet rather than QHash in SyncEngine (save memory)
  * Fix some memory leaks
  * Fix some thread race problems, ie. wait for neon thread to finish
-   before the propagator is shut down
+* before the propagator is shut down
  * Fix a lot of issues and warnings found by Coverity
  * Fix Mac some settings dialog problems
 
@@ -650,16 +811,16 @@ version 1.6.0 (release 2014-05-30 )
  * Introduce a general timeout of 300s for network operations
  * Improve error handling, blacklisting
  * Job-based change propagation, enables faster parallel up/downloads
-   (right now only if no bandwidth limit is set and no proxy is used)
+* (right now only if no bandwidth limit is set and no proxy is used)
  * Significantly reduced CPU load when checking for local and remote changes
  * Speed up file stat code on Windows
  * Enforce Qt5 for Windows and Mac OS X builds
  * Improved owncloudcmd: SSL support, documentation
  * Added advanced logging of operations (file .???.log in sync
-   directory)
+* directory)
  * Avoid creating a temporary copy of the sync database (.ctmp)
  * Enable support for TLS 1.2 negotiation on platforms that use
-   Qt 5.2 or later
+* Qt 5.2 or later
  * Forward server exception messages to client error messages
  * Mac OS X: Support Notification Center in OS X 10.8+
  * Mac OS X: Use native settings dialog
@@ -668,11 +829,15 @@ version 1.6.0 (release 2014-05-30 )
  * Remove vio abstraction in csync
  * Avoid data loss when a client file system is not case sensitive
 
+
+1.5 Series ChangeLog
+====================
+
 version 1.5.3 (release 2014-03-10 )
   * Fix usage of proxies after first sync run (#1502, #1524, #1459, #1521)
   * Do not wipe the credentials from config for reconnect (#1499, #1503)
   * Do not erase the full account config if an old version of the client stored
-    the password (related to above)
+*  the password (related to above)
   * Fix layout of the network tab (fixes #1491)
   * Handle authentication requests by a Shibboleth IdP
   * Shibboleth: If no connection is available, don't open the login window
@@ -701,34 +866,34 @@ version 1.5.2 (release 2014-02-26 )
 
 version 1.5.1 (release 2014-02-13 )
   * Added an auto updater that updates the client if a
-    more recent version was found automatically (Windows, Mac OS X)
+*  more recent version was found automatically (Windows, Mac OS X)
   * Added a button to the account dialog that gives information
-    about the encryption layer used for communication, plus a
-    certificate information widget
+*  about the encryption layer used for communication, plus a
+*  certificate information widget
   * Preserve the permission settings of local files rather than
-    setting them to a default (Bug #820)
+*  setting them to a default (Bug #820)
   * Handle windows lnk files correctly (Bug #1307)
   * Detect removes and renames in read only shares and
-    restore the gone away files. (Bug #1386)
+*  restore the gone away files. (Bug #1386)
   * Fixes sign in/sign out and password dialog. (Bug #1353)
   * Fixed error messages (Bug #1394)
   * Lots of fixes for building with Qt5
   * Changes to network limits are now also applied during a
-    sync run
+*  sync run
   * Fixed mem leak after via valgrind on Mac
   * Imported the ocsync library into miralls repository.
-    Adopted all build systems and packaging to that.
+*  Adopted all build systems and packaging to that.
   * Introduce a new linux packaging scheme following the
-    debian upstream scheme
+*  debian upstream scheme
   * Use a refactored Linux file system watcher based on
-    inotify, incl. unit tests
+*  inotify, incl. unit tests
   * Wizard: Gracefully fall back to HTTP if HTTPS connection
-    fails, issuing a warning
+*  fails, issuing a warning
   * Fixed translation misses in the propagator
   * Fixes in proxy configuration
   * Fixes in sync journal handling
   * Fix the upload progress if the local source is still
-    changing when the upload begins.
+*  changing when the upload begins.
   * Add proxy support to owncloud commandline client
   * NSIS fixes
   * A lot of other fixes and minor improvements
@@ -765,6 +930,10 @@ version 1.5.0 (release 2013-12-12 ), csync 0.91.4 required
   * Windows: Fix rename of temporary files
   * Windows: Fix move file operation
 
+
+1.4 Series ChangeLog
+====================
+
 version 1.4.2 (release 2013-10-18 ), csync 0.90.4 required
   * Do not show the warning icon in the tray (#944)
   * Fix manual proxy support when switching (#1016)
@@ -780,12 +949,11 @@ version 1.4.2 (release 2013-10-18 ), csync 0.90.4 required
   * Progress: Show number of deletes.
 
 version 1.4.1 (release 2013-09-24 ), csync 0.90.1 required
-
   * Translation and documentation fixes.
   * Fixed error display in settings/status dialog, displays multi
-    line error messages now correctly.
+*  line error messages now correctly.
   * Wait up to 30 secs before complaining about missing systray
-    Fixes bug #949
+*  Fixes bug #949
   * Fixed utf8 issues with basic auth authentication, fixes bug #941
   * Fixed remote folder selector, avoid recursive syncing, fixes bug #962
   * Handle and display network problems at startup correctly.
@@ -802,7 +970,6 @@ version 1.4.1 (release 2013-09-24 ), csync 0.90.1 required
   * Various minor code fixes
 
 version 1.4.0 (release 2013-09-04 ), csync 0.90.0 required
-
   * New Scheduler: Only sync when there are actual changes in the server
   * Add a Settings Dialog, move Proxy Settings there
   * Transform folder Status Dialog into Account Settings, provide feedback via context menu
@@ -813,7 +980,7 @@ version 1.4.0 (release 2013-09-04 ), csync 0.90.0 required
   * Move ability to switch to mono icons from a switch to a Settings option
   * Add "Launch on System Startup" GUI option
   * Add "Show Desktop Nofications"GUI option (enabled by default)
-    top optionally disable sync notifications
+*  top optionally disable sync notifications
   * Add Help item, pointing to online reference
   * Implement graphical selection of remote folders in FolderWizard
   * Allow custom ignore patterns
@@ -832,11 +999,14 @@ version 1.4.0 (release 2013-09-04 ), csync 0.90.0 required
   * Require Qt 4.7
   * Known issue: Under certain conditions, a file will only get uploaded after up to five minutes
 
-version 1.3.0 (release 2013-06-25 ), csync 0.80.0 required
 
+1.3 Series ChangeLog
+====================
+
+version 1.3.0 (release 2013-06-25 ), csync 0.80.0 required
   * Default proxy port to 8080
   * Don't lose proxy settings when changing passwords
-  * Support SOCKS5 proxy (useful in combination with ssh   *D)
+  * Support SOCKS5 proxy (useful in combination with ssh* *D)
   * Propagate proxy changes to csync at runtime
   * Improve proxy wizard
   * Display proxy errors
@@ -852,13 +1022,17 @@ version 1.3.0 (release 2013-06-25 ), csync 0.80.0 required
   * Remove journal when reusing a directory that used to have a journal before
   * Visual clean up of status dialog items
   * Wizard: When changing the URL or user name, allow the user to push his data
-    to the new location or wipe the folder and start from scratch
+*  to the new location or wipe the folder and start from scratch
   * Wizard: Make setting a custom folder as a sync target work again
   * Fix application icon
   * User-Agent now contains "Mozilla/5.0" and the Platform name (for firewall/proxy compat)
   * Server side directory moves will be detected
   * New setup wizard, defaulting to root syncing (only for new setups)
   * Improved thread stop/termination
+
+
+1.2 Series ChangeLog
+====================
 
 version 1.2.5 (release 2013-04-23 ), csync 0.70.7 required
   * [Fixes] NSIS installer fixes
@@ -925,6 +1099,10 @@ version 1.2.0 (release 2013-01-24 ), csync 0.70.2 required
   * [Platform] cmake fixes.
   * [Platform] Improved, more detailed error reporting.
 
+
+1.1 Series ChangeLog
+====================
+
 version 1.1.4 (release 2012-12-19 ), csync 0.60.4 required
   * No changes to mirall, only csync fixes.
 
@@ -934,7 +1112,7 @@ version 1.1.3 (release 2012-11-30 ), csync 0.60.3 required
 version 1.1.2 (release 2012-11-26 ), csync 0.60.2 required
   * [Fixes] Allow to properly cancel the password dialog.
   * [Fixes] Share folder name correctly percent encoded with old Qt
-            4.6 builds ie. Debian.
+* * * * 4.6 builds ie. Debian.
   * [Fixes] If local sync dir is not existing, create it.
   * [Fixes] lots of other minor fixes.
   * [GUI] Display error messages in status dialog.
@@ -942,30 +1120,30 @@ version 1.1.2 (release 2012-11-26 ), csync 0.60.2 required
   * [GUI] Show username for connection in statusdialog.
   * [GUI] Show intro wizard on new connection setup.
   * [APP] Use CredentialStore to better support various credential
-          backends.
+* * *  backends.
   * [APP] Handle missing local folder more robust: Create it if
-          missing instead of ignoring.
+* * *  missing instead of ignoring.
   * [APP] Simplify treewalk code.
   * [Platform] Fix Mac building
 
 version 1.1.1 (release 2012-10-18), csync 0.60.1 required
-  * [GUI]   Allow changing folder name in single folder mode
-  * [GUI]   Windows: Add license to installer
-  * [GUI]   owncloud --logwindow will bring up the log window
-            in an already running instance
+  * [GUI]* Allow changing folder name in single folder mode
+  * [GUI]* Windows: Add license to installer
+  * [GUI]* owncloud --logwindow will bring up the log window
+* * * * in an already running instance
   * [Fixes] Make sure SSL errors are always handled
   * [Fixes] Allow special characters in folder alias
   * [Fixes] Proper workaround for Menu bug in Ubuntu
   * [Fixes] csync: Fix improper memory cleanup which could
-            cause memory leaks and crashes
+* * * * cause memory leaks and crashes
   * [Fixes] csync: Fix memory leak
   * [Fixes] csync: Allow single quote (') in file names
   * [Fixes] csync: Remove stray temporary files
 
-  * [GUI]   Reworked tray context menu.
-  * [GUI]   Users can now sync the server root folder.
+  * [GUI]* Reworked tray context menu.
+  * [GUI]* Users can now sync the server root folder.
   * [Fixes] Proxy support: now supports Proxy Auto-Configuration (PAC)
-            on Windows, reliability fixes across all OSes.
+* * * * on Windows, reliability fixes across all OSes.
   * [Fixes] Url entry field in setup assistant handles http/https correctly.
   * [Fixes] Button enable state in status dialog.
   * [Fixes] Crash fixed on ending the client, tray icon related.
@@ -978,11 +1156,15 @@ version 1.1.1 (release 2012-10-18), csync 0.60.1 required
   * [Platform] Windows: ownCloud gets added to autorun by default.
   * [Platform] insert correct version info from cmake.
   * [Platform] csync conf file and database were moved to the users app data
-               directory, away from the .csync dir.
-  *         Renamed exclude.lst to sync-exclude.lst and moved it to
-            /etc/appName()/ for more clean packaging. From the user path,
-            still exclude.lst is read if sync-exclude.lst is not existing.
-  *         Placed custom.ini with customization options to /etc/appName()
+* * * * * directory, away from the .csync dir.
+  ** * * Renamed exclude.lst to sync-exclude.lst and moved it to
+* * * * /etc/appName()/ for more clean packaging. From the user path,
+* * * * still exclude.lst is read if sync-exclude.lst is not existing.
+  ** * * Placed custom.ini with customization options to /etc/appName()
+
+
+1.0 Series ChangeLog
+====================
 
 version 1.0.5 (release 2012-08-14), csync 0.50.8 required
   * [Fixes] Fixed setup dialog: Really use https if checkbox is activated.
@@ -1000,23 +1182,23 @@ version 1.0.4 (release 2012-08-10), csync 0.50.8 required
   * [GUI] Removed Log Window Button, log available through command line.
   * [GUI] Proxy configuration dialog added.
   * [GUI] Added Translations to languages Slovenian, Polish, Catalan,
-          Portuguese (Brazil), German, Greek, Spanish, Czech, Italian, Slovak,
-          French, Russian, Japanese, Swedish, Portuguese (Portugal)
-          all with translation rate >90%.
+* * *  Portuguese (Brazil), German, Greek, Spanish, Czech, Italian, Slovak,
+* * *  French, Russian, Japanese, Swedish, Portuguese (Portugal)
+* * *  all with translation rate >90%.
   * [Fixes] Loading of self signed certs into Networkmanager (#oc-843)
   * [Fixes] Win32: Handle SSL dll loading correctly.
   * [Fixes] Many other small fixes and improvements.
 
 version 1.0.3 (release 2012-06-19), csync 0.50.7 required
   * [GUI] Added a log window which catches the logging if required and
-          allows to save for information.
+* * *  allows to save for information.
   * [CMI] Added options --help, --logfile and --logflush
   * [APP] Allow to specify sync frequency in the config file.
   * [Fixes] Do not use csync database files from a sync before.
   * [Fixes] In Connection wizard, write the final config onyl if
-            the user really accepted. Also remove the former database.
+* * * * the user really accepted. Also remove the former database.
   * [Fixes] More user expected behaviour deletion of sync folder local
-            and remote.
+* * * * and remote.
   * [Fixes] Allow special characters in the sync directory names
   * [Fixes] Win32: Fixed directory removal with special character dirs.
   * [Fixes] MacOS: Do not flood the system log any more
@@ -1035,7 +1217,7 @@ version 1.0.2 (release 2012-05-18), csync 0.50.6 required
   * [Fixes] Dialogs comes to front on click
   * [Fixes] Open local sync folder from tray and status for win32
   * [Fixes] Load exclude.lst correctly on MacOSX
-    + csync fixes.
+*  + csync fixes.
 
 version 1.0.1 (release 2012-04-18), csync 0.50.5 required
   * [Security] Support SSL Connections

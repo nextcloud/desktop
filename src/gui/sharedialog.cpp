@@ -18,6 +18,8 @@
 #include "sharelinkwidget.h"
 #include "shareusergroupwidget.h"
 
+#include "sharemanager.h"
+
 #include "account.h"
 #include "accountstate.h"
 #include "configfile.h"
@@ -49,7 +51,8 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _maxSharingPermissions(maxSharingPermissions)
     , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
     , _startPage(startPage)
-    , _linkWidget(nullptr)
+    , _linkWidgetList({})
+    , _emptyShareLinkWidget(nullptr)
     , _userGroupWidget(nullptr)
     , _progressIndicator(nullptr)
 {
@@ -101,11 +104,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
 
     if (!accountState->account()->capabilities().shareAPI()) {
-        // TODO do we want to display it?
-        //auto label = new QLabel(tr("The server does not allow sharing"));
-        //label->setWordWrap(true);
-        //label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        //layout()->replaceWidget(_ui->shareWidgets, label);
         return;
     }
 
@@ -115,14 +113,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         job->start();
     }
 
-//TODO Progress Indicator where should it go?
-//    _progressIndicator = new QProgressIndicator(this);
-//    _progressIndicator->startAnimation();
-//    _progressIndicator->setToolTip(tr("Retrieving maximum possible sharing permissions from server..."));
-//    _ui->buttonBoxLayout->insertWidget(0, _progressIndicator);
-
-    // Server versions >= 9.1 support the "share-permissions" property
-    // older versions will just return share-permissions: ""
     auto job = new PropfindJob(accountState->account(), _sharePath);
     job->setProperties(
         QList<QByteArray>()
@@ -133,10 +123,103 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     connect(job, &PropfindJob::result, this, &ShareDialog::slotPropfindReceived);
     connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
     job->start();
+
+    bool sharingPossible = true;
+    if (!accountState->account()->capabilities().sharePublicLink()) {
+        qCWarning(lcSharing) << "Link shares have been disabled";
+        sharingPossible = false;
+    } else if (!(maxSharingPermissions & SharePermissionShare)) {
+        qCWarning(lcSharing) << "The file can not be shared because it was shared without sharing permission.";
+        sharingPossible = false;
+    }
+
+    if (sharingPossible) {
+        _manager = new ShareManager(accountState->account(), this);
+        connect(_manager, &ShareManager::sharesFetched, this, &ShareDialog::slotSharesFetched);
+        connect(_manager, &ShareManager::linkShareCreated, this, &ShareDialog::slotAddLinkShareWidget);
+    }
+}
+
+void ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare){
+    _linkWidgetList.append(new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this));
+    int index = _linkWidgetList.size()-1;
+    _linkWidgetList.at(index)->setLinkShare(linkShare);
+
+    connect(linkShare.data(), &Share::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
+    connect(linkShare.data(), &Share::shareDeleted, _linkWidgetList.at(index), &ShareLinkWidget::slotDeleteShareFetched);
+    connect(_manager, &ShareManager::linkShareRequiresPassword, _linkWidgetList.at(index), &ShareLinkWidget::slotCreateShareRequiresPassword);
+    connect(_manager, &ShareManager::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
+
+    // Connect all shares signals to gui slots
+    connect(this, &ShareDialog::toggleAnimation, _linkWidgetList.at(index), &ShareLinkWidget::slotToggleAnimation);
+    connect(_linkWidgetList.at(index), &ShareLinkWidget::createLinkShare, this, &ShareDialog::slotCreateLinkShare);
+    connect(_linkWidgetList.at(index), &ShareLinkWidget::deleteLinkShare, this, &ShareDialog::slotDeleteShare);
+    //connect(_linkWidgetList.at(index), &ShareLinkWidget::resizeRequested, this, &ShareDialog::slotAdjustScrollWidgetSize);
+
+    _ui->verticalLayout->insertWidget(_linkWidgetList.size()+1, _linkWidgetList.at(index));
+    _linkWidgetList.at(index)->setupUiOptions();
+}
+
+void ShareDialog::initLinkShareWidget(){
+    if(_linkWidgetList.size() == 0){
+        _emptyShareLinkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
+        _linkWidgetList.append(_emptyShareLinkWidget);
+
+//        connect(_emptyShareLinkWidget, &ShareLinkWidget::resizeRequested, this, &ShareDialog::slotAdjustScrollWidgetSize);
+//        connect(this, &ShareDialog::toggleAnimation, _emptyShareLinkWidget, &ShareLinkWidget::slotToggleAnimation);
+        connect(_emptyShareLinkWidget, &ShareLinkWidget::createLinkShare, this, &ShareDialog::slotCreateLinkShare);
+
+        _ui->verticalLayout->insertWidget(_linkWidgetList.size()+1, _emptyShareLinkWidget);
+        _emptyShareLinkWidget->show();
+
+    } else if(_emptyShareLinkWidget) {
+        _emptyShareLinkWidget->hide();
+        _ui->verticalLayout->removeWidget(_emptyShareLinkWidget);
+        _linkWidgetList.removeAll(_emptyShareLinkWidget);
+        _emptyShareLinkWidget = nullptr;
+    }
+}
+
+void ShareDialog::slotAddLinkShareWidget(const QSharedPointer<LinkShare> &linkShare){
+    emit toggleAnimation(true);
+    addLinkShareWidget(linkShare);
+    initLinkShareWidget();
+    emit toggleAnimation(false);
+}
+
+void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
+{
+    emit toggleAnimation(true);
+
+    const QString versionString = _accountState->account()->serverVersion();
+    qCInfo(lcSharing) << versionString << "Fetched" << shares.count() << "shares";
+    foreach (auto share, shares) {
+        if (share->getShareType() != Share::TypeLink || share->getUidOwner() != share->account()->davUser()) {
+            continue;
+        }
+
+        QSharedPointer<LinkShare> linkShare = qSharedPointerDynamicCast<LinkShare>(share);
+        addLinkShareWidget(linkShare);
+    }
+
+    initLinkShareWidget();
+    emit toggleAnimation(false);
+}
+
+// TODO
+void ShareDialog::slotAdjustScrollWidgetSize()
+{
+    int count = this->findChildren<ShareLinkWidget *>().count();
+    _ui->scrollArea->setVisible(count > 0);
+    if (count > 0 && count <= 3) {
+        _ui->scrollArea->setFixedHeight(_ui->scrollArea->widget()->sizeHint().height());
+    }
+    _ui->scrollArea->setFrameShape(count > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
 }
 
 ShareDialog::~ShareDialog()
 {
+    _linkWidgetList.clear();
     delete _ui;
 }
 
@@ -178,8 +261,6 @@ void ShareDialog::slotPropfindError()
 
 void ShareDialog::showSharingUi()
 {
-    //_progressIndicator->stopAnimation();
-
     auto theme = Theme::instance();
 
     // There's no difference between being unable to reshare and
@@ -190,6 +271,7 @@ void ShareDialog::showSharingUi()
         auto label = new QLabel(this);
         label->setText(tr("The file can not be shared because it was shared without sharing permission."));
         label->setWordWrap(true);
+        _ui->verticalLayout->insertWidget(1, label);
         return;
     }
 
@@ -205,13 +287,23 @@ void ShareDialog::showSharingUi()
     }
 
     if (theme->linkSharing()) {
-        _linkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
-        _ui->verticalLayout->insertWidget(2, _linkWidget);
-        _linkWidget->getShares();
-
-        if (_startPage == ShareDialogStartPage::PublicLinks)
-            _ui->verticalLayout->insertWidget(3, _linkWidget);
+        _manager->fetchShares(_sharePath);
     }
+}
+
+void ShareDialog::slotCreateLinkShare()
+{
+    _manager->createLinkShare(_sharePath, QString(), QString());
+}
+
+
+void ShareDialog::slotDeleteShare()
+{
+    auto sharelinkWidget = dynamic_cast<ShareLinkWidget*>(sender());
+    sharelinkWidget->hide();
+    _ui->verticalLayout->removeWidget(sharelinkWidget);
+    _linkWidgetList.removeAll(sharelinkWidget);
+    initLinkShareWidget();
 }
 
 void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &reply)
@@ -237,8 +329,10 @@ void ShareDialog::slotAccountStateChanged(int state)
         _userGroupWidget->setEnabled(enabled);
     }
 
-    if (_linkWidget != nullptr) {
-        _linkWidget->setEnabled(enabled);
+    if(_linkWidgetList.size() > 0){
+        foreach(ShareLinkWidget *widget, _linkWidgetList){
+            widget->setEnabled(state);
+        }
     }
 }
 }

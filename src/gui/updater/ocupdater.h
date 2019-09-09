@@ -101,7 +101,7 @@ public:
 
     bool performUpdate();
 
-    void checkForUpdate() Q_DECL_OVERRIDE;
+    void checkForUpdate() override;
 
     QString statusString() const;
     int downloadState() const;
@@ -116,7 +116,7 @@ public slots:
     void slotStartInstaller();
 
 protected slots:
-    void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
+    void backgroundCheckForUpdate() override;
 
 private slots:
     void slotOpenUpdateUrl();
@@ -149,7 +149,7 @@ public:
         UpdateAvailable,
         UpdateFailed };
     explicit NSISUpdater(const QUrl &url);
-    bool handleStartup() Q_DECL_OVERRIDE;
+    bool handleStartup() override;
 private slots:
     void slotSetSeenVersion();
     void slotDownloadFinished();
@@ -158,7 +158,7 @@ private slots:
 private:
     NSISUpdater::UpdateState updateStateOnStart();
     void showDialog(const UpdateInfo &info);
-    void versionInfoArrived(const UpdateInfo &info) Q_DECL_OVERRIDE;
+    void versionInfoArrived(const UpdateInfo &info) override;
     QScopedPointer<QTemporaryFile> _file;
     QString _targetFile;
     bool _showFallbackMessage;
@@ -176,11 +176,11 @@ class PassiveUpdateNotifier : public OCUpdater
     Q_OBJECT
 public:
     explicit PassiveUpdateNotifier(const QUrl &url);
-    bool handleStartup() Q_DECL_OVERRIDE { return false; }
-    void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
+    bool handleStartup() override { return false; }
+    void backgroundCheckForUpdate() override;
 
 private:
-    void versionInfoArrived(const UpdateInfo &info) Q_DECL_OVERRIDE;
+    void versionInfoArrived(const UpdateInfo &info) override;
     QByteArray _runningAppVersion;
 };
 }

@@ -59,7 +59,7 @@ class DiscoverySingleDirectoryJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+    explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
     // Specify thgat this is the root and we need to check the data-fingerprint
     void setIsRootPath() { _isRootPath = true; }
     void start();
@@ -117,8 +117,8 @@ public:
     DiscoveryMainThread(AccountPtr account)
         : QObject()
         , _account(account)
-        , _currentDiscoveryDirectoryResult(0)
-        , _currentGetSizeResult(0)
+        , _currentDiscoveryDirectoryResult(nullptr)
+        , _currentGetSizeResult(nullptr)
         , _firstFolderProcessed(false)
     {
     }
@@ -187,7 +187,7 @@ class DiscoveryJob : public QObject
 
 
 public:
-    explicit DiscoveryJob(CSYNC *ctx, QObject *parent = 0)
+    explicit DiscoveryJob(CSYNC *ctx, QObject *parent = nullptr)
         : QObject(parent)
         , _csync_ctx(ctx)
     {

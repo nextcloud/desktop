@@ -28,6 +28,7 @@ SyncResult::SyncResult()
     , _numNewConflictItems(0)
     , _numOldConflictItems(0)
     , _numErrorItems(0)
+    , _numLockedItems(0)
 
 {
 }
@@ -137,6 +138,13 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
                                   || item->_instruction == CSYNC_INSTRUCTION_REMOVE
                                   || item->_instruction == CSYNC_INSTRUCTION_RENAME)) {
         _folderStructureWasChanged = true;
+    }
+
+    if(item->_status == SyncFileItem::FileLocked){
+        _numLockedItems++;
+        if (!_firstItemLocked) {
+            _firstItemLocked = item;
+        }
     }
 
     // Process the item to the gui

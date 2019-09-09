@@ -26,6 +26,8 @@
 #include "propagateremotedelete.h"
 #include "propagatedownload.h"
 #include "common/asserts.h"
+#include "configfile.h"
+
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -89,7 +91,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
 
     _csync_ctx.reset(new CSYNC(localPath.toUtf8().data(), journal));
 
-    _excludedFiles.reset(new ExcludedFiles);
+    _excludedFiles.reset(new ExcludedFiles(localPath));
     _csync_ctx->exclude_traversal_fn = _excludedFiles->csyncTraversalMatchFun();
 
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
@@ -1035,7 +1037,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
-    if (!_hasNoneFiles && _hasRemoveFile) {
+    ConfigFile cfgFile;
+    if (!_hasNoneFiles && _hasRemoveFile && cfgFile.promptDeleteFiles()) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
         bool cancel = false;
         emit aboutToRemoveAllFiles(syncItems.first()->_direction, &cancel);
