@@ -54,7 +54,7 @@ ShibbolethCredentials::ShibbolethCredentials()
     , _url()
     , _ready(false)
     , _stillValid(false)
-    , _browser(0)
+    , _browser(nullptr)
     , _keychainMigration(false)
 {
 }
@@ -62,7 +62,7 @@ ShibbolethCredentials::ShibbolethCredentials()
 ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie &cookie)
     : _ready(true)
     , _stillValid(true)
-    , _browser(0)
+    , _browser(nullptr)
     , _shibCookie(cookie)
     , _keychainMigration(false)
 {
@@ -161,7 +161,7 @@ void ShibbolethCredentials::askFromUser()
         } else if (type == DetermineAuthTypeJob::OAuth) {
             // Hack: upgrade to oauth
             auto newCred = new HttpCredentialsGui;
-            job->setParent(0);
+            job->setParent(nullptr);
             job->deleteLater();
             auto account = this->_account;
             auto user = this->_user;

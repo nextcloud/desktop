@@ -229,14 +229,13 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // change pen color if use is not online
     QPalette p = option.palette;
     if(!accountOnline)
-        painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
+        p.setCurrentColorGroup(QPalette::Disabled);
 
     // change pen color if the line is selected
-    QPalette::ColorGroup cg = option.state & (QStyle::State_Enabled | QStyle::State_Active)
-            ? QPalette::Normal
-            : QPalette::Inactive;
-
-    painter->setPen(option.palette.color(cg, QPalette::Text));
+    if (option.state & QStyle::State_Selected)
+        painter->setPen(p.color(QPalette::HighlightedText));
+    else
+        painter->setPen(p.color(QPalette::Text));
 
     // calculate space for text - use the max possible before using the elipses
     int spaceLeftForText = option.rect.width() - (actionIconRect.width() + margin + rightMargin + leftMargin) -
@@ -262,11 +261,10 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
 
     // change pen color for the time
-    painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
-
-    // check if line is selected
     if (option.state & QStyle::State_Selected)
-        painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
+        painter->setPen(p.color(QPalette::Disabled, QPalette::HighlightedText));
+    else
+        painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
 
     // draw the time
     const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, spaceLeftForText);

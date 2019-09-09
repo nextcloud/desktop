@@ -26,6 +26,7 @@
 #include <QHash>
 #include <QScopedPointer>
 #include <QSet>
+#include <QDir>
 
 class QTimer;
 
@@ -55,11 +56,14 @@ class FolderWatcher : public QObject
 {
     Q_OBJECT
 public:
+    // Construct, connect signals, call init()
+    explicit FolderWatcher(Folder *folder = nullptr);
+    virtual ~FolderWatcher();
+
     /**
      * @param root Path of the root of the folder
      */
-    FolderWatcher(const QString &root, Folder *folder = 0L);
-    virtual ~FolderWatcher();
+    void init(const QString &root);
 
     /**
      * Not all backends are recursive by default.
@@ -96,6 +100,12 @@ signals:
      */
     void lostChanges();
 
+    /**
+     * Signals when the watcher became unreliable. The string is a translated
+     * message that can be shown to users.
+     */
+    void becameUnreliable(const QString &message);
+
 protected slots:
     // called from the implementations to indicate a change in path
     void changeDetected(const QString &path);
@@ -110,6 +120,8 @@ private:
     QSet<QString> _lastPaths;
     Folder *_folder;
     bool _isReliable = true;
+
+    void appendSubPaths(QDir dir, QStringList& subPaths);
 
     friend class FolderWatcherPrivate;
 };

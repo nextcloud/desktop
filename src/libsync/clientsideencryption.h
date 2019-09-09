@@ -47,7 +47,7 @@ namespace EncryptionHelper {
             const QByteArray& data
     );
 
-    QByteArray privateKeyToPem(const QSslKey key);
+    QByteArray privateKeyToPem(const QByteArray key);
 
     //TODO: change those two EVP_PKEY into QSslKey.
     QByteArray encryptStringAsymmetric(
@@ -87,6 +87,8 @@ public:
 
     void forgetSensitiveData();
 
+    bool newMnemonicGenerated() const;
+
 public slots:
     void slotRequestMnemonic();
 
@@ -122,10 +124,12 @@ private:
     QMap<QString, bool> _folder2encryptedStatus;
 
 public:
-    QSslKey _privateKey;
+    //QSslKey _privateKey;
+    QByteArray _privateKey;
     QSslKey _publicKey;
     QSslCertificate _certificate;
     QString _mnemonic;
+    bool _newMnemonicGenerated = false;
 };
 
 /* Generates the Metadata for the folder */

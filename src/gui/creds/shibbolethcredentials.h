@@ -50,17 +50,17 @@ public:
     /* create credentials for an already connected account */
     ShibbolethCredentials(const QNetworkCookie &cookie);
 
-    void setAccount(Account *account) Q_DECL_OVERRIDE;
-    QString authType() const Q_DECL_OVERRIDE;
-    QString user() const Q_DECL_OVERRIDE;
-    QNetworkAccessManager *createQNAM() const Q_DECL_OVERRIDE;
-    bool ready() const Q_DECL_OVERRIDE;
-    void fetchFromKeychain() Q_DECL_OVERRIDE;
-    void askFromUser() Q_DECL_OVERRIDE;
-    bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
-    void persist() Q_DECL_OVERRIDE;
-    void invalidateToken() Q_DECL_OVERRIDE;
-    void forgetSensitiveData() Q_DECL_OVERRIDE;
+    void setAccount(Account *account) override;
+    QString authType() const override;
+    QString user() const override;
+    QNetworkAccessManager *createQNAM() const override;
+    bool ready() const override;
+    void fetchFromKeychain() override;
+    void askFromUser() override;
+    bool stillValid(QNetworkReply *reply) override;
+    void persist() override;
+    void invalidateToken() override;
+    void forgetSensitiveData() override;
 
     void showLoginWindow();
 

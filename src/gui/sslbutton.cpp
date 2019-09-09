@@ -175,7 +175,7 @@ void SslButton::updateAccountState(AccountState *accountState)
     } else {
         setIcon(QIcon(QLatin1String(":/client/resources/lock-http.png")));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
-        setMenu(0);
+        setMenu(nullptr);
     }
 }
 

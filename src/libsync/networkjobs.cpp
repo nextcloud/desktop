@@ -649,7 +649,7 @@ QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
 {
     int dim = baseAvatar.width();
 
-    QImage avatar(dim, dim, baseAvatar.format());
+    QImage avatar(dim, dim, QImage::Format_ARGB32);
     avatar.fill(Qt::transparent);
 
     QPainter painter(&avatar);
@@ -923,6 +923,11 @@ void DetermineAuthTypeJob::checkBothDone()
     // WebViewFlow > OAuth > Shib > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
         result = WebViewFlow;
+    }
+
+    // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
+    if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
+        result = LoginFlowV2;
     }
 
     qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;

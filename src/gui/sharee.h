@@ -63,12 +63,12 @@ class ShareeModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = 0);
+    explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = nullptr);
 
     typedef QVector<QSharedPointer<Sharee>> ShareeSet; // FIXME: make it a QSet<Sharee> when Sharee can be compared
     void fetch(const QString &search, const ShareeSet &blacklist);
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
 
     QSharedPointer<Sharee> getSharee(int at);
 

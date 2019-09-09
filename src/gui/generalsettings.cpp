@@ -54,7 +54,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
 
     // setup about section
-    QString about = Theme::instance()->about();
     if (about.isEmpty()) {
         _ui->aboutGroupBox->hide();
     } else {
@@ -136,7 +135,7 @@ void GeneralSettings::slotUpdateInfo()
     // Note: the sparkle-updater is not an OCUpdater
     OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance());
     if (ConfigFile().skipUpdateCheck()) {
-        updater = 0; // don't show update info if updates are disabled
+        updater = nullptr; // don't show update info if updates are disabled
     }
 
     if (updater) {
@@ -189,6 +188,7 @@ void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 void GeneralSettings::slotIgnoreFilesEditor()
 {
     if (_ignoreEditor.isNull()) {
+        ConfigFile cfgFile;
         _ignoreEditor = new IgnoreListEditor(this);
         _ignoreEditor->setAttribute(Qt::WA_DeleteOnClose, true);
         _ignoreEditor->open();
