@@ -275,7 +275,7 @@ void ShareLinkWidget::slotCreatePassword()
     _linkShare->setPassword(_ui->lineEdit_password->text());
 }
 
-void ShareLinkWidget::slotCreateShareLink(bool clicked)
+void ShareLinkWidget::slotCreateShareLink()
 {
     slotToggleAnimation(true);
     emit createLinkShare();
