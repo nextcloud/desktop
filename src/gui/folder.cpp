@@ -417,6 +417,13 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
                 text = tr("%1 could not be synced due to an error. See the log for details.").arg(file);
             }
             break;
+        case LogStatusFileLocked:
+            if (count > 1) {
+                text = tr("%1 and %n other file(s) are currently locked.", "", count -1).arg(file);
+            } else {
+                text = tr("%1 is currently locked.").arg(file);
+            }
+            break;
         }
 
         if (!text.isEmpty()) {
