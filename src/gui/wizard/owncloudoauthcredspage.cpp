@@ -13,6 +13,8 @@
  */
 
 #include <QVariant>
+#include <QMenu>
+#include <QClipboard>
 
 #include "wizard/owncloudoauthcredspage.h"
 #include "theme.h"
@@ -43,12 +45,8 @@ OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
     setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(Theme::instance()->appNameGUI())));
     setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Login in your browser")));
 
-    connect(_ui.openLinkButton, &QCommandLinkButton::clicked, [this] {
-        _ui.errorLabel->hide();
-        qobject_cast<OwncloudWizard *>(wizard())->account()->clearCookieJar(); // #6574
-        if (_asyncAuth)
-            _asyncAuth->openBrowser();
-    });
+    connect(_ui.openLinkButton, &QCommandLinkButton::clicked, this, &OwncloudOAuthCredsPage::slotOpenBrowser);
+    connect(_ui.copyLinkButton, &QCommandLinkButton::clicked, this, &OwncloudOAuthCredsPage::slotCopyLinkToClipboard);
 }
 
 void OwncloudOAuthCredsPage::initializePage()
@@ -59,7 +57,9 @@ void OwncloudOAuthCredsPage::initializePage()
     _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
     _asyncAuth->start();
-    wizard()->hide();
+
+    // Don't hide the wizard (avoid user confusion)!
+    //wizard()->hide();
 }
 
 void OCC::OwncloudOAuthCredsPage::cleanupPage()
@@ -118,6 +118,21 @@ AbstractCredentials *OwncloudOAuthCredsPage::getCredentials() const
 bool OwncloudOAuthCredsPage::isComplete() const
 {
     return false; /* We can never go forward manually */
+}
+
+void OwncloudOAuthCredsPage::slotOpenBrowser()
+{
+    if (_ui.errorLabel)
+        _ui.errorLabel->hide();
+
+    if (_asyncAuth)
+        _asyncAuth->openBrowser();
+}
+
+void OwncloudOAuthCredsPage::slotCopyLinkToClipboard()
+{
+    if (_asyncAuth)
+        QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
 }
 
 } // namespace OCC

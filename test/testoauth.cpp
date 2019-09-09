@@ -22,7 +22,7 @@ signals:
     void hooked(const QUrl &);
 public:
     DesktopServiceHook() { QDesktopServices::setUrlHandler("oauthtest", this, "hooked"); }
-} desktopServiceHook;
+};
 
 static const QUrl sOAuthTestServer("oauthtest://someserver/owncloud");
 
@@ -90,6 +90,7 @@ public:
 class OAuthTestCase : public QObject
 {
     Q_OBJECT
+    DesktopServiceHook desktopServiceHook;
 public:
     enum State { StartState, BrowserOpened, TokenAsked, CustomState } state = StartState;
     Q_ENUM(State);

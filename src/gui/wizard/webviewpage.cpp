@@ -3,6 +3,7 @@
 #include <QWebEngineUrlRequestJob>
 #include <QProgressBar>
 #include <QVBoxLayout>
+#include <QNetworkProxyFactory>
 
 #include "owncloudwizard.h"
 #include "creds/webflowcredentials.h"
@@ -27,15 +28,26 @@ WebViewPage::WebViewPage(QWidget *parent)
     setLayout(layout);
 
     connect(_webView, &WebView::urlCatched, this, &WebViewPage::urlCatched);
+
+    //_useSystemProxy = QNetworkProxyFactory::usesSystemConfiguration();
+}
+
+WebViewPage::~WebViewPage() {
+    //QNetworkProxyFactory::setUseSystemConfiguration(_useSystemProxy);
 }
 
 void WebViewPage::initializePage() {
+    //QNetworkProxy::setApplicationProxy(QNetworkProxy::applicationProxy());
+
     QString url;
     if (_ocWizard->registration()) {
         url = "https://nextcloud.com/register";
     } else {
         url = _ocWizard->ocUrl();
-        url += "/index.php/login/flow";
+        if (!url.endsWith('/')) {
+            url += "/";
+        }
+        url += "index.php/login/flow";
     }
     qCInfo(lcWizardWebiewPage()) << "Url to auth at: " << url;
     _webView->setUrl(QUrl(url));

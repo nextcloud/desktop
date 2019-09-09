@@ -34,11 +34,11 @@ public:
         , _deleteExisting(false)
     {
     }
-    void start() Q_DECL_OVERRIDE;
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
+    void start() override;
+    void abort(PropagatorJob::AbortType abortType) override;
 
     // Creating a directory should be fast.
-    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return true; }
+    bool isLikelyFinishedQuickly() override { return true; }
 
     /**
      * Whether an existing entity with the same name may be deleted before

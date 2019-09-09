@@ -335,10 +335,10 @@ void AccountState::slotInvalidCredentials()
 
     if (account()->credentials()->ready()) {
         account()->credentials()->invalidateToken();
-        if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
-            if (creds->refreshAccessToken())
-                return;
-        }
+    }
+    if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
+        if (creds->refreshAccessToken())
+            return;
     }
     account()->credentials()->askFromUser();
 }
@@ -371,7 +371,7 @@ void AccountState::slotCredentialsAsked(AbstractCredentials *credentials)
         // When new credentials become available we always want to restart the
         // connection validation, even if it's currently running.
         _connectionValidator->deleteLater();
-        _connectionValidator = 0;
+        _connectionValidator = nullptr;
     }
 
     checkConnectivity();

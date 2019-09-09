@@ -65,7 +65,7 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
     _ocWizard->deleteLater();
 }
 
-static QPointer<OwncloudSetupWizard> wiz = 0;
+static QPointer<OwncloudSetupWizard> wiz = nullptr;
 
 void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
 {
@@ -408,7 +408,7 @@ void OwncloudSetupWizard::slotAuthError()
     }
 
     _ocWizard->show();
-    if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds || _ocWizard->currentId() == WizardCommon::Page_OAuthCreds) {
+    if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds || _ocWizard->currentId() == WizardCommon::Page_OAuthCreds || _ocWizard->currentId() == WizardCommon::Page_Flow2AuthCreds) {
         _ocWizard->back();
     }
     _ocWizard->displayError(errorMsg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
@@ -505,7 +505,7 @@ void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
 
 void OwncloudSetupWizard::createRemoteFolder()
 {
-    _ocWizard->appendToConfigurationLog(tr("creating folder on ownCloud: %1").arg(_remoteFolder));
+    _ocWizard->appendToConfigurationLog(tr("creating folder on Nextcloud: %1").arg(_remoteFolder));
 
     MkColJob *job = new MkColJob(_ocWizard->account(), _remoteFolder, this);
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)), SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
@@ -582,7 +582,7 @@ bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder)
         renameOk = FolderMan::instance()->startFromScratch(localFolder);
         if (!renameOk) {
             QMessageBox::StandardButton but;
-            but = QMessageBox::question(0, tr("Folder rename failed"),
+            but = QMessageBox::question(nullptr, tr("Folder rename failed"),
                 tr("Can't remove and back up the folder because the folder or a file in it is open in another program."
                    " Please close the folder or file and hit retry or cancel the setup."),
                 QMessageBox::Retry | QMessageBox::Abort, QMessageBox::Retry);

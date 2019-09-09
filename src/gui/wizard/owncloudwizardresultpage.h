@@ -33,8 +33,8 @@ public:
     OwncloudWizardResultPage();
     ~OwncloudWizardResultPage();
 
-    bool isComplete() const Q_DECL_OVERRIDE;
-    void initializePage() Q_DECL_OVERRIDE;
+    bool isComplete() const override;
+    void initializePage() override;
     void setRemoteFolder(const QString &remoteFolder);
 
 public slots:

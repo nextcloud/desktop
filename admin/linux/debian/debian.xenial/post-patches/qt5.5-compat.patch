@@ -1,0 +1,12 @@
+--- nextcloud-client-2.5.3.orig/src/3rdparty/kmessagewidget/kmessagewidget.cpp	2019-07-26 18:40:34.949349387 +0000
++++ nextcloud-client-2.5.3/src/3rdparty/kmessagewidget/kmessagewidget.cpp	2019-07-26 18:41:39.866478051 +0000
+@@ -105,6 +105,9 @@
+     q->setMessageType(KMessageWidget::Information);
+ }
+ 
++template <typename T>
++constexpr typename std::add_const<T>::type &qAsConst(T &t) noexcept { return t; }
++
+ void KMessageWidgetPrivate::createLayout()
+ {
+     delete content->layout();

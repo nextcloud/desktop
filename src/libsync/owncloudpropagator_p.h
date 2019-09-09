@@ -60,7 +60,7 @@ inline QByteArray getEtagFromReply(QNetworkReply *reply)
  */
 inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
     int httpCode,
-    bool *anotherSyncNeeded = NULL)
+    bool *anotherSyncNeeded = nullptr)
 {
     Q_ASSERT(nerror != QNetworkReply::NoError); // we should only be called when there is an error
 
@@ -93,7 +93,7 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
         if (anotherSyncNeeded) {
             *anotherSyncNeeded = true;
         }
-        return SyncFileItem::SoftError;
+        return SyncFileItem::FileLocked;
     }
 
     return SyncFileItem::NormalError;

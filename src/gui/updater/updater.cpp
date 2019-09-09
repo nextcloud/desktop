@@ -30,7 +30,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUpdater, "nextcloud.gui.updater", QtInfoMsg)
 
-Updater *Updater::_instance = 0;
+Updater *Updater::_instance = nullptr;
 
 Updater *Updater::instance()
 {
@@ -105,7 +105,7 @@ Updater *Updater::create()
     }
     if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
         qCWarning(lcUpdater) << "Not a valid updater URL, will not do update check";
-        return 0;
+        return nullptr;
     }
 
     auto urlQuery = getQueryParams();

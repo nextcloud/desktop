@@ -44,7 +44,7 @@ public:
     void setFullText(const QString &text);
 
 protected:
-    void paintEvent(QPaintEvent *pe);
+    void paintEvent(QPaintEvent *pe) override;
 
 private:
     QString _postfix;

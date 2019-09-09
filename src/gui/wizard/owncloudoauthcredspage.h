@@ -36,11 +36,11 @@ class OwncloudOAuthCredsPage : public AbstractCredentialsWizardPage
 public:
     OwncloudOAuthCredsPage();
 
-    AbstractCredentials *getCredentials() const Q_DECL_OVERRIDE;
+    AbstractCredentials *getCredentials() const override;
 
-    void initializePage() Q_DECL_OVERRIDE;
+    void initializePage() override;
     void cleanupPage() override;
-    int nextId() const Q_DECL_OVERRIDE;
+    int nextId() const override;
     void setConnected();
     bool isComplete() const override;
 
@@ -57,6 +57,10 @@ public:
     QString _refreshToken;
     QScopedPointer<OAuth> _asyncAuth;
     Ui_OwncloudOAuthCredsPage _ui;
+
+protected slots:
+    void slotOpenBrowser();
+    void slotCopyLinkToClipboard();
 };
 
 } // namespace OCC

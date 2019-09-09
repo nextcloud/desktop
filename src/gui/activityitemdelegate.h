@@ -43,10 +43,10 @@ public:
         AccountConnectedRole,
         SyncFileStatusRole };
 
-    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
-    QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
+    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
+    QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-        const QModelIndex &index) Q_DECL_OVERRIDE;
+        const QModelIndex &index) override;
 
     static int rowHeight();
     static int iconHeight();
