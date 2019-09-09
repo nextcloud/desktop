@@ -711,6 +711,18 @@ private slots:
     }
 #endif
 
+    void testEmptyLocalButHasRemote()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        fakeFolder.remoteModifier().mkdir("foo");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        QVERIFY(fakeFolder.currentLocalState().find("foo"));
+
+    }
+
     // Check that server mtime is set on directories on initial propagation
     void testDirectoryInitialMtime()
     {
