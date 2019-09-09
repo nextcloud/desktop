@@ -67,7 +67,7 @@ public slots:
     void slotCreateShareRequiresPassword(const QString &message);
 
 private slots:
-    void slotCreateShareLink();
+    void slotCreateShareLink(bool clicked);
 
     void slotCreatePassword();
     void slotPasswordSet();
