@@ -18,9 +18,11 @@
 #include <QDebug>
 #include <algorithm>
 #include <set>
-#include <QDirIterator>
 #include <QTextCodec>
 #include "vio/csync_vio_local.h"
+#include <QFileInfo>
+#include <QFile>
+#include <QThreadPool>
 #include "common/checksums.h"
 #include "csync_exclude.h"
 #include "csync_util.h"
@@ -50,14 +52,16 @@ void ProcessDirectoryJob::start()
     }
 
     if (_queryLocal == NormalQuery) {
-        if (!runLocalQuery() && serverJob)
-            serverJob->abort();
+        _localJob = startAsyncLocalQuery();
+    } else {
+        _localQueryDone = true;
     }
-    _localQueryDone = true;
 
-    // Process is being called when both local and server entries are fetched.
-    if (_serverQueryDone)
+    // FIXME: serverJob->abort() if local failed..? This used to be in code before
+
+    if (_localQueryDone && _serverQueryDone) {
         process();
+    }
 }
 
 void ProcessDirectoryJob::process()
@@ -1416,71 +1420,58 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     return serverJob;
 }
 
-bool ProcessDirectoryJob::runLocalQuery()
+DiscoverySingleLocalDirectoryJob *ProcessDirectoryJob::startAsyncLocalQuery()
 {
     QString localPath = _discoveryData->_localDir + _currentFolder._local;
-    if (localPath.endsWith('/')) // Happens if _currentFolder._local.isEmpty()
-        localPath.chop(1);
-    auto dh = csync_vio_local_opendir(localPath);
-    if (!dh) {
-        qCInfo(lcDisco) << "Error while opening directory" << (localPath) << errno;
-        QString errorString = tr("Error while opening directory %1").arg(localPath);
-        if (errno == EACCES) {
-            errorString = tr("Directory not accessible on client, permission denied");
-            if (_dirItem) {
-                _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                _dirItem->_errorString = errorString;
-                emit finished();
-                return false;
-            }
-        } else if (errno == ENOENT) {
-            errorString = tr("Directory not found: %1").arg(localPath);
-        } else if (errno == ENOTDIR) {
-            // Not a directory..
-            // Just consider it is empty
-            return true;
+    auto localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account, localPath, _discoveryData->_syncOptions._vfs.data(), this);
+
+    _discoveryData->_currentlyActiveJobs++;
+    _pendingAsyncJobs++;
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::itemDiscovered, _discoveryData, &DiscoveryPhase::itemDiscovered);
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::childIgnored, this, [this](bool b) {
+        _childIgnored = b;
+    });
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedFatalError, this, [this](const QString &msg) {
+        _discoveryData->_currentlyActiveJobs--;
+        _pendingAsyncJobs--;
+
+        emit _discoveryData->fatalError(msg);
+    });
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedNonFatalError, this, [this](const QString &msg) {
+        _discoveryData->_currentlyActiveJobs--;
+        _pendingAsyncJobs--;
+
+        if (_dirItem) {
+            _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            _dirItem->_errorString = msg;
+            emit this->finished();
+        } else {
+            // Fatal for the root job since it has no SyncFileItem
+            emit _discoveryData->fatalError(msg);
         }
-        emit _discoveryData->fatalError(errorString);
-        return false;
-    }
-    errno = 0;
-    while (auto dirent = csync_vio_local_readdir(dh, _discoveryData->_syncOptions._vfs.data())) {
-        if (dirent->type == ItemTypeSkip)
-            continue;
-        LocalInfo i;
-        static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-        ASSERT(codec);
-        QTextCodec::ConverterState state;
-        i.name = codec->toUnicode(dirent->path, dirent->path.size(), &state);
-        if (state.invalidChars > 0 || state.remainingChars > 0) {
-            _childIgnored = true;
-            auto item = SyncFileItemPtr::create();
-            item->_file = _currentFolder._target + i.name;
-            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            item->_status = SyncFileItem::NormalError;
-            item->_errorString = tr("Filename encoding is not valid");
-            emit _discoveryData->itemDiscovered(item);
-            continue;
-        }
-        i.modtime = dirent->modtime;
-        i.size = dirent->size;
-        i.inode = dirent->inode;
-        i.isDirectory = dirent->type == ItemTypeDirectory;
-        i.isHidden = dirent->is_hidden;
-        i.isSymLink = dirent->type == ItemTypeSoftLink;
-        i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
-        i.type = dirent->type;
-        _localNormalQueryEntries.push_back(i);
-    }
-    csync_vio_local_closedir(dh);
-    if (errno != 0) {
-        // Note: Windows vio converts any error into EACCES
-        qCWarning(lcDisco) << "readdir failed for file in " << _currentFolder._local << " - errno: " << errno;
-        emit _discoveryData->fatalError(tr("Error while reading directory %1").arg(localPath));
-        return false;
-    }
-    return true;
+    });
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::finished, this, [this](const auto &results) {
+        _discoveryData->_currentlyActiveJobs--;
+        _pendingAsyncJobs--;
+
+        _localNormalQueryEntries = results;
+        _localQueryDone = true;
+
+        if (_serverQueryDone)
+            this->process();
+    });
+
+    QThreadPool *pool = QThreadPool::globalInstance();
+    pool->start(localJob);
+
+    return localJob;
 }
+
 
 bool ProcessDirectoryJob::isVfsWithSuffix() const
 {

@@ -24,6 +24,7 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QLinkedList>
+#include <QRunnable>
 #include <deque>
 #include "syncoptions.h"
 #include "syncfileitem.h"
@@ -75,6 +76,33 @@ struct LocalInfo
     bool isVirtualFile = false;
     bool isSymLink = false;
     bool isValid() const { return !name.isNull(); }
+};
+
+/**
+ * @brief Run list on a local directory and process the results for Discovery
+ *
+ * @ingroup libsync
+ */
+class DiscoverySingleLocalDirectoryJob : public QObject, public QRunnable
+{
+    Q_OBJECT
+public:
+    explicit DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent = 0);
+
+    void run() Q_DECL_OVERRIDE;
+signals:
+    void finished(const QVector<LocalInfo> &result);
+    void finishedFatalError(const QString &errorString);
+    void finishedNonFatalError(const QString &errorString);
+
+    void itemDiscovered(const SyncFileItemPtr &item);
+    void childIgnored(bool b);
+private slots:
+private:
+    QString _localPath;
+    AccountPtr _account;
+    OCC::Vfs* _vfs;
+public:
 };
 
 

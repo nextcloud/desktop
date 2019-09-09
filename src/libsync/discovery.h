@@ -202,11 +202,12 @@ private:
      */
     DiscoverySingleDirectoryJob *startAsyncServerQuery();
 
-    /** Discover the local directory now
+    /** Discover the local directory
       *
       * Fills _localNormalQueryEntries.
       */
-    bool runLocalQuery();
+    DiscoverySingleLocalDirectoryJob *startAsyncLocalQuery();
+
 
     /** Sets _pinState, the directory's pin state
      *
@@ -241,6 +242,9 @@ private:
 
     RemotePermissions _rootPermissions;
     QPointer<DiscoverySingleDirectoryJob> _serverJob;
+
+    QPointer<DiscoverySingleLocalDirectoryJob> _localJob;
+
 
     /** Number of currently running async jobs.
      *

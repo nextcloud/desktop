@@ -20,10 +20,13 @@
 #include "common/checksums.h"
 
 #include <csync_exclude.h>
+#include "vio/csync_vio_local.h"
 
 #include <QLoggingCategory>
 #include <QUrl>
+#include <QFile>
 #include <QFileInfo>
+#include <QTextCodec>
 #include <cstring>
 
 
@@ -212,6 +215,78 @@ void DiscoveryPhase::scheduleMoreJobs()
     if (_currentRootJob && _currentlyActiveJobs < limit) {
         _currentRootJob->processSubJobs(limit - _currentlyActiveJobs);
     }
+}
+
+DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent)
+ : QObject(parent), QRunnable(), _localPath(localPath), _account(account), _vfs(vfs)
+{
+    qRegisterMetaType<QVector<LocalInfo> >("QVector<LocalInfo>");
+}
+
+// Use as QRunnable
+void DiscoverySingleLocalDirectoryJob::run() {
+    QString localPath = _localPath;
+    if (localPath.endsWith('/')) // Happens if _currentFolder._local.isEmpty()
+        localPath.chop(1);
+
+    auto dh = csync_vio_local_opendir(localPath);
+    if (!dh) {
+        qCInfo(lcDiscovery) << "Error while opening directory" << (localPath) << errno;
+        QString errorString = tr("Error while opening directory %1").arg(localPath);
+        if (errno == EACCES) {
+            errorString = tr("Directory not accessible on client, permission denied");
+            emit finishedNonFatalError(errorString);
+            return;
+        } else if (errno == ENOENT) {
+            errorString = tr("Directory not found: %1").arg(localPath);
+        } else if (errno == ENOTDIR) {
+            // Not a directory..
+            // Just consider it is empty
+            return;
+        }
+        emit finishedFatalError(errorString);
+        return;
+    }
+    errno = 0;
+    QVector<LocalInfo> results;
+    while (auto dirent = csync_vio_local_readdir(dh, _vfs)) {
+        if (dirent->type == ItemTypeSkip)
+            continue;
+        LocalInfo i;
+        static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+        ASSERT(codec);
+        QTextCodec::ConverterState state;
+        i.name = codec->toUnicode(dirent->path, dirent->path.size(), &state);
+        if (state.invalidChars > 0 || state.remainingChars > 0) {
+            emit childIgnored(true);
+            auto item = SyncFileItemPtr::create();
+            //item->_file = _currentFolder._target + i.name;
+            // FIXME ^^ do we really need to use _target or is local fine?
+            item->_file = _localPath + i.name;
+            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            item->_status = SyncFileItem::NormalError;
+            item->_errorString = tr("Filename encoding is not valid");
+            emit itemDiscovered(item);
+            continue;
+        }
+        i.modtime = dirent->modtime;
+        i.size = dirent->size;
+        i.inode = dirent->inode;
+        i.isDirectory = dirent->type == ItemTypeDirectory;
+        i.isHidden = dirent->is_hidden;
+        i.isSymLink = dirent->type == ItemTypeSoftLink;
+        i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
+        i.type = dirent->type;
+        results.push_back(i);
+    }
+    csync_vio_local_closedir(dh);
+    if (errno != 0) {
+        // Note: Windows vio converts any error into EACCES
+        qCWarning(lcDiscovery) << "readdir failed for file in " << localPath << " - errno: " << errno;
+        emit finishedFatalError(tr("Error while reading directory %1").arg(localPath));
+        return;
+    }
+    emit finished(results);
 }
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
