@@ -539,7 +539,7 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(QKeychain::Job *incomin
             return;
         } else {
             if (readJob->error() != QKeychain::Error::EntryNotFound ||
-                (readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0) {
+                ((readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0)) {
                 qCWarning(lcWebFlowCredentials) << "Unable to read client CA cert slot " << QString::number(_clientSslCaCertificates.count()) << readJob->errorString();
             }
         }
