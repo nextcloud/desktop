@@ -91,15 +91,7 @@
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QToolButton" name="deleteShareButton">
-     <property name="icon">
-      <iconset theme="user-trash">
-       <normaloff>.</normaloff>.</iconset>
-     </property>
-    </widget>
-   </item>
-  </layout>
+    </layout>
  </widget>
  <customwidgets>
   <customwidget>
