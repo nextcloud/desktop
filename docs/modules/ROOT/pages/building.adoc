@@ -205,11 +205,11 @@ craft --fetch owncloud-client
 ....
 
 You can find the git checkout in `C:\CraftRoot\downloads\git\owncloud\owncloud-client`.
-There you can use the usual git commands to switch branches and remotes, e.g., to build the `2.5` stable branch:
+There you can use the usual git commands to switch branches and remotes, e.g., to build the `2.6` stable branch:
 
 [source,powershell]
 ....
-git checkout 2.5
+git checkout 2.6
 ....
 
 Afterwards you can build the client like this:
@@ -375,7 +375,7 @@ To build the most up-to-date version of the client:
 ....
 git clone git://github.com/owncloud/client.git
 cd client
-# master this default, but you can also check out a tag like v2.4.1
+# master this default, but you can also check out a tag like v2.5.4
 git checkout master
 git submodule init
 git submodule update
@@ -395,10 +395,10 @@ cd client-build
 +
 [source,console]
 ....
-cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/ ..
+cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.12.4 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/ ..
 ....
 +
-For Linux builds (using QT5 libraries via build-dep) a typical setting is `-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/`. However, the version number may vary. 
+For Linux builds (using QT5 libraries via build-dep) a typical setting is `-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.12.4/`. However, the version number may vary. 
 For Linux builds using system dependencies `-DCMAKE_PREFIX_PATH` is not needed.
 You must use absolute paths for the `include` and `library` directories.
 +
@@ -419,5 +419,5 @@ The following are known CMake parameters:
   same Qt version. If you install QtKeychain into the CMAKE_PREFIX_PATH
   then you don’t need to specify the path manually.
 * `WITH_DOC=TRUE`: Creates doc and man pages through running `make`; also adds install statements, providing the ability to install using `make install`.
-* `CMAKE_PREFIX_PATH=/path/to/Qt5.10.1/5.10.1/yourarch/lib/cmake/`: Builds using that Qt version.
+* `CMAKE_PREFIX_PATH=/path/to/Qt5.12.4/5.12.4/yourarch/lib/cmake/`: Builds using that Qt version.
 * `CMAKE_INSTALL_PREFIX=path`: Set an install prefix. This is mandatory on Mac OS.
