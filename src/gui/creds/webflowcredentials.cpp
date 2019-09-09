@@ -372,7 +372,7 @@ void WebFlowCredentials::forgetSensitiveData() {
     invalidateToken();
 
     /* IMPORTANT
-    /* TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
+     * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
      *
      *       Disabled as long as selecting another cert is not supported by the UI.
      *
