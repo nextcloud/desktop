@@ -777,10 +777,38 @@ Esta acción interromperá calquera sincronización que estea agora en proceso.<
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="378"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="400"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="453"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="475"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Produciuse un erro no servidor: a réplica PROPFIND non está en formato XML!</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::DiscoverySingleLocalDirectoryJob</name>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="235"/>
+        <source>Error while opening directory %1</source>
+        <translation>Produciuse un erro ao abrir o directorio %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="237"/>
+        <source>Directory not accessible on client, permission denied</source>
+        <translation>Directorio non accesíbel no cliente, permiso denegado </translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="241"/>
+        <source>Directory not found: %1</source>
+        <translation>Non se atopou o directorio: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
+        <source>Filename encoding is not valid</source>
+        <translation>O nome de ficheiro codificado non é correcto</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="286"/>
+        <source>Error while reading directory %1</source>
+        <translation>Produciuse un erro ao ler o directorio %1</translation>
     </message>
 </context>
 <context>
@@ -2471,164 +2499,139 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="211"/>
+        <location filename="../src/libsync/discovery.cpp" line="215"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>As ligazóns simbolicas non son admitidas nas sincronizacións</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="219"/>
+        <location filename="../src/libsync/discovery.cpp" line="223"/>
         <source>File is listed on the ignore list.</source>
         <translation>O ficheiro está na lista de ignorados.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="223"/>
+        <location filename="../src/libsync/discovery.cpp" line="227"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Os nomes de ficheiros que rematan cun punto non son compatíbeis con este sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="233"/>
+        <location filename="../src/libsync/discovery.cpp" line="237"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>Os nomes de ficheiros que conteñen o carácter «%1» non son compatíbeis con este sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="237"/>
+        <location filename="../src/libsync/discovery.cpp" line="241"/>
         <source>File name contains at least one invalid character</source>
         <translation>O nome de ficheiro contén algún carácter incorrecto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="239"/>
+        <location filename="../src/libsync/discovery.cpp" line="243"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>O nome do ficheiro é un nome reservado neste sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="244"/>
+        <location filename="../src/libsync/discovery.cpp" line="248"/>
         <source>Filename contains trailing spaces.</source>
         <translation>O nome do ficheiro contén espazos finais.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="247"/>
+        <location filename="../src/libsync/discovery.cpp" line="251"/>
         <source>Filename is too long.</source>
         <translation>O nome de ficheiro é longo de máis.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="250"/>
+        <location filename="../src/libsync/discovery.cpp" line="254"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>O ficheiro/cartafol ignórase por estar agochado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="253"/>
+        <location filename="../src/libsync/discovery.cpp" line="257"/>
         <source>Stat failed.</source>
         <translation>Produciuse un fallo na obtención de estatísticas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="256"/>
+        <location filename="../src/libsync/discovery.cpp" line="260"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Conflito: Versión do servidor descargada, a copia local cambiou o nome e non se cargou.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="260"/>
+        <location filename="../src/libsync/discovery.cpp" line="264"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>O nome do ficheiro non pode ser codificado no seu sistema de ficheiros.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="263"/>
+        <location filename="../src/libsync/discovery.cpp" line="267"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>O nome do ficheiro está na lista negra do servidor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="316"/>
+        <location filename="../src/libsync/discovery.cpp" line="320"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>O ficheiro ten una extensión reservada para os ficheiros virtuais.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="377"/>
+        <location filename="../src/libsync/discovery.cpp" line="381"/>
         <source>size</source>
         <translation>tamaño</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="379"/>
+        <location filename="../src/libsync/discovery.cpp" line="383"/>
         <source>permissions</source>
         <translation>permisos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="381"/>
+        <location filename="../src/libsync/discovery.cpp" line="385"/>
         <source>etag</source>
         <translation>etag</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="383"/>
+        <location filename="../src/libsync/discovery.cpp" line="387"/>
         <source>file id</source>
         <translation>ID de ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="387"/>
+        <location filename="../src/libsync/discovery.cpp" line="391"/>
         <source>server reported no %1</source>
         <translation>o servidor non informou de %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1215"/>
+        <location filename="../src/libsync/discovery.cpp" line="1219"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Movido a un destino incorrecto, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1228"/>
+        <location filename="../src/libsync/discovery.cpp" line="1232"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non está permitido retiralo, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1140"/>
+        <location filename="../src/libsync/discovery.cpp" line="1144"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por mor da lista negra de «escolla que sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1173"/>
+        <location filename="../src/libsync/discovery.cpp" line="1177"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non se lle permite porque vostede non ten permiso para engadir subcartafoles neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1178"/>
+        <location filename="../src/libsync/discovery.cpp" line="1182"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non se lle permite porque vostede non ten permiso para engadir ficheiros neste cartafol</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1192"/>
+        <location filename="../src/libsync/discovery.cpp" line="1196"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1337"/>
+        <location filename="../src/libsync/discovery.cpp" line="1341"/>
         <source>Error while reading the database</source>
         <translation>Produciuse un erro ao ler a base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1383"/>
+        <location filename="../src/libsync/discovery.cpp" line="1387"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>O servidor respondeu cun erro ao ler o directorio «%1» : %2 </translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1427"/>
-        <source>Error while opening directory %1</source>
-        <translation>Produciuse un erro ao abrir o directorio %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1429"/>
-        <source>Directory not accessible on client, permission denied</source>
-        <translation>Directorio non accesíbel no cliente, permiso denegado </translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1437"/>
-        <source>Directory not found: %1</source>
-        <translation>Non se atopou o directorio: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1461"/>
-        <source>Filename encoding is not valid</source>
-        <translation>O nome de ficheiro codificado non é correcto</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1479"/>
-        <source>Error while reading directory %1</source>
-        <translation>Produciuse un erro ao ler o directorio %1</translation>
     </message>
 </context>
 <context>
@@ -3784,23 +3787,23 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
         <translation>%1 (omitido por mor do erro anterior, tentándoo de novo en %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="454"/>
+        <location filename="../src/libsync/syncengine.cpp" line="458"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Só %1 está dispoñíbel, necesita polo menos %2 para comezar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="487"/>
+        <location filename="../src/libsync/syncengine.cpp" line="491"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Non foi posíbel abrir ou crear a base de datos de sincronización local. Asegúrese de ter acceso de escritura no cartafol de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Pouco espazo dispoñíbel no disco: As descargas que reduzan o tamaño por baixo de %1 van ser omitidas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1038"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Non hai espazo libre abondo no servisor para algúns envíos.</translation>
     </message>
@@ -3815,27 +3818,27 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
         <translation>Non foi posíbel actualizar os metadatos do ficheiro virtual: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="503"/>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>Empregando ficheiros virtuais con sufixo, mais o sufixo non está estabelecido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="515"/>
+        <location filename="../src/libsync/syncengine.cpp" line="519"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Non foi posíbel ler a lista negra da base de datos local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="546"/>
+        <location filename="../src/libsync/syncengine.cpp" line="550"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Non foi posíbel ler dende o diario de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="630"/>
+        <location filename="../src/libsync/syncengine.cpp" line="634"/>
         <source>Cannot open the sync journal</source>
         <translation>Non foi posíbel abrir o rexistro de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
         <source>Aborted</source>
         <translation>Interrompido</translation>
     </message>
