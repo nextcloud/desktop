@@ -10,6 +10,8 @@
 #include <QProgressBar>
 #include <QLoggingCategory>
 #include <QLocale>
+#include <QWebEngineCertificateError>
+#include <QMessageBox>
 
 #include "common/utility.h"
 
@@ -22,16 +24,16 @@ class WebViewPageUrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
 {
     Q_OBJECT
 public:
-    WebViewPageUrlRequestInterceptor(QObject *parent = 0);
-    void interceptRequest(QWebEngineUrlRequestInfo &info);
+    WebViewPageUrlRequestInterceptor(QObject *parent = nullptr);
+    void interceptRequest(QWebEngineUrlRequestInfo &info) override;
 };
 
 class WebViewPageUrlSchemeHandler : public QWebEngineUrlSchemeHandler
 {
     Q_OBJECT
 public:
-    WebViewPageUrlSchemeHandler(QObject *parent = 0);
-    void requestStarted(QWebEngineUrlRequestJob *request);
+    WebViewPageUrlSchemeHandler(QObject *parent = nullptr);
+    void requestStarted(QWebEngineUrlRequestJob *request) override;
 
 Q_SIGNALS:
     void urlCatched(QString user, QString pass, QString host);
@@ -41,6 +43,13 @@ class WebEnginePage : public QWebEnginePage {
 public:
     WebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
     QWebEnginePage * createWindow(QWebEnginePage::WebWindowType type) override;
+    void setUrl(const QUrl &url);
+
+protected:
+    bool certificateError(const QWebEngineCertificateError &certificateError) override;
+
+private:
+    QUrl _rootUrl;
 };
 
 // We need a separate class here, since we cannot simply return the same WebEnginePage object
@@ -97,6 +106,19 @@ void WebView::setUrl(const QUrl &url) {
     _page->setUrl(url);
 }
 
+WebView::~WebView() {
+    /*
+     * The Qt implmentation deletes children in the order they are added to the
+     * object tree, so in this case _page is deleted after _profile, which
+     * violates the assumption that _profile should exist longer than
+     * _page [1]. Here I delete _page manually so that _profile can be safely
+     * deleted later.
+     *
+     * [1] https://doc.qt.io/qt-5/qwebenginepage.html#QWebEnginePage-1
+     */
+    delete _page;
+}
+
 WebViewPageUrlRequestInterceptor::WebViewPageUrlRequestInterceptor(QObject *parent)
     : QWebEngineUrlRequestInterceptor(parent) {
 
@@ -114,7 +136,7 @@ WebViewPageUrlSchemeHandler::WebViewPageUrlSchemeHandler(QObject *parent)
 void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request) {
     QUrl url = request->requestUrl();
 
-    QString path = url.path().mid(1);
+    QString path = url.path(0).mid(1); // get undecoded path
     QStringList parts = path.split("&");
 
     QString server;
@@ -131,6 +153,17 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
         }
     }
 
+    qCDebug(lcWizardWebiew()) << "Got raw user from request path: " << user;
+
+    user = user.replace(QChar('+'), QChar(' '));
+    password = password.replace(QChar('+'), QChar(' '));
+
+    user = QUrl::fromPercentEncoding(user.toUtf8());
+    password = QUrl::fromPercentEncoding(password.toUtf8());
+
+    if (!server.startsWith("http://") && !server.startsWith("https://")) {
+        server = "https://" + server;
+    }
     qCInfo(lcWizardWebiew()) << "Got user: " << user << ", server: " << server;
 
     emit urlCatched(user, password, server);
@@ -144,6 +177,36 @@ WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWeb
 QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type) {
     ExternalWebEnginePage *view = new ExternalWebEnginePage(this->profile());
     return view;
+}
+
+void WebEnginePage::setUrl(const QUrl &url) {
+    QWebEnginePage::setUrl(url);
+    _rootUrl = url;
+}
+
+bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError) {
+    if (certificateError.error() == QWebEngineCertificateError::CertificateAuthorityInvalid &&
+        certificateError.url().host() == _rootUrl.host()) {
+        return true;
+    }
+
+    /**
+     * TODO properly improve this.
+     * The certificate should be displayed.
+     *
+     * Or rather we should do a request with the QNAM and see if it works (then it is in the store).
+     * This is just a quick fix for now.
+     */
+    QMessageBox messageBox;
+    messageBox.setText(tr("Invalid certificate detected"));
+    messageBox.setInformativeText(tr("The host \"%1\" provided an invalid certificate. Continue?").arg(certificateError.url().host()));
+    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+    messageBox.setDefaultButton(QMessageBox::No);
+
+    int ret = messageBox.exec();
+
+    return ret == QMessageBox::Yes;
 }
 
 ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {

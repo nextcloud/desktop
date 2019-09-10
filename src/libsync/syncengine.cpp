@@ -26,6 +26,8 @@
 #include "propagateremotedelete.h"
 #include "propagatedownload.h"
 #include "common/asserts.h"
+#include "configfile.h"
+
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -89,7 +91,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
 
     _csync_ctx.reset(new CSYNC(localPath.toUtf8().data(), journal));
 
-    _excludedFiles.reset(new ExcludedFiles);
+    _excludedFiles.reset(new ExcludedFiles(localPath));
     _csync_ctx->exclude_traversal_fn = _excludedFiles->csyncTraversalMatchFun();
 
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
@@ -837,6 +839,11 @@ void SyncEngine::startSync()
         // database creation error!
     }
 
+    // Functionality like selective sync might have set up etag storage
+    // filtering via avoidReadFromDbOnNextSync(). This *is* the next sync, so
+    // undo the filter to allow this sync to retrieve and store the correct etags.
+    _journal->clearEtagStorageFilter();
+
     _csync_ctx->upload_conflict_files = _account->capabilities().uploadConflictFiles();
     _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
 
@@ -1030,7 +1037,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
-    if (!_hasNoneFiles && _hasRemoveFile) {
+    ConfigFile cfgFile;
+    if (!_hasNoneFiles && _hasRemoveFile && cfgFile.promptDeleteFiles()) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
         bool cancel = false;
         emit aboutToRemoveAllFiles(syncItems.first()->_direction, &cancel);
@@ -1042,10 +1050,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
 
     auto databaseFingerprint = _journal->dataFingerprint();
-    // If databaseFingerprint is null, this means that there was no information in the database
-    // (for example, upgrading from a previous version, or first sync)
-    // Note that an empty ("") fingerprint is valid and means it was empty on the server before.
-    if (!databaseFingerprint.isNull()
+    // If databaseFingerprint is empty, this means that there was no information in the database
+    // (for example, upgrading from a previous version, or first sync, or server not supporting fingerprint)
+    if (!databaseFingerprint.isEmpty()
         && _discoveryMainThread->_dataFingerprint != databaseFingerprint) {
         qCInfo(lcEngine) << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryMainThread->_dataFingerprint;
         restoreOldFiles(syncItems);

@@ -52,11 +52,11 @@ public:
     // DOES NOT take ownership of the device.
     explicit GETFileJob(AccountPtr account, const QString &path, QFile *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = 0);
+        quint64 resumeStart, QObject *parent = nullptr);
     // For directDownloadUrl:
     explicit GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = 0);
+        quint64 resumeStart, QObject *parent = nullptr);
     virtual ~GETFileJob()
     {
         if (_bandwidthManager) {
@@ -64,8 +64,8 @@ public:
         }
     }
 
-    virtual void start() Q_DECL_OVERRIDE;
-    virtual bool finished() Q_DECL_OVERRIDE
+    void start() override;
+    bool finished() override
     {
         if (reply()->bytesAvailable()) {
             return false;
@@ -95,7 +95,7 @@ public:
     SyncFileItem::Status errorStatus() { return _errorStatus; }
     void setErrorStatus(const SyncFileItem::Status &s) { _errorStatus = s; }
 
-    void onTimedOut() Q_DECL_OVERRIDE;
+    void onTimedOut() override;
 
     QByteArray &etag() { return _etag; }
     quint64 resumeStart() { return _resumeStart; }
@@ -159,11 +159,11 @@ public:
         , _deleteExisting(false)
     {
     }
-    void start() Q_DECL_OVERRIDE;
-    qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
+    void start() override;
+    qint64 committedDiskSpace() const override;
 
     // We think it might finish quickly because it is a small file.
-    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
+    bool isLikelyFinishedQuickly() override { return _item->_size < propagator()->smallFileSize(); }
 
     /**
      * Whether an existing folder with the same name may be deleted before
@@ -192,7 +192,7 @@ private slots:
     /// Called when it's time to update the db metadata
     void updateMetadata(bool isConflict);
 
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) override;
     void slotDownloadProgress(qint64, qint64);
     void slotChecksumFail(const QString &errMsg);
 

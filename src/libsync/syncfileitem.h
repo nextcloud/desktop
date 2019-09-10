@@ -59,6 +59,7 @@ public:
         Conflict,
 
         FileIgnored, ///< The file is in the ignored list (or blacklisted with no retries left)
+        FileLocked, ///< The file is locked
         Restoration, ///< The file was restored because what should have been done was not allowed
 
         /** For errors that should only appear in the error view.

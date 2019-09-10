@@ -38,17 +38,20 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolderWatcher, "nextcloud.gui.folderwatcher", QtInfoMsg)
 
-FolderWatcher::FolderWatcher(const QString &root, Folder *folder)
+FolderWatcher::FolderWatcher(Folder *folder)
     : QObject(folder)
     , _folder(folder)
 {
-    _d.reset(new FolderWatcherPrivate(this, root));
-
-    _timer.start();
 }
 
 FolderWatcher::~FolderWatcher()
 {
+}
+
+void FolderWatcher::init(const QString &root)
+{
+    _d.reset(new FolderWatcherPrivate(this, root));
+    _timer.start();
 }
 
 bool FolderWatcher::pathIsIgnored(const QString &path)
@@ -72,9 +75,27 @@ bool FolderWatcher::isReliable() const
     return _isReliable;
 }
 
+void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
+    QStringList newSubPaths = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
+    for (int i = 0; i < newSubPaths.size(); i++) {
+        QString path = dir.path() + "/" + newSubPaths[i];
+        QFileInfo fileInfo(path);
+        subPaths.append(path);
+        if (fileInfo.isDir()) {
+            QDir dir(path);
+            appendSubPaths(dir, subPaths);
+        }
+    }
+}
+
 void FolderWatcher::changeDetected(const QString &path)
 {
+    QFileInfo fileInfo(path);
     QStringList paths(path);
+    if (fileInfo.isDir()) {
+        QDir dir(path);
+        appendSubPaths(dir, paths);
+    }
     changeDetected(paths);
 }
 

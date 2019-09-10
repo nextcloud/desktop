@@ -44,24 +44,27 @@ public:
         SyncProgressItemString,
         WarningCount,
         SyncRunning,
+        SyncDate,
 
         AddButton // 1 = enabled; 2 = disabled
     };
-    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
-    QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
+    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
+    QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-        const QModelIndex &index) Q_DECL_OVERRIDE;
+        const QModelIndex &index) override;
 
 
     /**
      * return the position of the option button within the item
      */
     static QRect optionsButtonRect(QRect within, Qt::LayoutDirection direction);
+    static QRect addButtonRect(QRect within, Qt::LayoutDirection direction);
     static QRect errorsListRect(QRect within);
     static int rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm);
 
 private:
     static QString addFolderText();
+    QPersistentModelIndex _pressedIndex;
 };
 
 } // namespace OCC

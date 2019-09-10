@@ -152,10 +152,10 @@ AbstractCredentials *Account::credentials() const
 void Account::setCredentials(AbstractCredentials *cred)
 {
     // set active credential manager
-    QNetworkCookieJar *jar = 0;
+    QNetworkCookieJar *jar = nullptr;
     if (_am) {
         jar = _am->cookieJar();
-        jar->setParent(0);
+        jar->setParent(nullptr);
 
         _am = QSharedPointer<QNetworkAccessManager>();
     }

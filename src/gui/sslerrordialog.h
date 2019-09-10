@@ -37,7 +37,7 @@ namespace Ui {
 class SslDialogErrorHandler : public AbstractSslErrorHandler
 {
 public:
-    bool handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr) Q_DECL_OVERRIDE;
+    bool handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr) override;
 };
 
 /**
@@ -48,7 +48,7 @@ class SslErrorDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit SslErrorDialog(AccountPtr account, QWidget *parent = 0);
+    explicit SslErrorDialog(AccountPtr account, QWidget *parent = nullptr);
     ~SslErrorDialog();
     bool checkFailingCertsKnown(const QList<QSslError> &errors);
     bool trustConnection();

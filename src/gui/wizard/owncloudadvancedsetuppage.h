@@ -35,10 +35,10 @@ class OwncloudAdvancedSetupPage : public QWizardPage
 public:
     OwncloudAdvancedSetupPage();
 
-    virtual bool isComplete() const Q_DECL_OVERRIDE;
-    virtual void initializePage() Q_DECL_OVERRIDE;
-    virtual int nextId() const Q_DECL_OVERRIDE;
-    bool validatePage() Q_DECL_OVERRIDE;
+    bool isComplete() const override;
+    void initializePage() override;
+    int nextId() const override;
+    bool validatePage() override;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
     bool isConfirmBigFolderChecked() const;
@@ -65,6 +65,8 @@ private:
     void startSpinner();
     void stopSpinner();
     QUrl serverUrl() const;
+    qint64 availableLocalSpace() const;
+    QString checkLocalSpace(qint64 remoteSize) const;
 
     Ui_OwncloudAdvancedSetupPage _ui;
     bool _checking;
@@ -73,6 +75,8 @@ private:
     QProgressIndicator *_progressIndi;
     QString _remoteFolder;
     QStringList _selectiveSyncBlacklist;
+    qint64 _rSize;
+    qint64 _rSelectedSize;
 };
 
 } // namespace OCC
