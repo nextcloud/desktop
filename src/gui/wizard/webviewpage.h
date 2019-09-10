@@ -14,6 +14,7 @@ class WebViewPage : public AbstractCredentialsWizardPage
     Q_OBJECT
 public:
     WebViewPage(QWidget *parent = nullptr);
+    ~WebViewPage();
 
     void initializePage() override;
     int nextId() const override;
@@ -34,6 +35,8 @@ private:
 
     QString _user;
     QString _pass;
+
+    bool _useSystemProxy;
 };
 
 }

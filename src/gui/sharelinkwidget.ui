@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>126</height>
+    <height>160</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,80 +29,13 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item row="0" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="createShareButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">text-align: left</string>
-       </property>
-       <property name="text">
-        <string>&amp;Share link</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../client.qrc">
-         <normaloff>:/client/resources/public.svg</normaloff>:/client/resources/public.svg</iconset>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>25</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QProgressIndicator" name="progressIndicator"/>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>25</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="enableShareLink">
-       <property name="text">
-        <string>Enable</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="0" column="3">
-    <widget class="QToolButton" name="shareLinkToolButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="icon">
-      <iconset resource="../../client.qrc">
-       <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
-     </property>
-     <property name="popupMode">
-      <enum>QToolButton::InstantPopup</enum>
+   <item row="2" column="1">
+    <widget class="QDateEdit" name="calendar">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
     </widget>
    </item>
@@ -122,64 +55,17 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="lineEdit_password">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+   <item row="0" column="3">
+    <widget class="QToolButton" name="shareLinkToolButton">
+     <property name="enabled">
+      <bool>false</bool>
      </property>
-     <property name="echoMode">
-      <enum>QLineEdit::Password</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QToolButton" name="confirmPassword">
      <property name="icon">
       <iconset resource="../../client.qrc">
-       <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
+       <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
      </property>
-     <property name="autoRaise">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="expirationLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>Expiration date:</string>
-     </property>
-     <property name="indent">
-      <number>20</number>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QDateEdit" name="calendar">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QToolButton" name="confirmExpirationDate">
-     <property name="icon">
-      <iconset resource="../../client.qrc">
-       <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
-     </property>
-     <property name="autoRaise">
-      <bool>true</bool>
+     <property name="popupMode">
+      <enum>QToolButton::InstantPopup</enum>
      </property>
     </widget>
    </item>
@@ -230,6 +116,130 @@
      </property>
      <property name="wordWrap">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="lineEdit_password">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QToolButton" name="confirmPassword">
+     <property name="icon">
+      <iconset resource="../../client.qrc">
+       <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QToolButton" name="confirmExpirationDate">
+     <property name="icon">
+      <iconset resource="../../client.qrc">
+       <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="createShareButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">text-align: left</string>
+       </property>
+       <property name="text">
+        <string>&amp;Share link</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../client.qrc">
+         <normaloff>:/client/resources/public.svg</normaloff>:/client/resources/public.svg</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>25</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QProgressIndicator" name="progressIndicator" native="true"/>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>25</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="enableShareLink">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../client.qrc">
+         <normaloff>:/client/resources/add.png</normaloff>:/client/resources/add.png</iconset>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="expirationLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Expiration date:</string>
+     </property>
+     <property name="indent">
+      <number>20</number>
      </property>
     </widget>
    </item>

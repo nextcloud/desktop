@@ -184,10 +184,15 @@ QString SslErrorDialog::certDiv(QSslCertificate cert) const
 
     msg += QL("<p>");
 
-    QString md5sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex());
-    QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
-    msg += tr("Fingerprint (MD5): <tt>%1</tt>").arg(md5sum) + QL("<br/>");
-    msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
+    if (cert.effectiveDate() < QDateTime(QDate(2016, 1, 1), QTime(), Qt::UTC)) {
+	QString sha1sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex());
+        msg += tr("Fingerprint (SHA1): <tt>%1</tt>").arg(sha1sum) + QL("<br/>");
+    }
+
+    QString sha256sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha256).toHex());
+    QString sha512sum = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha512).toHex());
+    msg += tr("Fingerprint (SHA-256): <tt>%1</tt>").arg(sha256sum) + QL("<br/>");
+    msg += tr("Fingerprint (SHA-512): <tt>%1</tt>").arg(sha512sum) + QL("<br/>");
     msg += QL("<br/>");
     msg += tr("Effective Date: %1").arg(cert.effectiveDate().toString()) + QL("<br/>");
     msg += tr("Expiration Date: %1").arg(cert.expiryDate().toString()) + QL("</p>");

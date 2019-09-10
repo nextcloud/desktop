@@ -571,6 +571,12 @@ void PropagateDownloadFile::slotGetFinished()
             qCWarning(lcPropagateDownload) << "server replied 404, assuming file was deleted";
         }
 
+        // Getting a 423 means that the file is locked
+        const bool fileLocked = _item->_httpErrorCode == 423;
+        if (fileLocked) {
+            qCWarning(lcPropagateDownload) << "server replied 423, file is Locked";
+        }
+
         // Don't keep the temporary file if it is empty or we
         // used a bad range header or the file's not on the server anymore.
         if (_tmpFile.size() == 0 || badRangeHeader || fileNotFound) {
@@ -659,7 +665,7 @@ void PropagateDownloadFile::slotGetFinished()
     if (_tmpFile.size() == 0 && _item->_size > 0) {
         FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::NormalError,
-            tr("The downloaded file is empty despite the server announced it should have been %1.")
+            tr("The downloaded file is empty despite that the server announced it should have been %1.")
                 .arg(Utility::octetsToString(_item->_size)));
         return;
     }

@@ -70,7 +70,9 @@ def collectEntries(baseCommit, baseVersion, kind):
     lastVersionTag = None
     lastCMAKEVersion = None
     for line in output.splitlines():
-        (commit, name, email, date, revdate, subject) = line.split("\t")
+        words = line.split("\t")
+        (commit, name, email, date, revdate) = words[0:5]
+        subject = "\t".join(words[5:])
         revdate = datetime.datetime.utcfromtimestamp(long(revdate)).strftime("%Y%m%d.%H%M%S")
 
         kind = "beta"

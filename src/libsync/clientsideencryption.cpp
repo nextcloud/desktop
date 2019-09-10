@@ -958,6 +958,7 @@ void ClientSideEncryption::encryptPrivateKey()
 {
     QStringList list = WordList::getRandomWords(12);
     _mnemonic = list.join(' ');
+    _newMnemonicGenerated = true;
     qCInfo(lcCse()) << "mnemonic Generated:" << _mnemonic;
 
     emit mnemonicGenerated(_mnemonic);
@@ -987,6 +988,11 @@ void ClientSideEncryption::encryptPrivateKey()
         }
     });
     job->start();
+}
+
+bool ClientSideEncryption::newMnemonicGenerated() const
+{
+    return _newMnemonicGenerated;
 }
 
 void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {

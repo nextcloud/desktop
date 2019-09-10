@@ -21,7 +21,7 @@ If your issue appears to be a bug, and hasn't been reported, open a new issue.
 Help us to maximize the effort we can spend fixing issues and adding new
 features, by not reporting duplicate issues.
 
-[template]: https://raw.githubusercontent.com/nextcloud/appstore/master/.github/issue_template.md
+[template]: https://raw.githubusercontent.com/nextcloud/desktop/master/.github/issue_template.md
 [support]: https://nextcloud.com/support/
 [forum]: https://help.nextcloud.com/categories
 [irc]: https://webchat.freenode.net/?channels=nextcloud

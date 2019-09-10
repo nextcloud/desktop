@@ -87,6 +87,8 @@ public:
 
     void forgetSensitiveData();
 
+    bool newMnemonicGenerated() const;
+
 public slots:
     void slotRequestMnemonic();
 
@@ -127,6 +129,7 @@ public:
     QSslKey _publicKey;
     QSslCertificate _certificate;
     QString _mnemonic;
+    bool _newMnemonicGenerated = false;
 };
 
 /* Generates the Metadata for the folder */

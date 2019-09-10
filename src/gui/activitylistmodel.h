@@ -49,6 +49,7 @@ public:
     ActivityList activityList() { return _finalList; }
     ActivityList errorsList() { return _notificationErrorsLists; }
     void addNotificationToActivityList(Activity activity);
+    void clearNotifications();
     void addErrorToActivityList(Activity activity);
     void addSyncFileItemToActivityList(Activity activity);
     void removeActivityFromActivityList(int row);

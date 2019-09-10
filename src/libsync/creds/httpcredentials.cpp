@@ -173,7 +173,7 @@ void HttpCredentials::fetchFromKeychain()
     fetchUser();
 
     if (!_ready && !_refreshToken.isEmpty()) {
-        // This happens if the credentials are still loaded from the keychain, bur we are called
+        // This happens if the credentials are still loaded from the keychain, but we are called
         // here because the auth is invalid, so this means we simply need to refresh the credentials
         refreshAccessToken();
         return;
