@@ -21,6 +21,7 @@
 #include <string.h>
 #include <time.h>
 #include <sys/time.h>
+#include <stdio.h>
 
 #define CSYNC_TEST 1
 #include "csync_exclude.cpp"
@@ -115,16 +116,32 @@ static void check_csync_exclude_add(void **)
     excludedFiles->addManualExclude("/tmp/check_csync1/*");
     assert_int_equal(check_file_full("/tmp/check_csync1/foo"), CSYNC_FILE_EXCLUDE_LIST);
     assert_int_equal(check_file_full("/tmp/check_csync2/foo"), CSYNC_NOT_EXCLUDED);
-    assert_true(excludedFiles->_allExcludes.contains("/tmp/check_csync1/*"));
+    assert_true(excludedFiles->_allExcludes["/"].contains("/tmp/check_csync1/*"));
 
-    assert_true(excludedFiles->_fullRegexFile.pattern().contains("csync1"));
-    assert_true(excludedFiles->_fullTraversalRegexFile.pattern().contains("csync1"));
-    assert_false(excludedFiles->_bnameTraversalRegexFile.pattern().contains("csync1"));
+    assert_true(excludedFiles->_fullRegexFile["/"].pattern().contains("csync1"));
+    assert_true(excludedFiles->_fullTraversalRegexFile["/"].pattern().contains("csync1"));
+    assert_false(excludedFiles->_bnameTraversalRegexFile["/"].pattern().contains("csync1"));
 
     excludedFiles->addManualExclude("foo");
-    assert_true(excludedFiles->_bnameTraversalRegexFile.pattern().contains("foo"));
-    assert_true(excludedFiles->_fullRegexFile.pattern().contains("foo"));
-    assert_false(excludedFiles->_fullTraversalRegexFile.pattern().contains("foo"));
+    assert_true(excludedFiles->_bnameTraversalRegexFile["/"].pattern().contains("foo"));
+    assert_true(excludedFiles->_fullRegexFile["/"].pattern().contains("foo"));
+    assert_false(excludedFiles->_fullTraversalRegexFile["/"].pattern().contains("foo"));
+}
+
+static void check_csync_exclude_add_per_dir(void **)
+{
+    excludedFiles->addManualExclude("*", "/tmp/check_csync1/");
+    assert_int_equal(check_file_full("/tmp/check_csync1/foo"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_full("/tmp/check_csync2/foo"), CSYNC_NOT_EXCLUDED);
+    assert_true(excludedFiles->_allExcludes["/tmp/check_csync1/"].contains("*"));
+
+    excludedFiles->addManualExclude("foo");
+    assert_true(excludedFiles->_fullRegexFile["/"].pattern().contains("foo"));
+
+    excludedFiles->addManualExclude("foo/bar", "/tmp/check_csync1/");
+    assert_true(excludedFiles->_fullRegexFile["/tmp/check_csync1/"].pattern().contains("bar"));
+    assert_true(excludedFiles->_fullTraversalRegexFile["/tmp/check_csync1/"].pattern().contains("bar"));
+    assert_false(excludedFiles->_bnameTraversalRegexFile["/tmp/check_csync1/"].pattern().contains("foo"));
 }
 
 static void check_csync_excluded(void **)
@@ -230,6 +247,58 @@ static void check_csync_excluded(void **)
     assert_int_equal(check_file_full("c \\[d]"), CSYNC_NOT_EXCLUDED);
     assert_int_equal(check_file_full("c d"), CSYNC_NOT_EXCLUDED);
     assert_int_equal(check_file_full("c [d]"), CSYNC_FILE_EXCLUDE_LIST);
+}
+
+static void check_csync_excluded_per_dir(void **)
+{
+    excludedFiles->addManualExclude("A");
+    excludedFiles->reloadExcludeFiles();
+
+    assert_int_equal(check_file_full("A"), CSYNC_FILE_EXCLUDE_LIST);
+
+    excludedFiles->clearManualExcludes();
+    excludedFiles->addManualExclude("A", "/B/");
+    excludedFiles->reloadExcludeFiles();
+
+    assert_int_equal(check_file_full("A"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_full("B/A"), CSYNC_FILE_EXCLUDE_LIST);
+
+    excludedFiles->clearManualExcludes();
+    excludedFiles->addManualExclude("A/a1", "/B/");
+    excludedFiles->reloadExcludeFiles();
+
+    assert_int_equal(check_file_full("A"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_full("B/A/a1"), CSYNC_FILE_EXCLUDE_LIST);
+
+#define FOO_DIR "/tmp/check_csync1/foo"
+#define FOO_EXCLUDE_LIST FOO_DIR "/.sync-exclude.lst"
+    int rc;
+    rc = system("mkdir -p " FOO_DIR);
+    assert_int_equal(rc, 0);
+    FILE *fh = fopen(FOO_EXCLUDE_LIST, "w");
+    assert_non_null(fh);
+    rc = fprintf(fh, "bar");
+    assert_int_not_equal(rc, 0);
+    rc = fclose(fh);
+    assert_int_equal(rc, 0);
+
+    excludedFiles->addInTreeExcludeFilePath(FOO_EXCLUDE_LIST);
+    excludedFiles->reloadExcludeFiles();
+    assert_int_equal(check_file_full(FOO_DIR), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_full(FOO_DIR "/bar"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_full(FOO_DIR "/baz"), CSYNC_NOT_EXCLUDED);
+#undef FOO_DIR
+#undef FOO_EXCLUDE_LIST
+}
+
+static void check_csync_excluded_traversal_per_dir(void **)
+{
+    assert_int_equal(check_file_traversal("/"), CSYNC_NOT_EXCLUDED);
+
+    /* path wildcards */
+    excludedFiles->addManualExclude("*/*.tex.tmp", "/latex/");
+    assert_int_equal(check_file_traversal("latex/my_manuscript.tex.tmp"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("latex/songbook/my_manuscript.tex.tmp"), CSYNC_FILE_EXCLUDE_LIST);
 }
 
 static void check_csync_excluded_traversal(void **)
@@ -633,8 +702,11 @@ int torture_run_tests(void)
 
     const struct CMUnitTest tests[] = {
         cmocka_unit_test_setup_teardown(T::check_csync_exclude_add, T::setup, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_exclude_add_per_dir, T::setup, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_excluded, T::setup_init, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_excluded_per_dir, T::setup, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_excluded_traversal, T::setup_init, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_excluded_traversal_per_dir, T::setup, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_dir_only, T::setup, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_pathes, T::setup_init, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_wildcards, T::setup, T::teardown),

@@ -28,6 +28,7 @@
         <file>resources/copy.svg</file>
         <file>resources/state-sync.svg</file>
         <file>resources/add.png</file>
+        <file>resources/state-info.svg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
