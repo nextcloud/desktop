@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[is]=@APPLICATION_NAME@ forrit til samstillingar við tölvu
 Icon[is]=@APPLICATION_ICON_NAME@
 Name[is]=@APPLICATION_NAME@ forrit til samstillingar við tölvu
+Comment[is]=@APPLICATION_NAME@ forrit til samstillingar við tölvu
 GenericName[is]=Samstilling á möppum

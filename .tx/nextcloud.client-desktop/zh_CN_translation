@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[zh_CN]=@APPLICATION_NAME@ 桌面同步客户端
 Icon[zh_CN]=@APPLICATION_ICON_NAME@
 Name[zh_CN]=@APPLICATION_NAME@ 桌面同步客户端
+Comment[zh_CN]=@APPLICATION_NAME@ 桌面同步客户端
 GenericName[zh_CN]=文件夹同步

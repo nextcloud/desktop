@@ -75,10 +75,10 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
     case OAuth::NotSupported:
         // We will re-enter the event loop, so better wait the next iteration
         QMetaObject::invokeMethod(this, "showDialog", Qt::QueuedConnection);
-        _asyncAuth.reset(0);
+        _asyncAuth.reset(nullptr);
         return;
     case OAuth::Error:
-        _asyncAuth.reset(0);
+        _asyncAuth.reset(nullptr);
         emit asked();
         return;
     case OAuth::LoggedIn:
@@ -91,7 +91,7 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
     _refreshToken = refreshToken;
     _ready = true;
     persist();
-    _asyncAuth.reset(0);
+    _asyncAuth.reset(nullptr);
     emit asked();
 }
 
@@ -148,7 +148,7 @@ QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
     } else if (version >= Account::makeServerVersion(12, 0, 0)) {
         url += QLatin1String("/index.php/settings/personal#security");
     } else if (version >= Account::makeServerVersion(11, 0, 0)) {
-        url += QLatin1String("/index.php/settings/personal#apppasswords");
+        url += QLatin1String("/index.php/settings/user/security#security");
     } else {
         return QString();
     }

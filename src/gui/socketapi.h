@@ -47,7 +47,7 @@ class SocketApi : public QObject
     Q_OBJECT
 
 public:
-    explicit SocketApi(QObject *parent = 0);
+    explicit SocketApi(QObject *parent = nullptr);
     virtual ~SocketApi();
 
 public slots:

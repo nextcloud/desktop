@@ -81,8 +81,11 @@ void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
         } else {
             // If we're running out of memory or inotify watches, become
             // unreliable.
-            if (errno == ENOMEM || errno == ENOSPC) {
+            if (_parent->_isReliable && (errno == ENOMEM || errno == ENOSPC)) {
                 _parent->_isReliable = false;
+                emit _parent->becameUnreliable(
+                    tr("This problem usually happens when the inotify watches are exhausted. "
+                       "Check the FAQ for details."));
             }
         }
     }
@@ -157,7 +160,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
     while (i + sizeof(struct inotify_event) < static_cast<unsigned int>(len)) {
         // cast an inotify_event
         event = (struct inotify_event *)&buffer[i];
-        if (event == NULL) {
+        if (event == nullptr) {
             qCDebug(lcFolderWatcher) << "NULL event";
             i += sizeof(struct inotify_event);
             continue;

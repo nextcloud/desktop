@@ -99,7 +99,7 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
-    Folder(const FolderDefinition &definition, AccountState *accountState, QObject *parent = 0L);
+    Folder(const FolderDefinition &definition, AccountState *accountState, QObject *parent = nullptr);
 
     ~Folder();
 
@@ -325,6 +325,9 @@ private slots:
     /** Warn users if they create a file or folder that is selective-sync excluded */
     void warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path);
 
+    /** Warn users about an unreliable folder watcher */
+    void slotWatcherUnreliable(const QString &message);
+
 private:
     bool reloadExcludes();
 
@@ -341,7 +344,8 @@ private:
         LogStatusNew,
         LogStatusError,
         LogStatusConflict,
-        LogStatusUpdated
+        LogStatusUpdated,
+        LogStatusFileLocked
     };
 
     void createGuiLog(const QString &filename, LogStatus status, int count,

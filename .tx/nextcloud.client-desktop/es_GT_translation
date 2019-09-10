@@ -198,6 +198,6 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[es_GT]=@APPLICATION_NAME@ Cliente de sincronización de escritorio
 Name[es_GT]=@APPLICATION_NAME@ Cliente de sincronización de escritorio
+Comment[es_GT]=@APPLICATION_NAME@ Cliente de sincronización de escritorio
 GenericName[es_GT]=Sincronización de carpeta

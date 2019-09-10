@@ -156,6 +156,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
           // might be error, check!
           int dwError = GetLastError();
           if (dwError != ERROR_NO_MORE_FILES) {
+              qCWarning(lcCSyncVIOLocal, "FindNextFile error %d", dwError);
               errno = EACCES; // no more files is fine. Otherwise EACCESS
           }
           return nullptr;
@@ -181,7 +182,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
       }
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
-                || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
+              ) {
         file_stat->type = ItemTypeSkip;
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
         file_stat->type = ItemTypeDirectory;

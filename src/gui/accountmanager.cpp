@@ -52,7 +52,7 @@ AccountManager *AccountManager::instance()
 bool AccountManager::restore()
 {
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    if (settings->status() != QSettings::NoError) {
+    if (settings->status() != QSettings::NoError || !settings->isWritable()) {
         qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName()
                                     << settings->status();
         return false;
@@ -253,6 +253,20 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         acc->setUrl(urlConfig.toUrl());
     }
 
+    // Migrate to webflow
+    if (authType == QLatin1String("http")) {
+        authType = "webflow";
+        settings.setValue(QLatin1String(authTypeC), authType);
+
+        foreach(QString key, settings.childKeys()) {
+            if (!key.startsWith("http_"))
+                continue;
+            auto newkey = QString::fromLatin1("webflow_").append(key.mid(5));
+            settings.setValue(newkey, settings.value((key)));
+            settings.remove(key);
+        }
+    }
+
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
@@ -328,9 +342,6 @@ AccountPtr AccountManager::createAccount()
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
 
-    connect(acc.data()->e2e(), &ClientSideEncryption::mnemonicGenerated,
-             &AccountManager::displayMnemonic);
-
     return acc;
 }
 
@@ -340,7 +351,7 @@ void AccountManager::displayMnemonic(const QString& mnemonic)
     Ui_Dialog ui;
     ui.setupUi(widget);
     widget->setWindowTitle(tr("End to end encryption mnemonic"));
-    ui.label->setText(tr("To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words."
+    ui.label->setText(tr("To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. "
                          "Please note these down and keep them safe. "
                          "They will be needed to add other devices to your account (like your mobile phone or laptop)."));
     ui.textEdit->setText(mnemonic);
@@ -350,6 +361,7 @@ void AccountManager::displayMnemonic(const QString& mnemonic)
     widget->exec();
     widget->resize(widget->sizeHint());
 }
+
 void AccountManager::shutdown()
 {
     auto accountsCopy = _accounts;
