@@ -80,6 +80,8 @@ protected slots:
     void slotRemoveCurrentFolder();
     void slotOpenCurrentFolder(); // sync folder
     void slotOpenCurrentLocalSubFolder(); // selected subfolder in sync folder
+    void slotEditCurrentIgnoredFiles();
+    void slotEditCurrentLocalIgnoredFiles();
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotDeleteAccount();
@@ -87,7 +89,7 @@ protected slots:
     void slotOpenAccountWizard();
     void slotAccountAdded(AccountState *);
     void refreshSelectiveSyncStatus();
-    void slotMarkSubfolderEncrpted(const FolderStatusModel::SubFolderInfo* folderInfo);
+    void slotMarkSubfolderEncrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
     void slotMarkSubfolderDecrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
     void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);
     void slotCustomContextMenuRequested(const QPoint &);
@@ -99,6 +101,7 @@ protected slots:
 
     // Encryption Related Stuff.
     void slotShowMnemonic(const QString &mnemonic);
+    void slotNewMnemonicGenerated();
 
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
     void slotEncryptionFlagError(const QByteArray &folderId, int httpReturnCode);
@@ -109,7 +112,7 @@ protected slots:
     void slotUploadMetadataSuccess(const QByteArray& folderId);
     void slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode);
 
-    // Remove Encryotion Bit.
+    // Remove Encryption Bit.
     void slotLockForDecryptionSuccess(const QByteArray& folderId, const QByteArray& token);
     void slotLockForDecryptionError(const QByteArray& folderId, int httpReturnCode);
     void slotDeleteMetadataSuccess(const QByteArray& folderId);
@@ -124,6 +127,7 @@ private:
         QStringList errors = QStringList());
     bool event(QEvent *) override;
     void createAccountToolbox();
+    void openIgnoredFilesDialog(const QString & absFolderPath);
 
     /// Returns the alias of the selected folder, empty string if none
     QString selectedFolderAlias() const;

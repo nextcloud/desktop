@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
@@ -35,7 +35,7 @@
       </size>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
@@ -94,7 +94,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
