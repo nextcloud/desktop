@@ -52,7 +52,7 @@ void ProcessDirectoryJob::start()
     }
 
     if (_queryLocal == NormalQuery) {
-        _localJob = startAsyncLocalQuery();
+        startAsyncLocalQuery();
     } else {
         _localQueryDone = true;
     }
@@ -1420,7 +1420,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     return serverJob;
 }
 
-DiscoverySingleLocalDirectoryJob *ProcessDirectoryJob::startAsyncLocalQuery()
+void ProcessDirectoryJob::startAsyncLocalQuery()
 {
     QString localPath = _discoveryData->_localDir + _currentFolder._local;
     auto localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account, localPath, _discoveryData->_syncOptions._vfs.data(), this);
@@ -1467,9 +1467,7 @@ DiscoverySingleLocalDirectoryJob *ProcessDirectoryJob::startAsyncLocalQuery()
     });
 
     QThreadPool *pool = QThreadPool::globalInstance();
-    pool->start(localJob);
-
-    return localJob;
+    pool->start(localJob); // QThreadPool takes ownership
 }
 
 
