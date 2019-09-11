@@ -91,11 +91,11 @@ public:
 
     void run() Q_DECL_OVERRIDE;
 signals:
-    void finished(const QVector<LocalInfo> &result);
-    void finishedFatalError(const QString &errorString);
-    void finishedNonFatalError(const QString &errorString);
+    void finished(QVector<LocalInfo> result);
+    void finishedFatalError(QString errorString);
+    void finishedNonFatalError(QString errorString);
 
-    void itemDiscovered(const SyncFileItemPtr &item);
+    void itemDiscovered(SyncFileItemPtr item);
     void childIgnored(bool b);
 private slots:
 private:
