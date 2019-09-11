@@ -925,6 +925,11 @@ void DetermineAuthTypeJob::checkBothDone()
         result = WebViewFlow;
     }
 
+    // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
+    if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
+        result = LoginFlowV2;
+    }
+
     qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
     emit authType(result);
     deleteLater();

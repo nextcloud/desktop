@@ -99,7 +99,7 @@ Activity
 .. index:: activity, recent changes, sync activity
 
 The Activity window, which can be invoked either from the main menu (``Recent
-Changes -> Details…``) or the Activity tab on the left side of the settings
+Changes -> View more activity…``) or the Activity tab on the left side of the settings
 window, provides an in-depth account of the recent sync activity.  It will show
 files that have not been synced because they are on the ignored files list, or
 because they cannot be synced in a cross-platform manner due to containing
