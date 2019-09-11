@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
@@ -29,7 +29,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
@@ -97,7 +97,7 @@
           <item>
            <widget class="QLabel" name="lSyncEverythingSizeLabel">
             <property name="text">
-             <string>TextLabel</string>
+             <string notr="true">TextLabel</string>
             </property>
             <property name="textFormat">
              <enum>Qt::PlainText</enum>
@@ -209,7 +209,7 @@
           <item>
            <widget class="QLabel" name="lSelectiveSyncSizeLabel">
             <property name="text">
-             <string>TextLabel</string>
+             <string notr="true">TextLabel</string>
             </property>
             <property name="textFormat">
              <enum>Qt::PlainText</enum>
@@ -239,7 +239,7 @@
        <item>
         <widget class="QLabel" name="lLocalIcon">
          <property name="text">
-          <string>TextLabel</string>
+          <string notr="true">TextLabel</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -289,7 +289,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>pbSelectLocalFolder</string>
+        <string notr="true">pbSelectLocalFolder</string>
        </property>
       </widget>
      </item>
@@ -298,7 +298,7 @@
        <item>
         <widget class="QLabel" name="lServerIcon">
          <property name="text">
-          <string>TextLabel</string>
+          <string notr="true">TextLabel</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -390,7 +390,7 @@
      <item row="4" column="1">
       <widget class="QLabel" name="lFreeSpace">
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">TextLabel</string>
        </property>
       </widget>
      </item>
@@ -399,7 +399,7 @@
    <item>
     <widget class="QLabel" name="errorLabel">
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
     </widget>
    </item>
@@ -425,7 +425,7 @@
    <item>
     <widget class="QLabel" name="bottomLabel">
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>

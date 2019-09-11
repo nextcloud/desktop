@@ -343,7 +343,8 @@ private:
         LogStatusNew,
         LogStatusError,
         LogStatusConflict,
-        LogStatusUpdated
+        LogStatusUpdated,
+        LogStatusFileLocked
     };
 
     void createGuiLog(const QString &filename, LogStatus status, int count,

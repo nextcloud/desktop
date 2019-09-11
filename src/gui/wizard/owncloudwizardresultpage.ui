@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QLabel" name="topLabel">
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -95,7 +95,7 @@
               </size>
              </property>
              <property name="text">
-              <string>PushButton</string>
+              <string notr="true">PushButton</string>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonTextUnderIcon</enum>
@@ -117,7 +117,7 @@
               </size>
              </property>
              <property name="text">
-              <string>PushButton</string>
+              <string notr="true">PushButton</string>
              </property>
              <property name="toolButtonStyle">
               <enum>Qt::ToolButtonTextUnderIcon</enum>

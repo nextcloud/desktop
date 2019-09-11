@@ -39,6 +39,8 @@ private slots:
         QVERIFY(excluded.isExcluded("/a/foo_conflict-bar", "/a", keepHidden));
         QVERIFY(excluded.isExcluded("/a/foo (conflicted copy bar)", "/a", keepHidden));
         QVERIFY(excluded.isExcluded("/a/.b", "/a", excludeHidden));
+
+        QVERIFY(excluded.isExcluded("/a/#b#", "/a", keepHidden));
     }
 };
 

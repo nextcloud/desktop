@@ -87,9 +87,36 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     }
 }
 
+// TODO: Right now only detection on toggle/startup, not when windows theme is switched while nextcloud is running
 static inline bool hasDarkSystray_private()
 {
-    return true;
+    bool hasDarkSystray = true;
+    // Open registry key first, continue only on success (may be legitimately absent in earlier windows versions)
+    HKEY hKey;
+    LONG lRes = RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", 0, KEY_READ, &hKey);
+    
+    // classical windows function - preserve buff size for DWORD, call ExW version, store regkey value in nResult
+    if (lRes == ERROR_SUCCESS) {
+        DWORD dwBufferSize(sizeof(DWORD));
+        DWORD nResult(0);
+
+        // https://docs.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regqueryvalueexw
+        LONG nError = ::RegQueryValueExW(hKey,
+            L"SystemUsesLightTheme",
+            NULL,
+            NULL,
+            reinterpret_cast<LPBYTE>(&nResult),
+            &dwBufferSize);
+        
+        // if RegQuery returned no error and light theme was found, change systray return value
+        if (nError == ERROR_SUCCESS && nResult == 1)
+            hasDarkSystray = false;
+
+        return hasDarkSystray;
+    } else {
+        // fallback to true if regkey could not be determined
+        return hasDarkSystray;
+    }
 }
 
 QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName)
