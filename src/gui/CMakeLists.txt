@@ -22,6 +22,7 @@ set(client_UI_SRCS
     generalsettings.ui
     legalnotice.ui
     ignorelisteditor.ui
+    ignorelisttablewidget.ui
     networksettings.ui
     activitywidget.ui
     synclogdialog.ui
@@ -38,6 +39,8 @@ set(client_UI_SRCS
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudoauthcredspage.ui
+    wizard/flow2authcredspage.ui
+    wizard/flow2authwidget.ui
     wizard/owncloudsetupnocredspage.ui
     wizard/owncloudwizardresultpage.ui
     wizard/webview.ui
@@ -59,6 +62,7 @@ set(client_SRCS
     generalsettings.cpp
     legalnotice.cpp
     ignorelisteditor.cpp
+    ignorelisttablewidget.cpp
     lockwatcher.cpp
     logbrowser.cpp
     navigationpanehelper.cpp
@@ -103,6 +107,7 @@ set(client_SRCS
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
+    creds/flow2auth.cpp
     creds/webflowcredentials.cpp
     creds/webflowcredentialsdialog.cpp
     wizard/postfixlineedit.cpp
@@ -111,6 +116,8 @@ set(client_SRCS
     wizard/owncloudconnectionmethoddialog.cpp
     wizard/owncloudhttpcredspage.cpp
     wizard/owncloudoauthcredspage.cpp
+    wizard/flow2authcredspage.cpp
+    wizard/flow2authwidget.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
@@ -244,7 +251,7 @@ if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
     MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 endif()
-ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASE "${APPLICATION_ICON_NAME}")
+ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
@@ -266,6 +273,9 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
         endforeach(_file)
         install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
     else()
+        file(GLOB_RECURSE VISUAL_ELEMENTS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-w10startmenu*")
+        install(FILES ${VISUAL_ELEMENTS} DESTINATION bin/visualelements)
+        install(FILES "${theme_dir}/${APPLICATION_EXECUTABLE}.VisualElementsManifest.xml" DESTINATION bin)
         install(FILES ${client_I18N} DESTINATION i18n)
     endif()
 

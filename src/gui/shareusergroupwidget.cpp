@@ -190,11 +190,21 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     layout->setContentsMargins(0, 0, 0, 0);
     int x = 0;
     int height = 0;
+    QList<QString> linkOwners({});
 
     foreach (const auto &share, shares) {
         // We don't handle link shares, only TypeUser or TypeGroup
         if (share->getShareType() == Share::TypeLink) {
+            if(!share->getUidOwner().isEmpty() &&
+                    share->getUidOwner() != share->account()->davUser()){
+                linkOwners.append(share->getOwnerDisplayName());
+             }
             continue;
+        }
+
+        // the owner of the file that shared it first
+        if(x == 0 && !share->getUidOwner().isEmpty()){
+            _ui->mainOwnerLabel->setText(QString("Shared with you by ").append(share->getOwnerDisplayName()));
         }
 
         ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _parentScrollArea);
@@ -202,7 +212,6 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
         s->setBackgroundRole(layout->count() % 2 == 0 ? QPalette::Base : QPalette::AlternateBase);
         layout->addWidget(s);
-        s->setVisible(true);
 
         x++;
         if (x <= 3) {
@@ -210,7 +219,18 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
     }
 
-    scrollArea->setFrameShape(x > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
+    foreach (const QString &owner, linkOwners) {
+        auto ownerLabel = new QLabel(QString(owner + " shared via link"));
+        layout->addWidget(ownerLabel);
+        ownerLabel->setVisible(true);
+
+        x++;
+        if (x <= 6) {
+            height = newViewPort->sizeHint().height();
+        }
+    }
+
+    scrollArea->setFrameShape(x > 6 ? QFrame::StyledPanel : QFrame::NoFrame);
     scrollArea->setVisible(!shares.isEmpty());
     scrollArea->setFixedHeight(height);
     scrollArea->setWidget(newViewPort);
@@ -368,6 +388,15 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     menu->addAction(_permissionReshare);
     connect(_permissionReshare, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
 
+    menu->addSeparator();
+
+      // Adds action to delete share widget
+      QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),QIcon(QLatin1String(":/client/resources/delete.png")));
+      _deleteShareButton= new QAction(deleteicon,tr("Unshare"), this);
+
+    menu->addAction(_deleteShareButton);
+    connect(_deleteShareButton, &QAction::triggered, this, &ShareUserLine::on_deleteShareButton_clicked);
+
     /*
      * Files can't have create or delete permissions
      */
@@ -414,18 +443,11 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     connect(share.data(), &Share::permissionsSet, this, &ShareUserLine::slotPermissionsSet);
     connect(share.data(), &Share::shareDeleted, this, &ShareUserLine::slotShareDeleted);
 
-    _ui->deleteShareButton->setIcon(QIcon::fromTheme(QLatin1String("user-trash"),
-                                                     QIcon(QLatin1String(":/client/resources/delete.png"))));
+    // _ui->deleteShareButton->setIcon(QIcon::fromTheme(QLatin1String("user-trash"),
+    //                                                  QIcon(QLatin1String(":/client/resources/delete.png"))));
 
     if (!share->account()->capabilities().shareResharing()) {
         _permissionReshare->setVisible(false);
-    }
-
-    //If the initiator is not you. And the recipient is not you. Show it without any options.
-    if(share->account()->id() != share->getId() && share->account()->davUser() != share->getShareWith()->shareWith()){
-        _ui->permissionsEdit->hide();
-        _ui->permissionToolButton->hide();
-        _ui->deleteShareButton->hide();
     }
 
     loadAvatar();

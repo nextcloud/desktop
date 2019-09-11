@@ -57,6 +57,10 @@ public:
     QString _refreshToken;
     QScopedPointer<OAuth> _asyncAuth;
     Ui_OwncloudOAuthCredsPage _ui;
+
+protected slots:
+    void slotOpenBrowser();
+    void slotCopyLinkToClipboard();
 };
 
 } // namespace OCC
