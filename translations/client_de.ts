@@ -1133,7 +1133,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisiert mit lokalem Ordner (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="303"/>
