@@ -87,7 +87,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
     connect(_ui.slideShow, &SlideShow::clicked, _ui.slideShow, &SlideShow::stopShow);
     connect(_ui.nextButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::nextSlide);
-    connect(_ui.previousButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::previousSlide);
+    connect(_ui.prevButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::prevSlide);
 
     _ui.slideShow->startShow();
 
