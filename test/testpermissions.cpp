@@ -83,6 +83,13 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
+        // Some of this test depends on the order of discovery. With threading
+        // that order becomes effectively random, but we want to make sure to test
+        // all cases and thus disable threading.
+        auto syncOpts = fakeFolder.syncEngine().syncOptions();
+        syncOpts._parallelNetworkJobs = 1;
+        fakeFolder.syncEngine().setSyncOptions(syncOpts);
+
         const int cannotBeModifiedSize = 133;
         const int canBeModifiedSize = 144;
 
@@ -354,6 +361,13 @@ private slots:
     {
         FakeFolder fakeFolder{FileInfo{}};
 
+        // Some of this test depends on the order of discovery. With threading
+        // that order becomes effectively random, but we want to make sure to test
+        // all cases and thus disable threading.
+        auto syncOpts = fakeFolder.syncEngine().syncOptions();
+        syncOpts._parallelNetworkJobs = 1;
+        fakeFolder.syncEngine().setSyncOptions(syncOpts);
+
         auto &lm = fakeFolder.localModifier();
         auto &rm = fakeFolder.remoteModifier();
         rm.mkdir("allowed");
@@ -441,7 +455,7 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "zallowed/sub2/file", CSYNC_INSTRUCTION_NEW));
         QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), ImmediateFollowUp);
 
-        // A follow-up sync will restore allowed/file and allowed/sub2 and maintain the createdir/file errors
+        // A follow-up sync will restore allowed/file and allowed/sub2 and maintain the nocreatedir/file errors
         completeSpy.clear();
         QVERIFY(!fakeFolder.syncOnce());
 
@@ -453,6 +467,13 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "allowed/file", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "allowed/sub2", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "allowed/sub2/file", CSYNC_INSTRUCTION_NEW));
+
+        auto cls = fakeFolder.currentLocalState();
+        QVERIFY(cls.find("allowed/file"));
+        QVERIFY(cls.find("allowed/sub2"));
+        QVERIFY(cls.find("zallowed/file"));
+        QVERIFY(cls.find("zallowed/sub2"));
+        QVERIFY(cls.find("zallowed/sub2/file"));
     }
 };
 
