@@ -1133,7 +1133,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizowany z folderem lokalnym (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="303"/>

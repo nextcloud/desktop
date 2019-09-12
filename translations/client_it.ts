@@ -1135,7 +1135,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzato con la cartella locale (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="303"/>
