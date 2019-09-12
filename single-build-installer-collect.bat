@@ -137,12 +137,12 @@ start "copy sync-exclude.lst" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%MY_INSTA
 if %ERRORLEVEL% neq 0 goto onError
 
 Rem icon (hi-res version created by png2ico, if unavailable use lo-res: %MY_REPO%/admin/win/nsi/installer.ico)
-echo "* copy nextcloud.ico."
-if exist "%MY_BUILD_PATH%/src/gui/Nextcloud.ico" (
-    start "copy nextcloud.ico to %APP_NAME%.ico" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%MY_BUILD_PATH%/src/gui/Nextcloud.ico" "%MY_COLLECT_PATH%/%APP_NAME%.ico"
+echo "* copy %APP_NAME_SANITIZED%.ico."
+if exist "%MY_BUILD_PATH%/src/gui/%APP_NAME_SANITIZED%.ico" (
+    start "copy %APP_NAME_SANITIZED%.ico" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%MY_BUILD_PATH%/src/gui/%APP_NAME_SANITIZED%.ico" "%MY_COLLECT_PATH%/%APP_NAME_SANITIZED%.ico"
 ) else (
-    echo "  NOT FOUND - try to copy installer.ico to %APP_NAME%.ico"
-    start "copy installer.ico to %APP_NAME%.ico" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%MY_REPO%/admin/win/nsi/installer.ico" "%MY_COLLECT_PATH%/%APP_NAME%.ico"
+    echo "  NOT FOUND - try to copy installer.ico to %APP_NAME_SANITIZED%.ico"
+    start "copy installer.ico to %APP_NAME_SANITIZED%.ico" /D "%MY_COLLECT_PATH%/" /B /wait cp -af "%MY_REPO%/admin/win/nsi/installer.ico" "%MY_COLLECT_PATH%/%APP_NAME_SANITIZED%.ico"
 )
 if %ERRORLEVEL% neq 0 goto onError
 
