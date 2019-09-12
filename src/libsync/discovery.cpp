@@ -924,6 +924,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // More complicated. The REMOVE is canceled. Restore will happen next sync.
             qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
             _discoveryData->_statedb->deleteFileRecord(originalPath, true);
+            _discoveryData->_statedb->schedulePathForRemoteDiscovery(originalPath);
             _discoveryData->_anotherSyncNeeded = true;
         } else {
             // Signal to future checkPermissions() to forbid the REMOVE and set to restore instead
