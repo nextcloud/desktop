@@ -206,8 +206,15 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="0">
-    <widget class="OCC::SlideShow" name="slideShow">
+   <item row="15" column="3">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+    </layout>
+   </item>
+   <item row="2" column="3">
+    <widget class="OCC::SlideShow" name="slideShow" native="true">
      <property name="font">
       <font>
        <pointsize>12</pointsize>
