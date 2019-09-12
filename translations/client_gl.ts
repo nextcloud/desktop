@@ -129,8 +129,13 @@
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
-        <source>Re-open Browser (or right-click to copy link)</source>
-        <translation>Volver abrir o navegador (ou botón dereito para copiar a ligazón)</translation>
+        <source>Re-open Browser</source>
+        <translation>Volver abrir o navegador</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authcredspage.ui" line="69"/>
+        <source>Copy link</source>
+        <translation>Copiar a ligazón</translation>
     </message>
 </context>
 <context>
@@ -152,8 +157,13 @@
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
-        <source>Re-open Browser (or right-click to copy link)</source>
-        <translation>Volver abrir o navegador (ou botón dereito para copiar a ligazón)</translation>
+        <source>Re-open Browser</source>
+        <translation>Volver abrir o navegador</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/flow2authwidget.ui" line="81"/>
+        <source>Copy link</source>
+        <translation>Copiar a ligazón</translation>
     </message>
 </context>
 <context>
@@ -267,8 +277,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
-        <location filename="../src/gui/accountsettings.cpp" line="754"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1167"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1221"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -278,224 +288,230 @@
         <translation>Conectado con &lt;server&gt; como &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="186"/>
+        <location filename="../src/gui/accountsettings.cpp" line="188"/>
         <source>No account configured.</source>
         <translation>Non hai contas configuradas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="214"/>
+        <location filename="../src/gui/accountsettings.cpp" line="216"/>
         <source>Add new</source>
         <translation>Engadir novo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="222"/>
+        <location filename="../src/gui/accountsettings.cpp" line="224"/>
         <source>Remove</source>
         <translation>Retirar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="226"/>
+        <location filename="../src/gui/accountsettings.cpp" line="228"/>
         <source>Account</source>
         <translation>Conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="236"/>
+        <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>This account supports end-to-end encryption</source>
         <translation>Esta conta admite o cifrado de extremo a extremo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="238"/>
+        <location filename="../src/gui/accountsettings.cpp" line="240"/>
         <source>Enable encryption</source>
         <translation>Activar o cifrado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="255"/>
+        <location filename="../src/gui/accountsettings.cpp" line="257"/>
         <source>Show E2E mnemonic</source>
         <translation>Amosar o mnemónico E2E</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="563"/>
+        <location filename="../src/gui/accountsettings.cpp" line="610"/>
         <source>Encrypt</source>
         <translation>Cifrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="604"/>
+        <location filename="../src/gui/accountsettings.cpp" line="618"/>
+        <location filename="../src/gui/accountsettings.cpp" line="654"/>
+        <source>Edit Ignored Files</source>
+        <translation>Editar ficheiros ignorados</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="658"/>
         <source>Choose what to sync</source>
         <translation>Escolla que sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="610"/>
+        <location filename="../src/gui/accountsettings.cpp" line="664"/>
         <source>Force sync now</source>
         <translation>Forzar a sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="612"/>
+        <location filename="../src/gui/accountsettings.cpp" line="666"/>
         <source>Restart sync</source>
         <translation>Reiniciar a sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="621"/>
+        <location filename="../src/gui/accountsettings.cpp" line="675"/>
         <source>Remove folder sync connection</source>
         <translation>Retirar a conexión da sincronización do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="746"/>
         <source>Folder creation failed</source>
         <translation>Non foi posíbel crear o cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="693"/>
+        <location filename="../src/gui/accountsettings.cpp" line="747"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Non foi posíbel crear o cartafol local &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="746"/>
+        <location filename="../src/gui/accountsettings.cpp" line="800"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Confirmar a retirada da conexión da sincronización do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="753"/>
+        <location filename="../src/gui/accountsettings.cpp" line="807"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Retirar a conexión da sincronización do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="835"/>
+        <location filename="../src/gui/accountsettings.cpp" line="889"/>
         <source>Sync Running</source>
         <translation>Sincronización en proceso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="836"/>
+        <location filename="../src/gui/accountsettings.cpp" line="890"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Estase a realizar a sincronización.&lt;br/&gt;Quere interrompela e rematala?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="925"/>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>%1 in use</source>
         <translation>%1 en uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="952"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1006"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 como &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="958"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
         <translation>Este servidor da versión %1 é vello e non ten soporte! Vostede verá o que fai.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="960"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>Connected to %1.</source>
         <translation>Conectado a %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="962"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>O servidor %1 non está dispoñíbel temporalmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="964"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>O servidor %1 neste momento está en modo de mantemento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="966"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1020"/>
         <source>Signed out from %1.</source>
         <translation>Desconectado de %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="975"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1029"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Obtendo autorización dende o navegador. &lt;a href=&apos;%1&apos;&gt;Prema aquí&lt;/a&gt; para volver abrir o navegador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1033"/>
         <source>Connecting to %1...</source>
         <translation>Conectando con %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="982"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1036"/>
         <source>No connection to %1 at %2.</source>
         <translation>Non hai conexión con %1 en %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1014"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1068"/>
         <source>Log in</source>
         <translation>Acceder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1110"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1164"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Hai cartafoles que non se sincronizaron por ser demasiado grandes:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1112"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1166"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Hai cartafoles que non se sincronizaron porque son almacenamentos externos:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1113"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1167"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Hai cartafoles que non se sincronizaron porque son demasiado grandes ou almacenamentos externos:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1159"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1213"/>
         <source>Confirm Account Removal</source>
         <translation>Confirme a retirada da conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1160"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1214"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;De verdade quere retirar a conexión a conta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Isto &lt;b&gt;non&lt;/b&gt; eliminará ningún ficheiro.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1166"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1220"/>
         <source>Remove connection</source>
         <translation>Retirar conexión</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="547"/>
-        <location filename="../src/gui/accountsettings.cpp" line="600"/>
+        <location filename="../src/gui/accountsettings.cpp" line="594"/>
+        <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>Open folder</source>
         <translation>Abrir o cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="218"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
+        <location filename="../src/gui/accountsettings.cpp" line="220"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
         <source>Log out</source>
         <translation>Saír</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="618"/>
+        <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>Resume sync</source>
         <translation>Continuar coa sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="618"/>
+        <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>Pause sync</source>
         <translation>Por en pausa a sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="747"/>
+        <location filename="../src/gui/accountsettings.cpp" line="801"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Quere realmente deixar de sincronizar o cartafol &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Isto &lt;b&gt;non&lt;/b&gt; eliminará ningún ficheiro.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="912"/>
+        <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) de %2 en uso. Algúns cartafoles, incluíndo os compartidos e os montados en rede, poderían ter diferentes límites.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="913"/>
+        <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>%1 of %2 in use</source>
         <translation>%1 de %2 en uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="922"/>
+        <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Actualmente non hai dispoñíbel ningunha información sobre o uso do almacenamento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="988"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>No %1 connection configured.</source>
         <translation>Non se configurou a conexión %1.</translation>
     </message>
@@ -788,12 +804,7 @@
         <translation>Acceda no seu navegador (Fluxo de acceso v2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="57"/>
-        <source>Copy link to clipboard</source>
-        <translation>Copiar a ligazón no portapapeis</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="96"/>
+        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="83"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Non foi posíbel abrir o navegador, copie a ligazón ao seu navegador.</translation>
     </message>
@@ -801,12 +812,7 @@
 <context>
     <name>OCC::Flow2AuthWidget</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="61"/>
-        <source>Copy link to clipboard</source>
-        <translation>Copiar a ligazón no portapapeis</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="80"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="67"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>Non foi posíbel abrir o navegador, copie a ligazón ao seu navegador.</translation>
     </message>
@@ -1126,12 +1132,12 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
         <translation>Engadir a conexión da sincronización do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="255"/>
-        <source>Synchronized with local folder</source>
-        <translation>Sincronizado co cartafol local</translation>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
+        <source>Synchronized with local folder (%1)</source>
+        <translation>Sincronizado co cartafol local (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="302"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="303"/>
         <source>File</source>
         <translation>Ficheiro</translation>
     </message>
@@ -1161,7 +1167,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
         <translation>Produciuse un erro ao cargar a lista de cartafoles dende o servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="237"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="239"/>
         <source>Signed out</source>
         <translation>Desconectado</translation>
     </message>
@@ -1176,107 +1182,107 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
         <translation>Hai conflitos sen resolver. Prema para obter máis detalles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="932"/>
         <source>Reconciling changes</source>
         <translation>Reconciliando os cambios</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="967"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>«%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="996"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1007"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>descargar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1008"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>enviar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Comprobando os cambios no cartafol remoto «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Comprobando os cambios no cartafol local «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1002"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1012"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1018"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1022"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1041"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>Restan %5, %1 de %2, ficheiro %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1049"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 de %2, ficheiro %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
         <source>file %1 of %2</source>
         <translation>ficheiro %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1100"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting...</source>
         <translation>Agardando...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Agardando por outro cartafol…</numerusform><numerusform>Agardando por outros %n cartafoles…</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1108"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync...</source>
         <translation>Preparando para sincronizar…</translation>
     </message>
@@ -1557,32 +1563,45 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
         <translation>Ficheiros ignorados por patróns</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.ui" line="119"/>
-        <source>Add</source>
-        <translation>Engadir</translation>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
+        <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
+        <translation>Esta entrada é fornecida polo sistema en «%1» e non pode ser modificado nesta vista.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::IgnoreListTableWidget</name>
+    <message>
+        <location filename="../src/gui/ignorelisttablewidget.ui" line="14"/>
+        <source>IgnoreListTableWidget</source>
+        <translation>IgnorarListaTáboaTrebello</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.ui" line="126"/>
-        <source>Remove all</source>
-        <translation>Retirar todo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/ignorelisteditor.ui" line="93"/>
+        <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation>Patrón</translation>
+        <translation>Modelo</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.ui" line="98"/>
+        <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
         <translation>Permitir a eliminación</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.ui" line="109"/>
+        <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
+        <source>Add</source>
+        <translation>Engadir</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
         <source>Remove</source>
         <translation>Retirar</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="42"/>
+        <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
+        <source>Remove all</source>
+        <translation>Retirar todo</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
@@ -1591,29 +1610,24 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 Os elementos onde se permite a eliminación eliminaranse se impiden que se elimine un directorio. Isto é útil para os metadatos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
         <translation>Non foi posíbel abrir o ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Non é posíbel escribir os cambios en «%1».</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="159"/>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
         <translation>Engadir o patrón a ignorar</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="160"/>
+        <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
         <translation>Engadir un novo patrón a ignorar:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="46"/>
-        <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation>Esta entrada é fornecida polo sistema en «%1» e non pode ser modificado nesta vista.</translation>
     </message>
 </context>
 <context>
@@ -2064,11 +2078,6 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
         <translation>Acceda no seu navegador</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
-        <source>Copy link to clipboard</source>
-        <translation>Copiar a ligazón no portapapeis</translation>
     </message>
 </context>
 <context>
@@ -3156,12 +3165,12 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Pegada dixital (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Pegada dixital (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
@@ -3823,6 +3832,11 @@ Recomendámoslle que non o use.</translation>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
         <translation>Volver abrir o navegador</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
+        <source>Copy link</source>
+        <translation>Copiar a ligazón</translation>
     </message>
 </context>
 <context>
