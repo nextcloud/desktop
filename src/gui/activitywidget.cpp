@@ -121,6 +121,11 @@ void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo 
                 continue;
             }
 
+            if(activity._status == SyncFileItem::FileLocked && !QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
+
 
             if(activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()){
                 _model->removeActivityFromActivityList(activity);

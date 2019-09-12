@@ -37,7 +37,7 @@
 #include <QNetworkProxy>
 #include <QStandardPaths>
 
-#define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
+#define DEFAULT_REMOTE_POLL_INTERVAL 5000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace OCC {
@@ -750,7 +750,7 @@ void ConfigFile::setMoveToTrash(bool isChecked)
 bool ConfigFile::promptDeleteFiles() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(promptDeleteC), true).toBool();
+    return settings.value(QLatin1String(promptDeleteC), false).toBool();
 }
 
 void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)

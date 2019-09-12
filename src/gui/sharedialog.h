@@ -19,6 +19,7 @@
 #include "sharepermissions.h"
 #include "owncloudgui.h"
 
+#include <QSharedPointer>
 #include <QPointer>
 #include <QString>
 #include <QDialog>
@@ -34,6 +35,9 @@ namespace Ui {
 
 class ShareLinkWidget;
 class ShareUserGroupWidget;
+class ShareManager;
+class LinkShare;
+class Share;
 
 class ShareDialog : public QDialog
 {
@@ -56,8 +60,19 @@ private slots:
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
     void slotAccountStateChanged(int state);
 
+    void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
+    void slotAddLinkShareWidget(const QSharedPointer<LinkShare> &linkShare);
+    void slotDeleteShare();
+    void slotCreateLinkShare();
+    void slotAdjustScrollWidgetSize();
+
+signals:
+    void toggleAnimation(bool);
+
 private:
     void showSharingUi();
+    void addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare);
+    void initLinkShareWidget();
 
     Ui::ShareDialog *_ui;
 
@@ -68,8 +83,10 @@ private:
     QByteArray _numericFileId;
     QString _privateLinkUrl;
     ShareDialogStartPage _startPage;
+    ShareManager *_manager;
 
-    ShareLinkWidget *_linkWidget;
+    QList<ShareLinkWidget*> _linkWidgetList;
+    ShareLinkWidget* _emptyShareLinkWidget;
     ShareUserGroupWidget *_userGroupWidget;
     QProgressIndicator *_progressIndicator;
 };

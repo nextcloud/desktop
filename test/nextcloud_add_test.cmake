@@ -1,6 +1,6 @@
 find_package(Qt5 COMPONENTS Core Test Xml Network REQUIRED)
 
-macro(owncloud_add_test test_class additional_cpp)
+macro(nextcloud_add_test test_class additional_cpp)
     set(CMAKE_AUTOMOC TRUE)
     set(OWNCLOUD_TEST_CLASS ${test_class})
     string(TOLOWER "${OWNCLOUD_TEST_CLASS}" OWNCLOUD_TEST_CLASS_LOWERCASE)
@@ -19,7 +19,7 @@ macro(owncloud_add_test test_class additional_cpp)
     add_test(NAME ${OWNCLOUD_TEST_CLASS}Test COMMAND ${OWNCLOUD_TEST_CLASS}Test)
 endmacro()
 
-macro(owncloud_add_benchmark test_class additional_cpp)
+macro(nextcloud_add_benchmark test_class additional_cpp)
     set(CMAKE_AUTOMOC TRUE)
     set(OWNCLOUD_TEST_CLASS ${test_class})
     string(TOLOWER "${OWNCLOUD_TEST_CLASS}" OWNCLOUD_TEST_CLASS_LOWERCASE)
