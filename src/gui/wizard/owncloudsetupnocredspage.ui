@@ -485,7 +485,6 @@
  </customwidgets>
  <resources>
   <include location="../../../theme.qrc"/>
-  <include location="../../../client.qrc"/>
  </resources>
  <connections/>
 </ui>
