@@ -466,7 +466,41 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
         _ocWizard->appendToConfigurationLog(res);
     }
     if (nextStep) {
-        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), _ocWizard->account()->davPath() + remoteFolder, this);
+        /*
+         * BEGIN - Sanitize URL paths to eliminate double-slashes
+         *
+         *         Purpose: Don't rely on unsafe paths, be extra careful.
+         *
+         *         Example: https://cloud.example.com/remote.php/webdav//
+         *
+        */
+        qCInfo(lcWizard) << "Sanitize got URL path:" << QString(_ocWizard->account()->url().toString() + '/' + _ocWizard->account()->davPath() + remoteFolder);
+
+        QString newDavPath = _ocWizard->account()->davPath(),
+                newRemoteFolder = remoteFolder;
+
+        while (newDavPath.startsWith('/')) {
+            newDavPath.remove(0, 1);
+        }
+        while (newDavPath.endsWith('/')) {
+            newDavPath.chop(1);
+        }
+
+        while (newRemoteFolder.startsWith('/')) {
+            newRemoteFolder.remove(0, 1);
+        }
+        while (newRemoteFolder.endsWith('/')) {
+            newRemoteFolder.chop(1);
+        }
+
+        QString newUrlPath = newDavPath + '/' + newRemoteFolder;
+
+        qCInfo(lcWizard) << "Sanitized to URL path:" << _ocWizard->account()->url().toString() + '/' + newUrlPath;
+        /*
+         * END - Sanitize URL paths to eliminate double-slashes
+        */
+
+        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), newUrlPath, this);
         connect(job, &EntityExistsJob::exists, this, &OwncloudSetupWizard::slotRemoteFolderExists);
         job->start();
     } else {
