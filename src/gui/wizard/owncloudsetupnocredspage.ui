@@ -485,10 +485,6 @@
  </customwidgets>
  <resources>
   <include location="../../../theme.qrc"/>
-<<<<<<< HEAD
-=======
-  <include location="../../../client.qrc"/>
->>>>>>> f49cd1850... Restructured layout, as the initial change were too broken (after additions through the last months)
  </resources>
  <connections/>
 </ui>
