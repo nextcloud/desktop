@@ -88,6 +88,9 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     connect(_ui.nextButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::nextSlide);
     connect(_ui.prevButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::prevSlide);
 
+	_ui.nextButton->setIcon(theme->uiThemeIcon(QString("control-next.svg"), false));
+    _ui.prevButton->setIcon(theme->uiThemeIcon(QString("control-prev.svg"), false));
+
     _ui.slideShow->startShow();
 
     QPalette pal = _ui.slideShow->palette();
