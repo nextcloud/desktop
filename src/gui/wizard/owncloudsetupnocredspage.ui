@@ -84,8 +84,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../client.qrc">
-         <normaloff>:/client/resources/previous.svg</normaloff>:/client/resources/previous.svg</iconset>
+        <iconset resource="../../../theme.qrc">
+         <normaloff>:/client/theme/black/control-prev.svg</normaloff>:/client/theme/black/control-prev.svg</iconset>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -121,8 +121,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../client.qrc">
-         <normaloff>:/client/resources/next.svg</normaloff>:/client/resources/next.svg</iconset>
+        <iconset resource="../../../theme.qrc">
+         <normaloff>:/client/theme/black/control-next.svg</normaloff>:/client/theme/black/control-next.svg</iconset>
        </property>
        <property name="flat">
         <bool>true</bool>
