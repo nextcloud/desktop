@@ -89,9 +89,9 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     connect(_ui.nextButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::nextSlide);
     connect(_ui.prevButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::prevSlide);
 
-	auto color = OwncloudSetupPage::palette().color(OwncloudSetupPage::backgroundRole()).lightness();
+	auto widgetBgLightness = OwncloudSetupPage::palette().color(OwncloudSetupPage::backgroundRole()).lightness();
 	bool widgetHasDarkBg =
-        (OwncloudSetupPage::palette().color(OwncloudSetupPage::backgroundRole()).lightness() >= 125)
+        (widgetBgLightness >= 125)
         ? false
         : true;
 	_ui.nextButton->setIcon(theme->uiThemeIcon(QString("control-next.svg"), widgetHasDarkBg));
