@@ -184,7 +184,6 @@ void NetworkSettings::loadBWLimitSettings()
 void NetworkSettings::loadWifiListSettings()
 {
     ConfigFile cfgFile;
-    bool test = cfgFile.wifiListActive();
     _ui->activateWifiListsCheckbox->setChecked(cfgFile.wifiListActive());
     _ui->manageWifiListsBtn->setEnabled(cfgFile.wifiListActive());
     _ui->wifiListsStatusLabel->setText(getActiveSsidsDescription());
