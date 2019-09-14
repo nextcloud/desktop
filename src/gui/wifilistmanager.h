@@ -22,7 +22,7 @@ private slots:
     void loadListMode();
     void loadSsidList();
     void addListItem(const QString &entry);
-    void deleteListItems(QList<QListWidgetItem*> &itemList);
+    void deleteListItems(const QList<QListWidgetItem*> &itemList);
     void saveSsidSettings();
 
 private:

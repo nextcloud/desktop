@@ -55,7 +55,7 @@ void WifiListManager::saveSsidSettings()
     QStringList *ssidSaveList;
     ssidSaveList = new QStringList;
     if (_ui->ssidList->count() != 0) {
-        for (size_t i = 0; i < _ui->ssidList->count(); i++) {
+        for (int i = 0; i < _ui->ssidList->count(); i++) {
             ssidSaveList->append(_ui->ssidList->item(i)->text());
         }
     } 
@@ -75,10 +75,10 @@ void WifiListManager::addListItem(const QString &entry)
     return;
 }
 
-void WifiListManager::deleteListItems(QList<QListWidgetItem *> &itemList)
+void WifiListManager::deleteListItems(const QList<QListWidgetItem *> &itemList)
 {
     if (!itemList.isEmpty()) {
-        for (size_t i = 0; i < itemList.count(); i++) {
+        for (int i = 0; i < itemList.count(); i++) {
             delete _ui->ssidList->takeItem(_ui->ssidList->row(itemList[i]));
         }
         return;
