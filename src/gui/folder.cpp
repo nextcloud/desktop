@@ -351,6 +351,10 @@ void Folder::showSyncResultPopup()
         createGuiLog(_syncResult.firstItemError()->_file, LogStatusError, errorCount);
     }
 
+    if (int lockedCount = _syncResult.numLockedItems()) {
+        createGuiLog(_syncResult.firstItemLocked()->_file, LogStatusFileLocked, lockedCount);
+    }
+
     qCInfo(lcFolder) << "Folder sync result: " << int(_syncResult.status());
 }
 

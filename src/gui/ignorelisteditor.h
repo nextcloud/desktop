@@ -35,23 +35,16 @@ class IgnoreListEditor : public QDialog
     Q_OBJECT
 
 public:
-    explicit IgnoreListEditor(QWidget *parent = nullptr);
+    IgnoreListEditor(QWidget *parent = nullptr);
     ~IgnoreListEditor();
 
     bool ignoreHiddenFiles();
 
 private slots:
-    void slotItemSelectionChanged();
-    void slotRemoveCurrentItem();
-    void slotUpdateLocalIgnoreList();
-    void slotAddPattern();
     void slotRestoreDefaults(QAbstractButton *button);
-    void slotRemoveAllItems();
 
 private:
-    void readIgnoreFile(const QString &file, bool readOnly);
     void setupTableReadOnlyItems();
-    int addPattern(const QString &pattern, bool deletable, bool readOnly);
     QString readOnlyTooltip;
     Ui::IgnoreListEditor *ui;
 };

@@ -21,7 +21,7 @@ namespace OCC {
 OcsShareeJob::OcsShareeJob(AccountPtr account)
     : OcsJob(account)
 {
-    setPath("ocs/v1.php/apps/files_sharing/api/v1/sharees");
+    setPath("ocs/v2.php/apps/files_sharing/api/v1/sharees");
     connect(this, &OcsJob::jobFinished, this, &OcsShareeJob::jobDone);
 }
 
