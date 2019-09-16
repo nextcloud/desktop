@@ -4,6 +4,9 @@
 #include <QWebEngineProfile>
 #include <QWebEngineUrlRequestInterceptor>
 #include <QWebEngineUrlRequestJob>
+#if QT_VERSION >= 0x051200
+#include <QWebEngineUrlScheme>
+#endif
 #include <QWebEngineUrlSchemeHandler>
 #include <QWebEngineView>
 #include <QDesktopServices>
@@ -65,7 +68,10 @@ WebView::WebView(QWidget *parent)
       _ui()
 {
     _ui.setupUi(this);
-
+#if QT_VERSION >= 0x051200
+    QWebEngineUrlScheme _ncsheme("nc");
+    QWebEngineUrlScheme::registerScheme(_ncsheme);
+#endif
     _webview = new QWebEngineView(this);
     _profile = new QWebEngineProfile(this);
     _page = new WebEnginePage(_profile);
@@ -175,6 +181,7 @@ WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWeb
 }
 
 QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type) {
+    Q_UNUSED(type);
     ExternalWebEnginePage *view = new ExternalWebEnginePage(this->profile());
     return view;
 }
@@ -216,6 +223,8 @@ ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject
 
 bool ExternalWebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
 {
+    Q_UNUSED(type);
+    Q_UNUSED(isMainFrame);
     QDesktopServices::openUrl(url);
     return false;
 }

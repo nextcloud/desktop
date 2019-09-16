@@ -372,7 +372,7 @@ void WebFlowCredentials::forgetSensitiveData() {
     invalidateToken();
 
     /* IMPORTANT
-    /* TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
+     * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
      *
      *       Disabled as long as selecting another cert is not supported by the UI.
      *
@@ -539,7 +539,7 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(QKeychain::Job *incomin
             return;
         } else {
             if (readJob->error() != QKeychain::Error::EntryNotFound ||
-                (readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0) {
+                ((readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0)) {
                 qCWarning(lcWebFlowCredentials) << "Unable to read client CA cert slot " << QString::number(_clientSslCaCertificates.count()) << readJob->errorString();
             }
         }

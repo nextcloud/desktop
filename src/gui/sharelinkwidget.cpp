@@ -277,6 +277,7 @@ void ShareLinkWidget::slotCreatePassword()
 
 void ShareLinkWidget::slotCreateShareLink(bool clicked)
 {
+    Q_UNUSED(clicked);
     slotToggleAnimation(true);
     emit createLinkShare();
 }

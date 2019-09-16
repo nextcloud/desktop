@@ -3,7 +3,11 @@
 # For details see the accompanying COPYING* file.
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Wno-long-long -Wno-gnu-zero-variadic-macro-arguments")
+
+    # Use this only for Clang
+    if (CMAKE_CXX_COMPILER MATCHES "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Wno-long-long -Wno-gnu-zero-variadic-macro-arguments")
+    endif()
 
     # Fix sqlite compilation on macOS
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-incompatible-pointer-types-discards-qualifiers")

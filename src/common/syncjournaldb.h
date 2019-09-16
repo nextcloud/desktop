@@ -103,6 +103,7 @@ public:
             : _chunk(0)
             , _transferid(0)
             , _size(0)
+            , _modtime(0)
             , _errorCount(0)
             , _valid(false)
         {

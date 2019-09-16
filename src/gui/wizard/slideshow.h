@@ -51,7 +51,7 @@ public slots:
     void startShow(int interval = 0);
     void stopShow();
     void nextSlide();
-    void previousSlide();
+    void prevSlide();
     void reset();
 
 signals:
