@@ -177,6 +177,14 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
     return cached;
 }
 
+QIcon Theme::uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const
+{
+    QString themeResBasePath = ":/client/theme/";
+    QString iconPath = themeResBasePath + (uiHasDarkBg?"white/":"black/") + iconName;
+    std::string icnPath = iconPath.toUtf8().constData();
+    return QIcon(QPixmap(iconPath));
+}
+
 QString Theme::hidpiFileName(const QString &fileName, QPaintDevice *dev)
 {
     qreal devicePixelRatio = dev ? dev->devicePixelRatio() : qApp->primaryScreen()->devicePixelRatio();
