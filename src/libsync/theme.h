@@ -347,6 +347,14 @@ public:
      * important dependency versions.
      */
     virtual QString versionSwitchOutput() const;
+	
+	/**
+    * @brief Request suitable QIcon resource depending on the background colour of the parent widget.
+    *
+    * This should be replaced (TODO) by a real theming implementation for the client UI 
+    * (actually 2019/09/13 only systray theming).
+    */
+	virtual QIcon uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const;
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

@@ -4,6 +4,9 @@
 #include <QWebEngineProfile>
 #include <QWebEngineUrlRequestInterceptor>
 #include <QWebEngineUrlRequestJob>
+#if QT_VERSION >= 0x051200
+#include <QWebEngineUrlScheme>
+#endif
 #include <QWebEngineUrlSchemeHandler>
 #include <QWebEngineView>
 #include <QDesktopServices>
@@ -65,7 +68,10 @@ WebView::WebView(QWidget *parent)
       _ui()
 {
     _ui.setupUi(this);
-
+#if QT_VERSION >= 0x051200
+    QWebEngineUrlScheme _ncsheme("nc");
+    QWebEngineUrlScheme::registerScheme(_ncsheme);
+#endif
     _webview = new QWebEngineView(this);
     _profile = new QWebEngineProfile(this);
     _page = new WebEnginePage(_profile);

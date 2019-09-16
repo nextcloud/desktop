@@ -122,7 +122,7 @@ void SlideShow::nextSlide()
     _reverse = false;
 }
 
-void SlideShow::previousSlide()
+void SlideShow::prevSlide()
 {
     setCurrentSlide((_currentIndex > 0 ? _currentIndex : _labels.count()) - 1);
     _reverse = true;
