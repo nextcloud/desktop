@@ -19,6 +19,8 @@
 #include "folderwatcher.h"
 #include "folderwatcher_win.h"
 
+#include "common/utility.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <tchar.h>
@@ -52,7 +54,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
 
     // QVarLengthArray ensures the stack-buffer is aligned like double and qint64.
     QVarLengthArray<char, 4096 * 10> fileNotifyBuffer;
-    fileNotifyBuffer.resize(fileNotifyBufferSize);
+    fileNotifyBuffer.resize(OCC::Utility::convertSizeToInt(fileNotifyBufferSize));
 
     const size_t fileNameBufferSize = 4096;
     TCHAR fileNameBuffer[fileNameBufferSize];
@@ -66,7 +68,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         DWORD dwBytesReturned = 0;
         SecureZeroMemory(pFileNotifyBuffer, fileNotifyBufferSize);
         if (!ReadDirectoryChangesW(_directory, (LPVOID)pFileNotifyBuffer,
-                fileNotifyBufferSize, true,
+                OCC::Utility::convertSizeToDWORD(fileNotifyBufferSize), true,
                 FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
                 &dwBytesReturned,
                 &overlapped,
@@ -113,7 +115,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         FILE_NOTIFY_INFORMATION *curEntry = pFileNotifyBuffer;
         forever {
             size_t len = curEntry->FileNameLength / 2;
-            QString file = _path + "\\" + QString::fromWCharArray(curEntry->FileName, len);
+            QString file = _path + "\\" + QString::fromWCharArray(curEntry->FileName, OCC::Utility::convertSizeToInt(len));
 
             // Unless the file was removed or renamed, get its full long name
             // TODO: We could still try expanding the path in the tricky cases...
@@ -122,7 +124,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 && curEntry->Action != FILE_ACTION_RENAMED_OLD_NAME) {
                 size_t longNameSize = GetLongPathNameW(reinterpret_cast<LPCWSTR>(file.utf16()), fileNameBuffer, fileNameBufferSize);
                 if (longNameSize > 0) {
-                    longfile = QString::fromUtf16(reinterpret_cast<const ushort *>(fileNameBuffer), longNameSize);
+                    longfile = QString::fromUtf16(reinterpret_cast<const ushort *>(fileNameBuffer), OCC::Utility::convertSizeToInt(longNameSize));
                 } else {
                     qCWarning(lcFolderWatcher) << "Error converting file name to full length, keeping original name.";
                 }

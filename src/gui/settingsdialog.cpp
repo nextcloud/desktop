@@ -48,7 +48,7 @@ const char TOOLBAR_CSS[] =
     "QToolBar QToolBarExtension { padding:0; } "
     "QToolBar QToolButton:checked { background: %3; color: %4; }";
 
-static const float buttonSizeRatio = 1.618; // golden ratio
+static const float buttonSizeRatio = 1.618f; // golden ratio
 }
 
 

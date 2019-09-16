@@ -181,6 +181,7 @@ WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWeb
 }
 
 QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type) {
+    Q_UNUSED(type);
     ExternalWebEnginePage *view = new ExternalWebEnginePage(this->profile());
     return view;
 }
@@ -222,6 +223,8 @@ ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject
 
 bool ExternalWebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
 {
+    Q_UNUSED(type);
+    Q_UNUSED(isMainFrame);
     QDesktopServices::openUrl(url);
     return false;
 }

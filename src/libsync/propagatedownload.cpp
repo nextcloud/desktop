@@ -798,7 +798,10 @@ namespace { // Anonymous namespace for the recall feature
     static void preserveGroupOwnership(const QString &fileName, const QFileInfo &fi)
     {
 #ifdef Q_OS_UNIX
-        chown(fileName.toLocal8Bit().constData(), -1, fi.groupId());
+        int chownErr = chown(fileName.toLocal8Bit().constData(), -1, fi.groupId());
+        if (chownErr) {
+            // TODO: Error handling!
+        }
 #else
         Q_UNUSED(fileName);
         Q_UNUSED(fi);

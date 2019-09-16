@@ -55,6 +55,12 @@ namespace Utility {
     OCSYNC_EXPORT QByteArray userAgentString();
     OCSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, bool launch);
+    OCSYNC_EXPORT uint convertSizeToUint(size_t &convertVar);
+    OCSYNC_EXPORT uint convertSizeToInt(size_t &convertVar);
+
+#ifdef Q_OS_WIN
+    OCSYNC_EXPORT DWORD convertSizeToDWORD(size_t &convertVar);
+#endif
 
     /**
      * Return the amount of free space available.

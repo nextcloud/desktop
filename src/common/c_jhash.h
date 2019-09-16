@@ -207,7 +207,10 @@ static inline uint64_t c_jhash64(const uint8_t *k, uint64_t length, uint64_t int
   /* handle the last 23 bytes */
   c += length;
   switch(len) {
+// pragma only for GCC (and clang continues to pretend to be it by defining __GNUC__)
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#endif
     case 23: c+=((uint64_t)k[22]<<56);
     case 22: c+=((uint64_t)k[21]<<48);
     case 21: c+=((uint64_t)k[20]<<40);
