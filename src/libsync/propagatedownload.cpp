@@ -800,7 +800,8 @@ namespace { // Anonymous namespace for the recall feature
 #ifdef Q_OS_UNIX
         int chownErr = chown(fileName.toLocal8Bit().constData(), -1, fi.groupId());
         if (chownErr) {
-            // TODO: Error handling!
+            // TODO: Consider further error handling!
+            qCWarning(lcPropagateDownload) << QString("preserveGroupOwnership: chown error %1: setting group %2 failed on file %3").arg(chownErr).arg(fi.groupId()).arg(fileName);
         }
 #else
         Q_UNUSED(fileName);
