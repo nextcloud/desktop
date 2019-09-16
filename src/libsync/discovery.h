@@ -170,11 +170,11 @@ private:
     struct MovePermissionResult
     {
         // whether moving/renaming the source is ok
-        bool sourceOk = false;
+        bool sourceOk;
         // whether the destination accepts (always true for renames)
-        bool destinationOk = false;
+        bool destinationOk;
         // whether creating a new file/dir in the destination is ok
-        bool destinationNewOk = false;
+        bool destinationNewOk;
     };
 
     /**
