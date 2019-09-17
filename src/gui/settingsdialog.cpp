@@ -17,6 +17,7 @@
 
 #include "folderman.h"
 #include "theme.h"
+#include "schedulesettings.h"
 #include "generalsettings.h"
 #include "networksettings.h"
 #include "accountsettings.h"
@@ -96,7 +97,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionBefore = new QAction(this);
     _toolBar->addAction(_actionBefore);
 
-    // Adds space between users + activities and general + network actions
+    // Adds space between users + activities and general + schedule + network actions
     QWidget* spacer = new QWidget();
     spacer->setMinimumWidth(10);
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
@@ -108,12 +109,20 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
 
+    QAction *scheduleAction = createColorAwareAction(QLatin1String(":/client/resources/schedule.png"), tr("Schedule"));
+    _actionGroup->addAction(scheduleAction);
+    _toolBar->addAction(scheduleAction);
+    ScheduleSettings *scheduleSettings = new ScheduleSettings;
+    _ui->stack->addWidget(scheduleSettings);
+
+    
     QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
     _actionGroup->addAction(networkAction);
     _toolBar->addAction(networkAction);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
+    _actionGroupWidgets.insert(scheduleAction, scheduleSettings);
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 

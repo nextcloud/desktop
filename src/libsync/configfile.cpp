@@ -57,6 +57,7 @@ static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
 static const char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static const char notificationRefreshIntervalC[] = "notificationRefreshInterval";
+static const char scheduleC[] = "schedule";
 static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
@@ -768,6 +769,20 @@ void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(promptDeleteC), promptDeleteFiles);
 }
+
+bool ConfigFile::schedule() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    bool scheduleDefault = false;
+    return settings.value(QLatin1String(scheduleC), scheduleDefault).toBool();
+}
+
+void ConfigFile::setSchedule(bool useSchedule)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(scheduleC), useSchedule);
+}
+
 
 bool ConfigFile::monoIcons() const
 {
