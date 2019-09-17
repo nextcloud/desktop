@@ -80,6 +80,9 @@ public:
      */
     std::chrono::milliseconds fullLocalDiscoveryInterval() const;
 
+    bool schedule() const;
+    void setSchedule(bool);
+
     bool monoIcons() const;
     void setMonoIcons(bool);
 

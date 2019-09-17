@@ -4,6 +4,8 @@
         <file>resources/settings@2x.png</file>
         <file>resources/activity.png</file>
         <file>resources/activity@2x.png</file>
+        <file>resources/schedule.png</file>
+        <file>resources/schedule@2x.png</file>
         <file>resources/network.png</file>
         <file>resources/network@2x.png</file>
         <file>resources/lock-http.png</file>

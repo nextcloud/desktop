@@ -156,6 +156,14 @@ void SettingsDialogMac::accountAdded(AccountState *s)
     connect(_activitySettings[s], SIGNAL(guiLog(QString, QString)), _gui,
         SLOT(slotShowOptionalTrayMessage(QString, QString)));
 
+    // Add schedule panel
+    QIcon scheduleIcon(QLatin1String(":/client/resources/schedule.png"));
+    _scheduleSettings[s] = new ScheduleSettings(s, this);
+    insertPreferencesPanel(++_actionsIdx, scheduleIcon, tr("Schedule"), _scheduleSettings[s]);
+    connect(_scheduleSettings[s], SIGNAL(guiLog(QString, QString)), _gui,
+        SLOT(slotShowOptionalTrayMessage(QString, QString)));
+
+    
     // if this is not the first account, add separator 2 positions before int the toolbar
     if(AccountManager::instance()->accounts().first().data() != s &&
         AccountManager::instance()->accounts().size() >= 1){
