@@ -346,6 +346,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         }
         qDebug() << "prevModtime" << prevModtime << "Curr" << _item->_modtime;
         done(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
+        return;
     }
 
     quint64 fileSize = FileSystem::getSize(fullFilePath);
