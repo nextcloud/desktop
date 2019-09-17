@@ -13,8 +13,10 @@
  */
 
 #define WIN32_LEAN_AND_MEAN
-#define WINVER 0x0501
-#define _WIN32_WINNT 0x0501
+
+// Note: Here was a #define for windows target version
+// e.g. WINVER / _WIN32_WINNT, see https://devblogs.microsoft.com/oldnewthing/20070411-00/?p=27283
+// Unnecessary because we define both in desktop/CMakeLists.txt
 
 #include "CommunicationSocket.h"
 #include "RegistryUtil.h"
