@@ -19,6 +19,7 @@ set(client_UI_SRCS
     accountsettings.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
+    schedulesettings.ui
     generalsettings.ui
     legalnotice.ui
     ignorelisteditor.ui
@@ -59,6 +60,7 @@ set(client_SRCS
     folderstatusview.cpp
     folderwatcher.cpp
     folderwizard.cpp
+    schedulesettings.cpp
     generalsettings.cpp
     legalnotice.cpp
     ignorelisteditor.cpp
