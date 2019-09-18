@@ -97,7 +97,7 @@
        <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
      </property>
      <property name="autoRaise">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>
