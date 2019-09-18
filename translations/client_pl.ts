@@ -911,12 +911,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 i %n inny plik jest obecnie zablokowany.</numerusform><numerusform>%1 i %n inne pliki są obecnie zablokowane.</numerusform><numerusform>%1 i %n innych plików są obecnie zablokowane.</numerusform><numerusform>%1 i %n inny plik(ów) jest obecnie zablokowany.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 jest obecnie zablokowany.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
