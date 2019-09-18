@@ -167,11 +167,21 @@ private:
      */
     bool checkPermissions(const SyncFileItemPtr &item);
 
+    struct MovePermissionResult
+    {
+        // whether moving/renaming the source is ok
+        bool sourceOk;
+        // whether the destination accepts (always true for renames)
+        bool destinationOk;
+        // whether creating a new file/dir in the destination is ok
+        bool destinationNewOk;
+    };
+
     /**
      * Check if the move is of a specified file within this directory is allowed.
      * Return true if it is allowed, false otherwise
      */
-    bool checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath, bool isDirectory);
+    MovePermissionResult checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath, bool isDirectory);
 
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
@@ -192,11 +202,12 @@ private:
      */
     DiscoverySingleDirectoryJob *startAsyncServerQuery();
 
-    /** Discover the local directory now
+    /** Discover the local directory
       *
       * Fills _localNormalQueryEntries.
       */
-    bool runLocalQuery();
+    void startAsyncLocalQuery();
+
 
     /** Sets _pinState, the directory's pin state
      *
@@ -231,6 +242,7 @@ private:
 
     RemotePermissions _rootPermissions;
     QPointer<DiscoverySingleDirectoryJob> _serverJob;
+
 
     /** Number of currently running async jobs.
      *

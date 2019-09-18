@@ -11,22 +11,34 @@
 
 using namespace OCC;
 
-bool itemDidComplete(const QSignalSpy &spy, const QString &path)
+SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
 {
-    for(const QList<QVariant> &args : spy) {
+    for (const QList<QVariant> &args : spy) {
         auto item = args[0].value<SyncFileItemPtr>();
         if (item->destination() == path)
-            return item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
+            return item;
+    }
+    return SyncFileItemPtr(new SyncFileItem);
+}
+
+bool itemDidComplete(const QSignalSpy &spy, const QString &path)
+{
+    if (auto item = findItem(spy, path)) {
+        return item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
     }
     return false;
 }
 
+bool itemInstruction(const QSignalSpy &spy, const QString &path, const csync_instructions_e instr)
+{
+    auto item = findItem(spy, path);
+    return item->_instruction == instr;
+}
+
 bool itemDidCompleteSuccessfully(const QSignalSpy &spy, const QString &path)
 {
-    for(const QList<QVariant> &args : spy) {
-        auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
-            return item->_status == SyncFileItem::Success;
+    if (auto item = findItem(spy, path)) {
+        return item->_status == SyncFileItem::Success;
     }
     return false;
 }
@@ -698,6 +710,18 @@ private slots:
         QCOMPARE(QFileInfo(fakeFolder.localPath() + conflictName).permissions(), perm);
     }
 #endif
+
+    void testEmptyLocalButHasRemote()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        fakeFolder.remoteModifier().mkdir("foo");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        QVERIFY(fakeFolder.currentLocalState().find("foo"));
+
+    }
 
     // Check that server mtime is set on directories on initial propagation
     void testDirectoryInitialMtime()

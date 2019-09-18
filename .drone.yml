@@ -1,169 +1,459 @@
-#
-# We are building GCC with make and Clang with ninja, the combinations are more
-# or less arbitrarily chosen. We just want to check that both compilers and both
-# CMake generators work. It's unlikely that a specific generator only breaks
-# with a specific compiler.
-#
+---
+kind: pipeline
+name: gcc-release-make
 
-workspace:
-  base: /drone
-  path: src/github.com/owncloud/client
+platform:
+  os: linux
+  arch: amd64
 
-branches:
-  - master
-  - 2.5
-  - 2.4
+steps:
+- name: submodules
+  image: docker:git
+  commands:
+  - git submodule update --init --recursive
 
-clone:
-  git:
-    image: plugins/git
-    pull: true
-    tags: false
+- name: cmake
+  pull: always
+  image: owncloudci/client
+  commands:
+  - mkdir -p "build-gcc-release-make"
+  - cd "build-gcc-release-make"
+  - cmake -G"Unix Makefiles" -DCMAKE_C_COMPILER="gcc" -DCMAKE_CXX_COMPILER="g++" -DCMAKE_BUILD_TYPE="Release" -DBUILD_TESTING=1 ..
+  environment:
+    LC_ALL: C.UTF-8
 
-pipeline:
-  prepare-clang:
-    image: owncloudci/client:latest
-    pull: true
-    environment:
-      - LC_ALL=C.UTF-8
-    commands:
-      - mkdir clang-build
-      - cd clang-build
-      - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE="Debug" -DBUILD_TESTING=1 ..
+- name: make
+  pull: always
+  image: owncloudci/client
+  commands:
+  - cd "build-gcc-release-make"
+  - make -j4
+  environment:
+    LC_ALL: C.UTF-8
 
-  building-clang:
-    image: owncloudci/client:latest
-    pull: true
-    environment:
-      - LC_ALL=C.UTF-8
-    commands:
-      - cd clang-build
-      - ninja -j4
+- name: ctest
+  pull: always
+  image: owncloudci/client
+  commands:
+  - cd "build-gcc-release-make"
+  - useradd -m -s /bin/bash tester
+  - chown -R tester:tester .
+  - su-exec tester ctest --output-on-failure -LE nodrone
+  environment:
+    LC_ALL: C.UTF-8
 
-  testing-clang:
-    image: owncloudci/client:latest
-    pull: true
-    environment:
-      - LC_ALL=C.UTF-8
-    commands:
-      - cd clang-build
-      - useradd -m -s /bin/bash tester
-      - chown -R tester:tester .
-      - su-exec tester ctest --output-on-failure -LE nodrone
+trigger:
+  event:
+  - push
+  - pull_request
+  - tag
 
-  prepare-gcc:
-    image: owncloudci/client:latest
-    pull: true
-    environment:
-      - LC_ALL=C.UTF-8
-    commands:
-      - mkdir gcc-build
-      - cd gcc-build
-      - cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE="Debug" -DBUILD_TESTING=1 ..
+---
+kind: pipeline
+name: clang-debug-ninja
 
-  building-gcc:
-    image: owncloudci/client:latest
-    pull: true
-    environment:
-      - LC_ALL=C.UTF-8
-    commands:
-      - cd gcc-build
-      - make -j4
+platform:
+  os: linux
+  arch: amd64
 
-  testing-gcc:
-    image: owncloudci/client:latest
-    pull: true
-    environment:
-      - LC_ALL=C.UTF-8
-    commands:
-      - cd gcc-build
-      - useradd -m -s /bin/bash tester
-      - chown -R tester:tester .
-      - su-exec tester ctest --output-on-failure -LE nodrone
+steps:
+- name: submodules
+  image: docker:git
+  commands:
+  - git submodule update --init --recursive
 
-  cache-restore:
-    image: plugins/s3-cache:1
-    pull: true
-    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
+- name: cmake
+  pull: always
+  image: owncloudci/client
+  commands:
+  - mkdir -p "build-clang-debug-ninja"
+  - cd "build-clang-debug-ninja"
+  - cmake -G"Ninja" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" -DCMAKE_BUILD_TYPE="Debug" -DBUILD_TESTING=1 ..
+  environment:
+    LC_ALL: C.UTF-8
+
+- name: ninja
+  pull: always
+  image: owncloudci/client
+  commands:
+  - cd "build-clang-debug-ninja"
+  - ninja -j4
+  environment:
+    LC_ALL: C.UTF-8
+
+- name: ctest
+  pull: always
+  image: owncloudci/client
+  commands:
+  - cd "build-clang-debug-ninja"
+  - useradd -m -s /bin/bash tester
+  - chown -R tester:tester .
+  - su-exec tester ctest --output-on-failure -LE nodrone
+  environment:
+    LC_ALL: C.UTF-8
+
+trigger:
+  event:
+  - push
+  - pull_request
+  - tag
+
+---
+kind: pipeline
+name: build-docs
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: cache-restore
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
     restore: true
-    when:
-      local: false
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    instance:
+    - drone.owncloud.com
 
-  docs-deps:
-    image: owncloudci/nodejs:11
-    pull: true
-    commands:
-      - cd docs/
-      - yarn install
+- name: docs-deps
+  pull: always
+  image: owncloudci/nodejs:11
+  commands:
+  - cd docs/
+  - yarn install
 
-  docs-validate:
-    image: owncloudci/nodejs:11
-    pull: true
-    commands:
-      - cd docs/
-      - yarn validate
+- name: docs-validate
+  pull: always
+  image: owncloudci/nodejs:11
+  commands:
+  - cd docs/
+  - yarn validate
 
-  docs-build:
-    image: owncloudci/nodejs:11
-    pull: true
-    commands:
-      - cd docs/
-      - yarn antora
+- name: docs-build
+  pull: always
+  image: owncloudci/nodejs:11
+  commands:
+  - cd docs/
+  - yarn antora
 
-  docs-pdf:
-    image: owncloudci/asciidoctor:latest
-    pull: true
-    commands:
-      - cd docs/
-      - make pdf
+- name: docs-pdf
+  pull: always
+  image: owncloudci/asciidoctor:latest
+  commands:
+  - cd docs/
+  - make pdf
 
-  docs-artifacts:
-    image: owncloud/ubuntu:latest
-    pull: true
-    commands:
-      - tree docs/public/
+- name: docs-artifacts
+  pull: always
+  image: owncloud/ubuntu:latest
+  commands:
+  - tree docs/public/
 
-  cache-rebuild:
-    image: plugins/s3-cache:1
-    pull: true
-    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
+- name: cache-rebuild
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
+    mount: docs/cache
     rebuild: true
-    mount:
-      - docs/cache
-    when:
-      local: false
-      event: [ push ]
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    event:
+    - push
+    instance:
+    - drone.owncloud.com
 
-  cache-flush:
-    image: plugins/s3-cache:1
-    pull: true
-    secrets: [ cache_s3_endpoint, cache_s3_access_key, cache_s3_secret_key ]
+- name: cache-flush
+  pull: always
+  image: plugins/s3-cache:1
+  settings:
+    access_key:
+      from_secret: cache_s3_access_key
+    endpoint:
+      from_secret: cache_s3_endpoint
     flush: true
     flush_age: 14
-    when:
-      local: false
-      event: [ push ]
+    secret_key:
+      from_secret: cache_s3_secret_key
+  when:
+    event:
+    - push
+    instance:
+    - drone.owncloud.com
 
-  upload-pdf:
-    image: plugins/s3-sync:1
-    pull: true
-    secrets: [ aws_access_key_id, aws_secret_access_key ]
+- name: upload-pdf
+  pull: always
+  image: plugins/s3-sync:1
+  settings:
     bucket: uploads
     endpoint: https://doc.owncloud.com
     path_style: true
     source: docs/build/
-    target: /deploy
-    delete: false
-    when:
-      local: false
-      event: [ push ]
+    target: /deploy/
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: aws_access_key_id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: aws_secret_access_key
+  when:
+    event:
+    - push
+    instance:
+    - drone.owncloud.com
 
-  notify-slack:
-    image: plugins/slack
-    pull: true
-    secrets: [ slack_webhook ]
+trigger:
+  event:
+  - push
+  - pull_request
+  - tag
+
+---
+kind: pipeline
+name: notifications-build
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  disable: true
+
+steps:
+- name: notification
+  pull: always
+  image: plugins/slack
+  settings:
     channel: desktop
-    when:
-      local: false
-      event: [ push ]
-      status: [ failure, changed ]
+    webhook:
+      from_secret: slack_webhook
+
+trigger:
+  status:
+  - success
+  - failure
+
+depends_on:
+- gcc-release-make
+- clang-debug-ninja
+- build-docs
+
+---
+kind: pipeline
+name: translations-client
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: l10n-read
+  pull: always
+  image: rabits/qt:5.12-desktop
+  commands:
+  - cd "translations"
+  - make l10n-read
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: l10n-push
+  pull: always
+  image: owncloudci/transifex:latest
+  commands:
+  - cd "translations"
+  - make l10n-push
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: l10n-pull
+  pull: always
+  image: owncloudci/transifex:latest
+  commands:
+  - cd "translations"
+  - make l10n-pull
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: l10n-write
+  pull: always
+  image: owncloudci/transifex:latest
+  commands:
+  - cd "translations"
+  - make l10n-write
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: l10n-clean
+  pull: always
+  image: owncloudci/transifex:latest
+  commands:
+  - cd "translations"
+  - make l10n-clean
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: update-repo-before-commit
+  image: docker:git
+  commands:
+  - git stash
+  - git pull --ff-only origin +refs/heads/$${DRONE_BRANCH}
+  - "[ \"$(git stash list)\" = \"\" ] || git stash pop"
+
+- name: commit
+  pull: always
+  image: appleboy/drone-git-push
+  settings:
+    author_email: devops@owncloud.com
+    author_name: ownClouders
+    branch: ${DRONE_BRANCH}
+    commit: true
+    commit_message: "[tx] updated client translations from transifex"
+    no_verify: true
+    remote_name: origin
+    ssh_key:
+      from_secret: git_push_ssh_key
+  when:
+    instance:
+    - drone.owncloud.com
+
+trigger:
+  cron:
+  - translations
+
+---
+kind: pipeline
+name: translations-nsis
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: l10n-read
+  pull: always
+  image: owncloudci/transifex:latest
+  commands:
+  - cd "admin/win/nsi/l10n"
+  - make l10n-read
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: l10n-push
+  pull: always
+  image: owncloudci/transifex:latest
+  commands:
+  - cd "admin/win/nsi/l10n"
+  - make l10n-push
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: l10n-pull
+  pull: always
+  image: owncloudci/transifex:latest
+  commands:
+  - cd "admin/win/nsi/l10n"
+  - make l10n-pull
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: l10n-write
+  pull: always
+  image: python:2.7-stretch
+  commands:
+  - cd "admin/win/nsi/l10n"
+  - make l10n-write
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: l10n-clean
+  pull: always
+  image: owncloudci/transifex:latest
+  commands:
+  - cd "admin/win/nsi/l10n"
+  - make l10n-clean
+  environment:
+    TX_TOKEN:
+      from_secret: tx_token
+
+- name: update-repo-before-commit
+  image: docker:git
+  commands:
+  - git stash
+  - git pull --ff-only origin +refs/heads/$${DRONE_BRANCH}
+  - "[ \"$(git stash list)\" = \"\" ] || git stash pop"
+
+- name: commit
+  pull: always
+  image: appleboy/drone-git-push
+  settings:
+    author_email: devops@owncloud.com
+    author_name: ownClouders
+    branch: ${DRONE_BRANCH}
+    commit: true
+    commit_message: "[tx] updated nsis translations from transifex"
+    no_verify: true
+    remote_name: origin
+    ssh_key:
+      from_secret: git_push_ssh_key
+  when:
+    instance:
+    - drone.owncloud.com
+
+trigger:
+  cron:
+  - translations
+
+depends_on:
+- translations-client
+
+---
+kind: pipeline
+name: notifications-translations
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  disable: true
+
+steps:
+- name: notification
+  pull: always
+  image: plugins/slack
+  settings:
+    channel: desktop
+    webhook:
+      from_secret: slack_webhook
+
+trigger:
+  cron:
+  - translations
+  status:
+  - success
+  - failure
+
+depends_on:
+- translations-client
+- translations-nsis
+
+...
