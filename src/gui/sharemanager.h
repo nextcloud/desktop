@@ -184,11 +184,23 @@ public:
     QString getName() const;
 
     /*
+     * Returns the note of the link share.
+     */
+
+    QString getNote() const;
+
+    /*
      * Set the name of the link share.
      *
      * Emits either nameSet() or serverError().
      */
     void setName(const QString &name);
+
+
+    /*
+     * Set the note of the link share.
+     */
+    void setNote(const QString &note);
 
     /*
      * Returns the token of the link share.
@@ -224,11 +236,13 @@ public:
 signals:
     void expireDateSet();
     void passwordSet();
+    void noteSet();
     void passwordSetError(int statusCode, const QString &message);
     void nameSet();
 
 private slots:
     void slotPasswordSet(const QJsonDocument &, const QVariant &value);
+    void slotNoteSet(const QJsonDocument &, const QVariant &value);
     void slotExpireDateSet(const QJsonDocument &reply, const QVariant &value);
     void slotSetPasswordError(int statusCode, const QString &message);
     void slotNameSet(const QJsonDocument &, const QVariant &value);
@@ -237,6 +251,7 @@ private:
     QString _name;
     QString _token;
     bool _passwordSet;
+    QString _note;
     QDate _expireDate;
     QUrl _url;
 };

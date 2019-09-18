@@ -73,6 +73,17 @@ void OcsShareJob::setPassword(const QString &shareId, const QString &password)
     start();
 }
 
+void OcsShareJob::setNote(const QString &shareId, const QString &note)
+{
+    appendPath(shareId);
+    setVerb("PUT");
+
+    addParam(QString::fromLatin1("note"), note);
+    _value = note;
+
+    start();
+}
+
 void OcsShareJob::setPublicUpload(const QString &shareId, bool publicUpload)
 {
     appendPath(shareId);
