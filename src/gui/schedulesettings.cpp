@@ -16,6 +16,7 @@
 #include <QNetworkProxy>
 #include <QDir>
 #include <QScopedValueRollback>
+#include <QPushButton>
 
 #define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
 
@@ -32,10 +33,23 @@ ScheduleSettings::ScheduleSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    loadMiscSettings();
+    //Create items table disabled by default
+    QTableWidget *tableWidget = _ui->scheduleTableWidget;
+    int rows = tableWidget->rowCount();
+    int cols = tableWidget->columnCount();
+    for (int idx = 0; idx<rows; idx++){
+      for (int idj = 0; idj<cols; idj++){
+        QTableWidgetItem *newItem = new QTableWidgetItem();
+        newItem->setBackground(Qt::white);
+        tableWidget->setItem(idx, idj, newItem);
+      }
+    }
 
-    // misc
-    connect(_ui->enableScheduleCheckBox, &QAbstractButton::toggled, this, &ScheduleSettings::saveMiscSettings);
+    // load settings stored in config file
+    loadScheduleSettings();
+
+    // connect with events
+    connect(_ui->saveButton, &QPushButton::clicked, this, &ScheduleSettings::saveScheduleSettings);
 }
 
 ScheduleSettings::~ScheduleSettings()
@@ -43,21 +57,26 @@ ScheduleSettings::~ScheduleSettings()
     delete _ui;
 }
 
-void ScheduleSettings::loadMiscSettings()
+void ScheduleSettings::loadScheduleSettings()
 {
     QScopedValueRollback<bool> scope(_currentlyLoading, true);
     ConfigFile cfgFile;
-    _ui->enableScheduleCheckBox->setChecked(cfgFile.schedule());
+    QTableWidget* table = _ui->scheduleTableWidget;
+    _ui->enableScheduleCheckBox->setChecked(cfgFile.getScheduleStatus());
+    cfgFile.getScheduleTable(*table);
 }
 
 
-void ScheduleSettings::saveMiscSettings()
+void ScheduleSettings::saveScheduleSettings()
 {
     if (_currentlyLoading)
         return;
     ConfigFile cfgFile;
     bool isChecked = _ui->enableScheduleCheckBox->isChecked();
-    cfgFile.setSchedule(isChecked);
+    cfgFile.setScheduleStatus(isChecked);    
+    QTableWidget* table = _ui->scheduleTableWidget;
+    cfgFile.setScheduleTable(*table);
+    loadScheduleSettings();
 }
 
 
