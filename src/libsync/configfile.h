@@ -21,6 +21,7 @@
 #include <QSettings>
 #include <QString>
 #include <QVariant>
+#include <QTableWidget>
 #include <chrono>
 
 class QWidget;
@@ -80,8 +81,10 @@ public:
      */
     std::chrono::milliseconds fullLocalDiscoveryInterval() const;
 
-    bool schedule() const;
-    void setSchedule(bool);
+    bool getScheduleStatus() const;
+    void getScheduleTable(QTableWidget &table) const;
+    void setScheduleStatus(bool);
+    void setScheduleTable(const QTableWidget &table);
 
     bool monoIcons() const;
     void setMonoIcons(bool);

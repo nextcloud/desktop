@@ -57,7 +57,9 @@ static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
 static const char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static const char notificationRefreshIntervalC[] = "notificationRefreshInterval";
+static const char scheduleG[] = "Schedule";
 static const char scheduleC[] = "schedule";
+static const char scheduleTableC[] = "scheduleTable";
 static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
@@ -770,17 +772,54 @@ void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)
     settings.setValue(QLatin1String(promptDeleteC), promptDeleteFiles);
 }
 
-bool ConfigFile::schedule() const
+bool ConfigFile::getScheduleStatus() const
 {
-    QSettings settings(configFile(), QSettings::IniFormat);
-    bool scheduleDefault = false;
-    return settings.value(QLatin1String(scheduleC), scheduleDefault).toBool();
+    QVariant schedule = this->retrieveData(QLatin1String(scheduleG), QLatin1String(scheduleC));
+    if( schedule.isNull() ) return false;
+    else return schedule.toBool();
 }
 
-void ConfigFile::setSchedule(bool useSchedule)
+void ConfigFile::getScheduleTable(QTableWidget &table) const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(scheduleC), useSchedule);
+    settings.beginGroup(QLatin1String(scheduleG));
+    for (int idx = 0; idx < table.rowCount(); idx++)
+    {
+      settings.beginReadArray(table.verticalHeaderItem(idx)->text().toLatin1());
+      for (int idj = 0; idj < table.columnCount(); idj++){
+        settings.setArrayIndex(idj);
+        if( settings.value("checked",false).toBool() ){
+          table.item(idx, idj)->setBackground(Qt::blue);
+        }else{
+          table.item(idx, idj)->setBackground(Qt::white);
+        }
+      }
+      settings.endArray();
+    }
+    settings.endGroup();
+}
+
+void ConfigFile::setScheduleStatus(bool useSchedule)
+{
+  this->storeData(QLatin1String(scheduleG), QLatin1String(scheduleC), useSchedule);
+}
+
+void ConfigFile::setScheduleTable(const QTableWidget &table)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup(QLatin1String(scheduleG));    
+    for (int idx = 0; idx < table.rowCount(); idx++)
+    {
+      settings.beginWriteArray(table.verticalHeaderItem(idx)->text().toLatin1());
+      for (int idj = 0; idj < table.columnCount(); idj++){
+        QTableWidgetItem *item =  table.item(idx,idj);
+        bool selected = item->isSelected();
+        settings.setArrayIndex(idj);
+        settings.setValue(QLatin1String("checked"),selected);
+      }
+      settings.endArray();
+    }
+    settings.endGroup();
 }
 
 

@@ -34,7 +34,7 @@
          <x>10</x>
          <y>20</y>
          <width>741</width>
-         <height>41</height>
+         <height>70</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="optionsGridLayout">
@@ -45,7 +45,7 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <spacer name="verticalSpacer_2">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -58,19 +58,37 @@
           </property>
          </spacer>
         </item>
+        <item row="1" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="suspendLabel">
+            <property name="text">
+             <string>Suspend</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="runLabel">
+            <property name="text">
+             <string>Run</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
       </widget>
       <widget class="QTableWidget" name="scheduleTableWidget">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>60</y>
+         <x>60</x>
+         <y>110</y>
          <width>551</width>
          <height>191</height>
         </rect>
        </property>
        <property name="cornerButtonEnabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="rowCount">
         <number>7</number>
@@ -85,10 +103,10 @@
         <bool>true</bool>
        </attribute>
        <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>21</number>
+        <number>20</number>
        </attribute>
        <attribute name="horizontalHeaderMinimumSectionSize">
-        <number>21</number>
+        <number>20</number>
        </attribute>
        <attribute name="verticalHeaderVisible">
         <bool>true</bool>
@@ -97,10 +115,10 @@
         <bool>true</bool>
        </attribute>
        <attribute name="verticalHeaderDefaultSectionSize">
-        <number>21</number>
+        <number>20</number>
        </attribute>
        <attribute name="verticalHeaderMinimumSectionSize">
-        <number>21</number>
+        <number>20</number>
        </attribute>
        <row>
         <property name="text">
@@ -258,11 +276,27 @@
         </property>
        </column>
       </widget>
+      <widget class="QPushButton" name="saveButton">
+       <property name="geometry">
+        <rect>
+         <x>510</x>
+         <y>320</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../client.qrc"/>
+  <include location="../../theme.qrc"/>
+ </resources>
  <connections/>
 </ui>

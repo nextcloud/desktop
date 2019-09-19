@@ -23,8 +23,8 @@ public:
     ~ScheduleSettings();
 
 private slots:
-    void saveMiscSettings();
-    void loadMiscSettings();
+    void saveScheduleSettings();
+    void loadScheduleSettings();
 
 private:
     Ui::ScheduleSettings *_ui;
