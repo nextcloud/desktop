@@ -911,12 +911,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 och %n andra fil(er) är för närvarande låsta.</numerusform><numerusform>%1 och %n andra fil(er) är för närvarande låsta.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 är för närvarande låst.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
