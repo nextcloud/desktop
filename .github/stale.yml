@@ -30,6 +30,12 @@ exemptLabels:
     - feature: :memo: versions
     - feature: :minidisc: external storage
     - feature: :minidisc: virtual drive
+    - feature: :new: versions
+    - feature: :tongue: language l10n and translations
+    - feature: :wheelchair: accessibility
+    - feature: :white_square_button: nextcloudcmd
+    - feature: :zap: activity and :bell: notification
+    - good first issue
     - help wanted
     - high
     - integration
