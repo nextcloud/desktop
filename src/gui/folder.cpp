@@ -1075,17 +1075,17 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel
     QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder '%1' folder were deleted on the server.\n"
                                                  "These deletes will be synchronized to your local sync folder, making such files "
                                                  "unavailable unless you have a right to restore. \n"
-                                                 "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
+                                                 "If you decide to restore the files, they will be re-synced with the server if you have rights to do so.\n"
                                                  "If you decide to delete the files, they will be unavailable to you, unless you are the owner.")
-                                            : tr("All the files in your local sync folder '%1' were deleted. These deletes will be "
-                                                 "synchronized with your server, making such files unavailable unless restored.\n"
-                                                 "Are you sure you want to sync those actions with the server?\n"
-                                                 "If this was an accident and you decide to keep your files, they will be re-synced from the server.");
-    QMessageBox msgBox(QMessageBox::Warning, tr("Download new files?"),
+                                            : tr("All files got deleted from your local sync folder '%1'.\n"
+                                                 "These files will be deleted from the server and will not be available on your other devices if they "
+                                                 "will not be restored.\n"
+                                                 "If this action was unintended you can restore the lost data now.");
+    QMessageBox msgBox(QMessageBox::Warning, tr("Delete all files?"),
         msg.arg(shortGuiLocalPath()));
     msgBox.setWindowFlags(msgBox.windowFlags() | Qt::WindowStaysOnTopHint);
-    msgBox.addButton(tr("Download new files"), QMessageBox::DestructiveRole);
-    QPushButton *keepBtn = msgBox.addButton(tr("Keep local files"), QMessageBox::AcceptRole);
+    msgBox.addButton(tr("Delete all files"), QMessageBox::DestructiveRole);
+    QPushButton *keepBtn = msgBox.addButton(tr("Restore deleted files"), QMessageBox::AcceptRole);
     if (msgBox.exec() == -1) {
         *cancel = true;
         return;
