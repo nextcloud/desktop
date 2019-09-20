@@ -103,7 +103,7 @@
         <bool>true</bool>
        </attribute>
        <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>20</number>
+        <number>57</number>
        </attribute>
        <attribute name="horizontalHeaderMinimumSectionSize">
         <number>20</number>
@@ -115,16 +115,11 @@
         <bool>true</bool>
        </attribute>
        <attribute name="verticalHeaderDefaultSectionSize">
-        <number>20</number>
+        <number>21</number>
        </attribute>
        <attribute name="verticalHeaderMinimumSectionSize">
         <number>20</number>
        </attribute>
-       <row>
-        <property name="text">
-         <string>Sun</string>
-        </property>
-       </row>
        <row>
         <property name="text">
          <string>Mon</string>
@@ -153,6 +148,11 @@
        <row>
         <property name="text">
          <string>Sat</string>
+        </property>
+       </row>
+       <row>
+        <property name="text">
+         <string>Sun</string>
         </property>
        </row>
        <column>
