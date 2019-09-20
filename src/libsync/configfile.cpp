@@ -789,8 +789,10 @@ void ConfigFile::getScheduleTable(QTableWidget &table) const
       for (int idj = 0; idj < table.columnCount(); idj++){
         settings.setArrayIndex(idj);
         if( settings.value("checked",false).toBool() ){
+          table.item(idx, idj)->setSelected(true);
           table.item(idx, idj)->setBackground(Qt::blue);
         }else{
+          table.item(idx, idj)->setSelected(false);
           table.item(idx, idj)->setBackground(Qt::white);
         }
       }
