@@ -2503,13 +2503,13 @@ No es recomendable usarlo. </translation>
         <translation>El archivo local cambió durante la sincronización. Se resumirá. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>El archivo local cambio durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>La carga de %1 excede la cuota de la carpeta</translation>
     </message>
@@ -2519,7 +2519,7 @@ No es recomendable usarlo. </translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos a la base de datos</translation>
     </message>

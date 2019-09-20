@@ -2512,13 +2512,13 @@ Uzi ĝin ne konsilindas.</translation>
         <translation>Loka dosiero ŝanĝiĝis dum sinkronigo. Ĝi rekomenciĝos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>Loka dosiero ŝanĝiĝis dum sinkronigo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Alŝuto de %1 transpasas la dosierujan kvoton</translation>
     </message>
@@ -2528,7 +2528,7 @@ Uzi ĝin ne konsilindas.</translation>
         <translation>Forigita dosiero (ekalŝuti) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>Eraro dum skribo de pridatumoj en la datumbazo</translation>
     </message>
