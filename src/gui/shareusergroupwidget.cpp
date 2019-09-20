@@ -205,12 +205,9 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
         // the owner of the file that shared it first
-        if(x == 0 && !share->getUidOwner().isEmpty()){
-            if (_account->credentials()->user() == share->getUidOwner()) {
-                _ui->mainOwnerLabel->setText(QString("You shared this file"));
-            } else {
-                _ui->mainOwnerLabel->setText(QString("Shared with you by ").append(share->getOwnerDisplayName()));
-            }
+		// leave out if it's the current user
+        if(x == 0 && !share->getUidOwner().isEmpty() && !(share->getUidOwner() == _account->credentials()->user())) {
+            _ui->mainOwnerLabel->setText(QString("Shared with you by ").append(share->getOwnerDisplayName()));
         }
 
         ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _parentScrollArea);
