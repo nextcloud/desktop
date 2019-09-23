@@ -236,6 +236,23 @@ private slots:
         QCOMPARE(finishedSpy.first().first().toBool(), false);
     }
 
+    /** Verify that an incompletely propagated directory doesn't have the server's
+     * etag stored in the database yet. */
+    void testDirEtagAfterIncompleteSync() {
+        FakeFolder fakeFolder{FileInfo{}};
+        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));
+        fakeFolder.serverErrorPaths().append("NewFolder/foo");
+        fakeFolder.remoteModifier().mkdir("NewFolder");
+        fakeFolder.remoteModifier().insert("NewFolder/foo");
+        QVERIFY(!fakeFolder.syncOnce());
+
+        SyncJournalFileRecord rec;
+        fakeFolder.syncJournal().getFileRecord(QByteArrayLiteral("NewFolder"), &rec);
+        QVERIFY(rec.isValid());
+        QCOMPARE(rec._etag, QByteArrayLiteral("_invalid_"));
+        QVERIFY(!rec._fileId.isEmpty());
+    }
+
     void testDirDownloadWithError() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
