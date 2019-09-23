@@ -36,7 +36,7 @@ test_script:
 
 after_test:
 - ps: |
-    craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --package owncloud-client
+    craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --install --qmerge --package owncloud-client
 
 
 environment:
