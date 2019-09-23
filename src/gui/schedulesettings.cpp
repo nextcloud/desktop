@@ -1,25 +1,14 @@
 #include "schedulesettings.h"
 #include "ui_schedulesettings.h"
 
-#include "theme.h"
 #include "configfile.h"
 #include "application.h"
-#include "configfile.h"
-#include "owncloudsetupwizard.h"
+#include "accountmanager.h"
 
-#include "updater/updater.h"
-#include "updater/ocupdater.h"
-#include "common/utility.h"
-
-#include "config.h"
-
-#include <QNetworkProxy>
-#include <QDir>
 #include <QScopedValueRollback>
 #include <QPushButton>
 #include <QDate>
 #include <QTime>
-#include <QDebug>
 #include <QTableWidgetItem>
 
 #define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
@@ -30,7 +19,10 @@
 
 namespace OCC {
 
-  Q_LOGGING_CATEGORY(lcScheduler, "nextcloud.gui.scheduler", QtInfoMsg)
+  Q_LOGGING_CATEGORY(lcScheduler, "nextcloud.gui.scheduler", QtDebugMsg)
+
+  const char propertyAccountC[] = "oc_account";
+
   
   ScheduleSettings::ScheduleSettings(QWidget *parent)
     : QWidget(parent)
@@ -39,8 +31,10 @@ namespace OCC {
   {
     _ui->setupUi(this);
 
-    //Create items table disabled by default
+    // create items table disabled by default
     QTableWidget *tableWidget = _ui->scheduleTableWidget;
+    
+    // create internal table for checking synchronization
     int rows = tableWidget->rowCount();
     int cols = tableWidget->columnCount();
     QStringList horzHeaders, verHeaders;
@@ -50,6 +44,8 @@ namespace OCC {
     _timerTable = new QTableWidget(rows,cols);
     _timerTable->setHorizontalHeaderLabels(horzHeaders);
     _timerTable->setVerticalHeaderLabels(verHeaders);
+
+    // fill tables with items
     for (int idx = 0; idx<rows; idx++){
       for (int idj = 0; idj<cols; idj++){
         QTableWidgetItem *newItem = new QTableWidgetItem();
@@ -58,14 +54,11 @@ namespace OCC {
         tableWidget->setItem(idx, idj, newItem);
         _timerTable->setItem(idx, idj, newItemTimer);
       }
-    }
+    }   
 
-    
-
-    //create timer to check configuration every 5 seconds
+    // create timer to check configuration every 5 seconds
     _scheduleTimer = new QTimer(this);
     connect(_scheduleTimer, SIGNAL(timeout()), this, SLOT(checkSchedule()));
-    _scheduleTimer->start(5000);
     
     // load settings stored in config file
     loadScheduleSettings();
@@ -74,12 +67,14 @@ namespace OCC {
     connect(_ui->saveButton, &QPushButton::clicked, this, &ScheduleSettings::saveScheduleSettings);
   }
 
+  
   ScheduleSettings::~ScheduleSettings()
   {
     delete _timerTable;
     delete _ui;
   }
 
+  
   void ScheduleSettings::loadScheduleSettings()
   {
     QScopedValueRollback<bool> scope(_currentlyLoading, true);
@@ -88,8 +83,10 @@ namespace OCC {
     _ui->enableScheduleCheckBox->setChecked(cfgFile.getScheduleStatus());
     if(cfgFile.getScheduleStatus()){
       qCInfo(lcScheduler) << "Sync Scheduler enabled";
+      _scheduleTimer->start(SCHEDULE_TIME);
     }else{
       qCInfo(lcScheduler) << "Sync Scheduler disabled";
+      _scheduleTimer->stop();
     }
     cfgFile.getScheduleTable(*table);
   }
@@ -101,31 +98,51 @@ namespace OCC {
       return;
     ConfigFile cfgFile;
     bool isChecked = _ui->enableScheduleCheckBox->isChecked();
-    cfgFile.setScheduleStatus(isChecked);    
+    cfgFile.setScheduleStatus(isChecked);
     QTableWidget* table = _ui->scheduleTableWidget;
     cfgFile.setScheduleTable(*table);
     loadScheduleSettings();
   }
 
+  
   void ScheduleSettings::checkSchedule(){
     ConfigFile cfgFile;
     cfgFile.getScheduleTable(*_timerTable);
-    bool enabled = cfgFile.getScheduleStatus();
 
-    if( enabled ){
-      QDate date = QDate::currentDate();
-      int day = date.dayOfWeek();
-      QTime time = QTime::currentTime();
-      int hour = time.hour();
-      QTableWidgetItem *item = _timerTable->item(day-1, hour);
-      if( item->isSelected() ){
-        qCInfo(lcScheduler) << "Start sync: " << day << " - " << hour;
-      }else{
-        qCInfo(lcScheduler) << "Not start sync: " << day << " - " << hour;
-      }
+    //activate/deactivate sync depending the day of the week and the hour
+    QDate date = QDate::currentDate();
+    int day = date.dayOfWeek();
+    QTime time = QTime::currentTime();
+    int hour = time.hour();
+    QTableWidgetItem *item = _timerTable->item(day-1, hour);
+    if( item->isSelected() ){
+      qCDebug(lcScheduler) << "Start sync: " << day << " - " << hour;
+      this->setPauseOnAllFoldersHelper(false);
     }else{
-      qCInfo(lcScheduler) << "Stop sync";
+      qCDebug(lcScheduler) << "Stop Sync: " << day << " - " << hour;
+      this->setPauseOnAllFoldersHelper(true);
     }
   }
 
+  void ScheduleSettings::setPauseOnAllFoldersHelper(bool pause)
+  {
+    // this funcion is a copy of ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
+    QList<AccountState *> accounts;
+    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
+      accounts.append(account.data());
+    } else {
+      foreach (auto a, AccountManager::instance()->accounts()) {
+        accounts.append(a.data());
+      }
+    }
+    foreach (Folder *f, FolderMan::instance()->map()) {
+      if (accounts.contains(f->accountState())) {
+        f->setSyncPaused(pause);
+        if (pause) {
+          f->slotTerminateSync();
+        }
+      }
+    }
+  }
+  
 } // namespace OCC
