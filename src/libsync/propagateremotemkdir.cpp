@@ -223,8 +223,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         // while files are still uploading
         propagator()->_activeJobList.append(this);
         auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
-        propfindJob->setProperties(QList<QByteArray>() << "getetag"
-                                                       << "http://owncloud.org/ns:id");
+        propfindJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:id");
         QObject::connect(propfindJob, &PropfindJob::result, this, &PropagateRemoteMkdir::propfindResult);
         QObject::connect(propfindJob, &PropfindJob::finishedWithError, this, &PropagateRemoteMkdir::propfindError);
         propfindJob->start();
@@ -260,9 +259,6 @@ void PropagateRemoteMkdir::slotEncryptFolderFinished()
 void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
 {
     propagator()->_activeJobList.removeOne(this);
-    if (result.contains("getetag")) {
-        _item->_etag = result["getetag"].toByteArray();
-    }
     if (result.contains("id")) {
         _item->_fileId = result["id"].toByteArray();
     }
@@ -278,8 +274,13 @@ void PropagateRemoteMkdir::propfindError()
 
 void PropagateRemoteMkdir::success()
 {
+    // Never save the etag on first mkdir.
+    // Only fully propagated directories should have the etag set.
+    auto itemCopy = *_item;
+    itemCopy._etag.clear();
+
     // save the file id already so we can detect rename or remove
-    if (!propagator()->updateMetadata(*_item)) {
+    if (!propagator()->updateMetadata(itemCopy)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
