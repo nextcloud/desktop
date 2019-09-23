@@ -44,9 +44,10 @@ For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
 * [ ] Create build for theme 'testpilotcloud' using client-trigger (uncheck the "daily build" checkbox, use the rcX or betaX dropdown for version suffix)
 * Build results are in https://download.owncloud.com/desktop/testing -- win and mac binaries are there, linux packages are listed in a *repo.html file.
 * [ ] Check if *tar.xz.asc files are there. If not resort to https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge
-* [ ] Mac: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
-* [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
-* [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
+* [ ] Mac: Perform smoke test of non-osx10.11 package (fresh install, perform upload/download, check the version in General tab)
+* [ ] Win: Perform smoke test of non-GPO package (fresh install, perform upload/download, check the version in General tab)
+* [ ] Linux: Perform smoke test two distro packages (fresh install, perform upload/download, check the version in General tab)
+      Latest Ubuntu + Latest Fedora
 * [ ] Linux: Run https://jenkins.int.owncloud.com/job/client-linux-tests/ with REPO_URL=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
 * [ ] Linux: add/remove build targets in isv:ownCloud:Qt5121 and isv:ownCloud:desktop:testing to match the list of supported platforms and announced(!) deprecations. Keep in sync with https://doc.owncloud.org/server/latest/admin_manual/installation/system_requirements.html#desktop and https://github.com/owncloud/ownbrander/blob/master/brand-items.php#L1651
 * [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
@@ -81,9 +82,10 @@ On Release Day (for final release):
   ```obs-deepcopy-prj.sh isv:ownCloud:desktop isv:ownCloud:desktop:client-2.5.1```
 * [ ] Re-download Mac builds and check signature. Interactive in installer window
 * [ ] Re-download Win build check signature. From Mac or Linux: ```osslsigncode verify ownCloud-version-setup.exe```
-* [ ] Mac: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
-* [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
-* [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
+* [ ] Mac: Perform smoke test of non-osx10.11 package (fresh install, perform upload/download, check the version in General tab)
+* [ ] Win: Perform smoke test of non-GPO package (fresh install, perform upload/download, check the version in General tab)
+* [ ] Linux: Perform smoke test two distro packages (fresh install, perform upload/download, check the version in General tab)
+      Latest Ubuntu + Latest Fedora
 * [ ] Linux: Run https://jenkins.int.owncloud.com/job/client-linux-tests/ with REPO_URL=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
 * [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too.
 * [ ] Linux: also copy the *.linux-repo.html files from ```testing``` to ```stable``` **and** edit away the `:testing` strings.
