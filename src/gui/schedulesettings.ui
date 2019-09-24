@@ -13,40 +13,397 @@
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>761</width>
-     <height>501</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="mainLayout">
-    <item>
-     <widget class="QGroupBox" name="optionsGroupBox">
-      <property name="title">
-       <string>Options</string>
-      </property>
-      <widget class="QWidget" name="gridLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>741</width>
-         <height>70</height>
-        </rect>
+  <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <item>
+    <layout class="QVBoxLayout" name="mainLayout">
+     <item>
+      <widget class="QGroupBox" name="optionsGroupBox">
+       <property name="title">
+        <string>Schedule settings</string>
        </property>
-       <layout class="QGridLayout" name="optionsGridLayout">
-        <item row="0" column="0">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
          <widget class="QCheckBox" name="enableScheduleCheckBox">
           <property name="text">
            <string>Enable</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item>
          <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>10</width>
+            <height>10</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Minimum</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="suspendTableWidget">
+            <property name="maximumSize">
+             <size>
+              <width>21</width>
+              <height>21</height>
+             </size>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="rowCount">
+             <number>1</number>
+            </property>
+            <property name="columnCount">
+             <number>1</number>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="horizontalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderMinimumSectionSize">
+             <number>20</number>
+            </attribute>
+            <row/>
+            <column/>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="suspendLabel">
+            <property name="text">
+             <string>Suspend</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="runTableWidget">
+            <property name="maximumSize">
+             <size>
+              <width>21</width>
+              <height>21</height>
+             </size>
+            </property>
+            <property name="rowCount">
+             <number>1</number>
+            </property>
+            <property name="columnCount">
+             <number>1</number>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="horizontalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="verticalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderMinimumSectionSize">
+             <number>20</number>
+            </attribute>
+            <row/>
+            <column/>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="runLabel">
+            <property name="text">
+             <string>Run</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="scheduleTableWidget">
+          <property name="cornerButtonEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="rowCount">
+           <number>7</number>
+          </property>
+          <property name="columnCount">
+           <number>24</number>
+          </property>
+          <attribute name="horizontalHeaderVisible">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>21</number>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>21</number>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>21</number>
+          </attribute>
+          <attribute name="verticalHeaderMinimumSectionSize">
+           <number>21</number>
+          </attribute>
+          <row>
+           <property name="text">
+            <string>Mon</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Tue</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Wed</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Thu</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Fri</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Sat</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>Sun</string>
+           </property>
+          </row>
+          <column>
+           <property name="text">
+            <string>0</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>1</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>2</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>3</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>4</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>5</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>6</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>7</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>8</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>9</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>10</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>11</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>12</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>13</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>14</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>15</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>16</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>17</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>18</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>19</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>20</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>21</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>22</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>23</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="resetButton">
+            <property name="text">
+             <string>Reset</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="saveButton">
+            <property name="text">
+             <string>Save</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -58,241 +415,12 @@
           </property>
          </spacer>
         </item>
-        <item row="1" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QLabel" name="suspendLabel">
-            <property name="text">
-             <string>Suspend</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="runLabel">
-            <property name="text">
-             <string>Run</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
        </layout>
       </widget>
-      <widget class="QTableWidget" name="scheduleTableWidget">
-       <property name="geometry">
-        <rect>
-         <x>60</x>
-         <y>110</y>
-         <width>551</width>
-         <height>191</height>
-        </rect>
-       </property>
-       <property name="cornerButtonEnabled">
-        <bool>false</bool>
-       </property>
-       <property name="rowCount">
-        <number>7</number>
-       </property>
-       <property name="columnCount">
-        <number>24</number>
-       </property>
-       <attribute name="horizontalHeaderVisible">
-        <bool>true</bool>
-       </attribute>
-       <attribute name="horizontalHeaderCascadingSectionResizes">
-        <bool>true</bool>
-       </attribute>
-       <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>57</number>
-       </attribute>
-       <attribute name="horizontalHeaderMinimumSectionSize">
-        <number>20</number>
-       </attribute>
-       <attribute name="verticalHeaderVisible">
-        <bool>true</bool>
-       </attribute>
-       <attribute name="verticalHeaderCascadingSectionResizes">
-        <bool>true</bool>
-       </attribute>
-       <attribute name="verticalHeaderDefaultSectionSize">
-        <number>21</number>
-       </attribute>
-       <attribute name="verticalHeaderMinimumSectionSize">
-        <number>20</number>
-       </attribute>
-       <row>
-        <property name="text">
-         <string>Mon</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Tue</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Wed</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Thu</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Fri</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Sat</string>
-        </property>
-       </row>
-       <row>
-        <property name="text">
-         <string>Sun</string>
-        </property>
-       </row>
-       <column>
-        <property name="text">
-         <string>0</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>1</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>2</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>3</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>4</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>5</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>6</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>7</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>8</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>9</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>10</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>11</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>12</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>13</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>14</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>15</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>16</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>17</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>18</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>19</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>20</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>21</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>22</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>23</string>
-        </property>
-       </column>
-      </widget>
-      <widget class="QPushButton" name="saveButton">
-       <property name="geometry">
-        <rect>
-         <x>510</x>
-         <y>320</y>
-         <width>85</width>
-         <height>27</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Save</string>
-       </property>
-      </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources>
   <include location="../../client.qrc"/>

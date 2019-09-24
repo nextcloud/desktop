@@ -29,6 +29,8 @@ namespace OCC {
   private slots:
     void saveScheduleSettings();
     void loadScheduleSettings();
+    void resetScheduleSettings();
+    void changedScheduleSettings();
     void checkSchedule();
 
   private:
