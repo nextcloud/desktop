@@ -31,8 +31,25 @@ namespace OCC {
   {
     _ui->setupUi(this);
 
-    // create items table disabled by default
+    // create label items
+    QTableWidget *runTableWidget = _ui->runTableWidget;
+    QTableWidget *suspendTableWidget = _ui->suspendTableWidget;
+    QTableWidgetItem *newItemRun = new QTableWidgetItem();
+    QTableWidgetItem *newItemSuspend = new QTableWidgetItem();
+    newItemRun->setBackground(Qt::blue);
+    newItemRun->setFlags(newItemRun->flags() &  ~Qt::ItemIsEnabled);
+    newItemSuspend->setBackground(Qt::white);
+    newItemSuspend->setFlags(newItemSuspend->flags() &  ~Qt::ItemIsEnabled);
+    runTableWidget->setItem(0, 0, newItemRun);
+    suspendTableWidget->setItem(0, 0, newItemSuspend);
+    
+    // create items table disabled by default and strech them
     QTableWidget *tableWidget = _ui->scheduleTableWidget;
+    QHeaderView* headerH = tableWidget->horizontalHeader();
+    QHeaderView* headerV = tableWidget->verticalHeader();
+    headerH->setSectionResizeMode(QHeaderView::Stretch);    
+    headerV->setSectionResizeMode(QHeaderView::Stretch);
+    
     
     // create internal table for checking synchronization
     int rows = tableWidget->rowCount();
@@ -58,13 +75,16 @@ namespace OCC {
 
     // create timer to check configuration every 5 seconds
     _scheduleTimer = new QTimer(this);
-    connect(_scheduleTimer, SIGNAL(timeout()), this, SLOT(checkSchedule()));
-    
-    // load settings stored in config file
-    loadScheduleSettings();
-    
+    connect(_scheduleTimer, &QTimer::timeout, this, &ScheduleSettings::checkSchedule);
+       
     // connect with events
     connect(_ui->saveButton, &QPushButton::clicked, this, &ScheduleSettings::saveScheduleSettings);
+    connect(_ui->resetButton, &QPushButton::clicked, this, &ScheduleSettings::resetScheduleSettings);
+    connect(_ui->enableScheduleCheckBox, &QCheckBox::clicked, this, &ScheduleSettings::changedScheduleSettings);
+    connect(_ui->scheduleTableWidget, &QTableWidget::cellPressed, this, &ScheduleSettings::changedScheduleSettings);
+
+    // load settings stored in config file
+    loadScheduleSettings();    
   }
 
   
@@ -89,9 +109,25 @@ namespace OCC {
       _scheduleTimer->stop();
     }
     cfgFile.getScheduleTable(*table);
+    table->clearSelection();
+    
+    // finally disable reset and save buttons
+    _ui->resetButton->setEnabled(false);
+    _ui->saveButton->setEnabled(false);
   }
 
 
+  void ScheduleSettings::resetScheduleSettings()
+  {
+    loadScheduleSettings();
+  }
+
+  void ScheduleSettings::changedScheduleSettings()
+  {
+    _ui->resetButton->setEnabled(true);
+    _ui->saveButton->setEnabled(true);
+  }
+  
   void ScheduleSettings::saveScheduleSettings()
   {
     if (_currentlyLoading)
