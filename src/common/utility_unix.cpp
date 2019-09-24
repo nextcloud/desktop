@@ -89,4 +89,9 @@ static inline bool hasDarkSystray_private()
     return true;
 }
 
+static inline bool hasDarkOsTheme_private()
+{
+    return false;
+}
+
 } // namespace OCC

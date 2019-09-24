@@ -131,4 +131,9 @@ static bool hasDarkSystray_private()
     return returnValue;
 }
 
+static bool hasDarkOsTheme_private()
+{
+    return false;
+}
+
 } // namespace OCC
