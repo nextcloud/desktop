@@ -15,11 +15,17 @@ QPlainTextEdit {
 QDialog,
 QWidget#OwncloudSetupPage {
 	background: #FFFFFF;
+	color:		#1F1F1F;
 }
 
-QListView,
 QToolBar {
 	background: #EFEFEF;
+}
+
+QListView {
+	background-color:			#EFEFEF;
+	alternate-background-color:	#E4E4E4;
+	color:						#1F1F1F;
 }
 
 QInputDialog,

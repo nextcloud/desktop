@@ -93,26 +93,26 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
            QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
            if(!cachedIcon.isNull())
                return cachedIcon;
-           else return QIcon(QLatin1String(":/client/resources/bell.svg"));
+           else return Theme::instance()->themeIcon("bell.svg", false, false, true);
         } else if(a._type == Activity::SyncResultType){
-            return QIcon(QLatin1String(":/client/resources/state-error.svg"));
+            return Theme::instance()->themeIcon("state-error.svg", false, false, true);
         } else if(a._type == Activity::SyncFileItemType){
                if(a._status == SyncFileItem::NormalError
                    || a._status == SyncFileItem::FatalError
                    || a._status == SyncFileItem::DetailError
                    || a._status == SyncFileItem::BlacklistedError) {
-                   return QIcon(QLatin1String(":/client/resources/state-error.svg"));
+					return Theme::instance()->themeIcon("state-error.svg", false, false, true);
                } else if(a._status == SyncFileItem::SoftError
                          || a._status == SyncFileItem::Conflict
                          || a._status == SyncFileItem::Restoration
                          || a._status == SyncFileItem::FileLocked){
-                   return QIcon(QLatin1String(":/client/resources/state-warning.svg"));
+                   return Theme::instance()->themeIcon("state-warning.svg", false, false, true);
                } else if(a._status == SyncFileItem::FileIgnored){
-                   return QIcon(QLatin1String(":/client/resources/state-info.svg"));
+                   return Theme::instance()->themeIcon("state-info.svg", false, false, true);
                }
-               return QIcon(QLatin1String(":/client/resources/state-sync.svg"));
+               return Theme::instance()->themeIcon("state-sync.svg", false, false, true);
         }
-        return QIcon(QLatin1String(":/client/resources/activity.png"));
+        return Theme::instance()->themeIcon("activity.svg", false, false, true);
         break;
     case ActivityItemDelegate::ObjectTypeRole:
         return a._objectType;

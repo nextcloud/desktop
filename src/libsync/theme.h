@@ -182,7 +182,7 @@ public:
 	/** Current (last set) systrayMonoFlavor used for efficacy optimization when checking for system theme changes */
     IconFlavor currentIconFlavor;
 
-	/** Current (last set) systrayMonoFlavor used for efficacy optimization when checking for system theme changes */
+	/** Current (last set) appFlavor used for efficacy optimization when checking for system theme changes */
     AppFlavor currentAppFlavor;
 
 #ifndef TOKEN_AUTH_ONLY
@@ -375,19 +375,12 @@ public:
      * important dependency versions.
      */
     virtual QString versionSwitchOutput() const;
-	
-	/**
-    * @brief Request suitable QIcon resource depending on the background colour of the parent widget.
-    *
-    * This should be replaced (TODO) by a real theming implementation for the client UI 
-    * (actually 2019/09/13 only systray theming).
-    */
-	virtual QIcon uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const;
+
+#ifndef TOKEN_AUTH_ONLY
+    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false, bool uiTheme = false) const;
+#endif
 
 protected:
-#ifndef TOKEN_AUTH_ONLY
-    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false) const;
-#endif
     Theme();
 
 signals:

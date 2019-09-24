@@ -17,9 +17,14 @@ QWidget#OwncloudSetupPage {
 	background: #151515;
 }
 
-QListView,
 QToolBar {
 	background: #1F1F1F;
+}
+
+QListView {
+	background-color:			#1F1F1F;
+	alternate-background-color:	#323232;
+	color:						#CCCCCC;
 }
 
 QInputDialog,

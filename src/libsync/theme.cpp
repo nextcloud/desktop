@@ -131,14 +131,24 @@ QIcon Theme::applicationIcon() const
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.
  */
-QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible) const
+QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible, bool uiTheme) const
 {
     QString flavor;
     if (sysTray) {
         flavor = systrayIconFlavor(_mono, sysTrayMenuVisible);
+    } else if (uiTheme) {
+        if (currentAppFlavor == AppFlavor::System) {
+            Utility::hasDarkOsTheme() ? flavor = QLatin1String("white") : flavor = QLatin1String("black");
+        } else if (currentAppFlavor == AppFlavor::Dark) {
+            flavor = QLatin1String("white");
+        } else if (currentAppFlavor == AppFlavor::Light) {
+            flavor = QLatin1String("black");
+        }
+        QString iconPath(":/client/theme/" + flavor + "/" + name);
+        return QIcon(iconPath);
     } else {
         flavor = QLatin1String("colored");
-    }
+	}
 
     QString key = name + "," + flavor;
     QIcon &cached = _iconCache[key];
@@ -183,14 +193,6 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
 #endif
 
     return cached;
-}
-
-QIcon Theme::uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const
-{
-    QString themeResBasePath = ":/client/theme/";
-    QString iconPath = themeResBasePath + (uiHasDarkBg?"white/":"black/") + iconName;
-    std::string icnPath = iconPath.toUtf8().constData();
-    return QIcon(QPixmap(iconPath));
 }
 
 QString Theme::hidpiFileName(const QString &fileName, QPaintDevice *dev)
