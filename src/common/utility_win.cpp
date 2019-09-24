@@ -87,7 +87,6 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     }
 }
 
-// TODO: Right now only detection on toggle/startup, not when windows theme is switched while nextcloud is running
 static inline bool hasDarkSystray_private()
 {
     if(Utility::registryGetKeyValue(    HKEY_CURRENT_USER,
@@ -96,6 +95,18 @@ static inline bool hasDarkSystray_private()
         return false;
     }
     else {
+        return true;
+    }
+}
+
+static inline bool hasDarkOsTheme_private()
+{
+    if (Utility::registryGetKeyValue(HKEY_CURRENT_USER,
+            "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+            "AppsUseLightTheme")
+        == 1) {
+        return false;
+    } else {
         return true;
     }
 }

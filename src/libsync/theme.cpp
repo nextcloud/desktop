@@ -14,10 +14,12 @@
 
 #include "theme.h"
 #include "config.h"
+#include "configfile.h"
 #include "common/utility.h"
 #include "version.h"
 
 #include <QtCore>
+#include <QDebug>
 #ifndef TOKEN_AUTH_ONLY
 #include <QtGui>
 #include <QStyle>
@@ -45,6 +47,12 @@ Theme *Theme::instance()
         _instance = new THEME_CLASS;
         // some themes may not call the base ctor
         _instance->_mono = false;
+        _instance->currentIconFlavor = ( ConfigFile().monoIcons() )
+            ? (Utility::hasDarkSystray() ? IconFlavor::Light : IconFlavor::Dark)
+            : IconFlavor::Color;
+        _instance->currentAppFlavor = (ConfigFile().appFlavor() == "System")
+            ? ( (Utility::hasDarkOsTheme() ? AppFlavor::Dark : AppFlavor::Light) )
+            : ( (ConfigFile().appFlavor() == "Dark") ? AppFlavor::Dark : AppFlavor::Light);
     }
     return _instance;
 }
@@ -294,6 +302,25 @@ void Theme::setSystrayUseMonoIcons(bool mono)
     emit systrayUseMonoIconsChanged(mono);
 }
 
+void Theme::setUseSpecificTheme(Theme::AppFlavor theme)
+{
+    switch (theme) {
+    case OCC::Theme::AppFlavor::Dark:
+        emit appUseDarkTheme();
+        break;
+    case OCC::Theme::AppFlavor::Light:
+        emit appUseLightTheme();
+        break;
+    default:
+        break;
+    }
+}
+
+void Theme::setOSThemeChanged()
+{
+    emit osThemeChanged();
+}
+
 bool Theme::systrayUseMonoIcons() const
 {
     return _mono;
@@ -334,7 +361,7 @@ QString Theme::gitSHA1() const
         "https://github.com/nextcloud/desktop/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
     devString = QCoreApplication::translate("nextcloudTheme::about()",
-        "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
+        "<p><small>Built from Git revision <a href=\"%1\" style=\"color:#989898\">%2</a>"
         " on %3, %4 using Qt %5, %6</small></p>")
                     .arg(githubPrefix + gitSha1)
                     .arg(gitSha1.left(6))
@@ -349,7 +376,7 @@ QString Theme::gitSHA1() const
 QString Theme::about() const
 {
     QString devString;
-    devString = tr("<p>Version %1. For more information please click <a href='%2'>here</a>.</p>")
+    devString = tr("<p>Version %1. For more information please click <a href=\"%2\" style=\"color:#989898\">here</a>.</p>")
               .arg(MIRALL_VERSION_STRING)
               .arg(helpUrl());
 

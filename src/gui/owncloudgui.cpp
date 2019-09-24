@@ -13,6 +13,7 @@
  */
 
 #include "application.h"
+#include "../libsync/configfile.h"
 #include "owncloudgui.h"
 #include "ocsnavigationappsjob.h"
 #include "theme.h"
@@ -107,6 +108,12 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::slotShowOptionalTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage,
         this, &ownCloudGui::slotShowGuiMessage);
+
+    connect(Theme::instance(), &Theme::osThemeChanged, [this]() {
+		if (ConfigFile().appFlavor() == "System") {slotUpdateUiTheme((Utility::hasDarkOsTheme()) ? Theme::AppFlavor::Dark : Theme::AppFlavor::Light);}
+		; });
+    connect(Theme::instance(), &Theme::appUseDarkTheme, [this]() { slotUpdateUiTheme(Theme::AppFlavor::Dark); });
+    connect(Theme::instance(), &Theme::appUseLightTheme, [this]() { slotUpdateUiTheme(Theme::AppFlavor::Light); });
 }
 
 #ifdef WITH_LIBCLOUDPROVIDERS
@@ -121,7 +128,7 @@ bool ownCloudGui::cloudProviderApiAvailable()
         return false;
     }
     QDBusInterface dbus_iface("org.freedesktop.CloudProviderManager", "/org/freedesktop/CloudProviderManager",
-                              "org.freedesktop.CloudProvider.Manager1", _bus);
+        "org.freedesktop.CloudProvider.Manager1", _bus);
 
     if (!dbus_iface.isValid()) {
         qCInfo(lcApplication) << "DBus interface unavailable";
@@ -332,6 +339,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     QIcon statusIcon = Theme::instance()->syncStateIcon(iconStatus, true, contextMenuVisible());
     _tray->setIcon(statusIcon);
+    Theme::instance()->currentIconFlavor = (Utility::hasDarkSystray() ? Theme::IconFlavor::Light : Theme::IconFlavor::Dark);
 
     // create the tray blob message, check if we have an defined state
     if (map.count() > 0) {
@@ -798,15 +806,17 @@ void ownCloudGui::setupActions()
     }
 }
 
-void ownCloudGui::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
-    if(statusCode == 200){
+void ownCloudGui::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode)
+{
+    if (statusCode == 200) {
         qCDebug(lcApplication) << "New navigation apps ETag Response Header received " << value;
         auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC));
         account->setNavigationAppsEtagResponseHeader(value);
     }
 }
 
-void ownCloudGui::fetchNavigationApps(AccountStatePtr account){
+void ownCloudGui::fetchNavigationApps(AccountStatePtr account)
+{
     OcsNavigationAppsJob *job = new OcsNavigationAppsJob(account->account());
     job->setProperty(propertyAccountC, QVariant::fromValue(account));
     job->addRawHeader("If-None-Match", account->navigationAppsEtagResponseHeader());
@@ -816,20 +826,19 @@ void ownCloudGui::fetchNavigationApps(AccountStatePtr account){
     job->getNavigationApps();
 }
 
-void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu){
+void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu)
+{
     auto navLinks = _navApps.value(account);
-    if(navLinks.size() > 0){
-
+    if (navLinks.size() > 0) {
         // when there is only one account add the nav links above the settings
         QAction *actionBefore = _actionSettings;
 
         // when there is more than one account add the nav links above pause/unpause folder or logout action
-        if(AccountManager::instance()->accounts().size() > 1){
-            foreach(QAction *action, accountMenu->actions()){
-
+        if (AccountManager::instance()->accounts().size() > 1) {
+            foreach (QAction *action, accountMenu->actions()) {
                 // pause/unpause folder and logout actions have propertyAccountC
-                if(auto actionAccount = qvariant_cast<AccountStatePtr>(action->property(propertyAccountC))){
-                    if(actionAccount == account){
+                if (auto actionAccount = qvariant_cast<AccountStatePtr>(action->property(propertyAccountC))) {
+                    if (actionAccount == account) {
                         actionBefore = action;
                         break;
                     }
@@ -854,11 +863,11 @@ void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accoun
 
 void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode)
 {
-    if(auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))){
+    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
         if (statusCode == 304) {
             qCWarning(lcApplication) << "Status code " << statusCode << " Not Modified - No new navigation apps.";
         } else {
-            if(!reply.isEmpty()){
+            if (!reply.isEmpty()) {
                 auto element = reply.object().value("ocs").toObject().value("data");
                 auto navLinks = element.toArray();
                 _navApps.insert(account, navLinks);
@@ -867,15 +876,15 @@ void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply, int stat
 
         // TODO see pull #523
         auto accountList = AccountManager::instance()->accounts();
-        if(accountList.size() > 1){
+        if (accountList.size() > 1) {
             // the list of apps will be displayed under the account that it belongs to
             foreach (QMenu *accountMenu, _accountMenus) {
-                if(accountMenu->title() == account->account()->displayName()){
+                if (accountMenu->title() == account->account()->displayName()) {
                     buildNavigationAppsMenu(account, accountMenu);
                     break;
                 }
             }
-        } else if(accountList.size() == 1){
+        } else if (accountList.size() == 1) {
             buildNavigationAppsMenu(account, _contextMenu.data());
         }
     }
@@ -1229,5 +1238,26 @@ void ownCloudGui::slotRemoveDestroyedShareDialogs()
     }
 }
 
+void ownCloudGui::slotUpdateUiTheme(Theme::AppFlavor theme)
+{
+    switch (theme) {
+    case OCC::Theme::AppFlavor::Dark: {
+        QFile styleSheet(":/client/theme/darktheme.qss");
+        styleSheet.open(QFile::ReadOnly | QFile::Text);
+        QString qssContent = QLatin1String(styleSheet.readAll());
+        _app->setStyleSheet(qssContent);
+        break;
+    }
+    case OCC::Theme::AppFlavor::Light: {
+        QFile styleSheet(":/client/theme/lighttheme.qss");
+        styleSheet.open(QFile::ReadOnly | QFile::Text);
+        QString qssContent = QLatin1String(styleSheet.readAll());
+        _app->setStyleSheet(qssContent);
+        break;
+    }
+    default:
+        break;
+    }
+}
 
 } // end namespace

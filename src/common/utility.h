@@ -112,6 +112,18 @@ namespace Utility {
      */
     OCSYNC_EXPORT bool hasDarkSystray();
 
+    /**
+     * @brief hasDarkOsTheme - determines whether the OS theme is dark or light.
+     *
+     * Use this to check if the OS has a dark or a light app theme.
+     *
+     * The value might change during the execution of the program. Also this
+	 * has to be evaluated separately from hasDarkSystray (e.g. Window 10 Systray/App theme customizations).
+     *
+     * @return bool which is true for systems with dark systray.
+     */
+    OCSYNC_EXPORT bool hasDarkOsTheme();
+
     // convenience OS detection methods
     inline bool isWindows();
     inline bool isMac();

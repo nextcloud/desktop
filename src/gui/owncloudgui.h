@@ -16,6 +16,7 @@
 #define OWNCLOUDGUI_H
 
 #include "systray.h"
+#include "../libsync/theme.h"
 #include "connectionvalidator.h"
 #include "progressdispatcher.h"
 
@@ -100,6 +101,7 @@ public slots:
     void slotTrayMessageIfServerUnsupported(Account *account);
     void slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode);
     void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
+    void slotUpdateUiTheme(Theme::AppFlavor);
 
 
     /**

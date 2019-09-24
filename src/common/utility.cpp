@@ -32,7 +32,6 @@
 #include <QObject>
 #include <QThread>
 #include <QDateTime>
-#include <QSysInfo>
 #include <QStandardPaths>
 #include <QCollator>
 #include <QSysInfo>
@@ -384,6 +383,10 @@ bool Utility::hasDarkSystray()
     return hasDarkSystray_private();
 }
 
+bool Utility::hasDarkOsTheme()
+{
+    return hasDarkOsTheme_private();
+}
 
 QString Utility::platformName()
 {

@@ -52,6 +52,7 @@ set(client_SRCS
     application.cpp
     clientproxy.cpp
     connectionvalidator.cpp
+	eventfilter.cpp
     folder.cpp
     folderman.cpp
     folderstatusmodel.cpp
@@ -160,7 +161,7 @@ IF( NOT WIN32 AND NOT APPLE )
 set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp)
 ENDIF()
 IF( WIN32 )
-set(client_SRCS ${client_SRCS} folderwatcher_win.cpp)
+set(client_SRCS ${client_SRCS} folderwatcher_win.cpp eventfilter_win.cpp)
 ENDIF()
 IF( APPLE )
 list(APPEND client_SRCS folderwatcher_mac.cpp)

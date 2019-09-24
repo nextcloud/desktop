@@ -67,7 +67,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <item>
-      <widget class="QPushButton" name="prevButton">
+      <widget class="QPushButton" name="prevSlideButton">
        <property name="minimumSize">
         <size>
          <width>40</width>
@@ -100,7 +100,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="nextButton">
+      <widget class="QPushButton" name="nextSlideButton">
        <property name="minimumSize">
         <size>
          <width>40</width>

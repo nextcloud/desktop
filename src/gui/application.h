@@ -87,6 +87,7 @@ protected slots:
     void slotParseMessage(const QString &, QObject *);
     void slotCheckConnection();
     void slotUseMonoIconsChanged(bool);
+    void slotOSThemeChanged();
     void slotCleanup();
     void slotAccountStateAdded(AccountState *accountState);
     void slotAccountStateRemoved(AccountState *accountState);

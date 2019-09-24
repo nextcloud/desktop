@@ -994,7 +994,7 @@ void AccountSettings::slotAccountStateChanged()
             _model->slotUpdateFolderState(folder);
         }
 
-        QString server = QString::fromLatin1("<a href=\"%1\">%2</a>")
+        QString server = QString::fromLatin1("<a href=\"%1\" style=\"color:#989898\">%2</a>")
                              .arg(Utility::escape(account->url().toString()),
                                  Utility::escape(safeUrl.toString()));
         QString serverWithUser = server;

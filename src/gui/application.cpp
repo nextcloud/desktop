@@ -19,6 +19,7 @@
 #include <iostream>
 #include <random>
 
+#include "eventfilter.h"
 #include "config.h"
 #include "account.h"
 #include "accountstate.h"
@@ -127,7 +128,8 @@ Application::Application(int &argc, char **argv)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     auto confDir = ConfigFile().configPath();
-    if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
+    if (confDir.endsWith('/'))
+        confDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
     if (!QFileInfo(confDir).isDir()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
@@ -139,7 +141,8 @@ Application::Application(int &argc, char **argv)
         // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
         // behavior of adding "data" to the path
         QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        if (oldDir.endsWith('/'))
+            oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
@@ -203,8 +206,13 @@ Application::Application(int &argc, char **argv)
 
     setQuitOnLastWindowClosed(false);
 
+    auto ncEventFilter = new NCEventFilter();
+    QAbstractEventDispatcher::instance()->installNativeEventFilter(ncEventFilter);
+
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
+
+    connect(_theme, &Theme::osThemeChanged, this, &Application::slotOSThemeChanged);
 
     // Setting up the gui class will allow tray notifications for the
     // setup that follows, like folder setup
@@ -218,9 +226,6 @@ Application::Application(int &argc, char **argv)
 
     FolderMan::instance()->setupFolders();
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
-
-    // Enable word wrapping of QInputDialog (#4197)
-    setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Application::slotAccountStateAdded);
@@ -250,6 +255,8 @@ Application::Application(int &argc, char **argv)
         _gui.data(), &ownCloudGui::slotShowTrayMessage);
     connect(updaterScheduler, &UpdaterScheduler::requestRestart,
         _folderManager.data(), &FolderMan::slotScheduleAppRestart);
+
+	_gui->slotUpdateUiTheme(Theme::instance()->currentAppFlavor);
 
     // Cleanup at Quit.
     connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
@@ -400,6 +407,13 @@ void Application::setupLogging()
 void Application::slotUseMonoIconsChanged(bool)
 {
     _gui->slotComputeOverallSyncStatus();
+}
+
+void Application::slotOSThemeChanged()
+{
+    if (ConfigFile().monoIcons()) {
+        _gui->slotComputeOverallSyncStatus();
+    }
 }
 
 void Application::slotParseMessage(const QString &msg, QObject *)

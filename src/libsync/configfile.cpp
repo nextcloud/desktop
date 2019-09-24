@@ -37,7 +37,7 @@
 #include <QNetworkProxy>
 #include <QStandardPaths>
 
-#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
+#define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5, 9, 0))
 
 #if !(QTLEGACY)
 #include <QOperatingSystemVersion>
@@ -58,6 +58,7 @@ static const char forceSyncIntervalC[] = "forceSyncInterval";
 static const char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static const char notificationRefreshIntervalC[] = "notificationRefreshInterval";
 static const char monoIconsC[] = "monoIcons";
+static const char appFlavorC[] = "appFlavor";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
 static const char optionalServerNotificationsC[] = "optionalServerNotifications";
@@ -180,15 +181,15 @@ bool ConfigFile::showInExplorerNavigationPane() const
 {
     const bool defaultValue =
 #ifdef Q_OS_WIN
-    #if QTLEGACY
+#if QTLEGACY
         (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10);
-    #else
+#else
         QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows10;
-    #endif
+#endif
 #else
         false
 #endif
-        ;
+    ;
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(showInExplorerNavigationPaneC), defaultValue).toBool();
 }
@@ -311,19 +312,19 @@ QString ConfigFile::configPath() const
             _confDir = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
         } else {
             // On Windows, use AppDataLocation, that's where the roaming data is and where we should store the config file
-             auto newLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+            auto newLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
-             // Check if this is the first time loading the new location
-             if (!QFileInfo(newLocation).isDir()) {
-                 // Migrate data to the new locations
-                 auto oldLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+            // Check if this is the first time loading the new location
+            if (!QFileInfo(newLocation).isDir()) {
+                // Migrate data to the new locations
+                auto oldLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
 
-                 // Only migrate if the old location exists.
-                 if (QFileInfo(oldLocation).isDir()) {
-                     QDir().mkpath(newLocation);
-                     copy_dir_recursive(oldLocation, newLocation);
-                 }
-             }
+                // Only migrate if the old location exists.
+                if (QFileInfo(oldLocation).isDir()) {
+                    QDir().mkpath(newLocation);
+                    copy_dir_recursive(oldLocation, newLocation);
+                }
+            }
             _confDir = newLocation;
         }
     }
@@ -780,10 +781,37 @@ bool ConfigFile::monoIcons() const
     return settings.value(QLatin1String(monoIconsC), monoDefault).toBool();
 }
 
+QString ConfigFile::appFlavor() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    QString test = settings.value(appFlavorC).toString();
+    return getValue(QLatin1String(appFlavorC)).toString();
+}
+
 void ConfigFile::setMonoIcons(bool useMonoIcons)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(monoIconsC), useMonoIcons);
+}
+
+void ConfigFile::setAppFlavor(Theme::AppFlavor appFlavor)
+{
+    QString useAppFlavor;
+    QSettings settings(configFile(), QSettings::IniFormat);
+    switch (appFlavor) {
+    case OCC::Theme::AppFlavor::System:
+        useAppFlavor = "System";
+        break;
+    case OCC::Theme::AppFlavor::Dark:
+        useAppFlavor = "Dark";
+        break;
+    case OCC::Theme::AppFlavor::Light:
+        useAppFlavor = "Light";
+        break;
+    default:
+        break;
+    }
+    settings.setValue(QLatin1String(appFlavorC), useAppFlavor);
 }
 
 bool ConfigFile::crashReporter() const

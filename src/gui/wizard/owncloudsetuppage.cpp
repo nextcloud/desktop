@@ -86,19 +86,9 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-talk.png"), tr("Screensharing, online meetings & web conferences"));
 
     connect(_ui.slideShow, &SlideShow::clicked, _ui.slideShow, &SlideShow::stopShow);
-    connect(_ui.nextButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::nextSlide);
-    connect(_ui.prevButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::prevSlide);
+    connect(_ui.nextSlideButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::nextSlide);
+    connect(_ui.prevSlideButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::prevSlide);
 
-	auto widgetBgLightness = OwncloudSetupPage::palette().color(OwncloudSetupPage::backgroundRole()).lightness();
-	bool widgetHasDarkBg =
-        (widgetBgLightness >= 125)
-        ? false
-        : true;
-	_ui.nextButton->setIcon(theme->uiThemeIcon(QString("control-next.svg"), widgetHasDarkBg));
-    _ui.prevButton->setIcon(theme->uiThemeIcon(QString("control-prev.svg"), widgetHasDarkBg));
-
-	// QPushButtons are a mess when it comes to consistent background coloring without stylesheets,
-	// so we do it here even though this is an exceptional styling method here
     _ui.createAccountButton->setStyleSheet("QPushButton {background-color: #0082C9; color: white}");
 
     _ui.slideShow->startShow();

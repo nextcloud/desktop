@@ -16,6 +16,7 @@
 #define CONFIGFILE_H
 
 #include "owncloudlib.h"
+#include "theme.h"
 #include <memory>
 #include <QSharedPointer>
 #include <QSettings>
@@ -82,6 +83,9 @@ public:
 
     bool monoIcons() const;
     void setMonoIcons(bool);
+
+	QString appFlavor() const; // 'System', 'Dark' or 'White'
+    void setAppFlavor(Theme::AppFlavor);
 
     bool promptDeleteFiles() const;
     void setPromptDeleteFiles(bool promptDeleteFiles);

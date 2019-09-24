@@ -97,7 +97,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(_actionBefore);
 
     // Adds space between users + activities and general + network actions
-    QWidget* spacer = new QWidget();
+    QWidget *spacer = new QWidget();
     spacer->setMinimumWidth(10);
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _toolBar->addWidget(spacer);
@@ -117,7 +117,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
-    foreach(auto ai, AccountManager::instance()->accounts()) {
+    foreach (auto ai, AccountManager::instance()->accounts()) {
         accountAdded(ai.data());
     }
 
@@ -183,13 +183,14 @@ void SettingsDialog::showFirstPage()
 
 void SettingsDialog::showActivityPage()
 {
-    if (auto account = qvariant_cast<AccountState*>(sender()->property("account"))) {
+    if (auto account = qvariant_cast<AccountState *>(sender()->property("account"))) {
         _activitySettings[account]->show();
         _ui->stack->setCurrentWidget(_activitySettings[account]);
     }
 }
 
-void SettingsDialog::showIssuesList(AccountState *account) {
+void SettingsDialog::showIssuesList(AccountState *account)
+{
     for (auto it = _actionGroupWidgets.begin(); it != _actionGroupWidgets.end(); ++it) {
         if (it.value() == _activitySettings[account]) {
             it.key()->activate(QAction::ActionEvent::Trigger);
@@ -198,7 +199,8 @@ void SettingsDialog::showIssuesList(AccountState *account) {
     }
 }
 
-void SettingsDialog::activityAdded(AccountState *s){
+void SettingsDialog::activityAdded(AccountState *s)
+{
     _ui->stack->addWidget(_activitySettings[s]);
     connect(_activitySettings[s], &ActivitySettings::guiLog, _gui,
         &ownCloudGui::slotShowOptionalTrayMessage);
@@ -224,8 +226,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     _activitySettings[s] = new ActivitySettings(s, this);
 
     // if this is not the first account, then before we continue to add more accounts we add a separator
-    if(AccountManager::instance()->accounts().first().data() != s &&
-        AccountManager::instance()->accounts().size() >= 1){
+    if (AccountManager::instance()->accounts().first().data() != s && AccountManager::instance()->accounts().size() >= 1) {
         _actionGroupWidgets.insert(_toolBar->insertSeparator(_actionBefore), _activitySettings[s]);
     }
 
@@ -242,7 +243,7 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
-        accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(),  height * buttonSizeRatio));
+        accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(), height * buttonSizeRatio));
     }
 
     _toolBar->insertAction(_actionBefore, accountAction);
@@ -320,12 +321,12 @@ void SettingsDialog::accountRemoved(AccountState *s)
         _actionForAccount.remove(s->account().data());
     }
 
-    if(_activitySettings.contains(s)){
+    if (_activitySettings.contains(s)) {
         _activitySettings[s]->slotRemoveAccount();
         _activitySettings[s]->hide();
 
         // get the settings widget and the separator
-        foreach(QAction *action, _actionGroupWidgets.keys(_activitySettings[s])){
+        foreach (QAction *action, _actionGroupWidgets.keys(_activitySettings[s])) {
             _actionGroupWidgets.remove(action);
             _toolBar->removeAction(action);
         }
@@ -346,7 +347,30 @@ void SettingsDialog::customizeStyle()
     QString highlightColor(palette().highlight().color().name());
     QString altBase(palette().alternateBase().color().name());
     QString dark(palette().dark().color().name());
-    QString background(palette().base().color().name());
+
+    QString background("");
+    switch (Theme::instance()->currentAppFlavor) {
+    case Theme::AppFlavor::System: {
+        Utility::hasDarkOsTheme()
+            ? background = "#1F1F1F"
+            : background = "#F5F5F5";
+        break;
+    }
+    case Theme::AppFlavor::Dark: {
+        background = "#1F1F1F";
+        break;
+	}
+    case Theme::AppFlavor::Light: {
+		background = "#F5F5F5";
+        break;
+    }
+    default: {
+        qDebug() << "No AppFlavor could be determined. Using fallback color for GUI toolbar.";
+        background = "#F5F5F5";
+        break;
+	}
+    }
+
     _toolBar->setStyleSheet(QString::fromLatin1(TOOLBAR_CSS).arg(background, dark, highlightColor, altBase));
 
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
@@ -432,7 +456,7 @@ QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const Q
 
 void SettingsDialog::slotRefreshActivityAccountStateSender()
 {
-    slotRefreshActivity(qobject_cast<AccountState*>(sender()));
+    slotRefreshActivity(qobject_cast<AccountState *>(sender()));
 }
 
 void SettingsDialog::slotRefreshActivity(AccountState *accountState)

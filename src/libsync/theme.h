@@ -44,6 +44,18 @@ public:
         oCSetupResultTop // ownCloud connect result page
     };
 
+	enum class IconFlavor {
+		Dark,
+		Light,
+		Color
+	};
+
+	enum class AppFlavor {
+		System,
+		Dark,
+		Light
+	};
+
     /* returns a singleton instance. */
     static Theme *instance();
 
@@ -167,6 +179,12 @@ public:
     /** colored, white or black */
     QString systrayIconFlavor(bool mono, bool sysTrayMenuVisible = false) const;
 
+	/** Current (last set) systrayMonoFlavor used for efficacy optimization when checking for system theme changes */
+    IconFlavor currentIconFlavor;
+
+	/** Current (last set) systrayMonoFlavor used for efficacy optimization when checking for system theme changes */
+    AppFlavor currentAppFlavor;
+
 #ifndef TOKEN_AUTH_ONLY
     /**
      * Override to use a string or a custom image name.
@@ -208,6 +226,16 @@ public:
      * Define if the systray icons should be using mono design
      */
     void setSystrayUseMonoIcons(bool mono);
+
+	/**
+    * Hook for OS theme change triggered by native event filter
+    */
+    void setOSThemeChanged();
+
+	/**
+    * Specific theme requested by user (settings)
+    */
+    void setUseSpecificTheme(Theme::AppFlavor);
 
     /**
      * Retrieve wether to use mono icons for systray
@@ -363,6 +391,9 @@ protected:
     Theme();
 
 signals:
+    void osThemeChanged();
+    void appUseDarkTheme();
+    void appUseLightTheme();
     void systrayUseMonoIconsChanged(bool);
 
 private:

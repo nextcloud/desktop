@@ -78,6 +78,14 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->appFlavorDarkRad, &QRadioButton::toggled, [this]() { if (_ui->appFlavorDarkRad->isChecked()) { saveMiscSettings(); }; });
+    connect(_ui->appFlavorLightRad, &QRadioButton::toggled, [this]() { if (_ui->appFlavorLightRad->isChecked()) { saveMiscSettings(); }; });
+    connect(_ui->appFlavorSystemRad, &QRadioButton::toggled, [this]() { if (_ui->appFlavorSystemRad->isChecked()) { saveMiscSettings(); }; });
+
+	// Trigger theme request if user changes app theme settings
+    connect(_ui->appFlavorSystemRad, &QRadioButton::toggled, [this]() { if (_ui->appFlavorSystemRad->isChecked()) { Theme::instance()->setUseSpecificTheme( Utility::hasDarkOsTheme() ? Theme::AppFlavor::Dark : Theme::AppFlavor::Light );} });
+    connect(_ui->appFlavorDarkRad, &QRadioButton::toggled, [this]() { if (_ui->appFlavorDarkRad->isChecked()) {Theme::instance()->setUseSpecificTheme(Theme::AppFlavor::Dark);} });
+    connect(_ui->appFlavorLightRad, &QRadioButton::toggled, [this]() { if (_ui->appFlavorLightRad->isChecked()) {Theme::instance()->setUseSpecificTheme(Theme::AppFlavor::Light);} });
 
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
@@ -135,6 +143,15 @@ void GeneralSettings::loadMiscSettings()
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
+
+    auto appFlavor = cfgFile.appFlavor();
+    if (appFlavor == "System") {
+        _ui->appFlavorSystemRad->setChecked(true);
+    } else if (appFlavor == "Dark") {
+        _ui->appFlavorDarkRad->setChecked(true);
+    } else if (appFlavor == "Light") {
+        _ui->appFlavorLightRad->setChecked(true);
+    }
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -162,9 +179,21 @@ void GeneralSettings::saveMiscSettings()
     if (_currentlyLoading)
         return;
     ConfigFile cfgFile;
-    bool isChecked = _ui->monoIconsCheckBox->isChecked();
-    cfgFile.setMonoIcons(isChecked);
-    Theme::instance()->setSystrayUseMonoIcons(isChecked);
+    bool monoIconsIsChecked = _ui->monoIconsCheckBox->isChecked();
+    cfgFile.setMonoIcons(monoIconsIsChecked);
+    Theme::instance()->setSystrayUseMonoIcons(monoIconsIsChecked);
+
+    if (_ui->appFlavorSystemRad->isChecked()) {
+        cfgFile.setAppFlavor(Theme::AppFlavor::System);
+        Theme::instance()->currentAppFlavor = Theme::AppFlavor::System;
+    } else if (_ui->appFlavorLightRad->isChecked()) {
+        cfgFile.setAppFlavor(Theme::AppFlavor::Light);
+        Theme::instance()->currentAppFlavor = Theme::AppFlavor::Light;
+    } else if (_ui->appFlavorDarkRad->isChecked()) {
+        cfgFile.setAppFlavor(Theme::AppFlavor::Dark);
+        Theme::instance()->currentAppFlavor = Theme::AppFlavor::Dark;
+    }
+    
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
 
     cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
