@@ -1,0 +1,164 @@
+QTableWidget,
+QTreeView,
+QSpinBox,
+QHeaderView,
+QHeaderView::section {
+	background:	#1F1F1F;
+	color:		#CCCCCC;
+}
+
+QPlainTextEdit {
+	background: #1F1F1F;
+	color:		#FFFFFF;
+}
+
+QDialog,
+QWidget#OwncloudSetupPage {
+	background: #151515;
+}
+
+QListView,
+QToolBar {
+	background: #1F1F1F;
+}
+
+QInputDialog,
+QLabel {
+	/* Enable word wrapping of QInputDialog (#4197) */
+	qproperty-wordWrap:	1;
+}
+
+QLabel,
+QCheckBox {
+	color:				#CCCCCC;
+	font-size:			14px;
+}
+
+QComboBox {
+	background:	#252525;
+	padding:	4px;
+	color:		#CCCCCC;
+}
+
+QLineEdit {
+	border:		2px solid gray;
+	padding:	4px;
+	background:	#1F1F1F;
+	color:		#CCCCCC;
+}
+
+QToolButton,
+QToolButton:open,
+QMenu {
+	background:	#3C3C3C;
+	color:		#CCCCCC;
+}
+
+QGroupBox {
+	border:			2px solid gray;
+    border-radius:	1px;
+	margin-top:		2.5ex;
+	font:			bold;
+	font-size:		14px;
+	padding:		4px 0px 1px 1px;
+}
+
+QGroupBox::title {
+    subcontrol-origin:	margin;
+    left:				7px;
+	padding:			0px 5px 0px 5px;
+	color:				#CCCCCC;
+}
+
+QPushButton {
+	background-color:	#3C3C3C;
+	color:				#CCCCCC;
+	font-size:			14px;
+	padding:			6px;
+}
+
+QSpinBox#portSpinBox {
+	border:				2px solid gray;
+	padding:			4px;
+	background:			#1F1F1F;
+	color:				#CCCCCC;
+}
+
+QRadioButton {
+	color:				#CCCCCC;
+	font-size:			14px;
+}
+
+QCheckBox::indicator,
+QTableView::indicator {
+	width:	15px;
+	height:	15px;
+}
+
+/******************** Icon resources ********************/
+
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+	image: url(:/client/theme/black/controls/arrow-right.png);
+}
+
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings {
+	image: url(:/client/theme/black/controls/arrow-down.png);
+}
+
+QPushButton#nextSlideButton {
+	qproperty-icon: url(:/client/theme/black/controls/arrow-right.svg);
+}
+
+QPushButton#prevSlideButton {
+	qproperty-icon: url(:/client/theme/black/controls/arrow-left.svg);
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(:/client/theme/black/controls/checkbox_unchecked.svg);
+}
+
+QCheckBox::indicator:unchecked:hover {
+    image: url(:/client/theme/black/controls/checkbox_unchecked_hover.svg);
+}
+
+QCheckBox::indicator:unchecked:pressed {
+    image: url(:/client/theme/black/controls/checkbox_unchecked_pressed.svg);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:/client/theme/black/controls/checkbox_checked.svg);
+}
+
+QCheckBox::indicator:checked:hover {
+    image: url(:/client/theme/black/controls/checkbox_checked_hover.svg);
+}
+
+QCheckBox::indicator:checked:pressed {
+    image: url(:/client/theme/black/controls/checkbox_checked_pressed.svg);
+}
+
+QTableView::indicator:unchecked {
+    image: url(:/client/theme/black/controls/checkbox_unchecked.svg);
+}
+
+QTableView::indicator:unchecked:hover {
+    image: url(:/client/theme/black/controls/checkbox_unchecked_hover.svg);
+}
+
+QTableView::indicator:unchecked:pressed {
+    image: url(:/client/theme/black/controls/checkbox_unchecked_pressed.svg);
+}
+
+QTableView::indicator:checked {
+    image: url(:/client/theme/black/controls/checkbox_checked.svg);
+}
+
+QTableView::indicator:checked:hover {
+    image: url(:/client/theme/black/controls/checkbox_checked_hover.svg);
+}
+
+QTableView::indicator:checked:pressed {
+    image: url(:/client/theme/black/controls/checkbox_checked_pressed.svg);
+}

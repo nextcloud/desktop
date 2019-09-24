@@ -9,6 +9,8 @@
         <file alias="theme/colored/Nextcloud-icon-256.png">theme/colored/256-Nextcloud-icon.png</file>
         <file alias="theme/colored/Nextcloud-icon-512.png">theme/colored/512-Nextcloud-icon.png</file>
         <file alias="theme/colored/Nextcloud-icon-1024.png">theme/colored/1024-Nextcloud-icon.png</file>
+        <file>theme/darktheme.qss</file>
+        <file>theme/lighttheme.qss</file>
         <file>theme/colored/state-error-32.png</file>
         <file>theme/colored/state-error-64.png</file>
         <file>theme/colored/state-error-128.png</file>
@@ -43,7 +45,7 @@
         <file>theme/white/state-sync-64.png</file>
         <file>theme/white/state-sync-128.png</file>
         <file>theme/white/state-sync-256.png</file>
-		<file>theme/black/state-error-32.png</file>
+        <file>theme/black/state-error-32.png</file>
         <file>theme/black/state-error-64.png</file>
         <file>theme/black/state-error-128.png</file>
         <file>theme/black/state-error-256.png</file>
@@ -79,8 +81,6 @@
         <file>theme/colored/state-warning-64.png</file>
         <file>theme/colored/state-warning-128.png</file>
         <file>theme/colored/state-warning-256.png</file>
-        <file>theme/black/control-next.svg</file>
-		<file>theme/black/control-prev.svg</file>
         <file>theme/black/state-error.svg</file>
         <file>theme/black/state-error-16.png</file>
         <file>theme/black/state-offline.svg</file>
@@ -101,8 +101,6 @@
         <file>theme/black/state-warning-64.png</file>
         <file>theme/black/state-warning-128.png</file>
         <file>theme/black/state-warning-256.png</file>
-		<file>theme/white/control-next.svg</file>
-		<file>theme/white/control-prev.svg</file>
         <file>theme/white/state-error.svg</file>
         <file>theme/white/state-error-16.png</file>
         <file>theme/white/state-offline.svg</file>
@@ -131,5 +129,29 @@
         <file>theme/colored/wizard-nextcloud@2x.png</file>
         <file>theme/colored/wizard-talk.png</file>
         <file>theme/colored/wizard-talk@2x.png</file>
+        <file>theme/black/controls/checkbox_checked.svg</file>
+        <file>theme/black/controls/checkbox_checked_hover.svg</file>
+        <file>theme/black/controls/checkbox_checked_pressed.svg</file>
+        <file>theme/black/controls/checkbox_unchecked.svg</file>
+        <file>theme/black/controls/checkbox_unchecked_hover.svg</file>
+        <file>theme/black/controls/checkbox_unchecked_pressed.svg</file>
+        <file>theme/black/controls/arrow-right.svg</file>
+        <file>theme/black/controls/arrow-down.svg</file>
+        <file>theme/black/controls/arrow-left.svg</file>
+        <file>theme/black/controls/arrow-right.png</file>
+        <file>theme/black/controls/arrow-down.png</file>
+        <file>theme/black/controls/arrow-left.png</file>
+        <file>theme/white/controls/checkbox_checked.svg</file>
+        <file>theme/white/controls/checkbox_checked_hover.svg</file>
+        <file>theme/white/controls/checkbox_checked_pressed.svg</file>
+        <file>theme/white/controls/checkbox_unchecked.svg</file>
+        <file>theme/white/controls/checkbox_unchecked_hover.svg</file>
+        <file>theme/white/controls/checkbox_unchecked_pressed.svg</file>
+        <file>theme/white/controls/arrow-right.svg</file>
+        <file>theme/white/controls/arrow-down.svg</file>
+        <file>theme/white/controls/arrow-left.svg</file>
+        <file>theme/white/controls/arrow-right.png</file>
+        <file>theme/white/controls/arrow-down.png</file>
+        <file>theme/white/controls/arrow-left.png</file>
     </qresource>
 </RCC>
