@@ -623,7 +623,7 @@ void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *lis
 {
     static std::array<std::pair<const char *, QString>, 5> strings { {
         { "SHARE_MENU_TITLE", tr("Share...") },
-        { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
+        { "CONTEXT_MENU_TITLE", tr("Share via ") + Theme::instance()->appNameGUI()},
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
         { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email...") },
     } };
