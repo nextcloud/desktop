@@ -441,8 +441,8 @@ public:
     qint64 bytesAvailable() const override { return payload.size() + QIODevice::bytesAvailable(); }
     qint64 readData(char *data, qint64 maxlen) override {
         qint64 len = std::min(qint64{payload.size()}, maxlen);
-        strncpy(data, payload.constData(), len);
-        payload.remove(0, len);
+        std::copy(payload.cbegin(), payload.cbegin() + len, data);
+        payload.remove(0, static_cast<int>(len));
         return len;
     }
 };
@@ -679,11 +679,13 @@ public:
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
 
         if (request.hasRawHeader("Range")) {
-            QByteArray range = request.rawHeader("Range");
-            quint64 start, end;
-            const char *r = range.constData();
-            int res = sscanf(r, "bytes=%llu-%llu", &start, &end);
-            if (res == 2) {
+            const QString range = request.rawHeader("Range");
+            const QRegularExpression bytesPattern(QStringLiteral("bytes=(?<start>\\d+)-(?<end>\\d+)"));
+            const QRegularExpressionMatch match = bytesPattern.match(range);
+            if (match.hasMatch())
+            {
+                const int start = match.captured(QStringLiteral("start")).toInt();
+                const int end = match.captured(QStringLiteral("end")).toInt();
                 payload = payload.mid(start, end - start + 1);
             }
         }
