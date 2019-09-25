@@ -970,33 +970,31 @@ This means that the synchronization client might not upload local changes immedi
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/folder.cpp" line="1087"/>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>Λήψη νέων αρχείων;</translation>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>Λήψη νέων αρχείων</translation>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>Διατήρηση τοπικών αρχείων</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Όλα τα αρχεία στον τοπικό φάκελο συγχρονισμού σας &apos;% 1&apos; διαγράφηκαν. Αυτές οι διαγραφές θα συγχρονιστούν με το διακομιστή σας, καθιστώντας αυτά τα αρχεία μη διαθέσιμα εκτός εάν τα έχετε επαναφέρει.
-Είστε βέβαιοι ότι θέλετε να συγχρονίσετε αυτές τις ενέργειες με το διακομιστή; 
-Αν αυτό ήταν ένα ατύχημα και αποφασίσατε να διατηρήσετε τα αρχεία σας, θα συγχρονιστούν εκ νέου από το διακομιστή.</translation>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2960,6 +2958,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
         <translation>Διαμοιρασμός</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
