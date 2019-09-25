@@ -107,6 +107,10 @@ bool Capabilities::hasActivities() const {
     return _capabilities.contains("activity");
 }
 
+bool Capabilities::hasRichDocuments() const {
+    return _capabilities.contains("richdocuments");
+}
+
 QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
     QList<QByteArray> list;
@@ -174,5 +178,19 @@ bool Capabilities::uploadConflictFiles() const
         return envValue != 0;
 
     return _capabilities["uploadConflictFiles"].toBool();
+}
+
+QList<QByteArray> Capabilities::supportedRichDocumentsMimetypes() const
+{
+    QList<QByteArray> list;
+    foreach (const auto &t, _capabilities["richdocuments"].toMap()["mimetypes"].toList()) {
+        list.push_back(t.toByteArray());
+    }
+    return list;
+}
+
+QString Capabilities::richDocumentsProductName() const
+{
+    return _capabilities["richdocuments"].toMap()["productName"].toString();
 }
 }

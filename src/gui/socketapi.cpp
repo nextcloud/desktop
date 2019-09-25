@@ -54,6 +54,8 @@
 
 #include <QStandardPaths>
 
+#include <QMimeDatabase>
+
 
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
@@ -457,6 +459,11 @@ void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listen
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is Nextcloud").arg(Theme::instance()->appNameGUI()));
 }
 
+void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
+{
+    fetchPrivateLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
+}
+
 // don't pull the share manager into socketapi unittests
 #ifndef OWNCLOUD_TEST
 
@@ -717,9 +724,18 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
     bool isOnTheServer = fileData.journalRecord().isValid();
     auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+    auto capabilities = fileData.folder->accountState()->account()->capabilities();
+
     if (fileData.folder && fileData.folder->accountState()->isConnected()) {
         sendSharingContextMenuOptions(fileData, listener);
         listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+
+        QMimeDatabase db;
+        QMimeType type = db.mimeTypeForFile(fileData.localPath);
+        if (capabilities.hasRichDocuments() && capabilities.supportedRichDocumentsMimetypes().contains(type.name().toLatin1())){
+            listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit via ") + capabilities.richDocumentsProductName());
+        }
+
     }
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }

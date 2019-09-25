@@ -123,6 +123,8 @@ private:
      */
     Q_INVOKABLE void command_GET_MENU_ITEMS(const QString &argument, SocketListener *listener);
 
+    Q_INVOKABLE void command_EDIT(const QString &localFile, SocketListener *listener);
+
     QString buildRegisterPathMessage(const QString &path);
 
     QSet<QString> _registeredAliases;

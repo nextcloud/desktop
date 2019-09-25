@@ -62,6 +62,9 @@ public:
     /// return true if the activity app is enabled
     bool hasActivities() const;
 
+    /// return true if Collabora/OnlyOffice is enabled
+    bool hasRichDocuments() const;
+
     /**
      * Returns the checksum types the server understands.
      *
@@ -126,6 +129,18 @@ public:
      * Whether conflict files should remain local (default) or should be uploaded.
      */
     bool uploadConflictFiles() const;
+
+    /**
+     * Returns the richdocuments supported mimetypes
+     *
+     */
+    QList<QByteArray> supportedRichDocumentsMimetypes() const;
+
+    /**
+     * Returns the richdocuments productName
+     *
+     */
+    QString richDocumentsProductName() const;
 
 private:
     QVariantMap _capabilities;
