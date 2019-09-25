@@ -974,36 +974,31 @@ This means that the synchronization client might not upload local changes immedi
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>同期フォルダ &apos;%1&apos;フォルダ内のすべてのファイルがサーバー上で削除されました。
-これらの削除はローカルの同期フォルダと同期され、復元する権利がない限り、ファイルは使用できなくなります。
-ファイルを保持したい場合、ファイルを保持する権限があれば、ファイルはサーバーと再同期されます。
-ファイルを削除したい場合、あなたが所有者でなければ利用できません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>新しいファイルをダウンロードしますか？</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>新しいファイルをダウンロードする</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>ローカルファイルを保持</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>ローカル同期フォルダー &apos;%1&apos; にあるすべてのファイルが削除されました。これらの削除されたものはサーバーと同期され、復元されない限りファイルは使用できなくなります。
-本当にこれらのアクションをサーバーと同期して良いですか？
-「ファイルを残す」を選択した場合、ファイルはサーバーから再同期されます。</translation>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2507,13 +2502,13 @@ It is not advisable to use it.</source>
         <translation>ローカルファイルが同期中に変更されました。再開されます。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>%1 をアップロードするとフォルダーのクオータを超えます</translation>
     </message>
@@ -2523,7 +2518,7 @@ It is not advisable to use it.</source>
         <translation>ファイルが削除されました（アップロード開始）%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -2965,6 +2960,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
         <translation>共有…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>

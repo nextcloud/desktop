@@ -911,12 +911,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 i %n inny plik jest obecnie zablokowany.</numerusform><numerusform>%1 i %n inne pliki są obecnie zablokowane.</numerusform><numerusform>%1 i %n innych plików są obecnie zablokowane.</numerusform><numerusform>%1 i %n inny plik(ów) jest obecnie zablokowany.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 jest obecnie zablokowany.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -974,36 +974,31 @@ Oznacza to, że klient synchronizacji może nie przesłać lokalnych zmian natyc
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Wszystkie pliki z folderu &apos;%1&apos; zostały usunięte z serwera.
-W momencie synchronizacji zostaną usunięte z lokalnego folderu, co spowoduje ich niedostępność, chyba że posiadasz prawo do ich przywrócenia.
-Jeśli zdecydujesz się zachować te pliki, zostaną one zsynchronizowane z serwerem, jeżeli posiadasz odpowiednie uprawnienia.
-Jeśli zdecydujesz je usunąć, nie będą więcej dostępne, chyba że jesteś ich właścicielem. </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>Pobrać nowe pliki?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>Pobierz nowe pliki</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>Zachowaj pliki lokalne</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Wszystkie pliki w lokalnym folderze synchronizacji &apos;%1&apos; zostały usunięte. Te usunięcia zostaną zsynchronizowane z Twoim serwerem, co oznacza całkowite ich usunięcie
-Czy na pewno chcesz zsynchronizować te działania z serwerem?
-Jeśli to był wypadek i zdecydujesz się zachować swoje pliki, zostaną one przywrócone z serwera.</translation>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2515,13 +2510,13 @@ Niezalecane jest jego użycie.</translation>
         <translation>Lokalny plik uległ zmianie w trakcie synchronizacji. Zostanie wznowiony.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>Lokalny plik zmienił się podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Wysłanie %1 przekroczy limit dla folderu</translation>
     </message>
@@ -2531,7 +2526,7 @@ Niezalecane jest jego użycie.</translation>
         <translation>Plik usunięto (rozpoczęto wysyłanie) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
@@ -2973,6 +2968,11 @@ Niezalecane jest jego użycie.</translation>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
         <translation>Udostępnij…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>

@@ -911,12 +911,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Şu anda %1 ve %n diğer dosya kilitli.</numerusform><numerusform>Şu anda %1 ve %n diğer dosya kilitli.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 şu anda kilitli.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -972,37 +972,31 @@ Bunun sonucunda eşitleme istemcisi yerel değişiklikleri anında yükleyemez. 
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>&apos;%1&apos; eşitleme klasöründeki tüm dosyalar sunucu üzerinden silindi.
-Bu dosyalar yerel eşitleme klasörünüzden de geri alınamayacak şekilde silinecek.
-Bu dosyaları tutmak isterseniz ve yeterli izinleriniz varsa sunucu ile yeniden eşitlenecekler.
-Bu dosyaları silmek isterseniz ve sahibi değilseniz artık erişemeyeceksiniz.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>Yeni dosyalar indirilsin mi?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>Yeni dosyaları indir</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>Yerel dosyalar korunsun</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>&apos;%1&apos; eşitleme klasöründeki tüm dosyalar sunucudan silindi.
-Silinen dosyalar eşitleme sırasında yerel eşitleme klasörünüzden de silinecek ve bu dosyaları geri yüklemedikçe göremeyeceksiniz.
-Sunucuda bu eşitleme işlemlerinin yapılmasını istediğinizden emin misiniz?
-Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanız dosyalar sunucudan yeniden eşitlenecek.</translation>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2514,13 +2508,13 @@ Kullanmanız önerilmez.</translation>
         <translation>Yerel dosya eşitleme sırasında değişmiş. Sürdürülecek.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>Yerel dosya eşitleme sırasında değişti.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>%1 yüklemesi klasörün kotasını aşıyor</translation>
     </message>
@@ -2530,7 +2524,7 @@ Kullanmanız önerilmez.</translation>
         <translation>Dosya Kaldırıldı (yüklemeyi başlat) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>Üst veri veritabanına yazılırken sorun çıktı</translation>
     </message>
@@ -2972,6 +2966,11 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
         <translation>Paylaş...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>

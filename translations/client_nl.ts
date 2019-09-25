@@ -974,35 +974,31 @@ Dit betekent dat de synchronisatieclient misschien niet meteen lokale wijziginge
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Alle bestanden in de syncmap &apos;%1&apos; werden verwijderd van de server.
-Deze verwijderingen worden gesynchroniseerd naar je lokale syncmap, waardoor deze bestanden niet meer beschikbaar zijn, tenzij je het recht hebt om ze te herstellen. 
-Als je de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server als je die autorisatie hebt.
-Als je de bestanden wilt verwijderen, worden ze niet beschikbaar, tenzij je de eigenaar bent.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>Downloaden nieuwe bestanden?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>Downloaden nieuwe bestanden</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>Bewaar lokale bestanden</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Alle bestanden in je lokale syncmap &apos;%1&apos; werden verwijderd. Deze verwijderingen worden gesynchroniseerd naar je server, waardoor de bestanden niet beschikbaar zijn, tenzij ze worden teruggezet. Weet je zeker dat je deze acties wilt synchroniseren met de server? 
-Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server.</translation>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2519,13 +2515,13 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Lokaal bestand gewijzigd bij sync. Wordt opnieuw meengenomen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>Lokaal bestand gewijzigd bij sync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Upload van %1 overschrijdt het quotum voor de map</translation>
     </message>
@@ -2535,7 +2531,7 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Bestand verwijderd (start upload) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
@@ -2977,6 +2973,11 @@ We adviseren deze site niet te gebruiken.</translation>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
         <translation>Delen...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>

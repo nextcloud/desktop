@@ -911,12 +911,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 e outro %n ficheiro está bloqueado actualmente.</numerusform><numerusform>%1 e outros %n ficheiros están bloqueados actualmente.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 está bloqueado actualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -974,37 +974,31 @@ Isto significa que o cliente de sincronización podería non enviar os cambios i
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Todos os ficheiros no cartafol de sincronización «%1» foron eliminados no servidor.
-Estas eliminacións sincronizarse co seu cartafol de sincronización local, facendo que estes ficheiros non estean dispoñíbeis a menos que teña dereitos para restauralos. 
-Se decide manter os ficheiros, resincronizaranse co servidor se ten dereitos para facelo.
-Se decide eliminar os ficheiros, non poderá dispor deles a non ser que sexa o propietario.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>Descargar os ficheiros novos?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>Descargar os ficheiros novos</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>Manter os ficheiros locais</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Todos os ficheiros do cartafol de sincronización local «%1» foron eliminados.
-Estas eliminacións sincronizaranse co servidor, facendo que estes ficheiros non estean dispoñíbeis a non ser que se restauren.
-Confirma que quere sincronizar estas accións co servidor?
-Se fose un accidente e decide manter os seus ficheiros, volverán ser sincronizados dende o servidor.</translation>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -1041,7 +1035,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Atopouse un diario de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningún aplicativo.</translation>
+        <translation>Atopouse un diario de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningunha aplicación.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1023"/>
@@ -1547,7 +1541,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Prema aquí&lt;/a&gt; para solicitar un contrasinal de aplicativo dende a interface web.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Prema aquí&lt;/a&gt; para solicitar un contrasinal de aplicación dende a interface web.</translation>
     </message>
 </context>
 <context>
@@ -1944,7 +1938,7 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation>Está dispoñíbel %1 versión %2. Reinicie o aplicativon para comezar a actualización.</translation>
+        <translation>Está dispoñíbel %1 versión %2. Reinicie a aplicación para comezar a actualización.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -2516,13 +2510,13 @@ Recomendámoslle que non o use.</translation>
         <translation>O ficheiro local cambiou durante a sincronización. Retomase.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>O ficheiro local cambiou durante a sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>O envío de %1 excede o límite de tamaño do cartafol</translation>
     </message>
@@ -2532,7 +2526,7 @@ Recomendámoslle que non o use.</translation>
         <translation>Ficheiro eliminado (iniciar o envío) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>Produciuse un erro ao escribir os metadatos na base de datos</translation>
     </message>
@@ -2974,6 +2968,11 @@ Recomendámoslle que non o use.</translation>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
         <translation>Compartir...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
@@ -3706,7 +3705,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="841"/>
         <source>Apps</source>
-        <translation>Aplicativos</translation>
+        <translation>Aplicacións</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="898"/>
@@ -3879,7 +3878,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="417"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#7a7a7a;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#7a7a7a;&quot;&gt;Hospede o seu propio servidor&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4035,7 +4034,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 require dunha área de notificación. Se está executando XFCE, siga  &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucións&lt;/a&gt;. Senón, instale un aplicativo de área de notificación como «trayer» e ténteo de novo.</translation>
+        <translation>%1 require dunha área de notificación. Se está executando XFCE, siga  &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucións&lt;/a&gt;. Senón, instale unha aplicación de área de notificación como «trayer» e ténteo de novo.</translation>
     </message>
 </context>
 <context>

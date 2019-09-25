@@ -130,12 +130,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Ponovno otvori preglednik</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiraj poveznicu</translation>
     </message>
 </context>
 <context>
@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Ponovno otvori preglednik</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="81"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiraj poveznicu</translation>
     </message>
 </context>
 <context>
@@ -331,7 +331,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="618"/>
         <location filename="../src/gui/accountsettings.cpp" line="654"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Uredi zanemarene datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -801,12 +801,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="47"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation>Prijavi se u svoj preglednik (Login Flow v2)</translation>
+        <translation>Prijavite se u svoj preglednik (Login Flow v2)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="83"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Nije moguće otvoriti preglednik, kopirajte poveznicu u svoj preglednik.</translation>
+        <translation>Otvaranje preglednika nije uspjelo, kopirajte poveznicu u preglednik.</translation>
     </message>
 </context>
 <context>
@@ -814,7 +814,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="67"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Nije moguće otvoriti preglednik, kopirajte poveznicu u svoj preglednik.</translation>
+        <translation>Otvaranje preglednika nije uspjelo, kopirajte poveznicu u preglednik.</translation>
     </message>
 </context>
 <context>
@@ -974,36 +974,31 @@ To znači da klijent za sinkronizaciju možda neće odmah otpremiti lokalne prom
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Sve datoteke u mapi za sinkronizaciju &apos;%1&apos; izbrisane su sa poslužitelja.
-Ta će se brisanja sinkronizirati s lokalnom mapom za sinkronizaciju, što znači da će takve datoteke biti nedostupne ako nemate ovlasti za vraćanje.
-Ako odlučite zadržati datoteke, ponovno će se sinkronizirati s poslužiteljem ako imate potrebne ovlasti.
-Ako odlučite izbrisati datoteke, one će vam biti nedostupne ako niste njihov vlasnik.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>Preuzmi nove datoteke?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>Preuzmi nove datoteke</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>Zadrži lokalne datoteke</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Sve datoteke u vašoj lokalnoj mapi za sinkronizaciju &apos;%1&apos; su izbrisane. Ova će se brisanja sinkronizirati s vašim poslužiteljem, što znači da će te datoteke biti nedostupne ako ih ne vratite.
-Jeste li sigurni da želite sinkronizirati te radnje s poslužiteljem?
-Ako ste slučajno odabrali ovu radnju i želite zadržati svoje datoteke, ponovno će se sinkronizirati s poslužitelja.</translation>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -1143,7 +1138,7 @@ Nastavljanje sinkronizacije uzrokovat će zamjenu svih vaših datoteka starijim 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizirano s lokalnom mapom (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="303"/>
@@ -1582,59 +1577,61 @@ Nastavljanje sinkronizacije uzrokovat će zamjenu svih vaših datoteka starijim 
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="14"/>
         <source>IgnoreListTableWidget</source>
-        <translation type="unfinished"/>
+        <translation>IgnoreListTableWidget</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Obrazac</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Dopusti brisanje</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni sve</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ili mape koje odgovaraju određenom obrascu neće biti sinkronizirane.
+
+Stavke za koje je dopušteno brisanje bit će izbrisane ako sprječavaju uklanjanje direktorija. To je korisno za metapodatke.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće otvoriti datoteku</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće zapisati promjene u &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj obrazac za zanemarivanje</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj novi obrazac za zanemarivanje:</translation>
     </message>
 </context>
 <context>
@@ -2513,13 +2510,13 @@ Nije preporučljivo koristiti ga.</translation>
         <translation>Lokalna datoteka je izmijenjena tijekom sinkronizacije. Sinkroniziranje će se nastaviti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>Lokalna datoteka je izmijenjena tijekom sinkronizacije.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Otpremanje %1 premašuje kvotu za mapu</translation>
     </message>
@@ -2529,7 +2526,7 @@ Nije preporučljivo koristiti ga.</translation>
         <translation>Datoteka je uklonjena (početak otpremanja) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>Pogreška pri pisanju metapodataka u bazu podataka</translation>
     </message>
@@ -2973,6 +2970,11 @@ Nije preporučljivo koristiti ga.</translation>
         <translation>Dijeli...</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
@@ -3045,7 +3047,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="99"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation>&lt;H3&gt;Izdavatelj&lt;/ h3&gt;</translation>
+        <translation>&lt;h3&gt;Izdavatelj&lt;/ h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="102"/>
@@ -3065,7 +3067,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation>&lt;H3&gt;Otisci prstiju&lt;/ h3&gt;</translation>
+        <translation>&lt;h3&gt;Otisci prstiju&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="111"/>
@@ -3172,12 +3174,12 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Otisak prsta (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Otisak prsta (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
@@ -3482,7 +3484,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="352"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Inačica %1. Za više informacija, kliknite &lt;a href=&apos;%2&apos;&gt;ovdje&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Inačica %1. Za više informacija kliknite &lt;a href=’%2’&gt;ovdje&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="356"/>
@@ -3843,7 +3845,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiraj poveznicu</translation>
     </message>
 </context>
 <context>

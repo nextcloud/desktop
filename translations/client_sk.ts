@@ -974,36 +974,31 @@ To znamená, že klient synchronizácie nemusí okamžite odovzdať lokálne zme
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Všetky súbory v synchronizačnom priečinku „%1“ boli na serveri vymazané.
-Tieto zmeny budú synchronizované do lokálneho synchronizačného priečinka, takže už tieto vymazané súbory nebudú dostupné (ak nemáte oprávnenie pre ich obnovu).
-Ak sa rozhodnete lokálne súbory ponechať, budú znovu synchronizované so serverom (ak na to máte oprávnenie).
-Ak sa rozhodnete súbory vymazať tak následne už nebudú dostupné (ak nie ste vlastník).</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>Stiahnuť nové súbory?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>Stiahnuť nové súbory</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>Ponechať lokálne súbory</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Všetky súbory vo vašej lokálnej synchronizovanom priečinku &apos;%1&apos; boli vymazané. Tieto súbory budú vymazané aj na serveri a teda už viac nebudú dostupné až kým ich neobnovíte.
-Ste si istí, že chcete tieto akcie synchronizovať so serverom?
-Ak to bol omyl a chcete si tieto súbory ponechať, budú opäť synchronizované zo servera.</translation>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2515,13 +2510,13 @@ Nie je vhodné ju používať.</translation>
         <translation>Lokálny súbor bol zmenený počas synchronizácie. Bude obnovený.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>Lokálny súbor bol zmenený počas synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Nahranie %1 prekračuje kvótu, ktorá je pre priečinok nastavená</translation>
     </message>
@@ -2531,7 +2526,7 @@ Nie je vhodné ju používať.</translation>
         <translation>Súbor odobratý (spustiť nahrávanie) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
@@ -2973,6 +2968,11 @@ Nie je vhodné ju používať.</translation>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
         <translation>Zdieľať…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>

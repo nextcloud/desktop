@@ -130,12 +130,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Torna a obrir el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Copia l&apos;enllaç</translation>
     </message>
 </context>
 <context>
@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Torna a obrir el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="81"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Copia l&apos;enllaç</translation>
     </message>
 </context>
 <context>
@@ -331,7 +331,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="618"/>
         <location filename="../src/gui/accountsettings.cpp" line="654"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Edita els fitxers ignorats</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -976,36 +976,31 @@ Això significa que és possible que el client de sincronització no pugui carre
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Tots els fitxers de la carpeta de sincronització &apos;%1&apos; de la carpeta s&apos;han suprimit al servidor.
-Aquestes eliminacions es sincronitzaran amb la vostra carpeta de sincronització local, fent que aquests fitxers no estiguin disponibles a menys que tingueu dret a restaurar-los.
-Si decidiu conservar els fitxers, es tornarà a sincronitzar amb el servidor si teniu drets per fer-ho.
-Si decidiu suprimir els fitxers, no estaran disponibles per a vosaltres, tret que en sigueu el propietari.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>Descarregar nous fitxers?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>Descarrega nous fitxers</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>Manté els fitxers locals</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>S&apos;han suprimit tots els fitxers de la vostra carpeta de sincronització local &apos;%1&apos;. Aquestes eliminacions es sincronitzaran amb el vostre servidor, cosa que farà que aquests fitxers no estiguin disponibles, tret que s’hagin restaurat.
-Esteu segurs que voleu sincronitzar aquestes accions amb el servidor?
-Si s’ha produït un accident i decidiu conservar els vostres fitxers, es tornaran a sincronitzar des del servidor.</translation>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -1145,7 +1140,7 @@ Continuar la sincronització com a normal farà que tots els vostres fitxers sig
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronitzat amb la carpeta local (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="303"/>
@@ -1584,59 +1579,61 @@ Continuar la sincronització com a normal farà que tots els vostres fitxers sig
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="14"/>
         <source>IgnoreListTableWidget</source>
-        <translation type="unfinished"/>
+        <translation>IgnoreListTableWidget</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Patró</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Permet la supressió</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Afegeix</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Suprimeix</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Suprimeix-ho tot</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Els fitxers o directoris que concordin amb algun patró no es sincronitzaran.
+
+Els elements que es poden suprimir s&apos;eliminaran si impedeixen que una carpeta sigui suprimida. Això és útil per les metadades.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut obrir el fitxer</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>No es poden escriure els canvis a &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Afegeix un patró d&apos;ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Afegeix un patró d&apos;ignorar nou:</translation>
     </message>
 </context>
 <context>
@@ -2515,13 +2512,13 @@ No és aconsellable fer-la servir.</translation>
         <translation>El fitxer local ha canviat durant la sincronització. Es reprendrà.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>El fitxer local ha canviat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>La càrrega de %1 supera la quota de la carpeta</translation>
     </message>
@@ -2531,7 +2528,7 @@ No és aconsellable fer-la servir.</translation>
         <translation>S&apos;ha eliminat el fitxer (inicieu la càrrega) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>S&apos;ha produït un error en escriure metadades a la base de dades</translation>
     </message>
@@ -2975,6 +2972,11 @@ No és aconsellable fer-la servir.</translation>
         <translation>Comparteix...</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
@@ -3174,12 +3176,12 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Empremta (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Empremta (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
@@ -3845,7 +3847,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Copia l&apos;enllaç</translation>
     </message>
 </context>
 <context>

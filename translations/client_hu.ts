@@ -974,36 +974,31 @@ Ez azt jelenti, hogy a szinkronizációs kliens lehet, hogy nem fogja azonnal fe
         <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
-If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
+If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>A(z) „%1” szinkronizálási mappa összes fájlja törlésre került a kiszolgálón.
-Ez töröl mindent a helyi szinkronizálási mappában, így nem lesznek elérhetőek ezek a fájlok, hacsak nincs helyreállítási joga.
-Ha úgy dönt, hogy megtartja a fájlokat, akkor újra fel lesznek töltve a kiszolgálóra, ha van ehhez joga.
-Ha úgy dönt, hogy törli ezeket a fájlokat, akkor többé nem fogja azokat elérni, hacsak nem Ön a tulajdonos.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
-        <source>Download new files?</source>
-        <translation>Letölti az új fájlokat?</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
-        <source>Download new files</source>
-        <translation>Új fájlok letöltése</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
-        <source>Keep local files</source>
-        <translation>Helyi fájlok megtartása</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
-        <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
-Are you sure you want to sync those actions with the server?
-If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>A(z) „%1” helyi szinkronizálási mappában található összes fájl törölve lett. Ezek a törlések szinkronizálva lesznek a kiszolgálóval, így ezek nem lesznek elérhetőek, hacsak helyre nem állítja őket.
-Biztos, hogy szinkronizálni akarja ezeket a változásokat a kiszolgálóval?
-Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor újra letöltésre kerülnek a kiszolgálóról.</translation>
+        <source>All files got deleted from your local sync folder '%1'.
+These files will be deleted from the server and will not be available on your other devices if they will not be restored.
+If this action was unintended you can restore the lost data now.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <source>Delete all files?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <source>Delete all files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <source>Restore deleted files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2512,13 +2507,13 @@ Használata nem ajánlott.</translation>
         <translation>A helyi fájl megváltozott a szinkronizálás során. Folytatva lesz.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="362"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
         <translation>A helyi fájl megváltozott szinkronizáció közben.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="602"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>A(z) %1 feltöltése túllépi a mappa kvótáját</translation>
     </message>
@@ -2528,7 +2523,7 @@ Használata nem ajánlott.</translation>
         <translation>Fájl eltávolítva (feltöltés indítása) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="684"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
         <translation>Hiba a metaadatok adatbázisba írásakor</translation>
     </message>
@@ -2970,6 +2965,11 @@ Használata nem ajánlott.</translation>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
         <translation>Megosztás…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <source>Share via </source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
