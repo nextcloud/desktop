@@ -783,6 +783,7 @@ void ConfigFile::getScheduleTable(QTableWidget &table) const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(QLatin1String(scheduleG));
+    table.clearSelection();
     for (int idx = 0; idx < table.rowCount(); idx++)
     {
       settings.beginReadArray(table.verticalHeaderItem(idx)->text().toLatin1());
