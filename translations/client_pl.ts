@@ -976,29 +976,34 @@ Oznacza to, że klient synchronizacji może nie przesłać lokalnych zmian natyc
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki z folderu synchronizacji &apos;%1&apos; zostały usunięte z serwera.
+W momencie synchronizacji zostaną usunięte z lokalnego folderu, co spowoduje ich niedostępność, chyba że posiadasz prawo do przywracania.
+Jeśli zdecydujesz się przywrócić pliki i posiadasz odpowiednie uprawnienia, zostaną one ponownie przesłane na serwer.
+Jeśli zdecydujesz się je usunąć, nie będą już dostępne. </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki zostały usunięte z lokalnego folderu synchronizacji &apos;%1&apos;.
+Pliki te zostaną usunięte z serwera i nie będą dostępne na innych urządzeniach, chyba że zostaną przywrócone.
+Jeśli ta akcja była niezamierzona, możesz teraz przywrócić utracone dane.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Delete all files?</source>
-        <translation type="unfinished"/>
+        <translation>Usunąć wszystkie pliki?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1094"/>
         <source>Delete all files</source>
-        <translation type="unfinished"/>
+        <translation>Usuń wszystkie pliki</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1095"/>
         <source>Restore deleted files</source>
-        <translation type="unfinished"/>
+        <translation>Przywróć usunięte pliki</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2972,7 +2977,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via </source>
-        <translation type="unfinished"/>
+        <translation>Współdziel przez</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
