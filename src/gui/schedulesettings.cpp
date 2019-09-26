@@ -19,7 +19,7 @@
 
 namespace OCC {
 
-  Q_LOGGING_CATEGORY(lcScheduler, "nextcloud.gui.scheduler", QtDebugMsg)
+  Q_LOGGING_CATEGORY(lcScheduler, "nextcloud.gui.scheduler", QtInfoMsg)
 
   const char propertyAccountC[] = "oc_account";
 
@@ -33,14 +33,14 @@ namespace OCC {
 
     // create label items
     QTableWidget *runTableWidget = _ui->runTableWidget;
-    QTableWidget *suspendTableWidget = _ui->suspendTableWidget;
-    QTableWidgetItem *newItemRun = new QTableWidgetItem();
-    QTableWidgetItem *newItemSuspend = new QTableWidgetItem();
-    newItemRun->setBackground(Qt::blue);
+    QTableWidgetItem *newItemRun = new QTableWidgetItem();    
     newItemRun->setFlags(newItemRun->flags() &  ~Qt::ItemIsEnabled);
+    runTableWidget->setItem(0, 0, newItemRun);
+    runTableWidget->selectRow(0);
+    QTableWidget *suspendTableWidget = _ui->suspendTableWidget;
+    QTableWidgetItem *newItemSuspend = new QTableWidgetItem();    
     newItemSuspend->setBackground(Qt::white);
     newItemSuspend->setFlags(newItemSuspend->flags() &  ~Qt::ItemIsEnabled);
-    runTableWidget->setItem(0, 0, newItemRun);
     suspendTableWidget->setItem(0, 0, newItemSuspend);
     
     // create items table disabled by default and strech them
@@ -55,9 +55,10 @@ namespace OCC {
     int rows = tableWidget->rowCount();
     int cols = tableWidget->columnCount();
     QStringList horzHeaders, verHeaders;
-    for (int idx=0; idx<24; idx++)
+    for (int idx=0; idx<cols; idx++)
       horzHeaders << QString::number(idx);
-    verHeaders << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat" << "Sun";
+    for (int idx=0; idx<rows; idx++)
+      verHeaders << tableWidget->verticalHeaderItem(idx)->text().toLatin1();
     _timerTable = new QTableWidget(rows,cols);
     _timerTable->setHorizontalHeaderLabels(horzHeaders);
     _timerTable->setVerticalHeaderLabels(verHeaders);
@@ -90,6 +91,7 @@ namespace OCC {
   
   ScheduleSettings::~ScheduleSettings()
   {
+    delete _scheduleTimer;
     delete _timerTable;
     delete _ui;
   }
@@ -109,7 +111,6 @@ namespace OCC {
       _scheduleTimer->stop();
     }
     cfgFile.getScheduleTable(*table);
-    table->clearSelection();
     
     // finally disable reset and save buttons
     _ui->resetButton->setEnabled(false);
