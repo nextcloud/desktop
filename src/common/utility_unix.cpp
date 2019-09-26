@@ -47,7 +47,7 @@ QString getUserAutostartDir_private()
 
 bool hasLaunchOnStartup_private(const QString &appName)
 {
-    QString desktopFileLocation = getUserAutostartDir_private() + appName + QLatin1String(".desktop");
+    QString desktopFileLocation = getUserAutostartDir_private() + QLatin1String(APPLICATION_REV_DOMAIN) + QLatin1Char('.') + appName + QLatin1String(".desktop");
     return QFile::exists(desktopFileLocation);
 }
 
