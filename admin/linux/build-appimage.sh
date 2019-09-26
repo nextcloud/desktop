@@ -12,6 +12,9 @@ export PATH=$QT_BASE_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=$QT_BASE_DIR/lib/pkgconfig:$PKG_CONFIG_PATH
 
+#Set APPID for .desktop file processing
+export LINUX_APPLICATION_ID=com.nextcloud.desktopclient.nextcloud
+
 #set defaults
 export SUFFIX=${DRONE_PULL_REQUEST:=master}
 if [ $SUFFIX != "master" ]; then
@@ -63,7 +66,7 @@ rm -rf ./usr/share/caja-python/
 rm -rf ./usr/share/nautilus-python/
 rm -rf ./usr/share/nemo-python/
 
-# Move sync exlucde to right location
+# Move sync exclude to right location
 mv ./etc/Nextcloud/sync-exclude.lst ./usr/bin/
 rm -rf ./etc
 
