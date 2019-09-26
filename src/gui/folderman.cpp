@@ -210,6 +210,11 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 folderDefinition.journalPath = defaultJournalPath;
             }
 
+			// Migration #2: journalPath now in DataAppDir, not root of local tree (cross-platform persistent user roaming files)
+            if (folderDefinition.journalPath.at(0) == QChar('.')) {
+				folderDefinition.journalPath = defaultJournalPath;
+            }
+
             // Migration: ._ files sometimes don't work
             // So if the configured journalPath is the default one ("._sync_*.db")
             // but the current default doesn't have the underscore, switch to the
