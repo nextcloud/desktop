@@ -976,29 +976,34 @@ Esto significa que el cliente de sincronización podría no subir inmediatamente
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos en la carpeta de sincronización &apos;%1&apos; han sido eliminados en el servidor.
+Esta eliminación se sincronizará con tu carpeta local sincronizada, haciendo que esos archivos ya no estén disponibles a no ser que tengas derecho a restaurarlos.
+Si decides restaurar los archivos, volverán a sincronizarse con el servidor si tienes derecho a hacer esto.
+Si decides eliminar los archivos, ya no los tendrás disponibles, a no ser que seas el propietario.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos han sido eliminados de tu carpeta local sincronizada &apos;%1&apos;.
+Estos archivos se eliminarán del servidor y no estarán disponibles en tus otros dispositivos si no se restauran.
+Si no querías realizar esta acción, puedes recuperar ahora los datos perdidos.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Delete all files?</source>
-        <translation type="unfinished"/>
+        <translation>¿Eliminar todos los archivos?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1094"/>
         <source>Delete all files</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar todos los archivos</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1095"/>
         <source>Restore deleted files</source>
-        <translation type="unfinished"/>
+        <translation>Recuperar archivos eliminados</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2971,7 +2976,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via </source>
-        <translation type="unfinished"/>
+        <translation>Compartir vía</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
