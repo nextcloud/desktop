@@ -2,10 +2,16 @@
 
 This allows you to easily build the desktop client for 64-bit and 32-bit Windows.
 
+## Update: 2019-09-27
+
+Upgrades / new default versions:
+- Qt 5.12.5
+- OpenSSL 1.1.1d
+
 ## Update: 2019-08-18
 
 Qt 5.12.4 for Windows doesn't require the old 1.0.x DLL's anymore (libeay32.dll + ssleay32.dll)
-and is linked against OpenSSL 1.1.1c
+and is linked against OpenSSL 1.1.1
 
 This finally removes the odd mixture of diverging DLL versions.
 Now the Desktop Client finally uses OpenSSL 1.1.1 components only, reports the correct
@@ -58,7 +64,7 @@ Optional:
 - [ ] Git bash (it comes with Git):
       https://git-scm.com/download/win
 
-- [ ] Qt 5.12.4 (select in the wizard: MSVC 2017 64-bit AND 32-bit and all the "Qt ..." options, not required: Debug Info Files):
+- [ ] Qt 5.12.5 (select in the wizard: MSVC 2017 64-bit AND 32-bit and all the "Qt ..." options, not required: Debug Info Files):
       https://www.qt.io/download
 
       Install to: C:\Qt
@@ -71,13 +77,13 @@ Optional:
       Put the generated png2ico.exe to: C:\Nextcloud\tools\
 
 - [ ] OpenSSL: Windows Build:
-      https://slproweb.com/products/Win32OpenSSL.html     (e.g.: Win64 AND Win32 OpenSSL v1.1.1c)
+      https://slproweb.com/products/Win32OpenSSL.html     (e.g.: Win64 AND Win32 OpenSSL v1.1.1d)
 
       Install to:
       - C:\OpenSSL\Win64
       - C:\OpenSSL\Win32
 
-    Note: Qt 5.12.4 also includes the option to install OpenSSL 1.1.1c libraries from the Maintenance tool wizard.
+    Note: Qt 5.12.5 also includes the option to install OpenSSL 1.1.1 libraries from the Maintenance tool wizard.
           You may also use these libraries instead of the ones above but then you have to modify the paths in defaults.inc.bat
           and be sure to check for updates on a regular basis!
 
