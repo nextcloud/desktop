@@ -599,7 +599,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         dir = SyncFileItem::None;
         // For directories, metadata-only updates will be done after all their files are propagated.
         if (!isDirectory) {
-
+            
             // Update the database now already:  New remote fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
             // Or a local inode/mtime change
@@ -1073,6 +1073,13 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // Sort items per destination
     std::sort(syncItems.begin(), syncItems.end());
 
+	//Now get REMOVE instructions to the top
+    std::sort(syncItems.begin(), syncItems.end(),
+        [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool
+			{
+				return ( (a->_instruction == 0x00000002) && (b->_instruction != 0x00000002) );
+			});
+
     // make sure everything is allowed
     checkForPermission(syncItems);
 
@@ -1269,8 +1276,7 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
         const QString path = (*it)->destination() + QLatin1Char('/');
 
         // if reading the selective sync list from db failed, lets ignore all rather than nothing.
-        if (!selectiveListOk || std::binary_search(selectiveSyncBlackList.constBegin(), selectiveSyncBlackList.constEnd(),
-                                    path)) {
+        if (!selectiveListOk || std::binary_search(selectiveSyncBlackList.constBegin(), selectiveSyncBlackList.constEnd(), path)) {
             (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
             (*it)->_status = SyncFileItem::FileIgnored;
             (*it)->_errorString = tr("Ignored because of the \"choose what to sync\" blacklist");
@@ -1465,7 +1471,7 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
             bool sourceOK = true;
             if (!filePerms.isNull()
                 && ((isRename && !filePerms.hasPermission(RemotePermissions::CanRename))
-                       || (!isRename && !filePerms.hasPermission(RemotePermissions::CanMove)))) {
+                    || (!isRename && !filePerms.hasPermission(RemotePermissions::CanMove)))) {
                 // We are not allowed to move or rename this file
                 sourceOK = false;
 
@@ -1616,8 +1622,8 @@ bool SyncEngine::wasFileTouched(const QString &fn) const
     // Start from the end (most recent) and look for our path. Check the time just in case.
     auto begin = _touchedFiles.constBegin();
     for (auto it = _touchedFiles.constEnd(); it != begin; --it) {
-        if ((it-1).value() == fn)
-            return (it-1).key().elapsed() <= s_touchedFilesMaxAgeMs;
+        if ((it - 1).value() == fn)
+            return (it - 1).key().elapsed() <= s_touchedFilesMaxAgeMs;
     }
     return false;
 }

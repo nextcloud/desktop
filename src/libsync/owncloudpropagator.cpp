@@ -368,7 +368,12 @@ quint64 OwncloudPropagator::smallFileSize()
 
 void OwncloudPropagator::start(const SyncFileItemVector &items)
 {
-    Q_ASSERT(std::is_sorted(items.begin(), items.end()));
+    Q_ASSERT(std::is_sorted(items.begin(), items.end(),
+		[](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool
+			{
+        return ((a->_instruction == 0x00000002) && (b->_instruction != 0x00000002));
+			})
+		);
 
     /* This builds all the jobs needed for the propagation.
      * Each directory is a PropagateDirectory job, which contains the files in it.
