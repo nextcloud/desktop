@@ -599,7 +599,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         dir = SyncFileItem::None;
         // For directories, metadata-only updates will be done after all their files are propagated.
         if (!isDirectory) {
-            
             // Update the database now already:  New remote fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
             // Or a local inode/mtime change
@@ -994,11 +993,11 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
 
-    if (csync_walk_local_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, false); } ) < 0) {
+    if (csync_walk_local_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, false); }) < 0) {
         qCWarning(lcEngine) << "Error in local treewalk.";
         walkOk = false;
     }
-    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, true); } ) < 0) {
+    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, true); }) < 0) {
         qCWarning(lcEngine) << "Error in remote treewalk.";
     }
 
@@ -1070,15 +1069,34 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
-    // Sort items per destination
-    std::sort(syncItems.begin(), syncItems.end());
+	bool hasDelete = false;
+    int lastDeleteInstruction = 0;
 
-	//Now get REMOVE instructions to the top
+    //Get REMOVE instructions to the top
     std::sort(syncItems.begin(), syncItems.end(),
-        [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool
-			{
-				return ( (a->_instruction == 0x00000002) && (b->_instruction != 0x00000002) );
-			});
+        [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool {
+            return ((a->_instruction == 0x00000002) && (b->_instruction != 0x00000002));
+        });
+
+	if (syncItems.count() > 0) {
+        // We have at least one REMOVE instruction in the list
+        if (syncItems.at(0)->_instruction == csync_instructions_e::CSYNC_INSTRUCTION_REMOVE) {
+            hasDelete = true;
+            // as long as vector continues and instruction of current item is REMOVE
+            for (SyncFileItemVector::iterator it = syncItems.begin();
+                 it != syncItems.end() && (*it)->_instruction == csync_instructions_e::CSYNC_INSTRUCTION_REMOVE; ++it) {
+                lastDeleteInstruction = std::distance(syncItems.begin(), it);
+            }
+            // sort REMOVE and all other items separately for destination
+            std::sort(syncItems.begin(), syncItems.begin() + lastDeleteInstruction);
+            if (syncItems.count() > 1) {
+                std::sort(syncItems.begin() + (lastDeleteInstruction + 1), syncItems.end());
+            }
+        } else {
+            // just sort whole vector for destination
+            std::sort(syncItems.begin(), syncItems.end());
+        }
+    }
 
     // make sure everything is allowed
     checkForPermission(syncItems);
@@ -1136,7 +1154,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (_needsUpdate)
         emit(started());
 
-    _propagator->start(syncItems);
+    _propagator->start(syncItems, hasDelete, lastDeleteInstruction);
 
     qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Post-Reconcile Finished")) << "ms";
 }
