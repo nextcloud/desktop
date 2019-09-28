@@ -2972,7 +2972,7 @@ Niezalecane jest jego użycie.</translation>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Opcje udostępniania</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
@@ -2998,12 +2998,12 @@ Niezalecane jest jego użycie.</translation>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiuj link publiczny</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiuj link wewnętrzny</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
