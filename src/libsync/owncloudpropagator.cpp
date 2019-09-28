@@ -366,19 +366,28 @@ quint64 OwncloudPropagator::smallFileSize()
     return smallFileSize;
 }
 
-void OwncloudPropagator::start(const SyncFileItemVector &items, const bool &hasDelete, const int lastDeleteInstruction)
+void OwncloudPropagator::start(const SyncFileItemVector &items,
+								const bool &hasChange,
+								const int &lastChangeInstruction,
+								const bool &hasDelete,
+								const int &lastDeleteInstruction)
 {
-    if (hasDelete) {
+    if (!hasChange && !hasDelete) {
+        Q_ASSERT(std::is_sorted(items.begin(), items.end()));
+    } else if (hasChange) {
         Q_ASSERT(std::is_sorted(items.begin(), items.end(),
             [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool {
-                return ((a->_instruction == 0x00000002) && (b->_instruction != 0x00000002));
+                return ((a->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) && (b->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE));
             }));
-        Q_ASSERT(std::is_sorted(items.begin(), items.begin() + lastDeleteInstruction));
-        if (items.count() > 1) {
-            Q_ASSERT(std::is_sorted(items.begin() + (lastDeleteInstruction + 1), items.end()));
+        Q_ASSERT(std::is_sorted(items.begin(), items.begin() + lastChangeInstruction));
+
+        if (hasDelete) {
+            Q_ASSERT(std::is_sorted(items.begin() + (lastChangeInstruction + 1), items.end(),
+                [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool {
+                    return ((a->_instruction == CSYNC_INSTRUCTION_REMOVE) && (b->_instruction != CSYNC_INSTRUCTION_REMOVE));
+                }));
+            Q_ASSERT(std::is_sorted(items.begin() + (lastChangeInstruction + 1), items.begin() + lastDeleteInstruction));
         }
-    } else {
-        Q_ASSERT(std::is_sorted(items.begin(), items.end()));
 	}
 
     /* This builds all the jobs needed for the propagation.

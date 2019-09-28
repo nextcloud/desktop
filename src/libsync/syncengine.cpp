@@ -1069,34 +1069,53 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
+	bool hasChange = false;
 	bool hasDelete = false;
+    int lastChangeInstruction = 0;
     int lastDeleteInstruction = 0;
 
-    //Get REMOVE instructions to the top
-    std::sort(syncItems.begin(), syncItems.end(),
-        [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool {
-            return ((a->_instruction == 0x00000002) && (b->_instruction != 0x00000002));
-        });
-
-	if (syncItems.count() > 0) {
-        // We have at least one REMOVE instruction in the list
-        if (syncItems.at(0)->_instruction == csync_instructions_e::CSYNC_INSTRUCTION_REMOVE) {
-            hasDelete = true;
-            // as long as vector continues and instruction of current item is REMOVE
-            for (SyncFileItemVector::iterator it = syncItems.begin();
-                 it != syncItems.end() && (*it)->_instruction == csync_instructions_e::CSYNC_INSTRUCTION_REMOVE; ++it) {
-                lastDeleteInstruction = std::distance(syncItems.begin(), it);
+	// Only if list is populated, can be empty under certain circumstances
+    // Get CHANGE instructions to the top first
+    if (syncItems.count() > 0) {
+        std::sort(syncItems.begin(), syncItems.end(),
+            [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool {
+				return ((a->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) && (b->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE));
+            });
+        if (syncItems.at(0)->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+            hasChange = true;
+            lastChangeInstruction = std::distance(syncItems.begin(), std::find_if(syncItems.begin(), syncItems.end(), [](SyncFileItemVector::const_reference &a) -> bool { return a->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE; }));
+        }
+        if (hasChange) {
+            std::sort(syncItems.begin(), syncItems.begin() + lastChangeInstruction);
+            if (syncItems.count() > lastChangeInstruction) {
+                std::sort(syncItems.begin() + (lastChangeInstruction + 1), syncItems.end(),
+                    [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool {
+                        return ((a->_instruction == CSYNC_INSTRUCTION_REMOVE) && (b->_instruction != CSYNC_INSTRUCTION_REMOVE));
+                    });
+                if (syncItems.at(lastChangeInstruction + 1)->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+                    hasDelete = true;
+                    lastDeleteInstruction = std::distance(syncItems.begin(), std::find_if(syncItems.begin() + (lastChangeInstruction + 1), syncItems.end(), [](SyncFileItemVector::const_reference &a) -> bool { return a->_instruction != CSYNC_INSTRUCTION_REMOVE; }));
+                    std::sort(syncItems.begin() + (lastChangeInstruction + 1), syncItems.begin() + lastDeleteInstruction);
+                    if (syncItems.count() > lastDeleteInstruction) {
+                        std::sort(syncItems.begin() + (lastDeleteInstruction + 1), syncItems.end());
+                    }
+                } else {
+                    std::sort(syncItems.begin() + (lastChangeInstruction + 1), syncItems.end());
+                }
             }
-            // sort REMOVE and all other items separately for destination
+        } else if (syncItems.at(0)->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+            hasDelete = true;
+            lastDeleteInstruction = std::distance(syncItems.begin(), std::find_if(syncItems.begin(), syncItems.end(), [](SyncFileItemVector::const_reference &a) -> bool { return a->_instruction != CSYNC_INSTRUCTION_REMOVE; }));
             std::sort(syncItems.begin(), syncItems.begin() + lastDeleteInstruction);
-            if (syncItems.count() > 1) {
+			if (syncItems.count() > lastDeleteInstruction) {
                 std::sort(syncItems.begin() + (lastDeleteInstruction + 1), syncItems.end());
             }
         } else {
-            // just sort whole vector for destination
             std::sort(syncItems.begin(), syncItems.end());
         }
     }
+
+    //std::sort(syncItems.begin(), syncItems.end());
 
     // make sure everything is allowed
     checkForPermission(syncItems);
@@ -1154,7 +1173,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (_needsUpdate)
         emit(started());
 
-    _propagator->start(syncItems, hasDelete, lastDeleteInstruction);
+    _propagator->start(syncItems, hasChange, lastChangeInstruction, hasDelete, lastDeleteInstruction);
 
     qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Post-Reconcile Finished")) << "ms";
 }
