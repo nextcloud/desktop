@@ -976,29 +976,34 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>服务器上的同步目录 &apos;%1&apos; 中的所有文件已被删除。
+这些删除操作将被同步到您的本地同步目录，使这些文件被清空，除非您有恢复的权限。
+如果您有恢复这些文件的权限并决定这样做，它们将会与服务器重新同步。
+如果您决定删除这些文件，它们将被清空，除非您是文件拥有者。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>所有文件将从您的本地同步文件夹 &apos;%1&apos; 中删除。
+如果这些文件不被恢复，它们也将在服务器上被删除，您的其他设备也将无法访问这些文件。
+如果此操作不是故意的，您现在就可恢复丢失的数据。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Delete all files?</source>
-        <translation type="unfinished"/>
+        <translation>删除所有文件？</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1094"/>
         <source>Delete all files</source>
-        <translation type="unfinished"/>
+        <translation>删除所有文件</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1095"/>
         <source>Restore deleted files</source>
-        <translation type="unfinished"/>
+        <translation>恢复已删除文件</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2965,12 +2970,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>共享选项</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via </source>
-        <translation type="unfinished"/>
+        <translation>共享途径</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
@@ -2991,12 +2996,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>复制公开链接</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>复制内部链接</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
