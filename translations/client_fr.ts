@@ -1231,12 +1231,12 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Vérification des modification dans &apos;%1&apos; distant</translation>
+        <translation>Vérification des modifications dans &apos;%1&apos; distant</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Vérification des modification dans &apos;%1&apos; local</translation>
+        <translation>Vérification des modifications dans &apos;%1&apos; local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1002"/>
@@ -3722,12 +3722,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="920"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Vérification des modification dans &apos;%1&apos; distant</translation>
+        <translation>Vérification des modifications dans &apos;%1&apos; distant</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Vérification des modification dans &apos;%1&apos; local</translation>
+        <translation>Vérification des modifications dans &apos;%1&apos; local</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="938"/>
