@@ -126,7 +126,7 @@ void Account::setAvatar(const QImage &img)
 
 QString Account::displayName() const
 {
-    QString dn = QString("%1@%2").arg(davUser(), _url.host());
+    QString dn = QString("%1@%2").arg(credentials()->user(), _url.host());
     int port = url().port();
     if (port > 0 && port != 80 && port != 443) {
         dn.append(QLatin1Char(':'));
