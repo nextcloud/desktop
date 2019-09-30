@@ -68,21 +68,9 @@ protected:
     void accept() override;
     void changeEvent(QEvent *) override;
 
-    // FIX - White Window issue on Windows after Qt 5.12.4 upgrade ///////////////////////////////
-    #if (defined(Q_OS_WIN) && (QT_VERSION >= QT_VERSION_CHECK(5, 12, 4)))
-        void showEvent(QShowEvent *) override;
-    #endif
-    // FIX - White Window issue on Windows after Qt 5.12.4 upgrade ///////////////////////////////
-
 private slots:
     void accountAdded(AccountState *);
     void accountRemoved(AccountState *);
-
-    // FIX - White Window issue on Windows after Qt 5.12.4 upgrade ///////////////////////////////
-    #if (defined(Q_OS_WIN) && (QT_VERSION >= QT_VERSION_CHECK(5, 12, 4)))
-        void timerShowEvent();
-    #endif
-    // FIX - White Window issue on Windows after Qt 5.12.4 upgrade ///////////////////////////////
 
 private:
     void customizeStyle();

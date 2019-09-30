@@ -2971,8 +2971,8 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
-        <source>Share...</source>
-        <translation>Dela...</translation>
+        <source>Share options</source>
+        <translation>Delningsalternativ</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
@@ -2981,7 +2981,6 @@ Det är inte lämpligt använda den.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
-        <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopiera privat länk till urklipp</translation>
     </message>
@@ -2998,8 +2997,13 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
-        <source>Copy public link to clipboard</source>
-        <translation>Kopiera publik länk till urklipp</translation>
+        <source>Copy public link</source>
+        <translation>Kopiera publik länk</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="672"/>
+        <source>Copy internal link</source>
+        <translation>Kopiera intern länk</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>

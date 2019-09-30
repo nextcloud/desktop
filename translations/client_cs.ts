@@ -120,7 +120,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Pro pokračování se přepněte do prohlížeče.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="46"/>
@@ -130,12 +130,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Znovu otevřít prohlížeč</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat odkaz</translation>
     </message>
 </context>
 <context>
@@ -158,12 +158,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Znovuotevřít prohlížeč</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="81"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat odkaz</translation>
     </message>
 </context>
 <context>
@@ -331,7 +331,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="618"/>
         <location filename="../src/gui/accountsettings.cpp" line="654"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Upravit ignorované soubory</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -814,7 +814,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="67"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se otevřít váš prohlížeč – zkopírujte do něho odkaz sami.</translation>
     </message>
 </context>
 <context>
@@ -916,7 +916,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 je v tuto chvíli uzamčeno.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -987,17 +987,17 @@ If this action was unintended you can restore the lost data now.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Delete all files?</source>
-        <translation type="unfinished"/>
+        <translation>Smazat všechny soubory?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1094"/>
         <source>Delete all files</source>
-        <translation type="unfinished"/>
+        <translation>Smazat všechny soubory</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1095"/>
         <source>Restore deleted files</source>
-        <translation type="unfinished"/>
+        <translation>Obnovit smazané soubory</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -1137,7 +1137,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizováno s místní složkou (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="303"/>
@@ -1586,22 +1586,22 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Umožnit smazání</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Přidat</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Odebrat</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Odebrat vše</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
@@ -1613,17 +1613,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Nedaří se otevřít soubor</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Nedaří se zapsat změny do „%1“.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Přidat vzor ignorovaného</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
@@ -2963,17 +2963,16 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
-        <source>Share...</source>
-        <translation>Sdílet…</translation>
+        <source>Share options</source>
+        <translation>Možnosti sdílení</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via </source>
-        <translation type="unfinished"/>
+        <translation>Sdílet prostřednictvím</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
-        <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
         <translation>Zkopírovat soukromý odkaz do schránky</translation>
     </message>
@@ -2990,8 +2989,13 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
-        <source>Copy public link to clipboard</source>
-        <translation>Zkopírovat veřejný odkaz do schránky</translation>
+        <source>Copy public link</source>
+        <translation>Zkopírovat veřejný odkaz</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="672"/>
+        <source>Copy internal link</source>
+        <translation>Zkopírovat interní odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
@@ -3171,12 +3175,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Otisk (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Otisk (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
@@ -3842,7 +3846,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat odkaz</translation>
     </message>
 </context>
 <context>
@@ -3875,7 +3879,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="417"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#7a7a7a;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#7a7a7a;&quot;&gt;Hostujte si svůj vlastní server&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
 </context>
 <context>

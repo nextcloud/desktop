@@ -976,29 +976,34 @@ Isso significa que o cliente de sincronização pode não fazer upload de altera
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos na pasta de sincronização &apos;%1&apos; foram excluídos do servidor.
+Essas exclusões serão sincronizadas com a pasta de sincronização local, tornando esses arquivos indisponíveis, a menos que você tenha o direito de restaurar. 
+Se você decidir restaurar os arquivos, eles serão sincronizados novamente com o servidor, se você tiver direitos para fazê-lo.
+Se você decidir excluir os arquivos, eles não estarão disponíveis para você, a menos que você seja o proprietário.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos foram excluídos da sua pasta de sincronização local &apos;%1&apos;.
+Esses arquivos serão excluídos do servidor e não estarão disponíveis nos seus outros dispositivos, se não forem restaurados..
+Se essa ação não foi intencional, você pode restaurar os dados perdidos agora.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Delete all files?</source>
-        <translation type="unfinished"/>
+        <translation>Excluir todos os arquivos?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1094"/>
         <source>Delete all files</source>
-        <translation type="unfinished"/>
+        <translation>Excluir todos os arquivos</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1095"/>
         <source>Restore deleted files</source>
-        <translation type="unfinished"/>
+        <translation>Restaurar arquivos excluídos</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2966,17 +2971,16 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
-        <source>Share...</source>
-        <translation>Compartilhar...</translation>
+        <source>Share options</source>
+        <translation>Opções de compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via </source>
-        <translation type="unfinished"/>
+        <translation>Compartilhar via</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
-        <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
         <translation>Copiar link privado para a área de transferência</translation>
     </message>
@@ -2993,8 +2997,13 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
-        <source>Copy public link to clipboard</source>
-        <translation>Copiar link público para a área de transferência</translation>
+        <source>Copy public link</source>
+        <translation>Copiar link público</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="672"/>
+        <source>Copy internal link</source>
+        <translation>Copiar link interno</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
