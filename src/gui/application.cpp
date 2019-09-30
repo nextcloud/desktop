@@ -133,9 +133,7 @@ Application::Application(int &argc, char **argv)
     // setDesktopFilename to provide wayland compatibility (in general: conformance with naming standards)
     // but only on Qt >= 5.7, where setDesktopFilename was introduced
 #if (QT_VERSION >= 0x050700)
-    QString desktopFileName = QString(QLatin1String(APPLICATION_REV_DOMAIN)
-                                        + QLatin1Char('.')
-                                        + QLatin1String(APPLICATION_SHORTNAME)
+    QString desktopFileName = QString(QLatin1String(LINUX_APPLICATION_ID)
                                         + QLatin1String(".desktop"));
     setDesktopFileName(desktopFileName);
 #endif
