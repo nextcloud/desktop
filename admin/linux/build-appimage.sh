@@ -12,6 +12,9 @@ export PATH=$QT_BASE_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=$QT_BASE_DIR/lib/pkgconfig:$PKG_CONFIG_PATH
 
+#Set APPID for .desktop file processing
+export LINUX_APPLICATION_ID=com.nextcloud.desktopclient.nextcloud.desktop
+
 #set defaults
 export SUFFIX=${DRONE_PULL_REQUEST:=master}
 if [ $SUFFIX != "master" ]; then
@@ -66,7 +69,7 @@ rm -rf ./usr/share/nemo-python/
 mv ./etc/Nextcloud/sync-exclude.lst ./usr/bin/
 rm -rf ./etc
 
-sed -i -e 's|Icon=nextcloud|Icon=Nextcloud|g' usr/share/applications/com.nextcloud.desktopclient.Nextcloud.desktop # Bug in desktop file?
+sed -i -e 's|Icon=nextcloud|Icon=Nextcloud|g' usr/share/applications/${LINUX_APPLICATION_ID}.desktop # Bug in desktop file?
 cp ./usr/share/icons/hicolor/512x512/apps/Nextcloud.png . # Workaround for linuxeployqt bug, FIXME
 
 
@@ -87,13 +90,13 @@ chmod a+x linuxdeployqt*.AppImage
 rm ./linuxdeployqt-continuous-x86_64.AppImage
 unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/app/usr/lib/
-./squashfs-root/AppRun /app/usr/share/applications/com.nextcloud.desktopclient.Nextcloud.desktop -bundle-non-qt-libs
+./squashfs-root/AppRun /app/usr/share/applications/${LINUX_APPLICATION_ID}.desktop -bundle-non-qt-libs
 
 # Set origin
 ./squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/' /app/usr/lib/libnextcloudsync.so.0
 
 # Build AppImage
-./squashfs-root/AppRun /app/usr/share/applications/com.nextcloud.desktopclient.Nextcloud.desktop -appimage
+./squashfs-root/AppRun /app/usr/share/applications/${LINUX_APPLICATION_ID}.desktop -appimage
 
 mv Nextcloud*.AppImage Nextcloud-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
 
