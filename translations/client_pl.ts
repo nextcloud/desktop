@@ -2971,8 +2971,8 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
-        <source>Share...</source>
-        <translation>Udostępnij…</translation>
+        <source>Share options</source>
+        <translation>Opcje udostępniania</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
@@ -2981,7 +2981,6 @@ Niezalecane jest jego użycie.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
-        <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopij link prywatny do schowka</translation>
     </message>
@@ -2998,8 +2997,13 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
-        <source>Copy public link to clipboard</source>
-        <translation>Kopiuj link publiczny do schowka</translation>
+        <source>Copy public link</source>
+        <translation>Kopiuj link publiczny</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="672"/>
+        <source>Copy internal link</source>
+        <translation>Kopiuj link wewnętrzny</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
