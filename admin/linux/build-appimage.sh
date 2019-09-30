@@ -13,7 +13,7 @@ export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LI
 export PKG_CONFIG_PATH=$QT_BASE_DIR/lib/pkgconfig:$PKG_CONFIG_PATH
 
 #Set APPID for .desktop file processing
-export LINUX_APPLICATION_ID=com.nextcloud.desktopclient.nextcloud.desktop
+export LINUX_APPLICATION_ID=com.nextcloud.desktopclient.nextcloud
 
 #set defaults
 export SUFFIX=${DRONE_PULL_REQUEST:=master}
