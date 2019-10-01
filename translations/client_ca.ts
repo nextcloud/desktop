@@ -913,12 +913,12 @@ Consulteu el registre per obtenir més informació.</numerusform></translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 i %n altre/s fitxer/s ara estan bloquejats.</numerusform><numerusform>%1 i %n altres fitxers ara estan bloquejats.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ara està bloquejat.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -990,17 +990,17 @@ If this action was unintended you can restore the lost data now.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Delete all files?</source>
-        <translation type="unfinished"/>
+        <translation>Voleu suprimir tots els fitxers?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1094"/>
         <source>Delete all files</source>
-        <translation type="unfinished"/>
+        <translation>Suprimeix tots els fitxers</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1095"/>
         <source>Restore deleted files</source>
-        <translation type="unfinished"/>
+        <translation>Restaura els fitxers suprimits</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -2974,7 +2974,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via </source>
-        <translation type="unfinished"/>
+        <translation>Comparteix per</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
@@ -3884,7 +3884,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="417"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#7a7a7a;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#7a7a7a;&quot;&gt;Allotgeu el vostre servidor&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
