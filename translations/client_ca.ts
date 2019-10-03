@@ -985,7 +985,9 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>Tots els fitxers s&apos;han suprimit de la carpeta de sincronització local &quot;%1&quot;.
+Aquests fitxers se suprimiran del servidor i no estaran disponibles als altres dispositius si no es restauren.
+Si aquesta acció no era desitjada, podeu restaurar les dades perdudes ara.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
