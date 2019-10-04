@@ -344,10 +344,9 @@ steps:
       from_secret: DEBIAN_SECRET_IV
 trigger:
   branch:
-    - master
+    - stable-2.6
   event:
-    - pull_request
-    - push
+    - tag
 ---
 kind: pipeline
 name: Documentation
