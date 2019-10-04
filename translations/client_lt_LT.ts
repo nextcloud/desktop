@@ -1403,7 +1403,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="220"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Serveris grąžino neteisingą turinio rėžį</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="332"/>
