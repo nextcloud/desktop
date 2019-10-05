@@ -109,7 +109,7 @@ repos (qtkeychain, zlib and Nextcloud's desktop):
 - Open Git Bash:
   ```
   cd /c/Nextcloud
-  git clone https://github.com/misch7/nextcloud-client-building.git client-building
+  git clone https://github.com/nextcloud/client-building.git client-building
   ```
 
 - Take a look at this file and adapt the environment variables to your needs. You may also define them in the Windows
