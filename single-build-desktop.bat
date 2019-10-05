@@ -113,8 +113,15 @@ rem Reference: https://ss64.com/nt/setlocal.html
 rem Reference: https://ss64.com/nt/start.html
 
 if "%PULL_DESKTOP%" == "1" (
+    Rem Checkout master first to have it clean for git pull
+    if "%CHECKOUT_DESKTOP%" == "1" (
+        echo "* git checkout master at %MY_REPO%/."
+        start "git checkout master" /D "%MY_REPO%/" /B /wait git checkout master
+    )
+    if !ERRORLEVEL! neq 0 goto onError
+
     echo "* git pull at %MY_REPO%/."
-    start "git pull" /D "%MY_REPO%/" /B /wait git pull --tags
+    start "git pull" /D "%MY_REPO%/" /B /wait git pull --tags origin master
 )
 if %ERRORLEVEL% neq 0 goto onError
 
