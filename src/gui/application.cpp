@@ -108,6 +108,7 @@ Application::Application(int &argc, char **argv)
     , _userTriggeredConnect(false)
     , _debugMode(false)
     , _backgroundMode(false)
+    , _isQuitting(false)
 {
     _startedAt.start();
 
@@ -283,7 +284,7 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
     }
 
     // if there is no more account, show the wizard.
-    if (AccountManager::instance()->accounts().isEmpty()) {
+    if (!_isQuitting && AccountManager::instance()->accounts().isEmpty()) {
         // allow to add a new account if there is non any more. Always think
         // about single account theming!
         OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
@@ -306,6 +307,8 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
 void Application::slotCleanup()
 {
+    _isQuitting = true;
+
     AccountManager::instance()->save();
     FolderMan::instance()->unloadAndDeleteAllFolders();
 
