@@ -973,14 +973,11 @@ Questo significa che il client di sincronizzazione potrebbe non caricare le modi
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1082"/>
-        <source>All files in the sync folder '%1' folder were deleted on the server.
+        <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Tutti i file nella cartella di sincronizzazione &apos;%1&apos; sono stati eliminati sul server.
-L&apos;eliminazione sarà sincronizzata con la tua cartella locale, rendendo tali file indisponibili, a meno che tu abbia il permesso per ripristinarli.
-Se decidi di ripristinare i file, essi saranno sincronizzati nuovamente con il server, se hai i diritti per farlo.
-Se decidi di eliminare i file, non saranno più disponibili, a meno che tu sia il proprietario.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -3014,111 +3011,121 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>OCC::SslButton</name>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="87"/>
+        <location filename="../src/gui/sslbutton.cpp" line="88"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Dettagli del certificato&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="90"/>
+        <location filename="../src/gui/sslbutton.cpp" line="91"/>
         <source>Common Name (CN):</source>
         <translation>Nome comune (CN):</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="91"/>
+        <location filename="../src/gui/sslbutton.cpp" line="92"/>
         <source>Subject Alternative Names:</source>
         <translation>Nomi alternativi soggetto (SAN):</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="92"/>
+        <location filename="../src/gui/sslbutton.cpp" line="93"/>
         <source>Organization (O):</source>
         <translation>Organizzazione (O):</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="93"/>
+        <location filename="../src/gui/sslbutton.cpp" line="94"/>
         <source>Organizational Unit (OU):</source>
         <translation>Unità organizzativa (OU):</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="94"/>
+        <location filename="../src/gui/sslbutton.cpp" line="95"/>
         <source>State/Province:</source>
         <translation>Stato/Regione:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="95"/>
+        <location filename="../src/gui/sslbutton.cpp" line="96"/>
         <source>Country:</source>
         <translation>Nazione:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="96"/>
+        <location filename="../src/gui/sslbutton.cpp" line="97"/>
         <source>Serial:</source>
         <translation>Numero di serie:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="99"/>
+        <location filename="../src/gui/sslbutton.cpp" line="100"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Emittente&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="102"/>
+        <location filename="../src/gui/sslbutton.cpp" line="103"/>
         <source>Issuer:</source>
         <translation>Emittente:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="103"/>
+        <location filename="../src/gui/sslbutton.cpp" line="104"/>
         <source>Issued on:</source>
         <translation>Emesso il:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="104"/>
+        <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Expires on:</source>
         <translation>Scade il:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="107"/>
+        <location filename="../src/gui/sslbutton.cpp" line="108"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
         <translation>&lt;h3&gt;Impronte digitali&lt;/h3&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="111"/>
+        <location filename="../src/gui/sslbutton.cpp" line="112"/>
         <source>SHA-256:</source>
         <translation>SHA-256:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="112"/>
+        <location filename="../src/gui/sslbutton.cpp" line="113"/>
         <source>SHA-1:</source>
         <translation>SHA-1:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="116"/>
+        <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; questo certificato è stato approvato manualmente&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="136"/>
+        <location filename="../src/gui/sslbutton.cpp" line="137"/>
         <source>%1 (self-signed)</source>
         <translation>%1 (autofirmato)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="138"/>
+        <location filename="../src/gui/sslbutton.cpp" line="139"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="173"/>
+        <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation>Questa connessione è cifrata utilizzando %1 bit %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="204"/>
+        <location filename="../src/gui/sslbutton.cpp" line="191"/>
+        <source>Server version: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
         <translation>Nessun supporto per i ticket/identificatori di sessione SSL</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="214"/>
+        <location filename="../src/gui/sslbutton.cpp" line="215"/>
         <source>Certificate information:</source>
         <translation>Informazioni sul certificato:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sslbutton.cpp" line="244"/>
+        <source>The connection is not secure</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
