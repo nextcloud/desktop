@@ -523,13 +523,13 @@ private slots:
         auto currentLocal = fakeFolder.currentLocalState();
         auto conflicts = findConflicts(currentLocal.children["A4"]);
         QCOMPARE(conflicts.size(), 1);
-        for (auto c : conflicts) {
+        for (const auto& c : conflicts) {
             QCOMPARE(currentLocal.find(c)->contentChar, 'L');
             local.remove(c);
         }
         conflicts = findConflicts(currentLocal.children["B4"]);
         QCOMPARE(conflicts.size(), 1);
-        for (auto c : conflicts) {
+        for (const auto& c : conflicts) {
             QCOMPARE(currentLocal.find(c)->contentChar, 'L');
             local.remove(c);
         }
