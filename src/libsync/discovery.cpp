@@ -36,9 +36,8 @@ void ProcessDirectoryJob::start()
 {
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
 
-    DiscoverySingleDirectoryJob *serverJob = nullptr;
     if (_queryServer == NormalQuery) {
-        serverJob = startAsyncServerQuery();
+        _serverJob = startAsyncServerQuery();
     } else {
         _serverQueryDone = true;
     }
@@ -56,8 +55,6 @@ void ProcessDirectoryJob::start()
     } else {
         _localQueryDone = true;
     }
-
-    // FIXME: serverJob->abort() if local failed..? This used to be in code before
 
     if (_localQueryDone && _serverQueryDone) {
         process();
@@ -1438,6 +1435,8 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
     connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedFatalError, this, [this](const QString &msg) {
         _discoveryData->_currentlyActiveJobs--;
         _pendingAsyncJobs--;
+        if (_serverJob)
+            _serverJob->abort();
 
         emit _discoveryData->fatalError(msg);
     });
