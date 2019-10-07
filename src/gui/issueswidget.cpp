@@ -101,7 +101,7 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     _ui->_treeWidget->setHeaderLabels(header);
     int timestampColumnWidth =
         ActivityItemDelegate::rowHeight() // icon
-        + _ui->_treeWidget->fontMetrics().width(ProtocolItem::timeString(QDateTime::currentDateTime()))
+        + _ui->_treeWidget->fontMetrics().boundingRect(ProtocolItem::timeString(QDateTime::currentDateTime())).width()
         + timestampColumnExtra;
     _ui->_treeWidget->setColumnWidth(0, timestampColumnWidth);
     _ui->_treeWidget->setColumnWidth(1, 180);
