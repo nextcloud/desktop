@@ -19,6 +19,8 @@
 #include <QStyle>
 #include <QStyleHints>
 
+#define HASQT5_11 (QT_VERSION >= QT_VERSION_CHECK(5,11,0))
+
 namespace OCC {
 
 static const int Spacing = 6;
@@ -88,7 +90,11 @@ QSize SlideShow::sizeHint() const
     QFontMetrics fm = fontMetrics();
     QSize labelSize(0, fm.height());
     for (const QString &label : _labels) {
+#if (HASQT5_11)
+        labelSize.setWidth(std::max(fm.horizontalAdvance(label), labelSize.width()));
+#else
         labelSize.setWidth(std::max(fm.width(label), labelSize.width()));
+#endif
     }
     QSize pixmapSize;
     for (const QPixmap &pixmap : _pixmaps) {

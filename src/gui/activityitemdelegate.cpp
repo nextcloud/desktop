@@ -26,6 +26,8 @@
 #include <QPainter>
 #include <QApplication>
 
+#define HASQT5_11 (QT_VERSION >= QT_VERSION_CHECK(5,11,0))
+
 namespace OCC {
 
 int ActivityItemDelegate::_iconHeight = 0;
@@ -106,7 +108,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     // subject text rect
     QRect actionTextBox = actionIconRect;
+#if (HASQT5_11)
+    int actionTextBoxWidth = fm.horizontalAdvance(actionText);
+#else
     int actionTextBoxWidth = fm.width(actionText);
+#endif
     actionTextBox.setTop(option.rect.top() + margin + offset/2);
     actionTextBox.setHeight(fm.height());
     actionTextBox.setLeft(actionIconRect.right() + margin);
@@ -114,7 +120,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     // message text rect
     QRect messageTextBox = actionTextBox;
+#if (HASQT5_11)
+    int messageTextWidth = fm.horizontalAdvance(messageText);
+#else
     int messageTextWidth = fm.width(messageText);
+#endif
     int messageTextTop = option.rect.top() + fm.height() + margin;
     if(actionText.isEmpty()) messageTextTop = option.rect.top() + margin + offset/2;
     messageTextBox.setTop(messageTextTop);
@@ -129,7 +139,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // time box rect
     QRect timeBox = messageTextBox;
     QString timeStr = tr("%1").arg(timeText);
+#if (HASQT5_11)
+    int timeTextWidth = fm.horizontalAdvance(timeStr);
+#else
     int timeTextWidth = fm.width(timeStr);
+#endif
     int timeTop = option.rect.top() + fm.height() + fm.height() + margin + offset/2;
     if(messageText.isEmpty() || actionText.isEmpty())
         timeTop = option.rect.top() + fm.height() + margin;
@@ -180,7 +194,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         if(objectType == _remote_share) primaryButton.text = tr("Accept");
         if(objectType == _call) primaryButton.text = tr("Join");
 
+#if (HASQT5_11)
+        primaryButton.rect.setLeft(left - margin * 2 - fm.horizontalAdvance(primaryButton.text));
+#else
         primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
+#endif
 
         // save info to be able to filter mouse clicks
         _buttonHeight = buttonSize;
@@ -196,7 +214,12 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // Primary button will be 'open browser'
         primaryButton.text = tr("Open Browser");
+
+#if (HASQT5_11)
+        primaryButton.rect.setLeft(left - margin * 2 - fm.horizontalAdvance(primaryButton.text));
+#else
         primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
+#endif
 
         // save info to be able to filter mouse clicks
         _buttonHeight = buttonSize;

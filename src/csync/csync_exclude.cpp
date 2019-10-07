@@ -73,7 +73,7 @@ static void csync_exclude_expand_escapes(QByteArray &input)
             line[o++] = line[i];
         }
     }
-    input.resize(o);
+    input.resize(OCC::Utility::convertSizeToUint(o));
 }
 
 // See http://support.microsoft.com/kb/74496 and
@@ -322,7 +322,11 @@ bool ExcludedFiles::loadExcludeFile(const QByteArray & basePath, const QString &
         csync_exclude_expand_escapes(line);
         _allExcludes[basePath].append(line);
     }
-    prepare(basePath);
+
+    // nothing to prepare if the user decided to not exclude anything
+    if(_allExcludes.size())
+        prepare(basePath);
+
     return true;
 }
 

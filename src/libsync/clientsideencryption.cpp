@@ -32,6 +32,7 @@
 #include <QUuid>
 
 #include <keychain.h>
+#include "common/utility.h"
 
 #include "wordlist.h"
 
@@ -62,11 +63,11 @@ namespace {
 
 namespace {
     QByteArray BIO2ByteArray(BIO *b) {
-        int pending = BIO_ctrl_pending(b);
+        size_t pending = BIO_ctrl_pending(b);
         char *tmp = (char *)calloc(pending+1, sizeof(char));
-        BIO_read(b, tmp, pending);
+        BIO_read(b, tmp, OCC::Utility::convertSizeToInt(pending));
 
-        QByteArray res(tmp, pending);
+        QByteArray res(tmp, OCC::Utility::convertSizeToInt(pending));
         free(tmp);
 
         return res;
@@ -549,7 +550,7 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     }
 
     const auto ret = std::string((char*) out, outlen);
-    QByteArray raw((const char*) out, outlen);
+    QByteArray raw((const char*) out, OCC::Utility::convertSizeToInt(outlen));
     qCInfo(lcCse()) << raw;
     return raw;
 }
@@ -603,7 +604,7 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
     }
 
     // Transform the encrypted data into base64.
-    QByteArray raw((const char*) out, outLen);
+    QByteArray raw((const char*) out, OCC::Utility::convertSizeToInt(outLen));
     qCInfo(lcCse()) << raw.toBase64();
     return raw.toBase64();
 }

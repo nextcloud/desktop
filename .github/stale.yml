@@ -1,0 +1,67 @@
+
+# Number of days of inactivity before an issue becomes stale
+daysUntilStale: 28
+# Number of days of inactivity before a stale issue is closed
+daysUntilClose: 14
+# Issues with these labels will never be considered stale
+exemptLabels:
+    - 1. to develop
+    - 2. to review
+    - 3. to release
+    - 4. to test
+    - accessibility
+    - backport-request
+    - bug
+    - design
+    - enhancement
+    - epic
+    - discussion
+    - documentation
+    - overview
+    - good first issue
+    - feature-request
+    - feature: :arrows_counterclockwise: sync engine
+    - feature: :busts_in_silhouette: sharing
+    - feature: :cloud: system tray
+    - feature: :gear: settings
+    - feature: :inbox_tray: install and update
+    - feature: :key: authentication
+    - feature: :lock: end to end encryption
+    - feature: :memo: versions
+    - feature: :minidisc: external storage
+    - feature: :minidisc: virtual drive
+    - feature: :new: versions
+    - feature: :tongue: language l10n and translations
+    - feature: :wheelchair: accessibility
+    - feature: :white_square_button: nextcloudcmd
+    - feature: :zap: activity and :bell: notification
+    - good first issue
+    - help wanted
+    - high
+    - integration
+    - low
+    - medium
+    - needs info
+    - os: :apple: macOS
+    - os: :door: Windows
+    - os: :penguin: Linux
+    - os: :smiling_imp: FreeBSD
+    - overview
+    - package: appimage
+    - package: debian
+    - package: snap
+    - papercut
+    - regression
+    - security
+    - server
+    - spec
+    - technical debt
+# Label to use when marking an issue as stale
+staleLabel: stale
+# Comment to post when marking an issue as stale. Set to `false` to disable
+markComment: >
+    This request did not receive an update in the last 4 weeks.
+    Please take a look again and update the issue with new details,
+    otherwise the issue will be automatically closed in 2 weeks. Thank you!
+# Comment to post when closing a stale issue. Set to `false` to disable
+closeComment: false
