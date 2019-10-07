@@ -41,16 +41,6 @@ static void assertCsyncJournalOk(SyncJournalDb &journal)
 #endif
 }
 
-SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
-{
-    for (const QList<QVariant> &args : spy) {
-        auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
-            return item;
-    }
-    return SyncFileItemPtr(new SyncFileItem);
-}
-
 SyncFileItemPtr findDiscoveryItem(const SyncFileItemVector &spy, const QString &path)
 {
     for (const auto &item : spy) {
@@ -60,9 +50,9 @@ SyncFileItemPtr findDiscoveryItem(const SyncFileItemVector &spy, const QString &
     return SyncFileItemPtr(new SyncFileItem);
 }
 
-bool itemInstruction(const QSignalSpy &spy, const QString &path, const csync_instructions_e instr)
+bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const csync_instructions_e instr)
 {
-    auto item = findItem(spy, path);
+    auto item = spy.findItem(path);
     return item->_instruction == instr;
 }
 
@@ -418,7 +408,7 @@ private slots:
         // also hook into discovery!!
         SyncFileItemVector discovery;
         connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, this, [&discovery](auto v) { discovery = v; });
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         QVERIFY(!fakeFolder.syncOnce());
 
         // if renaming doesn't work, just delete+create
