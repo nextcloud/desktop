@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation>Usklajevanje %1</translation>
+        <translation>Poteka usklajevanje %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
@@ -80,7 +80,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Končaj usklajevalnik</translation>
     </message>
 </context>
 <context>
@@ -984,17 +984,17 @@ If this action was unintended you can restore the lost data now.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Delete all files?</source>
-        <translation type="unfinished"/>
+        <translation>Ali želite izbrisati vse datoteke?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1094"/>
         <source>Delete all files</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši vse datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1095"/>
         <source>Restore deleted files</source>
-        <translation type="unfinished"/>
+        <translation>Obnovi izbrisane datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1112"/>
@@ -1576,7 +1576,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Maska</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
@@ -1586,17 +1586,17 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Odstrani</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Odstrani vse</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
@@ -1608,7 +1608,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče odpreti datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
@@ -1674,7 +1674,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Trajno shrani dnevnike</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
@@ -2983,17 +2983,17 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiraj javno povezavo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiraj krajevno povezavo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Odpri v brskalniku</translation>
     </message>
 </context>
 <context>
@@ -3098,7 +3098,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Različica strežnika: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -3113,7 +3113,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>Povezava s strežnikom ni varna</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
@@ -3882,7 +3882,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="417"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#7a7a7a;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#7a7a7a;&quot;&gt;Gostite svoj strežnik&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
 </context>
 <context>

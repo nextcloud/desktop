@@ -974,7 +974,10 @@ Bunun sonucunda eşitleme istemcisi yerel değişiklikleri anında yükleyemez. 
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; eşitleme klasöründeki tüm dosyalar silinecek.
+Silinen bu dosyalar yerel eşitleme klasörünüzden de silineceğinden, geri yükleme yetkiniz yoksa bu dosyaları kullanamayacaksınız. 
+Geri yükleme yetkiniz varsa ve geri yüklemeyi seçerseniz, dosyalar sunucu ile yeniden eşitlenir.
+Silmeyi seçerseniz, sahibi değilseniz bu dosyaları artık kullanamazsınız.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -3108,7 +3111,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu sürümü: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -3123,7 +3126,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantı güvenli değil</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
