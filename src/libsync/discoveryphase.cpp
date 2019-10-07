@@ -247,9 +247,13 @@ void DiscoverySingleLocalDirectoryJob::run() {
         emit finishedFatalError(errorString);
         return;
     }
-    errno = 0;
+
     QVector<LocalInfo> results;
-    while (auto dirent = csync_vio_local_readdir(dh, _vfs)) {
+    while (true) {
+        errno = 0;
+        auto dirent = csync_vio_local_readdir(dh, _vfs);
+        if (!dirent)
+            break;
         if (dirent->type == ItemTypeSkip)
             continue;
         LocalInfo i;
@@ -279,13 +283,21 @@ void DiscoverySingleLocalDirectoryJob::run() {
         i.type = dirent->type;
         results.push_back(i);
     }
-    csync_vio_local_closedir(dh);
     if (errno != 0) {
+        csync_vio_local_closedir(dh);
+
         // Note: Windows vio converts any error into EACCES
         qCWarning(lcDiscovery) << "readdir failed for file in " << localPath << " - errno: " << errno;
         emit finishedFatalError(tr("Error while reading directory %1").arg(localPath));
         return;
     }
+
+    errno = 0;
+    csync_vio_local_closedir(dh);
+    if (errno != 0) {
+        qCWarning(lcDiscovery) << "closedir failed for file in " << localPath << " - errno: " << errno;
+    }
+
     emit finished(results);
 }
 
