@@ -976,7 +976,10 @@ Isso significa que o cliente de sincronização pode não fazer upload de altera
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos na pasta de sincronização &apos;%1&apos; foram excluídos no servidor.
+Essas exclusões serão sincronizadas localmente, tornando esses arquivos indisponíveis, a menos que você tenha o direito de restaurar. 
+Se você decidir restaurar os arquivos, eles serão sincronizados novamente com o servidor, se você tiver direitos para fazê-lo..
+Se você decidir excluir os arquivos, eles não estarão disponíveis para você, a menos que você seja o proprietário.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -3110,7 +3113,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Versão do servidor: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -3125,7 +3128,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>A conexão não é segura</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
