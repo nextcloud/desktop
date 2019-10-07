@@ -11,29 +11,19 @@
 
 using namespace OCC;
 
-SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
+bool itemSuccessful(const ItemCompletedSpy &spy, const QString &path, const csync_instructions_e instr)
 {
-    for (const QList<QVariant> &args : spy) {
-        auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
-            return item;
-    }
-    return SyncFileItemPtr(new SyncFileItem);
-}
-
-bool itemSuccessful(const QSignalSpy &spy, const QString &path, const csync_instructions_e instr)
-{
-    auto item = findItem(spy, path);
+    auto item = spy.findItem(path);
     return item->_status == SyncFileItem::Success && item->_instruction == instr;
 }
 
-bool itemConflict(const QSignalSpy &spy, const QString &path)
+bool itemConflict(const ItemCompletedSpy &spy, const QString &path)
 {
-    auto item = findItem(spy, path);
+    auto item = spy.findItem(path);
     return item->_status == SyncFileItem::Conflict && item->_instruction == CSYNC_INSTRUCTION_CONFLICT;
 }
 
-bool itemSuccessfulMove(const QSignalSpy &spy, const QString &path)
+bool itemSuccessfulMove(const ItemCompletedSpy &spy, const QString &path)
 {
     return itemSuccessful(spy, path, CSYNC_INSTRUCTION_RENAME);
 }
@@ -410,7 +400,7 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
             completeSpy.clear();
@@ -488,7 +478,7 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         // 1) a NEW/NEW conflict
         fakeFolder.remoteModifier().mkdir("Z");
@@ -539,7 +529,7 @@ private slots:
     void testTypeConflictWithMove()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         // the remote becomes a file, but a file inside the dir has moved away!
         fakeFolder.remoteModifier().remove("A");
@@ -572,7 +562,7 @@ private slots:
     void testTypeChange()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         // dir becomes file
         fakeFolder.remoteModifier().remove("A");

@@ -11,16 +11,6 @@
 
 using namespace OCC;
 
-SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
-{
-    for (const QList<QVariant> &args : spy) {
-        auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
-            return item;
-    }
-    return SyncFileItemPtr(new SyncFileItem);
-}
-
 SyncJournalFileRecord journalRecord(FakeFolder &folder, const QByteArray &path)
 {
     SyncJournalFileRecord rec;
@@ -46,7 +36,7 @@ private slots:
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto &modifier = remote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
 
@@ -73,7 +63,7 @@ private slots:
         fakeFolder.serverErrorPaths().append("A/new", 500); // will be blacklisted
         QVERIFY(!fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::NormalError); // initial error visible
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW);
@@ -94,7 +84,7 @@ private slots:
         // Ignored during the second run - but soft errors are also errors
         QVERIFY(!fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::BlacklistedError);
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_IGNORE); // no retry happened!
@@ -121,7 +111,7 @@ private slots:
         }
         QVERIFY(!fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::BlacklistedError); // blacklisted as it's just a retry
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW); // retry!
@@ -143,7 +133,7 @@ private slots:
         modifier.appendByte("A/new");
         QVERIFY(!fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::BlacklistedError);
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW); // retry!
@@ -171,7 +161,7 @@ private slots:
         }
         QVERIFY(fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::Success);
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW);

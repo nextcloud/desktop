@@ -35,29 +35,19 @@ struct OperationCounter {
     }
 };
 
-SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
+bool itemSuccessful(const ItemCompletedSpy &spy, const QString &path, const csync_instructions_e instr)
 {
-    for (const QList<QVariant> &args : spy) {
-        auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
-            return item;
-    }
-    return SyncFileItemPtr(new SyncFileItem);
-}
-
-bool itemSuccessful(const QSignalSpy &spy, const QString &path, const csync_instructions_e instr)
-{
-    auto item = findItem(spy, path);
+    auto item = spy.findItem(path);
     return item->_status == SyncFileItem::Success && item->_instruction == instr;
 }
 
-bool itemConflict(const QSignalSpy &spy, const QString &path)
+bool itemConflict(const ItemCompletedSpy &spy, const QString &path)
 {
-    auto item = findItem(spy, path);
+    auto item = spy.findItem(path);
     return item->_status == SyncFileItem::Conflict && item->_instruction == CSYNC_INSTRUCTION_CONFLICT;
 }
 
-bool itemSuccessfulMove(const QSignalSpy &spy, const QString &path)
+bool itemSuccessfulMove(const ItemCompletedSpy &spy, const QString &path)
 {
     return itemSuccessful(spy, path, CSYNC_INSTRUCTION_RENAME);
 }
@@ -167,7 +157,7 @@ private slots:
             QCOMPARE(fakeFolder.currentLocalState(), remoteState);
 
             expectedServerState = fakeFolder.currentRemoteState();
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+            ItemCompletedSpy completeSpy(fakeFolder);
             fakeFolder.syncOnce(); // This sync should do nothing
             QCOMPARE(completeSpy.count(), 0);
 
@@ -347,7 +337,7 @@ private slots:
             counter.reset();
             local.rename("A/a1", "A/a1m");
             remote.rename("B/b1", "B/b1m");
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+            ItemCompletedSpy completeSpy(fakeFolder);
             QVERIFY(fakeFolder.syncOnce());
             QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
             QCOMPARE(counter.nGET, 0);
@@ -356,10 +346,10 @@ private slots:
             QCOMPARE(counter.nDELETE, 0);
             QVERIFY(itemSuccessfulMove(completeSpy, "A/a1m"));
             QVERIFY(itemSuccessfulMove(completeSpy, "B/b1m"));
-            QCOMPARE(findItem(completeSpy, "A/a1m")->_file, QStringLiteral("A/a1"));
-            QCOMPARE(findItem(completeSpy, "A/a1m")->_renameTarget, QStringLiteral("A/a1m"));
-            QCOMPARE(findItem(completeSpy, "B/b1m")->_file, QStringLiteral("B/b1"));
-            QCOMPARE(findItem(completeSpy, "B/b1m")->_renameTarget, QStringLiteral("B/b1m"));
+            QCOMPARE(completeSpy.findItem("A/a1m")->_file, QStringLiteral("A/a1"));
+            QCOMPARE(completeSpy.findItem("A/a1m")->_renameTarget, QStringLiteral("A/a1m"));
+            QCOMPARE(completeSpy.findItem("B/b1m")->_file, QStringLiteral("B/b1"));
+            QCOMPARE(completeSpy.findItem("B/b1m")->_renameTarget, QStringLiteral("B/b1m"));
         }
 
         // Touch+Move on same side
@@ -409,7 +399,7 @@ private slots:
             remote.appendByte("B/b1m");
             remote.insert("B/b1mt");
             local.rename("B/b1m", "B/b1mt");
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+            ItemCompletedSpy completeSpy(fakeFolder);
             QVERIFY(fakeFolder.syncOnce());
             QVERIFY(expectAndWipeConflict(local, fakeFolder.currentLocalState(), "A/a1mt"));
             QVERIFY(expectAndWipeConflict(local, fakeFolder.currentLocalState(), "B/b1mt"));
@@ -432,7 +422,7 @@ private slots:
             remote.rename("A/a1mt", "A/a1N");
             remote.insert("B/b1N", 13);
             local.rename("B/b1mt", "B/b1N");
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+            ItemCompletedSpy completeSpy(fakeFolder);
             QVERIFY(fakeFolder.syncOnce());
             QVERIFY(expectAndWipeConflict(local, fakeFolder.currentLocalState(), "A/a1N"));
             QVERIFY(expectAndWipeConflict(local, fakeFolder.currentLocalState(), "B/b1N"));
@@ -479,7 +469,7 @@ private slots:
             counter.reset();
             local.rename("A", "AM");
             remote.rename("B", "BM");
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+            ItemCompletedSpy completeSpy(fakeFolder);
             QVERIFY(fakeFolder.syncOnce());
             QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
             QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
@@ -489,10 +479,10 @@ private slots:
             QCOMPARE(counter.nDELETE, 0);
             QVERIFY(itemSuccessfulMove(completeSpy, "AM"));
             QVERIFY(itemSuccessfulMove(completeSpy, "BM"));
-            QCOMPARE(findItem(completeSpy, "AM")->_file, QStringLiteral("A"));
-            QCOMPARE(findItem(completeSpy, "AM")->_renameTarget, QStringLiteral("AM"));
-            QCOMPARE(findItem(completeSpy, "BM")->_file, QStringLiteral("B"));
-            QCOMPARE(findItem(completeSpy, "BM")->_renameTarget, QStringLiteral("BM"));
+            QCOMPARE(completeSpy.findItem("AM")->_file, QStringLiteral("A"));
+            QCOMPARE(completeSpy.findItem("AM")->_renameTarget, QStringLiteral("AM"));
+            QCOMPARE(completeSpy.findItem("BM")->_file, QStringLiteral("B"));
+            QCOMPARE(completeSpy.findItem("BM")->_renameTarget, QStringLiteral("BM"));
         }
 
         // Folder move with contents touched on the same side
@@ -507,7 +497,7 @@ private slots:
             local.rename("AM", "A2");
             remote.setContents("BM/b2m", 'C');
             remote.rename("BM", "B2");
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+            ItemCompletedSpy completeSpy(fakeFolder);
             QVERIFY(fakeFolder.syncOnce());
             QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
             QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
@@ -630,7 +620,7 @@ private slots:
             remote.appendByte("B/b1");
             local.rename("B/b1", "B/b1mq");
             local.mkdir("B/b1");
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+            ItemCompletedSpy completeSpy(fakeFolder);
             QVERIFY(fakeFolder.syncOnce());
             // BUG: This doesn't behave right
             //QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
