@@ -11,33 +11,23 @@
 
 using namespace OCC;
 
-SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
+bool itemDidComplete(const ItemCompletedSpy &spy, const QString &path)
 {
-    for (const QList<QVariant> &args : spy) {
-        auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
-            return item;
-    }
-    return SyncFileItemPtr(new SyncFileItem);
-}
-
-bool itemDidComplete(const QSignalSpy &spy, const QString &path)
-{
-    if (auto item = findItem(spy, path)) {
+    if (auto item = spy.findItem(path)) {
         return item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
     }
     return false;
 }
 
-bool itemInstruction(const QSignalSpy &spy, const QString &path, const csync_instructions_e instr)
+bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const csync_instructions_e instr)
 {
-    auto item = findItem(spy, path);
+    auto item = spy.findItem(path);
     return item->_instruction == instr;
 }
 
-bool itemDidCompleteSuccessfully(const QSignalSpy &spy, const QString &path)
+bool itemDidCompleteSuccessfully(const ItemCompletedSpy &spy, const QString &path)
 {
-    if (auto item = findItem(spy, path)) {
+    if (auto item = spy.findItem(path)) {
         return item->_status == SyncFileItem::Success;
     }
     return false;
@@ -50,7 +40,7 @@ class TestSyncEngine : public QObject
 private slots:
     void testFileDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.remoteModifier().insert("A/a0");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
@@ -59,7 +49,7 @@ private slots:
 
     void testFileUpload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.localModifier().insert("A/a0");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
@@ -68,7 +58,7 @@ private slots:
 
     void testDirDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.remoteModifier().mkdir("Y");
         fakeFolder.remoteModifier().mkdir("Z");
         fakeFolder.remoteModifier().insert("Z/d0");
@@ -81,7 +71,7 @@ private slots:
 
     void testDirUpload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.localModifier().mkdir("Y");
         fakeFolder.localModifier().mkdir("Z");
         fakeFolder.localModifier().insert("Z/d0");
@@ -94,7 +84,7 @@ private slots:
 
     void testLocalDelete() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.remoteModifier().remove("A/a1");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a1"));
@@ -103,7 +93,7 @@ private slots:
 
     void testRemoteDelete() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.localModifier().remove("A/a1");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a1"));
@@ -133,7 +123,7 @@ private slots:
         QCOMPARE(getDbChecksum("a3.eml"), referenceChecksum);
         QCOMPARE(getDbChecksum("b3.txt"), referenceChecksum);
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         // Touch the file without changing the content, shouldn't upload
         fakeFolder.localModifier().setContents("a1.eml", 'A');
         // Change the content/size
@@ -236,9 +226,26 @@ private slots:
         QCOMPARE(finishedSpy.first().first().toBool(), false);
     }
 
+    /** Verify that an incompletely propagated directory doesn't have the server's
+     * etag stored in the database yet. */
+    void testDirEtagAfterIncompleteSync() {
+        FakeFolder fakeFolder{FileInfo{}};
+        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));
+        fakeFolder.serverErrorPaths().append("NewFolder/foo");
+        fakeFolder.remoteModifier().mkdir("NewFolder");
+        fakeFolder.remoteModifier().insert("NewFolder/foo");
+        QVERIFY(!fakeFolder.syncOnce());
+
+        SyncJournalFileRecord rec;
+        fakeFolder.syncJournal().getFileRecord(QByteArrayLiteral("NewFolder"), &rec);
+        QVERIFY(rec.isValid());
+        QCOMPARE(rec._etag, QByteArrayLiteral("_invalid_"));
+        QVERIFY(!rec._fileId.isEmpty());
+    }
+
     void testDirDownloadWithError() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         fakeFolder.remoteModifier().mkdir("Y");
         fakeFolder.remoteModifier().mkdir("Y/Z");
         fakeFolder.remoteModifier().insert("Y/Z/d0");

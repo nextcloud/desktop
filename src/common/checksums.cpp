@@ -261,7 +261,9 @@ void ComputeChecksum::startImpl(std::unique_ptr<QIODevice> device)
             }
             return QByteArray();
         }
-        return ComputeChecksum::computeNow(sharedDevice.data(), type);
+        auto result = ComputeChecksum::computeNow(sharedDevice.data(), type);
+        sharedDevice->close();
+        return result;
     }));
 }
 

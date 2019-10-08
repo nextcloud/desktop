@@ -18,8 +18,6 @@
 #include "UtilConstants.h"
 #include "StringUtil.h"
 
-#include "config.h"
-
 #include <iostream>
 #include <vector>
 #include <array>
@@ -47,14 +45,7 @@ std::wstring getUserName() {
 std::wstring CommunicationSocket::DefaultPipePath()
 {
     auto pipename = std::wstring(L"\\\\.\\pipe\\");
-
-#define WIDEN_(exp)   L##exp
-#define WIDEN(exp)    WIDEN_(exp)
-    pipename += WIDEN(APPLICATION_SHORTNAME);
-#undef WIDEN
-#undef WIDEN_
-
-    pipename += L"-";
+    pipename += L"ownCloud-";
     pipename += getUserName();
     return pipename;
 }

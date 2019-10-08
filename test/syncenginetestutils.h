@@ -1206,7 +1206,7 @@ public:
         // A new folder will update the local file state database on first sync.
         // To have a state matching what users will encounter, we have to a sync
         // using an identical local/remote file tree first.
-        syncOnce();
+        ENFORCE(syncOnce());
     }
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs, bool enableShell = false)
@@ -1399,6 +1399,21 @@ inline const FileInfo *findConflict(FileInfo &dir, const QString &filename)
     return nullptr;
 }
 
+struct ItemCompletedSpy : QSignalSpy {
+    explicit ItemCompletedSpy(FakeFolder &folder)
+        : QSignalSpy(&folder.syncEngine(), &OCC::SyncEngine::itemCompleted)
+    {}
+
+    OCC::SyncFileItemPtr findItem(const QString &path) const
+    {
+        for (const QList<QVariant> &args : *this) {
+            auto item = args[0].value<OCC::SyncFileItemPtr>();
+            if (item->destination() == path)
+                return item;
+        }
+        return OCC::SyncFileItemPtr::create();
+    }
+};
 
 // QTest::toString overloads
 namespace OCC {
