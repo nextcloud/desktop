@@ -72,6 +72,8 @@ void HttpCredentialsGui::performOAuthProcess()
         this, &HttpCredentialsGui::asyncAuthResult);
     connect(_asyncAuth.data(), &OAuth::destroyed,
         this, &HttpCredentialsGui::authorisationLinkChanged);
+    connect(_asyncAuth.data(), &OAuth::authorisationLinkChanged,
+        this, &HttpCredentialsGui::authorisationLinkChanged);
     _asyncAuth->start();
     emit authorisationLinkChanged();
 }

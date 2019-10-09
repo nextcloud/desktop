@@ -27,15 +27,20 @@ namespace OCC {
  *
  *   --> start()
  *       |
- *       +----> openBrowser() open the browser to the login page, redirects to http://localhost:xxx
+ *       +----> fetchWellKnown() query the ".well-known/openid-configuration" endpoint
+ *       |
+ *       +----> openBrowser() open the browser to the login page after fetchWellKnown finished.
+ *       |                    Then the browser will redirect to http://localhost:xxx
  *       |
  *       +----> _server starts listening on a TCP port waiting for an HTTP request with a 'code'
  *                |
  *                v
  *             request the access_token and the refresh_token via 'apps/oauth2/api/v1/token'
  *                |
- *                v
- *              emit result(...)
+ *                +-> Request the user_id is not present
+ *                |     |
+ *                v     v
+ *              finalize(...): emit result(...)
  *
  */
 class OAuth : public QObject
@@ -54,8 +59,14 @@ public:
         Error };
     Q_ENUM(Result);
     void start();
-    bool openBrowser();
+    void openBrowser();
     QUrl authorisationLink() const;
+    /**
+     * Call the callback when the call to the well-known endpoint finishes.
+     * (or immediatly if it is ready)
+     * The callback will not be called if this object gets destroyed
+     */
+    void authorisationLinkAsync(std::function<void(const QUrl&)> callback) const;
 
 signals:
     /**
@@ -64,9 +75,23 @@ signals:
      */
     void result(OAuth::Result result, const QString &user = QString(), const QString &token = QString(), const QString &refreshToken = QString());
 
+    /**
+     * emitted when the call to the well-known endpoint is finished
+     */
+    void authorisationLinkChanged(const QUrl &);
+
 private:
-    Account *_account;
+
+    void fetchWellKnown();
+    void finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
+                  const QString &refreshToken, const QString &userId, const QUrl &messageUrl);
+
+    Account* _account;
     QTcpServer _server;
+    bool _wellKnownFinished = false;
+    QUrl _authEndpoint;
+    QUrl _tokenEndpoint;
+    QByteArray _pkceCodeVerifier;
 
 public:
     QString _expectedUser;

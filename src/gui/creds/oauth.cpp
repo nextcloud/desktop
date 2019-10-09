@@ -23,6 +23,7 @@
 #include "theme.h"
 #include "networkjobs.h"
 #include "creds/httpcredentials.h"
+#include <QRandomGenerator>
 
 namespace OCC {
 
@@ -39,7 +40,7 @@ static void httpReplyAndClose(QTcpSocket *socket, const char *code, const char *
         return; // socket can have been deleted if the browser was closed
     socket->write("HTTP/1.1 ");
     socket->write(code);
-    socket->write("\r\nContent-Type: text/html\r\nConnection: close\r\nContent-Length: ");
+    socket->write("\r\nContent-Type: text/html; charset=utf-8\r\nConnection: close\r\nContent-Length: ");
     socket->write(QByteArray::number(qstrlen(html)));
     if (moreHeaders) {
         socket->write("\r\n");
@@ -61,8 +62,14 @@ void OAuth::start()
         return;
     }
 
-    if (!openBrowser())
-        return;
+    quint32 buffer[24];
+    QRandomGenerator::global()->fillRange(buffer);
+    _pkceCodeVerifier = QByteArray(reinterpret_cast<char*>(buffer), sizeof(buffer)).toBase64(QByteArray::Base64UrlEncoding);
+    Q_ASSERT(_pkceCodeVerifier.size() == 128);
+
+    fetchWellKnown();
+
+    openBrowser();
 
     QObject::connect(&_server, &QTcpServer::newConnection, this, [this] {
         while (QPointer<QTcpSocket> socket = _server.nextPendingConnection()) {
@@ -71,7 +78,7 @@ void OAuth::start()
                 QByteArray peek = socket->peek(qMin(socket->bytesAvailable(), 4000LL)); //The code should always be within the first 4K
                 if (peek.indexOf('\n') < 0)
                     return; // wait until we find a \n
-                QRegExp rx("^GET /\\?code=([a-zA-Z0-9]+)[& ]"); // Match a  /?code=...  URL
+                QRegExp rx("^GET /\\?code=([a-zA-Z0-9_-]+)[& ]"); // Match a  /?code=...  URL
                 if (rx.indexIn(peek) != 0) {
                     httpReplyAndClose(socket, "404 Not Found", "<html><head><title>404 Not Found</title></head><body><center><h1>404 Not Found</h1></center></body></html>");
                     return;
@@ -79,7 +86,10 @@ void OAuth::start()
 
                 QString code = rx.cap(1); // The 'code' is the first capture of the regexp
 
-                QUrl requestToken = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
+                QUrl requestToken = _tokenEndpoint.isValid()
+                    ? _tokenEndpoint
+                    : Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
+
                 QNetworkRequest req;
                 req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
@@ -91,10 +101,9 @@ void OAuth::start()
 
                 auto requestBody = new QBuffer;
                 QUrlQuery arguments(QString(
-                    "grant_type=authorization_code&code=%1&redirect_uri=http://localhost:%2")
-                                        .arg(code, QString::number(_server.serverPort())));
+                    "grant_type=authorization_code&code=%1&redirect_uri=http://localhost:%2&code_verifier=%3&scope=openid offline_access")
+                                        .arg(code, QString::number(_server.serverPort()), _pkceCodeVerifier));
                 requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
-
                 auto job = _account->sendRequest("POST", requestToken, req, requestBody);
                 job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
@@ -110,7 +119,9 @@ void OAuth::start()
                         || jsonData.isEmpty() || json.isEmpty() || refreshToken.isEmpty() || accessToken.isEmpty()
                         || json["token_type"].toString() != QLatin1String("Bearer")) {
                         QString errorReason;
-                        QString errorFromJson = json["error"].toString();
+                        QString errorFromJson = json["error_description"].toString();
+                        if (errorFromJson.isEmpty())
+                            QString errorFromJson = json["error"].toString();
                         if (!errorFromJson.isEmpty()) {
                             errorReason = tr("Error returned from the server: <em>%1</em>")
                                               .arg(errorFromJson.toHtmlEscaped());
@@ -129,59 +140,130 @@ void OAuth::start()
                         } else {
                             errorReason = tr("The reply from the server did not contain all expected fields");
                         }
-                        qCWarning(lcOauth) << "Error when getting the accessToken" << json << errorReason;
+                        qCWarning(lcOauth) << "Error when getting the accessToken" << jsonData << errorReason;
                         httpReplyAndClose(socket, "500 Internal Server Error",
                             tr("<h1>Login Error</h1><p>%1</p>").arg(errorReason).toUtf8().constData());
                         emit result(Error);
                         return;
                     }
-                    if (!_expectedUser.isNull() && user != _expectedUser) {
-                        // Connected with the wrong user
-                        QString message = tr("<h1>Wrong user</h1>"
-                                             "<p>You logged-in with user <em>%1</em>, but must login with user <em>%2</em>.<br>"
-                                             "Please log out of %3 in another tab, then <a href='%4'>click here</a> "
-                                             "and log in as user %2</p>")
-                                              .arg(user, _expectedUser, Theme::instance()->appNameGUI(),
-                                                  authorisationLink().toString(QUrl::FullyEncoded));
-                        httpReplyAndClose(socket, "200 OK", message.toUtf8().constData());
-                        // We are still listening on the socket so we will get the new connection
+                    if (!user.isEmpty()) {
+                        finalize(socket, accessToken, refreshToken, user, messageUrl);
                         return;
                     }
-                    const char *loginSuccessfullHtml = "<h1>Login Successful</h1><p>You can close this window.</p>";
-                    if (messageUrl.isValid()) {
-                        httpReplyAndClose(socket, "303 See Other", loginSuccessfullHtml,
-                            QByteArray("Location: " + messageUrl.toEncoded()).constData());
-                    } else {
-                        httpReplyAndClose(socket, "200 OK", loginSuccessfullHtml);
-                    }
-                    emit result(LoggedIn, user, accessToken, refreshToken);
+                    // If the reply don't contains the user id, we must do another call to query it
+                    JsonApiJob *job = new JsonApiJob(_account->sharedFromThis(), QLatin1String("ocs/v1.php/cloud/user"), this);
+                    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+                    QNetworkRequest req;
+                    // We are not connected yet so we need to handle the authentication manually
+                    req.setRawHeader("Authorization", "Bearer " + accessToken.toUtf8());
+                    // We just added the Authorization header, don't let HttpCredentialsAccessManager tamper with it
+                    req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+                    job->startWithRequest(req);
+                    QObject::connect(job, &JsonApiJob::jsonReceived, this, [=](const QJsonDocument &json) {
+                        QString user = json.object().value("ocs").toObject().value("data").toObject().value("id").toString();
+                        finalize(socket, accessToken, refreshToken, user, messageUrl);
+                    });
                 });
             });
         }
     });
 }
 
+void OAuth::finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
+                     const QString &refreshToken, const QString &user, const QUrl &messageUrl) {
+    if (!_expectedUser.isNull() && user != _expectedUser) {
+        // Connected with the wrong user
+        QString message = tr("<h1>Wrong user</h1>"
+                                "<p>You logged-in with user <em>%1</em>, but must login with user <em>%2</em>.<br>"
+                                "Please log out of %3 in another tab, then <a href='%4'>click here</a> "
+                                "and log in as user %2</p>")
+                                .arg(user, _expectedUser, Theme::instance()->appNameGUI(),
+                                    authorisationLink().toString(QUrl::FullyEncoded));
+        httpReplyAndClose(socket, "200 OK", message.toUtf8().constData());
+        // We are still listening on the socket so we will get the new connection
+        return;
+    }
+    const char *loginSuccessfullHtml = "<h1>Login Successful</h1><p>You can close this window.</p>";
+    if (messageUrl.isValid()) {
+        httpReplyAndClose(socket, "303 See Other", loginSuccessfullHtml,
+            QByteArray("Location: " + messageUrl.toEncoded()).constData());
+    } else {
+        httpReplyAndClose(socket, "200 OK", loginSuccessfullHtml);
+    }
+    emit result(LoggedIn, user, accessToken, refreshToken);
+}
+
 QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
     QUrlQuery query;
+    QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
+        .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     query.setQueryItems({ { QLatin1String("response_type"), QLatin1String("code") },
         { QLatin1String("client_id"), Theme::instance()->oauthClientId() },
-        { QLatin1String("redirect_uri"), QLatin1String("http://localhost:") + QString::number(_server.serverPort()) } });
+        { QLatin1String("redirect_uri"), QLatin1String("http://localhost:") + QString::number(_server.serverPort()) },
+        { QLatin1String("code_challenge"), QString::fromLatin1(code_challenge) },
+        { QLatin1String("code_challenge_method"), QLatin1String("S256")},
+        { QLatin1String("scope"), QLatin1String("openid offline_access") },
+        { QLatin1String("prompt"), QLatin1String("consent")}
+    });
     if (!_expectedUser.isNull())
         query.addQueryItem("user", _expectedUser);
-    QUrl url = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/authorize"), query);
+    QUrl url = _authEndpoint.isValid()
+        ? Utility::concatUrlPath(_authEndpoint, {}, query)
+        : Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/authorize"), query);
     return url;
 }
 
-bool OAuth::openBrowser()
+void OAuth::authorisationLinkAsync(std::function<void (const QUrl &)> callback) const
 {
-    if (!QDesktopServices::openUrl(authorisationLink())) {
-        // We cannot open the browser, then we claim we don't support OAuth.
-        emit result(NotSupported, QString());
-        return false;
+    if (_wellKnownFinished) {
+        callback(authorisationLink());
+    } else {
+        connect(this, &OAuth::authorisationLinkChanged, callback);
     }
-    return true;
+}
+
+void OAuth::fetchWellKnown()
+{
+    QUrl wellKnownUrl = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/.well-known/openid-configuration"));
+    QNetworkRequest req;
+    auto job = _account->sendRequest("GET", wellKnownUrl);
+    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+    QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
+        _wellKnownFinished = true;
+        if (reply->error() != QNetworkReply::NoError) {
+            // Most likely the file does not exist, default to the normal endpoint
+            emit this->authorisationLinkChanged(authorisationLink());
+            return;
+        }
+        auto jsonData = reply->readAll();
+        QJsonParseError jsonParseError;
+        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+
+        if (jsonParseError.error == QJsonParseError::NoError) {
+            QString authEp = json["authorization_endpoint"].toString();
+            if (!authEp.isEmpty())
+                this->_authEndpoint = authEp;
+            QString tokenEp = json["token_endpoint"].toString();
+            if (!tokenEp.isEmpty())
+                this->_tokenEndpoint = tokenEp;
+        } else {
+            qCWarning(lcOauth) << "Json parse error in well-known: " << jsonParseError.errorString();
+        }
+
+        emit this->authorisationLinkChanged(authorisationLink());
+    });
+}
+
+void OAuth::openBrowser()
+{
+    authorisationLinkAsync([this](const QUrl &link) {
+        if (!QDesktopServices::openUrl(link)) {
+            // We cannot open the browser, then we claim we don't support OAuth.
+            emit result(NotSupported, QString());
+        }
+    });
 }
 
 } // namespace OCC

@@ -54,8 +54,11 @@ OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
     QObject::connect(_ui.openLinkButton, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
         auto menu = new QMenu(_ui.openLinkButton);
         menu->addAction(tr("Copy link to clipboard"), this, [this] {
-            if (_asyncAuth)
-                QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+            if (_asyncAuth) {
+                _asyncAuth->authorisationLinkAsync([](const QUrl &link) {
+                    QApplication::clipboard()->setText(link.toString(QUrl::FullyEncoded));
+                });
+            }
         });
         menu->setAttribute(Qt::WA_DeleteOnClose);
         menu->popup(_ui.openLinkButton->mapToGlobal(pos));

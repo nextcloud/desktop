@@ -808,7 +808,11 @@ void JsonApiJob::addQueryParams(const QUrlQuery &params)
 
 void JsonApiJob::start()
 {
-    QNetworkRequest req;
+    startWithRequest(QNetworkRequest());
+}
+
+void OCC::JsonApiJob::startWithRequest(QNetworkRequest req)
+{
     req.setRawHeader("OCS-APIREQUEST", "true");
     auto query = _additionalParams;
     query.addQueryItem(QLatin1String("format"), QLatin1String("json"));

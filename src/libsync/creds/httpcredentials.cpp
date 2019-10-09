@@ -412,47 +412,64 @@ bool HttpCredentials::refreshAccessToken()
     if (_refreshToken.isEmpty())
         return false;
 
-    QUrl requestToken = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
+    QUrl wellKnownUrl = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/.well-known/openid-configuration"));
     QNetworkRequest req;
-    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-    QString basicAuth = QString("%1:%2").arg(
-        Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
-    req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
-    req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
-
-    auto requestBody = new QBuffer;
-    QUrlQuery arguments(QString("grant_type=refresh_token&refresh_token=%1").arg(_refreshToken));
-    requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
-
-    auto job = _account->sendRequest("POST", requestToken, req, requestBody);
+    auto job = _account->sendRequest("GET", wellKnownUrl);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError;
-        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-        QString accessToken = json["access_token"].toString();
-        if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
-            // Invalid or empty JSON: Network error maybe?
-            qCWarning(lcHttpCredentials) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
-        } else if (accessToken.isEmpty()) {
-            // If the json was valid, but the reply did not contain an access token, the token
-            // is considered expired. (Usually the HTTP reply code is 400)
-            qCDebug(lcHttpCredentials) << "Expired refresh token. Logging out";
-            _refreshToken.clear();
-        } else {
-            _ready = true;
-            _password = accessToken;
-            _refreshToken = json["refresh_token"].toString();
-            persist();
+        QUrl requestTokenUrl = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
+        if (reply->error() == QNetworkReply::NoError) {
+            auto jsonData = reply->readAll();
+            QJsonParseError jsonParseError;
+            QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+            if (jsonParseError.error == QJsonParseError::NoError) {
+                QString tokenEp = json["token_endpoint"].toString();
+                if (!tokenEp.isEmpty())
+                    requestTokenUrl = tokenEp;
+            }
         }
-        _isRenewingOAuthToken = false;
-        for (const auto &job : _retryQueue) {
-            if (job)
-                job->retry();
-        }
-        _retryQueue.clear();
-        emit fetched();
+
+        QNetworkRequest req;
+        req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+        QString basicAuth = QString("%1:%2").arg(
+            Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
+        req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
+        req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+
+        auto requestBody = new QBuffer;
+        QUrlQuery arguments(QString("grant_type=refresh_token&refresh_token=%1").arg(_refreshToken));
+        requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
+
+        auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
+        job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+        QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
+            auto jsonData = reply->readAll();
+            QJsonParseError jsonParseError;
+            QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+            QString accessToken = json["access_token"].toString();
+            if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
+                // Invalid or empty JSON: Network error maybe?
+                qCWarning(lcHttpCredentials) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
+            } else if (accessToken.isEmpty()) {
+                // If the json was valid, but the reply did not contain an access token, the token
+                // is considered expired. (Usually the HTTP reply code is 400)
+                qCDebug(lcHttpCredentials) << "Expired refresh token. Logging out";
+                _refreshToken.clear();
+            } else {
+                _ready = true;
+                _password = accessToken;
+                _refreshToken = json["refresh_token"].toString();
+                persist();
+            }
+            _isRenewingOAuthToken = false;
+            for (const auto &job : _retryQueue) {
+                if (job)
+                    job->retry();
+            }
+            _retryQueue.clear();
+            emit fetched();
+        });
     });
     _isRenewingOAuthToken = true;
     return true;

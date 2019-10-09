@@ -358,6 +358,10 @@ public:
 
 public slots:
     void start() Q_DECL_OVERRIDE;
+    /**
+     * Start which allow to specify a request that might contains already headers or attributes
+     */
+    void startWithRequest(QNetworkRequest request);
 
 protected:
     bool finished() Q_DECL_OVERRIDE;
