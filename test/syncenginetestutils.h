@@ -770,7 +770,7 @@ public:
         Q_ASSERT(sourceFolder);
         Q_ASSERT(sourceFolder->isDir);
         int count = 0;
-        int size = 0;
+        qlonglong size = 0;
         qlonglong prev = 0;
         char payload = '\0';
 
@@ -798,7 +798,7 @@ public:
 
         // For zsync, get the size from the header, and allow no-chunk uploads (shrinking files)
         if (zsync) {
-            size = request.rawHeader("OC-Total-File-Length").toInt();
+            size = request.rawHeader("OC-Total-File-Length").toLongLong();
             if (count == 0) {
                 if (auto info = remoteRootFileInfo.find(fileName))
                     payload = info->contentChar;
