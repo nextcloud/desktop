@@ -426,7 +426,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1033"/>
         <source>Connecting to %1...</source>
-        <translation>正在連接到 ％1 ...</translation>
+        <translation>正在連接到%1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1036"/>
