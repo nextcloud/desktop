@@ -87,7 +87,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
         _folders << info;
 
         connect(f, &Folder::progressInfo, this, &FolderStatusModel::slotSetProgress, Qt::UniqueConnection);
-        connect(f, &Folder::newBigFolderDiscovered, this, &FolderStatusModel::slotNewBigFolder, Qt::UniqueConnection);
+        connect(f, &Folder::newBigObjectDiscovered, this, &FolderStatusModel::slotNewBigObject, Qt::UniqueConnection);
     }
 
     // Sort by header text
@@ -1210,7 +1210,7 @@ void FolderStatusModel::slotSyncNoPendingBigFolders()
     resetFolders();
 }
 
-void FolderStatusModel::slotNewBigFolder()
+void FolderStatusModel::slotNewBigObject()
 {
     auto f = qobject_cast<Folder *>(sender());
     ASSERT(f);

@@ -145,7 +145,7 @@ private slots:
     void slotLscolFinishedWithError(QNetworkReply *r);
     void slotFolderSyncStateChange(Folder *f);
     void slotFolderScheduleQueueChanged();
-    void slotNewBigFolder();
+    void slotNewBigObject();
 
     /**
      * "In progress" labels for fetching data from the server are only
