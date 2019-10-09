@@ -114,7 +114,6 @@ private:
     bool _userTriggeredConnect;
     bool _debugMode;
     bool _backgroundMode;
-    bool _isQuitting;
 
     ClientProxy _proxy;
 
