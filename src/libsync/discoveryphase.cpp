@@ -161,7 +161,9 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
     if (it != _deletedItem.end()) {
         ENFORCE((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE
             // re-creation of virtual files count as a delete
-             || ((*it)->_type == ItemTypeVirtualFile && (*it)->_instruction == CSYNC_INSTRUCTION_NEW));
+             || ((*it)->_type == ItemTypeVirtualFile && (*it)->_instruction == CSYNC_INSTRUCTION_NEW)
+             || ((*it)->_isRestoration && (*it)->_instruction == CSYNC_INSTRUCTION_NEW)
+               );
         (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
         result = true;
         oldEtag = (*it)->_etag;
