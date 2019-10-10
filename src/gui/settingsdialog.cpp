@@ -311,10 +311,10 @@ void SettingsDialog::accountRemoved(AccountState *s)
 void SettingsDialog::customizeStyle()
 {
     QString highlightColor(palette().highlight().color().name());
-    QString altBase(palette().alternateBase().color().name());
+    QString highlightTextColor(palette().highlightedText().color().name());
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
-    _toolBar->setStyleSheet(QString::fromLatin1(TOOLBAR_CSS).arg(background, dark, highlightColor, altBase));
+    _toolBar->setStyleSheet(QString::fromLatin1(TOOLBAR_CSS).arg(background, dark, highlightColor, highlightTextColor));
 
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
         QIcon icon = createColorAwareIcon(a->property("iconPath").toString());
