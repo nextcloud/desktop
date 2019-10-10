@@ -197,7 +197,7 @@ public:
      */
     bool showInProtocolTab() const
     {
-        return !showInIssuesTab()
+        return (!showInIssuesTab() || _status == SyncFileItem::Restoration)
             // Don't show conflicts that were resolved as "not a conflict after all"
             && !(_instruction == CSYNC_INSTRUCTION_CONFLICT && _status == SyncFileItem::Success);
     }
