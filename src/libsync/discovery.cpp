@@ -1098,6 +1098,7 @@ void ProcessDirectoryJob::processFileFinalize(
 
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+    bool removed = item->_instruction == CSYNC_INSTRUCTION_REMOVE;
     if (checkPermissions(item)) {
         if (item->_isRestoration && item->isDirectory())
             recurse = true;
@@ -1106,7 +1107,7 @@ void ProcessDirectoryJob::processFileFinalize(
     }
     if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer, this);
-        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+        if (removed) {
             job->setParent(_discoveryData);
             _discoveryData->_queuedDeletedDirectories[path._original] = job;
         } else {
@@ -1114,7 +1115,7 @@ void ProcessDirectoryJob::processFileFinalize(
             _queuedJobs.push_back(job);
         }
     } else {
-        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE
+        if (removed
             // For the purpose of rename deletion, restored deleted placeholder is as if it was deleted
             || (item->_type == ItemTypeVirtualFile && item->_instruction == CSYNC_INSTRUCTION_NEW)) {
             _discoveryData->_deletedItem[path._original] = item;
