@@ -74,6 +74,7 @@ Some small changes and bug fixes:
 * Sharing: When sharing from context menu, show dialog if share creation fails (#7286)
 * Sharing: Always show at least readonly permissions (#7429)
 * OSX: Fix issues with Finder integration being gone after reboot
+* OSX: Use the same implementation as on Linux/Windows for the settings dialog (#7371)
 * Linux: Add autostart delay to avoid tray icon issues (#6518)
 * Folder watcher: Test before relying on it (#7241)
 * Client certs: Fix storage of large certs in older Windows versions (#6776)
