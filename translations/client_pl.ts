@@ -107,7 +107,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="14"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Uwierzytelnienie przeglądarki</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Uwierzytelnienie przeglądarki</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="48"/>
@@ -602,7 +602,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>Autentykacja certyfikatem SSL klienta</translation>
+        <translation>Uwierzytelnianie certyfikatu klienta SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -658,7 +658,7 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="30"/>
         <source>Authentication Required</source>
-        <translation>Wymagana autoryzacja</translation>
+        <translation>Wymagane uwierzytelnienie</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -717,7 +717,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Błąd autentykacji: nazwa użytkownika lub hasło są nieprawidłowe.</translation>
+        <translation>Błąd uwierzytelnienia: nazwa użytkownika lub hasło są nieprawidłowe.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
@@ -1337,7 +1337,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Błąd autentykacji w dostępie do %1</translation>
+        <translation>Uwierzytelnianie nie powiodło się podczas uzyskiwania dostępu do %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="227"/>
@@ -2569,7 +2569,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>Wymagane uwierzytelnienie Proxy</translation>
+        <translation>Wymagane uwierzytelnienie serwera proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -2899,7 +2899,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Reauthentication required</source>
-        <translation>Wymagana powtórna autoryzacja</translation>
+        <translation>Wymagane jest ponowne uwierzytelnienie</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>

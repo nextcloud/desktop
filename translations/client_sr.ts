@@ -107,7 +107,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="14"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Провера идентитета из веб читача</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Провера идентитета из веб читача</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="48"/>
@@ -958,7 +958,10 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Сви фајлови из синхронизационе фасцикле &apos;%1&apos; су избрисани на серверу.
+Ово брисање ће бити синхронизовано са локалном синхронизационом фасциклом и тиме ће ови фајлови постати недоступни, осим ако немате право њиховог враћања.
+Ако одлучите да повратите фајлове, они ће бити опет синхронизовани назад са сервером, уколико имате права то да урадите.
+Ако одлучите да обришете фајлове, они ће Вам постати недоступни, осим ако нисте власник.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -3067,7 +3070,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Верзија сервера: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -3082,7 +3085,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>Веза није безбедна</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
