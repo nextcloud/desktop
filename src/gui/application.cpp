@@ -670,14 +670,7 @@ QString substLang(const QString &lang)
 
 void Application::setupTranslations()
 {
-    QStringList uiLanguages;
-// uiLanguages crashes on Windows with 4.8.0 release builds
-#if (QT_VERSION >= 0x040801) || (QT_VERSION >= 0x040800 && !defined(Q_OS_WIN))
-    uiLanguages = QLocale::system().uiLanguages();
-#else
-    // older versions need to fall back to the systems locale
-    uiLanguages << QLocale::system().name();
-#endif
+    QStringList uiLanguages = QLocale::system().uiLanguages();
 
     QString enforcedLocale = Theme::instance()->enforcedLocale();
     if (!enforcedLocale.isEmpty())

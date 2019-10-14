@@ -291,12 +291,9 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, const QByteArray &chec
         return calcSha1(device);
     } else if (checksumType == checkSumSHA2C) {
         return calcCryptoHash(device, QCryptographicHash::Sha256);
-    }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
-    else if (checksumType == checkSumSHA3C) {
+    } else if (checksumType == checkSumSHA3C) {
         return calcCryptoHash(device, QCryptographicHash::Sha3_256);
     }
-#endif
 #ifdef ZLIB_FOUND
     else if (checksumType == checkSumAdlerC) {
         return calcAdler32(device);
