@@ -13,14 +13,14 @@ using namespace OCC;
 
 /* Upload a 1/3 of a file of given size.
  * fakeFolder needs to be synchronized */
-static void partialUpload(FakeFolder &fakeFolder, const QString &name, int size)
+static void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 size)
 {
     QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     QCOMPARE(fakeFolder.uploadState().children.count(), 0); // The state should be clean
 
     fakeFolder.localModifier().insert(name, size);
     // Abort when the upload is at 1/3
-    int sizeWhenAbort = -1;
+    qint64 sizeWhenAbort = -1;
     auto con = QObject::connect(&fakeFolder.syncEngine(),  &SyncEngine::transmissionProgress,
                                     [&](const ProgressInfo &progress) {
                 if (progress.completedSize() > (progress.totalSize() /3 )) {
@@ -589,6 +589,36 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    // Test uploading large files (2.5GiB)
+    void testVeryBigFiles() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        const qint64 size = 2.5 * 1024 * 1024 * 1024; // 2.5 GiB
+
+        // Partial upload of big files
+        partialUpload(fakeFolder, "A/a0", size);
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        auto chunkingId = fakeFolder.uploadState().children.first().name;
+
+        // Now resume
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+
+        // The same chunk id was re-used
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
+
+
+        // Upload another file again, this time without interruption
+        fakeFolder.localModifier().appendByte("A/a0");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size + 1);
+    }
+
+
 };
 
 QTEST_GUILESS_MAIN(TestChunkingNG)

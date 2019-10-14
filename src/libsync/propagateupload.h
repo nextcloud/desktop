@@ -369,7 +369,7 @@ private:
     qint64 _bytesToUpload;
 
     uint _transferId = 0; /// transfer id (part of the url)
-    int _currentChunkOffset = 0; /// byte offset of the next chunk data that will be sent
+    qint64 _currentChunkOffset = 0; /// byte offset of the next chunk data that will be sent
     qint64 _currentChunkSize = 0; /// current chunk size
     bool _removeJobError = false; /// if not null, there was an error removing the job
     bool _zsyncSupported = false; /// if zsync is supported this will be set to true
