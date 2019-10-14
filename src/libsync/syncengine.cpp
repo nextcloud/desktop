@@ -279,9 +279,8 @@ void SyncEngine::conflictRecordMaintenance()
     //
     // This happens when the conflicts table is new or when conflict files
     // are downlaoded but the server doesn't send conflict headers.
-    for (const auto &path : _seenFiles) {
-        if (!Utility::isConflictFile(path))
-            continue;
+    for (const auto &path : _seenConflictFiles) {
+        ASSERT(Utility::isConflictFile(path));
 
         auto bapath = path.toUtf8();
         if (!conflictRecordPaths.contains(bapath)) {
@@ -304,11 +303,8 @@ void SyncEngine::conflictRecordMaintenance()
 
 void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
-    _seenFiles.insert(item->_file);
-    if (!item->_renameTarget.isEmpty()) {
-        // Yes, this records both the rename renameTarget and the original so we keep both in case of a rename
-        _seenFiles.insert(item->_renameTarget);
-    }
+    if (Utility::isConflictFile(item->_file))
+        _seenConflictFiles.insert(item->_file);
     if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
         // For directories, metadata-only updates will be done after all their files are propagated.
 
@@ -435,7 +431,7 @@ void SyncEngine::startSync()
 
     _hasNoneFiles = false;
     _hasRemoveFile = false;
-    _seenFiles.clear();
+    _seenConflictFiles.clear();
 
     _progressInfo->reset();
 
@@ -813,7 +809,7 @@ void SyncEngine::finalize(bool success)
 
     // Delete the propagator only after emitting the signal.
     _propagator.clear();
-    _seenFiles.clear();
+    _seenConflictFiles.clear();
     _uniqueErrors.clear();
     _localDiscoveryPaths.clear();
     _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
