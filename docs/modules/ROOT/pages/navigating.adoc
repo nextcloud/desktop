@@ -201,4 +201,4 @@ In addition to excluding files and directories that use patterns defined in this
 * The ownCloud Client always excludes files containing characters that cannot be synchronized to other file systems.
 * Files are removed that cause individual errors three times during a synchronization. However, the client provides the option of retrying a synchronization three additional times on files that produce errors.
 
-For more detailed information see `ignored-files-label`.
+For more detailed information see xref:architecture.adoc#ignored-files[the Ignored Files section].

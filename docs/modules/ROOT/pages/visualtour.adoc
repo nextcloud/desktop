@@ -134,4 +134,4 @@ With version 1.5.0 it also ignores files that caused individual errors while syn
 These are listed in the activity view.
 There also is a button to retry the sync for another three times.
 
-For more detailed information see `ignored-files-label`.
+For more detailed information see xref:architecture.adoc#ignored-files[the Ignored Files section].
