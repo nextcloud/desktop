@@ -938,8 +938,8 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                 QFileInfo fileInfo(fileData.localPath);
                 auto parentDir = fileData.parentFolder();
                 auto parentRecord = parentDir.journalRecord();
-                bool canAddToDir =
-                    (fileInfo.isFile() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
+                bool canAddToDir =  parentRecord._remotePerm.isNull()
+                    || (fileInfo.isFile() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
                     || (fileInfo.isDir() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories));
                 bool canChangeFile =
                     !isOnTheServer
