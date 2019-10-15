@@ -122,6 +122,7 @@ private:
 
     // options from command line:
     bool _showLogWindow;
+    bool _showSettings = false;
     QString _logFile;
     QString _logDir;
     std::chrono::hours _logExpire;

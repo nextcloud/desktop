@@ -10,6 +10,8 @@ The other options are:
 [options="header"]
 |===
 | Option | Description
+| `-s` +
+`--showsettings` | Open the settings dialog while starting.
 | `--logwindow` | Opens a window displaying log output.
 | `--logfile <filename>` | Write log output to the file specified. To write to stdout, specify `-` as the filename.
 | `--logdir <name>` | Writes each synchronization log output in a new file in the specified directory.

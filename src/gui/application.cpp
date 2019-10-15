@@ -68,6 +68,7 @@ namespace {
     static const char optionsC[] =
         "Options:\n"
         "  -h --help            : show this help screen.\n"
+        "  -s --showsettings    : show the settings dialog while starting.\n"
         "  --logwindow          : open a window to show log output.\n"
         "  --logfile <filename> : write log output to file <filename>.\n"
         "  --logfile -          : write log output to stdout.\n"
@@ -311,6 +312,9 @@ Application::Application(int &argc, char **argv)
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
+    if (_showSettings) {
+        _gui->slotShowSettings();
+    }
 
     FolderMan::instance()->setupFolders();
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
@@ -515,10 +519,14 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         const int lengthOfMsgPrefix = 17;
         QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
         _showLogWindow = false;
+        _showSettings = false;
         parseOptions(options);
         setupLogging();
         if (_showLogWindow) {
             _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+        }
+        if (_showSettings) {
+            _gui->slotShowSettings();
         }
     } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
@@ -544,6 +552,8 @@ void Application::parseOptions(const QStringList &options)
         if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
             setHelp();
             break;
+        } else if (option == QLatin1String("--showsettings") || option == QLatin1String("-s")) {
+            _showSettings = true;
         } else if (option == QLatin1String("--logwindow") || option == QLatin1String("-l")) {
             _showLogWindow = true;
         } else if (option == QLatin1String("--logfile")) {
