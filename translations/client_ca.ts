@@ -960,7 +960,10 @@ Això significa que és possible que el client de sincronització no pugui carre
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Tots els fitxers de la carpeta de sincronització &quot;% 1&quot; s&apos;han suprimit del servidor.
+Aquestes eliminacions se sincronitzaran a la vostra carpeta de sincronització local, fent que aquests fitxers no estiguin disponibles si no teniu dret a la restauració.
+Si decidiu restaurar els fitxers, es tornaran a sincronitzar amb el servidor si teniu drets per fer-ho.
+Si decidiu suprimir els fitxers, no estaran disponibles, tret que en sigueu el propietari.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
