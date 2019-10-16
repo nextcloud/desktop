@@ -362,6 +362,16 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 {
     if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
         // "Add Folder Sync Connection"
+        QTreeView *tv = ui->_folderList;
+        auto pos = tv->mapFromGlobal(QCursor::pos());
+        QStyleOptionViewItem opt;
+        opt.initFrom(tv);
+        auto btnRect = tv->visualRect(indx);
+        auto btnSize = tv->itemDelegate(indx)->sizeHint(opt, indx);
+        auto actual = QStyle::visualRect(opt.direction, btnRect, QRect(btnRect.topLeft(), btnSize));
+        if (!actual.contains(pos))
+            return;
+
         if (indx.flags() & Qt::ItemIsEnabled) {
             slotAddFolder();
         } else {
