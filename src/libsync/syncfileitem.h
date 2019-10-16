@@ -105,6 +105,7 @@ public:
         , _errorMayBeBlacklisted(false)
         , _status(NoStatus)
         , _isRestoration(false)
+        , _isSelectiveSync(false)
         , _httpErrorCode(0)
         , _affectedItems(1)
         , _instruction(CSYNC_INSTRUCTION_NONE)
@@ -241,6 +242,7 @@ public:
     // Variables useful to report to the user
     Status _status BITFIELD(4);
     bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
+    bool _isSelectiveSync BITFIELD(1); // The file is removed or ignored because it is in the selective sync list
     quint16 _httpErrorCode;
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
