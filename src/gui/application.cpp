@@ -264,6 +264,8 @@ Application::~Application()
     }
 
     // Remove the account from the account manager so it can be deleted.
+    disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
 }
 
