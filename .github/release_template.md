@@ -106,7 +106,7 @@ On Release Day (for final release):
 * [ ] Update https://owncloud.com/download/#desktop-clients (both de & en, achim via #marketing)
 * [ ] Announce on https://central.owncloud.org
 * [ ] Announce on announcements@owncloud.org Link to the central post so discussion happens there.
-* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian) @Germano0 (Fedora)
+* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian)
 * [ ] Send out Social (tweet, blog, other)
 * [ ] Send out customer communication (if any)
 * [ ] Inform GCX that the new version is released (gcx@owncloud.com)
