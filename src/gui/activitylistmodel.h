@@ -51,6 +51,7 @@ public:
     void addNotificationToActivityList(Activity activity);
     void clearNotifications();
     void addErrorToActivityList(Activity activity);
+    void addIgnoredFileToList(Activity newActivity);
     void addSyncFileItemToActivityList(Activity activity);
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(Activity activity);
@@ -73,6 +74,8 @@ private:
     ActivityList _activityLists;
     ActivityList _syncFileItemLists;
     ActivityList _notificationLists;
+    ActivityList _listOfIgnoredFiles;
+    Activity _notificationIgnoredFiles;
     ActivityList _notificationErrorsLists;
     ActivityList _finalList;
     AccountState *_accountState;
