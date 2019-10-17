@@ -902,13 +902,19 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
     }
 
     // add new directories or remove gone away dirs to the watcher
-    if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW) {
-        if (_folderWatcher)
-            _folderWatcher->addPath(path() + item->_file);
-    }
-    if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-        if (_folderWatcher)
-            _folderWatcher->removePath(path() + item->_file);
+    if (_folderWatcher && item->isDirectory()) {
+	switch (item->_instruction) {
+	    case CSYNC_INSTRUCTION_NEW:
+                _folderWatcher->addPath(path() + item->_file);
+	    break;
+	    case CSYNC_INSTRUCTION_REMOVE:
+                _folderWatcher->removePath(path() + item->_file);
+	    break;
+	    case CSYNC_INSTRUCTION_RENAME:
+                _folderWatcher->removePath(path() + item->_file);
+                _folderWatcher->addPath(path() + item->destination());
+	    break;
+	}
     }
 
     // Success and failure of sync items adjust what the next sync is
