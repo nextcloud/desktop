@@ -14,29 +14,10 @@
 #include "account.h"
 #include "accountstate.h"
 #include "configfile.h"
-#include "creds/httpcredentials.h"
+#include "testhelper.h"
 
 using namespace OCC;
-
-class HttpCredentialsTest : public HttpCredentials {
-public:
-    HttpCredentialsTest(const QString& user, const QString& password)
-        : HttpCredentials(user, password)
-    {}
-
-    void askFromUser() Q_DECL_OVERRIDE {
-
-    }
-};
-
-static FolderDefinition folderDefinition(const QString &path) {
-    FolderDefinition d;
-    d.localPath = path;
-    d.targetPath = path;
-    d.alias = path;
-    return d;
-}
-
+class HttpCredentials;
 
 class TestFolderMan: public QObject
 {

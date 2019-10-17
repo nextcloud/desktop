@@ -99,6 +99,7 @@ void Flow2AuthCredsPage::asyncAuthResult(Flow2Auth::Result r, const QString &use
         _appPassword = appPassword;
         OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
         Q_ASSERT(ocWizard);
+
         emit connectToOCUrl(ocWizard->account()->url().toString());
         break;
     }

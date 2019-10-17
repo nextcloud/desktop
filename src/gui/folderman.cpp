@@ -75,7 +75,7 @@ FolderMan::FolderMan(QObject *parent)
         this, &FolderMan::slotScheduleFolderByTime);
     _timeScheduler.start();
 
-    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+    connect(AccountManager::instance(), &AccountManager::removeAccountFolders,
         this, &FolderMan::slotRemoveFoldersForAccount);
 
     connect(_lockWatcher.data(), &LockWatcher::fileUnlocked,
@@ -443,7 +443,7 @@ void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
 void FolderMan::slotFolderCanSyncChanged()
 {
     Folder *f = qobject_cast<Folder *>(sender());
-    ASSERT(f);
+     ASSERT(f);
     if (f->canSync()) {
         _socketApi->slotRegisterPath(f->alias());
     } else {
@@ -1082,6 +1082,73 @@ bool FolderMan::startFromScratch(const QString &localFolder)
     }
 
     return true;
+}
+
+void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
+{
+    QVarLengthArray<Folder *, 16> foldersToRemove;
+    Folder::MapIterator i(_folderMap);
+    while (i.hasNext()) {
+        i.next();
+        Folder *folder = i.value();
+        if (folder->accountState() == accountState) {
+            foldersToRemove.append(folder);
+        }
+    }
+
+    bool success = false;
+    foreach (const auto &f, foldersToRemove) {
+        if (!f) {
+            qCCritical(lcFolderMan) << "Can not remove null folder";
+            return;
+        }
+
+        qCInfo(lcFolderMan) << "Removing " << f->alias();
+
+        const bool currentlyRunning = (_currentSyncFolder == f);
+        if (currentlyRunning) {
+            // abort the sync now
+            terminateSyncProcess();
+        }
+
+        if (_scheduledFolders.removeAll(f) > 0) {
+            emit scheduleQueueChanged();
+        }
+
+        // wipe database
+        f->wipe();
+
+        // wipe data
+        QDir userFolder(f->path());
+        if (userFolder.exists()) {
+            success = userFolder.removeRecursively();
+            if (!success) {
+                qCWarning(lcFolderMan) << "Failed to remove existing folder " << f->path();
+            } else {
+                qCInfo(lcFolderMan) << "wipe: Removed  file " << f->path();
+            }
+
+
+        } else {
+            success = true;
+            qCWarning(lcFolderMan) << "folder does not exist, can not remove.";
+        }
+
+        f->setSyncPaused(true);
+
+        // remove the folder configuration
+        f->removeFromSettings();
+
+        unloadFolder(f);
+        if (currentlyRunning) {
+            delete f;
+        }
+
+        _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+    }
+
+    emit folderListChanged(_folderMap);
+    emit wipeDone(accountState, success);
 }
 
 void FolderMan::setDirtyProxy()

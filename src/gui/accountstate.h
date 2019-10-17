@@ -29,6 +29,7 @@ namespace OCC {
 
 class AccountState;
 class Account;
+class RemoteWipe;
 
 typedef QExplicitlySharedDataPointer<AccountState> AccountStatePtr;
 
@@ -150,6 +151,9 @@ public:
     */
     void setNavigationAppsEtagResponseHeader(const QByteArray &value);
 
+    ///Asks for user credentials
+    void handleInvalidCredentials();
+
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
@@ -164,7 +168,11 @@ signals:
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
-    void slotInvalidCredentials();
+
+    /// When client gets a 401 or 403 checks if server requested remote wipe
+    /// before asking for user credentials again
+    void slotHandleRemoteWipeCheck();
+
     void slotCredentialsFetched(AbstractCredentials *creds);
     void slotCredentialsAsked(AbstractCredentials *creds);
 
@@ -190,6 +198,13 @@ private:
      * Milliseconds for which to delay reconnection after 503/maintenance.
      */
     int _maintenanceToConnectedDelay;
+
+    /**
+     * Connects remote wipe check with the account
+     * the log out triggers the check (loads app password -> create request)
+     */
+    RemoteWipe *_remoteWipe;
+
 };
 }
 

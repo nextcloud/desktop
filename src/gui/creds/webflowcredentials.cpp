@@ -358,6 +358,8 @@ void WebFlowCredentials::forgetSensitiveData() {
 
     fetchUser();
 
+    _account->deleteAppPassword();
+
     const QString kck = keychainKey(_account->url().toString(), _user, _account->id());
     if (kck.isEmpty()) {
         qCDebug(lcWebFlowCredentials()) << "InvalidateToken: User is empty, bailing out!";
@@ -416,6 +418,9 @@ void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
 
     if (reply->error() == QNetworkReply::NoError) {
         _credentialsValid = true;
+
+        /// Used later for remote wipe
+        _account->setAppPassword(_password);
     }
 }
 
