@@ -89,7 +89,7 @@
         </size>
        </property>
        <property name="text">
-        <string>share label</string>
+        <string notr="true">share label</string>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
@@ -120,7 +120,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Icon</string>
+        <string notr="true">Icon</string>
        </property>
       </widget>
      </item>
@@ -151,8 +151,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>352</width>
-        <height>68</height>
+        <width>367</width>
+        <height>85</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="scrollAreaVerticalLayout"/>

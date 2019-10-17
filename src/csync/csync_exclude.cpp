@@ -346,8 +346,8 @@ bool ExcludedFiles::reloadExcludeFiles()
     _fullRegexDir.clear();
 
     bool success = true;
-    for (auto basePath : _excludeFiles.keys()) {
-        for (auto file : _excludeFiles.value(basePath)) {
+    for (const auto& basePath : _excludeFiles.keys()) {
+        for (const auto& file : _excludeFiles.value(basePath)) {
             success = loadExcludeFile(basePath, file);
         }
     }
