@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[sl]=@APPLICATION_ICON_NAME@
-Name[sl]=@APPLICATION_NAME@ program za usklajevanje
-Comment[sl]=@APPLICATION_NAME@ program za usklajevanje
-GenericName[sl]=Usklajevanje map
+Icon[sw]=@APPLICATION_ICON_NAME@
+Name[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa
+Comment[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa 
+GenericName[sw]=Fanana Kabrasha

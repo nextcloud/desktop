@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[sl]=@APPLICATION_ICON_NAME@
-Name[sl]=@APPLICATION_NAME@ program za usklajevanje
-Comment[sl]=@APPLICATION_NAME@ program za usklajevanje
-GenericName[sl]=Usklajevanje map
+Icon[cy_GB]=@APPLICATION_ICON_NAME@
+Name[cy_GB]=@APPLICATION_NAME@ cleient cydweddu bwrdd gwaith
+Comment[cy_GB]=@APPLICATION_NAME@ cleient cydweddu bwrdd gwaith
+GenericName[cy_GB]=Cydweddu Ffolder

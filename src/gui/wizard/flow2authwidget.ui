@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Browser Authentication</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -73,6 +73,7 @@
     <widget class="QCommandLinkButton" name="copyLinkButton">
      <property name="font">
       <font>
+       <family>Segoe UI</family>
        <weight>50</weight>
        <bold>false</bold>
       </font>

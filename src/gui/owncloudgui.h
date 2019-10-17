@@ -168,6 +168,7 @@ private:
     QAction *_actionQuit;
     QAction *_actionCrash;
 
+    QMenu *_navLinksMenu;
     QMap<AccountStatePtr, QJsonArray> _navApps;
 
     QList<QAction *> _recentItemsActions;

@@ -107,7 +107,7 @@
            <enum>QFrame::Plain</enum>
           </property>
           <property name="text">
-           <string>TextLabel</string>
+           <string notr="true">TextLabel</string>
           </property>
           <property name="textFormat">
            <enum>Qt::RichText</enum>

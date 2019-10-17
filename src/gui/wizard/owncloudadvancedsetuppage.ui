@@ -399,7 +399,7 @@
    <item>
     <widget class="QLabel" name="syncModeLabel">
      <property name="text">
-      <string>Status message</string>
+      <string notr="true">Status message</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
