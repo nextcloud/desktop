@@ -1,8 +1,6 @@
 project(gui)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
-set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
-set(CMAKE_AUTORCC TRUE)
 add_subdirectory(updater)
 
 #TODO Move resources files
@@ -231,13 +229,13 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     # we may not add MACOSX_BUNDLE here, if not building one
 
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
-    add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
+    add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
-    add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
+    add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${client_I18N} DESTINATION ${QM_DIR})
@@ -257,10 +255,6 @@ endif()
 add_library(updater STATIC ${updater_SRCS})
 target_link_libraries(updater ${synclib_NAME} ${updater_DEPS} Qt5::Widgets Qt5::Network Qt5::Xml)
 target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-
-set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
-)
 
 target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::Xml)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )

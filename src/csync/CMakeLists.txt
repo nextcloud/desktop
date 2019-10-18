@@ -1,5 +1,4 @@
 project(libcsync)
-set(CMAKE_AUTOMOC TRUE)
 # global needed variables
 set(APPLICATION_NAME "ocsync")
 
@@ -7,12 +6,9 @@ set(LIBRARY_VERSION ${MIRALL_VERSION})
 set(LIBRARY_SOVERSION "0")
 
 # add definitions
-include(DefineCMakeDefaults)
 include(DefinePlatformDefaults)
 include(DefineCompilerFlags)
 include(DefineOptions.cmake)
-
-include(DefineInstallationPaths)
 
 include(ConfigureChecks.cmake)
 include(../common/common.cmake)
@@ -103,8 +99,6 @@ set_target_properties(
         ${LIBRARY_VERSION}
       SOVERSION
         ${LIBRARY_SOVERSION}
-      RUNTIME_OUTPUT_DIRECTORY
-        ${BIN_OUTPUT_DIRECTORY}
 )
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
   INSTALL(

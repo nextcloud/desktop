@@ -18,6 +18,7 @@ endif(CMAKE_COMPILER_IS_GNUCC AND NOT MINGW)
 
 function (ADD_CMOCKA_TEST _testName _testSource)
     add_executable(${_testName} ${_testSource})
+    ecm_mark_nongui_executable(${_testName})
     target_link_libraries(${_testName} ${ARGN})
     add_test(${_testName} ${CMAKE_CURRENT_BINARY_DIR}/${_testName})
 endfunction (ADD_CMOCKA_TEST)

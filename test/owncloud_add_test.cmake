@@ -1,12 +1,11 @@
 find_package(Qt5 COMPONENTS Core Test Xml Network REQUIRED)
 
 macro(owncloud_add_test test_class additional_cpp)
-    set(CMAKE_AUTOMOC TRUE)
     set(OWNCLOUD_TEST_CLASS ${test_class})
     string(TOLOWER "${OWNCLOUD_TEST_CLASS}" OWNCLOUD_TEST_CLASS_LOWERCASE)
 
     add_executable(${OWNCLOUD_TEST_CLASS}Test test${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp ${additional_cpp})
-    set_target_properties(${OWNCLOUD_TEST_CLASS}Test PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
+    ecm_mark_nongui_executable(${OWNCLOUD_TEST_CLASS}Test)
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
         updater
@@ -24,12 +23,11 @@ macro(owncloud_add_test test_class additional_cpp)
 endmacro()
 
 macro(owncloud_add_benchmark test_class additional_cpp)
-    set(CMAKE_AUTOMOC TRUE)
     set(OWNCLOUD_TEST_CLASS ${test_class})
     string(TOLOWER "${OWNCLOUD_TEST_CLASS}" OWNCLOUD_TEST_CLASS_LOWERCASE)
 
     add_executable(${OWNCLOUD_TEST_CLASS}Bench benchmarks/bench${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp ${additional_cpp})
-    set_target_properties(${OWNCLOUD_TEST_CLASS}Bench PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
+    ecm_mark_nongui_executable(${OWNCLOUD_TEST_CLASS}Bench)
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench
         updater

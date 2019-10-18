@@ -1,5 +1,4 @@
 project(cmd)
-set(CMAKE_AUTOMOC TRUE)
 
 set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 set(cmd_SRC
@@ -17,8 +16,7 @@ endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
     add_executable(${cmd_NAME}  ${cmd_SRC})
-    set_target_properties(${cmd_NAME} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
+    ecm_mark_nongui_executable(${cmd_NAME})
 
     target_link_libraries(${cmd_NAME} "${csync_NAME}" "${synclib_NAME}" Qt5::Core Qt5::Network)
 

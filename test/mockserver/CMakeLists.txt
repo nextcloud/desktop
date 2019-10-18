@@ -1,5 +1,4 @@
 project(gui)
-set(CMAKE_AUTOMOC TRUE)
 
 set(MOCKSERVER_NAME mockserver)
 
@@ -15,7 +14,7 @@ set(mockserver_HDRS
 )
 
 # add_executable( ${MOCKSERVER_NAME} main.cpp ${final_src})
-add_executable(${MOCKSERVER_NAME} WIN32 ${mockserver_SRCS} ${mockserver_HDRS})
+add_executable(${MOCKSERVER_NAME} ${mockserver_SRCS} ${mockserver_HDRS})
 qt5_use_modules(${MOCKSERVER_NAME} Network Xml)
 target_link_libraries(${MOCKSERVER_NAME} ${QT_LIBRARIES})
 

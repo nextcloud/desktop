@@ -9,6 +9,10 @@ feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKA
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
 
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(ECMMarkNonGuiExecutable)
+
 if (APPLE OR WIN32)
     set(USE_OUR_OWN_SQLITE3 TRUE)
     set(SQLITE3_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3)
@@ -26,14 +30,11 @@ if(UNIT_TESTING)
 endif()
 include(CTest)
 
-set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 
 set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
 set(csync_NAME "${APPLICATION_EXECUTABLE}_csync")
 
-include(Warnings)
 
 # For config.h
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
@@ -52,8 +53,6 @@ if(NOT WITH_CRASHREPORTER)
     message(STATUS "Build of crashreporter disabled.")
 endif()
 
-include(GNUInstallDirs)
-include(DefineInstallationPaths)
 include(GenerateExportHeader)
 
 include(GetGitRevisionDescription)

@@ -32,7 +32,7 @@ list(APPEND crashreporter_RC "${CMAKE_CURRENT_BINARY_DIR}/resources.qrc")
 
 
 if(NOT BUILD_LIBRARIES_ONLY)
-    add_executable( ${CRASHREPORTER_EXECUTABLE} WIN32
+    add_executable( ${CRASHREPORTER_EXECUTABLE}
         ${crashreporter_SOURCES}
         ${crashreporter_HEADERS_MOC}
         ${crashreporter_UI_HEADERS}
