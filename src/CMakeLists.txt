@@ -31,6 +31,11 @@ if(NOT MSVC)
   endif()
 endif()
 
+# Calling Qt's qCWarning(category, ...) with no params for "..." is a GNU
+# extension (C++11 §16.3/4 forbids them). Silence clang's warnings.
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-gnu-zero-variadic-macro-arguments")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-gnu-zero-variadic-macro-arguments")
+
 if(WIN32)
   # Enable DEP & ASLR
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /nxcompat /dynamicbase")
