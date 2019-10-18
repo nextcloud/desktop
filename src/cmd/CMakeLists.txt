@@ -1,5 +1,3 @@
-project(cmd)
-
 set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 set(cmd_SRC
     cmd.cpp
@@ -7,12 +5,6 @@ set(cmd_SRC
     netrcparser.cpp
    )
 
-
-if(UNIX AND NOT APPLE)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIE")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie")
-endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
     add_executable(${cmd_NAME}  ${cmd_SRC})

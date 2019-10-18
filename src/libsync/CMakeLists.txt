@@ -1,5 +1,3 @@
-project(libsync)
-
 if ( APPLE )
     list(APPEND OS_SPECIFIC_LINK_LIBRARIES
          /System/Library/Frameworks/CoreServices.framework

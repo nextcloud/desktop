@@ -29,6 +29,10 @@ extern "C" int c_utimes(const char *, const struct timeval *);
 #include "std/c_string.h"
 #include "std/c_utf8.h"
 
+#ifdef Q_OS_WIN32
+#include <winsock2.h>
+#endif
+
 namespace OCC {
 
 bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)

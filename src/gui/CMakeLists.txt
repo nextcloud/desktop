@@ -1,6 +1,7 @@
-project(gui)
+include(ECMAddAppIcon)
+
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
-set(CMAKE_AUTOUIC TRUE)
+
 add_subdirectory(updater)
 
 #TODO Move resources files
@@ -196,11 +197,6 @@ endif()
 
 # add executable icon on windows and osx
 
-# UPSTREAM our ECMAddAppIcon.cmake then require that version here
-# find_package(ECM 1.7.0 REQUIRED NO_MODULE)
-# list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
-include(ECMAddAppIcon)
-
 file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
 if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
@@ -208,11 +204,8 @@ if(APPLE)
 endif()
 ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
-if(UNIX AND NOT APPLE)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIE")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie")
-endif()
+add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
+
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     if(NOT WIN32)

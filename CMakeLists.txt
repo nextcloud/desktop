@@ -13,6 +13,11 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(ECMMarkNonGuiExecutable)
 
+include(KDECompilerSettings NO_POLICY_SCOPE)
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_AUTOUIC ON)
+
 if (APPLE OR WIN32)
     set(USE_OUR_OWN_SQLITE3 TRUE)
     set(SQLITE3_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3)
@@ -184,20 +189,14 @@ endif()
 
 include(OwnCloudCPack.cmake)
 
-add_definitions(-DUNICODE)
-add_definitions(-D_UNICODE)
 if( WIN32 )
-add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
-add_definitions( -DNOMINMAX )
-# Get APIs from from Vista onwards.
-add_definitions(-D_WIN32_WINNT=0x0600)
-add_definitions(-DWINVER=0x0600)
-add_definitions(-DNTDDI_VERSION=0x0A000003)
+    add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
+    add_definitions( -DNOMINMAX )
+    # Get APIs from from Vista onwards.
+    add_definitions(-D_WIN32_WINNT=0x0600)
+    add_definitions(-DWINVER=0x0600)
+    add_definitions(-DNTDDI_VERSION=0x0A000003)
 endif( WIN32 )
-
-if (APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-endif()
 
 # Handle Translations, pick all client_* files from trans directory.
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)

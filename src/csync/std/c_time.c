@@ -39,6 +39,7 @@ int c_utimes(const char *uri, const struct timeval *times) {
 
 #include <errno.h>
 #include <wtypes.h>
+#include <winsock2.h>
 #define CSYNC_SECONDS_SINCE_1601 11644473600LL
 #define CSYNC_USEC_IN_SEC            1000000LL
 //after Microsoft KB167296
