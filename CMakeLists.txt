@@ -1,7 +1,24 @@
 cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 14)
 
-project(client)
+project(client LANGUAGES CXX C VERSION 2.7.0)
+include(FeatureSummary)
+find_package(ECM 5.50.0  NO_MODULE)
+set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules")
+feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
+
+if (APPLE OR WIN32)
+    set(USE_OUR_OWN_SQLITE3 TRUE)
+    set(SQLITE3_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3)
+    set(SQLITE3_LIBRARIES "")
+    set(SQLITE3_SOURCE ${SQLITE3_INCLUDE_DIR}/sqlite3.c)
+    MESSAGE(STATUS "Using own sqlite3 from " ${SQLITE3_INCLUDE_DIR})
+else()
+    find_package(SQLite3 3.9.0 REQUIRED)
+endif()
+
 
 if(UNIT_TESTING)
     message(DEPRECATION "Setting UNIT_TESTING is deprecated please use BUILD_TESTING")
@@ -12,8 +29,6 @@ include(CTest)
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
-
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
 set(csync_NAME "${APPLICATION_EXECUTABLE}_csync")
@@ -222,3 +237,4 @@ elseif(BUILD_CLIENT)
     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
 endif()
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
