@@ -104,6 +104,7 @@ set(client_SRCS
     guiutility.cpp
     elidedlabel.cpp
     iconjob.cpp
+    remotewipe.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
