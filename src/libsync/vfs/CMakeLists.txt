@@ -16,7 +16,7 @@ foreach(vfsPlugin ${VIRTUAL_FILE_SYSTEM_PLUGINS})
 
     add_subdirectory(${vfsPluginPath} ${vfsPluginName})
 
-    if(UNIT_TESTING AND IS_DIRECTORY "${vfsPluginPath}/test")
+    if(BUILD_TESTING AND IS_DIRECTORY "${vfsPluginPath}/test")
         add_subdirectory("${vfsPluginPath}/test" "${vfsPluginName}_test")
         message(STATUS "Added vfsPlugin with tests: ${vfsPluginName}")
     else()
