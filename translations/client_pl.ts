@@ -579,7 +579,7 @@
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="229"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation type="unfinished"/>
+        <translation>Pliki z listy ignorowanych oraz linki symboliczne nie są synchronizowane. Zawarte:</translation>
     </message>
 </context>
 <context>
