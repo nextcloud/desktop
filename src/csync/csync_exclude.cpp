@@ -322,7 +322,11 @@ bool ExcludedFiles::loadExcludeFile(const QByteArray & basePath, const QString &
         csync_exclude_expand_escapes(line);
         _allExcludes[basePath].append(line);
     }
-    prepare(basePath);
+
+    // nothing to prepare if the user decided to not exclude anything
+    if(_allExcludes.size())
+        prepare(basePath);
+
     return true;
 }
 
@@ -338,8 +342,8 @@ bool ExcludedFiles::reloadExcludeFiles()
     _fullRegexDir.clear();
 
     bool success = true;
-    for (auto basePath : _excludeFiles.keys()) {
-        for (auto file : _excludeFiles.value(basePath)) {
+    for (const auto& basePath : _excludeFiles.keys()) {
+        for (const auto& file : _excludeFiles.value(basePath)) {
             success = loadExcludeFile(basePath, file);
         }
     }

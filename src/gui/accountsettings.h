@@ -63,6 +63,7 @@ signals:
     void openFolderAlias(const QString &);
     void showIssuesList(AccountState *account);
     void requesetMnemonic();
+    void removeAccountFolders(AccountState *account);
 
 public slots:
     void slotOpenOC();
