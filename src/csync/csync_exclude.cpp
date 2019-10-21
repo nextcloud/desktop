@@ -288,7 +288,11 @@ void ExcludedFiles::addManualExclude(const QByteArray &expr)
 
 void ExcludedFiles::addManualExclude(const QByteArray &expr, const QByteArray &basePath)
 {
+#if defined(Q_OS_WIN)
+    Q_ASSERT(basePath.size() >= 2 && basePath.at(1) == ':');
+#else
     Q_ASSERT(basePath.startsWith('/'));
+#endif
     Q_ASSERT(basePath.endsWith('/'));
 
     auto key = basePath;
