@@ -147,7 +147,7 @@ QString OCUpdater::statusString() const
     case Downloading:
         return tr("Downloading %1. Please wait...").arg(updateVersion);
     case DownloadComplete:
-        return tr("%1 available. Restart application to start the update.").arg(Theme::instance()->appNameGUI(), updateVersion);
+        return tr("%1 available. Restart application to start the update.").arg(updateVersion);
     case DownloadFailed:
         return tr("Could not download update. Please click <a href='%1'>here</a> to download the update manually.").arg(_updateInfo.web());
     case DownloadTimedOut:
