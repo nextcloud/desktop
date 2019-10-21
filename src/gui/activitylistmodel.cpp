@@ -71,6 +71,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QIcon(QLatin1String(":/client/resources/account.png"));
         break;
     case Qt::ToolTipRole:
+        return tr("%1 %2 on %3").arg(a._subject, Utility::timeAgoInWords(a._dateTime), a._accName);
+        break;
     case ActivityItemDelegate::ActionTextRole:
         return a._subject;
         break;
