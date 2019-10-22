@@ -75,10 +75,23 @@ To set up your build environment for development using HomeBrew_:
 
 10. Install the Packages_ package creation tool.
 
-11. In the build directory, run ``admin/osx/create_mac.sh <build_dir> <install_dir>``.
-    If you have a developer signing certificate, you can specify
-    its Common Name as a third parameter (use quotes) to have the package
-    signed automatically.
+11. Enable git submodules:
+```
+$ cd desktop
+$ git submodule init
+$ git submodule update
+```
+
+12. Generate the build files:
+```
+$ cd build
+$ cmake .. -DCMAKE_INSTALL_PREFIX=~/nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1 
+```
+
+13. Compile and install:
+```
+$ make install
+```
 
    .. note:: Contrary to earlier versions, Nextcloud 1.7 and later are packaged
              as a ``pkg`` installer. Do not call "make package" at any time when
