@@ -2922,7 +2922,7 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Možnosti souporabe</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
