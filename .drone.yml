@@ -150,12 +150,6 @@ steps:
   - cd docs/
   - make pdf
 
-- name: docs-artifacts
-  pull: always
-  image: owncloud/ubuntu:latest
-  commands:
-  - tree docs/public/
-
 - name: cache-rebuild
   pull: always
   image: plugins/s3-cache:1
