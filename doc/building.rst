@@ -13,11 +13,19 @@ desktop client.
 
 These instructions are updated to work with version |version| of the Nextcloud Client.
 
-Getting Source Code
--------------------
+You have two possibilities to clone the repo. 
 
-The :ref:`generic-build-instructions` pull the latest code directly from
-GitHub, and work on Linux, macOS, and Windows.
+First option is As [remote URL](https://help.github.com/en/articles/which-remote-url-should-i-use) you can choose between cloning with HTTPS URL's, which is recommended or cloning with SSH URL's. 
+
+[https://github.com/nextcloud/desktop.git](https://github.com/nextcloud/desktop.git)
+
+When you don't have SSH key added to your GitHub account, than use HTTPS. 
+
+When you no part of the nextcloud organisation, clone with HTTPS:
+
+```
+$ git clone git@github.com:nextcloud/desktop.git
+```
 
 macOS
 -----
