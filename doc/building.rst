@@ -55,7 +55,7 @@ To set up your build environment for development using HomeBrew_:
 
 5. Install a Qt5 version with qtwebkit support::
 
-    brew install qt5 --with-qtwebkit
+    brew install qt5
 
 6. Install any missing dependencies::
 
