@@ -827,6 +827,10 @@ void ownCloudGui::fetchNavigationApps(AccountStatePtr account){
 
 void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu){
     auto navLinks = _navApps.value(account);
+
+    _navLinksMenu->clear();
+    _navLinksMenu->setEnabled(navLinks.size() > 0);
+
     if(navLinks.size() > 0){
         // when there is only one account add the nav links above the settings
         QAction *actionBefore = _actionSettings;
@@ -853,7 +857,6 @@ void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accoun
             connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
             _navLinksMenu->addAction(action);
         }
-        _navLinksMenu->setEnabled(true);
     }
 }
 
