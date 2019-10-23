@@ -1406,7 +1406,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="332"/>
         <source>Connection Timeout</source>
-        <translation>Conexão Finalizada</translation>
+        <translation>Tempo Limite de Conexão Atingido</translation>
     </message>
 </context>
 <context>
@@ -2149,7 +2149,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>O tempo expirou ao tentar conectar com %1 em %2.</translation>
+        <translation>Atingido o tempo limite ao tentar conectar com %1 em %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
@@ -3191,7 +3191,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="132"/>
         <source>A network connection timeout happened.</source>
-        <translation>Ocorreu uma desconexão de rede. </translation>
+        <translation>Atingiu o tempo limite para conexão de rede. </translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="135"/>
