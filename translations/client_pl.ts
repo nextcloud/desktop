@@ -2952,7 +2952,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="628"/>
         <source>Send private link by email...</source>
-        <translation>Wyślij link prywatny e-mailem</translation>
+        <translation>Wyślij e-mailem link prywatny</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="653"/>

@@ -861,7 +861,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 και%n άλλο αρχείο(ο) έχουν ληφθεί.</numerusform><numerusform>%1 και%n άλλο αρχείο(ο) έχουν ληφθεί.</numerusform></translation>
+        <translation><numerusform>%1 και%n άλλο αρχείο(ο) έχουν ληφθεί.</numerusform><numerusform>%1 και %n άλλο(α) αρχείο(α) έχουν ληφθεί.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
