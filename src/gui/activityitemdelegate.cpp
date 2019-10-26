@@ -229,6 +229,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     } else if(activityType == Activity::SyncFileItemType){
 
+        _buttonHeight = buttonSize;
+        _primaryButtonWidth = primaryButton.rect.size().width();
+        _secondaryButtonWidth = secondaryButton.rect.size().width();
+        _spaceBetweenButtons = secondaryButton.rect.left() - primaryButton.rect.right();
+
         // Secondary will be 'open file manager' with the folder icon
         secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder.svg"));
         secondaryButton.iconSize = QSize(iconSize, iconSize);
@@ -309,27 +314,25 @@ bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
                 int buttonsWidth = _primaryButtonWidth + _spaceBetweenButtons + _secondaryButtonWidth;
                 int x = option.rect.left() + option.rect.width() - buttonsWidth - _timeWidth;
                 int y = option.rect.top();
-
                 // clickable area for ...
                 if (mouseEventX > x && mouseEventX < x + buttonsWidth){
                     if(mouseEventY > y && mouseEventY < y + _buttonHeight){
-
                         // ...primary button ('more information' or 'accept' on notifications or 'open browser' on errors)
                         if (mouseEventX > x && mouseEventX < x + _primaryButtonWidth){
                             emit primaryButtonClickedOnItemView(index);
-
                         // ...secondary button ('dismiss' on notifications or 'open file manager' on errors)
                         } else  {
                             x += _primaryButtonWidth + _spaceBetweenButtons;
                             if (mouseEventX > x && mouseEventX < x + _secondaryButtonWidth)
+                            {
                                 emit secondaryButtonClickedOnItemView(index);
+                            }
                         }
                     }
                 }
             }
         }
     }
-
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
