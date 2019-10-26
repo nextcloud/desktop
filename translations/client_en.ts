@@ -602,29 +602,29 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="349"/>
-        <source>You received %n new notification(s) from %2.</source>
+        <location filename="../src/gui/activitywidget.cpp" line="351"/>
+        <source>You received %n new request(s) from %1.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="356"/>
-        <source>You received %n new notification(s) from %1 and %2.</source>
+        <location filename="../src/gui/activitywidget.cpp" line="357"/>
+        <source>You received %n new request(s) from %1 and %2.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="358"/>
-        <source>You received new notifications from %1, %2 and other accounts.</source>
+        <location filename="../src/gui/activitywidget.cpp" line="359"/>
+        <source>You received new request from %1, %2 and other accounts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="362"/>
-        <source>%1 Notifications - Action Required</source>
+        <source>Action required. Open the activity view to react.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
