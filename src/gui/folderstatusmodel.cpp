@@ -628,7 +628,7 @@ void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QS
     job->setProperty(propertyPermissionMap, permissionMap);
 }
 
-void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
+void FolderStatusModel::slotUpdateDirectories(const std::vector<std::tuple<QString, bool>> &list)
 {
     auto job = qobject_cast<LsColJob *>(sender());
     ASSERT(job);
@@ -677,17 +677,17 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
     const auto permissionMap = job->property(propertyPermissionMap).toMap();
 
-    QStringList sortedSubfolders = list;
-    if (!sortedSubfolders.isEmpty())
-        sortedSubfolders.removeFirst(); // skip the parent item (first in the list)
-    Utility::sortFilenames(sortedSubfolders);
+    SyncObjectList sortedSubfolders = list;
+    if (!sortedSubfolders.empty())
+        sortedSubfolders.erase(sortedSubfolders.begin()); // skip the parent item (first in the list)
+    //Utility::sortFilenames(sortedSubfolders);
 
     QVarLengthArray<int, 10> undecidedIndexes;
 
     QVector<SubFolderInfo> newSubs;
     newSubs.reserve(sortedSubfolders.size());
-    foreach (const QString &path, sortedSubfolders) {
-        auto relativePath = path.mid(pathToRemove.size());
+    foreach (const auto &syncObject, sortedSubfolders) {
+        auto relativePath = std::get<0>(syncObject).mid(pathToRemove.size());
         if (parentInfo->_folder->isFileExcludedRelative(relativePath)) {
             continue;
         }
@@ -696,11 +696,11 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._folder = parentInfo->_folder;
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
-        newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
+        newInfo._isExternal = permissionMap.value(removeTrailingSlash(std::get<0>(syncObject))).toString().contains("M");
         newInfo._path = relativePath;
         newInfo._name = removeTrailingSlash(relativePath).split('/').last();
 
-        const auto& folderInfo = job->_folderInfos.value(path);
+        const auto &folderInfo = job->_folderInfos.value(std::get<0>(syncObject));
         newInfo._size = folderInfo.size;
         newInfo._fileId = folderInfo.fileId;
         if (relativePath.isEmpty())
