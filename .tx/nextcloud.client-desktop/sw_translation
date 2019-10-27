@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[ro]=@APPLICATION_ICON_NAME@
-Name[ro]=@APPLICATION_NAME@ client de sincronizare pentru desktop
-Comment[ro]=@APPLICATION_NAME@ client de sincronizare pentru desktop
-GenericName[ro]=Sincronizare director
+Icon[sw]=@APPLICATION_ICON_NAME@
+Name[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa
+Comment[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa 
+GenericName[sw]=Fanana Kabrasha

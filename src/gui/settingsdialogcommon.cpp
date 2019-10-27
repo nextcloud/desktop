@@ -2,7 +2,7 @@ namespace SettingsDialogCommon
 {
 
 /** display name with two lines that is displayed in the settings
- * If width is bigger than 0, the string will be ellided so it does not exceed that width
+ * If width is bigger than 0, the string will be elided so it does not exceed that width
  */
 QString shortDisplayNameForSettings(Account* account, int width)
 {

@@ -14,6 +14,7 @@
 
 #include "accountstate.h"
 #include "accountmanager.h"
+#include "remotewipe.h"
 #include "account.h"
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
@@ -23,6 +24,11 @@
 #include <QSettings>
 #include <QTimer>
 #include <qfontmetrics.h>
+
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QNetworkRequest>
+#include <QBuffer>
 
 namespace OCC {
 
@@ -36,11 +42,12 @@ AccountState::AccountState(AccountPtr account)
     , _waitingForNewCredentials(false)
     , _notificationsEtagResponseHeader("*")
     , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
+    , _remoteWipe(new RemoteWipe(_account))
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
     connect(account.data(), &Account::invalidCredentials,
-        this, &AccountState::slotInvalidCredentials);
+        this, &AccountState::slotHandleRemoteWipeCheck);
     connect(account.data(), &Account::credentialsFetched,
         this, &AccountState::slotCredentialsFetched);
     connect(account.data(), &Account::credentialsAsked,
@@ -303,7 +310,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         break;
     case ConnectionValidator::CredentialsWrong:
     case ConnectionValidator::CredentialsNotReady:
-        slotInvalidCredentials();
+        handleInvalidCredentials();
         break;
     case ConnectionValidator::SslError:
         setState(SignedOut);
@@ -322,7 +329,20 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     }
 }
 
-void AccountState::slotInvalidCredentials()
+void AccountState::slotHandleRemoteWipeCheck()
+{
+    // make sure it changes account state and icons
+    signOutByUi();
+
+    qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
+                           << "checking for remote wipe request";
+
+    _waitingForNewCredentials = false;
+    setState(SignedOut);
+}
+
+
+void AccountState::handleInvalidCredentials()
 {
     if (isSignedOut() || _waitingForNewCredentials)
         return;
@@ -342,6 +362,7 @@ void AccountState::slotInvalidCredentials()
     }
     account()->credentials()->askFromUser();
 }
+
 
 void AccountState::slotCredentialsFetched(AbstractCredentials *)
 {

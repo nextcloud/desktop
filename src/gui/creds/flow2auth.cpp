@@ -52,7 +52,11 @@ void Flow2Auth::openBrowser()
     // Step 1: Initiate a login, do an anonymous POST request
     QUrl url = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/login/v2"));
 
-    auto job = _account->sendRequest("POST", url);
+    // add 'Content-Length: 0' header (see https://github.com/nextcloud/desktop/issues/1473)
+    QNetworkRequest req;
+    req.setHeader(QNetworkRequest::ContentLengthHeader, "0");
+
+    auto job = _account->sendRequest("POST", url, req);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
