@@ -810,6 +810,9 @@ Function .onInstSuccess
    ${AndIf} $InstallRunIfSilent == "yes"
      Call LaunchApplication
    ${EndIf}
+
+   ; FIX: Return zero on success (previously returned 1223 here)
+   SetErrorLevel 0
 FunctionEnd
 
 Function .onInstFailed
