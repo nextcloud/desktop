@@ -55,6 +55,12 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include <QQmlEngine>
+#include <QQmlComponent>
+#include <QQmlApplicationEngine>
+#include <QQuickItem>
+#include <QQmlContext>
+
 namespace OCC {
 
 const char propertyAccountC[] = "oc_account";
@@ -87,6 +93,15 @@ ownCloudGui::ownCloudGui(Application *parent)
     setupContextMenu();
 
     _tray->show();
+
+    // QML System tray
+    QQmlEngine *engine = new QQmlEngine;
+    //engine.load(QUrl(QStringLiteral(":/qml/src/gui/systemtray.qml")));
+    QQmlComponent systrayrtest(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/systemtray.qml")));
+    QQmlContext *ctxt = engine->contextForObject(systrayrtest.create());
+    // TODO hack to pass the icon to QML
+    //ctxt->setContextProperty("theme", QLatin1String("colored"));
+    //ctxt->setContextProperty("filename", "state-offline");
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,

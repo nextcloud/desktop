@@ -12,8 +12,9 @@ Window {
     flags: Qt.FramelessWindowHint
 
     Component.onCompleted: {
-            setX((Screen.width - width) - 18);
-            setY(Screen.height - (height + 60));
+            // desktopAvailableWidth and Height doesn't include the system tray bar
+            setX(Screen.desktopAvailableWidth - width);
+            setY(Screen.desktopAvailableHeight + height);
     }
 
     Rectangle {

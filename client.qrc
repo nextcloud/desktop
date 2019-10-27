@@ -31,4 +31,8 @@
         <file>resources/state-info.svg</file>
     </qresource>
     <qresource prefix="/"/>
+    <qresource prefix="/qml">
+        <file>src/gui/systemtray.qml</file>
+        <file>src/gui/traywindow.qml</file>
+    </qresource>
 </RCC>
