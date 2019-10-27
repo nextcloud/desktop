@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[de_DE]=@APPLICATION_ICON_NAME@
-Name[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-Comment[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-GenericName[de_DE]=Synchronisationsordner
+Icon[sw]=@APPLICATION_ICON_NAME@
+Name[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa
+Comment[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa 
+GenericName[sw]=Fanana Kabrasha

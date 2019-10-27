@@ -187,7 +187,7 @@
       <item row="0" column="2">
        <widget class="QToolButton" name="_accountToolbox">
         <property name="text">
-         <string>...</string>
+         <string notr="true">...</string>
         </property>
        </widget>
       </item>

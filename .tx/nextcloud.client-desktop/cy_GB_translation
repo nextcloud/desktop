@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[de_DE]=@APPLICATION_ICON_NAME@
-Name[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-Comment[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-GenericName[de_DE]=Synchronisationsordner
+Icon[cy_GB]=@APPLICATION_ICON_NAME@
+Name[cy_GB]=@APPLICATION_NAME@ cleient cydweddu bwrdd gwaith
+Comment[cy_GB]=@APPLICATION_NAME@ cleient cydweddu bwrdd gwaith
+GenericName[cy_GB]=Cydweddu Ffolder

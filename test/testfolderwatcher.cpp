@@ -146,7 +146,7 @@ private slots:
         mkdir(_rootPath + "/a0/b");
         mkdir(_rootPath + "/a0/b/c");
         touch(file);
-        mv(_rootPath + "/a0 ", _rootPath + "/a");
+        mv(_rootPath + "/a0", _rootPath + "/a");
         QVERIFY(waitForPathChanged(_rootPath + "/a/b/c/empty.txt"));
     }
 
