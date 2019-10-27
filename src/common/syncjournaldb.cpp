@@ -120,7 +120,7 @@ QString SyncJournalDb::makeDbName(const QUrl &remoteUrl,
     journalPath.append(ba.left(6).toHex());
     journalPath.append(".db");
 
-	journalPath = dbPath + QLatin1Char('/') + journalPath;
+    journalPath = dbPath + QLatin1Char('/') + journalPath;
 
     // If the journal doesn't exist and we can't create a file
     // at that location, try again with a journal name that doesn't

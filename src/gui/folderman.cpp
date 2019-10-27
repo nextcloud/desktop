@@ -210,13 +210,13 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 folderDefinition.journalPath = defaultJournalPath;
             }
 
-			// Migration #2: journalPath now in DataAppDir, not root of local tree (cross-platform persistent user roaming files)
+            // Migration #2: journalPath now in DataAppDir, not root of local tree (cross-platform persistent user roaming files)
             if (folderDefinition.journalPath.at(0) == QChar('.')) {
                 QFile oldJournal(folderDefinition.localPath + "/" + folderDefinition.journalPath);
                 QFile oldJournalShm(folderDefinition.localPath + "/" + folderDefinition.journalPath.append("-shm"));
                 QFile oldJournalWal(folderDefinition.localPath + "/" + folderDefinition.journalPath.append("-wal"));
 
-				folderDefinition.journalPath = defaultJournalPath;
+                folderDefinition.journalPath = defaultJournalPath;
 
                 socketApi()->slotUnregisterPath(folderAlias);
                 auto settings = account->settings();
@@ -224,7 +224,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 Folder *f = addFolderInternal(folderDefinition, account.data());
                 f->saveToSettings();
 
-				oldJournal.remove();
+                oldJournal.remove();
                 oldJournalShm.remove();
                 oldJournalWal.remove();
 
