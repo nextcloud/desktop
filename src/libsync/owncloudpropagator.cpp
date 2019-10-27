@@ -367,10 +367,10 @@ quint64 OwncloudPropagator::smallFileSize()
 }
 
 void OwncloudPropagator::start(const SyncFileItemVector &items,
-								const bool &hasChange,
-								const int &lastChangeInstruction,
-								const bool &hasDelete,
-								const int &lastDeleteInstruction)
+                                const bool &hasChange,
+                                const int &lastChangeInstruction,
+                                const bool &hasDelete,
+                                const int &lastDeleteInstruction)
 {
     if (!hasChange && !hasDelete) {
         Q_ASSERT(std::is_sorted(items.begin(), items.end()));
