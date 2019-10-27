@@ -1069,12 +1069,12 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
-	bool hasChange = false;
-	bool hasDelete = false;
+    bool hasChange = false;
+    bool hasDelete = false;
     int lastChangeInstruction = 0;
     int lastDeleteInstruction = 0;
 
-	// Only if list is populated, can be empty under certain circumstances
+    // Only if list is populated, can be empty under certain circumstances
     // Get CHANGE instructions to the top first
     if (syncItems.count() > 0) {
         std::sort(syncItems.begin(), syncItems.end(),
