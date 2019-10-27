@@ -209,7 +209,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     } else if(activityType == Activity::SyncResultType){
 
         // Secondary will be 'open file manager' with the folder icon
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder.svg"));
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/rename.png"));
         secondaryButton.iconSize = QSize(iconSize, iconSize);
 
         // Primary button will be 'open browser'
@@ -234,8 +234,8 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         _secondaryButtonWidth = secondaryButton.rect.size().width();
         _spaceBetweenButtons = secondaryButton.rect.left() - primaryButton.rect.right();
 
-        // Secondary will be 'open file manager' with the folder icon
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder.svg"));
+        // Secondary will be 'open file manager' with the rename icon
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/rename.png"));
         secondaryButton.iconSize = QSize(iconSize, iconSize);
 
         // No primary button on this case
