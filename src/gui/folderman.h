@@ -207,6 +207,11 @@ signals:
      */
     void folderListChanged(const Folder::Map &);
 
+    /**
+     * Emitted once slotRemoveFoldersForAccount is done wiping
+     */
+    void wipeDone(AccountState *account, bool success);
+
 public slots:
 
     /**
@@ -230,6 +235,9 @@ public slots:
 
     // slot to schedule an ETag job (from Folder only)
     void slotScheduleETagJob(const QString &alias, RequestEtagJob *job);
+
+    /** Wipe folder */
+    void slotWipeFolderForAccount(AccountState *accountState);
 
 private slots:
     void slotFolderSyncPaused(Folder *, bool paused);

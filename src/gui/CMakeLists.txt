@@ -104,6 +104,7 @@ set(client_SRCS
     guiutility.cpp
     elidedlabel.cpp
     iconjob.cpp
+    remotewipe.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
@@ -181,6 +182,9 @@ if (APPLE)
         ../3rdparty/qtmacgoodies/src/macstandardicon.mm
         ../3rdparty/qtmacgoodies/src/macwindow.mm
         )
+    # We want to access Cocoa specific structures in the code above
+    # and need the platform plugin interface for that - which is private.
+    include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 endif()
 
 if(NOT WIN32)
