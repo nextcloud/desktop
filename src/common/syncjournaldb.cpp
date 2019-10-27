@@ -23,6 +23,7 @@
 #include <QElapsedTimer>
 #include <QUrl>
 #include <QDir>
+#include <QStandardPaths>
 #include <sqlite3.h>
 
 #include "common/syncjournaldb.h"
@@ -102,11 +103,15 @@ SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
     }
 }
 
-QString SyncJournalDb::makeDbName(const QString &localPath,
-    const QUrl &remoteUrl,
+QString SyncJournalDb::makeDbName(const QUrl &remoteUrl,
     const QString &remotePath,
     const QString &user)
 {
+    const QString dbPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    if (!QDir(dbPath).exists()) {
+        QDir().mkdir(dbPath);
+    }
+
     QString journalPath = QLatin1String("._sync_");
 
     QString key = QString::fromUtf8("%1@%2:%3").arg(user, remoteUrl.toString(), remotePath);
@@ -115,17 +120,16 @@ QString SyncJournalDb::makeDbName(const QString &localPath,
     journalPath.append(ba.left(6).toHex());
     journalPath.append(".db");
 
+    journalPath = dbPath + QLatin1Char('/') + journalPath;
+
     // If the journal doesn't exist and we can't create a file
     // at that location, try again with a journal name that doesn't
     // have the ._ prefix.
     //
-    // The disadvantage of that filename is that it will only be ignored
-    // by client versions >2.3.2.
-    //
     // See #5633: "._*" is often forbidden on samba shared folders.
 
     // If it exists already, the path is clearly usable
-    QFile file(QDir(localPath).filePath(journalPath));
+    QFile file(QDir(dbPath).filePath(journalPath));
     if (file.exists()) {
         return journalPath;
     }
@@ -140,7 +144,7 @@ QString SyncJournalDb::makeDbName(const QString &localPath,
 
     // Can we create it if we drop the underscore?
     QString alternateJournalPath = journalPath.mid(2).prepend(".");
-    QFile file2(QDir(localPath).filePath(alternateJournalPath));
+    QFile file2(QDir(dbPath).filePath(alternateJournalPath));
     if (file2.open(QIODevice::ReadWrite)) {
         // The alternative worked, use it
         qCInfo(lcDb) << "Using alternate database path" << alternateJournalPath;
