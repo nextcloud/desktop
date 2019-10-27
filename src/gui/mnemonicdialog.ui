@@ -55,7 +55,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Label</string>
+        <string notr="true">Label</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

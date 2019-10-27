@@ -64,20 +64,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActivityItemDelegate::PathRole:
         if(!a._file.isEmpty()){
             auto folder = FolderMan::instance()->folder(a._folder);
-            QString relPath(a._file);
-            if(folder) relPath.prepend(folder->remotePath());
-            list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
-            if (list.count() > 0) {
-                return QVariant(list.at(0));
-            }
-            // File does not exist anymore? Let's try to open its path
-            list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(relPath).path(), ast->account());
+            list = FolderMan::instance()->findFileInLocalFolders(folder->remotePath(), ast->account());
             if (list.count() > 0) {
                 return QVariant(list.at(0));
             }
         }
         return QVariant();
-        break;
      case ActivityItemDelegate::ActionsLinksRole:{
         QList<QVariant> customList;
         foreach (ActivityLink customItem, a._links) {
@@ -86,7 +78,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             customList << customVariant;
         }
         return customList;
-        break;
     }
     case ActivityItemDelegate::ActionIconRole:
         if(a._type == Activity::NotificationType){
@@ -229,6 +220,29 @@ void ActivityListModel::addErrorToActivityList(Activity activity) {
     combineActivityLists();
 }
 
+void ActivityListModel::addIgnoredFileToList(Activity newActivity) {
+    qCInfo(lcActivity) << "First checking for duplicates then add file to the notification list of ignored files: " << newActivity._file;
+
+    bool duplicate = false;
+    if(_listOfIgnoredFiles.size() == 0){
+        _notificationIgnoredFiles = newActivity;
+        _notificationIgnoredFiles._subject = tr("Files from the ignore list as well as symbolic links are not synced. This includes:");
+        _listOfIgnoredFiles.append(newActivity);
+        return;
+    }
+
+    foreach(Activity activity, _listOfIgnoredFiles){
+        if(activity._file == newActivity._file){
+            duplicate = true;
+            break;
+        }
+    }
+
+    if(!duplicate){
+        _notificationIgnoredFiles._message.append(", " + newActivity._file);
+    }
+}
+
 void ActivityListModel::addNotificationToActivityList(Activity activity) {
     qCInfo(lcActivity) << "Notification successfully added to the notification list: " << activity._subject;
     _notificationLists.prepend(activity);
@@ -276,13 +290,13 @@ void ActivityListModel::removeActivityFromActivityList(Activity activity) {
     }
 }
 
-
 void ActivityListModel::combineActivityLists()
 {
     ActivityList resultList;
 
     std::sort(_notificationErrorsLists.begin(), _notificationErrorsLists.end());
     resultList.append(_notificationErrorsLists);
+    resultList.append(_notificationIgnoredFiles);
 
     std::sort(_notificationLists.begin(), _notificationLists.end());
     resultList.append(_notificationLists);

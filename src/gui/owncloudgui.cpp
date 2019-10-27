@@ -675,6 +675,12 @@ void ownCloudGui::updateContextMenu()
 
     _contextMenu->addSeparator();
 
+    if (_navLinksMenu) {
+        _contextMenu->addMenu(_navLinksMenu);
+    }
+
+    _contextMenu->addSeparator();
+
     if (accountList.isEmpty()) {
         _contextMenu->addAction(_actionNewAccountWizard);
     }
@@ -688,6 +694,7 @@ void ownCloudGui::updateContextMenu()
     }
 
     _contextMenu->addSeparator();
+
     if (atLeastOnePaused) {
         QString text;
         if (accountList.count() > 1) {
@@ -777,6 +784,8 @@ void ownCloudGui::setupActions()
 {
     _actionStatus = new QAction(tr("Unknown status"), this);
     _actionStatus->setEnabled(false);
+    _navLinksMenu = new QMenu(tr("Apps"));
+    _navLinksMenu->setEnabled(false);
     _actionSettings = new QAction(tr("Settings..."), this);
     _actionNewAccountWizard = new QAction(tr("New account..."), this);
     _actionRecent = new QAction(tr("View more activity..."), this);
@@ -818,8 +827,11 @@ void ownCloudGui::fetchNavigationApps(AccountStatePtr account){
 
 void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu){
     auto navLinks = _navApps.value(account);
-    if(navLinks.size() > 0){
 
+    _navLinksMenu->clear();
+    _navLinksMenu->setEnabled(navLinks.size() > 0);
+
+    if(navLinks.size() > 0){
         // when there is only one account add the nav links above the settings
         QAction *actionBefore = _actionSettings;
 
@@ -838,17 +850,13 @@ void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accoun
         }
 
         // Create submenu with links
-        QMenu *navLinksMenu = new QMenu(tr("Apps"));
-        accountMenu->insertSeparator(actionBefore);
-        accountMenu->insertMenu(actionBefore, navLinksMenu);
         foreach (const QJsonValue &value, navLinks) {
             auto navLink = value.toObject();
             QAction *action = new QAction(navLink.value("name").toString(), this);
             QUrl href(navLink.value("href").toString());
             connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
-            navLinksMenu->addAction(action);
+            _navLinksMenu->addAction(action);
         }
-        accountMenu->insertSeparator(actionBefore);
     }
 }
 

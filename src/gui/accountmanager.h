@@ -70,7 +70,6 @@ public:
      */
     void deleteAccount(AccountState *account);
 
-
     /**
      * Creates an account and sets up some basic handlers.
      * Does *not* add the account to the account manager just yet.
@@ -104,6 +103,7 @@ public slots:
 Q_SIGNALS:
     void accountAdded(AccountState *account);
     void accountRemoved(AccountState *account);
+    void removeAccountFolders(AccountState *account);
 
 private:
     AccountManager() {}

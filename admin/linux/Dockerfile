@@ -14,6 +14,7 @@ RUN apt-get update -q && DEBIAN_FRONTEND=noninteractive apt-get install -q -y --
         libsqlite3-dev \
         libssl-dev \
         libcmocka-dev \
+        libcloudproviders-dev \
         qt5-default \
         qttools5-dev-tools \
         libqt5webkit5-dev \
