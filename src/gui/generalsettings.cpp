@@ -26,6 +26,7 @@
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
 #include "ignorelisteditor.h"
+#include "schedulesettings.h"
 #include "common/utility.h"
 
 #include "config.h"
@@ -106,6 +107,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
 
     connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
+    connect(_ui->scheduleSyncingButton, &QAbstractButton::clicked, this, &GeneralSettings::slotScheduleSyncing);
 
     // accountAdded means the wizard was finished and the wizard might change some options.
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
@@ -204,6 +206,19 @@ void GeneralSettings::slotIgnoreFilesEditor()
     }
 }
 
+void GeneralSettings::slotScheduleSyncing()
+{
+    if (_scheduleSettings.isNull()) {
+        ConfigFile cfgFile;
+        _scheduleSettings = new ScheduleSettings(this);
+        _scheduleSettings->setAttribute(Qt::WA_DeleteOnClose, true);
+        _scheduleSettings->open();
+    } else {
+        ownCloudGui::raiseDialog(_scheduleSettings);
+    }
+}
+
+  
 void GeneralSettings::slotShowLegalNotice()
 {
     auto notice = new LegalNotice();

@@ -25,7 +25,7 @@ namespace OCC {
 
   
   ScheduleSettings::ScheduleSettings(QWidget *parent)
-    : QWidget(parent)
+    : QDialog(parent)
     , _ui(new Ui::ScheduleSettings)
     , _currentlyLoading(false)
   {
@@ -79,10 +79,9 @@ namespace OCC {
     connect(_scheduleTimer, &QTimer::timeout, this, &ScheduleSettings::checkSchedule);
        
     // connect with events
-    connect(_ui->saveButton, &QPushButton::clicked, this, &ScheduleSettings::saveScheduleSettings);
-    connect(_ui->resetButton, &QPushButton::clicked, this, &ScheduleSettings::resetScheduleSettings);
-    connect(_ui->enableScheduleCheckBox, &QCheckBox::clicked, this, &ScheduleSettings::changedScheduleSettings);
-    connect(_ui->scheduleTableWidget, &QTableWidget::cellPressed, this, &ScheduleSettings::changedScheduleSettings);
+    connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &ScheduleSettings::okButton);
+    connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &ScheduleSettings::cancelButton);
+    connect(_ui->buttonBox, &QDialogButtonBox::clicked, this, &ScheduleSettings::resetButton);
 
     // load settings stored in config file
     loadScheduleSettings();    
@@ -96,6 +95,19 @@ namespace OCC {
     delete _ui;
   }
 
+  void ScheduleSettings::okButton(){
+    this->saveScheduleSettings();
+    accept();
+  }
+  void ScheduleSettings::cancelButton(){
+    this->resetScheduleSettings();
+    reject();
+  }
+  void ScheduleSettings::resetButton(QAbstractButton *button){
+    if(_ui->buttonBox->buttonRole(button) != QDialogButtonBox::ResetRole)
+      return;
+    this->resetScheduleSettings();
+  }
   
   void ScheduleSettings::loadScheduleSettings()
   {
@@ -112,9 +124,6 @@ namespace OCC {
     }
     cfgFile.getScheduleTable(*table);
     
-    // finally disable reset and save buttons
-    _ui->resetButton->setEnabled(false);
-    _ui->saveButton->setEnabled(false);
   }
 
 
@@ -123,11 +132,6 @@ namespace OCC {
     loadScheduleSettings();
   }
 
-  void ScheduleSettings::changedScheduleSettings()
-  {
-    _ui->resetButton->setEnabled(true);
-    _ui->saveButton->setEnabled(true);
-  }
   
   void ScheduleSettings::saveScheduleSettings()
   {

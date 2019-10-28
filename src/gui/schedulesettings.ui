@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>OCC::ScheduleSettings</class>
- <widget class="QWidget" name="OCC::ScheduleSettings">
+ <widget class="QDialog" name="OCC::ScheduleSettings">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>785</width>
-    <height>523</height>
+    <width>540</width>
+    <height>370</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>540</width>
+    <height>370</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
@@ -82,7 +88,7 @@
            <bool>false</bool>
           </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>20</number>
+           <number>57</number>
           </attribute>
           <attribute name="horizontalHeaderHighlightSections">
            <bool>false</bool>
@@ -94,7 +100,7 @@
            <bool>false</bool>
           </attribute>
           <attribute name="verticalHeaderDefaultSectionSize">
-           <number>20</number>
+           <number>21</number>
           </attribute>
           <attribute name="verticalHeaderHighlightSections">
            <bool>false</bool>
@@ -131,7 +137,7 @@
            <bool>false</bool>
           </attribute>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>20</number>
+           <number>57</number>
           </attribute>
           <attribute name="horizontalHeaderHighlightSections">
            <bool>false</bool>
@@ -143,7 +149,7 @@
            <bool>false</bool>
           </attribute>
           <attribute name="verticalHeaderDefaultSectionSize">
-           <number>20</number>
+           <number>21</number>
           </attribute>
           <attribute name="verticalHeaderHighlightSections">
            <bool>false</bool>
@@ -179,6 +185,18 @@
       </item>
       <item>
        <widget class="QTableWidget" name="scheduleTableWidget">
+        <property name="minimumSize">
+         <size>
+          <width>474</width>
+          <height>192</height>
+         </size>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="cornerButtonEnabled">
          <bool>false</bool>
         </property>
@@ -195,10 +213,10 @@
          <bool>true</bool>
         </attribute>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>21</number>
+         <number>19</number>
         </attribute>
         <attribute name="horizontalHeaderMinimumSectionSize">
-         <number>21</number>
+         <number>19</number>
         </attribute>
         <attribute name="verticalHeaderVisible">
          <bool>true</bool>
@@ -372,29 +390,9 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="resetButton">
-          <property name="text">
-           <string>Reset</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="saveButton">
-          <property name="text">
-           <string>Save</string>
+         <widget class="QDialogButtonBox" name="buttonBox">
+          <property name="standardButtons">
+           <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
           </property>
          </widget>
         </item>
@@ -402,19 +400,6 @@
       </item>
      </layout>
     </widget>
-   </item>
-   <item row="1" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

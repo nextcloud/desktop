@@ -1,9 +1,10 @@
-#ifndef MIRALL_SCHEDULESETTINGS_H
-#define MIRALL_SCHEDULESETTINGS_H
+#ifndef SCHEDULESETTINGS_H
+#define SCHEDULESETTINGS_H
 
 #include <QLoggingCategory>
-#include <QWidget>
+#include <QDialog>
 #include <QTableWidget>
+#include <QAbstractButton>
 #include <QTimer>
 
 namespace OCC {
@@ -18,7 +19,7 @@ namespace OCC {
    * @brief The ScheduleSettings class
    * @ingroup gui
    */
-  class ScheduleSettings : public QWidget
+  class ScheduleSettings : public QDialog
   {
     Q_OBJECT
 
@@ -27,10 +28,12 @@ namespace OCC {
     ~ScheduleSettings();
 
   private slots:
+    void okButton();
+    void cancelButton();
+    void resetButton(QAbstractButton *button);
     void saveScheduleSettings();
     void loadScheduleSettings();
     void resetScheduleSettings();
-    void changedScheduleSettings();
     void checkSchedule();
 
   private:
@@ -46,4 +49,4 @@ namespace OCC {
 
 
 } // namespace OCC
-#endif // MIRALL_SCHEDULESETTINGS_H
+#endif // SCHEDULESETTINGS_H

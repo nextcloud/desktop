@@ -20,6 +20,7 @@
 
 namespace OCC {
 class IgnoreListEditor;
+class ScheduleSettings;  
 class SyncLogDialog;
 
 namespace Ui {
@@ -46,12 +47,14 @@ private slots:
     void slotShowInExplorerNavigationPane(bool);
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();
+    void slotScheduleSyncing();  
     void loadMiscSettings();
     void slotShowLegalNotice();
 
 private:
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
+    QPointer<ScheduleSettings> _scheduleSettings;  
     QPointer<SyncLogDialog> _syncLogDialog;
     bool _currentlyLoading;
 };
