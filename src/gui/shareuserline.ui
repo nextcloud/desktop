@@ -6,35 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>45</height>
+    <width>360</width>
+    <height>58</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-    <horstretch>0</horstretch>
+   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+    <horstretch>1</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="autoFillBackground">
-   <bool>true</bool>
+  <property name="minimumSize">
+   <size>
+    <width>360</width>
+    <height>0</height>
+   </size>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,2,2,2">
-   <property name="spacing">
-    <number>5</number>
-   </property>
-   <property name="leftMargin">
-    <number>5</number>
-   </property>
-   <property name="topMargin">
-    <number>5</number>
-   </property>
-   <property name="rightMargin">
-    <number>5</number>
-   </property>
-   <property name="bottomMargin">
-    <number>5</number>
-   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QLabel" name="avatar">
      <property name="sizePolicy">
@@ -57,7 +48,7 @@
    <item>
     <widget class="OCC::ElidedLabel" name="sharedWith">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Maximum">
+      <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -69,6 +60,22 @@
       <enum>Qt::PlainText</enum>
      </property>
     </widget>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item>
     <widget class="QCheckBox" name="permissionsEdit">
@@ -89,9 +96,12 @@
       <iconset resource="../../client.qrc">
        <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
      </property>
+     <property name="autoRaise">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
-    </layout>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
