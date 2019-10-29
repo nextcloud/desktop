@@ -2,11 +2,12 @@ import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.0
 
 Window {
     id: trayWindow
     visible: true
-    width: 420
+    width: 400
     height: 500
     color: "transparent"
     flags: Qt.FramelessWindowHint
@@ -30,7 +31,7 @@ Window {
             anchors.top: trayWindowBackground.top
             height: 60
             width: parent.width
-            radius: 10
+            radius: 9
             color: "#0082c9"
 
             Rectangle {
@@ -43,43 +44,29 @@ Window {
 
             RowLayout {
                 id: trayWindowHeaderLayout
-                spacing: 2
+                spacing: 0
                 anchors.fill: parent
 
-                Item {
-                    id: avatarButtonContainer
-                    Layout.alignment: Qt.AlignLeft
-                    width: (trayWindowHeaderBackground.height - 12)
-                    height: (trayWindowHeaderBackground.height - 12)
-                    Layout.margins: 4
-                    Image {
-                        id: currentAvatarButton
-                        width: (trayWindowHeaderBackground.height - 12)
-                        height: (trayWindowHeaderBackground.height - 12)
-                        antialiasing: true
-                        Layout.margins: 4
-                        //source: "../avatar.png"
-                    }
+                Button {
+                    id: currentAccountButton
+                    Layout.preferredWidth: 220
+                    Layout.preferredHeight: (trayWindowHeaderBackground.height)
+                    display: AbstractButton.IconOnly
+                    flat: true
 
-                    Button {
-                        id: currentAccountButton
-                        width: (trayWindowHeaderBackground.height + 4)
-                        height: (trayWindowHeaderBackground.height)
-                        display: AbstractButton.IconOnly
-                        flat: true
+                    MouseArea {
+                        id: accountBtnMouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked:
+                        {
+                            accountMenu.popup()
+                        }
 
-                        MouseArea {
-                            id: accountBtnMouseArea
-                            width: currentAccountButton.width + accountLabels.width + 8
-                            height: trayWindowHeaderBackground.height - 6
-                            onClicked:
-                            {
-                                accountMenu.popup()
-                            }
-
-                            Menu {
-                                id: accountMenu
-                                background: Rectangle {
+                        Menu {
+                            id: accountMenu
+                            background:
+                                Rectangle {
                                     id: menubackground
                                     implicitWidth: 200
                                     implicitHeight: 40
@@ -87,43 +74,101 @@ Window {
                                     radius: 10
                                 }
 
-                                MenuItem { text: "test" }
-                            }
-                         }
+                            MenuItem { text: "test" }
+                        }
+                    }
 
-                         background:
+                    background:
+                        Item {
+                        id: leftHoverContainer
+                        height: currentAccountButton.height
+                        width: currentAccountButton.width
                             Rectangle {
+                                width: currentAccountButton.width / 2
+                                height: currentAccountButton.height / 2
                                 color: "transparent"
+                                clip: true
+                                Rectangle {
+                                    width: currentAccountButton.width
+                                    height: currentAccountButton.height
+                                    radius: 10
+                                    color: "white"
+                                    opacity: 0.2
+                                    visible: accountBtnMouseArea.containsMouse
+                                }
                             }
-                    }
-                }
+                            Rectangle {
+                                width: currentAccountButton.width / 2
+                                height: currentAccountButton.height / 2
+                                anchors.bottom: leftHoverContainer.bottom
+                                color: "white"
+                                opacity: 0.2
+                                visible: accountBtnMouseArea.containsMouse
+                            }
+                            Rectangle {
+                                width: currentAccountButton.width / 2
+                                height: currentAccountButton.height / 2
+                                anchors.right: leftHoverContainer.right
+                                color: "white"
+                                opacity: 0.2
+                                visible: accountBtnMouseArea.containsMouse
+                            }
+                            Rectangle {
+                                width: currentAccountButton.width / 2
+                                height: currentAccountButton.height / 2
+                                anchors.right: leftHoverContainer.right
+                                anchors.bottom: leftHoverContainer.bottom
+                                color: "white"
+                                opacity: 0.2
+                                visible: accountBtnMouseArea.containsMouse
+                            }
+                        }
 
-                Column {
-                    id: accountLabels
-                    Layout.leftMargin: 0
-                    spacing: 4
-                    Layout.alignment: Qt.AlignLeft
-                    //anchors.left: currentAvatarButton.right
-                    Label {
-                        id: syncStatusLabel
-                        text: "Everything up to date"
-                        color: "white"
-                        font.pointSize: 9
-                        font.bold: true
-                    }
-                    Label {
-                        id: currentUserLabel
-                        text: "freddie@nextcloud.com"
-                        color: "white"
-                        font.pointSize: 8
-                    }
-                }
+                    RowLayout {
+                        id: accountControlRowLayout
+                        height: currentAccountButton.height
+                        width: currentAccountButton.width
 
-                Image {
-                    Layout.bottomMargin: 10
-                    Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-                    verticalAlignment: Qt.AlignBottom
-                    source: "qrc:///client/theme/white/caret-down.svg"
+                        Image {
+                            id: currentAccountAvatar
+                            width: (trayWindowHeaderBackground.height - 12)
+                            height: (trayWindowHeaderBackground.height - 12)
+                            Layout.leftMargin: 6
+                            verticalAlignment: Qt.AlignCenter
+                            //source: "file"
+                        }
+
+                        Column {
+                            id: accountLabels
+                            spacing: 4
+                            Layout.alignment: Qt.AlignLeft
+                            Label {
+                                id: syncStatusLabel
+                                text: "Up to date"
+                                color: "white"
+                                font.pointSize: 9
+                                font.bold: true
+                            }
+                            Label {
+                                id: currentUserLabel
+                                text: "cloud.nextcloud.com"
+                                color: "white"
+                                font.pointSize: 8
+                            }
+                        }
+
+                        /*Item {
+                            Layout.preferredWidth: 6
+                        }*/
+
+                        Image {
+                            Layout.alignment: Qt.AlignLeft
+                            verticalAlignment: Qt.AlignCenter
+                            Layout.margins: 12
+                            //source: "../../theme/white/caret-down.svg"
+                            source: "qrc:///client/theme/white/caret-down.svg"
+                        }
+                    }
                 }
 
                 Item {
@@ -133,48 +178,48 @@ Window {
 
                 Button {
                     id: openLocalFolderButton
-                    rightPadding: 2
-                    leftPadding: 2
                     Layout.alignment: Qt.AlignRight
                     display: AbstractButton.IconOnly
+                    Layout.preferredWidth: (trayWindowHeaderBackground.height)
+                    Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
-                    Layout.preferredWidth: (trayWindowHeaderBackground.height - 12)
-                    Layout.preferredHeight: (trayWindowHeaderBackground.height - 12)
 
+                    //icon.source: "../../theme/white/folder.svg"
                     icon.source: "qrc:///client/theme/white/folder.svg"
                     icon.color: "transparent"
 
                     MouseArea {
                         id: folderBtnMouseArea
                         anchors.fill: parent
+                        hoverEnabled: true
                         onClicked:
                         {
                         }
-                     }
+                    }
 
-                     background:
-                        Rectangle {
-                            color: "transparent"
-                        }
+                    background:
+                       Rectangle {
+                        color: folderBtnMouseArea.containsMouse ? "white" : "transparent"
+                        opacity: 0.2
+                       }
                 }
 
                 Button {
                     id: trayWindowTalkButton
-                    rightPadding: 2
-                    leftPadding: 2
                     Layout.alignment: Qt.AlignRight
                     display: AbstractButton.IconOnly
-                    Layout.preferredWidth: (trayWindowHeaderBackground.height - 12)
-                    Layout.preferredHeight: (trayWindowHeaderBackground.height - 12)
+                    Layout.preferredWidth: (trayWindowHeaderBackground.height)
+                    Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
-                    Layout.margins: 4
 
+                    //icon.source: "../../theme/white/talk-app.svg"
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     icon.color: "transparent"
 
                     MouseArea {
                         id: talkBtnMouseArea
                         anchors.fill: parent
+                        hoverEnabled: true
                         onClicked:
                         {
                         }
@@ -182,35 +227,78 @@ Window {
 
                      background:
                         Rectangle {
-                            color: "transparent"
+                         color: talkBtnMouseArea.containsMouse ? "white" : "transparent"
+                         opacity: 0.2
                         }
                 }
 
                 Button {
                     id: trayWindowAppsButton
-                    rightPadding: 2
-                    leftPadding: 2
                     Layout.alignment: Qt.AlignRight
                     display: AbstractButton.IconOnly
-                    Layout.preferredWidth: (trayWindowHeaderBackground.height - 12)
-                    Layout.preferredHeight: (trayWindowHeaderBackground.height - 12)
+                    Layout.preferredWidth: (trayWindowHeaderBackground.height)
+                    Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
-                    Layout.margins: 4
 
+                    //icon.source: "../../theme/white/more-apps.svg"
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
                     icon.color: "transparent"
 
                     MouseArea {
                         id: appsBtnMouseArea
                         anchors.fill: parent
+                        hoverEnabled: true
                         onClicked:
                         {
                         }
                      }
 
                      background:
+                        Item {
+                        id: rightHoverContainer
+                        height: trayWindowAppsButton.height
+                        width: trayWindowAppsButton.width
                         Rectangle {
-                            color: "transparent"
+                            width: trayWindowAppsButton.width / 2
+                            height: trayWindowAppsButton.height / 2
+                            color: "white"
+                            opacity: 0.2
+                            visible: appsBtnMouseArea.containsMouse
+                        }
+                        Rectangle {
+                            width: trayWindowAppsButton.width / 2
+                            height: trayWindowAppsButton.height / 2
+                            anchors.bottom: rightHoverContainer.bottom
+                            color: "white"
+                            opacity: 0.2
+                            visible: appsBtnMouseArea.containsMouse
+                        }
+                        Rectangle {
+                            width: trayWindowAppsButton.width / 2
+                            height: trayWindowAppsButton.height / 2
+                            anchors.bottom: rightHoverContainer.bottom
+                            anchors.right: rightHoverContainer.right
+                            color: "white"
+                            opacity: 0.2
+                            visible: appsBtnMouseArea.containsMouse
+                        }
+                            Rectangle {
+                                id: rightHoverContainerClipper
+                                anchors.right: rightHoverContainer.right
+                                width: trayWindowAppsButton.width / 2
+                                height: trayWindowAppsButton.height / 2
+                                color: "transparent"
+                                clip: true
+                                Rectangle {
+                                    width: trayWindowAppsButton.width
+                                    height: trayWindowAppsButton.height
+                                    anchors.right: rightHoverContainerClipper.right
+                                    radius: 10
+                                    color: "white"
+                                    opacity: 0.2
+                                    visible: appsBtnMouseArea.containsMouse
+                                }
+                            }
                         }
                 }
             }
