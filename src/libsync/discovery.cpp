@@ -332,6 +332,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // remote will be rediscovered. This is just a fallback for a similar check
     // in processFileAnalyzeRemoteInfo().
     if (_queryServer == ParentNotChanged
+        && dbEntry.isValid()
         && (dbEntry._type == ItemTypeVirtualFileDownload
             || localEntry.type == ItemTypeVirtualFileDownload)
         && (localEntry.isValid() || _queryLocal == ParentNotChanged)) {
