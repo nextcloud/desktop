@@ -368,6 +368,7 @@ void AccountManager::shutdown()
     _accounts.clear();
     foreach (const auto &acc, accountsCopy) {
         emit accountRemoved(acc.data());
+        emit removeAccountFolders(acc.data());
     }
 }
 

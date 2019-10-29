@@ -41,6 +41,12 @@ class QNetworkReply;
 class QUrl;
 class QNetworkAccessManager;
 
+namespace QKeychain {
+class Job;
+class WritePasswordJob;
+class ReadPasswordJob;
+}
+
 namespace OCC {
 
 class AbstractCredentials;
@@ -49,7 +55,6 @@ typedef QSharedPointer<Account> AccountPtr;
 class QuotaInfo;
 class AccessManager;
 class SimpleNetworkJob;
-
 
 /**
  * @brief Reimplement this to handle SSL errors from libsync
@@ -236,6 +241,11 @@ public:
 
     ClientSideEncryption* e2e();
 
+    /// Used in RemoteWipe
+    void retrieveAppPassword();
+    void setAppPassword(QString appPassword);
+    void deleteAppPassword();
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -261,6 +271,9 @@ signals:
 
     void accountChangedAvatar();
     void accountChangedDisplayName();
+
+    /// Used in RemoteWipe
+    void appPasswordRetrieved(QString);
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
