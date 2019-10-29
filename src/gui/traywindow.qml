@@ -12,9 +12,11 @@ Window {
     flags: Qt.FramelessWindowHint
 
     Component.onCompleted: {
-            // desktopAvailableWidth and Height doesn't include the system tray bar
-            setX(Screen.desktopAvailableWidth - width);
-            setY(Screen.desktopAvailableHeight + height);
+            /* desktopAvailableWidth and Height doesn't include the system tray bar
+               but breaks application anyway on windows when using multi monitor setup,
+               will look for a better solution later, for now just get this thing complete */
+            //setX(Screen.desktopAvailableWidth - width);
+            //setY(Screen.desktopAvailableHeight + height);
     }
 
     Rectangle {
@@ -56,7 +58,7 @@ Window {
                         height: (trayWindowHeaderBackground.height - 12)
                         antialiasing: true
                         Layout.margins: 4
-                        source: "../avatar.png"
+                        //source: "../avatar.png"
                     }
 
                     Button {
@@ -117,13 +119,11 @@ Window {
                     }
                 }
 
-                Label {
-                    text: "\u25BC"
+                Image {
                     Layout.bottomMargin: 10
                     Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
-                    font.pointSize: 9
-                    color: "white"
                     verticalAlignment: Qt.AlignBottom
+                    source: "qrc:///client/theme/white/caret-down.svg"
                 }
 
                 Item {
@@ -141,7 +141,7 @@ Window {
                     Layout.preferredWidth: (trayWindowHeaderBackground.height - 12)
                     Layout.preferredHeight: (trayWindowHeaderBackground.height - 12)
 
-                    icon.source: "../files.png"
+                    icon.source: "qrc:///client/theme/white/folder.svg"
                     icon.color: "transparent"
 
                     MouseArea {
@@ -169,7 +169,7 @@ Window {
                     flat: true
                     Layout.margins: 4
 
-                    icon.source: "../talk.png"
+                    icon.source: "qrc:///client/theme/white/talk-app.svg"
                     icon.color: "transparent"
 
                     MouseArea {
@@ -197,7 +197,7 @@ Window {
                     flat: true
                     Layout.margins: 4
 
-                    icon.source: "../apps.png"
+                    icon.source: "qrc:///client/theme/white/more-apps.svg"
                     icon.color: "transparent"
 
                     MouseArea {
