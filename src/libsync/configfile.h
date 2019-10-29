@@ -85,6 +85,8 @@ public:
     void getScheduleTable(QTableWidget &table) const;
     void setScheduleStatus(bool);
     void setScheduleTable(const QTableWidget &table);
+    void setScheduleTable(const bool (&table)[7][24]);
+    void getScheduleTable(bool (&table)[7][24]) const;
 
     bool monoIcons() const;
     void setMonoIcons(bool);
