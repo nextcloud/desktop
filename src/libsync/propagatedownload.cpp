@@ -424,7 +424,11 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         }
 
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
-        vfs->dehydratePlaceholder(*_item);
+        auto r = vfs->dehydratePlaceholder(*_item);
+        if (!r) {
+            done(SyncFileItem::NormalError, r.error());
+            return;
+        }
         propagator()->_journal->deleteFileRecord(_item->_originalFile);
         updateMetadata(false);
         return;
@@ -435,7 +439,11 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
     }
     if (_item->_type == ItemTypeVirtualFile) {
         qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
-        vfs->createPlaceholder(*_item);
+        auto r = vfs->createPlaceholder(*_item);
+        if (!r) {
+            done(SyncFileItem::NormalError, r.error());
+            return;
+        }
         updateMetadata(false);
         return;
     }
