@@ -137,7 +137,7 @@ void ActivityWidget::showLabels()
     _ui->_headerLabel->setTextFormat(Qt::RichText);
     _ui->_headerLabel->setText(t);
 
-    _ui->_notifyLabel->setText(tr("Action Required: Notifications"));
+    _ui->_notifyLabel->setText(tr("Notifications"));
 
     t.clear();
     QSetIterator<QString> i(_accountsWithoutActivities);
@@ -270,7 +270,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
                 this, &ActivityWidget::slotRequestCleanupAndBlacklist);
 
             _notificationsLayout->addWidget(widget);
-// _ui->_notifyScroll->setMinimumHeight( widget->height());
+            // _ui->_notifyScroll->setMinimumHeight( widget->height());
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
             _widgetForNotifId[activity.ident()] = widget;
             newNotificationShown = true;
@@ -348,19 +348,19 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         // Assemble a tray notification
         QString msg;
         if (newGuiLogCount == 1) {
-            msg = tr("You received %n new request(s) from %1.", "", accNotified.begin().value()).arg(accNotified.begin().key());
+            msg = tr("%n notifications(s) for %1.", "", accNotified.begin().value()).arg(accNotified.begin().key());
         } else if (newGuiLogCount >= 2) {
             const auto acc1 = accNotified.begin();
             const auto acc2 = acc1 + 1;
             if (newGuiLogCount == 2) {
                 const int notiCount = acc1.value() + acc2.value();
-                msg = tr("You received %n new request(s) from %1 and %2.", "", notiCount).arg(acc1.key(), acc2.key());
+                msg = tr("%n notifications(s) for %1 and %2.", "", notiCount).arg(acc1.key(), acc2.key());
             } else {
-                msg = tr("You received new request from %1, %2 and other accounts.").arg(acc1.key(), acc2.key());
+                msg = tr("New notifications for %1, %2 and other accounts.").arg(acc1.key(), acc2.key());
             }
         }
-        const QString log = tr("Action required. Open the activity view to react.");
-        emit guiLog(log, msg);
+        const QString log = tr("Open the activity view for details.");
+        emit guiLog(msg, log);
     }
 
     if (newNotificationShown) {
