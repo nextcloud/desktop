@@ -45,6 +45,8 @@
 #include <QPainter>
 #include <QListWidget>
 
+#include <string.h>
+
 namespace OCC {
 
 ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
@@ -203,7 +205,8 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
         // the owner of the file that shared it first
-        if(x == 0 && !share->getUidOwner().isEmpty()){
+		// leave out if it's the current user
+        if(x == 0 && !share->getUidOwner().isEmpty() && !(share->getUidOwner() == _account->credentials()->user())) {
             _ui->mainOwnerLabel->setText(QString("Shared with you by ").append(share->getOwnerDisplayName()));
         }
 

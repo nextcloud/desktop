@@ -384,7 +384,11 @@ public:
 
     ~OwncloudPropagator();
 
-    void start(const SyncFileItemVector &_syncedItems);
+    void start(const SyncFileItemVector &_syncedItems,
+               const bool &hasChange = false,
+               const int &lastChangeInstruction = 0,
+               const bool &hasDelete = false,
+               const int &lastDeleteInstruction = 0);
 
     const SyncOptions &syncOptions() const;
     void setSyncOptions(const SyncOptions &syncOptions);
