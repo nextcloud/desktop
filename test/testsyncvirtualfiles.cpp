@@ -1061,10 +1061,10 @@ private slots:
         fakeFolder.localModifier().remove("A/file3" DVSUFFIX);
         fakeFolder.localModifier().remove("A/file3" DVSUFFIX DVSUFFIX);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(findItem(completeSpy, "A/file1" DVSUFFIX)->isEmpty());
-        QVERIFY(findItem(completeSpy, "A/file2" DVSUFFIX)->isEmpty());
-        QVERIFY(findItem(completeSpy, "A/file3" DVSUFFIX)->isEmpty());
-        QVERIFY(findItem(completeSpy, "A/file3" DVSUFFIX DVSUFFIX)->isEmpty());
+        QVERIFY(completeSpy.findItem("A/file1" DVSUFFIX)->isEmpty());
+        QVERIFY(completeSpy.findItem("A/file2" DVSUFFIX)->isEmpty());
+        QVERIFY(completeSpy.findItem("A/file3" DVSUFFIX)->isEmpty());
+        QVERIFY(completeSpy.findItem("A/file3" DVSUFFIX DVSUFFIX)->isEmpty());
         cleanup();
 
         // Local removal: when querying server
@@ -1105,7 +1105,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         setupVfs(fakeFolder);
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         auto cleanup = [&]() {
             completeSpy.clear();
         };
