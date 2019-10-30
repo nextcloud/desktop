@@ -18,13 +18,7 @@ Build instructions are subject to change as development proceeds.
 
 NOTE: Please check the version for which you want to build.
 
-These instructions are updated to work with version of the ownCloud Client.
-
-[[compiling-via-ownbrander]]
-== Compiling via ownBrander
-
-If you don’t want to go through the trouble of doing all the compile work manually, you can use
-https://doc.owncloud.org/branded_clients/[ownBrander] to create installer images for all platforms.
+These instructions are updated to work with the latest version of the ownCloud Client.
 
 [[getting-source-code]]
 == Getting the Source Code
@@ -431,3 +425,9 @@ The following are known CMake parameters:
 ....
 LD_LIBRARY_PATH=/opt/ownCloud/qt-5.12.4/lib/x86_64-linux-gnu/:/Users/path/to/client/../install/lib/x86_64-linux-gnu/ /Users/path/to/client/../install/bin/owncloud
 ....
+
+[[compiling-via-ownbrander]]
+== Compiling via ownBrander
+
+If you don’t want to go through the trouble of doing all the compile work manually, you can use
+https://doc.owncloud.org/branded_clients/[ownBrander] to create installer images for all platforms.
