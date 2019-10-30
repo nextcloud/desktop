@@ -128,7 +128,7 @@ Window {
                         id: accountControlRowLayout
                         height: currentAccountButton.height
                         width: currentAccountButton.width
-
+                        spacing: 0
                         Image {
                             id: currentAccountAvatar
                             width: (trayWindowHeaderBackground.height - 12)
@@ -142,6 +142,7 @@ Window {
                             id: accountLabels
                             spacing: 4
                             Layout.alignment: Qt.AlignLeft
+                            Layout.leftMargin: 6
                             Label {
                                 id: syncStatusLabel
                                 text: "Up to date"
@@ -304,11 +305,81 @@ Window {
             }
         }   // Rectangle trayWindowHeaderBackground
 
-        /*ListView {
+        ListView {
+            id: activityListView
             anchors.top: trayWindowHeaderBackground.bottom
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-        }*/
+            width:  trayWindowBackground.width
+            height: trayWindowBackground.height - trayWindowHeaderBackground.height
+            clip: true
+
+            model: ListModel {}
+
+            delegate: RowLayout {
+                id: activityItem
+                width: activityListView.width
+                height: trayWindowHeaderLayout.height
+                spacing: 0
+                Image {
+                    id: activityIcon
+                    Layout.leftMargin: 6
+                    Layout.preferredWidth: 48
+                    Layout.preferredHeight: 48
+                    verticalAlignment: Qt.AlignCenter
+                    source: "qrc:///client/theme/black/state-sync.svg"
+                    sourceSize.height: 48
+                    sourceSize.width: 48
+                }
+                Column {
+                    Layout.leftMargin: 6
+                    spacing: 4
+                    Layout.alignment: Qt.AlignLeft
+                    Text {
+                        id: activityTextTitle
+                        text: name
+                        font.pointSize: 9
+                    }
+                    Text {
+                        id: activityTextInfo
+                        text: "Lorem ipsum dolor sit amet"
+                        font.pointSize: 8
+                    }
+                }
+                Item {
+                    id: activityItemFiller
+                    Layout.fillWidth: true
+                }
+                Button {
+                    Layout.preferredWidth: activityItem.height
+                    Layout.preferredHeight: activityItem.height
+                    Layout.alignment: Qt.AlignRight
+                    flat: true
+                    display: AbstractButton.IconOnly
+                    icon.source: "qrc:///client/resources/files.svg"
+                    icon.color: "transparent"
+                }
+                Button {
+                    Layout.preferredWidth: activityItem.height
+                    Layout.preferredHeight: activityItem.height
+                    Layout.alignment: Qt.AlignRight
+                    flat: true
+                    display: AbstractButton.IconOnly
+                    icon.source: "qrc:///client/resources/public.svg"
+                    icon.color: "transparent"
+                }
+            }
+
+            add: Transition {
+                NumberAnimation { properties: "y"; from: -60; duration: 150; easing.type: Easing.Linear }
+            }
+
+            displaced: Transition {
+                NumberAnimation { properties: "y"; duration: 150; easing.type: Easing.Linear }
+            }
+
+            focus: true
+            Keys.onSpacePressed: model.insert(0, { "name": "Item " + model.count })
+            Keys.onTabPressed: model.remove(3)
+        }
 
     }       // Rectangle trayWindowBackground
 }
