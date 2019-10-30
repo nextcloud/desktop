@@ -1135,9 +1135,8 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find("A/file4" DVSUFFIX DVSUFFIX));
         QVERIFY(itemInstruction(completeSpy, "A/file1" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "A/file2" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
-        QVERIFY(itemInstruction(completeSpy, "A/file3" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
-        QVERIFY(itemInstruction(completeSpy, "A/file4" DVSUFFIX, CSYNC_INSTRUCTION_NEW));
-        // technically file3.owncloud and file4.owncloud are also ignored
+        QVERIFY(itemInstruction(completeSpy, "A/file3" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(itemInstruction(completeSpy, "A/file4" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
         QVERIFY(itemInstruction(completeSpy, "A/file4" DVSUFFIX DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
         cleanup();
 
