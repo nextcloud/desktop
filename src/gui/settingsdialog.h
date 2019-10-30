@@ -46,12 +46,13 @@ class ActivitySettings;
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
+    Q_PROPERTY(QWidget* currentPage READ currentPage)
 
 public:
     explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = 0);
     ~SettingsDialog();
 
-    void addAccount(const QString &title, QWidget *widget);
+    QWidget* currentPage();
 
 public slots:
     void showFirstPage();

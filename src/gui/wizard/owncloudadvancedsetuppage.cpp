@@ -78,6 +78,9 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
         _ui.confSpinBox->hide();
         _ui.confTraillingSizeLabel->hide();
     }
+
+    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(
+                                      bestAvailableVfsMode() == Vfs::WindowsCfApi ? tr("(tech preview)") : tr("(experimental)")));
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()

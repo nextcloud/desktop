@@ -29,4 +29,6 @@
 #cmakedefine SHAREDIR "@SHAREDIR@"
 #cmakedefine PLUGINDIR "@PLUGINDIR@"
 
+#cmakedefine01 GUI_TESTING
+
 #endif

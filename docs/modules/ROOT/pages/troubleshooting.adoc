@@ -50,7 +50,7 @@ Other issues can affect synchronization of your ownCloud files:
 * Synchronizing the same directory with ownCloud and other synchronization software such as Unison, rsync, Microsoft Windows Offline Folders, or other cloud services such as Dropbox or Microsoft SkyDrive is not supported and should not be attempted.
 In the worst case, it is possible that synchronizing folders or files using ownCloud and other synchronization software or services can result in data loss.
 * If you find that only specific files are not synchronized, the synchronization protocol might be having an effect. Some files are automatically ignored because they are system files, other files might be ignored because their filename contains characters that are not supported on certain file systems.
-For more information about ignored files, see `ignored-files-label`.
+For more detailed information see xref:architecture.adoc#ignored-files[the Ignored Files section].
 * If you are operating your own server, and use the local storage backend (the default), make sure that ownCloud has exclusive access to the directory.
 
 [WARNING]

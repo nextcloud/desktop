@@ -19,10 +19,10 @@
 
 namespace OCC {
 
-struct LibCloudProvidersPrivate;
+class LibCloudProvidersPrivate;
 
 /** Exports sync folders to dbus with libcloudproviders */
-struct LibCloudProviders : public QObject
+class LibCloudProviders : public QObject
 {
     Q_OBJECT
 

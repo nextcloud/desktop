@@ -126,7 +126,7 @@ for root,dirs,files in os.walk(options.podir):
             if filename in localeToName:
                 language = localeToName[filename]
                 translationCache[language] = collections.OrderedDict()
-                
+
                 po = polib.pofile(os.path.join(root,file))
                 for entry in po.translated_entries():
                     # Loop through all our labels and add translation (each translation may have multiple labels)
@@ -153,7 +153,8 @@ NSIDeclarations.append( tostr('; Auto-generated - do not modify\n') )
 
 # loopthrough the languages an generate one nsh files for each language
 lineNo = 1
-for language,translations in translationCache.iteritems():
+for language in sorted(translationCache):
+    translations = translationCache[language]
     NSINewLines = []
     NSINewLines.append( tostr('# Auto-generated - do not modify\n') )
     count = 0
@@ -172,7 +173,7 @@ for language,translations in translationCache.iteritems():
     NSIWorkingFile.writelines(NSINewLines)
     NSIWorkingFile.close()
     print ( "%i translations merged for language '%s'"%(count,language) )
-    
+
 # Finally, let's write languages.nsh and declarations.nsh
 NSIWorkingFile = open('%s/languages.nsh' % options.output,"w")
 NSIWorkingFile.writelines(NSILanguages)
@@ -181,5 +182,5 @@ NSIWorkingFile.close()
 NSIWorkingFile = open('%s/declarations.nsh' % options.output,"w")
 NSIWorkingFile.writelines(NSIDeclarations)
 NSIWorkingFile.close()
-    
+
 print ( "NSI Localization Operation Complete" )

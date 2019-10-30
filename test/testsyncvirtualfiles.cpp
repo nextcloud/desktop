@@ -15,19 +15,9 @@ using namespace OCC;
 
 #define DVSUFFIX APPLICATION_DOTVIRTUALFILE_SUFFIX
 
-SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
+bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const csync_instructions_e instr)
 {
-    for (const QList<QVariant> &args : spy) {
-        auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
-            return item;
-    }
-    return SyncFileItemPtr(new SyncFileItem);
-}
-
-bool itemInstruction(const QSignalSpy &spy, const QString &path, const csync_instructions_e instr)
-{
-    auto item = findItem(spy, path);
+    auto item = spy.findItem(path);
     return item->_instruction == instr;
 }
 
@@ -94,7 +84,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
             completeSpy.clear();
@@ -215,7 +205,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
             completeSpy.clear();
@@ -286,7 +276,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
             completeSpy.clear();
@@ -322,7 +312,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
             completeSpy.clear();
@@ -384,10 +374,10 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
-        QCOMPARE(findItem(completeSpy, "A/a1")->_type, ItemTypeVirtualFileDownload);
+        QCOMPARE(completeSpy.findItem("A/a1")->_type, ItemTypeVirtualFileDownload);
         QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_NONE));
         QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_SYNC));
-        QCOMPARE(findItem(completeSpy, "A/a2")->_type, ItemTypeVirtualFileDownload);
+        QCOMPARE(completeSpy.findItem("A/a2")->_type, ItemTypeVirtualFileDownload);
         QVERIFY(itemInstruction(completeSpy, "A/a2" DVSUFFIX, CSYNC_INSTRUCTION_NONE));
         QVERIFY(itemInstruction(completeSpy, "A/a3" DVSUFFIX, CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "A/a4m", CSYNC_INSTRUCTION_NEW));
@@ -437,7 +427,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
             completeSpy.clear();
@@ -595,7 +585,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
             completeSpy.clear();
@@ -635,7 +625,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
             completeSpy.clear();
@@ -690,7 +680,7 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo() };
         setupVfs(fakeFolder);
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         auto cleanup = [&]() {
             completeSpy.clear();
         };
@@ -781,7 +771,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         auto cleanup = [&]() {
             completeSpy.clear();
         };
@@ -832,13 +822,13 @@ private slots:
         QVERIFY(isDehydrated("A/a1"));
         QVERIFY(hasDehydratedDbEntries("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_SYNC));
-        QCOMPARE(findItem(completeSpy, "A/a1" DVSUFFIX)->_type, ItemTypeVirtualFileDehydration);
-        QCOMPARE(findItem(completeSpy, "A/a1" DVSUFFIX)->_file, QStringLiteral("A/a1"));
-        QCOMPARE(findItem(completeSpy, "A/a1" DVSUFFIX)->_renameTarget, QStringLiteral("A/a1" DVSUFFIX));
+        QCOMPARE(completeSpy.findItem("A/a1" DVSUFFIX)->_type, ItemTypeVirtualFileDehydration);
+        QCOMPARE(completeSpy.findItem("A/a1" DVSUFFIX)->_file, QStringLiteral("A/a1"));
+        QCOMPARE(completeSpy.findItem("A/a1" DVSUFFIX)->_renameTarget, QStringLiteral("A/a1" DVSUFFIX));
         QVERIFY(isDehydrated("A/a2"));
         QVERIFY(hasDehydratedDbEntries("A/a2"));
         QVERIFY(itemInstruction(completeSpy, "A/a2" DVSUFFIX, CSYNC_INSTRUCTION_SYNC));
-        QCOMPARE(findItem(completeSpy, "A/a2" DVSUFFIX)->_type, ItemTypeVirtualFileDehydration);
+        QCOMPARE(completeSpy.findItem("A/a2" DVSUFFIX)->_type, ItemTypeVirtualFileDehydration);
 
         QVERIFY(!fakeFolder.currentLocalState().find("B/b1"));
         QVERIFY(!fakeFolder.currentRemoteState().find("B/b1"));
@@ -992,7 +982,7 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo() };
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         auto cleanup = [&]() {
             completeSpy.clear();
         };

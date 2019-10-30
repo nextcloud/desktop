@@ -54,10 +54,6 @@
 
 #include "account.h"
 
-#ifdef Q_OS_MAC
-#include "settingsdialogmac.h"
-#endif
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountSettings, "gui.account.settings", QtInfoMsg)
@@ -193,8 +189,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
 void AccountSettings::createAccountToolbox()
 {
-    QMenu *menu = new QMenu();
+    QMenu *menu = new QMenu(ui->_accountToolbox);
     _addAccountAction = new QAction(tr("Add new"), this);
+    _addAccountAction->setObjectName("addAccountAction");
     menu->addAction(_addAccountAction);
     connect(_addAccountAction, &QAction::triggered, this, &AccountSettings::slotOpenAccountWizard);
 
@@ -228,16 +225,6 @@ void AccountSettings::slotOpenAccountWizard()
     if (qgetenv("QT_QPA_PLATFORMTHEME") == "appmenu-qt5" || QSystemTrayIcon::isSystemTrayAvailable()) {
         topLevelWidget()->close();
     }
-#ifdef Q_OS_MAC
-    qCDebug(lcAccountSettings) << parent() << topLevelWidget();
-    SettingsDialogMac *sd = qobject_cast<SettingsDialogMac *>(topLevelWidget());
-
-    if (sd) {
-        sd->showActivityPage();
-    } else {
-        qFatal("nope");
-    }
-#endif
     OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
 }
 
@@ -364,7 +351,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         && !folder->supportsVirtualFiles()
         && bestAvailableVfsMode() != Vfs::Off
         && !folder->isVfsOnOffSwitchPending()) {
-        ac = menu->addAction(tr("Enable virtual file support (experimental)..."));
+        ac = menu->addAction(tr("Enable virtual file support %1...").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? tr("(tech preview)") : tr("(experimental)")));
         connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableVfsCurrentFolder);
     }
 
@@ -822,8 +809,8 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 
 void AccountSettings::slotAccountStateChanged()
 {
-    int state = _accountState ? _accountState->state() : AccountState::Disconnected;
-    if (_accountState) {
+    const AccountState::State state = _accountState ? _accountState->state() : AccountState::Disconnected;
+    if (state != AccountState::Disconnected) {
         ui->sslButton->updateAccountState(_accountState);
         AccountPtr account = _accountState->account();
         QUrl safeUrl(account->url());
@@ -833,9 +820,9 @@ void AccountSettings::slotAccountStateChanged()
             _model->slotUpdateFolderState(folder);
         }
 
-        QString server = QString::fromLatin1("<a href=\"%1\">%2</a>")
-                             .arg(Utility::escape(account->url().toString()),
-                                 Utility::escape(safeUrl.toString()));
+        const QString server = QString::fromLatin1("<a href=\"%1\">%2</a>")
+                                   .arg(Utility::escape(account->url().toString()),
+                                       Utility::escape(safeUrl.toString()));
         QString serverWithUser = server;
         if (AbstractCredentials *cred = account->credentials()) {
             QString user = account->davDisplayName();
@@ -845,19 +832,25 @@ void AccountSettings::slotAccountStateChanged()
             serverWithUser = tr("%1 as <i>%2</i>").arg(server, Utility::escape(user));
         }
 
-        if (state == AccountState::Connected) {
+        switch (state) {
+        case AccountState::Connected: {
             QStringList errors;
             if (account->serverVersionUnsupported()) {
                 errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->serverVersion());
             }
             showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
-        } else if (state == AccountState::ServiceUnavailable) {
+            break;
+        }
+        case AccountState::ServiceUnavailable:
             showConnectionLabel(tr("Server %1 is temporarily unavailable.").arg(server));
-        } else if (state == AccountState::MaintenanceMode) {
+            break;
+        case AccountState::MaintenanceMode:
             showConnectionLabel(tr("Server %1 is currently in maintenance mode.").arg(server));
-        } else if (state == AccountState::SignedOut) {
+            break;
+        case AccountState::SignedOut:
             showConnectionLabel(tr("Signed out from %1.").arg(serverWithUser));
-        } else if (state == AccountState::AskingCredentials) {
+            break;
+        case AccountState::AskingCredentials: {
             QUrl url;
             if (auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials())) {
                 connect(cred, &HttpCredentialsGui::authorisationLinkChanged,
@@ -871,10 +864,22 @@ void AccountSettings::slotAccountStateChanged()
             } else {
                 showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
             }
-        } else {
+            break;
+        }
+        case AccountState::NetworkError:
             showConnectionLabel(tr("No connection to %1 at %2.")
                                     .arg(Utility::escape(Theme::instance()->appNameGUI()), server),
                 _accountState->connectionErrors());
+            break;
+        case AccountState::ConfigurationError:
+            showConnectionLabel(tr("Server configuration error: %1 at %2.")
+                                    .arg(Utility::escape(Theme::instance()->appNameGUI()), server),
+                _accountState->connectionErrors());
+            break;
+        case AccountState::Disconnected:
+            // we can't end up here as the whole block is ifdeffed
+            Q_UNREACHABLE();
+            break;
         }
     } else {
         // ownCloud is not yet configured.

@@ -294,7 +294,7 @@ public:
     void dehydratePlaceholder(const SyncFileItem &) override {}
     void convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override {}
 
-    bool needsMetadataUpdate(const SyncFileItem &item) override { return false; }
+    bool needsMetadataUpdate(const SyncFileItem &) override { return false; }
     bool isDehydratedPlaceholder(const QString &) override { return false; }
     bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }
 

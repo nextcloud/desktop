@@ -66,10 +66,6 @@ public:
 
     bool passwordStorageAllowed(const QString &connection = QString());
 
-    // max count of lines in the log window
-    int maxLogLines() const;
-    void setMaxLogLines(int);
-
     /* Server poll interval in milliseconds */
     std::chrono::milliseconds remotePollInterval(const QString &connection = QString()) const;
     /* Set poll interval. Value in milliseconds has to be larger than 5000 */

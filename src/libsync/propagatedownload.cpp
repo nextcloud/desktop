@@ -405,6 +405,7 @@ void PropagateDownloadFile::start()
         computeChecksum->setChecksumType(parseChecksumHeaderType(_item->_checksumHeader));
         connect(computeChecksum, &ComputeChecksum::done,
             this, &PropagateDownloadFile::conflictChecksumComputed);
+        propagator()->_activeJobList.append(this);
         computeChecksum->start(propagator()->getFilePath(_item->_file));
         return;
     }
@@ -414,6 +415,7 @@ void PropagateDownloadFile::start()
 
 void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
 {
+    propagator()->_activeJobList.removeOne(this);
     if (makeChecksumHeader(checksumType, checksum) == _item->_checksumHeader) {
         // No download necessary, just update fs and journal metadata
         qCDebug(lcPropagateDownload) << _item->_file << "remote and local checksum match";
@@ -461,24 +463,26 @@ void PropagateDownloadFile::startDownload()
     if (tmpFileName.isEmpty()) {
         tmpFileName = createDownloadTmpFileName(_item->_file);
     }
-
     _tmpFile.setFileName(propagator()->getFilePath(tmpFileName));
-    if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
-        done(SyncFileItem::NormalError, _tmpFile.errorString());
+
+    _resumeStart = _tmpFile.size();
+    if (_resumeStart > 0 && _resumeStart == _item->_size) {
+        qCInfo(lcPropagateDownload) << "File is already complete, no need to download";
+        downloadFinished();
         return;
     }
 
-    FileSystem::setFileHidden(_tmpFile.fileName(), true);
-
-    _resumeStart = _tmpFile.size();
-    if (_resumeStart > 0) {
-        if (_resumeStart == _item->_size) {
-            qCInfo(lcPropagateDownload) << "File is already complete, no need to download";
-            _tmpFile.close();
-            downloadFinished();
-            return;
-        }
+    // Can't open(Append) read-only files, make sure to make
+    // file writable if it exists.
+    if (_tmpFile.exists())
+        FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
+    if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
+        qCWarning(lcPropagateDownload) << "could not open temporary file" << _tmpFile.fileName();
+        done(SyncFileItem::NormalError, _tmpFile.errorString());
+        return;
     }
+    // Hide temporary after creation
+    FileSystem::setFileHidden(_tmpFile.fileName(), true);
 
     // If there's not enough space to fully download this file, stop.
     const auto diskSpaceResult = propagator()->diskSpaceCheck();
@@ -728,12 +732,8 @@ void PropagateDownloadFile::slotGetFinished()
     // of the compressed data. See QTBUG-73364.
     const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
     if ((contentEncoding == "gzip" || contentEncoding == "deflate")
-        && (
-#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
-           job->reply()->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool() ||
-#endif
-           job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool()
-         )) {
+        && (job->reply()->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()
+            || job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool())) {
         bodySize = 0;
         hasSizeHeader = false;
     }

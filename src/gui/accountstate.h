@@ -39,6 +39,8 @@ typedef QExplicitlySharedDataPointer<AccountState> AccountStatePtr;
 class AccountState : public QObject, public QSharedData
 {
     Q_OBJECT
+    Q_PROPERTY(AccountPtr account MEMBER _account)
+
 public:
     enum State {
         /// Not even attempting to connect, most likely because the

@@ -293,7 +293,6 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     // We attempt to work with servers >= 7.0.0 but warn users.
     // Check usages of Account::serverVersionUnsupported() for details.
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     // Record that the server supports HTTP/2
     // Actual decision if we should use HTTP/2 is done in AccessManager::createRequest
     if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
@@ -302,7 +301,6 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
                 reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool());
         }
     }
-#endif
     return true;
 }
 

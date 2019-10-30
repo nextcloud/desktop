@@ -59,8 +59,13 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
     if (httpCode == 503) {
         // When the server is in maintenance mode, we want to exit the sync immediatly
         // so that we do not flood the server with many requests
-        return errorBody.contains(R"(>Sabre\DAV\Exception\ServiceUnavailable<)") ?
-            SyncFileItem::FatalError : SyncFileItem::NormalError;
+        // BUG: This relies on a translated string and is thus unreliable.
+        //      In the future it should return a NormalError and trigger a status.php
+        //      check that detects maintenance mode reliably and will terminate the sync run.
+        auto probablyMaintenance =
+                errorBody.contains(R"(>Sabre\DAV\Exception\ServiceUnavailable<)")
+                && !errorBody.contains("Storage is temporarily not available");
+        return probablyMaintenance ? SyncFileItem::FatalError : SyncFileItem::NormalError;
     }
 
     if (httpCode == 412) {

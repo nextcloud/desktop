@@ -427,7 +427,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Use virtual files instead of downloading content immediately (e&amp;xperimental)</string>
+             <string notr="true">Use &amp;virtual files !PLACEHOLDER!</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -487,7 +487,7 @@
         <x>0</x>
         <y>0</y>
         <width>899</width>
-        <height>68</height>
+        <height>164</height>
        </rect>
       </property>
       <property name="sizePolicy">

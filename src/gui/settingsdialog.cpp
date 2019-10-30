@@ -57,10 +57,6 @@ namespace OCC {
 
 #include "settingsdialogcommon.cpp"
 
-//
-// Whenever you change something here check both settingsdialog.cpp and settingsdialogmac.cpp !
-//
-
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     : QDialog(parent)
     , _ui(new Ui::SettingsDialog)
@@ -150,6 +146,11 @@ SettingsDialog::~SettingsDialog()
     delete _ui;
 }
 
+QWidget* SettingsDialog::currentPage()
+{
+    return _ui->stack->currentWidget();
+}
+
 // close event is not being called here
 void SettingsDialog::reject()
 {
@@ -231,7 +232,11 @@ void SettingsDialog::accountAdded(AccountState *s)
     }
     _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
-    _ui->stack->insertWidget(0, accountSettings);
+    QString objectName = QLatin1String("accountSettings_");
+    objectName += s->account()->displayName();
+    accountSettings->setObjectName(objectName);
+    _ui->stack->insertWidget(0 , accountSettings);
+
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
     _actionForAccount.insert(s->account().data(), accountAction);
@@ -315,10 +320,10 @@ void SettingsDialog::accountRemoved(AccountState *s)
 void SettingsDialog::customizeStyle()
 {
     QString highlightColor(palette().highlight().color().name());
-    QString altBase(palette().alternateBase().color().name());
+    QString highlightTextColor(palette().highlightedText().color().name());
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
-    _toolBar->setStyleSheet(QString::fromLatin1(TOOLBAR_CSS).arg(background, dark, highlightColor, altBase));
+    _toolBar->setStyleSheet(QString::fromLatin1(TOOLBAR_CSS).arg(background, dark, highlightColor, highlightTextColor));
 
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
         QIcon icon = createColorAwareIcon(a->property("iconPath").toString());
@@ -363,6 +368,10 @@ public:
         }
 
         QToolButton *btn = new QToolButton(parent);
+        QString objectName = QLatin1String("settingsdialog_toolbutton_");
+        objectName += text();
+        btn->setObjectName(objectName);
+
         btn->setDefaultAction(this);
         btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);

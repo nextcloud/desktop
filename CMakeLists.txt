@@ -4,9 +4,10 @@ set(CMAKE_CXX_STANDARD 14)
 project(client)
 
 if(UNIT_TESTING)
-    include(CTest)
-    enable_testing()
+    message(DEPRECATION "Setting UNIT_TESTING is deprecated please use BUILD_TESTING")
+    set(BUILD_TESTING TRUE)
 endif()
+include(CTest)
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
@@ -146,6 +147,8 @@ if(APPLE)
 endif()
 
 if(BUILD_CLIENT)
+    OPTION(GUI_TESTING "Build with gui introspection features of socket api" OFF)
+
     if(APPLE)
         find_package(Sparkle)
     endif(APPLE)
@@ -205,9 +208,7 @@ if(BUILD_SHELL_INTEGRATION)
     add_subdirectory(shell_integration)
 endif()
 
-include(CTest)
 if(BUILD_TESTING)
-    enable_testing()
     add_subdirectory(test)
 endif()
 

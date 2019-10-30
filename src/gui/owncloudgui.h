@@ -31,7 +31,6 @@ namespace OCC {
 class Folder;
 
 class SettingsDialog;
-class SettingsDialogMac;
 class ShareDialog;
 class Application;
 class LogBrowser;
@@ -118,11 +117,7 @@ private:
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
 
     QPointer<Systray> _tray;
-#if defined(Q_OS_MAC)
-    QPointer<SettingsDialogMac> _settingsDialog;
-#else
     QPointer<SettingsDialog> _settingsDialog;
-#endif
     QPointer<LogBrowser> _logBrowser;
     // tray's menu
     QScopedPointer<QMenu> _contextMenu;

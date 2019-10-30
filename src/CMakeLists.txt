@@ -2,10 +2,7 @@
 if(NOT TOKEN_AUTH_ONLY)
 endif()
 
-find_package(Qt5 5.6 COMPONENTS Core Network Xml Concurrent REQUIRED)
-if (Qt5Core_VERSION VERSION_LESS 5.9.0)
-message(STATUS "For HTTP/2 support, compile with Qt 5.9 or higher.")
-endif()
+find_package(Qt5 5.12 COMPONENTS Core Network Xml Concurrent REQUIRED)
 get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
 message(STATUS "Using Qt ${Qt5Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
 
@@ -35,8 +32,10 @@ endif()
 
 if(WIN32)
   # Enable DEP & ASLR
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--nxcompat -Wl,--dynamicbase")
-  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--nxcompat -Wl,--dynamicbase")
+  if (MINGW)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--nxcompat -Wl,--dynamicbase")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--nxcompat -Wl,--dynamicbase")
+  endif()
 elseif(UNIX AND NOT APPLE)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,relro -Wl,-z,now")
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,relro -Wl,-z,now")
