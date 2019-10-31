@@ -2731,17 +2731,17 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>Freigabe-Label</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud Pfad:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Symbol</translation>
     </message>
 </context>
 <context>
@@ -2749,12 +2749,12 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="38"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Link teilen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Anmerkung:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
@@ -2764,12 +2764,12 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Ablaufdatum:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="318"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="468"/>
@@ -2799,7 +2799,7 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Notiz an Empfänger hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>

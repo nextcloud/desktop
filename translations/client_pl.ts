@@ -1257,7 +1257,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
         <location filename="../src/gui/folderstatusmodel.cpp" line="1041"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>Plik %3 z %4, pozostało czasu %5 (%1 z %2)</translation>
+        <translation>Plik %3 z %4, pozostało %5 (%1 z %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1049"/>
@@ -2737,12 +2737,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Ścieżka Nextcloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Ikona</translation>
     </message>
 </context>
 <context>
@@ -2750,12 +2750,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="38"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Udostępnij link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Notatka:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
@@ -2765,12 +2765,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Wygasa:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="318"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Etykieta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="468"/>
@@ -2800,7 +2800,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj notatkę dla odbiorcy</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>

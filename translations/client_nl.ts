@@ -107,7 +107,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="14"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Browserverificatie</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Browserverificatie</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="48"/>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="229"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation type="unfinished"/>
+        <translation>Bestanden uit de negeerlijst en symbolische koppelingen worden niet gesynchroniseerd. Dit bevat:</translation>
     </message>
 </context>
 <context>
@@ -966,7 +966,10 @@ Dit betekent dat de synchronisatieclient misschien niet meteen lokale wijziginge
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Alle bestanden in de synchronisatiemap &apos;%1&apos; zijn op de server verwijderd.
+Deze verwijderingen worden gesynchroniseerd met uw lokale synchronisatiemap, waardoor dergelijke bestanden niet beschikbaar zijn, tenzij u het recht hebt om te herstellen. 
+Als u besluit de bestanden te herstellen, worden ze opnieuw gesynchroniseerd met de server als u hiertoe over de rechten beschikt.
+Als u besluit de bestanden te verwijderen, zijn ze niet beschikbaar voor u, tenzij u de eigenaar bent.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -2734,17 +2737,17 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>label delen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud-pad:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Pictogram</translation>
     </message>
 </context>
 <context>
@@ -2752,12 +2755,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="38"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Deel link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Opmerking:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
@@ -2767,12 +2770,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Verloopt:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="318"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TekstLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="468"/>
@@ -2802,7 +2805,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Notitie toevoegen aan ontvanger</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>

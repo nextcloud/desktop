@@ -2732,17 +2732,17 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>delningsetikett</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud-plats:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Ikon</translation>
     </message>
 </context>
 <context>
@@ -2750,12 +2750,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="38"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Dela länk</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Notering:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
@@ -2765,12 +2765,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Går ut:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="318"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Textetikett</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="468"/>
@@ -2800,7 +2800,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till notering till mottagaren</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>

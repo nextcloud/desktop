@@ -2731,17 +2731,17 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>Compartir etiqueta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Ruta de Nextcloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Icono</translation>
     </message>
 </context>
 <context>
@@ -2749,12 +2749,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="38"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Compartir enlace</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Nota:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
@@ -2764,12 +2764,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Expira:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="318"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Etiqueta de texto</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="468"/>
@@ -2799,7 +2799,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Añadir nota al recipiente</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
