@@ -372,7 +372,7 @@ To build the most up-to-date version of the client:
 ....
 git clone git://github.com/owncloud/client.git
 cd client
-# master this default, but you can also check out a tag like v2.4.1
+# master this default, but you can also check out a tag like v2.5.4
 git checkout master
 git submodule init
 git submodule update

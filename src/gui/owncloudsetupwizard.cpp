@@ -274,8 +274,6 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
 void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
 {
     auto job = qobject_cast<CheckServerJob *>(sender());
-    int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
 
     // Do this early because reply might be deleted in message box event loop
     QString msg;

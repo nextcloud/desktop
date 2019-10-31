@@ -33,6 +33,7 @@ Some small changes and bug fixes:
 * Sync: Don't abort on 404, 500, 503 errors (#5088, #5859, #7199)
 * Sync: Fix parsing of etags, improving move detection (#7271, #7345)
 * Sync: If a move is forbidden, restore the source (#7410)
+* Sync: When moving is allowed but deleting is not, do not restore moved items (#7293)
 * Sync: Fix delete-before-rename bug (#7441)
 * Sync: Delay job execution a bit (#7439)
 * Sync: Make sure we schedule only one job (#7439)
@@ -54,6 +55,7 @@ Some small changes and bug fixes:
 * Vfs: Ensure the database temporaries are marked as excluded (#7141)
 * Vfs: Don't dehydrate existing data when switching on (#7302)
 * Vfs: Fix move detection when virtual files are involved (#7001)
+* Vfs: Lots of tests and corrections for suffix edge cases (#7350, #7261)
 * GUI: Adjust "new public link share" ui so options can be set before share creation
 * GUI: Added action to open folder in browser to selective sync context menu (#6471)
 * GUI: Add server version info to SSL info button (#6628)
@@ -63,11 +65,13 @@ Some small changes and bug fixes:
 * GUI: Improve error message for missing data in server replies (#7112)
 * GUI: Remove log window, instead focus on easy handling of log files (#6475)
 * GUI: Fix notification buttons sometimes getting their own window (#7185)
+* GUI: Notifications: Remove do-nothing "OK" button (#7355)
 * GUI: Add "Show file versions" context menu action (#7196)
 * GUI: Fix layout in "Add Certificate" dialog (#7184)
 * GUI: Fix duplicated error message for fatal errors (#5088)
 * GUI: Fix selective sync ui initial state after account creation (#7336)
 * GUI: Improve help text in ignore editor (#7162)
+* GUI: Show restoration items in protocol
 * Sharing: Fix issues with enforced passwords and expiry (#7246, #7245)
 * Sharing: Fix resharing an item in a share with limited permissions (#7275)
 * Sharing: Use the default expiration date even when not enforced (#7256)
@@ -82,6 +86,7 @@ Some small changes and bug fixes:
 * Updater: Set correct state on network error (#3933)
 * Updater: Provide more useful options on update failure (#7217)
 * Updater: Improve logging (#3475, #7388)
+* Updater: Fix Version numer not shown in the user visible string (#7288)
 * DB: Database path for new folders now starts  with ".sync_", avoiding the "._" (#5904)
 * File hashes: Add support for SHA256 and SHA3
 * Cmd: Respect chunk sizing environment variables (#7078)

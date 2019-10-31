@@ -234,7 +234,7 @@
          <item row="3" column="0">
           <widget class="QRadioButton" name="radio_readWrite">
            <property name="text">
-            <string>Download / View / Upload</string>
+            <string>Download / View / Edit</string>
            </property>
           </widget>
          </item>

@@ -291,7 +291,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (!errorTexts.isEmpty())
         drawTextBox(errorTexts, QColor(0xbb, 0x4d, 0x4d));
     if (!infoTexts.isEmpty())
-        drawTextBox(infoTexts, QColor(0x4d, 0xba, 0x4d));
+        drawTextBox(infoTexts, QColor(0x4d, 0x4d, 0xba));
 
     // Sync File Progress Bar: Show it if syncFile is not empty.
     if (showProgess) {

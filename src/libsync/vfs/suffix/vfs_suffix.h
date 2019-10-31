@@ -58,7 +58,7 @@ public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}
 
 protected:
-    void startImpl(const VfsSetupParams &) override {}
+    void startImpl(const VfsSetupParams &params) override;
 };
 
 class SuffixVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsSuffix>
