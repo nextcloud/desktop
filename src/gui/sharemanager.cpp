@@ -200,12 +200,31 @@ QString LinkShare::getName() const
     return _name;
 }
 
+QString LinkShare::getNote() const
+{
+    return _note;
+}
+
 void LinkShare::setName(const QString &name)
 {
     OcsShareJob *job = new OcsShareJob(_account);
     connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNameSet);
     connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
     job->setName(getId(), name);
+}
+
+void LinkShare::setNote(const QString &note)
+{
+    OcsShareJob *job = new OcsShareJob(_account);
+    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNoteSet);
+    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
+    job->setNote(getId(), note);
+}
+
+void LinkShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
+{
+    _note = note.toString();
+    emit noteSet();
 }
 
 QString LinkShare::getToken() const
