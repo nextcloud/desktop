@@ -2732,17 +2732,17 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation>Compartir etiqueta</translation>
+        <translation>compartir etiqueta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation>Ruta de Nextcloud:</translation>
+        <translation>Ruta do Nexcloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation>Icono</translation>
+        <translation>Icona</translation>
     </message>
 </context>
 <context>
@@ -2750,12 +2750,12 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="38"/>
         <source>Share link</source>
-        <translation>Compartir ligazón</translation>
+        <translation>Compartir a ligazón</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation>Nota:</translation>
+        <translation>Nota</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
@@ -2765,12 +2765,12 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation>Expira:</translation>
+        <translation>Caduca:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="318"/>
         <source>TextLabel</source>
-        <translation>Etiqueta de Texto</translation>
+        <translation>Etiqueta de texto</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="468"/>
@@ -2800,7 +2800,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
-        <translation>Engadir nota ao recipiente</translation>
+        <translation>Enviar nota o destinatario</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
