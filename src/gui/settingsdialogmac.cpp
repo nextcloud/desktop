@@ -28,6 +28,7 @@
 #include "owncloudgui.h"
 #include "activitywidget.h"
 #include "accountmanager.h"
+#include "schedulesettings.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -37,6 +38,9 @@
 #include <QPainterPath>
 
 namespace OCC {
+
+  const char propertyAccountC[] = "oc_account";
+  Q_LOGGING_CATEGORY(lcSettings, "nextcloud.gui.settings", QtDebugMsg)
 
 #include "settingsdialogcommon.cpp"
 
@@ -115,6 +119,15 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     addAction(showLogWindow);
 
     ConfigFile cfg;
+
+    // create timer to check configuration every 5 seconds
+    _scheduleTimer = new QTimer(this);
+    connect(_scheduleTimer, &QTimer::timeout,
+        this, &SettingsDialog::checkSchedule);
+    if( cfgFile.getScheduleStatus() ){
+      _scheduleTimer->start(ScheduleSettings::SCHEDULE_TIME);
+    }
+
     cfg.restoreGeometry(this);
 }
 
@@ -235,5 +248,46 @@ void SettingsDialogMac::slotAccountDisplayNameChanged()
     }
 }
 
+void SettingsDialogMac::checkSchedule(){
+    ConfigFile cfgFile;
+    bool timer_table[7][24];
+    cfgFile.getScheduleTable(timer_table);
+
+    //activate/deactivate sync depending the day of the week and the hour
+    QDate date = QDate::currentDate();
+    int day = date.dayOfWeek() - 1;
+    QTime time = QTime::currentTime();
+    int hour = time.hour();
+    if( timer_table[day][hour] ){
+        qCDebug(lcSettings) << "Start sync: " << day << " - " << hour;
+        this->setPauseOnAllFoldersHelper(false);
+    }else{
+        qCDebug(lcSettings) << "Stop Sync: " << day << " - " << hour;
+        this->setPauseOnAllFoldersHelper(true);
+    }
 }
 
+
+void SettingsDialogMac::setPauseOnAllFoldersHelper(bool pause)
+{
+    // this funcion is a copy of ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
+    QList<AccountState *> accounts;
+    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
+      accounts.append(account.data());
+    } else {
+      foreach (auto a, AccountManager::instance()->accounts()) {
+        accounts.append(a.data());
+      }
+    }
+    foreach (Folder *f, FolderMan::instance()->map()) {
+      if (accounts.contains(f->accountState())) {
+        f->setSyncPaused(pause);
+        if (pause) {
+          f->slotTerminateSync();
+        }
+      }
+    }
+}
+
+
+} // namespace OCC

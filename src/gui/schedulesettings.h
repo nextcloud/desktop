@@ -24,8 +24,10 @@ namespace OCC {
     Q_OBJECT
 
     public:
-    explicit ScheduleSettings(QWidget *parent = nullptr);
+    explicit ScheduleSettings(QTimer *scheduleTimer, QWidget *parent = nullptr);
     ~ScheduleSettings();
+    
+    static const unsigned short int SCHEDULE_TIME = 5000;
 
   private slots:
     void okButton();
@@ -34,17 +36,11 @@ namespace OCC {
     void saveScheduleSettings();
     void loadScheduleSettings();
     void resetScheduleSettings();
-    void checkSchedule();
 
   private:
-    void setPauseOnAllFoldersHelper(bool pause);
-    
     Ui::ScheduleSettings *_ui;
     bool _currentlyLoading;
     QTimer *_scheduleTimer;
-    QTableWidget *_timerTable;
-    
-    const unsigned short int SCHEDULE_TIME = 5000;
   };
 
 

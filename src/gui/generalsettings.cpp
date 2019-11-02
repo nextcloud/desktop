@@ -45,10 +45,11 @@
 
 namespace OCC {
 
-GeneralSettings::GeneralSettings(QWidget *parent)
+GeneralSettings::GeneralSettings(QTimer *scheduleTimer, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::GeneralSettings)
     , _currentlyLoading(false)
+    , _scheduleTimer(scheduleTimer)
 {
     _ui->setupUi(this);
 
@@ -208,14 +209,9 @@ void GeneralSettings::slotIgnoreFilesEditor()
 
 void GeneralSettings::slotScheduleSyncing()
 {
-    if (_scheduleSettings.isNull()) {
-        ConfigFile cfgFile;
-        _scheduleSettings = new ScheduleSettings(this);
-        _scheduleSettings->setAttribute(Qt::WA_DeleteOnClose, true);
-        _scheduleSettings->open();
-    } else {
-        ownCloudGui::raiseDialog(_scheduleSettings);
-    }
+  ScheduleSettings *scheduleSettings = new ScheduleSettings(_scheduleTimer, this);
+  scheduleSettings->setAttribute(Qt::WA_DeleteOnClose, true);
+  scheduleSettings->open();
 }
 
   

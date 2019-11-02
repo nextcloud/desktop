@@ -16,6 +16,7 @@
 #ifndef SETTINGSDIALOGMAC_H
 #define SETTINGSDIALOGMAC_H
 
+#include <QLoggingCategory>
 #include "progressdispatcher.h"
 #include "macpreferenceswindow.h"
 #include "owncloudgui.h"
@@ -24,6 +25,8 @@ class QStandardItemModel;
 class QListWidgetItem;
 
 namespace OCC {
+
+ Q_DECLARE_LOGGING_CATEGORY(lcSettings)
 
 class AccountSettings;
 class Application;
@@ -57,12 +60,18 @@ private slots:
 
 private:
     void closeEvent(QCloseEvent *event);
+    void checkSchedule();
+    void setPauseOnAllFoldersHelper(bool pause);
 
     QAction *_actionBefore;
     int _actionsIdx;
     QMap<AccountState *, QAction *> _separators;
 
     QMap<AccountState *, ActivitySettings *> _activitySettings;
+
+    // Timer for schedule syncing
+    QTimer *_scheduleTimer;
+
     ownCloudGui *_gui;
 
     int _protocolIdx;

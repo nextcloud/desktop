@@ -7,8 +7,6 @@
 
 #include <QScopedValueRollback>
 #include <QPushButton>
-#include <QDate>
-#include <QTime>
 #include <QTableWidgetItem>
 
 #define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
@@ -24,10 +22,11 @@ namespace OCC {
   const char propertyAccountC[] = "oc_account";
 
   
-  ScheduleSettings::ScheduleSettings(QWidget *parent)
+  ScheduleSettings::ScheduleSettings(QTimer *scheduleTimer, QWidget *parent)
     : QDialog(parent)
     , _ui(new Ui::ScheduleSettings)
     , _currentlyLoading(false)
+    , _scheduleTimer(scheduleTimer)
   {
     _ui->setupUi(this);
 
@@ -51,32 +50,18 @@ namespace OCC {
     headerV->setSectionResizeMode(QHeaderView::Stretch);
     
     
-    // create internal table for checking synchronization
-    int rows = tableWidget->rowCount();
-    int cols = tableWidget->columnCount();
-    QStringList horzHeaders, verHeaders;
-    for (int idx=0; idx<cols; idx++)
-      horzHeaders << QString::number(idx);
-    for (int idx=0; idx<rows; idx++)
-      verHeaders << tableWidget->verticalHeaderItem(idx)->text().toLatin1();
-    _timerTable = new QTableWidget(rows,cols);
-    _timerTable->setHorizontalHeaderLabels(horzHeaders);
-    _timerTable->setVerticalHeaderLabels(verHeaders);
-
     // fill tables with items
+    int rows = tableWidget->rowCount();
+    int cols = tableWidget->columnCount();    
     for (int idx = 0; idx<rows; idx++){
       for (int idj = 0; idj<cols; idj++){
         QTableWidgetItem *newItem = new QTableWidgetItem();
         QTableWidgetItem *newItemTimer = new QTableWidgetItem();
         newItem->setBackground(Qt::white);
+        newItem->setFlags(newItem->flags() &  ~Qt::ItemIsEditable);
         tableWidget->setItem(idx, idj, newItem);
-        _timerTable->setItem(idx, idj, newItemTimer);
       }
     }   
-
-    // create timer to check configuration every 5 seconds
-    _scheduleTimer = new QTimer(this);
-    connect(_scheduleTimer, &QTimer::timeout, this, &ScheduleSettings::checkSchedule);
        
     // connect with events
     connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &ScheduleSettings::okButton);
@@ -90,8 +75,6 @@ namespace OCC {
   
   ScheduleSettings::~ScheduleSettings()
   {
-    delete _scheduleTimer;
-    delete _timerTable;
     delete _ui;
   }
 
@@ -117,7 +100,7 @@ namespace OCC {
     _ui->enableScheduleCheckBox->setChecked(cfgFile.getScheduleStatus());
     if(cfgFile.getScheduleStatus()){
       qCInfo(lcScheduler) << "Sync Scheduler enabled";
-      _scheduleTimer->start(SCHEDULE_TIME);
+      _scheduleTimer->start(ScheduleSettings::SCHEDULE_TIME);
     }else{
       qCInfo(lcScheduler) << "Sync Scheduler disabled";
       _scheduleTimer->stop();
@@ -145,45 +128,4 @@ namespace OCC {
     loadScheduleSettings();
   }
 
-  
-  void ScheduleSettings::checkSchedule(){
-    ConfigFile cfgFile;
-    cfgFile.getScheduleTable(*_timerTable);
-
-    //activate/deactivate sync depending the day of the week and the hour
-    QDate date = QDate::currentDate();
-    int day = date.dayOfWeek();
-    QTime time = QTime::currentTime();
-    int hour = time.hour();
-    QTableWidgetItem *item = _timerTable->item(day-1, hour);
-    if( item->isSelected() ){
-      qCDebug(lcScheduler) << "Start sync: " << day << " - " << hour;
-      this->setPauseOnAllFoldersHelper(false);
-    }else{
-      qCDebug(lcScheduler) << "Stop Sync: " << day << " - " << hour;
-      this->setPauseOnAllFoldersHelper(true);
-    }
-  }
-
-  void ScheduleSettings::setPauseOnAllFoldersHelper(bool pause)
-  {
-    // this funcion is a copy of ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
-    QList<AccountState *> accounts;
-    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
-      accounts.append(account.data());
-    } else {
-      foreach (auto a, AccountManager::instance()->accounts()) {
-        accounts.append(a.data());
-      }
-    }
-    foreach (Folder *f, FolderMan::instance()->map()) {
-      if (accounts.contains(f->accountState())) {
-        f->setSyncPaused(pause);
-        if (pause) {
-          f->slotTerminateSync();
-        }
-      }
-    }
-  }
-  
 } // namespace OCC

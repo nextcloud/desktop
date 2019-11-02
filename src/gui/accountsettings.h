@@ -53,7 +53,7 @@ class AccountSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
+    explicit AccountSettings(QTimer *scheduleSettings, AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings();
     QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
     bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);
@@ -80,6 +80,7 @@ protected slots:
     void slotRemoveCurrentFolder();
     void slotOpenCurrentFolder(); // sync folder
     void slotOpenCurrentLocalSubFolder(); // selected subfolder in sync folder
+    void slotScheduleSyncing();
     void slotEditCurrentIgnoredFiles();
     void slotEditCurrentLocalIgnoredFiles();
     void slotFolderWizardAccepted();
@@ -143,6 +144,8 @@ private:
     QAction *_addAccountAction;
 
     bool _menuShown;
+
+    QTimer *_scheduleTimer;
 };
 
 } // namespace OCC

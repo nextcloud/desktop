@@ -15,6 +15,7 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
+#include <QLoggingCategory>
 #include <QDialog>
 #include <QStyledItemDelegate>
 
@@ -27,6 +28,8 @@ class QToolBar;
 class QStandardItemModel;
 
 namespace OCC {
+
+ Q_DECLARE_LOGGING_CATEGORY(lcSettings)
 
 class AccountState;
 
@@ -91,7 +94,9 @@ private:
     QIcon createColorAwareIcon(const QString &name);
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
-
+    void checkSchedule();
+    void setPauseOnAllFoldersHelper(bool pause);
+  
     Ui::SettingsDialog *const _ui;
 
     QActionGroup *_actionGroup;
@@ -106,6 +111,9 @@ private:
     QToolBar *_toolBar;
     QMap<AccountState *, ActivitySettings *> _activitySettings;
 
+    // Timer for schedule syncing
+    QTimer *_scheduleTimer;
+  
     ownCloudGui *_gui;
 };
 }

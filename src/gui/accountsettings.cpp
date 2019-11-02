@@ -36,6 +36,7 @@
 #include "clientsideencryptionjobs.h"
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
+#include "schedulesettings.h"
 
 #include <math.h>
 
@@ -111,13 +112,14 @@ protected:
     }
 };
 
-AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
+  AccountSettings::AccountSettings(QTimer *scheduleTimer, AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AccountSettings)
     , _wasDisabledBefore(false)
     , _accountState(accountState)
     , _quotaInfo(accountState)
     , _menuShown(false)
+    , _scheduleTimer(scheduleTimer)
 {
     ui->setupUi(this);
 
@@ -541,6 +543,15 @@ void AccountSettings::slotLockForDecryptionError(const QByteArray& fileId, int h
     qDebug() << "Error Locking for decryption";
 }
 
+
+void AccountSettings::slotScheduleSyncing()
+{
+  ScheduleSettings *scheduleSettings = new ScheduleSettings(_scheduleTimer, this);
+  scheduleSettings->setAttribute(Qt::WA_DeleteOnClose, true);
+  scheduleSettings->open();
+}
+
+
 void AccountSettings::slotEditCurrentIgnoredFiles()
 {
     Folder *f = FolderMan::instance()->folder(selectedFolderAlias());
@@ -654,6 +665,9 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     ac = menu->addAction(tr("Edit Ignored Files"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotEditCurrentIgnoredFiles);
 
+    ac = menu->addAction(tr("Edit Schedule Syncing"));
+    connect(ac, &QAction::triggered, this, &AccountSettings::slotScheduleSyncing);
+    
     if (!ui->_folderList->isExpanded(index)) {
         ac = menu->addAction(tr("Choose what to sync"));
         ac->setEnabled(folderConnected);

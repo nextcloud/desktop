@@ -25,6 +25,7 @@
 #include "owncloudgui.h"
 #include "activitywidget.h"
 #include "accountmanager.h"
+#include "schedulesettings.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -54,6 +55,9 @@ static const float buttonSizeRatio = 1.618f; // golden ratio
 
 namespace OCC {
 
+  const char propertyAccountC[] = "oc_account";
+  Q_LOGGING_CATEGORY(lcSettings, "nextcloud.gui.settings", QtDebugMsg)
+  
 #include "settingsdialogcommon.cpp"
 
 //
@@ -102,10 +106,19 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _toolBar->addWidget(spacer);
 
+    // create timer to check configuration every 5 seconds
+    _scheduleTimer = new QTimer(this);
+    connect(_scheduleTimer, &QTimer::timeout,
+        this, &SettingsDialog::checkSchedule);
+    ConfigFile cfgFile;
+    if( cfgFile.getScheduleStatus() ){
+      _scheduleTimer->start(ScheduleSettings::SCHEDULE_TIME);
+    }
+    
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
-    GeneralSettings *generalSettings = new GeneralSettings;
+    GeneralSettings *generalSettings = new GeneralSettings(_scheduleTimer);
     _ui->stack->addWidget(generalSettings);
 
     QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
@@ -135,6 +148,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
 SettingsDialog::~SettingsDialog()
 {
+    delete _scheduleTimer;
     delete _ui;
 }
 
@@ -263,7 +277,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     }
 
     _toolBar->insertAction(_actionBefore, accountAction);
-    auto accountSettings = new AccountSettings(s, this);
+    auto accountSettings = new AccountSettings(_scheduleTimer, s, this);
     _ui->stack->insertWidget(0, accountSettings);
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
@@ -457,5 +471,47 @@ void SettingsDialog::slotRefreshActivity(AccountState *accountState)
     if (accountState->isConnected())
         _activitySettings[accountState]->slotRefresh();
 }
+
+void SettingsDialog::checkSchedule(){
+    ConfigFile cfgFile;
+    bool timer_table[7][24];
+    cfgFile.getScheduleTable(timer_table);
+
+    //activate/deactivate sync depending the day of the week and the hour
+    QDate date = QDate::currentDate();
+    int day = date.dayOfWeek() - 1;
+    QTime time = QTime::currentTime();
+    int hour = time.hour();
+    if( timer_table[day][hour] ){
+        qCDebug(lcSettings) << "Start sync: " << day << " - " << hour;
+        this->setPauseOnAllFoldersHelper(false);
+    }else{
+        qCDebug(lcSettings) << "Stop Sync: " << day << " - " << hour;
+        this->setPauseOnAllFoldersHelper(true);
+    }
+}
+
+
+void SettingsDialog::setPauseOnAllFoldersHelper(bool pause)
+{
+    // this funcion is a copy of ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
+    QList<AccountState *> accounts;
+    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
+      accounts.append(account.data());
+    } else {
+      foreach (auto a, AccountManager::instance()->accounts()) {
+        accounts.append(a.data());
+      }
+    }
+    foreach (Folder *f, FolderMan::instance()->map()) {
+      if (accounts.contains(f->accountState())) {
+        f->setSyncPaused(pause);
+        if (pause) {
+          f->slotTerminateSync();
+        }
+      }
+    }
+}
+
 
 } // namespace OCC

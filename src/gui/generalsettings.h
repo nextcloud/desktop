@@ -36,7 +36,7 @@ class GeneralSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit GeneralSettings(QWidget *parent = nullptr);
+    explicit GeneralSettings(QTimer *scheduleTimer, QWidget *parent = nullptr);
     ~GeneralSettings();
     QSize sizeHint() const override;
 
@@ -54,9 +54,9 @@ private slots:
 private:
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
-    QPointer<ScheduleSettings> _scheduleSettings;  
     QPointer<SyncLogDialog> _syncLogDialog;
     bool _currentlyLoading;
+    QTimer *_scheduleTimer;
 };
 
 
