@@ -628,7 +628,7 @@ void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *lis
         { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email...") },
     } };
     listener->sendMessage(QString("GET_STRINGS:BEGIN"));
-    for (auto key_value : strings) {
+    for (const auto& key_value : strings) {
         if (argument.isEmpty() || argument == QLatin1String(key_value.first)) {
             listener->sendMessage(QString("STRING:%1:%2").arg(key_value.first, key_value.second));
         }

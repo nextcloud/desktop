@@ -1079,7 +1079,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel
     if (!cfgFile.promptDeleteFiles())
         return;
 
-    QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder '%1' folder were deleted on the server.\n"
+    QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder '%1' were deleted on the server.\n"
                                                  "These deletes will be synchronized to your local sync folder, making such files "
                                                  "unavailable unless you have a right to restore. \n"
                                                  "If you decide to restore the files, they will be re-synced with the server if you have rights to do so.\n"
@@ -1198,7 +1198,7 @@ QString FolderDefinition::absoluteJournalPath() const
 
 QString FolderDefinition::defaultJournalPath(AccountPtr account)
 {
-    return SyncJournalDb::makeDbName(localPath, account->url(), targetPath, account->credentials()->user());
+    return SyncJournalDb::makeDbName(account->url(), targetPath, account->credentials()->user());
 }
 
 } // namespace OCC

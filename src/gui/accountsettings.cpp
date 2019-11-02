@@ -149,6 +149,8 @@ protected:
     createAccountToolbox();
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &AccountSettings::slotAccountAdded);
+    connect(this, &AccountSettings::removeAccountFolders,
+            AccountManager::instance(), &AccountManager::removeAccountFolders);
     connect(ui->_folderList, &QWidget::customContextMenuRequested,
         this, &AccountSettings::slotCustomContextMenuRequested);
     connect(ui->_folderList, &QAbstractItemView::clicked,
@@ -336,9 +338,9 @@ void AccountSettings::slotEncryptionFlagError(const QByteArray& fileId, int http
 
 void AccountSettings::slotLockForEncryptionSuccess(const QByteArray& fileId, const QByteArray &token)
 {
-		accountsState()->account()->e2e()->setTokenForFolder(fileId, token);
+        accountsState()->account()->e2e()->setTokenForFolder(fileId, token);
 
-		FolderMetadata emptyMetadata(accountsState()->account());
+        FolderMetadata emptyMetadata(accountsState()->account());
     auto encryptedMetadata = emptyMetadata.encryptedMetadata();
     if (encryptedMetadata.isEmpty()) {
       //TODO: Mark the folder as unencrypted as the metadata generation failed.
@@ -350,36 +352,36 @@ void AccountSettings::slotLockForEncryptionSuccess(const QByteArray& fileId, con
       return;
     }
     auto storeMetadataJob = new StoreMetaDataApiJob(accountsState()->account(), fileId, emptyMetadata.encryptedMetadata());
-		connect(storeMetadataJob, &StoreMetaDataApiJob::success,
-						this, &AccountSettings::slotUploadMetadataSuccess);
-		connect(storeMetadataJob, &StoreMetaDataApiJob::error,
-						this, &AccountSettings::slotUpdateMetadataError);
+        connect(storeMetadataJob, &StoreMetaDataApiJob::success,
+                        this, &AccountSettings::slotUploadMetadataSuccess);
+        connect(storeMetadataJob, &StoreMetaDataApiJob::error,
+                        this, &AccountSettings::slotUpdateMetadataError);
 
-		storeMetadataJob->start();
+        storeMetadataJob->start();
 }
 
 void AccountSettings::slotUploadMetadataSuccess(const QByteArray& folderId)
 {
-	const auto token = accountsState()->account()->e2e()->tokenForFolder(folderId);
-	auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
-	connect(unlockJob, &UnlockEncryptFolderApiJob::success,
-					this, &AccountSettings::slotUnlockFolderSuccess);
-	connect(unlockJob, &UnlockEncryptFolderApiJob::error,
-					this, &AccountSettings::slotUnlockFolderError);
-	unlockJob->start();
+    const auto token = accountsState()->account()->e2e()->tokenForFolder(folderId);
+    auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success,
+                    this, &AccountSettings::slotUnlockFolderSuccess);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error,
+                    this, &AccountSettings::slotUnlockFolderError);
+    unlockJob->start();
 }
 
 void AccountSettings::slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode)
 {
     Q_UNUSED(httpReturnCode);
 
-	const auto token = accountsState()->account()->e2e()->tokenForFolder(folderId);
-	auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
-	connect(unlockJob, &UnlockEncryptFolderApiJob::success,
-					this, &AccountSettings::slotUnlockFolderSuccess);
-	connect(unlockJob, &UnlockEncryptFolderApiJob::error,
-					this, &AccountSettings::slotUnlockFolderError);
-	unlockJob->start();
+    const auto token = accountsState()->account()->e2e()->tokenForFolder(folderId);
+    auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success,
+                    this, &AccountSettings::slotUnlockFolderSuccess);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error,
+                    this, &AccountSettings::slotUnlockFolderError);
+    unlockJob->start();
 }
 
 void AccountSettings::slotLockForEncryptionError(const QByteArray& fileId, int httpErrorCode)
