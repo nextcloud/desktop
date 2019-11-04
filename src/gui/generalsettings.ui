@@ -175,7 +175,7 @@
         <item>
          <widget class="QPushButton" name="scheduleSyncingButton">
           <property name="text">
-           <string>Schedule Syncing</string>
+           <string>Edit sync schedule</string>
           </property>
          </widget>
         </item>

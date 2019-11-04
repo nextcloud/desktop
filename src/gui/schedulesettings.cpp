@@ -27,30 +27,24 @@ namespace OCC {
     , _ui(new Ui::ScheduleSettings)
     , _currentlyLoading(false)
     , _scheduleTimer(scheduleTimer)
+    , _firstPress(true)
   {
     _ui->setupUi(this);
 
     // create label items
-    QTableWidget *runTableWidget = _ui->runTableWidget;
-    QTableWidgetItem *newItemRun = new QTableWidgetItem();    
-    newItemRun->setFlags(newItemRun->flags() &  ~Qt::ItemIsEnabled);
-    runTableWidget->setItem(0, 0, newItemRun);
-    runTableWidget->selectRow(0);
-    QTableWidget *suspendTableWidget = _ui->suspendTableWidget;
-    QTableWidgetItem *newItemSuspend = new QTableWidgetItem();    
-    newItemSuspend->setBackground(Qt::white);
-    newItemSuspend->setFlags(newItemSuspend->flags() &  ~Qt::ItemIsEnabled);
-    suspendTableWidget->setItem(0, 0, newItemSuspend);
+    QTableWidget *syncTableWidget = _ui->syncTableWidget;
+    QTableWidgetItem *newItemSync = new QTableWidgetItem();    
+    newItemSync->setFlags(newItemSync->flags() &  ~Qt::ItemIsEnabled);
+    syncTableWidget->setItem(0, 0, newItemSync);
+    syncTableWidget->selectRow(0);
+    QTableWidget *pauseTableWidget = _ui->pauseTableWidget;
+    QTableWidgetItem *newItemPause = new QTableWidgetItem();    
+    newItemPause->setBackground(Qt::white);
+    newItemPause->setFlags(newItemPause->flags() &  ~Qt::ItemIsEnabled);
+    pauseTableWidget->setItem(0, 0, newItemPause);  
     
-    // create items table disabled by default and strech them
+    // fill table with items
     QTableWidget *tableWidget = _ui->scheduleTableWidget;
-    QHeaderView* headerH = tableWidget->horizontalHeader();
-    QHeaderView* headerV = tableWidget->verticalHeader();
-    headerH->setSectionResizeMode(QHeaderView::Stretch);    
-    headerV->setSectionResizeMode(QHeaderView::Stretch);
-    
-    
-    // fill tables with items
     int rows = tableWidget->rowCount();
     int cols = tableWidget->columnCount();    
     for (int idx = 0; idx<rows; idx++){
@@ -67,6 +61,7 @@ namespace OCC {
     connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &ScheduleSettings::okButton);
     connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &ScheduleSettings::cancelButton);
     connect(_ui->buttonBox, &QDialogButtonBox::clicked, this, &ScheduleSettings::resetButton);
+    connect(_ui->scheduleTableWidget, &QTableWidget::cellPressed, this, &ScheduleSettings::resetTable);
 
     // load settings stored in config file
     loadScheduleSettings();    
@@ -90,8 +85,24 @@ namespace OCC {
     if(_ui->buttonBox->buttonRole(button) != QDialogButtonBox::ResetRole)
       return;
     this->resetScheduleSettings();
+    _firstPress = true;
   }
-  
+  void ScheduleSettings::resetTable(){
+    if( _firstPress ){
+      QTableWidget *tableWidget = _ui->scheduleTableWidget;    
+      int rows = tableWidget->rowCount();
+      int cols = tableWidget->columnCount();    
+      for (int idx = 0; idx<rows; idx++){
+        for (int idj = 0; idj<cols; idj++){
+          tableWidget->item(idx, idj)->setSelected(false);
+          tableWidget->item(idx, idj)->setBackground(Qt::white);
+        }
+      }
+      _firstPress = false;
+    }
+  }
+
+
   void ScheduleSettings::loadScheduleSettings()
   {
     QScopedValueRollback<bool> scope(_currentlyLoading, true);

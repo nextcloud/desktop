@@ -277,7 +277,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     }
 
     _toolBar->insertAction(_actionBefore, accountAction);
-    auto accountSettings = new AccountSettings(_scheduleTimer, s, this);
+    auto accountSettings = new AccountSettings(s, this);
     _ui->stack->insertWidget(0, accountSettings);
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);

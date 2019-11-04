@@ -33,6 +33,7 @@ namespace OCC {
     void okButton();
     void cancelButton();
     void resetButton(QAbstractButton *button);
+    void resetTable();
     void saveScheduleSettings();
     void loadScheduleSettings();
     void resetScheduleSettings();
@@ -41,6 +42,7 @@ namespace OCC {
     Ui::ScheduleSettings *_ui;
     bool _currentlyLoading;
     QTimer *_scheduleTimer;
+    bool _firstPress;
   };
 
 

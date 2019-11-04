@@ -17,19 +17,22 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string notr="true">Schedule Syncing</string>
+   <string notr="true">Schedule Settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QGroupBox" name="scheduleGroupBox">
      <property name="title">
-      <string>Schedule Settings</string>
+      <string/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="topMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QCheckBox" name="enableScheduleCheckBox">
         <property name="text">
-         <string>Enable</string>
+         <string>Enable sync schedule</string>
         </property>
        </widget>
       </item>
@@ -52,23 +55,56 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Minimum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
+         <widget class="QTableWidget" name="syncTableWidget">
+          <property name="maximumSize">
            <size>
-            <width>40</width>
-            <height>20</height>
+            <width>21</width>
+            <height>21</height>
            </size>
           </property>
-         </spacer>
+          <property name="rowCount">
+           <number>1</number>
+          </property>
+          <property name="columnCount">
+           <number>1</number>
+          </property>
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>57</number>
+          </attribute>
+          <attribute name="horizontalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>20</number>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>21</number>
+          </attribute>
+          <attribute name="verticalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderMinimumSectionSize">
+           <number>20</number>
+          </attribute>
+          <row/>
+          <column/>
+         </widget>
         </item>
         <item>
-         <widget class="QTableWidget" name="suspendTableWidget">
+         <widget class="QLabel" name="syncLabel">
+          <property name="text">
+           <string>Sync</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="pauseTableWidget">
           <property name="maximumSize">
            <size>
             <width>21</width>
@@ -113,58 +149,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="suspendLabel">
+         <widget class="QLabel" name="pauseLabel">
           <property name="text">
-           <string>Suspend</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="runTableWidget">
-          <property name="maximumSize">
-           <size>
-            <width>21</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="rowCount">
-           <number>1</number>
-          </property>
-          <property name="columnCount">
-           <number>1</number>
-          </property>
-          <attribute name="horizontalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>57</number>
-          </attribute>
-          <attribute name="horizontalHeaderHighlightSections">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="horizontalHeaderMinimumSectionSize">
-           <number>20</number>
-          </attribute>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="verticalHeaderDefaultSectionSize">
-           <number>21</number>
-          </attribute>
-          <attribute name="verticalHeaderHighlightSections">
-           <bool>false</bool>
-          </attribute>
-          <attribute name="verticalHeaderMinimumSectionSize">
-           <number>20</number>
-          </attribute>
-          <row/>
-          <column/>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="runLabel">
-          <property name="text">
-           <string>Run</string>
+           <string>Pause</string>
           </property>
          </widget>
         </item>
@@ -395,7 +382,7 @@
         <item>
          <widget class="QDialogButtonBox" name="buttonBox">
           <property name="standardButtons">
-           <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
+           <set>QDialogButtonBox::Cancel|QDialogButtonBox::RestoreDefaults|QDialogButtonBox::Save</set>
           </property>
          </widget>
         </item>
