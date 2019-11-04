@@ -45,6 +45,10 @@ namespace OCC {
     
     // fill table with items
     QTableWidget *tableWidget = _ui->scheduleTableWidget;
+    QHeaderView* headerH = tableWidget->horizontalHeader();
+    QHeaderView* headerV = tableWidget->verticalHeader();
+    headerH->setSectionResizeMode(QHeaderView::Stretch);    
+    headerV->setSectionResizeMode(QHeaderView::Stretch);
     int rows = tableWidget->rowCount();
     int cols = tableWidget->columnCount();    
     for (int idx = 0; idx<rows; idx++){
