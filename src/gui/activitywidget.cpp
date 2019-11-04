@@ -127,10 +127,11 @@ void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo 
             }
 
 
-            if(activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()){
+            if(activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()) {
                 _model->removeActivityFromActivityList(activity);
                 continue;
             }
+
 
             if(!QFileInfo(f->path() + activity._file).exists()){
                 _model->removeActivityFromActivityList(activity);
@@ -191,8 +192,12 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
             qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in error " << item->_errorString;
             activity._subject = item->_errorString;
 
-            // add 'protocol error' to activity list
-            _model->addErrorToActivityList(activity);
+            if(item->_status == SyncFileItem::Status::FileIgnored) {
+                _model->addIgnoredFileToList(activity);
+            } else {
+                // add 'protocol error' to activity list
+                _model->addErrorToActivityList(activity);
+            }
         }
     }
 }

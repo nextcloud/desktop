@@ -32,11 +32,12 @@ FRAMEWORK_SEARCH_PATH=[
     os.path.join(os.environ['HOME'], 'Library/Frameworks')
 ]
 
-LIBRARY_SEARCH_PATH=['/usr/local/lib', '/usr/local/Qt-5.6.2/lib', '.']
+LIBRARY_SEARCH_PATH=['/usr/local/lib', '/usr/local/Qt-5.12.5/lib', '.']
 
 QT_PLUGINS = [
     'sqldrivers/libqsqlite.dylib',
     'platforms/libqcocoa.dylib',
+    'styles/libqmacstyle.dylib',
     'imageformats/libqgif.dylib',
     'imageformats/libqico.dylib',
     'imageformats/libqjpeg.dylib',
@@ -46,7 +47,7 @@ QT_PLUGINS = [
 QT_PLUGINS_SEARCH_PATH=[
 #    os.path.join(os.environ['QTDIR'], 'plugins'),
 #    '/usr/local/Cellar/qt/5.2.1/plugins',
-    '/usr/local/Qt-5.6.2/plugins',
+    '/usr/local/Qt-5.12.5/plugins',
 ]
 
 

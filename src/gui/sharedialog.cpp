@@ -165,7 +165,7 @@ void ShareDialog::initLinkShareWidget(){
         _emptyShareLinkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
         _linkWidgetList.append(_emptyShareLinkWidget);
 
-//        connect(_emptyShareLinkWidget, &ShareLinkWidget::resizeRequested, this, &ShareDialog::slotAdjustScrollWidgetSize);
+        connect(_emptyShareLinkWidget, &ShareLinkWidget::resizeRequested, this, &ShareDialog::slotAdjustScrollWidgetSize);
 //        connect(this, &ShareDialog::toggleAnimation, _emptyShareLinkWidget, &ShareLinkWidget::slotToggleAnimation);
         connect(_emptyShareLinkWidget, &ShareLinkWidget::createLinkShare, this, &ShareDialog::slotCreateLinkShare);
 
@@ -206,7 +206,6 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
     emit toggleAnimation(false);
 }
 
-// TODO
 void ShareDialog::slotAdjustScrollWidgetSize()
 {
     int count = this->findChildren<ShareLinkWidget *>().count();

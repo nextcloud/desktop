@@ -182,23 +182,6 @@ void SettingsDialog::changeEvent(QEvent *e)
     QDialog::changeEvent(e);
 }
 
-// FIX - White Window issue on Windows after Qt 5.12.4 upgrade ///////////////////////////////
-#if (defined(Q_OS_WIN) && (QT_VERSION >= QT_VERSION_CHECK(5, 12, 4)))
-void SettingsDialog::showEvent(QShowEvent *e)
-{
-    QDialog::showEvent(e);
-
-    QTimer::singleShot(100, this, &SettingsDialog::timerShowEvent);
-}
-
-void SettingsDialog::timerShowEvent()
-{
-    update();
-    repaint();
-}
-#endif
-// FIX - White Window issue on Windows after Qt 5.12.4 upgrade ///////////////////////////////
-
 void SettingsDialog::slotSwitchPage(QAction *action)
 {
     _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));

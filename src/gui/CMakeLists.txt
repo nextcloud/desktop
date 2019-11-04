@@ -106,6 +106,7 @@ set(client_SRCS
     guiutility.cpp
     elidedlabel.cpp
     iconjob.cpp
+    remotewipe.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
@@ -183,6 +184,9 @@ if (APPLE)
         ../3rdparty/qtmacgoodies/src/macstandardicon.mm
         ../3rdparty/qtmacgoodies/src/macwindow.mm
         )
+    # We want to access Cocoa specific structures in the code above
+    # and need the platform plugin interface for that - which is private.
+    include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 endif()
 
 if(NOT WIN32)
@@ -399,7 +403,7 @@ endif()
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
     configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
-                   ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
-    install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${DATADIR}/applications )
+                   ${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.desktop)
+    install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.desktop DESTINATION ${DATADIR}/applications )
 endif()
 

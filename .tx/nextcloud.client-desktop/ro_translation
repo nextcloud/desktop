@@ -201,4 +201,4 @@ X-GNOME-Autostart-Delay=3
 Icon[ro]=@APPLICATION_ICON_NAME@
 Name[ro]=@APPLICATION_NAME@ client de sincronizare pentru desktop
 Comment[ro]=@APPLICATION_NAME@ client de sincronizare pentru desktop
-GenericName[ro]=Sincronizare dosare
+GenericName[ro]=Sincronizare director
