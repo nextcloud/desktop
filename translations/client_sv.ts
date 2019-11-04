@@ -720,7 +720,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="283"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Uppgradera servern och starta sedan om klienten.</translation>
+        <translation>Vänligen uppdatera till den senaste servern och starta om klienten.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="144"/>
@@ -896,7 +896,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="417"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 kunde inte synkroniseras på grund av ett fel. Kolla loggen för ytterligare detaljer.</translation>
+        <translation>%1 kunde inte synkroniseras på grund av ett fel. Se loggen för detaljer.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
@@ -3888,17 +3888,17 @@ Det är inte lämpligt att använda den.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="457"/>
         <source>%n day ago</source>
-        <translation><numerusform>%n dagar sedan</numerusform><numerusform>%n dagar sedan</numerusform></translation>
+        <translation><numerusform>%n dag sedan</numerusform><numerusform>%n dagar sedan</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="459"/>
         <source>%n days ago</source>
-        <translation><numerusform>%n dagar sedan</numerusform><numerusform>%n dagar sedan</numerusform></translation>
+        <translation><numerusform>%n dag sedan</numerusform><numerusform>%n dagar sedan</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="469"/>
         <source>%n hour ago</source>
-        <translation><numerusform>%n timme sedan</numerusform><numerusform>%n timme sedan</numerusform></translation>
+        <translation><numerusform>%n timme sedan</numerusform><numerusform>%n timmar sedan</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="471"/>
@@ -3923,12 +3923,12 @@ Det är inte lämpligt att använda den.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="486"/>
         <source>%n minutes ago</source>
-        <translation><numerusform>%n minuter sedan</numerusform><numerusform>%n minuter sedan</numerusform></translation>
+        <translation><numerusform>%n minut sedan</numerusform><numerusform>%n minuter sedan</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="490"/>
         <source>Some time ago</source>
-        <translation>En stund sedan</translation>
+        <translation>För en tid sedan</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="153"/>

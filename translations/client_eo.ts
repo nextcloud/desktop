@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation>Kontrolante ŝanĝojn en „%1“</translation>
+        <translation>Kontrolo de ŝanĝoj en „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
@@ -408,7 +408,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1035"/>
         <source>Connecting to %1...</source>
-        <translation>Konektante al %1...</translation>
+        <translation>Konektado al %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1038"/>
@@ -1055,7 +1055,7 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
     <message>
         <location filename="../src/gui/folderman.cpp" line="1300"/>
         <source>Preparing for sync.</source>
-        <translation>Pretigante sinkronigon.</translation>
+        <translation>Pretigado de la sinkronigo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1303"/>
@@ -1173,7 +1173,7 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
         <source>Fetching folder list from server...</source>
-        <translation>Prenante dosierujan liston el la servilo...</translation>
+        <translation>Prenado de dosieruja listo el la servilo...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
@@ -1183,7 +1183,7 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="932"/>
         <source>Reconciling changes</source>
-        <translation>Komparante ŝanĝoj</translation>
+        <translation>Komparo de ŝanĝoj</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="967"/>
@@ -1224,12 +1224,12 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Kontrolante ŝanĝojn en fora „%1“</translation>
+        <translation>Kontrolo de ŝanĝoj en fora „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Kontrolante ŝanĝojn en loka „%1“</translation>
+        <translation>Kontrolo de ŝanĝoj en loka „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1002"/>
@@ -1273,17 +1273,17 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting...</source>
-        <translation>Atendante...</translation>
+        <translation>Atendado...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Atendante %n plian dosierujon....</numerusform><numerusform>Atendante %n pliajn dosierujojn....</numerusform></translation>
+        <translation><numerusform>Atendado de %n plia dosierujo...</numerusform><numerusform>Atendado de %n pliaj dosierujoj....</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync...</source>
-        <translation>Pretigante sinkronigon...</translation>
+        <translation>Pretigo de la sinkronigo...</translation>
     </message>
 </context>
 <context>
@@ -1912,7 +1912,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>Elŝutanta version %1. Bv. atendi...</translation>
+        <translation>Elŝutado de versio %1. Bv. atendi...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1937,7 +1937,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server...</source>
-        <translation>Kontrolante la servilon pri ĝisdatigoj...</translation>
+        <translation>Kontrolo de la servilo pri ĝisdatigoj...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
@@ -1970,7 +1970,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
         <source>Connect...</source>
-        <translation>Konektante...</translation>
+        <translation>Konektado...</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2153,7 +2153,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>Konektante al %1 ĉe %2...</translation>
+        <translation>Konekto al %1 ĉe %2...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
@@ -2228,7 +2228,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="560"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>La fora dosierujo %1 jam ekzistas. Konektante.</translation>
+        <translation>La fora dosierujo %1 jam ekzistas. Konektado.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="562"/>
@@ -2612,7 +2612,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading ...</source>
-        <translation>Ŝargante...</translation>
+        <translation>Ŝargado...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -4088,27 +4088,27 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="66"/>
         <source>downloading</source>
-        <translation>elŝutante</translation>
+        <translation>elŝutado</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>
         <source>uploading</source>
-        <translation>alŝutante</translation>
+        <translation>alŝutado</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="70"/>
         <source>deleting</source>
-        <translation>forigante</translation>
+        <translation>forigado</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>moving</source>
-        <translation>movante</translation>
+        <translation>movado</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>ignoring</source>
-        <translation>ignorante</translation>
+        <translation>ignorado</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -4119,7 +4119,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation>ĝisdatigante lokajn pridatumojn</translation>
+        <translation>ĝisdatigo de lokaj pridatumoj</translation>
     </message>
 </context>
 <context>
@@ -4162,12 +4162,12 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="83"/>
         <source>Preparing to sync</source>
-        <translation>Pretigante sinkronigon</translation>
+        <translation>Pretigado de sinkronigo</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting...</source>
-        <translation>Haltigante...</translation>
+        <translation>Haltigado...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
