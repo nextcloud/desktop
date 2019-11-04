@@ -369,11 +369,22 @@ Window {
             }
 
             add: Transition {
-                NumberAnimation { properties: "y"; from: -60; duration: 150; easing.type: Easing.Linear }
+                NumberAnimation { properties: "y"; from: -60; duration: 100; easing.type: Easing.Linear }
+            }
+
+            remove: Transition {
+                NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 100 }
+            }
+
+            removeDisplaced: Transition {
+                SequentialAnimation {
+                    PauseAnimation { duration: 100}
+                    NumberAnimation { properties: "y"; duration: 100; easing.type: Easing.Linear }
+                }
             }
 
             displaced: Transition {
-                NumberAnimation { properties: "y"; duration: 150; easing.type: Easing.Linear }
+                NumberAnimation { properties: "y"; duration: 100; easing.type: Easing.Linear }
             }
 
             focus: true
