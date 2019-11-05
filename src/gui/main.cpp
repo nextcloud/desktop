@@ -47,16 +47,9 @@ int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(client);
 
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 #ifdef Q_OS_WIN
-// If the font size ratio is set on Windows, we need to
-// enable the auto pixelRatio in Qt since we don't
-// want to use sizes relative to the font size everywhere.
-// This is automatic on OS X, but opt-in on Windows and Linux
-// https://doc-snapshots.qt.io/qt5-5.6/highdpi.html#qt-support
-// We do not define it on linux so the behaviour is kept the same
-// as other Qt apps in the desktop environment. (which may or may
-// not set this envoronment variable)
-    qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #endif // !Q_OS_WIN
 
 #ifdef Q_OS_MAC
