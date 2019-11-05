@@ -1,8 +1,8 @@
 ChangeLog
 =========
 
-version 2.6.0 (2019-08)
-(last update on 8f6151733abc8e1f7939e2fbeac5c4443363ffe7)
+version 2.6.0 (2019-11-)
+(last update on 5131f50ff048d5213aa69edfbae349de2822498a)
 
 Major changes and additions:
 * Rewrote discovery code for performance improvements and better maintainability.
