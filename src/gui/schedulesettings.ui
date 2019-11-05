@@ -6,22 +6,29 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>650</width>
     <height>370</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>600</width>
+    <width>650</width>
     <height>370</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string notr="true">Schedule Settings</string>
+   <string notr="true">Sync Schedule Editor</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QGroupBox" name="scheduleGroupBox">
+     <property name="styleSheet">
+      <string notr="true">border: 0px solid gray;
+padding-top:0px; margin-top:-0px</string>
+     </property>
      <property name="title">
       <string/>
      </property>
@@ -33,6 +40,16 @@
        <widget class="QCheckBox" name="enableScheduleCheckBox">
         <property name="text">
          <string>Enable sync schedule</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Enabling the scheduler ignores manual synchronization control (pause or resume sync)</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -174,7 +191,7 @@
        <widget class="QTableWidget" name="scheduleTableWidget">
         <property name="minimumSize">
          <size>
-          <width>474</width>
+          <width>500</width>
           <height>192</height>
          </size>
         </property>
@@ -203,10 +220,10 @@
          <bool>true</bool>
         </attribute>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>21</number>
+         <number>23</number>
         </attribute>
         <attribute name="horizontalHeaderMinimumSectionSize">
-         <number>21</number>
+         <number>23</number>
         </attribute>
         <attribute name="verticalHeaderVisible">
          <bool>true</bool>
@@ -378,17 +395,16 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QDialogButtonBox" name="buttonBox">
-          <property name="standardButtons">
-           <set>QDialogButtonBox::Cancel|QDialogButtonBox::RestoreDefaults|QDialogButtonBox::Save</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <layout class="QHBoxLayout" name="horizontalLayout_2"/>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::RestoreDefaults|QDialogButtonBox::Save</set>
+     </property>
     </widget>
    </item>
   </layout>
