@@ -1928,7 +1928,7 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Nova %1 versão %2 está disponível. Clique &lt;a href=&apos;%3&apos;&gt;aqui&lt;/a&gt; para baixar a atualização.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
