@@ -17,12 +17,15 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string notr="true">Sync Schedule Editor</string>
+   <string notr="true">Sync schedule</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="topMargin">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
     <widget class="QGroupBox" name="scheduleGroupBox">
      <property name="styleSheet">
@@ -33,23 +36,19 @@ padding-top:0px; margin-top:-0px</string>
       <string/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
       <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
        <number>0</number>
       </property>
       <item>
        <widget class="QCheckBox" name="enableScheduleCheckBox">
         <property name="text">
-         <string>Enable sync schedule</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Enabling the scheduler ignores manual synchronization control (pause or resume sync)</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <string>Use schedule instead of always syncing</string>
         </property>
        </widget>
       </item>
@@ -220,7 +219,7 @@ padding-top:0px; margin-top:-0px</string>
          <bool>true</bool>
         </attribute>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>23</number>
+         <number>57</number>
         </attribute>
         <attribute name="horizontalHeaderMinimumSectionSize">
          <number>23</number>
@@ -403,7 +402,7 @@ padding-top:0px; margin-top:-0px</string>
    <item row="1" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::RestoreDefaults|QDialogButtonBox::Save</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
      </property>
     </widget>
    </item>

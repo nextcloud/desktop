@@ -41,14 +41,10 @@ namespace OCC {
     QTableWidgetItem *newItemPause = new QTableWidgetItem();    
     newItemPause->setBackground(Qt::white);
     newItemPause->setFlags(newItemPause->flags() &  ~Qt::ItemIsEnabled);
-    pauseTableWidget->setItem(0, 0, newItemPause);  
+    pauseTableWidget->setItem(0, 0, newItemPause);
     
     // fill table with items
     QTableWidget *tableWidget = _ui->scheduleTableWidget;
-    QHeaderView* headerH = tableWidget->horizontalHeader();
-    QHeaderView* headerV = tableWidget->verticalHeader();
-    headerH->setSectionResizeMode(QHeaderView::Stretch);    
-    headerV->setSectionResizeMode(QHeaderView::Stretch);
     int rows = tableWidget->rowCount();
     int cols = tableWidget->columnCount();    
     for (int idx = 0; idx<rows; idx++){
@@ -60,15 +56,26 @@ namespace OCC {
         tableWidget->setItem(idx, idj, newItem);
       }
     }   
-       
+    // set style of table headers
+    QString styleSheetHeader = "::section {" // "QHeaderView::section {"
+      "background-color: rgb(255,255,255);"
+      "text-align: right;}";
+    QHeaderView* headerH = tableWidget->horizontalHeader();
+    QHeaderView* headerV = tableWidget->verticalHeader();
+    headerH->setSectionResizeMode(QHeaderView::Stretch);
+    headerV->setSectionResizeMode(QHeaderView::Stretch);    
+    headerH->setStyleSheet(styleSheetHeader);
+    headerV->setStyleSheet(styleSheetHeader);
+    QAbstractButton *button =  tableWidget->findChild<QAbstractButton *>();
+    button->setStyleSheet("background-color: rgb(255,255,255);");
+    
     // connect with events
     connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &ScheduleSettings::okButton);
     connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &ScheduleSettings::cancelButton);
-    connect(_ui->buttonBox, &QDialogButtonBox::clicked, this, &ScheduleSettings::resetButton);
     connect(_ui->scheduleTableWidget, &QTableWidget::cellPressed, this, &ScheduleSettings::resetTable);
 
     // load settings stored in config file
-    loadScheduleSettings();    
+    loadScheduleSettings();
   }
 
   
@@ -84,12 +91,6 @@ namespace OCC {
   void ScheduleSettings::cancelButton(){
     this->resetScheduleSettings();
     reject();
-  }
-  void ScheduleSettings::resetButton(QAbstractButton *button){
-    if(_ui->buttonBox->buttonRole(button) != QDialogButtonBox::ResetRole)
-      return;
-    this->resetScheduleSettings();
-    _firstPress = true;
   }
   void ScheduleSettings::resetTable(){
     if( _firstPress ){

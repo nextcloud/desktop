@@ -32,7 +32,6 @@ namespace OCC {
   private slots:
     void okButton();
     void cancelButton();
-    void resetButton(QAbstractButton *button);
     void resetTable();
     void saveScheduleSettings();
     void loadScheduleSettings();
