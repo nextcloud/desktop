@@ -592,7 +592,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="189"/>
         <source>Synced</source>
-        <translation>同期した</translation>
+        <translation>同期済</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="228"/>
