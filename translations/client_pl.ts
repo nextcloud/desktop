@@ -313,7 +313,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="620"/>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Edit Ignored Files</source>
-        <translation>Edytuj Pliki Ignorowane</translation>
+        <translation>Edytuj pliki ignorowane</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="660"/>
@@ -1465,7 +1465,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Edytuj &amp;ignorowane pliki (pomijane)</translation>
+        <translation>Edytuj pliki &amp;ignorowane</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
@@ -1737,12 +1737,12 @@ Logi będą zapisane w %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="332"/>
         <source>New Version Available</source>
-        <translation>Nowa wersja dostępna</translation>
+        <translation>Dostępna nowa wersja</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Nowa wersja klienta %1 jest dostępna.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;jest dostępna do pobrania. Zainstalowana wersja to %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Dostępna jest nowa wersja klienta %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; jest dostępny do pobrania. Zainstalowana wersja to %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
@@ -1928,12 +1928,12 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Nowa wersja %1 %2 jest dostępna. Kliknij &lt;a href=&apos;%3&apos;&gt;tutaj&lt;/a&gt;, aby pobrać aktualizację.</translation>
+        <translation>Dostępna jest nowa wersja %1 %2. Kliknij &lt;a href=&apos;%3&apos;&gt;tutaj&lt;/a&gt;, aby pobrać aktualizację.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation>%1 wersja %2 jest dostępna. Uruchom ponownie aplikację, aby rozpocząć aktualizację.</translation>
+        <translation>Dostępna jest wersja %1 %2. Uruchom ponownie aplikację, aby rozpocząć aktualizację.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
