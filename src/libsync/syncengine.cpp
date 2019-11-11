@@ -345,10 +345,10 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
             // Update on-disk virtual file metadata
             if (item->_type == ItemTypeVirtualFile) {
-                QString error;
-                if (!_syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId, &error)) {
+                auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
+                if (!r) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                    item->_errorString = tr("Could not update virtual file metadata: %1").arg(error);
+                    item->_errorString = tr("Could not update virtual file metadata: %1").arg(r.error());
                     return;
                 }
             }

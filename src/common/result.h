@@ -129,6 +129,18 @@ public:
 };
 
 namespace detail {
+    struct NoResultData{};
+}
+
+template <typename Error>
+class Result<void, Error> : public Result<detail::NoResultData, Error>
+{
+public:
+    using Result<detail::NoResultData, Error>::Result;
+    Result() : Result(detail::NoResultData{}) {}
+};
+
+namespace detail {
 struct OptionalNoErrorData{};
 }
 

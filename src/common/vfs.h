@@ -151,20 +151,18 @@ public:
      *
      * If the remote metadata changes, the local placeholder's metadata should possibly
      * change as well.
-     *
-     * Returning false and setting error indicates an error.
      */
-    virtual bool updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId, QString *error) = 0;
+    virtual Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
 
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
-    virtual void createPlaceholder(const SyncFileItem &item) = 0;
+    virtual Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
 
     /** Convert a hydrated placeholder to a dehydrated one. Called from PropagateDownlaod.
      *
      * This is different from delete+create because preserving some file metadata
      * (like pin states) may be essential for some vfs plugins.
      */
-    virtual void dehydratePlaceholder(const SyncFileItem &item) = 0;
+    virtual Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) = 0;
 
     /** Discovery hook: even unchanged files may need UPDATE_METADATA.
      *
@@ -289,9 +287,9 @@ public:
     bool socketApiPinStateActionsShown() const override { return false; }
     bool isHydrating() const override { return false; }
 
-    bool updateMetadata(const QString &, time_t, qint64, const QByteArray &, QString *) override { return true; }
-    void createPlaceholder(const SyncFileItem &) override {}
-    void dehydratePlaceholder(const SyncFileItem &) override {}
+    Result<void, QString> updateMetadata(const QString &, time_t, qint64, const QByteArray &) override { return {}; }
+    Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
+    Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }
     void convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override {}
 
     bool needsMetadataUpdate(const SyncFileItem &) override { return false; }

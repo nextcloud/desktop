@@ -603,6 +603,7 @@ private slots:
 
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX)->size <= 1);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_SYNC));
         QCOMPARE(dbRecord(fakeFolder, "A/a1" DVSUFFIX)._type, ItemTypeVirtualFile);
@@ -1341,6 +1342,63 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("online/file1"));
         QVERIFY(fakeFolder.currentLocalState().find("local/file1" DVSUFFIX));
+    }
+
+    void testPlaceHolderExist() {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.remoteModifier().insert("A/a1" DVSUFFIX, 111);
+        fakeFolder.remoteModifier().insert("A/hello" DVSUFFIX, 222);
+        QVERIFY(fakeFolder.syncOnce());
+        auto vfs = setupVfs(fakeFolder);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        auto cleanup = [&]() { completeSpy.clear(); };
+        cleanup();
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(itemInstruction(completeSpy, "A/hello" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
+
+        fakeFolder.remoteModifier().insert("A/a2" DVSUFFIX);
+        fakeFolder.remoteModifier().insert("A/hello", 12);
+        fakeFolder.localModifier().insert("A/igno" DVSUFFIX, 123);
+        cleanup();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "A/a1" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(itemInstruction(completeSpy, "A/igno" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
+
+        // verify that the files are still present
+        QCOMPARE(fakeFolder.currentLocalState().find("A/hello" DVSUFFIX)->size, 222);
+        QCOMPARE(*fakeFolder.currentLocalState().find("A/hello" DVSUFFIX),
+                 *fakeFolder.currentRemoteState().find("A/hello" DVSUFFIX));
+        QCOMPARE(fakeFolder.currentLocalState().find("A/igno" DVSUFFIX)->size, 123);
+
+        cleanup();
+        // Dehydrate
+        vfs->setPinState(QString(), PinState::OnlineOnly);
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(itemInstruction(completeSpy, "A/igno" DVSUFFIX, CSYNC_INSTRUCTION_IGNORE));
+        // verify that the files are still present
+        QCOMPARE(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX)->size, 111);
+        QCOMPARE(fakeFolder.currentLocalState().find("A/hello" DVSUFFIX)->size, 222);
+        QCOMPARE(*fakeFolder.currentLocalState().find("A/hello" DVSUFFIX),
+                 *fakeFolder.currentRemoteState().find("A/hello" DVSUFFIX));
+        QCOMPARE(*fakeFolder.currentLocalState().find("A/a1"),
+                 *fakeFolder.currentRemoteState().find("A/a1"));
+        QCOMPARE(fakeFolder.currentLocalState().find("A/igno" DVSUFFIX)->size, 123);
+
+        // Now disable vfs and check that all files are still there
+        cleanup();
+        SyncEngine::wipeVirtualFiles(fakeFolder.localPath(), fakeFolder.syncJournal(), *vfs);
+        fakeFolder.switchToVfs(QSharedPointer<Vfs>(new VfsOff));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX)->size, 111);
+        QCOMPARE(fakeFolder.currentLocalState().find("A/hello")->size, 12);
+        QCOMPARE(fakeFolder.currentLocalState().find("A/hello" DVSUFFIX)->size, 222);
+        QCOMPARE(fakeFolder.currentLocalState().find("A/igno" DVSUFFIX)->size, 123);
     }
 };
 

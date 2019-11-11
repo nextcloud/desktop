@@ -68,34 +68,47 @@ bool VfsSuffix::isHydrating() const
     return false;
 }
 
-bool VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, qint64, const QByteArray &, QString *)
+Result<void, QString> VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, qint64, const QByteArray &)
 {
     FileSystem::setModTime(filePath, modtime);
-    return true;
+    return {};
 }
 
-void VfsSuffix::createPlaceholder(const SyncFileItem &item)
+Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
 {
     // The concrete shape of the placeholder is also used in isDehydratedPlaceholder() below
     QString fn = _setupParams.filesystemPath + item._file;
     if (!fn.endsWith(fileSuffix())) {
         ASSERT(false, "vfs file isn't ending with suffix");
-        return;
+        return QString("vfs file isn't ending with suffix");
     }
 
     QFile file(fn);
-    file.open(QFile::ReadWrite | QFile::Truncate);
+    if (file.exists() && file.size() > 1
+        && !FileSystem::verifyFileUnchanged(fn, item._size, item._modtime)) {
+        return QString("Cannot create a placeholder because a file with the placeholder name already exist");
+    }
+
+    if (!file.open(QFile::ReadWrite | QFile::Truncate))
+        return file.errorString();
+
     file.write(" ");
     file.close();
     FileSystem::setModTime(fn, item._modtime);
+    return {};
 }
 
-void VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
+Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
 {
-    QFile::remove(_setupParams.filesystemPath + item._file);
     SyncFileItem virtualItem(item);
     virtualItem._file = item._renameTarget;
-    createPlaceholder(virtualItem);
+    auto r = createPlaceholder(virtualItem);
+    if (!r)
+        return r;
+
+    if (item._file != item._renameTarget) { // can be the same when renaming foo -> foo.owncloud to dehydrate
+        QFile::remove(_setupParams.filesystemPath + item._file);
+    }
 
     // Move the item's pin state
     auto pin = _setupParams.journal->internalPinStates().rawForPath(item._file.toUtf8());
@@ -108,6 +121,7 @@ void VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
     pin = pinState(item._renameTarget);
     if (pin && *pin == PinState::AlwaysLocal)
         setPinState(item._renameTarget, PinState::Unspecified);
+    return {};
 }
 
 void VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
