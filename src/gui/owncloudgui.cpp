@@ -1170,9 +1170,15 @@ void ownCloudGui::slotAbout()
     msgBox->setInformativeText("<qt>"+about+"</qt>");
     msgBox->setStandardButtons(QMessageBox::Ok);
     QIcon appIcon = Theme::instance()->applicationIcon();
-    // Assume icon is always small enough to fit an about dialog?
-    qDebug() << appIcon.availableSizes().last();
-    QPixmap iconPixmap = appIcon.pixmap(appIcon.availableSizes().last());
+    const auto sizes = appIcon.availableSizes();
+    QSize size;
+    for (auto it = sizes.crbegin(); it != sizes.crend(); ++it) {
+        if (it->width() > 600)
+            continue;
+        size = *it;
+        break;
+    }
+    QPixmap iconPixmap = appIcon.pixmap(size);
     iconPixmap.setDevicePixelRatio(2);
     msgBox->setIconPixmap(iconPixmap);
     msgBox->show();
