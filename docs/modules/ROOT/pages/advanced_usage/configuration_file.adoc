@@ -1,4 +1,6 @@
 = Configuration File
+:toc:
+:ini-file-format-url: https://en.wikipedia.org/wiki/INI_file
 
 The ownCloud Client reads a configuration file.
 You can locate this configuration file as follows:
@@ -16,7 +18,7 @@ You can locate this configuration file as follows:
 |`$HOME/Library/ApplicationSupport/ownCloud/owncloud.cfg`
 |===
 
-The configuration file contains settings using the Microsoft Windows `.ini` file format.
+The configuration file contains settings using {ini-file-format-url}[the Microsoft Windows `.ini` file format].
 You can overwrite changes using the ownCloud configuration dialog.
 
 NOTE: Use caution when making changes to the ownCloud Client configuration file. Incorrect settings can produce unintended results.
