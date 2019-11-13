@@ -105,8 +105,17 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
         accountAdded(ai.data());
     }
 
+    // create timer to check configuration every 5 seconds
+    _scheduleTimer = new QTimer(this);
+    connect(_scheduleTimer, &QTimer::timeout,
+        this, &SettingsDialogMac::checkSchedule);
+    ConfigFile cfgFile;    
+    if( cfgFile.getScheduleStatus() ){
+      _scheduleTimer->start(ScheduleSettings::SCHEDULE_TIME);
+    }
+   
     QIcon generalIcon = MacStandardIcon::icon(MacStandardIcon::PreferencesGeneral);
-    GeneralSettings *generalSettings = new GeneralSettings;
+    GeneralSettings *generalSettings = new GeneralSettings(_scheduleTimer);
     addPreferencesPanel(generalIcon, tr("General"), generalSettings);
 
     QIcon networkIcon = MacStandardIcon::icon(MacStandardIcon::Network);
@@ -119,14 +128,6 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     addAction(showLogWindow);
 
     ConfigFile cfg;
-
-    // create timer to check configuration every 5 seconds
-    _scheduleTimer = new QTimer(this);
-    connect(_scheduleTimer, &QTimer::timeout,
-        this, &SettingsDialog::checkSchedule);
-    if( cfgFile.getScheduleStatus() ){
-      _scheduleTimer->start(ScheduleSettings::SCHEDULE_TIME);
-    }
 
     cfg.restoreGeometry(this);
 }

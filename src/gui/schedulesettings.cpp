@@ -33,14 +33,12 @@ namespace OCC {
 
     // create label items
     QTableWidget *syncTableWidget = _ui->syncTableWidget;
-    QTableWidgetItem *newItemSync = new QTableWidgetItem();    
-    newItemSync->setFlags(newItemSync->flags() &  ~Qt::ItemIsEnabled);
+    QTableWidgetItem *newItemSync = new QTableWidgetItem();
+    newItemSync->setBackground(QColor("steelblue"));
     syncTableWidget->setItem(0, 0, newItemSync);
-    syncTableWidget->selectRow(0);
     QTableWidget *pauseTableWidget = _ui->pauseTableWidget;
     QTableWidgetItem *newItemPause = new QTableWidgetItem();    
     newItemPause->setBackground(Qt::white);
-    newItemPause->setFlags(newItemPause->flags() &  ~Qt::ItemIsEnabled);
     pauseTableWidget->setItem(0, 0, newItemPause);
     
     // fill table with items
@@ -50,25 +48,29 @@ namespace OCC {
     for (int idx = 0; idx<rows; idx++){
       for (int idj = 0; idj<cols; idj++){
         QTableWidgetItem *newItem = new QTableWidgetItem();
-        QTableWidgetItem *newItemTimer = new QTableWidgetItem();
         newItem->setBackground(Qt::white);
         newItem->setFlags(newItem->flags() &  ~Qt::ItemIsEditable);
         tableWidget->setItem(idx, idj, newItem);
       }
     }   
-    // set style of table headers
+    // set style of table
+    QString styleSheetTable = "::item::selected {"
+      "background-color: steelblue; }";
+    tableWidget->setStyleSheet(styleSheetTable);
+    syncTableWidget->setStyleSheet(styleSheetTable);
     QString styleSheetHeader = "::section {" // "QHeaderView::section {"
       "background-color: rgb(255,255,255);"
       "text-align: right;}";
     QHeaderView* headerH = tableWidget->horizontalHeader();
     QHeaderView* headerV = tableWidget->verticalHeader();
     headerH->setSectionResizeMode(QHeaderView::Stretch);
-    headerV->setSectionResizeMode(QHeaderView::Stretch);    
+    headerV->setSectionResizeMode(QHeaderView::Stretch);
     headerH->setStyleSheet(styleSheetHeader);
     headerV->setStyleSheet(styleSheetHeader);
     QAbstractButton *button =  tableWidget->findChild<QAbstractButton *>();
     button->setStyleSheet("background-color: rgb(255,255,255);");
-    
+    tableWidget->setSelectionMode(QAbstractItemView::MultiSelection);
+
     // connect with events
     connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &ScheduleSettings::okButton);
     connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &ScheduleSettings::cancelButton);
