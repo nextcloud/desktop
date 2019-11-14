@@ -1032,7 +1032,7 @@ void AccountSettings::slotAccountStateChanged()
                                        "<a href='%1'>Click here</a> to re-open the browser.")
                                         .arg(url.toString(QUrl::FullyEncoded)));
             } else {
-                showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
+                showConnectionLabel(tr("Connecting to %1 …").arg(serverWithUser));
             }
         } else {
             showConnectionLabel(tr("No connection to %1 at %2.")
