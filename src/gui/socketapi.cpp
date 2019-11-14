@@ -625,7 +625,7 @@ void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *lis
         { "SHARE_MENU_TITLE", tr("Share options") },
         { "CONTEXT_MENU_TITLE", tr("Share via %1").arg(Theme::instance()->appNameGUI())},
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
-        { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email...") },
+        { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email …") },
     } };
     listener->sendMessage(QString("GET_STRINGS:BEGIN"));
     for (const auto& key_value : strings) {
@@ -673,7 +673,7 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
 
     // Disabled: only providing email option for private links would look odd,
     // and the copy option is more general.
-    //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email..."));
+    //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email …"));
 }
 
 SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
