@@ -943,7 +943,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
         quint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
         QString msg;
         if (progress.trustEta()) {
-            msg = tr("Syncing %1 of %2  (%3 left)")
+            msg = tr("Syncing %1 of %2 (%3 left)")
                       .arg(currentFile)
                       .arg(totalFileCount)
                       .arg(Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta));

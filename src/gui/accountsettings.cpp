@@ -746,7 +746,7 @@ void AccountSettings::slotFolderWizardAccepted()
             qCInfo(lcAccountSettings) << "Creating folder" << definition.localPath;
             if (!dir.mkpath(".")) {
                 QMessageBox::warning(this, tr("Folder creation failed"),
-                    tr("<p>Could not create local folder <i>%1</i>.")
+                    tr("<p>Could not create local folder <i>%1</i>.</p>")
                         .arg(QDir::toNativeSeparators(definition.localPath)));
                 return;
             }
