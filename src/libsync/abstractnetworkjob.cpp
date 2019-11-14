@@ -160,7 +160,8 @@ void AbstractNetworkJob::slotFinished()
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
 
-   // Qt doesn't yet transparently resend HTTP2 requests, do so here
+#if (QT_VERSION >= 0x050800)
+    // Qt doesn't yet transparently resend HTTP2 requests, do so here
     const auto maxHttp2Resends = 5;
     QByteArray verb = requestVerb(*reply());
     if (_reply->error() == QNetworkReply::ContentReSendError
@@ -190,6 +191,7 @@ void AbstractNetworkJob::slotFinished()
             return;
         }
     }
+#endif
 
     if (_reply->error() != QNetworkReply::NoError) {
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
