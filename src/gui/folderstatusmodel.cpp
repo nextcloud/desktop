@@ -186,7 +186,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 return QVariant(tr("Error while loading the list of folders from the server.")
                     + QString("\n") + x->_lastErrorString);
             } else {
-                return tr("Fetching folder list from server...");
+                return tr("Fetching folder list from server …");
             }
             break;
         default:
@@ -1099,15 +1099,15 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
         }
         QString message;
         if (pos <= 0) {
-            message = tr("Waiting...");
+            message = tr("Waiting …");
         } else {
-            message = tr("Waiting for %n other folder(s)...", "", pos);
+            message = tr("Waiting for %n other folder(s) …", "", pos);
         }
         pi = SubFolderInfo::Progress();
         pi._overallSyncString = message;
     } else if (state == SyncResult::SyncPrepare) {
         pi = SubFolderInfo::Progress();
-        pi._overallSyncString = tr("Preparing to sync...");
+        pi._overallSyncString = tr("Preparing to sync …");
     } else if (state == SyncResult::Problem || state == SyncResult::Success) {
         // Reset the progress info after a sync.
         pi = SubFolderInfo::Progress();
