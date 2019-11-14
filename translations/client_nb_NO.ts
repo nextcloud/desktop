@@ -35,7 +35,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation type="unfinished"/>
+        <translation>Nylig endrede filer</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
@@ -50,37 +50,37 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
-        <translation type="unfinished"/>
+        <translation>Åpne nettside</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Nylig endret</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Sett synkronisering på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Hjelp</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Innstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Logg ut</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Avslutt synkroniseringsklient</translation>
     </message>
 </context>
 <context>
@@ -107,27 +107,27 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="14"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Nettleserautentisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Vennligst bytt til nettleseren din for å fortsette.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Det oppstod en feil under tilkobling. Vennligst prøv igjen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Gjenåpne nettleser</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.ui" line="70"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopier lenke</translation>
     </message>
 </context>
 <context>
@@ -135,27 +135,27 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Nettleserautentisering</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="48"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Vennligst bytt til nettleseren din for å fortsette.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="58"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Det oppstod en feil under tilkobling. Vennligst prøv igjen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="68"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Gjenåpne nettleser</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="82"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopier lenke</translation>
     </message>
 </context>
 <context>
@@ -197,17 +197,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="280"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="282"/>
         <source>Connection timed out</source>
         <translation>Forbindelsen fikk tidsavbrudd</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="282"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="284"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Ukjent feil: nettverkssvar ble slettet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="434"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="436"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Server svarte &quot;%1 %2&quot; til &quot;%3 %4&quot;</translation>
     </message>
@@ -217,7 +217,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="353"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Ende-til-ende -kryptering mnemonic</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
@@ -292,17 +292,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="240"/>
         <source>This account supports end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Denne kontoen støtter ende-til-ende kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="242"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Aktiver kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="259"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Vis E2E mnemonic</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="612"/>
@@ -313,7 +313,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="620"/>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Rediger ignorerte filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="660"/>
@@ -786,7 +786,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="46"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Tilkoblet til %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="47"/>
@@ -906,7 +906,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 er låst.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -973,17 +973,17 @@ If this action was unintended you can restore the lost data now.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1097"/>
         <source>Delete all files?</source>
-        <translation type="unfinished"/>
+        <translation>Vil du slett alle filer?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1100"/>
         <source>Delete all files</source>
-        <translation type="unfinished"/>
+        <translation>Slette alle filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1101"/>
         <source>Restore deleted files</source>
-        <translation type="unfinished"/>
+        <translation>Gjenopprett slettede filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1118"/>
@@ -1055,7 +1055,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/folderman.cpp" line="1308"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering var vellykket, men det finnes uløste konflikter.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1310"/>
@@ -1123,7 +1123,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisert med lokal mappe (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="303"/>
@@ -1168,7 +1168,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Det finnes uløste konflikter. Klikk for detaljer.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="932"/>
@@ -1562,27 +1562,27 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Mønster</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Tillat sletting</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Legg til</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Fjern</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Fjern alle</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
@@ -1594,12 +1594,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke åpne fil</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke skrive endringer til &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
@@ -2728,7 +2728,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Ikon</translation>
     </message>
 </context>
 <context>
@@ -2736,12 +2736,12 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="38"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Del lenke</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Notat:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
@@ -2751,12 +2751,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="318"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Utløper:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="468"/>
@@ -2806,7 +2801,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="240"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Legg til en ny lenke</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="461"/>
@@ -2867,12 +2862,12 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="388"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>Kan dele videre</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="398"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Avslutt deling</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="407"/>
@@ -2948,12 +2943,12 @@ Det er ikke tilrådelig å bruke den.</translation>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Alternativer for deling</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via </source>
-        <translation type="unfinished"/>
+        <translation>Del via</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
@@ -2974,12 +2969,12 @@ Det er ikke tilrådelig å bruke den.</translation>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Kopier offentlig lenke</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Kopier intern lenke</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
@@ -3089,7 +3084,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tjenerversion: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -3848,7 +3843,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logg inn</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
