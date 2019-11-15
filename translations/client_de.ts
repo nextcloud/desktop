@@ -2961,7 +2961,7 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via </source>
-        <translation>Teilen über</translation>
+        <translation>Teilen mittels </translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
