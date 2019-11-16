@@ -2,6 +2,8 @@
 
 set -xe
 
+cd /build
+
 # Upload AppImage
 APPIMAGE=$(readlink -f ./Nextcloud*.AppImage)
 BASENAME=$(basename ${APPIMAGE})
