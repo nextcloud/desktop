@@ -1926,7 +1926,7 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Yeni  %1 versiyon %2 mevcut. Lütfen indirmek için &lt;a href=&apos;%3&apos;&gt;buraya&lt;/a&gt; tıklayınız.</translation>
+        <translation>%1 için %2 sürümü yayınlanmış. Lütfen indirmek için &lt;a href=&apos;%3&apos;&gt;buraya&lt;/a&gt; tıklayın.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
