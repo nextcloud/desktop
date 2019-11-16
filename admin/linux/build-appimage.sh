@@ -100,8 +100,3 @@ export LD_LIBRARY_PATH=/app/usr/lib/
 ./squashfs-root/AppRun ${DESKTOP_FILE} -appimage
 
 mv Nextcloud*.AppImage Nextcloud-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
-
-curl --upload-file $(readlink -f ./Nextcloud*.AppImage) https://transfer.sh/Nextcloud-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
-
-echo
-echo "Get the AppImage at the link above!"
