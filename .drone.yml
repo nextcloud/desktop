@@ -319,7 +319,7 @@ name: AppImage
 
 steps:
 - name: build
-  image: nextcloudci/client-5.12:client-5.12-3
+  image: nextcloudci/client-5.12:client-5.12-5
   commands:
     - /bin/bash -c "./admin/linux/build-appimage.sh"
 trigger:
