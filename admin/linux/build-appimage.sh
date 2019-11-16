@@ -6,7 +6,7 @@ mkdir /app
 mkdir /build
 
 #Set Qt-5.12
-export QT_BASE_DIR=/opt/qt512
+export QT_BASE_DIR=/opt/qt5.12.5
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH
@@ -69,7 +69,8 @@ rm -rf ./usr/share/nemo-python/
 mv ./etc/Nextcloud/sync-exclude.lst ./usr/bin/
 rm -rf ./etc
 
-sed -i -e 's|Icon=nextcloud|Icon=Nextcloud|g' usr/share/applications/${LINUX_APPLICATION_ID}.desktop # Bug in desktop file?
+DESKTOP_FILE=/app/usr/share/applications/${LINUX_APPLICATION_ID}.desktop
+sed -i -e 's|Icon=nextcloud|Icon=Nextcloud|g' ${DESKTOP_FILE} # Bug in desktop file?
 cp ./usr/share/icons/hicolor/512x512/apps/Nextcloud.png . # Workaround for linuxeployqt bug, FIXME
 
 
@@ -90,17 +91,12 @@ chmod a+x linuxdeployqt*.AppImage
 rm ./linuxdeployqt-continuous-x86_64.AppImage
 unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/app/usr/lib/
-./squashfs-root/AppRun /app/usr/share/applications/${LINUX_APPLICATION_ID}.desktop -bundle-non-qt-libs
+./squashfs-root/AppRun ${DESKTOP_FILE} -bundle-non-qt-libs
 
 # Set origin
 ./squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/' /app/usr/lib/libnextcloudsync.so.0
 
 # Build AppImage
-./squashfs-root/AppRun /app/usr/share/applications/${LINUX_APPLICATION_ID}.desktop -appimage
+./squashfs-root/AppRun ${DESKTOP_FILE} -appimage
 
 mv Nextcloud*.AppImage Nextcloud-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
-
-curl --upload-file $(readlink -f ./Nextcloud*.AppImage) https://transfer.sh/Nextcloud-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
-
-echo
-echo "Get the AppImage at the link above!"
