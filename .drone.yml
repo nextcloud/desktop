@@ -244,10 +244,10 @@ steps:
       export CC=gcc-7 &&
       export CXX=g++-7 &&
       export QT_BASE_DIR=/opt/qt5.12.5 &&
-      export QTDIR=$QT_BASE_DIR &&
-      export PATH=$QT_BASE_DIR/bin:$PATH &&
-      export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH &&
-      export PKG_CONFIG_PATH=$QT_BASE_DIR/lib/pkgconfig:$PKG_CONFIG_PATH &&
+      export QTDIR=\$QT_BASE_DIR &&
+      export PATH=\$QT_BASE_DIR/bin:\$PATH &&
+      export LD_LIBRARY_PATH=\$QT_BASE_DIR/lib/x86_64-linux-gnu:\$QT_BASE_DIR/lib:\$LD_LIBRARY_PATH &&
+      export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
       cd /tmp &&
       git clone https://github.com/frankosterfeld/qtkeychain.git &&
       cd qtkeychain &&
@@ -262,10 +262,10 @@ steps:
       export CC=gcc-7 &&
       export CXX=g++-7 &&
       export QT_BASE_DIR=/opt/qt5.12.5 &&
-      export QTDIR=$QT_BASE_DIR &&
-      export PATH=$QT_BASE_DIR/bin:$PATH &&
-      export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH &&
-      export PKG_CONFIG_PATH=$QT_BASE_DIR/lib/pkgconfig:$PKG_CONFIG_PATH &&
+      export QTDIR=\$QT_BASE_DIR &&
+      export PATH=\$QT_BASE_DIR/bin:\$PATH &&
+      export LD_LIBRARY_PATH=\$QT_BASE_DIR/lib/x86_64-linux-gnu:\$QT_BASE_DIR/lib:\$LD_LIBRARY_PATH &&
+      export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
       mkdir build &&
       cd build &&
       cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
@@ -293,10 +293,10 @@ steps:
       export CC=clang-6.0 &&
       export CXX=clang++-6.0 &&
       export QT_BASE_DIR=/opt/qt5.12.5 &&
-      export QTDIR=$QT_BASE_DIR &&
-      export PATH=$QT_BASE_DIR/bin:$PATH &&
-      export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH &&
-      export PKG_CONFIG_PATH=$QT_BASE_DIR/lib/pkgconfig:$PKG_CONFIG_PATH &&
+      export QTDIR=\$QT_BASE_DIR &&
+      export PATH=\$QT_BASE_DIR/bin:\$PATH &&
+      export LD_LIBRARY_PATH=\$QT_BASE_DIR/lib/x86_64-linux-gnu:\$QT_BASE_DIR/lib:\$LD_LIBRARY_PATH &&
+      export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
       cd /tmp &&
       git clone https://github.com/frankosterfeld/qtkeychain.git &&
       cd qtkeychain &&
@@ -311,10 +311,10 @@ steps:
       export CC=clang-6.0 &&
       export CXX=clang++-6.0 &&
       export QT_BASE_DIR=/opt/qt5.12.5 &&
-      export QTDIR=$QT_BASE_DIR &&
-      export PATH=$QT_BASE_DIR/bin:$PATH &&
-      export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH &&
-      export PKG_CONFIG_PATH=$QT_BASE_DIR/lib/pkgconfig:$PKG_CONFIG_PATH &&
+      export QTDIR=\$QT_BASE_DIR &&
+      export PATH=\$QT_BASE_DIR/bin:\$PATH &&
+      export LD_LIBRARY_PATH=\$QT_BASE_DIR/lib/x86_64-linux-gnu:\$QT_BASE_DIR/lib:\$LD_LIBRARY_PATH &&
+      export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
       mkdir build &&
       cd build &&
       cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
