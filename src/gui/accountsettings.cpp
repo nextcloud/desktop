@@ -55,6 +55,8 @@
 #include <qstringlistmodel.h>
 #include <qpropertyanimation.h>
 
+#include "ignorelisttablewidget.h"
+
 #include "account.h"
 
 namespace OCC {
