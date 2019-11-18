@@ -100,9 +100,12 @@ void OAuth::start()
                 req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
                 auto requestBody = new QBuffer;
-                QUrlQuery arguments(QString(
-                    "grant_type=authorization_code&code=%1&redirect_uri=http://localhost:%2&code_verifier=%3&scope=openid offline_access")
-                                        .arg(code, QString::number(_server.serverPort()), _pkceCodeVerifier));
+                QUrlQuery arguments {
+                    { "grant_type", "authorization_code" },
+                    { "code" , code },
+                    { "redirect_uri", QString("http://localhost:%1").arg(_server.serverPort()) },
+                    { "code_verifier", _pkceCodeVerifier },
+                    { "scope", "openid offline_access" }};
                 requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
                 auto job = _account->sendRequest("POST", requestToken, req, requestBody);
                 job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
@@ -121,7 +124,7 @@ void OAuth::start()
                         QString errorReason;
                         QString errorFromJson = json["error_description"].toString();
                         if (errorFromJson.isEmpty())
-                            QString errorFromJson = json["error"].toString();
+                            errorFromJson = json["error"].toString();
                         if (!errorFromJson.isEmpty()) {
                             errorReason = tr("Error returned from the server: <em>%1</em>")
                                               .arg(errorFromJson.toHtmlEscaped());
@@ -260,6 +263,7 @@ void OAuth::openBrowser()
 {
     authorisationLinkAsync([this](const QUrl &link) {
         if (!QDesktopServices::openUrl(link)) {
+            qCWarning(lcOauth) << "QDesktopServices::openUrl Failed";
             // We cannot open the browser, then we claim we don't support OAuth.
             emit result(NotSupported, QString());
         }

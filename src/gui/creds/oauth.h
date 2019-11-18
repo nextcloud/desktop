@@ -29,7 +29,8 @@ namespace OCC {
  *       |
  *       +----> fetchWellKnown() query the ".well-known/openid-configuration" endpoint
  *       |
- *       +----> openBrowser() open the browser to the login page after fetchWellKnown finished.
+ *       +----> openBrowser() open the browser after fetchWellKnown finished to the specified page
+ *       |                    (or the default 'oauth2/authorize' if fetchWellKnown does not exist)
  *       |                    Then the browser will redirect to http://localhost:xxx
  *       |
  *       +----> _server starts listening on a TCP port waiting for an HTTP request with a 'code'

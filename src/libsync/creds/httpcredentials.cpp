@@ -438,7 +438,7 @@ bool HttpCredentials::refreshAccessToken()
         req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
         auto requestBody = new QBuffer;
-        QUrlQuery arguments(QString("grant_type=refresh_token&refresh_token=%1").arg(_refreshToken));
+        QUrlQuery arguments{{"grant_type" , "refresh_token"}, { "refresh_token", _refreshToken}};
         requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
 
         auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
