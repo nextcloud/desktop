@@ -14,7 +14,7 @@ You can locate this configuration file as follows:
 | `$HOME/.config/ownCloud/owncloud.cfg`
 | *Microsoft Windows* 
 | `%APPDATA%\ownCloud\owncloud.cfg`
-| *macOS X* 
+| *macOS* 
 |`$HOME/Library/ApplicationSupport/ownCloud/owncloud.cfg`
 |===
 
