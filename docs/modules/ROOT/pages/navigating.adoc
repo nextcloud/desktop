@@ -154,10 +154,13 @@ This also displays notifications sent to users by the ownCloud admin via the Ann
 
 == General Window
 
-The General window has configuration options such as **Launch on System Startup*_,Use Monochrome Icons, andShow Desktop Notifications_*.
-This is where you will find the *Edit Ignored Files* button, to launch the ignored files editor, and **Ask confirmation before downloading folders larger than [folder size]**.
+The General window has configuration options such as "_Launch on System Startup_", "_Use Monochrome Icons_", and "_Show Desktop Notifications_".
+This is where you will find the "_Edit Ignored Files_" button, to launch the ignored files editor, and "_Ask confirmation before downloading folders larger than [folder size]_".
 
 image:client-9.png[image]
+
+TIP: While you can elect whether to show or hide the crash reporter, from the General window, you can also configure whether to show or hide it from xref:advanced_usage/configuration_file.adoc#general-section[the general section of the configuration file] as well. 
+Doing so can help with debugging on-startup-crashes.
 
 == Using the Network Window
 

@@ -1,13 +1,24 @@
 = Configuration File
+:toc:
+:ini-file-format-url: https://en.wikipedia.org/wiki/INI_file
 
 The ownCloud Client reads a configuration file.
 You can locate this configuration file as follows:
 
-On Linux distributions: `$HOME/.config/ownCloud/owncloud.cfg`
-On Microsoft Windows systems: `%APPDATA%\ownCloud\owncloud.cfg`
-On MAC OS X systems: `$HOME/Library/Preferences/ownCloud/owncloud.cfg`
+[cols="25%,75%",options="header"]
+|===
+| System
+| Location
 
-The configuration file contains settings using the Microsoft Windows `.ini` file format.
+| *Linux* 
+| `$HOME/.config/ownCloud/owncloud.cfg`
+| *Microsoft Windows* 
+| `%APPDATA%\ownCloud\owncloud.cfg`
+| *macOS* 
+|`$HOME/Library/ApplicationSupport/ownCloud/owncloud.cfg`
+|===
+
+The configuration file contains settings using {ini-file-format-url}[the Microsoft Windows `.ini` file format].
 You can overwrite changes using the ownCloud configuration dialog.
 
 NOTE: Use caution when making changes to the ownCloud Client configuration file. Incorrect settings can produce unintended results.
