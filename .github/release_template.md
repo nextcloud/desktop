@@ -8,22 +8,37 @@ Copy below text into a task and tick the items:
 
 ```
 Some weeks before the release:
-* [ ] Check if we should update the bundled sqlite3 (https://github.com/owncloud/client/tree/master/src/3rdparty/sqlite3)
-* [ ] Check if we should update Sparkle on build machine (https://github.com/sparkle-project/Sparkle/releases)
-* [ ] Ensure up-to-date dependencies (e.g. [latest Qt version](http://qt-project.org/downloads#qt-lib) is installed on the machine and picked up (cmake output)
-* [ ] Ensure the crash reporter server is up
-* [ ] Check crash reporter for bad crashes
-* [ ] Review list of supported platforms. Announce/execute deprecations.
-* [ ] Check daily builds are up and running, that is Jenkins.int jobs client-linux, client-osx and client-win32-msvc, client-win32--msvc-msi all green.
-* [ ] Ensure Linux daily builds are built too for all distros https://build.opensuse.org/package/show/isv:ownCloud:desktop:daily:2.X/owncloud-client
-* [ ] Build branded clients through the scripting machine and smoke test one or two branded clients (especially with predefined url)
+* [ ] Check if we should update the bundled sqlite3
+TODO: Link to handbook with 
+  details about win mac linux e.g. (https://github.com/owncloud/client/tree/master/src/3rdparty/sqlite3)
+  create github issue
+
+* [ ] Check if we should update Sparkle
+TODO: Handbook has instruction how, and create issue if needed.
+ on build machine (https://github.com/sparkle-project/Sparkle/releases)
+
+* [ ] Ensure up-to-date dependencies
+TODO: Handbook entry
+List of dependencies: qtkeychain, openssl, random linux stuff for old linux platforms like cmake.
+(e.g. [latest Qt version](http://qt-project.org/downloads#qt-lib) is installed on the machine and picked up (cmake output)
+
+* [ ] Review list of supported platforms. execute deprecations where announcment was already done.
+
 * [ ] Upload a daily build of the windows version to virustotal.com
-  * Contact AV vendors whom's engine reports a virus
-* [ ] Documentation should be online before the release http://doc.owncloud.org/desktop/2.X/
-* [ ] QA goes over https://github.com/owncloud/client/wiki/Testing-Scenarios
+  * Contact AV vendors whose engine reports a virus.
+* [ ] check if Documentation is online before the release http://doc.owncloud.org/desktop/2.X/
+* [ ] check if https://testlink.works needs new testplans. 
+TODO Hana review: https://github.com/owncloud/client/wiki/Testing-Scenarios
+
 * [ ] Make sure to have `client/ChangeLog` updated
- * use `git log --format=oneline v<lastrelease>...master` if your memory fails you
-* [ ] check if enterprise issues are fixed
+TODO Handbok entry "Make Changelogs"
+  * use `git log --format=oneline v<lastrelease>...master` if your memory fails you
+
+* [ ] check for issues with current milestone
+TODO: Handbook: list repos (enterprise, onlineupdater, gitea..., client, QA, QA-Enterprise); 
+how to find the relevant issues.check if enterprise issues are fixed
+
+###############################################
 
 For first Alpha/Beta of a Major or Minor release:
 * [ ] branch off master to new version branch (e.g. master -> 2.1, when releasing 2.1)
@@ -35,6 +50,12 @@ For first Alpha/Beta of a Major or Minor release:
 * [ ] Make sure there is a job for the docs of the new master branch and the current release branch on rotor e.g. http://doc.owncloud.org/desktop/1.X/ exists
 
 For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
+* [ ] check daily builds 
+TODO: describe what dailies we have in handbook.
+* [ ] Ensure the crash reporter server is up
+TODO: log into sentry, see if there is a fresh report. sentry.io and one more component in our infrastructure.
+* [ ] Check crash reporter for bad crashes (same crash happening to many users)
+
 * [ ] Make sure previous major version's branch is merged into current major branch (or everything cherry-picked)
 * [ ] Add last updates to Changelog in the client source repository.
 * [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
@@ -54,6 +75,8 @@ For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
 * [ ] update the wordpress content at owncloud.org/download (Attention: No staging!)
 * [ ] Inform packagers @dragotin (openSUSE), @hefee (Debian), ??? (Fedora)
 * [ ] Announce on https://central.owncloud.org
+TODO: itemize what goes into the announcement: deprecation warnings. ...
+
 * [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there.
 * [ ] Check crash reporter
 * [ ] Update the owncloud hosted auto updater according to https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy  (beta/unstable channel!)
