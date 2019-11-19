@@ -51,7 +51,7 @@ if ! wget http://ppa.launchpad.net/${repo}/ubuntu/pool/main/n/nextcloud-client/n
     origsourceopt="-sa"
 fi
 
-for distribution in xenial bionic disco eoan stable; do
+for distribution in xenial bionic disco eoan stable oldstable; do
     rm -rf nextcloud-client_${basever}
     cp -a ${DRONE_WORKSPACE} nextcloud-client_${basever}
 
@@ -98,26 +98,46 @@ if test "${pull_request}" = "master"; then
         PPA=$PPA_BETA
         OBS_PROJECT=$OBS_PROJECT_BETA
     fi
-    OBS_SUBDIR="${OBS_PROJECT}/${OBS_PACKAGE}"
 
     if test -f ~/.has_ppa_keys; then
         for changes in nextcloud-client_*~+([a-z])1_source.changes; do
-            dput $PPA $changes > /dev/null
+            case "${changes}" in
+                *oldstable1*)
+                    ;;
+                *)
+                    dput $PPA $changes > /dev/null
+                    ;;
+            esac
         done
 
-        mkdir osc
-        cd osc
-        osc co ${OBS_PROJECT} ${OBS_PACKAGE}
-        if test "$(ls ${OBS_SUBDIR})"; then
-            osc delete ${OBS_SUBDIR}/*
-        fi
-        cp ../nextcloud-client*.orig.tar.* ${OBS_SUBDIR}/
-        cp ../nextcloud-client_*[0-9.][0-9].dsc ${OBS_SUBDIR}/
-        cp ../nextcloud-client_*[0-9.][0-9].debian.tar* ${OBS_SUBDIR}/
-        cp ../nextcloud-client_*[0-9.][0-9]_source.changes ${OBS_SUBDIR}/
-        osc add ${OBS_SUBDIR}/*
+        for distribution in stable oldstable; do
+            if test "${distribution}" = "oldstable"; then
+                pkgsuffix=".${distribution}"
+                pkgvertag="~${distribution}1"
+            else
+                pkgsuffix=""
+                pkgvertag=""
+            fi
 
-        cd ${OBS_SUBDIR}
-        osc commit -m "Travis update"
+            package="${OBS_PACKAGE}${pkgsuffix}"
+            OBS_SUBDIR="${OBS_PROJECT}/${package}"
+
+            mkdir -p osc
+            pushd osc
+            osc co ${OBS_PROJECT} ${package}
+            if test "$(ls ${OBS_SUBDIR})"; then
+                osc delete ${OBS_SUBDIR}/*
+            fi
+
+            cp ../nextcloud-client*.orig.tar.* ${OBS_SUBDIR}/
+            cp ../nextcloud-client_*[0-9.][0-9]${pkgvertag}.dsc ${OBS_SUBDIR}/
+            cp ../nextcloud-client_*[0-9.][0-9]${pkgvertag}.debian.tar* ${OBS_SUBDIR}/
+            cp ../nextcloud-client_*[0-9.][0-9]${pkgvertag}_source.changes ${OBS_SUBDIR}/
+            osc add ${OBS_SUBDIR}/*
+
+            cd ${OBS_SUBDIR}
+            osc commit -m "Travis update"
+            popd
+        done
     fi
 fi
