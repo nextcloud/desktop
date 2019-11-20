@@ -751,7 +751,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>Svaret på serverfilsupptäckten saknar data.</translation>
     </message>
 </context>
 <context>
@@ -3302,7 +3302,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>Upptäcktssteget misslyckades.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>

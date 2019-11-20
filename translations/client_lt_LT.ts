@@ -666,7 +666,7 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="30"/>
         <source>Authentication Required</source>
-        <translation>Reikalingas tapatumo nustatymas </translation>
+        <translation>Reikalingas tapatybės nustatymas </translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -1105,12 +1105,12 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/folderman.cpp" line="1386"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Vietiniame aplanke% 1 jau yra aplankas, naudojamas aplanko sinchronizavime. Prašome pasirinkti kitą!</translation>
+        <translation>Vietiniame aplanke %1 jau yra aplankas, kuris naudojamas aplanko sinchronizavimo ryšyje. Prašome pasirinkti kitą!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1392"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Vietinis aplankas% 1 jau yra aplanke, naudojamame aplanko sinchronizavime. Prašome pasirinkti kitą!</translation>
+        <translation>Vietinis aplankas %1 jau yra aplanke, naudojamame aplanko sinchronizavimo ryšyje. Prašome pasirinkti kitą!</translation>
     </message>
 </context>
 <context>
@@ -1783,7 +1783,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation>Būtinas tarpinio serverio autentifikavimas </translation>
+        <translation>Įgaliotasis serveris reikalauja nustatyti tapatybę</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -2077,22 +2077,22 @@ papildomų teisių.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation>Saugokite ir patys valdykite savo duomenis</translation>
+        <translation>Saugiai laikykite ir valdykite savo duomenis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation>Saugus bendradarbiavimas ir failų apsikeitimas</translation>
+        <translation>Saugus bendradarbiavimas ir apsikeitimas failais</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>Lengvai naudojamas el. paštas, kalendorius ir kontaktai</translation>
+        <translation>Lengvai naudojamas el. paštas, kalendorius bei adresatai</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Ekrano vaizdo rodymas, internetiniai susitikimai ir konferencijos</translation>
+        <translation>Ekrano bendrinimas, internetiniai susitikimai bei konferencijos</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="196"/>
@@ -2147,12 +2147,12 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation>Autentifikuota serverio užklausa buvo peradresuota į &apos;%1&apos;. Blogas URL adresas, serveris sukonfigūruotas neteisingai.</translation>
+        <translation>Nustatytos tapatybės užklausa į serverį buvo peradresuota į &quot;%1&quot;. Blogas URL adresas, serveris sukonfigūruotas neteisingai.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation>Autentifikuota webdav užklausa grąžino netinkamą atsakymą</translation>
+        <translation>Neteisingas atsakymas į nustatytos tapatybės webdav užklausą</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
@@ -2565,7 +2565,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation>Būtinas tarpinio serverio autentifikavimas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -2905,7 +2905,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
         <source>%1 - Authenticate</source>
-        <translation>%1 - autentifikuoti</translation>
+        <translation>%1 - Tapatybės nustatymas</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
@@ -2915,7 +2915,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Reauthentication required</source>
-        <translation>Būtinas prisijungimas iš naujo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>

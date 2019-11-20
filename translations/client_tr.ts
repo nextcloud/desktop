@@ -561,7 +561,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="194"/>
         <source>Accept</source>
-        <translation>Onayla</translation>
+        <translation>Kabul Et</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="195"/>
@@ -587,7 +587,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="56"/>
         <source>Accept</source>
-        <translation>Onayla</translation>
+        <translation>Kabul Et</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="189"/>

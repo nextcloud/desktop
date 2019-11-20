@@ -1583,7 +1583,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation>すべてを佐久穂</translation>
+        <translation>すべてを削除</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
@@ -3100,7 +3100,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>接続は安全ではありません</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
