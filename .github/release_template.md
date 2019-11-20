@@ -27,8 +27,9 @@ List of dependencies: qtkeychain, openssl, random linux stuff for old linux plat
 * [ ] Upload a daily build of the windows version to virustotal.com
   * Contact AV vendors whose engine reports a virus.
 * [ ] check if Documentation is online before the release http://doc.owncloud.org/desktop/2.X/
-* [ ] check if https://testlink.works needs new testplans. 
-TODO Hana review: https://github.com/owncloud/client/wiki/Testing-Scenarios
+
+* [ ] Update TestLink - [handbook](https://handbook.owncloud.com/release_processes/client/testlink.html)
+
 
 * [ ] Make sure to have `client/ChangeLog` updated
 TODO Handbok entry "Make Changelogs"
