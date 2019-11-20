@@ -28,7 +28,7 @@ List of dependencies: qtkeychain, openssl, random linux stuff for old linux plat
   * Contact AV vendors whose engine reports a virus.
 * [ ] check if Documentation is online before the release http://doc.owncloud.org/desktop/2.X/
 
-* [ ] Update TestLink - [handbook](https://handbook.owncloud.com/release_processes/client/testlink.html)
+* [ ] Update Test Plans - [handbook](https://handbook.owncloud.com/release_processes/client/testlink.html)
 
 
 * [ ] Make sure to have `client/ChangeLog` updated
