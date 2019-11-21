@@ -856,17 +856,17 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="373"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 ir dar %n failas buvo pašalintas.</numerusform><numerusform>%1 ir dar %n failai buvo pašalinti.</numerusform><numerusform>%1 ir dar %n failų buvo pašalinta.</numerusform><numerusform>%1 ir dar %n failų buvo pašalinta.</numerusform></translation>
+        <translation><numerusform>Pašalintas %1 ir dar %n failas.</numerusform><numerusform>Pašalintas %1 ir dar %n failai.</numerusform><numerusform>Pašalintas %1 ir dar %n failų.</numerusform><numerusform>Pašalintas %1 ir dar %n failas.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 ir dar %n failas buvo atsisiųstas.</numerusform><numerusform>%1 ir dar %n failai buvo atsisiųsti.</numerusform><numerusform>%1 ir dar %n failų buvo atsisiųsta.</numerusform><numerusform>%1 ir dar %n failų buvo atsisiųsta.</numerusform></translation>
+        <translation><numerusform>Atsisiųstas %1 ir dar %n failas.</numerusform><numerusform>Atsisiųstas %1 ir dar %n failai.</numerusform><numerusform>Atsisiųstas %1 ir dar %n failų.</numerusform><numerusform>Atsisiųstas %1 ir dar %n failas.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 ir dar %n failas buvo pakeistas.</numerusform><numerusform>%1 ir dar %n failai buvo pakeisti.</numerusform><numerusform>%1 ir dar %n failų buvo pakeista.</numerusform><numerusform>%1 ir dar %n failų buvo pakeista.</numerusform></translation>
+        <translation><numerusform>Atnaujintas %1 ir dar %n failas.</numerusform><numerusform>Atnaujintas %1 ir dar %n failai.</numerusform><numerusform>Atnaujintas %1 ir dar %n failų.</numerusform><numerusform>Atnaujintas %1 ir dar %n failas.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
@@ -876,12 +876,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 buvo perkeltas į %2 ir dar %n failas buvo perkeltas.</numerusform><numerusform>%1 buvo perkeltas į %2 ir dar %n failai buvo perkelti.</numerusform><numerusform>%1 buvo perkeltas į %2 ir dar %n failų buvo perkelta.</numerusform><numerusform>%1 buvo perkeltas į %2 ir dar %n failų buvo perkelta.</numerusform></translation>
+        <translation><numerusform>%1 perkeltas į %2, o taip pat buvo perkeltas dar %n failas.</numerusform><numerusform>%1 perkeltas į %2, o taip pat buvo perkelti dar %n failai.</numerusform><numerusform>%1 perkeltas į %2, o taip pat buvo perkelta dar %n failų.</numerusform><numerusform>%1 perkeltas į %2, o taip pat buvo perkeltas dar %n failas.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 ir dar %n failas turi sinchronizavimo konfliktų.</numerusform><numerusform>%1 ir dar %n failai turi sinchronizavimo konfliktų.</numerusform><numerusform>%1 ir dar %n failų turi sinchronizavimo konfliktų.</numerusform><numerusform>%1 ir dar %n failų turi sinchronizavimo konfliktų.</numerusform></translation>
+        <translation><numerusform>%1 ir dar %n failas turi sinchronizavimo konfliktus.</numerusform><numerusform>%1 ir dar %n failai turi sinchronizavimo konfliktus.</numerusform><numerusform>%1 ir dar %n failų turi sinchronizavimo konfliktus.</numerusform><numerusform>%1 ir dar %n failas turi sinchronizavimo konfliktus.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="410"/>
@@ -891,7 +891,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 ir dar %2 failas negalėjo būti sinchronizuoti dėl klaidos. Žurnale rasite daugiau duomenų.</numerusform><numerusform>%1 ir dar %2 failai negalėjo būti sinchronizuoti dėl klaidos. Žurnale rasite daugiau duomenų.</numerusform><numerusform>%1 ir dar %2 failų negalėjo būti sinchronizuoti dėl klaidos. Žurnale rasite daugiau duomenų.</numerusform><numerusform>%1 ir dar %2 failų negalėjo būti sinchronizuoti dėl klaidos. Žurnale rasite daugiau duomenų.</numerusform></translation>
+        <translation><numerusform>Dėl klaidų nepavyko sinchronizuoti %1 ir dar %n failo. Išsamesnei informacijai, žiūrėkite žurnalą.</numerusform><numerusform>Dėl klaidų nepavyko sinchronizuoti %1 ir dar %n failų. Išsamesnei informacijai, žiūrėkite žurnalą.</numerusform><numerusform>Dėl klaidų nepavyko sinchronizuoti %1 ir dar %n failų. Išsamesnei informacijai, žiūrėkite žurnalą.</numerusform><numerusform>Dėl klaidų nepavyko sinchronizuoti %1 ir dar %n failo. Išsamesnei informacijai, žiūrėkite žurnalą.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="417"/>
@@ -1916,7 +1916,7 @@ papildomų teisių.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Yra prieinama nauja %1 versija %2. Spustelėkite &lt;a href=&apos;%3&apos;&gt;čia&lt;/a&gt; norėdami atsisiųsti atnaujinimą.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1974,7 +1974,7 @@ papildomų teisių.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="167"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Įspėjimas:&lt;/strong&gt;Aplanke kompiuteryje yra failų. Pasirinkite ką daryti!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Įspėjimas:&lt;/strong&gt; Vietinis aplankas nėra tuščias. Pasirinkite ką daryti!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="176"/>
@@ -2354,7 +2354,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="668"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųstas failas yra tuščias nepaisant to, kad serveris paskelbė, jog failas turėjo būti %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="857"/>
@@ -2813,7 +2813,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="462"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Vieša dalinimosi nuoroda &lt;i&gt;%1&lt;/i&gt; bus ištrinta. Tęsti?&lt;/p&gt;&lt;p&gt;Pastaba: šio veiksmo atšaukti negalima.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Ar tikrai norite ištrinti viešąją bendrinimo nuorodą &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Pastaba: Šio veiksmo negalima bus atšaukti.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="469"/>
@@ -2831,7 +2831,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups ...</source>
-        <translation>Dalintis su naudotojais ar grupėmis ...</translation>
+        <translation>Bendrinti su naudotojais ar grupėmis...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="262"/>

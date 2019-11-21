@@ -186,7 +186,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
         <source>Refresh</source>
-        <translation>Obnovit</translation>
+        <translation>Načíst znovu</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
@@ -250,7 +250,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="91"/>
         <source>Apply manual changes</source>
-        <translation>Použít manuální úpravy</translation>
+        <translation>Uplatnit ručně provedené změny</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="139"/>
@@ -262,7 +262,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="810"/>
         <location filename="../src/gui/accountsettings.cpp" line="1223"/>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation>Storno</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="174"/>
@@ -272,7 +272,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
         <source>No account configured.</source>
-        <translation>Žádný účet nenastaven.</translation>
+        <translation>Nenastaven žádný účet.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="218"/>
@@ -408,7 +408,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1035"/>
         <source>Connecting to %1...</source>
-        <translation>Připojeno k %1…</translation>
+        <translation>Připojování k %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1038"/>
@@ -730,7 +730,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
         <source>timeout</source>
-        <translation>vypršel časový interval</translation>
+        <translation>překročen časový limit</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="193"/>
@@ -1089,7 +1089,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderman.cpp" line="1328"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (Synchronizace je pozastavena)</translation>
+        <translation>%1 (synchronizace je pozastavena)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1336"/>
@@ -1099,7 +1099,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderman.cpp" line="1346"/>
         <source>The selected path is not a folder!</source>
-        <translation>Vybraná cesta není složka!</translation>
+        <translation>Vybraný popis umístění není složka!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1350"/>
@@ -1212,7 +1212,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>stahování %1/s</translation>
+        <translation>stáhnout %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
@@ -1316,7 +1316,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
-        <translation>Zadejte cestu k místní složce.</translation>
+        <translation>Zadejte popis umístění místní složky.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="135"/>
@@ -1354,7 +1354,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="236"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Chyba při vypsání složky. Chyba: %1</translation>
+        <translation>Nepodařilo se vypsat obsah složky. Chyba: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="317"/>
@@ -1811,7 +1811,7 @@ Záznamy událostí budou zapisovány do %1</translation>
         <location filename="../src/gui/networksettings.ui" line="241"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation>KBytů/s</translation>
+        <translation>KBajtů/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
@@ -2198,7 +2198,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="461"/>
         <source>failed.</source>
-        <translation>selhalo.</translation>
+        <translation>nezdařilo se.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
@@ -2301,7 +2301,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="36"/>
         <source>Everything set up!</source>
-        <translation>Všechno je nastaveno!</translation>
+        <translation>Všechno je nastaveno</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="40"/>
@@ -2388,7 +2388,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="234"/>
         <source>; Restoration Failed: %1</source>
-        <translation>; Obnovení selhalo: %1</translation>
+        <translation>; Obnovení se nezdařilo: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="302"/>
@@ -2692,7 +2692,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="106"/>
         <source>General</source>
-        <translation>Hlavní</translation>
+        <translation>Obecné</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="110"/>
@@ -3386,7 +3386,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="539"/>
         <source>Stat failed.</source>
-        <translation>Stat se nezdařil.</translation>
+        <translation>Zjištění existence (stat) se nezdařilo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="566"/>
