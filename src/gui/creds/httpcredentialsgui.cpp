@@ -43,16 +43,18 @@ void HttpCredentialsGui::askFromUser()
 
 void HttpCredentialsGui::askFromUserAsync()
 {
-    if (Theme::instance()->noUnauthedRequests()) {
-        performOAuthProcess();
-        return;
-    }
-
     // First, we will check what kind of auth we need.
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
         if (type == DetermineAuthTypeJob::OAuth) {
-            performOAuthProcess();
+            _asyncAuth.reset(new OAuth(_account, this));
+            _asyncAuth->_expectedUser = _account->davUser();
+            connect(_asyncAuth.data(), &OAuth::result,
+                this, &HttpCredentialsGui::asyncAuthResult);
+            connect(_asyncAuth.data(), &OAuth::destroyed,
+                this, &HttpCredentialsGui::authorisationLinkChanged);
+            _asyncAuth->start();
+            emit authorisationLinkChanged();
         } else if (type == DetermineAuthTypeJob::Basic) {
             showDialog();
         } else {
@@ -62,20 +64,6 @@ void HttpCredentialsGui::askFromUserAsync()
         }
     });
     job->start();
-}
-
-void HttpCredentialsGui::performOAuthProcess()
-{
-    _asyncAuth.reset(new OAuth(_account, this));
-    _asyncAuth->_expectedUser = _account->davUser();
-    connect(_asyncAuth.data(), &OAuth::result,
-        this, &HttpCredentialsGui::asyncAuthResult);
-    connect(_asyncAuth.data(), &OAuth::destroyed,
-        this, &HttpCredentialsGui::authorisationLinkChanged);
-    connect(_asyncAuth.data(), &OAuth::authorisationLinkChanged,
-        this, &HttpCredentialsGui::authorisationLinkChanged);
-    _asyncAuth->start();
-    emit authorisationLinkChanged();
 }
 
 void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,

@@ -59,7 +59,6 @@ public:
 
     static QString requestAppPasswordText(const Account *account);
 private slots:
-    void performOAuthProcess();
     void asyncAuthResult(OAuth::Result, const QString &user, const QString &accessToken, const QString &refreshToken);
     void showDialog();
     void askFromUserAsync();
