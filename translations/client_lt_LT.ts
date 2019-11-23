@@ -2859,7 +2859,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="89"/>
         <source>can edit</source>
-        <translation>gali keisti</translation>
+        <translation>gali redaguoti</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="388"/>

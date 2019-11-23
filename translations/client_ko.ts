@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>암호화 신원을 보호하기 위해 12개의 사전 단어를 사용하여 암호화합니다. 이 내용을 기록하고 안전하게 보관하십시오. 휴대 전화 나 노트북과 같은 다른 기기를 계정에 추가해야합니다.</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>확인되지 않은 폴더는 로컬 파일 시스템에서 &lt;b&gt;제거&lt;/b&gt;되고 더 이상이 컴퓨터와 동기화되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="77"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1을 &lt;i&gt;%2&lt;/i&gt;로</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
@@ -403,7 +403,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1031"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>브라우저에서 권한을 얻습니다. 브라우저를 다시 열려면 &lt;a href=&apos;%1&apos;&gt;여기&lt;/a&gt;를 클릭하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1035"/>
@@ -480,7 +480,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%2의 %1 (%3%) 사용 중. 네트워크 탑재 또는 공유 폴더를 포함한 일부 폴더에는 다른 제한이 있을 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="969"/>
@@ -743,7 +743,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="631"/>
         <source>Aborted by the user</source>
-        <translation>사용자로부터 중단되었습니다..</translation>
+        <translation>사용자로부터 중단되었습니다.</translation>
     </message>
 </context>
 <context>
@@ -940,12 +940,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1029"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>%1 폴더가 생성되었으나 이전에 동기화에서 제외되었습니다. 그 안의 데이터는 동기화되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1032"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>%1 파일이 생성되었으나 이전에 동기화에서 제외되었습니다. 동기화되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1043"/>
@@ -954,7 +954,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>동기화된 폴더의 변경 사항을 안정적으로 추적 할 수 없습니다.
+
+이는 동기화 클라이언트가 로컬 변경 사항을 즉시 업로드하지 않고 대신 로컬 변경 사항만 스캔하고 가끔(기본적으로 2 시간마다) 업로드함을 의미합니다.
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1088"/>
@@ -962,14 +966,19 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>동기화 폴더 &apos;%1&apos;의 모든 파일이 서버에서 삭제되었습니다.
+이러한 삭제는 로컬 동기화 폴더와 동기화되므로 복원할 권한이 없으면 해당 파일을 사용할 수 없습니다.
+파일을 복원하기로 결정한 경우, 파일을 복원할 수 있는 권한이 있으면 파일이 서버와 다시 동기화됩니다.
+파일을 삭제하기로 결정한 경우 소유자가 아닌 한 해당 파일을 사용할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1093"/>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>로컬 동기화 폴더 &apos;%1&apos;에서 모든 파일이 삭제되었습니다.
+이러한 파일은 서버에서 삭제되며 복원되지 않으면 다른 장치에서 사용할 수 없습니다.
+이 작업이 의도하지 않은 경우 손실된 데이터를 지금 복원 할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1097"/>
@@ -991,7 +1000,9 @@ If this action was unintended you can restore the lost data now.</source>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>이 동기화는 동기화 폴더 &apos;%1&apos;에서 파일을 이전 시간으로 재설정합니다.
+서버에서 백업이 복원되었기 때문일 수 있습니다.
+정상적으로 동기화를 계속하면 이전 파일의 이전 파일이 모든 파일을 덮어 씁니다. 로컬 최신 파일을 충돌 파일로 유지 하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1123"/>
@@ -1019,7 +1030,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="296"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>오래된 동기화 저널 &apos;%1&apos;을 찾았지만 제거 할 수 없습니다. 현재 사용중인 응용 프로그램이 없는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1044"/>
@@ -1099,17 +1110,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1406"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>서버에서 이 로컬 폴더로의 동기화가 이미 있습니다. 다른 로컬 폴더를 선택하십시오!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1386"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>로컬 폴더 %1에 폴더 동기화 연결에 사용된 폴더가 이미 있습니다. 다른 폴더를 선택해주세요!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1392"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>로컬 폴더 %1에 폴더 동기화 연결에 사용된 폴더에 이미 포함되어 있습니다. 다른 폴더를 선택해주세요!</translation>
     </message>
 </context>
 <context>
@@ -1280,7 +1291,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>이 문제는 일반적으로 inotify 시계가 소진 될 때 발생합니다. 자세한 내용은 FAQ를 확인하십시오.</translation>
     </message>
 </context>
 <context>
@@ -1588,7 +1599,9 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>패턴과 일치하는 파일 또는 폴더는 동기화되지 않습니다.
+
+삭제가 허용된 항목은 디렉토리가 제거되지 않으면 삭제됩니다. 메타데이터에 유용합니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -1626,12 +1639,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
         <source>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1666,7 +1679,9 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>이 옵션을 사용하고 다른 로깅을 구성하지 않으면 로그가 임시 폴더에 기록되고 몇 시간 후에 만료됩니다. 이 설정은 클라이언트 재시작시에도 지속됩니다.
+
+로그는 %1에 기록됩니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -1879,7 +1894,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;잘못된 사용자&lt;/h1&gt; &lt;p&gt;사용자 &lt;em&gt;%1&lt;/em&gt;로 로그인했지만 사용자 &lt;em&gt;%2&lt;/em&gt;로 로그인해야합니다. &lt;br&gt;다른 탭에서 %3을 로그아웃 한 후 &lt;a href=&apos;%4&apos;&gt;여기&lt;/a&gt;를 클릭하고 %2 사용자로 로그인하십시오.</translation>
     </message>
 </context>
 <context>
@@ -1893,7 +1908,8 @@ Logs will be written to %1</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>%1에 대한 새로운 업데이트가 설치 될 예정입니다. 업데이터가
+프로세스 중에 추가 권한을 요청할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -1903,7 +1919,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>업데이트를 다운로드 할 수 없습니다. 업데이트를 수동으로 다운로드하려면 &lt;a href=&apos;%1&apos;&gt;여기&lt;/a&gt;를 클릭하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -1913,7 +1929,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>새로운 %1 버전 %2을 사용할 수 있습니다. 업데이트를 다운로드하려면 &lt;a href=&apos;%3&apos;&gt;여기&lt;/a&gt;를 클릭하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -2144,17 +2160,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>서버에 대한 인증 된 요청이 &apos;%1&apos;로 리디렉션되었습니다. URL이 잘못되어 서버가 잘못 구성되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>인증된 webdav 요청에 대한 응답이 잘못되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>서버에서 액세스가 금지되었습니다. 올바른 액세스 권한이 있는지 확인하려면 &lt;a href=&quot;%1&quot;&gt;여기&lt;/a&gt;를 클릭하여 브라우저로 서비스에 액세스하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
@@ -2225,12 +2241,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="566"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>제공된 자격 증명이 잘못되어 원격 폴더 생성에 실패했습니다.&lt;br/&gt;돌아가서 자격 증명을 확인하십시오.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="570"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;제공된 자격 증명이 잘못되어 원격 폴더 생성에 실패했을 수 있습니다.&lt;/font&gt;&lt;br/&gt;돌아가서 자격 증명을 확인하십시오.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="575"/>
@@ -2261,7 +2277,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="620"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>폴더 나 폴더의 파일이 다른 프로그램에서 열려있어 폴더를 제거하고 백업 할 수 없습니다. 폴더 혹은 파일을 닫고 다시 시도하거나 설정을 취소하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="667"/>
@@ -2351,7 +2367,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="668"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>서버가 %1이어야한다고 안내 했음에도 불구하고 다운로드한 파일이 비어 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="857"/>
@@ -3247,7 +3263,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="835"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>로컬 동기화 데이터베이스를 열거나 만들 수 없습니다. 동기화 폴더에 쓰기 권한이 있는지 확인하십시오.</translation>
+        <translation>로컬 동기화 데이터베이스를 열거나 만들 수 없습니다. 동기화 폴더에 대한 쓰기 권한이 있는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1393"/>
@@ -3272,184 +3288,184 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 지정되지 않은 오류.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="153"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>사용자로부터 중단되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>저널 파일을 로드하거나 생성하지 못했습니다. 로컬 동기화 폴더에 대한 읽기 및 쓰기 권한이 있는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>감지 단계에서 실패했습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>권한이 거부되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>파일 혹은 디렉토리를 찾을 수 없습니다:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>이미 존재하는 폴더를 만들고 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>%1 서버에 사용 가능한 공간이 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>서비스를 임시로 사용할 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>접근이 금지되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="173"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>내부 오류 %1가 발생했습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="485"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>심볼릭 링크는 동기화에서 지원되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="488"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>파일이 무시 목록에 추가되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="492"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>마침표로 끝나는 파일 이름은 이 파일 시스템에서 지원되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="502"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;을 포함하는 파일 이름은 이 파일 시스템에서 지원되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="505"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>해당 파일 이름은 이 파일 시스템에서 예약된 이름입니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>파일 이름 뒤에 공백이 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="513"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>파일 이름이 너무 깁니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="522"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>파일 시스템에서 파일 이름을 인코딩 할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="531"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>해결되지 않은 충돌</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="539"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>스탯 실패</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="566"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>파일 이름 인코딩이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="730"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>잘못된 문자입니다. &quot;%1&quot;의 이름을 바꾸십시오.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="863"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 블랙리스트를 읽을 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="904"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>동기화 저널에서 읽을 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="967"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>동기화 저널을 열 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1033"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>파일 이름에 유효하지 않은 문자가 하나 이상 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1319"/>
         <location filename="../src/libsync/syncengine.cpp" line="1359"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>&quot;동기화 할 대상 선택&quot; 블랙리스트로 인해 무시되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1378"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>해당 폴더에 하위 폴더를 추가 할 수 있는 권한이 없기 때문에 허용되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1425"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>이 파일은 서버에서 읽기 전용이므로 업로드 할 수 없습니다. 복구</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1441"/>
         <location filename="../src/libsync/syncengine.cpp" line="1460"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>삭제가 허용되지 않음, 복구</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1474"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>로컬 파일과 공유 폴더가 삭제되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1528"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>이동 불가, 항목 복구</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1539"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>%1이 읽기 전용이므로 이동이 허용되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1539"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>목적지</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1539"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>출발지</translation>
     </message>
 </context>
 <context>
@@ -3457,7 +3473,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>동기화 로그</translation>
     </message>
 </context>
 <context>
@@ -3465,7 +3481,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="54"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -3473,12 +3489,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="352"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;버전 %1. 더 많은 정보를 보려면 &lt;a href=&apos;%2&apos;&gt;여기&lt;/a&gt;를 클릭하세요.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="356"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;이 릴리스는 %1에 의해 제공되었습니다.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3486,12 +3502,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="208"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>유효하지 않은 인증서 발견</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="209"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>호스트 &quot;%1&quot;이 잘못된 인증서를 제공했습니다. 계속하시겠습니까?</translation>
     </message>
 </context>
 <context>
@@ -3499,12 +3515,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>사용자 %2로 %1에서 로그아웃 했습니다. 다시 로그인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="179"/>
         <source>Please login with the user: %1</source>
-        <translation type="unfinished"/>
+        <translation>다음 사용자로 로그인 해주십시오: %1</translation>
     </message>
 </context>
 <context>
@@ -3512,234 +3528,234 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="302"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>로그인 해주십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="348"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>폴더 %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>설정된 동기화 폴더가 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>브라우저에서 열기</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Log in...</source>
-        <translation type="unfinished"/>
+        <translation>로그인...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="428"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>로그아웃</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>최근 변경</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="402"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>관리되는 폴더:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="405"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>폴더 열기 &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="377"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>브라우저에서 %1 열기</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="785"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>알 수 없는 상태</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="789"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>설정...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="797"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>도움말</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="799"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 끝내기</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>%1에서 연결 해제됨</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="233"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>지원되지 않는 서버 버전</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="234"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>계정 %1의 서버가 지원되지 않는 이전 버전 %2을 실행합니다. 지원되지 않는 서버 버전으로 이 클라이언트를 사용하는 것은 테스트되지 않았으며 잠재적으로 위험합니다. 자신의 책임하에 진행하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>연결이 끊어졌습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="275"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>일부 계정에서 연결이 끊어졌습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>계정에서 연결이 끊어졌습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="288"/>
         <source>Account %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>계정 %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>로그아웃</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>계정 동기화가 비활성화되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>동기화가 일시 정지되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>해결되지 않은 충돌</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="363"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>동기화 중 오류 발생</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>설정된 동기화 폴더가 없음</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="413"/>
         <source>Resume all folders</source>
-        <translation type="unfinished"/>
+        <translation>모든 폴더 재개</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Pause all folders</source>
-        <translation type="unfinished"/>
+        <translation>모든 폴더 일시 정지</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="701"/>
         <source>Resume all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>모든 동기화 재개</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="703"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>동기화 재개</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="711"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>모든 동기화 일시 정지</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="713"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>동기화 일시 정지</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>New account...</source>
-        <translation type="unfinished"/>
+        <translation>새 계정...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="791"/>
         <source>View more activity...</source>
-        <translation type="unfinished"/>
+        <translation>더 많은 활동 보기...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="803"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
-        <translation type="unfinished"/>
+        <translation>현재 충돌</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="787"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>앱</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="906"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>최근에 동기화 된 항목이 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="928"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>원격 &apos;%1&apos;의 변경 사항 확인 중</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="931"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>로컬 &apos;%1&apos;의 변경 사항 확인 중</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="946"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>%2 중 %1 동기화 중(%3 남음)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="951"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%2 중 %1 동기화 중</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="960"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>%1 동기화 중(%2 남음)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="963"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 동기화 중</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="981"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1(%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="358"/>
         <source>Up to date</source>
-        <translation type="unfinished"/>
+        <translation>최신 상태</translation>
     </message>
 </context>
 <context>
@@ -3747,53 +3763,53 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation>서버</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;이 박스를 선택하면 서버에서 클린 동기화를 시작하기 위해 로컬 폴더의 기존 컨텐츠가 지워 집니다.&lt;/p&gt;&lt;p&gt; 로컬 컨텐츠를 서버 폴더에 업로드해야하는 경우 이를 선택하지 마십시오.&lt;/p&gt;&lt;/body&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>&amp;clean 동기화 시작 (로컬 폴더 지우기)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>다음 보다 큰 폴더를 동기화하기 전에 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>외부 저장소를 동기화하기 전에 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>동기화 대상 선택</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>&amp;로컬 폴더</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>&amp;로컬 데이터 유지</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>서버에서 모두 동기화</translation>
     </message>
 </context>
 <context>
@@ -3801,12 +3817,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>&amp;사용자 이름</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;암호</translation>
     </message>
 </context>
 <context>
@@ -3814,22 +3830,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>진행을 위해서 브라우저를 전환하세요.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>연결하는 중 오류가 발생했습니다. 다시 시도하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>브라우저를 다시 열기</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>링크 복사</translation>
     </message>
 </context>
 <context>
@@ -3837,12 +3853,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>공급자로 등록</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>로그인</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
@@ -3855,7 +3871,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation type="unfinished"/>
+        <translation>전체 계정이 로컬 폴더에 동기화됩니다.</translation>
     </message>
 </context>
 <context>
@@ -3863,58 +3879,58 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="463"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>앞으로</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="457"/>
         <source>%n day ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n일 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="459"/>
         <source>%n days ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n일 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="469"/>
         <source>%n hour ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n시간 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="471"/>
         <source>%n hours ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n시간 전</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="478"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>현재</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="480"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>1분 미만 전</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="484"/>
         <source>%n minute ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n분 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="486"/>
         <source>%n minutes ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n분 전</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="490"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>몇분 전</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="153"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -3922,57 +3938,57 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="130"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1GB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="134"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1MB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="138"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="141"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n년</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n개월</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n일</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n시간</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n분</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n초</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>
@@ -3980,17 +3996,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>체크섬 헤더가 잘못되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>체크섬 헤더에 알 수 없는 체크섬 유형 &apos;% 1&apos;이 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>다운로드 한 파일이 체크섬과 일치하지 않아 다시 시작됩니다.</translation>
     </message>
 </context>
 <context>
@@ -3998,12 +4014,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>시스템 트레이를 사용할 수 없음</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>작업 트레이에 % 1이 필요합니다. XFCE를 실행중인 경우 &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;다음 지침&lt;/a&gt;을 따르십시오. 그렇지 않으면 &apos;트레이어&apos;와 같은 시스템 트레이 응용 프로그램을 설치하고 다시 시도하십시오.</translation>
     </message>
 </context>
 <context>
@@ -4011,7 +4027,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="336"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Git 개정 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;에서 Qt %5, %6을 사용하여 %3, %4의 빌드&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -4019,89 +4035,89 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>다운로드됨</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>업로드됨</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>서버 버전 다운로드, 변경된 로컬 파일을 충돌 파일로 복사</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>삭제됨</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1으로 이동</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>무시됨</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>파일시스템 접근 오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>로컬 메타데이터 업데이트</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="55"/>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>알 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="66"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>다운로드 중</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>업로드 중</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="70"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>삭제 중</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>이동 중</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>무시 중</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>로컬 메타데이터 업데이트 중</translation>
     </message>
 </context>
 <context>
@@ -4109,52 +4125,52 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="62"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>상태가 정의되지 않음</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="65"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>동기화 시작을 기다리는 중</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="68"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>동기화 진행 중</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="71"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>동기화 성공</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="74"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>동기화 성공,  일부 파일은 무시되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="77"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>동기화 오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="80"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>설치 오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="83"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>동기화 준비 중</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>중단 중...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>동기화 일시 정지됨</translation>
     </message>
 </context>
 <context>
@@ -4162,22 +4178,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>브라우저를 열 수 없음</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>URL %1로 이동하기 위해 브라우저를 시작할 때 오류가 발생했습니다. 기본 브라우저가 설정되어 있지 않습니까?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>이메일 클라이언트를 열 수 없음</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>이메일 클라이언트를 시작하여 새 메시지를 작성할 때 오류가 발생했습니다. 기본 이메일 클라이언트가 구성되어 있지 않습니까?</translation>
     </message>
 </context>
 </TS>
