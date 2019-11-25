@@ -100,12 +100,12 @@ void OAuth::start()
                 req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
                 auto requestBody = new QBuffer;
-                QUrlQuery arguments {
-                    { "grant_type", "authorization_code" },
-                    { "code" , code },
-                    { "redirect_uri", QString("http://localhost:%1").arg(_server.serverPort()) },
-                    { "code_verifier", _pkceCodeVerifier },
-                    { "scope", "openid offline_access" }};
+                QUrlQuery arguments;
+                arguments.setQueryItems({ { QStringLiteral("grant_type"), "authorization_code" },
+                    { QStringLiteral("code"), code },
+                    { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(_server.serverPort()) },
+                    { QStringLiteral("code_verifier"), _pkceCodeVerifier },
+                    { QStringLiteral("scope"), QStringLiteral("openid offline_access") } });
                 requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
                 auto job = _account->sendRequest("POST", requestToken, req, requestBody);
                 job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
