@@ -1,6 +1,7 @@
 = Appendix B: History and Architecture
 :toc: right
 :toclevels: 1
+:the-opengroup-website: http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01
 
 == Introduction
 
@@ -173,7 +174,7 @@ By default, the ownCloud Client ignores the following files:
 * Windows only: Files with a trailing space or dot.
 * Windows only: Filenames that are reserved on Windows.
 
-If a pattern selected using a checkbox in the `ignoredFilesEditor-label`, or if a line in the exclude file starts with the character `]` directly followed by the file pattern, files matching the pattern are considered.
+If a pattern selected using a checkbox in xref:visualtour.adoc#ignoredFilesEditor-label[the ignored files editor], or if a line in the exclude file starts with the character `]` directly followed by the file pattern, files matching the pattern are considered.
 *fleeting meta data*.
 
 These files are ignored and _removed_ by the client if found in the synchronized folder.
@@ -184,8 +185,7 @@ The pattern is only applied for directory components of filenames selected using
 
 To match filenames against the exclude patterns, the UNIX standard C library function `fnmatch` is used.
 This process checks the filename against the specified pattern using standard shell wildcard pattern matching.
-For more information, please refer to link:[The opengroup website.
-<http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>].
+For more information, please refer to {the-opengroup-website}[the opengroup website].
 
 The path that is checked is the relative path under the sync root directory.
 
