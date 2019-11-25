@@ -1,7 +1,9 @@
 #include "syncwrapper.h"
 #include "socketapi.h"
-
 #include <qdir.h>
+#include "networkjobs.h"
+
+#include <qtextcodec.h>
 
 namespace OCC {
 
@@ -26,7 +28,7 @@ namespace OCC {
 //    CSYNC_INSTRUCTION_RENAME = 0x00000004, /* The file need to be renamed (RECONCILE) */
 //};
 
-Q_LOGGING_CATEGORY(lcSyncWrapper, "nextcloud.gui.wrapper", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSyncWrapper, "nextcloud.gui.wrapper", QtInfoMsg);
 
 SyncWrapper *SyncWrapper::instance()
 {
@@ -42,114 +44,163 @@ QString SyncWrapper::getRelativePath(QString path)
 
     if (localPath.startsWith('/'))
         localPath.remove(0, 1);
-	
+
     Folder *folderForPath = FolderMan::instance()->folderForPath(localPath);
 
-	QString folderRelativePath("");
+    QString folderRelativePath("");
     if (folderForPath)
         folderRelativePath = localPath.mid(folderForPath->cleanPath().length() + 1);
 
-	qDebug() << "Path: " << path;
+    qDebug() << "Path: " << path;
+    qDebug() << "Local Path: " << localPath;
     qDebug() << "Folder Relative Path: " << folderRelativePath;
 
-	return folderRelativePath;
+    return folderRelativePath;
 }
 
-void SyncWrapper::updateSyncQueue(const QString path, bool syncing) {
-    _syncDone.insert(path, syncing);
-}
+//void SyncWrapper::updateSyncQueue(const QString path, bool syncing)
+//{
+//    _syncDone.insert(path, syncing);
+//}
 
-void SyncWrapper::updateFileTree(const QString path)
+void SyncWrapper::updateFileTree(int type, const QString path)
 {
-    FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_SYNC);
+	csync_instructions_e instruction = (type == 2) ? CSYNC_INSTRUCTION_NEW : CSYNC_INSTRUCTION_IGNORE;
+    if (SyncJournalDb::instance()->getSyncMode(getRelativePath(path)) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+        FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(getRelativePath(path), instruction);
+    } else {
+        FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(getRelativePath(path), CSYNC_INSTRUCTION_NEW);
+	}
+
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), true);
 }
 
-void SyncWrapper::createFileAtPath(const QString path)
+void SyncWrapper::createItemAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_NEW);
-}
-
-void SyncWrapper::deleteFileAtPath(const QString path)
-{
-    sync(path, CSYNC_INSTRUCTION_NEW);
-}
-
-void SyncWrapper::moveFileAtPath(const QString path)
-{
-    sync(path, CSYNC_INSTRUCTION_NEW);
-}
-
-void SyncWrapper::releaseFileAtPath(const QString path)
-{
-    sync(path, CSYNC_INSTRUCTION_NEW);
-}
-
-void SyncWrapper::writeFileAtPath(const QString path)
-{
-    sync(path, CSYNC_INSTRUCTION_NEW);
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
 }
 
 void SyncWrapper::openFileAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_SYNC);
+	auto job = new SearchJob(FolderMan::instance()->currentSyncFolder()->accountState()->account(), getRelativePath(path));
+    job->setProperties(
+        QList<QByteArray>()
+        << "fileid"
+		<< "getetag");
+	job->setFileId("307");
+    job->setTimeout(10 * 1000);
+	connect(job, &SearchJob::result, this, [=](const QVariantMap &result) {
+		qCWarning(lcSyncWrapper) << "Props received";
+		const QVariant fileid = result["fileid"];
+		const QVariant getetag = result["getetag"];
+
+		// now check
+		auto instruction = CSYNC_INSTRUCTION_NEW;
+
+		QString fileUtf8;
+		QString renameTarget;
+		bool utf8DecodeError = false;
+		{
+			const auto toUnicode = [](QByteArray utf8, QString *result) {
+				static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+				//ASSERT(codec);
+
+				QTextCodec::ConverterState state;
+				*result = codec->toUnicode(utf8, utf8.size(), &state);
+				return !(state.invalidChars > 0 || state.remainingChars > 0);
+			};
+
+			if (!toUnicode(path.toLatin1(), &fileUtf8)) {
+				qCWarning(lcSyncWrapper) << "File ignored because of invalid utf-8 sequence: " << path;
+				instruction = CSYNC_INSTRUCTION_IGNORE;
+				utf8DecodeError = true;
+			}
+			//if (!toUnicode(file->rename_path, &renameTarget)) {
+			//	qCWarning(lcSyncWrapper) << "File ignored because of invalid utf-8 sequence in the rename_path: " << file->path << file->rename_path;
+			//	instruction = CSYNC_INSTRUCTION_IGNORE;
+			//	utf8DecodeError = true;
+			//}
+		}
+
+		// key is the handle that the SyncFileItem will have in the map.
+		QString key = fileUtf8;
+		if (instruction == CSYNC_INSTRUCTION_RENAME) {
+			key = renameTarget;
+		}
+		SyncFileItemPtr item = _syncItemMap.value(key);
+		if (!item)
+			item = SyncFileItemPtr(new SyncFileItem);
+		// now propagate
+
+	});
+    connect(job, &SearchJob::finishedWithError, this, [](QNetworkReply *reply) {
+		qCWarning(lcSyncWrapper) << "SearchJob finished with error: " << reply->errorString();
+	});
+    job->start();
+    //sync(path, true, CSYNC_INSTRUCTION_NEW);
 }
 
-void SyncWrapper::createDirectoryAtPath(const QString path)
+void SyncWrapper::writeFileAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_NEW);
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
 }
 
-void SyncWrapper::moveDirectoryAtPath(const QString path)
+void SyncWrapper::releaseFileAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_NEW);
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
 }
 
-void SyncWrapper::sync(const QString path, csync_instructions_e instruction){
-    int result = 1;
+void SyncWrapper::deleteItemAtPath(const QString path)
+{
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
+}
+
+void SyncWrapper::moveItemAtPath(const QString path)
+{
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
+}
+
+void SyncWrapper::sync(const QString path, bool is_fuse_created_file, csync_instructions_e instruction)
+{
     QString folderRelativePath = getRelativePath(path);
     if (!folderRelativePath.isEmpty()) {
-        if (SyncJournalDb::instance()->getSyncMode(folderRelativePath) == SyncJournalDb::SyncMode::SYNCMODE_ONLINE) {
-            result = SyncJournalDb::instance()->setSyncMode(folderRelativePath, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
-        } else if (SyncJournalDb::instance()->getSyncMode(folderRelativePath) == SyncJournalDb::SyncMode::SYNCMODE_NONE) {
-            result = SyncJournalDb::instance()->setSyncMode(folderRelativePath, SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
-		}
 
-		if(result == 0)
-			qCWarning(lcSyncWrapper) << "Couldn't change file SYNCMODE.";
+			//Prepare to sync
+			qCWarning(lcSyncWrapper) << "SyncWrapper::sync #########################################";
+            qCWarning(lcSyncWrapper) << "path: " << path;
+            qCWarning(lcSyncWrapper) << "relative path: " << folderRelativePath;
+            qCWarning(lcSyncWrapper) << "#########################################";
 
-	   result = SyncJournalDb::instance()->setSyncModeDownload(folderRelativePath, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
-	   if(result == 0)
-			qCWarning(lcSyncWrapper) << "Couldn't set file to SYNCMODE_DOWNLOADED_NO.";
+            if (SyncJournalDb::instance()->updateLastAccess(folderRelativePath) == 0)
+                qCWarning(lcSyncWrapper) << "Couldn't update file to last access.";
 
-	   if(result == 1){
-            FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, instruction);
-            _syncDone.insert(folderRelativePath, false);
+            if (SyncJournalDb::instance()->setSyncModeDownload(folderRelativePath, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO) == 0)
+                qCWarning(lcSyncWrapper) << "Couldn't set file to SYNCMODE_DOWNLOADED_NO.";
 
-  		    //fix path
+            FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(folderRelativePath, CSYNC_INSTRUCTION_NEW);
+            //_syncDone.insert(folderRelativePath, false);
+			FolderMan::instance()->scheduleFolder();
 
-			SyncJournalDb::instance()->updateLastAccess(folderRelativePath);
-
-			if (shouldSync(folderRelativePath)) {
-				//_folderMan->terminateSyncProcess();
-				FolderMan::instance()->scheduleFolder(FolderMan::instance()->currentSyncFolder());
-				//_folderMan->scheduleFolderNext();
-				//emit startSyncForFolder();
-			} else {
-				emit syncFinish(folderRelativePath, true);
-			}
-		}
-	 }
+    } else {
+        emit syncFinish();
+	}
 }
 
-bool SyncWrapper::shouldSync(const QString path){
+bool SyncWrapper::shouldSync(const QString path)
+{
+    //FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_NEW);
     // Checks sync mode
-    if (SyncJournalDb::instance()->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE)
-        return false;
+    //if (SyncJournalDb::instance()->getSyncMode(path) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
+    //    return false;
 
     // checks if file is cached
     // checks last access
 
     return true;
 }
-
 }

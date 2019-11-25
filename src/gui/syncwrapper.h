@@ -8,6 +8,9 @@
 #include "folderman.h"
 #include "csync.h"
 
+#include <QMap>
+#include "syncfileitem.h"
+
 namespace OCC {
 
 class SyncWrapper : public QObject
@@ -17,40 +20,33 @@ public:
     static SyncWrapper *instance();
     ~SyncWrapper() {}
 
-    bool syncDone(const QString path);
-    int initSyncMode(const QString path);
-
 public slots:
-    void updateSyncQueue(const QString path, bool syncing);
-    void updateFileTree(const QString path);
+    //void updateSyncQueue();
+    void updateFileTree(int type, const QString path);
 
-    void createFileAtPath(const QString path);
-    void deleteFileAtPath(const QString path); 
-    void moveFileAtPath(const QString path);
+	void createItemAtPath(const QString path);
     void openFileAtPath(const QString path);
-
-	void releaseFileAtPath(const QString path);
     void writeFileAtPath(const QString path);
-
-	void createDirectoryAtPath(const QString path);
-    void moveDirectoryAtPath(const QString path);
+	void releaseFileAtPath(const QString path);
+    void deleteItemAtPath(const QString path);
+    void moveItemAtPath(const QString path);
 
 signals:
-    void syncFinish(const QString &, bool);
-    //void startSyncForFolder(Folder *f);
+    void syncFinish();
+	//void startSyncForFolder();
 
 private:
     SyncWrapper() {
-        connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::updateSyncQueue, Qt::DirectConnection);
         connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::syncFinish, Qt::DirectConnection);
+        //connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::updateSyncQueue, Qt::DirectConnection);
         //connect(this, &SyncWrapper::startSyncForFolder, FolderMan::instance()->currentSyncFolder(), &Folder::startSync, Qt::DirectConnection);
     }
 
     QString getRelativePath(QString path);
     bool shouldSync(const QString path);
-    void sync(const QString path, csync_instructions_e instruction = CSYNC_INSTRUCTION_SYNC);
-
-    QMap<QString, bool> _syncDone;
+    void sync(const QString path, bool is_fuse_created_file, csync_instructions_e instruction = CSYNC_INSTRUCTION_NEW);
+	QMap<QString, SyncFileItemPtr> _syncItemMap;
+    //QMap<QString, bool> _syncDone;
 };
 }
 
