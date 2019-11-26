@@ -5,8 +5,8 @@ This is the template for new release issues.
 -->
 
 Copy below text into a task and tick the items:
+<hr>
 
-```
 Some weeks before the release:
 * [ ] Check if we should update the bundled sqlite3
 TODO: Link to handbook with 
