@@ -7,7 +7,7 @@ This is the template for new release issues.
 Copy below text into a task and tick the items:
 <hr>
 
-Some weeks before the release:
+### Some weeks before the release:
 * [ ] Check if we should update the bundled sqlite3
 TODO: Link to handbook with 
   details about win mac linux e.g. (https://github.com/owncloud/client/tree/master/src/3rdparty/sqlite3)
@@ -41,7 +41,7 @@ how to find the relevant issues.check if enterprise issues are fixed
 
 ###############################################
 
-For first Alpha/Beta of a Major or Minor release:
+### For first Alpha/Beta of a Major or Minor release:
 * [ ] branch off master to new version branch (e.g. master -> 2.1, when releasing 2.1)
 * [ ] Adjust `VERSION.cmake` in master and count up (e.g. 2.2)
 * [ ] Add the new branch v2.X.X for the new version to gitea/jw/client-linux-build
@@ -50,7 +50,7 @@ For first Alpha/Beta of a Major or Minor release:
 * [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) to point to the release branch (e.g. 2.1).
 * [ ] Make sure there is a job for the docs of the new master branch and the current release branch on rotor e.g. http://doc.owncloud.org/desktop/1.X/ exists
 
-For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
+### For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
 * [ ] check daily builds 
 TODO: describe what dailies we have in handbook.
 * [ ] Ensure the crash reporter server is up
@@ -82,19 +82,19 @@ TODO: itemize what goes into the announcement: deprecation warnings. ...
 * [ ] Check crash reporter
 * [ ] Update the owncloud hosted auto updater according to https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy  (beta/unstable channel!)
 
-One week before the final release:
+### One week before the final release:
 * [ ] Communicate the release schedule on mailinglist release-coordination@owncloud.com. Give a high level overview of the upcoming new features, changes etc.
 * [ ] Ensure marketing is aware (marketing@owncloud.com) and prepared for the release (social, .com website, cust.communications)
 * [ ] Inform GCX knows the next version is about 1 week out (gcx@owncloud.com)
 
-Day before final Release:
+### One day before final Release:
 * [ ] Check the translations coming from transifex: All synchronized? (20181109jw: where? how?)
 * [ ] Run the tx.pl scripts on the final code tag (20181109jw: really? What does that test?)
 * [ ] Run ```make test```
 * [ ] Run smashbox (20180719 jw: FIXME: add details, how?)
 * [ ] Inform product management and marketing that we are 1 day out
 
-On Release Day (for final release):
+### On Release Day (for final release):
 * [ ] Add last updates to Changelog in the client source repository.
 * [ ] Branch off a release branch called VERSION  (without v, v is for tags)
 * [ ] Edit ```VERSION.cmake``` to set the suffix to "" etc. Commit the result to the release branch only
@@ -140,7 +140,7 @@ On Release Day (for final release):
 * [ ] Tell GCX to increment the minimum supported version for enterprise customers
 * [ ] Check if minimum.supported.desktop.version (https://github.com/owncloud/core/blob/master/config/config.sample.php#L1152) needs to be updated in server
 
-15 minutes after after release:
+### 15 minutes after after release:
 * [ ] Test all advertised download links to have the expected version
 * [ ] Check for build errors in OBS, do
 ```obs-deepcopy-prj.sh isv:ownCloud:desktop isv:ownCloud:desktop:client-2.X.X```
@@ -153,4 +153,3 @@ A few days after the release (for final release)
 * [ ] Update the owncloud hosted auto updater according to https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy  
 * [ ] Increment version number in daily builds. Special case: after the last release in a branch, jump forward to the 'next release branch'... That may mean, this is nightly is the same as edge then.
 
-```
