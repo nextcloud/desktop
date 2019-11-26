@@ -725,7 +725,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Chyba ověření: Uživatelské jméno nebo heslo není správné.</translation>
+        <translation>Chyba ověření se: Uživatelské jméno nebo heslo není správné.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
