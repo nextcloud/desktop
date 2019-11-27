@@ -188,7 +188,6 @@ Application::Application(int &argc, char **argv)
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
-    setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     if (!ConfigFile().exists()) {
         // Migrate from version <= 2.4
