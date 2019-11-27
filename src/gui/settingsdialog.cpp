@@ -41,6 +41,7 @@
 #include <QWidgetAction>
 #include <QPainter>
 #include <QPainterPath>
+#include <QMessageBox>
 
 namespace {
 const QString TOOLBAR_CSS()
@@ -131,6 +132,22 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(networkAction);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
+
+    QWidget *spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    _toolBar->addWidget(spacer);
+
+    QAction *quitAction = createColorAwareAction(QLatin1String(":/client/resources/quit.png"), tr("Quit %1").arg(qApp->applicationName()));
+    quitAction->setCheckable(false);
+    connect(quitAction, &QAction::triggered, this, [this] {
+        const auto reply = QMessageBox::question(this, tr("Quit %1").arg(qApp->applicationName()),
+            tr("Are you sure you want to quit %1?").arg(qApp->applicationName()),
+            QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::Yes) {
+            qApp->quit();
+        }
+    });
+    _toolBar->addAction(quitAction);
 
     _actionGroupWidgets.insert(_activityAction, _activitySettings);
     _actionGroupWidgets.insert(generalAction, generalSettings);
