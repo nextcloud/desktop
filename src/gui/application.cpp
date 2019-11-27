@@ -201,7 +201,6 @@ Application::Application(int &argc, char **argv)
 
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
-    setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     if (!ConfigFile().exists()) {
         // Migrate from version <= 2.4
