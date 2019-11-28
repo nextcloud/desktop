@@ -69,6 +69,7 @@ namespace {
         "Options:\n"
         "  -h --help            : show this help screen.\n"
         "  -s --showsettings    : show the settings dialog while starting.\n"
+        "  -q --quit            : quit the running instance\n"
         "  --logwindow          : open a window to show log output.\n"
         "  --logfile <filename> : write log output to file <filename>.\n"
         "  --logfile -          : write log output to stdout.\n"
@@ -234,6 +235,11 @@ Application::Application(int &argc, char **argv)
     //no need to waste time;
     if (_helpOnly || _versionOnly)
         return;
+
+    if (_quitInstance) {
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return;
+    }
 
     if (isRunning())
         return;
@@ -527,6 +533,10 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         if (_showSettings) {
             _gui->slotShowSettings();
         }
+        if (_quitInstance) {
+            qApp->quit();
+        }
+
     } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
@@ -553,6 +563,8 @@ void Application::parseOptions(const QStringList &options)
             break;
         } else if (option == QLatin1String("--showsettings") || option == QLatin1String("-s")) {
             _showSettings = true;
+        } else if (option == QLatin1String("--quit") || option == QLatin1String("-q")) {
+            _quitInstance = true;
         } else if (option == QLatin1String("--logwindow") || option == QLatin1String("-l")) {
             _showLogWindow = true;
         } else if (option == QLatin1String("--logfile")) {
