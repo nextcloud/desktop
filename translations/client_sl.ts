@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>V tem okolju premikanje predmetov v smeti ni mogoče.</translation>
     </message>
 </context>
 <context>
@@ -2412,7 +2412,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="77"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation>Napaka odstranjevanja &apos;%1&apos;: %2; </translation>
+        <translation>Napaka odstranjevanja »%1«: %2; </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="102"/>
@@ -2840,7 +2840,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="272"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation>Ni zadetkov za &apos;%1&apos;</translation>
+        <translation>Za iskalni niz »%1« ni zadetkov</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
@@ -2863,7 +2863,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="388"/>
         <source>Can reshare</source>
-        <translation>Lahko deli naprej</translation>
+        <translation>Lahko omogoči souporabo</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="398"/>
@@ -2883,7 +2883,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="419"/>
         <source>Can delete</source>
-        <translation>Lahko briše</translation>
+        <translation>Lahko izbriše</translation>
     </message>
 </context>
 <context>
@@ -2904,7 +2904,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
         <source>%1 - Authenticate</source>
-        <translation>%1 - Overitev</translation>
+        <translation>%1 – Overitev</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
@@ -2914,12 +2914,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Reauthentication required</source>
-        <translation>Zahtevano je vnovično overjanje istovetnosti</translation>
+        <translation>Zahtevano je ponovno overjanje istovetnosti</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation>Seja je potekla. Ponovno se je treba prijaviti in nadaljevati z uporabo odjemalca.</translation>
+        <translation>Seja je potekla. Za uporabo odjemalca je zahtevana ponovna prijava.</translation>
     </message>
 </context>
 <context>
@@ -3013,7 +3013,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="95"/>
         <source>State/Province:</source>
-        <translation>Okraj:</translation>
+        <translation>Zvezna država ali provinca</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="96"/>
@@ -3090,7 +3090,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation>Ni podpore za določila in karte ključe SSL</translation>
+        <translation>Ni podpore za določila seje SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
@@ -3106,7 +3106,7 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>Ta povezava NI varna, saj ni šifrirana.
+        <translation>Ta povezava ni šifrirana in zato NI varna.
 </translation>
     </message>
 </context>
@@ -3125,7 +3125,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation>Ni mogoče vzpostaviti varne povezave z &lt;i&gt;%1&lt;/i&gt;:</translation>
+        <translation>Ni mogoče vzpostaviti varne povezave s strežnikom &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
@@ -3299,7 +3299,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>File or directory not found:</source>
-        <translation>Datoteke ali mape ni mogoče najti</translation>
+        <translation>Datoteke ali mape ni mogoče najti:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
@@ -3339,7 +3339,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="492"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>Imena datotek, ki vsebujejo piko, na tem sistemu niso podprta.</translation>
+        <translation>Imena datotek, ki vsebujejo končno piko, na tem sistemu niso podprta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="502"/>
@@ -3384,7 +3384,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="730"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation>Uporabljen je neveljaven znak; preimenujte &quot;%1&quot;</translation>
+        <translation>Uporabljen je neveljaven znak; predmet »%1« je treba preimenovati.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="863"/>
@@ -3441,7 +3441,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1539"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation>Premikanje ni dovoljeno, ker je nastavljeno določilo %1 le za branje.</translation>
+        <translation>Premikanje ni dovoljeno, ker je za %1 nastavljeno določilo le za branje.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1539"/>
@@ -3759,7 +3759,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>Začni s &amp;svežim usklajevanjem (izbriše krajevno mapo!)</translation>
+        <translation>Začni z usklajevanjem od &amp;začetka (izbriše krajevno mapo!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -3775,7 +3775,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation>Vprašaj za potrditev pred usklajevanjem zunanji&amp;h shramb</translation>
+        <translation>Zahtevaj potrditev pred usklajevanjem zunanji&amp;h shramb</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
@@ -3816,7 +3816,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Preklopite na brskalnik za nadaljevanje.</translation>
+        <translation>Za nadaljevanje preklopite na brskalnik.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -4116,7 +4116,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="65"/>
         <source>Waiting to start sync</source>
-        <translation>Čakanje začetek usklajevanja</translation>
+        <translation>Čakanje na začetek usklajevanja</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="68"/>
@@ -4179,7 +4179,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Prišlo je do napake med zaganjanjem odjemalca elektronske pošte  za ustvarjanje novega sporočila. Najverjetneje ni nastavljen privzet programski paket.</translation>
+        <translation>Prišlo je do napake med zaganjanjem odjemalca elektronske pošte za ustvarjanje novega sporočila. Najverjetneje ni nastavljen privzet programski paket.</translation>
     </message>
 </context>
 </TS>
