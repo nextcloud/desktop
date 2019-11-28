@@ -123,6 +123,7 @@ private:
 
     // options from command line:
     bool _showLogWindow;
+    bool _quitInstance = false;
     QString _logFile;
     QString _logDir;
     int _logExpire;
