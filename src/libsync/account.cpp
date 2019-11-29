@@ -545,7 +545,7 @@ void Account::retrieveAppPassword(){
     ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
-    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+    connect(job, &ReadPasswordJob::finished, [this](Job *incoming) {
         ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
         QString pwd("");
         // Error or no valid public key error out
