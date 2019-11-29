@@ -30,8 +30,8 @@ class UserModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    UserModel(QObject *parent = 0);
-    virtual ~UserModel();
+    static UserModel *instance();
+    virtual ~UserModel() {};
 
     void addUser(const User &user);
     void addCurrentUser(const User &user);
@@ -40,7 +40,7 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    Q_INVOKABLE void login();
+   
     Q_INVOKABLE void logout();
 
     Q_INVOKABLE int numUsers();
@@ -55,10 +55,16 @@ public:
         AvatarRole
     };
 
+signals:
+    Q_INVOKABLE void login();
+    Q_INVOKABLE void logout();
+
 protected:
     QHash<int, QByteArray> roleNames() const;
 
 private:
+    static UserModel *_instance;
+    UserModel(QObject *parent = 0);
     QList<User> _users;
     User *_currentUser;
 };
