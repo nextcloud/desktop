@@ -305,6 +305,10 @@ Window {
             }
         }   // Rectangle trayWindowHeaderBackground
 
+        ListModel {
+            id: activityListModel
+        }
+
         ListView {
             id: activityListView
             anchors.top: trayWindowHeaderBackground.bottom
@@ -312,7 +316,7 @@ Window {
             height: trayWindowBackground.height - trayWindowHeaderBackground.height
             clip: true
 
-            model: ListModel {}
+            model: activityListModel
 
             delegate: RowLayout {
                 id: activityItem
@@ -388,8 +392,10 @@ Window {
             }
 
             focus: true
-            Keys.onSpacePressed: model.insert(0, { "name": "Item " + model.count })
-            Keys.onTabPressed: model.remove(3)
+
+            // For interactive ListView/Animation testing only
+            //Keys.onSpacePressed: model.insert(0, { "name": "Item " + model.count })
+            //Keys.onTabPressed: model.remove(3)
         }
 
     }       // Rectangle trayWindowBackground
