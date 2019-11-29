@@ -513,7 +513,10 @@ void Account::setNonShib(bool nonShib)
     }
 }
 
-void Account::setAppPassword(QString appPassword){
+void Account::writeAppPasswordOnce(QString appPassword){
+    if(_wroteAppPassword)
+        return;
+
     const QString kck = AbstractCredentials::keychainKey(
                 url().toString(),
                 davUser() + app_password,
@@ -524,8 +527,10 @@ void Account::setAppPassword(QString appPassword){
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(appPassword.toLatin1());
-    connect(job, &WritePasswordJob::finished, [](Job *) {
+    connect(job, &WritePasswordJob::finished, [this](Job *) {
         qCInfo(lcAccount) << "appPassword stored in keychain";
+
+        _wroteAppPassword = true;
     });
     job->start();
 }

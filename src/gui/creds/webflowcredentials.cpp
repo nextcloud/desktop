@@ -420,7 +420,7 @@ void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
         _credentialsValid = true;
 
         /// Used later for remote wipe
-        _account->setAppPassword(_password);
+        _account->writeAppPasswordOnce(_password);
     }
 }
 
