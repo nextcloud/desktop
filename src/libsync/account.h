@@ -243,7 +243,7 @@ public:
 
     /// Used in RemoteWipe
     void retrieveAppPassword();
-    void setAppPassword(QString appPassword);
+    void writeAppPasswordOnce(QString appPassword);
     void deleteAppPassword();
 
 public slots:
@@ -318,6 +318,9 @@ private:
 
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
     ClientSideEncryption _e2e;
+
+    /// Used in RemoteWipe
+    bool _wroteAppPassword = false;
 
     friend class AccountManager;
 };
