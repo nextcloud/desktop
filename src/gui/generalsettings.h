@@ -46,6 +46,7 @@ private slots:
     void saveMiscSettings();
     void slotToggleLaunchOnStartup(bool);
     void slotToggleOptionalServerNotifications(bool);
+	void slotToggleOptionalVirtualFileSystem(bool);
     void slotShowInExplorerNavigationPane(bool);
     void slotIgnoreFilesEditor();
     void loadMiscSettings();

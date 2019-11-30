@@ -52,7 +52,7 @@ namespace chrono = std::chrono;
 
 Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
 
-
+static const char enableVirtualFileSysC[]				= "enableVirtualFileSystem";
 static const char defaultFileStreamSyncPathC[]			= "fileStreamSyncPathDefault";
 static const char defaultFileStreamMirrorPathC[]		= "fileStreamMirrorPathDefault";
 static const char defaultFileStreamLetterDriveC[]		= "fileStreamPathDefaultLetterDrive";
@@ -895,6 +895,18 @@ QString ConfigFile::defaultFileStreamLetterDrive()
     QSettings settings(configFile(), QSettings::IniFormat);
     QString defaultString;
     return settings.value(QLatin1String(defaultFileStreamLetterDriveC), defaultString).toString();
+}
+
+void ConfigFile::setEnableVirtualFileSystem(bool enabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(enableVirtualFileSysC), enabled);
+}
+
+QString ConfigFile::enableVirtualFileSystem()
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(enableVirtualFileSysC), false).toString();
 }
 
 void ConfigFile::createAuxiliarDirectories()

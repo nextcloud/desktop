@@ -89,6 +89,14 @@
          <string>Show Server &amp;Notifications</string>
         </property>
        </widget>
+        <widget class="QCheckBox" name="virtualFileSystemCheckbox">
+          <property name="text">
+            <string>Enable &amp;Virtual File System</string>
+          </property>
+          <property name="hidden">
+            <bool>true</bool>
+          </property>
+        </widget>        
       </item>
      </layout>
     </widget>
@@ -325,6 +333,7 @@
  <tabstops>
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>serverNotificationsCheckBox</tabstop>
+  <tabstop>virtualFileSystemCheckbox</tabstop>
   <tabstop>monoIconsCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>

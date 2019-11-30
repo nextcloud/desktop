@@ -83,7 +83,9 @@ public:
     bool monoIcons() const;
     void setMonoIcons(bool);
 
-// Configuration paths for virtual FileSystem.
+// Configuration for virtual FileSystem.
+	void setEnableVirtualFileSystem(bool);
+	QString enableVirtualFileSystem();
 	void setDefaultFileStreamSyncPath(QString);
 	QString defaultFileStreamSyncPath();
 	void setDefaultFileStreamMirrorPath(QString);
