@@ -66,7 +66,14 @@
       <string>General Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="autostartCheckBox">
+        <property name="text">
+         <string>&amp;Launch on System Startup</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QCheckBox" name="monoIconsCheckBox">
         <property name="toolTip">
          <string>For System Tray</string>
@@ -76,10 +83,13 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="autostartCheckBox">
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="virtualFileSystemCheckbox">
         <property name="text">
-         <string>&amp;Launch on System Startup</string>
+         <string>Enable &amp;Virtual File System</string>
+        </property>
+        <property name="hidden" stdset="0">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
