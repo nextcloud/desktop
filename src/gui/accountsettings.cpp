@@ -36,7 +36,10 @@
 #include "encryptfolderjob.h"
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
+
+#ifdef Q_OS_WIN
 #include "vfs_windows.h"
+#endif
 
 #include <cmath>
 
