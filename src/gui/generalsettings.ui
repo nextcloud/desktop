@@ -66,14 +66,7 @@
       <string>General Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="autostartCheckBox">
-        <property name="text">
-         <string>&amp;Launch on System Startup</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <widget class="QCheckBox" name="monoIconsCheckBox">
         <property name="toolTip">
          <string>For System Tray</string>
@@ -83,13 +76,10 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="virtualFileSystemCheckbox">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="autostartCheckBox">
         <property name="text">
-         <string>Enable &amp;Virtual File System</string>
-        </property>
-        <property name="hidden" stdset="0">
-         <bool>true</bool>
+         <string>&amp;Launch on System Startup</string>
         </property>
        </widget>
       </item>
@@ -99,14 +89,6 @@
          <string>Show Server &amp;Notifications</string>
         </property>
        </widget>
-        <widget class="QCheckBox" name="virtualFileSystemCheckbox">
-          <property name="text">
-            <string>Enable &amp;Virtual File System</string>
-          </property>
-          <property name="hidden">
-            <bool>true</bool>
-          </property>
-        </widget>        
       </item>
      </layout>
     </widget>
@@ -343,7 +325,6 @@
  <tabstops>
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>serverNotificationsCheckBox</tabstop>
-  <tabstop>virtualFileSystemCheckbox</tabstop>
   <tabstop>monoIconsCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>

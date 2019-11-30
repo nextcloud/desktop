@@ -56,12 +56,12 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
 
-	#if defined(Q_OS_MAC) OR defined(Q_OS_WIN)
-	_ui->virtualFileSystemCheckBox->show();
+    #ifdef defined(Q_OS_MAC) || defined(Q_OS_WIN)
+    _ui->virtualFileSystemCheckBox->show();
     connect(_ui->virtualFileSystemCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalVirtualFileSystem);
     _ui->virtualFileSystemCheckBox->setToolTip(tr("Sync files on demand."));
-	#endif
+    #endif
 
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 

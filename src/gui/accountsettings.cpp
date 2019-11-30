@@ -35,7 +35,10 @@
 #include "filesystem.h"
 #include "clientsideencryptionjobs.h"
 #include "syncresult.h"
+
+#ifdef define(Q_OS_WIN)
 #include "vfs_windows.h"
+#endif
 
 #include <math.h>
 
