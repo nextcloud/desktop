@@ -65,6 +65,7 @@ public:
     bool _serverHasIgnoredFiles = false;
     QByteArray _checksumHeader;
     QByteArray _e2eMangledName;
+	qint64 _virtualfile; // 1 files created by the virtual file system, 0 created by the user
 };
 
 bool OCSYNC_EXPORT
