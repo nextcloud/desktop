@@ -239,6 +239,8 @@ Application::Application(int &argc, char **argv)
         this, &Application::slotAccountStateAdded);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
+    connect(AccountManager::instance(), &AccountManager::mountVirtualDriveForAccount,
+        this, &Application::slotMountVirtualDrive);
     foreach (auto ai, AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
     }
@@ -337,6 +339,10 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 
+	slotMountVirtualDrive(accountState);
+}
+
+void Application::slotMountVirtualDrive(AccountState *accountState) {
     // Mount the virtual FileSystem.
 #if defined(Q_OS_MAC)
     QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";

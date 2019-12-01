@@ -77,6 +77,7 @@ public slots:
     void slotownCloudWizardDone(int);
     void slotDeleteOnlineFiles();
     void slotCrash();
+	void slotMountVirtualDrive(AccountState *accountState);
 
 protected:
     void parseOptions(const QStringList &);

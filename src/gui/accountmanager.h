@@ -89,9 +89,6 @@ private:
     // Adds an account to the tracked list, emitting accountAdded()
     void addAccountState(AccountState *accountState);
 
-    AccountManager() {}
-    QList<AccountStatePtr> _accounts;
-
 public slots:
     /// Saves account data, not including the credentials
     void saveAccount(Account *a);
@@ -107,5 +104,10 @@ Q_SIGNALS:
     void accountAdded(AccountState *account);
     void accountRemoved(AccountState *account);
     void removeAccountFolders(AccountState *account);
+	void mountVirtualDriveForAccount(AccountState *account);
+
+private:
+    AccountManager() {}
+    QList<AccountStatePtr> _accounts;
 };
 }

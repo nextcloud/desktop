@@ -17,6 +17,7 @@
 
 #include <QWidget>
 #include <QPointer>
+#include "accountmanager.h"
 
 namespace OCC {
 class IgnoreListEditor;
@@ -56,6 +57,9 @@ private slots:
     void slotUpdateCheckNow();
     void slotToggleAutoUpdateCheck();
 #endif
+
+signals:
+	void mountVirtualDrive(AccountState *accountState);
 
 private:
     void customizeStyle();

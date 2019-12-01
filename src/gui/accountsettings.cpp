@@ -36,7 +36,7 @@
 #include "clientsideencryptionjobs.h"
 #include "syncresult.h"
 
-#ifdef define(Q_OS_WIN)
+#ifdef Q_OS_WIN
 #include "vfs_windows.h"
 #endif
 
