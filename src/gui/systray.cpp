@@ -93,7 +93,6 @@ void Systray::slotChangeActivityModel(const AccountStatePtr account)
 {
     _currentAccount = account;
     emit currentUserChanged();
-    bool test;
 }
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)
