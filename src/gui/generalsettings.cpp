@@ -290,15 +290,17 @@ void GeneralSettings::slotToggleOptionalVirtualFileSystem(bool enable)
 		QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
 		QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
 		QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
+		QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
 
 		if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
-			cfgFile.setDefaultFileStreamSyncPath(QString("X:/Mi unidad"));
+			cfgFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/") 
+				+ Theme::instance()->appName());
 
 		if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
 			cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
 
 		if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
-			cfgFile.setDefaultFileStreamLetterDrive(QString("x"));
+			cfgFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
 
 		//FIXME this doesnt work for multiple accounts...
 		foreach (auto ai, AccountManager::instance()->accounts()) {
