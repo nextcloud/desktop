@@ -11,7 +11,7 @@ SystemTrayIcon {
     }
 
     onActivated: {
-        var component = Qt.createComponent("qrc:/qml/src/gui/traywindow.qml")
+        var component = Qt.createComponent("qrc:/qml/src/gui/tray/window.qml")
         var win = component.createObject()
         win.show()
         win.raise()

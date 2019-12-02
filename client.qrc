@@ -32,7 +32,7 @@
     </qresource>
     <qresource prefix="/"/>
     <qresource prefix="/qml">
-        <file>src/gui/systemtray.qml</file>
-        <file>src/gui/traywindow.qml</file>
+        <file>src/gui/tray/init.qml</file>
+        <file>src/gui/tray/window.qml</file>
     </qresource>
 </RCC>

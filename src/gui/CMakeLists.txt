@@ -32,11 +32,11 @@ set(client_UI_SRCS
     shareusergroupwidget.ui
     shareuserline.ui
     sslerrordialog.ui
-    systemtray.qml
-    traywindow.qml
     addcertificatedialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
+    tray/init.qml
+    tray/window.qml
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui

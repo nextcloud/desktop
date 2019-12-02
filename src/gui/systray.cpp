@@ -14,6 +14,7 @@
 
 #include "accountmanager.h"
 #include "systray.h"
+#include "../common/utility.h"
 #include "theme.h"
 #include "config.h"
 
@@ -36,23 +37,63 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     : _currentAccount(nullptr)
     , _trayContext(nullptr)
 {
-    _currentAccount = AccountManager::instance()->accounts().first();
-
+    // Create QML tray engine, build component, set C++ backend context used in window.qml
     QQmlEngine *engine = new QQmlEngine;
-    QQmlComponent systray(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/systemtray.qml")));
+    QQmlComponent systray(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/init.qml")));
     _trayContext = engine->contextForObject(systray.create());
+
+    systray.engine()->rootContext()->setContextProperty("systrayBackend", this);
 
     // TODO: hack to pass the icon to QML
     //ctxt->setContextProperty("theme", QLatin1String("colored"));
     //ctxt->setContextProperty("filename", "state-offline");
+
+    if (!AccountManager::instance()->accounts().isEmpty()) {
+
+        slotChangeActivityModel(AccountManager::instance()->accounts().first());
+    }
+
+    //_trayContext->setContextProperty("serverTest", QVariant("Test"));
+    //connect(AccountManager::instance(), &AccountManager::accountAdded,
+    //    this, &Systray::slotChangeActivityModel);
 }
 
 Systray::~Systray()
 {
 }
 
-void Systray::slotChangeActivityModel()
+Q_INVOKABLE QIcon Systray::currentAvatar() const
 {
+    QImage userAvatarImg = _currentAccount->account()->avatar();
+    QIcon userAvatar(QPixmap::fromImage(userAvatarImg));
+    return userAvatar;
+}
+
+Q_INVOKABLE QString Systray::currentAccountServer() const
+{
+    QString serverUrl = _currentAccount->account()->url().toString();
+    if (serverUrl.length() > 25) {
+        serverUrl.truncate(23);
+        serverUrl.append(QByteArray("..."));
+    }
+    return serverUrl;
+}
+
+Q_INVOKABLE QString Systray::currentAccountUser() const
+{
+    QString userName = _currentAccount->account()->davDisplayName();
+    if (userName.length() > 19) {
+        userName.truncate(17);
+        userName.append(QByteArray("..."));
+    }
+    return userName;
+}
+
+void Systray::slotChangeActivityModel(const AccountStatePtr account)
+{
+    _currentAccount = account;
+    emit currentUserChanged();
+    bool test;
 }
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)

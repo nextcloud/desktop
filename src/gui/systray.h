@@ -46,9 +46,15 @@ public:
     ~Systray();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
+    Q_INVOKABLE QIcon currentAvatar() const;
+    Q_INVOKABLE QString currentAccountServer() const;
+    Q_INVOKABLE QString currentAccountUser() const;
+
+signals:
+    void currentUserChanged();
 
 private slots:
-    void slotChangeActivityModel();
+    void slotChangeActivityModel(const AccountStatePtr account);
 
 private:
     AccountStatePtr _currentAccount;

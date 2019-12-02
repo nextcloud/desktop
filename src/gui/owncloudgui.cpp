@@ -81,6 +81,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     , _app(parent)
 {
     _tray = new Systray();
+    //qmlRegisterType<Systray>("nc.desktop.systray.backend", 1, 0, "Systray");
     _tray->setParent(this);
     // for the beginning, set the offline icon until the account was verified
     _tray->setIcon(Theme::instance()->folderOfflineIcon(/*systray?*/ true, /*currently visible?*/ false));

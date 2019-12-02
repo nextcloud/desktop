@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 
 Window {
+
     id: trayWindow
     visible: true
     width: 400
@@ -135,7 +136,7 @@ Window {
                             height: (trayWindowHeaderBackground.height - 12)
                             Layout.leftMargin: 6
                             verticalAlignment: Qt.AlignCenter
-                            //source: "file"
+                            source: "image://avatars/current.png"
                         }
 
                         Column {
@@ -144,15 +145,15 @@ Window {
                             Layout.alignment: Qt.AlignLeft
                             Layout.leftMargin: 6
                             Label {
-                                id: syncStatusLabel
-                                text: "Up to date"
+                                id: currentAccountUser
+                                text: systrayBackend.currentAccountUser()
                                 color: "white"
                                 font.pointSize: 9
                                 font.bold: true
                             }
                             Label {
-                                id: currentUserLabel
-                                text: "cloud.nextcloud.com"
+                                id: currentAccountServer
+                                text: systrayBackend.currentAccountServer()
                                 color: "white"
                                 font.pointSize: 8
                             }
