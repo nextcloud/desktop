@@ -11,16 +11,19 @@ clone_depth: 50
 init:
 - ps: |
     function craft($target) {
-        & C:\Python36\python.exe "C:\CraftMaster\CraftMaster\CraftMaster.py" --config "$env:APPVEYOR_BUILD_FOLDER\.appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $target -c $args
+        if ($IsWindows){
+            $py = "py"
+        } else {
+            $py = "python3"
+        }
+        & $py "$HOME/CraftMaster/CraftMaster.py" --config "$env:APPVEYOR_BUILD_FOLDER/.appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $target -c $args
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
 
 install:
 - ps: |
     git submodule update --init --recursive
-
-    #use cmd to silence powershell behaviour for stderr
-    & cmd /C "git clone -q --depth=1 git://anongit.kde.org/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
+    & git clone -q --depth=1 git://anongit.kde.org/craftmaster.git $HOME/CraftMaster 2>&1
 
     craft $env:TARGET -i craft
     craft $env:TARGET --add-blueprint-repository [git]https://github.com/owncloud/craft-blueprints-owncloud.git
@@ -36,14 +39,21 @@ test_script:
 
 after_test:
 - ps: |
-    craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --options [Packager]PackageType=NullsoftInstallerPackager --package owncloud-client
+    if ($IsWindows){
+        craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --options [Packager]PackageType=NullsoftInstallerPackager --package owncloud-client
+    } else {
+       # Disable packaging for now
+       # craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --package owncloud-client
+    }
 
 artifacts:
-  - path: binaries\*
+  - path: binaries/*
 
 
 environment:
     matrix:
+    - TARGET: macos-64-clang
+      APPVEYOR_BUILD_WORKER_IMAGE: macOS
     - TARGET: windows-msvc2017_32-cl
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - TARGET: windows-msvc2017_64-cl
