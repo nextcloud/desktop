@@ -12,9 +12,13 @@
  * for more details.
  */
 
+#include "accountmanager.h"
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
+
+#include <QQmlComponent>
+#include <QQmlEngine>
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
@@ -27,6 +31,29 @@
 #endif
 
 namespace OCC {
+
+Systray::Systray() // TODO: make singleton, provide ::instance()
+    : _currentAccount(nullptr)
+    , _trayContext(nullptr)
+{
+    _currentAccount = AccountManager::instance()->accounts().first();
+
+    QQmlEngine *engine = new QQmlEngine;
+    QQmlComponent systray(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/systemtray.qml")));
+    _trayContext = engine->contextForObject(systray.create());
+
+    // TODO: hack to pass the icon to QML
+    //ctxt->setContextProperty("theme", QLatin1String("colored"));
+    //ctxt->setContextProperty("filename", "state-offline");
+}
+
+Systray::~Systray()
+{
+}
+
+void Systray::slotChangeActivityModel()
+{
+}
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)
 {

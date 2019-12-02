@@ -82,26 +82,16 @@ ownCloudGui::ownCloudGui(Application *parent)
 {
     _tray = new Systray();
     _tray->setParent(this);
-
     // for the beginning, set the offline icon until the account was verified
     _tray->setIcon(Theme::instance()->folderOfflineIcon(/*systray?*/ true, /*currently visible?*/ false));
-
-    connect(_tray.data(), &QSystemTrayIcon::activated,
-        this, &ownCloudGui::slotTrayClicked);
 
     setupActions();
     setupContextMenu();
 
     _tray->show();
 
-    // QML System tray
-    QQmlEngine *engine = new QQmlEngine;
-    //engine.load(QUrl(QStringLiteral(":/qml/src/gui/systemtray.qml")));
-    QQmlComponent systrayrtest(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/systemtray.qml")));
-    QQmlContext *ctxt = engine->contextForObject(systrayrtest.create());
-    // TODO hack to pass the icon to QML
-    //ctxt->setContextProperty("theme", QLatin1String("colored"));
-    //ctxt->setContextProperty("filename", "state-offline");
+    connect(_tray.data(), &QSystemTrayIcon::activated,
+        this, &ownCloudGui::slotTrayClicked);
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,

@@ -223,6 +223,8 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     _activitySettings[s] = new ActivitySettings(s, this);
 
+
+
     // if this is not the first account, then before we continue to add more accounts we add a separator
     if(AccountManager::instance()->accounts().first().data() != s &&
         AccountManager::instance()->accounts().size() >= 1){

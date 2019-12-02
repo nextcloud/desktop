@@ -16,6 +16,9 @@
 #define SYSTRAY_H
 
 #include <QSystemTrayIcon>
+#include <QQmlContext>
+
+#include "accountmanager.h"
 
 class QIcon;
 
@@ -26,16 +29,30 @@ bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 #endif
 
+namespace Ui {
+    class Systray;
+}
+
 /**
  * @brief The Systray class
  * @ingroup gui
  */
-class Systray : public QSystemTrayIcon
+class Systray
+    : public QSystemTrayIcon
 {
     Q_OBJECT
 public:
+    explicit Systray();
+    ~Systray();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
+
+private slots:
+    void slotChangeActivityModel();
+
+private:
+    AccountStatePtr _currentAccount;
+    QQmlContext *_trayContext;
 };
 
 } // namespace OCC
