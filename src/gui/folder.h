@@ -29,7 +29,6 @@
 #include <QUuid>
 #include <set>
 #include <chrono>
-#include <QThread>
 
 class QThread;
 class QSettings;
@@ -48,6 +47,12 @@ class FolderWatcher;
 class FolderDefinition
 {
 public:
+    FolderDefinition()
+        : paused(false)
+        , ignoreHiddenFiles(false)
+    {
+    }
+
     /// The name of the folder in the ui and internally
     QString alias;
     /// path on local machine
@@ -57,9 +62,11 @@ public:
     /// path on remote
     QString targetPath;
     /// whether the folder is paused
-    bool paused = false;
+    bool paused;
     /// whether the folder syncs hidden files
-    bool ignoreHiddenFiles = false;
+    bool ignoreHiddenFiles;
+    /// the folder has client side encryption
+    bool isClientSideEncrypted;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
 
@@ -229,7 +236,7 @@ public:
      *
      * May be called several times.
      */
-	void registerFolderWatcher();
+    void registerFolderWatcher();
 
 signals:
     void syncStateChange();
@@ -259,17 +266,11 @@ public slots:
 
 
     /**
-      * Starts a sync operation using _localDiscoveryPaths
+      * Starts a sync operation
       *
       * If the list of changed files is known, it is passed.
       */
-    void startSync(const QStringList &pathList);
-
-    /**
-      * Set local files and actions when it is known - triggered by FUSE operations
-      *
-      */
-    void updateLocalFileTree(const QString &path, csync_instructions_e instruction);
+    void startSync(const QStringList &pathList = QStringList());
 
     int slotDiscardDownloadProgress();
     int downloadInfoCount();
@@ -393,7 +394,7 @@ private:
      *
      * Created by registerFolderWatcher(), triggers slotWatchedPathChanged()
      */
-	QScopedPointer<FolderWatcher> _folderWatcher;
+    QScopedPointer<FolderWatcher> _folderWatcher;
 
     /**
      * The paths that should be checked by the next local discovery.

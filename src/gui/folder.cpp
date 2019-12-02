@@ -93,7 +93,7 @@ Folder::Folder(const FolderDefinition &definition,
         this, &Folder::slotAboutToRemoveAllFiles);
     connect(_engine.data(), &SyncEngine::aboutToRestoreBackup,
         this, &Folder::slotAboutToRestoreBackup);
-    connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress, Qt::DirectConnection);
+    connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
     connect(_engine.data(), &SyncEngine::itemCompleted,
         this, &Folder::slotItemCompleted);
     connect(_engine.data(), &SyncEngine::newBigFolder,
@@ -620,22 +620,14 @@ bool Folder::reloadExcludes()
     return _engine->excludedFiles().reloadExcludeFiles();
 }
 
-void Folder::updateLocalFileTree(const QString &path, csync_instructions_e instruction){
-    _engine->updateLocalFileTree(path, instruction);
-}
-
 void Folder::startSync(const QStringList &pathList)
 {
+    Q_UNUSED(pathList)
+
     if (isBusy()) {
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
     }
-
-    if (_engine->localTreeSize() == 0) {
-        qCCritical(lcFolder) << "Nothing to do yet...";
-        return;
-    }
-
     _csyncUnavail = false;
 
     _timeSinceLastSyncStart.start();
@@ -656,48 +648,42 @@ void Folder::startSync(const QStringList &pathList)
     setDirtyNetworkLimits();
     setSyncOptions();
 
-//    static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
-//        auto interval = ConfigFile().fullLocalDiscoveryInterval();
-//        QByteArray env = qgetenv("OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL");
-//        if (!env.isEmpty()) {
-//            interval = std::chrono::milliseconds(env.toLongLong());
-//        }
-//        return interval;
-//    }();
+    static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
+        auto interval = ConfigFile().fullLocalDiscoveryInterval();
+        QByteArray env = qgetenv("OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL");
+        if (!env.isEmpty()) {
+            interval = std::chrono::milliseconds(env.toLongLong());
+        }
+        return interval;
+    }();
+    bool hasDoneFullLocalDiscovery = _timeSinceLastFullLocalDiscovery.isValid();
+    bool periodicFullLocalDiscoveryNow =
+        fullLocalDiscoveryInterval.count() >= 0 // negative means we don't require periodic full runs
+        && _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count());
+    if (_folderWatcher && _folderWatcher->isReliable()
+        && hasDoneFullLocalDiscovery
+        && !periodicFullLocalDiscoveryNow) {
+        qCInfo(lcFolder) << "Allowing local discovery to read from the database";
+        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, _localDiscoveryPaths);
 
-//    if (_folderWatcher && _folderWatcher->isReliable() && _timeSinceLastFullLocalDiscovery.isValid()
-//        && (fullLocalDiscoveryInterval.count() < 0
-//               || _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count()))) {
+        if (lcFolder().isDebugEnabled()) {
+            QByteArrayList paths;
+            for (auto &path : _localDiscoveryPaths)
+                paths.append(path);
+            qCDebug(lcFolder) << "local discovery paths: " << paths;
+        }
 
-//        qCInfo(lcFolder) << "Allowing local discovery to read from the database";
-//        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
-
-//        if (lcFolder().isDebugEnabled()) {
-//            QByteArrayList paths;
-//            for (auto &path : _localDiscoveryPaths)
-//                paths.append(path);
-//            qCDebug(lcFolder) << "local discovery paths: " << paths;
-//        }
-
-//        _previousLocalDiscoveryPaths = std::move(_localDiscoveryPaths);
-//    } else {
-//        qCInfo(lcFolder) << "Forbidding local discovery to read from the database";
-//        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
-//        _previousLocalDiscoveryPaths.clear();
-//    }
-
-    _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
-    if (_engine->localTreeSize() > 0){
-        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FUSEFilesystem);
+        _previousLocalDiscoveryPaths = std::move(_localDiscoveryPaths);
     } else {
+        qCInfo(lcFolder) << "Forbidding local discovery to read from the database";
         _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        _previousLocalDiscoveryPaths.clear();
     }
-
-    //_localDiscoveryPaths.clear();
+    _localDiscoveryPaths.clear();
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
-    QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::DirectConnection);
+    QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
     emit syncStarted();
 }
@@ -838,23 +824,19 @@ void Folder::slotSyncFinished(bool success)
     if ((_syncResult.status() == SyncResult::Success
             || _syncResult.status() == SyncResult::Problem)
         && success) {
-//        if (_engine->lastLocalDiscoveryStyle() == LocalDiscoveryStyle::FilesystemOnly) {
-//            _timeSinceLastFullLocalDiscovery.start();
-//        }
-
+        if (_engine->lastLocalDiscoveryStyle() == LocalDiscoveryStyle::FilesystemOnly) {
+            _timeSinceLastFullLocalDiscovery.start();
+        }
         qCDebug(lcFolder) << "Sync success, forgetting last sync's local discovery path list";
     } else {
         // On overall-failure we can't forget about last sync's local discovery
         // paths yet, reuse them for the next sync again.
         // C++17: Could use std::set::merge().
-//        _localDiscoveryPaths.insert(
-//            _previousLocalDiscoveryPaths.begin(), _previousLocalDiscoveryPaths.end());
-
-        //_engine->updateLocalFileTree() ??
-
+        _localDiscoveryPaths.insert(
+            _previousLocalDiscoveryPaths.begin(), _previousLocalDiscoveryPaths.end());
         qCDebug(lcFolder) << "Sync failed, keeping last sync's local discovery path list";
     }
-    //_previousLocalDiscoveryPaths.clear();
+    _previousLocalDiscoveryPaths.clear();
 
     emit syncStateChange();
 
@@ -921,20 +903,18 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
 
     // add new directories or remove gone away dirs to the watcher
     if (_folderWatcher && item->isDirectory()) {
-    switch (item->_instruction) {
-        case CSYNC_INSTRUCTION_NEW:
+	switch (item->_instruction) {
+	    case CSYNC_INSTRUCTION_NEW:
                 _folderWatcher->addPath(path() + item->_file);
-        break;
-        case CSYNC_INSTRUCTION_REMOVE:
+	    break;
+	    case CSYNC_INSTRUCTION_REMOVE:
                 _folderWatcher->removePath(path() + item->_file);
-        break;
-        case CSYNC_INSTRUCTION_RENAME:
+	    break;
+	    case CSYNC_INSTRUCTION_RENAME:
                 _folderWatcher->removePath(path() + item->_file);
                 _folderWatcher->addPath(path() + item->destination());
-        break;
-        default:
-        break;
-    }
+	    break;
+	}
     }
 
     // Success and failure of sync items adjust what the next sync is
@@ -949,19 +929,14 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
         || item->_status == SyncFileItem::FileIgnored
         || item->_status == SyncFileItem::Restoration
         || item->_status == SyncFileItem::Conflict) {
-//        if (_previousLocalDiscoveryPaths.erase(item->_file.toUtf8()))
-//            qCDebug(lcFolder) << "local discovery: wiped" << item->_file;
+        if (_previousLocalDiscoveryPaths.erase(item->_file.toUtf8()))
+            qCDebug(lcFolder) << "local discovery: wiped" << item->_file;
     } else {
-        //_localDiscoveryPaths.insert(item->_file.toUtf8());
-        updateLocalFileTree(item->_file, item->_instruction);
+        _localDiscoveryPaths.insert(item->_file.toUtf8());
         qCDebug(lcFolder) << "local discovery: inserted" << item->_file << "due to sync failure";
     }
 
-    // notify this file 'got' synced - true to stop
-    _journal.setSyncMode(item->_file, SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
-    _journal.setSyncModeDownload(item->_file, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES);
-    _journal.emitSyncStatusChanged(item->_file, true);
-    qCWarning(lcFolder) << "INFO: " << item->_file << " SYNC IS DONE - SYNC MODE is "<< _journal.getSyncModeDownload(item->_file);
+    _syncResult.processCompletedItem(item);
 
     _fileLog->logItem(*item);
     emit ProgressDispatcher::instance()->itemCompleted(alias(), item);
@@ -976,8 +951,7 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
     auto journal = journalDb();
 
     // Add the entry to the blacklist if it is neither in the blacklist or whitelist already
-    bool ok1 = false;
-    bool ok2 = false;
+    bool ok1, ok2;
     auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
     auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
     if (ok1 && ok2 && !blacklist.contains(newFolder) && !whitelist.contains(newFolder)) {
@@ -1100,6 +1074,9 @@ void Folder::registerFolderWatcher()
         this, &Folder::slotWatchedPathChanged);
     connect(_folderWatcher.data(), &FolderWatcher::lostChanges,
         this, &Folder::slotNextSyncFullLocalDiscovery);
+    connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,
+        this, &Folder::slotWatcherUnreliable);
+    _folderWatcher->init(path());
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel)

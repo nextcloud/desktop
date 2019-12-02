@@ -37,7 +37,6 @@ namespace OCC {
 class SyncFileStatus;
 class Folder;
 class SocketListener;
-class DirectEditor;
 
 /**
  * @brief The SocketApi class
@@ -52,7 +51,7 @@ public:
     virtual ~SocketApi();
 
 public slots:
-    void slotUpdateFolderView(Folder *f);
+    void slotUpdateFolderView(Folder * f);
     void slotUnregisterPath(const QString &alias);
     void slotRegisterPath(const QString &alias);
     void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
@@ -107,14 +106,6 @@ private:
     Q_INVOKABLE void command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
-
-    // Windows Shell / Explorer pinning fallbacks, see issue: https://github.com/nextcloud/desktop/issues/1599
-#ifdef Q_OS_WIN
-    Q_INVOKABLE void command_COPYASPATH(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_OPENNEWWINDOW(const QString &localFile, SocketListener *listener);
-    Q_INVOKABLE void command_OPEN(const QString &localFile, SocketListener *listener);
-#endif
-
     Q_INVOKABLE void command_ONLINE_DOWNLOAD_MODE(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_OFFLINE_DOWNLOAD_MODE(const QString &localFile, SocketListener *listener);
 
@@ -136,13 +127,8 @@ private:
      */
     Q_INVOKABLE void command_GET_MENU_ITEMS(const QString &argument, SocketListener *listener);
 
-    /// Direct Editing
-    Q_INVOKABLE void command_EDIT(const QString &localFile, SocketListener *listener);
-    DirectEditor* getDirectEditorForLocalFile(const QString &localFile);
-
     QString buildRegisterPathMessage(const QString &path);
     QString buildRegisterFsMessage();
-
     Q_INVOKABLE void command_SET_DOWNLOAD_MODE(const QString& argument, SocketListener* listener);
     Q_INVOKABLE void command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener);
 

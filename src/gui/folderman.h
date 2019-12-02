@@ -87,7 +87,7 @@ public:
       */
     QStringList findFileInLocalFolders(const QString &relPath, const AccountPtr acc);
 
-    /** Returns the folder by alias or \c nullptr if no folder with the alias exists. */
+    /** Returns the folder by alias or NULL if no folder with the alias exists. */
     Folder *folder(const QString &);
 
     /**
@@ -239,9 +239,6 @@ public slots:
     /** Wipe folder */
     void slotWipeFolderForAccount(AccountState *accountState);
 
-    // slot to take the next folder from queue and start syncing.
-    void slotStartScheduledFolderSync();
-
 private slots:
     void slotFolderSyncPaused(Folder *, bool paused);
     void slotFolderCanSyncChanged();
@@ -251,6 +248,8 @@ private slots:
     void slotRunOneEtagJob();
     void slotEtagJobDestroyed(QObject *);
 
+    // slot to take the next folder from queue and start syncing.
+    void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
 
     void slotRemoveFoldersForAccount(AccountState *accountState);
@@ -305,9 +304,9 @@ private:
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
     QString _folderConfigPath;
-    Folder *_currentSyncFolder = nullptr;
+    Folder *_currentSyncFolder;
     QPointer<Folder> _lastSyncFolder;
-    bool _syncEnabled = true;
+    bool _syncEnabled;
 
     /// Starts regular etag query jobs
     QTimer _etagPollTimer;
@@ -329,7 +328,7 @@ private:
     QScopedPointer<SocketApi> _socketApi;
     NavigationPaneHelper _navigationPaneHelper;
 
-    bool _appRestartRequired = false;
+    bool _appRestartRequired;
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = nullptr);

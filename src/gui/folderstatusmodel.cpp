@@ -43,11 +43,15 @@ static QString removeTrailingSlash(const QString &s)
 
 FolderStatusModel::FolderStatusModel(QObject *parent)
     : QAbstractItemModel(parent)
+    , _accountState(nullptr)
+    , _dirty(false)
 {
 
 }
 
-FolderStatusModel::~FolderStatusModel() = default;
+FolderStatusModel::~FolderStatusModel()
+{
+}
 
 static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo &lhs, const FolderStatusModel::SubFolderInfo &rhs)
 {
@@ -155,9 +159,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return x._checked;
         case Qt::DecorationRole:
             if (_accountState->account()->e2e()->isFolderEncrypted(x._path)) {
-                return QIcon(QLatin1String(":/client/theme/lock-https.svg"));
-            } else if (x._size > 0 && _accountState->account()->e2e()->isAnyParentFolderEncrypted(x._path)) {
-                return QIcon(QLatin1String(":/client/theme/lock-broken.svg"));
+                return QIcon(QLatin1String(":/client/resources/lock-https.png"));
             }
             return QFileIconProvider().icon(x._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
         case Qt::ForegroundRole:
@@ -184,7 +186,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 return QVariant(tr("Error while loading the list of folders from the server.")
                     + QString("\n") + x->_lastErrorString);
             } else {
-                return tr("Fetching folder list from server …");
+                return tr("Fetching folder list from server...");
             }
             break;
         default:
@@ -284,7 +286,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
 {
     if (role == Qt::CheckStateRole) {
         auto info = infoForIndex(index);
-        auto checked = static_cast<Qt::CheckState>(value.toInt());
+        Qt::CheckState checked = static_cast<Qt::CheckState>(value.toInt());
 
         if (info && info->_checked != checked) {
             info->_checked = checked;
@@ -426,7 +428,7 @@ FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForFileId(const QByteAr
 QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) const
 {
     if (!f) {
-        return {};
+        return QModelIndex();
     }
 
     int slashPos = path.lastIndexOf('/');
@@ -444,10 +446,10 @@ QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) cons
                         return index(j, 0, index(i));
                     }
                 }
-                return {};
+                return QModelIndex();
             }
         }
-        return {};
+        return QModelIndex();
     }
 
     auto parent = indexForPath(f, path.left(slashPos));
@@ -461,7 +463,7 @@ QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) cons
 
     auto parentInfo = infoForIndex(parent);
     if (!parentInfo) {
-        return {};
+        return QModelIndex();
     }
     for (int i = 0; i < parentInfo->_subs.size(); ++i) {
         if (parentInfo->_subs.at(i)._name == path.mid(slashPos + 1)) {
@@ -469,7 +471,7 @@ QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) cons
         }
     }
 
-    return {};
+    return QModelIndex();
 }
 
 QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex &parent) const
@@ -480,34 +482,34 @@ QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex &par
     switch (classify(parent)) {
     case AddButton:
     case FetchLabel:
-        return {};
+        return QModelIndex();
     case RootFolder:
         if (_folders.count() <= parent.row())
-            return {}; // should not happen
+            return QModelIndex(); // should not happen
         return createIndex(row, column, const_cast<SubFolderInfo *>(&_folders[parent.row()]));
     case SubFolder: {
         auto pinfo = static_cast<SubFolderInfo *>(parent.internalPointer());
         if (pinfo->_subs.count() <= parent.row())
-            return {}; // should not happen
+            return QModelIndex(); // should not happen
         auto &info = pinfo->_subs[parent.row()];
         if (!info.hasLabel()
             && info._subs.count() <= row)
-            return {}; // should not happen
+            return QModelIndex(); // should not happen
         return createIndex(row, column, &info);
     }
     }
-    return {};
+    return QModelIndex();
 }
 
 QModelIndex FolderStatusModel::parent(const QModelIndex &child) const
 {
     if (!child.isValid()) {
-        return {};
+        return QModelIndex();
     }
     switch (classify(child)) {
     case RootFolder:
     case AddButton:
-        return {};
+        return QModelIndex();
     case SubFolder:
     case FetchLabel:
         break;
@@ -587,7 +589,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 			_accountState->account()->e2e()->fetchFolderEncryptedStatus();
 		}
 
-    auto *job = new LsColJob(_accountState->account(), path, this);
+    LsColJob *job = new LsColJob(_accountState->account(), path, this);
     info->_fetchingJob = job;
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size"
@@ -840,7 +842,7 @@ void FolderStatusModel::slotApplySelectiveSync()
         }
         auto folder = _folders.at(i)._folder;
 
-        bool ok = false;
+        bool ok;
         auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if (!ok) {
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
@@ -891,7 +893,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         return; // for https://github.com/owncloud/client/issues/2648#issuecomment-71377909
     }
 
-    auto *f = qobject_cast<Folder *>(sender());
+    Folder *f = qobject_cast<Folder *>(sender());
     if (!f) {
         return;
     }
@@ -1097,15 +1099,15 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
         }
         QString message;
         if (pos <= 0) {
-            message = tr("Waiting …");
+            message = tr("Waiting...");
         } else {
-            message = tr("Waiting for %n other folder(s) …", "", pos);
+            message = tr("Waiting for %n other folder(s)...", "", pos);
         }
         pi = SubFolderInfo::Progress();
         pi._overallSyncString = message;
     } else if (state == SyncResult::SyncPrepare) {
         pi = SubFolderInfo::Progress();
-        pi._overallSyncString = tr("Preparing to sync …");
+        pi._overallSyncString = tr("Preparing to sync...");
     } else if (state == SyncResult::Problem || state == SyncResult::Success) {
         // Reset the progress info after a sync.
         pi = SubFolderInfo::Progress();
@@ -1146,7 +1148,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         }
         auto folder = _folders.at(i)._folder;
 
-        bool ok = false;
+        bool ok;
         auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
         if (!ok) {
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";

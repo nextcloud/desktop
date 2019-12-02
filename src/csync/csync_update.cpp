@@ -63,8 +63,8 @@ static bool _csync_sameextension(const char *p1, const char *p2) {
 
     /* If the found extension contains a '/', it is because the . was in the folder name
      *            => no extensions */
-    if (e1 && strchr(e1, '/')) e1 = nullptr;
-    if (e2 && strchr(e2, '/')) e2 = nullptr;
+    if (e1 && strchr(e1, '/')) e1 = NULL;
+    if (e2 && strchr(e2, '/')) e2 = NULL;
 
     /* If none have extension, it is the same extension */
     if (!e1 && !e2)
@@ -298,9 +298,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               return -1;
           }
 
-          // Default to NEW unless we're sure it's a rename or fuse is telling otherwise
-   //       if (fs->instruction != CSYNC_INSTRUCTION_SYNC)
-			//fs->instruction = CSYNC_INSTRUCTION_NEW;
+          // Default to NEW unless we're sure it's a rename.
+          fs->instruction = CSYNC_INSTRUCTION_NEW;
 
           bool isRename =
               base.isValid() && base._type == fs->type
@@ -447,7 +446,8 @@ out:
 
   ctx->current_fs = fs.get();
 
-  qCInfo(lcUpdate) << "file:" << fs->path << "instruction: " << csync_instruction_str(fs->instruction);
+  qCInfo(lcUpdate, "file: %s, instruction: %s <<=", fs->path.constData(),
+      csync_instruction_str(fs->instruction));
 
   QByteArray path = fs->path;
   switch (ctx->current) {
@@ -551,10 +551,6 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
             st->instruction = CSYNC_INSTRUCTION_IGNORE;
         }
 
-        /*  check if it is offline */
-        if(ctx->statedb->getSyncMode(rec._path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
-            st->instruction = CSYNC_INSTRUCTION_IGNORE;
-
         /* store into result list. */
         files[rec._path] = std::move(st);
         ++count;
@@ -594,9 +590,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
   QByteArray filename;
   QByteArray fullpath;
-  csync_vio_handle_t *dh = nullptr;
+  csync_vio_handle_t *dh = NULL;
   std::unique_ptr<csync_file_stat_t> dirent;
-  csync_file_stat_t *previous_fs = nullptr;
+  csync_file_stat_t *previous_fs = NULL;
   int read_from_db = 0;
   int rc = 0;
 
@@ -621,7 +617,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   // if the etag of this dir is still the same, its content is restored from the
   // database.
   if( do_read_from_db ) {
-      if(!fill_tree_from_db(ctx, db_uri)) {
+      if( ! fill_tree_from_db(ctx, db_uri) ) {
         errno = ENOENT;
         ctx->status_code = CSYNC_STATUS_OPENDIR_ERROR;
         goto error;
@@ -629,7 +625,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       return 0;
   }
 
-  if (!(dh = csync_vio_opendir(ctx, uri))) {
+  if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
       if (ctx->abort) {
           qCDebug(lcUpdate, "Aborted!");
           ctx->status_code = CSYNC_STATUS_ABORTED;
@@ -787,7 +783,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
 error:
   ctx->remote.read_from_db = read_from_db;
-  if (dh) {
+  if (dh != NULL) {
     csync_vio_closedir(ctx, dh);
   }
   return -1;

@@ -66,15 +66,11 @@ csync_s::csync_s(const char *localUri, OCC::SyncJournalDb *statedb)
 
 int csync_update(CSYNC *ctx) {
   int rc = -1;
-  
-  if (!ctx) {
-	  if(ctx->fuseEnabled){
-		qCInfo(lcCSync, "Running FUSE!");
-	  }
+
+  if (ctx == NULL) {
     errno = EBADF;
     return -1;
   }
-
   ctx->status_code = CSYNC_STATUS_OK;
 
   ctx->status_code = CSYNC_STATUS_OK;
@@ -87,26 +83,22 @@ int csync_update(CSYNC *ctx) {
 
   /* update detection for local replica */
   QElapsedTimer timer;
+  timer.start();
+  ctx->current = LOCAL_REPLICA;
 
-  /* we don't do local discovery if fuse is in use */
-  if(!ctx->fuseEnabled){
-      timer.start();
-      ctx->current = LOCAL_REPLICA;
+  qCInfo(lcCSync, "## Starting local discovery ##");
 
-      qCInfo(lcCSync, "## Starting local discovery ##");
-
-      rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
-      if (rc < 0) {
-        if(ctx->status_code == CSYNC_STATUS_OK) {
-            ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
-        }
-        return rc;
-      }
-
-      qCInfo(lcCSync) << "Update detection for local replica took" << timer.elapsed() / 1000.
-                      << "seconds walking" << ctx->local.files.size() << "files";
-      csync_memstat_check();
+  rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
+  if (rc < 0) {
+    if(ctx->status_code == CSYNC_STATUS_OK) {
+        ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
+    }
+    return rc;
   }
+
+  qCInfo(lcCSync) << "Update detection for local replica took" << timer.elapsed() / 1000.
+                  << "seconds walking" << ctx->local.files.size() << "files";
+  csync_memstat_check();
 
   /* update detection for remote replica */
   timer.restart();
@@ -196,7 +188,7 @@ static int _csync_treewalk_visitor(csync_file_stat_t *cur, CSYNC * ctx, const cs
             other_file_it = other_tree->find(renamed_path);
     }
 
-    csync_file_stat_t *other = (other_file_it != other_tree->cend()) ? other_file_it->second.get() : nullptr;
+    csync_file_stat_t *other = (other_file_it != other_tree->cend()) ? other_file_it->second.get() : NULL;
 
     ctx->status_code = CSYNC_STATUS_OK;
 
@@ -242,11 +234,10 @@ int csync_s::reinitialize() {
 
   status_code = CSYNC_STATUS_OK;
 
-  remote.read_from_db = false;
+  remote.read_from_db = 0;
   read_remote_from_db = true;
 
-  //FUSE
-  //local.files.clear();
+  local.files.clear();
   remote.files.clear();
 
   renames.folder_renamed_from.clear();
@@ -265,14 +256,14 @@ csync_s::~csync_s() {
 }
 
 void *csync_get_userdata(CSYNC *ctx) {
-  if (!ctx) {
-    return nullptr;
+  if (ctx == NULL) {
+    return NULL;
   }
   return ctx->callbacks.userdata;
 }
 
 int csync_set_userdata(CSYNC *ctx, void *userdata) {
-  if (!ctx) {
+  if (ctx == NULL) {
     return -1;
   }
 
@@ -282,15 +273,15 @@ int csync_set_userdata(CSYNC *ctx, void *userdata) {
 }
 
 csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
-  if (!ctx) {
-    return nullptr;
+  if (ctx == NULL) {
+    return NULL;
   }
 
   return ctx->callbacks.auth_function;
 }
 
 int csync_set_status(CSYNC *ctx, int status) {
-  if (!ctx || status < 0) {
+  if (ctx == NULL || status < 0) {
     return -1;
   }
 
@@ -300,7 +291,7 @@ int csync_set_status(CSYNC *ctx, int status) {
 }
 
 CSYNC_STATUS csync_get_status(CSYNC *ctx) {
-  if (!ctx) {
+  if (ctx == NULL) {
     return CSYNC_STATUS_ERROR;
   }
 
@@ -314,21 +305,21 @@ const char *csync_get_status_string(CSYNC *ctx)
 
 void csync_request_abort(CSYNC *ctx)
 {
-  if (ctx) {
+  if (ctx != NULL) {
     ctx->abort = true;
   }
 }
 
 void csync_resume(CSYNC *ctx)
 {
-  if (ctx) {
+  if (ctx != NULL) {
     ctx->abort = false;
   }
 }
 
 int  csync_abort_requested(CSYNC *ctx)
 {
-  if (ctx) {
+  if (ctx != NULL) {
     return ctx->abort;
   } else {
     return (1 == 0);
@@ -351,4 +342,3 @@ std::unique_ptr<csync_file_stat_t> csync_file_stat_s::fromSyncJournalFileRecord(
     st->e2eMangledName = rec._e2eMangledName;
     return st;
 }
-

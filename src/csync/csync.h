@@ -149,9 +149,9 @@ enum ItemType {
 typedef struct csync_file_stat_s csync_file_stat_t;
 
 struct OCSYNC_EXPORT csync_file_stat_s {
-  time_t modtime = 0;
-  int64_t size = 0;
-  uint64_t inode = 0;
+  time_t modtime;
+  int64_t size;
+  uint64_t inode;
 
   OCC::RemotePermissions remotePerm;
   ItemType type BITFIELD(4);
@@ -174,15 +174,20 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   QByteArray checksumHeader;
   QByteArray e2eMangledName;
 
-  CSYNC_STATUS error_status = CSYNC_STATUS_OK;
+  CSYNC_STATUS error_status;
 
-  enum csync_instructions_e instruction = CSYNC_INSTRUCTION_NONE; /* u32 */
+  enum csync_instructions_e instruction; /* u32 */
 
   csync_file_stat_s()
-    : type(ItemTypeSkip)
+    : modtime(0)
+    , size(0)
+    , inode(0)
+    , type(ItemTypeSkip)
     , child_modified(false)
     , has_ignored_files(false)
     , is_hidden(false)
+    , error_status(CSYNC_STATUS_OK)
+    , instruction(CSYNC_INSTRUCTION_NONE)
   { }
 
   static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec);
@@ -235,7 +240,7 @@ int OCSYNC_EXPORT csync_reconcile(CSYNC *ctx);
  *
  * @param ctx           The csync context.
  *
- * @return              The userdata saved in the context, \c nullptr if an error
+ * @return              The userdata saved in the context, NULL if an error
  *                      occurred.
  */
 void *csync_get_userdata(CSYNC *ctx);
@@ -257,7 +262,7 @@ int OCSYNC_EXPORT csync_set_userdata(CSYNC *ctx, void *userdata);
  *
  * @param ctx           The csync context.
  *
- * @return              The authentication callback set or \c nullptr if an error
+ * @return              The authentication callback set or NULL if an error
  *                      occurred.
  */
 csync_auth_callback OCSYNC_EXPORT csync_get_auth_callback(CSYNC *ctx);
