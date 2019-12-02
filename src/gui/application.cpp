@@ -243,6 +243,7 @@ Application::Application(int &argc, char **argv)
         this, &Application::slotMountVirtualDrive);
     foreach (auto ai, AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
+		slotMountVirtualDrive(ai.data());
     }
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
@@ -339,7 +340,7 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 
-	slotMountVirtualDrive(accountState);
+	//slotMountVirtualDrive(accountState);
 }
 
 void Application::slotMountVirtualDrive(AccountState *accountState) {
@@ -352,9 +353,27 @@ void Application::slotMountVirtualDrive(AccountState *accountState) {
 #endif
 
 #if defined(Q_OS_WIN)
-    QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-    WCHAR mountLetter = L'X';
-    VfsWindows::instance()->initialize(rootPath, mountLetter, accountState);
+	//FIXME
+	ConfigFile cfgFile;
+	QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+	QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+	QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
+	QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
+
+	if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
+		cfgFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/") 
+			+ Theme::instance()->appName());
+
+	if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
+		cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
+
+	if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
+		cfgFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
+
+	//FIXME
+	WCHAR mountLetter[260] = L"X:\\";
+	wcscpy(mountLetter, availableLogicalDrive.toStdWString().c_str());
+    VfsWindows::instance()->initialize(m_defaultFileStreamMirrorPath, *mountLetter, accountState);
     VfsWindows::instance()->mount();
 #endif
 

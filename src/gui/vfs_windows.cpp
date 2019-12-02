@@ -2693,28 +2693,26 @@ void VfsWindows::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
 		qDebug() << "Error in obtaining the results, comes null";
 }
 
-QList<QString> VfsWindows::getLogicalDrives()
+QString VfsWindows::getAvailableLogicalDrive()
 {
 	QList<QString> availableLetters = {
-		"A:/", "B:/", "C:/", "D:/", "E:/", "F:/", "G:/", "H:/", "I:/", "J:/", "K:/", "L:/", "M:/", "N:/", "O:/", "P:/", "Q:/", "R:/", "S:/", "T:/", "U:/", "V:/", "W:/", "X:/", "Y:/", "Z:/"
+		"C:/", "D:/", "E:/", "F:/", "G:/", "H:/", "I:/", "J:/", "K:/", "L:/", "M:/", "N:/", 
+		"O:/", "P:/", "Q:/", "R:/", "S:/", "T:/", "U:/", "V:/", "W:/", "X:/", "Y:/", "Z:/"
 	};
 
 	foreach(const QStorageInfo &storage, QStorageInfo::mountedVolumes()) {
-		int index = 0;
-		foreach(QString item, availableLetters) {
-			if (item == storage.rootPath()) {
-				availableLetters.removeAt(index);
-			}
-
-			index++;
-		}
+		availableLetters.removeOne(storage.rootPath());
 	}
 
-	foreach(QString item, availableLetters) {
-		qDebug() << item;
+	if (availableLetters.isEmpty()) {
+		availableLetters.append(QString(""));
+
+		//FIXME throw an error?
+		qDebug() << "\n Dokan: " << Q_FUNC_INFO << "There is no logical drive available.";
 	}
 
-	return availableLetters;
+	// only need the letter
+	return availableLetters.first().mid(0, 1);
 }
 
 void VfsWindows::initialize(QString rootPath, WCHAR mountLetter, AccountState *accountState_)

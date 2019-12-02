@@ -71,9 +71,10 @@ public:
 	void startDeleteDirectoryAtPath(QString path, QVariantMap &error);
 	void endDeleteDirectoryAtPath(QString path, QVariantMap &error);
 
+	QString getAvailableLogicalDrive();
+
 private:
 	VfsWindows();
-    QList<QString> getLogicalDrives();
     static VfsWindows *_instance;
     QMap<QString, OCC::DiscoveryDirectoryResult *> _fileListMap;
     QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;

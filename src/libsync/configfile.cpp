@@ -903,10 +903,10 @@ void ConfigFile::setEnableVirtualFileSystem(bool enabled)
     settings.setValue(QLatin1String(enableVirtualFileSysC), enabled);
 }
 
-QString ConfigFile::enableVirtualFileSystem()
+bool ConfigFile::enableVirtualFileSystem()
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(enableVirtualFileSysC), false).toString();
+    return settings.value(QLatin1String(enableVirtualFileSysC), false).toBool();
 }
 
 void ConfigFile::createAuxiliarDirectories()
