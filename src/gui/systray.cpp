@@ -62,11 +62,19 @@ Systray::~Systray()
 {
 }
 
-Q_INVOKABLE QIcon Systray::currentAvatar() const
+// TODO: Lots of memory shifting here
+// Probably OK because the avatar is not changing a trillion times per second
+// But should consider moving to a generic ImageProvider helper class for img/QML-provision
+Q_INVOKABLE QString Systray::currentAvatar() const
 {
-    QImage userAvatarImg = _currentAccount->account()->avatar();
-    QIcon userAvatar(QPixmap::fromImage(userAvatarImg));
-    return userAvatar;
+    QByteArray bArray;
+    QBuffer buffer(&bArray);
+    buffer.open(QIODevice::WriteOnly);
+    AvatarJob::makeCircularAvatar(_currentAccount->account()->avatar()).save(&buffer, "PNG");
+
+    QString img("data:image/png;base64,");
+    img.append(QString::fromLatin1(bArray.toBase64().data()));
+    return img;
 }
 
 Q_INVOKABLE QString Systray::currentAccountServer() const

@@ -136,7 +136,9 @@ Window {
                             height: (trayWindowHeaderBackground.height - 12)
                             Layout.leftMargin: 6
                             verticalAlignment: Qt.AlignCenter
-                            source: "image://avatars/current.png"
+                            source: systrayBackend.currentAvatar()
+                            Layout.preferredHeight: (trayWindowHeaderBackground.height -12)
+                            Layout.preferredWidth: (trayWindowHeaderBackground.height -12)
                         }
 
                         Column {
