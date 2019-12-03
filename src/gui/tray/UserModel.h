@@ -4,21 +4,21 @@
 #include <QAbstractListModel>
 #include <QStringList>
 
+#include "accountmanager.h"
+
 namespace OCC {
 
 class User
 {
 public:
-    User(const QString &name, const QString &server, const QString &avatar);
+    User(const AccountStatePtr &account);
 
     QString name() const;
     QString server() const;
     QString avatar() const;
 
 private:
-    QString _name;
-    QString _server;
-    QString _avatar;
+    AccountStatePtr _account;
 };
 
 class UserModel : public QAbstractListModel
@@ -35,6 +35,10 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
+    Q_INVOKABLE QString currentUserAvatar();
+    Q_INVOKABLE QString currentUserName();
+    Q_INVOKABLE QString currentUserServer();
+
     enum UserRoles {
         NameRole = Qt::UserRole + 1,
         ServerRole,
@@ -46,6 +50,7 @@ protected:
 
 private:
     QList<User> _users;
+    User *_currentUser;
 };
 
 }

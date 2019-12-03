@@ -16,7 +16,7 @@
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
-#include "tray/menumodel.h"
+#include "tray/UserModel.h"
 
 #include <QQmlComponent>
 #include <QQmlEngine>
@@ -55,53 +55,12 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
         slotChangeActivityModel(AccountManager::instance()->accounts().first());
     }
 
-    //_trayContext->setContextProperty("serverTest", QVariant("Test"));
     //connect(AccountManager::instance(), &AccountManager::accountAdded,
     //    this, &Systray::slotChangeActivityModel);
 }
 
 Systray::~Systray()
 {
-}
-
-Q_INVOKABLE int Systray::numAccounts() const
-{
-    return AccountManager::instance()->accounts().size();
-}
-
-// TODO: Lots of memory shifting here
-// Probably OK because the avatar is not changing a trillion times per second
-// But should consider moving to a generic ImageProvider helper class for img/QML-provision
-Q_INVOKABLE QString Systray::currentAvatar() const
-{
-    QByteArray bArray;
-    QBuffer buffer(&bArray);
-    buffer.open(QIODevice::WriteOnly);
-    AvatarJob::makeCircularAvatar(_currentAccount->account()->avatar()).save(&buffer, "PNG");
-
-    QString img("data:image/png;base64,");
-    img.append(QString::fromLatin1(bArray.toBase64().data()));
-    return img;
-}
-
-Q_INVOKABLE QString Systray::currentAccountServer() const
-{
-    QString serverUrl = _currentAccount->account()->url().toString();
-    if (serverUrl.length() > 25) {
-        serverUrl.truncate(23);
-        serverUrl.append(QByteArray("..."));
-    }
-    return serverUrl;
-}
-
-Q_INVOKABLE QString Systray::currentAccountUser() const
-{
-    QString userName = _currentAccount->account()->davDisplayName();
-    if (userName.length() > 19) {
-        userName.truncate(17);
-        userName.append(QByteArray("..."));
-    }
-    return userName;
 }
 
 void Systray::slotChangeActivityModel(const AccountStatePtr account)

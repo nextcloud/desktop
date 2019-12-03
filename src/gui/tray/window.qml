@@ -76,17 +76,9 @@ Window {
                                 radius: 4
                             }
 
-                            /*ListView {
-                                model: systrayBackend
-                                delegate: UserLine {
-                                    text: name
-                                }
-                            }*/
-
                             Instantiator {
                                 model: systrayBackend
-                                delegate: UserLine {
-                                }
+                                delegate: UserLine {}
                                 onObjectAdded: accountMenu.insertItem(index, object)
                                 onObjectRemoved: accountMenu.removeItem(object)
                             }
@@ -156,7 +148,7 @@ Window {
                             height: (trayWindowHeaderBackground.height - 12)
                             Layout.leftMargin: 6
                             verticalAlignment: Qt.AlignCenter
-                            source: systrayBackend.currentAvatar()
+                            source: systrayBackend.currentUserAvatar()
                             Layout.preferredHeight: (trayWindowHeaderBackground.height -12)
                             Layout.preferredWidth: (trayWindowHeaderBackground.height -12)
                         }
@@ -168,14 +160,14 @@ Window {
                             Layout.leftMargin: 6
                             Label {
                                 id: currentAccountUser
-                                text: systrayBackend.currentAccountUser()
+                                text: systrayBackend.currentUserName()
                                 color: "white"
                                 font.pointSize: 9
                                 font.bold: true
                             }
                             Label {
                                 id: currentAccountServer
-                                text: systrayBackend.currentAccountServer()
+                                text: systrayBackend.currentUserServer()
                                 color: "white"
                                 font.pointSize: 8
                             }
