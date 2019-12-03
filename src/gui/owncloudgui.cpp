@@ -1118,10 +1118,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     //
     // The correct value will be found with a propfind from ShareDialog.
     // (we want to show the dialog directly, not wait for the propfind first)
-    SharePermissions maxSharingPermissions =
-        SharePermissionRead
-        | SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete
-        | SharePermissionShare;
+    SharePermissions maxSharingPermissions = static_cast<SharePermissions>(accountState->account()->capabilities().defaultPermissions());
     if (!resharingAllowed) {
         maxSharingPermissions = SharePermission(0);
     }

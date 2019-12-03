@@ -43,6 +43,10 @@ public:
     bool sharePublicLinkEnforceExpireDate() const;
     bool sharePublicLinkMultiple() const;
     bool shareResharing() const;
+
+    // TODO: return SharePermission
+    int defaultPermissions() const;
+
     bool chunkingNg() const;
     QString zsyncSupportedVersion() const;
 
