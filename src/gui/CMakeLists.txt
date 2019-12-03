@@ -37,6 +37,7 @@ set(client_UI_SRCS
     mnemonicdialog.ui
     tray/init.qml
     tray/window.qml
+    tray/UserLine.qml
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
@@ -107,6 +108,7 @@ set(client_SRCS
     elidedlabel.cpp
     iconjob.cpp
     remotewipe.cpp
+    tray/menumodel.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp

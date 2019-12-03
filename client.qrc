@@ -34,5 +34,6 @@
     <qresource prefix="/qml">
         <file>src/gui/tray/init.qml</file>
         <file>src/gui/tray/window.qml</file>
+        <file>src/gui/tray/UserLine.qml</file>
     </qresource>
 </RCC>

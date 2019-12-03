@@ -1,3 +1,4 @@
+import QtQml 2.2
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
@@ -14,11 +15,11 @@ Window {
     flags: Qt.FramelessWindowHint
 
     Component.onCompleted: {
-            /* desktopAvailableWidth and Height doesn't include the system tray bar
+        /* desktopAvailableWidth and Height doesn't include the system tray bar
                but breaks application anyway on windows when using multi monitor setup,
                will look for a better solution later, for now just get this thing complete */
-            //setX(Screen.desktopAvailableWidth - width);
-            //setY(Screen.desktopAvailableHeight + height);
+        //setX(Screen.desktopAvailableWidth - width);
+        //setY(Screen.desktopAvailableHeight + height);
     }
 
     Rectangle {
@@ -61,21 +62,40 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
-                            accountMenu.popup()
+                            accountMenu.open()
                         }
 
                         Menu {
                             id: accountMenu
-                            background:
-                                Rectangle {
-                                    id: menubackground
-                                    implicitWidth: 200
-                                    implicitHeight: 40
-                                    anchors.fill: parent
-                                    radius: 10
-                                }
+                            x: (currentAccountButton.x + 2)
+                            y: (currentAccountButton.y + currentAccountButton.height + 2)
+                            width: (currentAccountButton.width - 4)
 
-                            MenuItem { text: "test" }
+                            background: Rectangle {
+                                border.color: "#0082c9"
+                                radius: 4
+                            }
+
+                            /*ListView {
+                                model: systrayBackend
+                                delegate: UserLine {
+                                    text: name
+                                }
+                            }*/
+
+                            Instantiator {
+                                model: systrayBackend
+                                delegate: UserLine {
+                                }
+                                onObjectAdded: accountMenu.insertItem(index, object)
+                                onObjectRemoved: accountMenu.removeItem(object)
+                            }
+
+                            MenuSeparator {}
+
+                            MenuItem { text: "Login/Logout" }
+                            MenuItem { text: "Add Account" }
+                            MenuItem { text: "Remove Account" }
                         }
                     }
 
@@ -84,46 +104,46 @@ Window {
                         id: leftHoverContainer
                         height: currentAccountButton.height
                         width: currentAccountButton.width
+                        Rectangle {
+                            width: currentAccountButton.width / 2
+                            height: currentAccountButton.height / 2
+                            color: "transparent"
+                            clip: true
                             Rectangle {
-                                width: currentAccountButton.width / 2
-                                height: currentAccountButton.height / 2
-                                color: "transparent"
-                                clip: true
-                                Rectangle {
-                                    width: currentAccountButton.width
-                                    height: currentAccountButton.height
-                                    radius: 10
-                                    color: "white"
-                                    opacity: 0.2
-                                    visible: accountBtnMouseArea.containsMouse
-                                }
-                            }
-                            Rectangle {
-                                width: currentAccountButton.width / 2
-                                height: currentAccountButton.height / 2
-                                anchors.bottom: leftHoverContainer.bottom
-                                color: "white"
-                                opacity: 0.2
-                                visible: accountBtnMouseArea.containsMouse
-                            }
-                            Rectangle {
-                                width: currentAccountButton.width / 2
-                                height: currentAccountButton.height / 2
-                                anchors.right: leftHoverContainer.right
-                                color: "white"
-                                opacity: 0.2
-                                visible: accountBtnMouseArea.containsMouse
-                            }
-                            Rectangle {
-                                width: currentAccountButton.width / 2
-                                height: currentAccountButton.height / 2
-                                anchors.right: leftHoverContainer.right
-                                anchors.bottom: leftHoverContainer.bottom
+                                width: currentAccountButton.width
+                                height: currentAccountButton.height
+                                radius: 10
                                 color: "white"
                                 opacity: 0.2
                                 visible: accountBtnMouseArea.containsMouse
                             }
                         }
+                        Rectangle {
+                            width: currentAccountButton.width / 2
+                            height: currentAccountButton.height / 2
+                            anchors.bottom: leftHoverContainer.bottom
+                            color: "white"
+                            opacity: 0.2
+                            visible: accountBtnMouseArea.containsMouse
+                        }
+                        Rectangle {
+                            width: currentAccountButton.width / 2
+                            height: currentAccountButton.height / 2
+                            anchors.right: leftHoverContainer.right
+                            color: "white"
+                            opacity: 0.2
+                            visible: accountBtnMouseArea.containsMouse
+                        }
+                        Rectangle {
+                            width: currentAccountButton.width / 2
+                            height: currentAccountButton.height / 2
+                            anchors.right: leftHoverContainer.right
+                            anchors.bottom: leftHoverContainer.bottom
+                            color: "white"
+                            opacity: 0.2
+                            visible: accountBtnMouseArea.containsMouse
+                        }
+                    }
 
                     RowLayout {
                         id: accountControlRowLayout
@@ -202,10 +222,10 @@ Window {
                     }
 
                     background:
-                       Rectangle {
+                        Rectangle {
                         color: folderBtnMouseArea.containsMouse ? "white" : "transparent"
                         opacity: 0.2
-                       }
+                    }
                 }
 
                 Button {
@@ -227,13 +247,13 @@ Window {
                         onClicked:
                         {
                         }
-                     }
+                    }
 
-                     background:
+                    background:
                         Rectangle {
-                         color: talkBtnMouseArea.containsMouse ? "white" : "transparent"
-                         opacity: 0.2
-                        }
+                        color: talkBtnMouseArea.containsMouse ? "white" : "transparent"
+                        opacity: 0.2
+                    }
                 }
 
                 Button {
@@ -255,9 +275,9 @@ Window {
                         onClicked:
                         {
                         }
-                     }
+                    }
 
-                     background:
+                    background:
                         Item {
                         id: rightHoverContainer
                         height: trayWindowAppsButton.height
@@ -286,24 +306,24 @@ Window {
                             opacity: 0.2
                             visible: appsBtnMouseArea.containsMouse
                         }
+                        Rectangle {
+                            id: rightHoverContainerClipper
+                            anchors.right: rightHoverContainer.right
+                            width: trayWindowAppsButton.width / 2
+                            height: trayWindowAppsButton.height / 2
+                            color: "transparent"
+                            clip: true
                             Rectangle {
-                                id: rightHoverContainerClipper
-                                anchors.right: rightHoverContainer.right
-                                width: trayWindowAppsButton.width / 2
-                                height: trayWindowAppsButton.height / 2
-                                color: "transparent"
-                                clip: true
-                                Rectangle {
-                                    width: trayWindowAppsButton.width
-                                    height: trayWindowAppsButton.height
-                                    anchors.right: rightHoverContainerClipper.right
-                                    radius: 10
-                                    color: "white"
-                                    opacity: 0.2
-                                    visible: appsBtnMouseArea.containsMouse
-                                }
+                                width: trayWindowAppsButton.width
+                                height: trayWindowAppsButton.height
+                                anchors.right: rightHoverContainerClipper.right
+                                radius: 10
+                                color: "white"
+                                opacity: 0.2
+                                visible: appsBtnMouseArea.containsMouse
                             }
                         }
+                    }
                 }
             }
         }   // Rectangle trayWindowHeaderBackground

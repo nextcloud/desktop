@@ -14,9 +14,9 @@
 
 #include "accountmanager.h"
 #include "systray.h"
-#include "../common/utility.h"
 #include "theme.h"
 #include "config.h"
+#include "tray/menumodel.h"
 
 #include <QQmlComponent>
 #include <QQmlEngine>
@@ -36,13 +36,15 @@ namespace OCC {
 Systray::Systray() // TODO: make singleton, provide ::instance()
     : _currentAccount(nullptr)
     , _trayContext(nullptr)
+    , _accountMenuModel(nullptr)
 {
     // Create QML tray engine, build component, set C++ backend context used in window.qml
     QQmlEngine *engine = new QQmlEngine;
     QQmlComponent systray(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/init.qml")));
     _trayContext = engine->contextForObject(systray.create());
 
-    systray.engine()->rootContext()->setContextProperty("systrayBackend", this);
+    _accountMenuModel = new UserModel();
+    systray.engine()->rootContext()->setContextProperty("systrayBackend", _accountMenuModel);
 
     // TODO: hack to pass the icon to QML
     //ctxt->setContextProperty("theme", QLatin1String("colored"));
@@ -60,6 +62,11 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
 
 Systray::~Systray()
 {
+}
+
+Q_INVOKABLE int Systray::numAccounts() const
+{
+    return AccountManager::instance()->accounts().size();
 }
 
 // TODO: Lots of memory shifting here

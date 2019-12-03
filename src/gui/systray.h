@@ -19,6 +19,7 @@
 #include <QQmlContext>
 
 #include "accountmanager.h"
+#include "tray/menumodel.h"
 
 class QIcon;
 
@@ -46,9 +47,11 @@ public:
     ~Systray();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
+
     Q_INVOKABLE QString currentAvatar() const;
     Q_INVOKABLE QString currentAccountServer() const;
     Q_INVOKABLE QString currentAccountUser() const;
+    Q_INVOKABLE int numAccounts() const;
 
 signals:
     void currentUserChanged();
@@ -59,6 +62,7 @@ private slots:
 private:
     AccountStatePtr _currentAccount;
     QQmlContext *_trayContext;
+    UserModel *_accountMenuModel;
 };
 
 } // namespace OCC
