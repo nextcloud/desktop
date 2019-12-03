@@ -1,6 +1,8 @@
 #include "accountmanager.h"
 #include "UserModel.h"
 
+#include <QIcon>
+
 namespace OCC {
 
 User::User(const AccountStatePtr &account)
@@ -10,7 +12,8 @@ User::User(const AccountStatePtr &account)
 
 QString User::name() const
 {
-    return _account->account()->davDisplayName();
+    // If davDisplayName is empty (can be several reasons, simplest is missing login at startup), fall back to username
+    return (_account->account()->davDisplayName() == "") ? _account->account()->credentials()->user() : _account->account()->davDisplayName();
 }
 
 QString User::server() const
@@ -31,25 +34,81 @@ QString User::avatar() const
     buffer.open(QIODevice::WriteOnly);
     AvatarJob::makeCircularAvatar(_account->account()->avatar()).save(&buffer, "PNG");
 
+    // If AvatarJob doesn't deliver anything, fall back to placeholder image (may be due to missing login session)
+    if (buffer.size() == 0) {
+        QIcon(":/client/resources/account.svg").pixmap(QSize(250, 250)).save(&buffer, "PNG");
+    }
+
     QString img("data:image/png;base64,");
     img.append(QString::fromLatin1(bArray.toBase64().data()));
     return img;
+}
+
+QString User::id() const
+{
+    return _account->account()->id();
+}
+
+bool User::isConnected() const
+{
+    return (_account->connectionStatus() == AccountState::ConnectionStatus::Connected);
+}
+
+void User::login()
+{
+    _account->signIn();
+}
+
+void User::logout()
+{
+    _account->signOutByUi();
 }
 
 /*-------------------------------------------------------------------------------------*/
 
 UserModel::UserModel(QObject *parent)
     : QAbstractListModel()
-    , _currentUser()
+    , _currentUser(nullptr)
 {
-    for (int i = 0; i < AccountManager::instance()->accounts().size(); i++) {
-        addUser(User(AccountManager::instance()->accounts().at(i)));
+    // TODO: Remember selected user from last quit via settings file
+    //  this is the reason why this looks like an unnecessary double check atm
+    if (AccountManager::instance()->accounts().size() > 0) {
+        addCurrentUser(AccountManager::instance()->accounts().first());
+    } else {
+        return;
     }
-    _currentUser = &_users.first();
+
+    for (int i = 0; i < AccountManager::instance()->accounts().size(); i++) {
+        auto user = AccountManager::instance()->accounts().at(i);
+        if (user->account()->id() != _currentUser->id()) {
+            addUser(user);
+        }
+    }
 }
 
 UserModel::~UserModel()
 {
+}
+
+Q_INVOKABLE void UserModel::login()
+{
+    _currentUser->login();
+}
+
+Q_INVOKABLE void UserModel::logout()
+{
+    _currentUser->logout();
+}
+
+Q_INVOKABLE int UserModel::numUsers()
+{
+    auto test = _users.size();
+    return _users.size();
+}
+
+Q_INVOKABLE bool UserModel::isCurrentUserConnected()
+{
+    return _currentUser->isConnected();
 }
 
 Q_INVOKABLE QString UserModel::currentUserAvatar()
@@ -72,6 +131,11 @@ void UserModel::addUser(const User &user)
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     _users << user;
     endInsertRows();
+}
+
+void UserModel::addCurrentUser(const User &user)
+{
+    _currentUser = new User(user);
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const

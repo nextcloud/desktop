@@ -83,11 +83,24 @@ Window {
                                 onObjectRemoved: accountMenu.removeItem(object)
                             }
 
-                            MenuSeparator {}
+                            MenuSeparator { id: accountMenuSeparator }
 
-                            MenuItem { text: "Login/Logout" }
+                            MenuItem {
+                                text: (systrayBackend.isCurrentUserConnected() ? "Logout" : "Login")
+                                onClicked: (systrayBackend.isCurrentUserConnected()
+                                            ? systrayBackend.logout()
+                                            : systrayBackend.login() )
+                            }
                             MenuItem { text: "Add Account" }
                             MenuItem { text: "Remove Account" }
+
+                            Component.onCompleted: {
+                                if(systrayBackend.numUsers() === 0) {
+                                    accountMenuSeparator.height = 0
+                                } else {
+                                    accountMenuSeparator.height = 13
+                                }
+                            }
                         }
                     }
 
@@ -144,13 +157,11 @@ Window {
                         spacing: 0
                         Image {
                             id: currentAccountAvatar
-                            width: (trayWindowHeaderBackground.height - 12)
-                            height: (trayWindowHeaderBackground.height - 12)
-                            Layout.leftMargin: 6
+                            Layout.leftMargin: 8
                             verticalAlignment: Qt.AlignCenter
                             source: systrayBackend.currentUserAvatar()
-                            Layout.preferredHeight: (trayWindowHeaderBackground.height -12)
-                            Layout.preferredWidth: (trayWindowHeaderBackground.height -12)
+                            Layout.preferredHeight: (trayWindowHeaderBackground.height -16)
+                            Layout.preferredWidth: (trayWindowHeaderBackground.height -16)
                         }
 
                         Column {

@@ -11,6 +11,7 @@
         <file>resources/lock-https.png</file>
         <file>resources/lock-https@2x.png</file>
         <file>resources/account.png</file>
+        <file>resources/account.svg</file>
         <file>resources/more.svg</file>
         <file>resources/delete.png</file>
         <file>resources/close.svg</file>

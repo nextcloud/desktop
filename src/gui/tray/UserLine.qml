@@ -13,6 +13,7 @@ MenuItem {
 
     Rectangle {
         id: userLineBackground
+        height: 60
         anchors.fill: parent
         color: "transparent"
 
@@ -45,20 +46,18 @@ MenuItem {
                     spacing: 0
                     Image {
                         id: currentAccountAvatar
-                        width: (userLineBackground.height - 12)
-                        height: (userLineBackground.height - 12)
                         Layout.leftMargin: 6
                         verticalAlignment: Qt.AlignCenter
                         source: avatar
-                        Layout.preferredHeight: (userLineBackground.height -12)
-                        Layout.preferredWidth: (userLineBackground.height -12)
+                        Layout.preferredHeight: (userLineBackground.height -16)
+                        Layout.preferredWidth: (userLineBackground.height -16)
                     }
 
                     Column {
                         id: accountLabels
                         spacing: 4
                         Layout.alignment: Qt.AlignLeft
-                        Layout.leftMargin: 6
+                        Layout.leftMargin: 12
                         Label {
                             id: currentAccountUser
                             text: name
@@ -72,6 +71,11 @@ MenuItem {
                             color: "black"
                             font.pointSize: 8
                         }
+                    }
+
+                    Item {
+                        id: userLineSpacer
+                        Layout.fillWidth: true
                     }
                 }
             }
