@@ -400,6 +400,14 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   return 1;
               }
           }
+
+		  if (ctx->virtualDriveEnabled) {
+			  if (fs->instruction == CSYNC_INSTRUCTION_NEW
+				  && fs->virtualdrive
+				  && ctx->current == REMOTE_REPLICA) {
+				  fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+			  }
+		  }
           goto out;
       }
   }
