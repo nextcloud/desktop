@@ -104,10 +104,14 @@ VfsMac::VfsMac(QString rootPath, bool isThreadSafe, OCC::AccountState *accountSt
 
     // "talk" to the sync engine
     _syncWrapper = OCC::SyncWrapper::instance();
-    connect(this, &VfsMac::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::QueuedConnection);
-    connect(this, &VfsMac::deleteFile, _syncWrapper, &OCC::SyncWrapper::deleteFileAtPath, Qt::QueuedConnection);
-    connect(this, &VfsMac::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::QueuedConnection);
+    connect(this, &VfsMac::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::QueuedConnection);
     connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &VfsMac::slotSyncFinish, Qt::QueuedConnection);
+
+	connect(this, &VfsMac::createItem, _syncWrapper, &OCC::SyncWrapper::createItemAtPath, Qt::QueuedConnection);
+    connect(this, &VfsMac::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::QueuedConnection);
+    connect(this, &VfsMac::releaseFile, _syncWrapper, &OCC::SyncWrapper::releaseFileAtPath, Qt::QueuedConnection);
+    connect(this, &VfsMac::deleteItem, _syncWrapper, &OCC::SyncWrapper::deleteItemAtPath, Qt::QueuedConnection);
+    connect(this, &VfsMac::move, _syncWrapper, &OCC::SyncWrapper::moveItemAtPath, Qt::QueuedConnection);
 }
 
 bool VfsMac::enableAllocate() {
@@ -493,6 +497,7 @@ bool VfsMac::createDirectoryAtPath(QString path, QVariantMap attributes, QVarian
 {
     QString p = rootPath_ + path;
     FileManager fm;
+    emit createItem(path);
     return fm.createDirectory(p, attributes, error);
 }
 
@@ -500,6 +505,7 @@ bool VfsMac::createFileAtPath(QString path, QVariantMap attributes, int flags, Q
 {
     QString p = rootPath_ + path;
     FileManager fm;
+    emit createItem(path);
     return fm.createFileAtPath(p, attributes, flags, userData, error);
 }
 
@@ -520,6 +526,8 @@ bool VfsMac::removeItemAtPath(QString path, QVariantMap &error)
 {
     QString p = rootPath_ + path;
     FileManager fs;
+
+	emit deleteItem(path);
     return fs.removeItemAtPath(p, error);
 }
 
@@ -529,6 +537,10 @@ bool VfsMac::moveItemAtPath(QString source, QString destination, QVariantMap &er
 {
     // We use rename directly here since NSFileManager can sometimes fail to
     // rename and return non-posix error codes.
+	
+	//Todo: remove old path
+    emit move(destination);
+
     QString p_src = rootPath_  + source;
     QString p_dst = rootPath_ + destination;
     int ret = rename(p_src.toLatin1().data(), p_dst.toLatin1().data());
@@ -625,7 +637,6 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                     close(fd.toInt());
                 }
             }
-            // update file tree here?
         }
     }
 
@@ -724,7 +735,7 @@ void VfsMac::releaseFileAtPath(QString path, QVariant userData)
     if(nameBuffer == "Finder")
     {
         qDebug() << "FUSE releaseFileAtPath: " << path;
-        //emit writeFile(path);
+        emit releaseFile(path);
     }
 
     long num = userData.toLongLong();
@@ -746,15 +757,6 @@ int VfsMac::readFileAtPath(QString path, QVariant userData, char *buffer, size_t
 
 int VfsMac::writeFileAtPath(QString path, QVariant userData, const char *buffer, size_t size, off_t offset, QVariantMap &error)
 {
-    struct fuse_context *context = fuse_get_context();
-    QString nameBuffer = QString::fromLatin1(getProcessName(context->pid));
-    qDebug() << "JJDCname: " << nameBuffer;
-    if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite" && nameBuffer != "mds")
-    {
-        qDebug() << "FUSE writeFileAtPath: " << path;
-        //emit writeFile(path);
-    }
-
     long num = userData.toLongLong();
     int fd = num;
     int ret = pwrite(fd, buffer, size, offset);
