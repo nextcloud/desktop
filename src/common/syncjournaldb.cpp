@@ -960,7 +960,9 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         _setFileRecordQuery.bindValue(15, checksum);
         _setFileRecordQuery.bindValue(16, contentChecksumTypeId);
         _setFileRecordQuery.bindValue(17, record._e2eMangledName);
-		_setFileRecordQuery.bindValue(18, 0);
+		//1 is 0 byte file or new fine, do not sync, 0 is touched by the user, 
+		//it should sync on open
+		_setFileRecordQuery.bindValue(18, 1);
 
         if (!_setFileRecordQuery.exec()) {
             return false;
@@ -1347,9 +1349,25 @@ bool SyncJournalDb::setFileRecordMetadata(const SyncJournalFileRecord &record)
     existing._fileSize = record._fileSize;
     existing._serverHasIgnoredFiles = record._serverHasIgnoredFiles;
     existing._e2eMangledName = record._e2eMangledName;
+    return setFileRecord(existing);
+}
+
+bool SyncJournalDb::setFileRecordVirtualFile(const SyncJournalFileRecord &record)
+{
+    SyncJournalFileRecord existing;
+    if (!getFileRecord(record._path, &existing))
+        return false;
+
+    // If there's no existing record, just insert the new one.
+    if (!existing.isValid()) {
+        return setFileRecord(record);
+    }
+
+    // Update the virtualfile flag on the existing record.
 	existing._virtualfile = record._virtualfile;
     return setFileRecord(existing);
 }
+
 
 static void toDownloadInfo(SqlQuery &query, SyncJournalDb::DownloadInfo *res)
 {
