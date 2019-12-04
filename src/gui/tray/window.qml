@@ -73,7 +73,7 @@ Window {
 
                             background: Rectangle {
                                 border.color: "#0082c9"
-                                radius: 4
+                                radius: 2
                             }
 
                             Instantiator {
@@ -91,8 +91,14 @@ Window {
                                             ? systrayBackend.logout()
                                             : systrayBackend.login() )
                             }
-                            MenuItem { text: "Add Account" }
-                            MenuItem { text: "Remove Account" }
+                            MenuItem {
+                                text: "Add Account"
+                                onClicked: systrayBackend.addAccount()
+                            }
+                            MenuItem {
+                                text: "Remove Account"
+                                onClicked: systrayBackend.removeAccount()
+                            }
 
                             Component.onCompleted: {
                                 if(systrayBackend.numUsers() === 0) {

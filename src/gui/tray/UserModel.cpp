@@ -14,7 +14,15 @@ User::User(const AccountStatePtr &account)
 QString User::name() const
 {
     // If davDisplayName is empty (can be several reasons, simplest is missing login at startup), fall back to username
-    return (_account->account()->davDisplayName() == "") ? _account->account()->credentials()->user() : _account->account()->davDisplayName();
+    QString name = _account->account()->davDisplayName();
+    if (name == "") {
+        name = _account->account()->credentials()->user();
+    }
+    if (name.size() > 19) {
+        name.truncate(17);
+        name.append("...");
+    }
+    return name;
 }
 
 QString User::server() const
@@ -22,6 +30,10 @@ QString User::server() const
     QString serverUrl = _account->account()->url().toString();
     serverUrl.replace(QLatin1String("https://"), QLatin1String(""));
     serverUrl.replace(QLatin1String("http://"), QLatin1String(""));
+    if (serverUrl.size() > 24) {
+        serverUrl.truncate(22);
+        serverUrl.append("...");
+    }
     return serverUrl;
 }
 
@@ -53,17 +65,6 @@ QString User::id() const
 bool User::isConnected() const
 {
     return (_account->connectionStatus() == AccountState::ConnectionStatus::Connected);
-}
-
-void User::login()
-{
-    _account->account()->resetRejectedCertificates();
-    _account->signIn();
-}
-
-void User::logout()
-{
-    _account->signOutByUi();
 }
 
 /*-------------------------------------------------------------------------------------*/

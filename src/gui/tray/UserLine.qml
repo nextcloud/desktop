@@ -23,7 +23,7 @@ MenuItem {
             anchors.fill: parent
 
             Button {
-                id: currentAccountButton
+                id: accountButton
                 Layout.preferredWidth: 220
                 Layout.preferredHeight: (userLineBackground.height)
                 display: AbstractButton.IconOnly
@@ -31,7 +31,9 @@ MenuItem {
 
                 MouseArea {
                     id: accountBtnMouseArea
-                    anchors.fill: parent
+                    anchors.centerIn: parent
+                    Layout.preferredWidth: (accountButton.width - 4)
+                    Layout.preferredHeight: (accountButton.height - 4)
                     hoverEnabled: true
                     onClicked:
                     {
@@ -41,11 +43,11 @@ MenuItem {
 
                 RowLayout {
                     id: accountControlRowLayout
-                    height: currentAccountButton.height
-                    width: currentAccountButton.width
+                    height: accountButton.height
+                    width: accountButton.width
                     spacing: 0
                     Image {
-                        id: currentAccountAvatar
+                        id: accountAvatar
                         Layout.leftMargin: 6
                         verticalAlignment: Qt.AlignCenter
                         source: avatar
@@ -59,14 +61,14 @@ MenuItem {
                         Layout.alignment: Qt.AlignLeft
                         Layout.leftMargin: 12
                         Label {
-                            id: currentAccountUser
+                            id: accountUser
                             text: name
                             color: "black"
                             font.pointSize: 9
                             font.bold: true
                         }
                         Label {
-                            id: currentAccountServer
+                            id: accountServer
                             text: server
                             color: "black"
                             font.pointSize: 8

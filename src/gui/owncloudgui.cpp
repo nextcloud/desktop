@@ -119,6 +119,8 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::slotLogin);
     connect(UserModel::instance(), &UserModel::logout,
         this, &ownCloudGui::slotLogout);
+    connect(UserModel::instance(), &UserModel::addAccount,
+        this, &ownCloudGui::slotNewAccountWizard);
 }
 
 #ifdef WITH_LIBCLOUDPROVIDERS

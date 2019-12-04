@@ -40,9 +40,6 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-   
-    Q_INVOKABLE void logout();
-
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE bool isCurrentUserConnected();
     Q_INVOKABLE QString currentUserAvatar();
@@ -58,6 +55,8 @@ public:
 signals:
     Q_INVOKABLE void login();
     Q_INVOKABLE void logout();
+    Q_INVOKABLE void addAccount();
+    Q_INVOKABLE void removeAccount();
 
 protected:
     QHash<int, QByteArray> roleNames() const;
