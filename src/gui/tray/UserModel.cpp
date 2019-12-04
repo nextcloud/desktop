@@ -1,4 +1,5 @@
 #include "accountmanager.h"
+#include "owncloudgui.h"
 #include "UserModel.h"
 
 #include <QIcon>
@@ -56,6 +57,7 @@ bool User::isConnected() const
 
 void User::login()
 {
+    _account->account()->resetRejectedCertificates();
     _account->signIn();
 }
 
