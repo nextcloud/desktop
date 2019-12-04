@@ -465,7 +465,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="749"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Impossibile creare la cartella locale &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="803"/>
@@ -490,7 +490,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1035"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Connessione a %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1044"/>
@@ -1225,7 +1225,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Recupero dell&apos;elenco delle cartelle dal server...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
@@ -1274,17 +1274,17 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>Attendere...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>In attesa di %n altra cartella...</numerusform><numerusform>In attesa di %n altre cartelle...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Preparazione della sincronizzazione…</translation>
     </message>
 </context>
 <context>
@@ -1913,7 +1913,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Scaricamento della versione %1. Attendi...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1933,7 +1933,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server …</source>
-        <translation type="unfinished"/>
+        <translation>Controllo server degli aggiornamenti...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1971,7 +1971,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>Connetti…</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2179,7 +2179,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished"/>
+        <translation>Tentativo di connessione a %1 su %2...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2189,7 +2189,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Creazione della cartella locale di sincronizzazione %1... </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="459"/>
@@ -2613,7 +2613,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Caricamento…</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2962,12 +2962,12 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via %1</source>
-        <translation type="unfinished"/>
+        <translation>Condividi tramite %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="628"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Invia collegamento privato tramite email…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
@@ -3663,7 +3663,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Log in …</source>
-        <translation type="unfinished"/>
+        <translation>Accedi...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="701"/>
@@ -3688,7 +3688,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="946"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione di %1 di %2  (%3 rimanenti)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="803"/>
@@ -3704,17 +3704,17 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="789"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Impostazioni…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Nuovo account...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="791"/>
         <source>View more activity …</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza altre attività…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="906"/>
@@ -4164,7 +4164,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Interruzione...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>

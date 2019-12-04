@@ -465,7 +465,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="749"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kunde inte skapa lokal mapp &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="803"/>
@@ -490,7 +490,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1035"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Ansluter till %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1044"/>
@@ -1224,7 +1224,7 @@ Om du fortsätter synkroniseringen kommer alla dina filer återställas med en �
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Hämtar mapplistan från server …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
@@ -1273,17 +1273,17 @@ Om du fortsätter synkroniseringen kommer alla dina filer återställas med en �
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>Väntar ...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Väntat på %n andra mapp(ar) ...</numerusform><numerusform>Väntat på %n andra mapp(ar) ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Förbereder synk ...</translation>
     </message>
 </context>
 <context>
@@ -1913,7 +1913,7 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Hämtar version %1. Vänligen vänta ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1933,7 +1933,7 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server …</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollerar med uppdateringsserver ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1971,7 +1971,7 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>Anslut ...</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2179,7 +2179,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished"/>
+        <translation>Försöker ansluta till %1 på %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2189,7 +2189,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Skapar lokal synkroniseringsmapp %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="459"/>
@@ -2613,7 +2613,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Laddar ...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2962,12 +2962,12 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via %1</source>
-        <translation type="unfinished"/>
+        <translation>Dela via %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="628"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Skicka privat länk med e-post ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
@@ -3663,7 +3663,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Log in …</source>
-        <translation type="unfinished"/>
+        <translation>Logga in ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="701"/>
@@ -3688,7 +3688,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="946"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserar %1 av %2 (%3 kvar)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="803"/>
@@ -3704,17 +3704,17 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="789"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Inställningar ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Nytt konto ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="791"/>
         <source>View more activity …</source>
-        <translation type="unfinished"/>
+        <translation>Visa mer aktivitet ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="906"/>
@@ -4164,7 +4164,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Avbryter ...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>

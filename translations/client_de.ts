@@ -490,7 +490,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1035"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Verbinde zu %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1044"/>
@@ -1224,7 +1224,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Rufe Ordnerliste vom Server ab …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
@@ -1273,7 +1273,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>Warte …</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
@@ -1283,7 +1283,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation wird vorbereitet …</translation>
     </message>
 </context>
 <context>
@@ -1932,7 +1932,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server …</source>
-        <translation type="unfinished"/>
+        <translation>Aktualisierungsserver wird überprüft …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1970,7 +1970,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>Verbinden …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2178,7 +2178,7 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished"/>
+        <translation>Verbindungsversuch mit %1 unter %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2612,7 +2612,7 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Lade …</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -3703,12 +3703,12 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="789"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Einstellungen …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Neues Konto …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="791"/>
@@ -4163,7 +4163,7 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Breche ab …</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>

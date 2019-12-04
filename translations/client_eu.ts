@@ -1003,7 +1003,7 @@ Nahi al duzu zure tokiko fitxategi berrienak gatazkako fitxategi gisa mantentzea
     <message>
         <location filename="../src/gui/folder.cpp" line="1123"/>
         <source>Backup detected</source>
-        <translation>Babes-kopia hauteman da</translation>
+        <translation>Babeskopia detektatu da</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1126"/>

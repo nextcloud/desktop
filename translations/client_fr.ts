@@ -490,7 +490,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1035"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Connexion à %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1044"/>
@@ -1275,17 +1275,17 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>En attente ...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>En attente de %n autre dossier ...</numerusform><numerusform>En attente de %n autres dossiers ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Préparation de la synchronisation ...</translation>
     </message>
 </context>
 <context>
@@ -1935,7 +1935,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server …</source>
-        <translation type="unfinished"/>
+        <translation>Vérification du serveur de mises à jour ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1973,7 +1973,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>Connexion …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2615,7 +2615,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Chargement …</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2965,12 +2965,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
         <source>Share via %1</source>
-        <translation type="unfinished"/>
+        <translation>Partager via %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="628"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer le lien privé par courriel ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
@@ -3666,7 +3666,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Log in …</source>
-        <translation type="unfinished"/>
+        <translation>Connexion …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="701"/>
@@ -3691,7 +3691,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="946"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation de %1 sur %2 (%3 restants)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="803"/>
@@ -3712,12 +3712,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Nouveau compte…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="791"/>
         <source>View more activity …</source>
-        <translation type="unfinished"/>
+        <translation>Afficher plus d&apos;activité…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="906"/>
@@ -4167,7 +4167,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Annulation...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
