@@ -43,7 +43,7 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     QQmlComponent systray(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/init.qml")));
     _trayContext = engine->contextForObject(systray.create());
 
-    _accountMenuModel = new UserModel();
+    _accountMenuModel = UserModel::instance();
     systray.engine()->rootContext()->setContextProperty("systrayBackend", _accountMenuModel);
 
     // TODO: hack to pass the icon to QML

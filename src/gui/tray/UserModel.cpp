@@ -68,6 +68,16 @@ void User::logout()
 
 /*-------------------------------------------------------------------------------------*/
 
+UserModel* UserModel::_instance = nullptr;
+
+UserModel *UserModel::instance()
+{
+    if (_instance == nullptr) {
+        _instance = new UserModel();
+    }
+    return _instance;
+}
+
 UserModel::UserModel(QObject *parent)
     : QAbstractListModel()
     , _currentUser(nullptr)
@@ -86,20 +96,6 @@ UserModel::UserModel(QObject *parent)
             addUser(user);
         }
     }
-}
-
-UserModel::~UserModel()
-{
-}
-
-Q_INVOKABLE void UserModel::login()
-{
-    _currentUser->login();
-}
-
-Q_INVOKABLE void UserModel::logout()
-{
-    _currentUser->logout();
 }
 
 Q_INVOKABLE int UserModel::numUsers()
