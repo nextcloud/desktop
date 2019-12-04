@@ -217,7 +217,10 @@ void AccountSettings::createAccountToolbox()
 
     _addAccountAction = new QAction(tr("Add new"), this);
     menu->addAction(_addAccountAction);
+    
     connect(_addAccountAction, &QAction::triggered, this, &AccountSettings::slotOpenAccountWizard);
+    connect(UserModel::instance(), &UserModel::addAccount,
+        this, &AccountSettings::slotOpenAccountWizard);
 
     _toggleSignInOutAction = new QAction(tr("Log out"), this);
     connect(_toggleSignInOutAction, &QAction::triggered, this, &AccountSettings::slotToggleSignInState);
@@ -225,7 +228,10 @@ void AccountSettings::createAccountToolbox()
 
     QAction *action = new QAction(tr("Remove"), this);
     menu->addAction(action);
+
     connect(action, &QAction::triggered, this, &AccountSettings::slotDeleteAccount);
+    connect(UserModel::instance(), &UserModel::removeAccount,
+        this, &AccountSettings::slotOpenAccountWizard);
 
     ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
     ui->_accountToolbox->setMenu(menu);

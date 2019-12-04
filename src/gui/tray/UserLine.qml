@@ -7,7 +7,7 @@ MenuItem {
 
     id: userLine
     visible: true
-    width: 220
+    width: 216
     height: 60
     //color: "transparent"
 
@@ -24,21 +24,18 @@ MenuItem {
 
             Button {
                 id: accountButton
-                Layout.preferredWidth: 220
-                Layout.preferredHeight: (userLineBackground.height)
+                anchors.centerIn: parent
+                Layout.preferredWidth: (userLine.width - 4)
+                Layout.preferredHeight: (userLineBackground.height - 2)
                 display: AbstractButton.IconOnly
                 flat: true
 
-                MouseArea {
-                    id: accountBtnMouseArea
-                    anchors.centerIn: parent
-                    Layout.preferredWidth: (accountButton.width - 4)
-                    Layout.preferredHeight: (accountButton.height - 4)
-                    hoverEnabled: true
-                    onClicked:
-                    {
-                        //
-                    }
+                background: Rectangle {
+                    color: "transparent"
+                }
+
+                onClicked: {
+                    systrayBackend.switchUser(index)
                 }
 
                 RowLayout {

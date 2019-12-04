@@ -22,6 +22,15 @@ Window {
         //setY(Screen.desktopAvailableHeight + height);
     }
 
+    Connections {
+        target: systrayBackend
+        onRefreshCurrentUserGui: {
+            currentAccountAvatar.source = systrayBackend.currentUserAvatar()
+            currentAccountUser.text = systrayBackend.currentUserName()
+            currentAccountServer.text = systrayBackend.currentUserServer()
+        }
+    }
+
     Rectangle {
         id: trayWindowBackground
         anchors.fill: parent
@@ -189,10 +198,6 @@ Window {
                                 font.pointSize: 8
                             }
                         }
-
-                        /*Item {
-                            Layout.preferredWidth: 6
-                        }*/
 
                         Image {
                             Layout.alignment: Qt.AlignLeft

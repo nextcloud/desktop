@@ -45,6 +45,7 @@ public:
     Q_INVOKABLE QString currentUserAvatar();
     Q_INVOKABLE QString currentUserName();
     Q_INVOKABLE QString currentUserServer();
+    Q_INVOKABLE void switchUser(const int id);
 
     enum UserRoles {
         NameRole = Qt::UserRole + 1,
@@ -58,6 +59,8 @@ signals:
     Q_INVOKABLE void addAccount();
     Q_INVOKABLE void removeAccount();
 
+    Q_INVOKABLE void refreshCurrentUserGui();
+
 protected:
     QHash<int, QByteArray> roleNames() const;
 
@@ -66,6 +69,8 @@ private:
     UserModel(QObject *parent = 0);
     QList<User> _users;
     User *_currentUser;
+
+    void refreshUserList();
 };
 
 }

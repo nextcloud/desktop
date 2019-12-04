@@ -69,7 +69,7 @@ bool User::isConnected() const
 
 /*-------------------------------------------------------------------------------------*/
 
-UserModel* UserModel::_instance = nullptr;
+UserModel *UserModel::_instance = nullptr;
 
 UserModel *UserModel::instance()
 {
@@ -91,9 +91,14 @@ UserModel::UserModel(QObject *parent)
         return;
     }
 
+    refreshUserList();
+}
+
+void UserModel::refreshUserList()
+{
     for (int i = 0; i < AccountManager::instance()->accounts().size(); i++) {
         auto user = AccountManager::instance()->accounts().at(i);
-        if (user->account()->id() != _currentUser->id()) {
+        if ((user->account()->id() != _currentUser->id())) {
             addUser(user);
         }
     }
@@ -123,6 +128,13 @@ Q_INVOKABLE QString UserModel::currentUserName()
 Q_INVOKABLE QString UserModel::currentUserServer()
 {
     return _currentUser->server();
+}
+
+Q_INVOKABLE void UserModel::switchUser(const int id)
+{
+    addCurrentUser(_users.at(id));
+    refreshUserList();
+    emit refreshCurrentUserGui();
 }
 
 void UserModel::addUser(const User &user)
