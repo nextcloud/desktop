@@ -128,12 +128,6 @@ IF( APPLE )
         add_definitions(-DHAVE_SPARKLE)
         list(APPEND updater_SRCS updater/sparkleupdater_mac.mm updater/sparkleupdater.h)
         list(APPEND updater_DEPS ${SPARKLE_LIBRARY})
-
-        # Sparkle.framework is installed from here because macdeployqt's CopyFramework breaks on this bundle
-        # as its logic is tightly tailored around Qt5 frameworks
-        install(DIRECTORY "${SPARKLE_LIBRARY}"
-                DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks" USE_SOURCE_PERMISSIONS)
-
    endif()
 ENDIF()
 
@@ -206,8 +200,7 @@ ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_S
 
 add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
 
-
-if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
+if(NOT APPLE)
     if(NOT WIN32)
         file(GLOB _icons "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
         foreach(_file ${_icons})
@@ -220,29 +213,22 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
 
     # we may not add MACOSX_BUNDLE here, if not building one
-
-    # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
-    add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
 else()
-    # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
-    set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
+    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${OWNCLOUD_BUNDLED_RESOURCES})
 
-    # we must add MACOSX_BUNDLE only if building a bundle
-    add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
+    set_source_files_properties(
+      ${client_I18N}
+      PROPERTIES
+      MACOSX_PACKAGE_LOCATION Resources/Translations
+      )
 
-    set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
-    install(FILES ${client_I18N} DESTINATION ${QM_DIR})
-    get_target_property(_qmake Qt5::qmake LOCATION)
-    execute_process(COMMAND ${_qmake} -query QT_INSTALL_TRANSLATIONS
-        OUTPUT_VARIABLE QT_TRANSLATIONS_DIR
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-    file(GLOB qt_I18N ${QT_TRANSLATIONS_DIR}/qt_??.qm ${QT_TRANSLATIONS_DIR}/qt_??_??.qm)
-    install(FILES ${qt_I18N} DESTINATION ${QM_DIR})
-    file(GLOB qtbase_I18N ${QT_TRANSLATIONS_DIR}/qtbase_??.qm ${QT_TRANSLATIONS_DIR}/qt_??_??.qm)
-    install(FILES ${qtbase_I18N} DESTINATION ${QM_DIR})
-    file(GLOB qtkeychain_I18N ${QT_TRANSLATIONS_DIR}/qtkeychain*.qm)
-    install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
+    set_source_files_properties(
+      ${OWNCLOUD_BUNDLED_RESOURCES}
+      PROPERTIES
+      MACOSX_PACKAGE_LOCATION Resources
+      )
+
+  set_target_properties(${APPLICATION_EXECUTABLE} PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist)
 endif()
 
 add_library(updater STATIC ${updater_SRCS})
@@ -287,14 +273,9 @@ target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "QT_DISABLE_DEPRECA
 
 include(libcloudproviders/libcloudproviders.cmake)
 
-install(TARGETS ${APPLICATION_EXECUTABLE}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        BUNDLE  DESTINATION "."
- )
+install(TARGETS ${APPLICATION_EXECUTABLE} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
-if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
+if(UNIX AND NOT APPLE)
     configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
                    ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
     install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${DATADIR}/applications )
@@ -302,15 +283,8 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
     configure_file(owncloud.xml.in ${APPLICATION_EXECUTABLE}.xml)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.xml DESTINATION ${DATADIR}/mime/packages )
 
-    find_package(ECM 1.2.0 CONFIG)
-    set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
     find_package(SharedMimeInfo)
     if(SharedMimeInfo_FOUND)
         update_xdg_mimetypes( ${DATADIR}/mime/packages )
     endif(SharedMimeInfo_FOUND)
-endif()
-
-if(BUILD_OWNCLOUD_OSX_BUNDLE)
-  get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
-  add_custom_target(macdeployqt "${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py" "${CMAKE_INSTALL_PREFIX}/${OWNCLOUD_OSX_BUNDLE}" "${QT_QMAKE_EXECUTABLE}")
 endif()

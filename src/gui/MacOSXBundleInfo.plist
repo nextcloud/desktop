@@ -9,25 +9,25 @@
 	<key>CFBundleDevelopmentRegion</key>
         <string>English</string>
         <key>CFBundleExecutable</key>
-        <string>@APPLICATION_EXECUTABLE@</string>
+        <string>${APPLICATION_EXECUTABLE}</string>
         <key>CFBundleIconFile</key>
-        <string>@APPLICATION_ICON_NAME@.icns</string>
+        <string>${MACOSX_BUNDLE_ICON_FILE}</string>
         <key>CFBundleIdentifier</key>
-        <string>@APPLICATION_REV_DOMAIN@</string>
+        <string>${APPLICATION_REV_DOMAIN}</string>
         <key>CFBundleInfoDictionaryVersion</key>
         <string>6.0</string>
         <key>CFBundleLongVersionString</key>
-        <string>@APPLICATION_NAME_XML_ESCAPED@ @MIRALL_VERSION_STRING@</string>
+        <string>${APPLICATION_NAME_XML_ESCAPED} ${MIRALL_VERSION_STRING}</string>
         <key>CFBundlePackageType</key>
         <string>APPL</string>
         <key>CFBundleSignature</key>
         <string>????</string>
         <key>CFBundleVersion</key>
-        <string>@MIRALL_VERSION_FULL@</string>
+        <string>${MIRALL_VERSION_FULL}</string>
         <key>CFBundleShortVersionString</key>
-        <string>@MIRALL_VERSION_STRING@</string>
+        <string>${MIRALL_VERSION_STRING}</string>
         <key>NSHumanReadableCopyright</key>
-        <string>(C) 2014-2019 @APPLICATION_VENDOR@</string>
+        <string>(C) 2014-2019 ${APPLICATION_VENDOR}</string>
         <key>SUShowReleaseNotes</key>
         <false/>
         <key>SUPublicDSAKeyFile</key>
@@ -37,11 +37,11 @@
 <array>
     <dict>
         <key>UTTypeIdentifier</key>
-        <string>@APPLICATION_REV_DOMAIN@.VIRTUALFILE</string>
+        <string>${APPLICATION_REV_DOMAIN}.VIRTUALFILE</string>
         <key>UTTypeTagSpecification</key>
         <dict>
             <key>public.filename-extension</key>
-            <string>@APPLICATION_VIRTUALFILE_SUFFIX@</string>
+            <string>${APPLICATION_VIRTUALFILE_SUFFIX}</string>
             <key>public.mime-type</key>
             <string>application/octet-stream</string>
         </dict>
@@ -56,14 +56,14 @@
 <array>
     <dict>
         <key>CFBundleTypeName</key>
-        <string>@APPLICATION_EXECUTABLE@ Download Virtual File</string>
+        <string>${APPLICATION_EXECUTABLE} Download Virtual File</string>
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>LSHandlerRank</key>
         <string>Owner</string>
         <key>LSItemContentTypes</key>
         <array>
-            <string>@APPLICATION_REV_DOMAIN@.VIRTUALFILE</string>
+            <string>${APPLICATION_REV_DOMAIN}.VIRTUALFILE</string>
         </array>
     </dict>
 </array>

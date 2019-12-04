@@ -97,25 +97,6 @@ else()
     set(PLUGINDIR "../PlugIns" CACHE STRING "Extra path to look for Qt plugins like for VFS. May be relative to binary.")
 endif()
 
-#####
-## handle BUILD_OWNCLOUD_OSX_BUNDLE
-# BUILD_OWNCLOUD_OSX_BUNDLE was not initialized OR set to true on OSX
-if(APPLE AND (NOT DEFINED BUILD_OWNCLOUD_OSX_BUNDLE OR BUILD_OWNCLOUD_OSX_BUNDLE))
-    set(BUILD_OWNCLOUD_OSX_BUNDLE ON)
-    set(OWNCLOUD_OSX_BUNDLE "${APPLICATION_EXECUTABLE}.app")
-    set(LIB_INSTALL_DIR "${APPLICATION_EXECUTABLE}.app/Contents/MacOS")
-    set(BIN_INSTALL_DIR "${APPLICATION_EXECUTABLE}.app/Contents/MacOS")
-
-# BUILD_OWNCLOUD_OSX_BUNDLE was disabled on OSX
-elseif(APPLE AND NOT BUILD_OWNCLOUD_OSX_BUNDLE)
-    message(FATAL_ERROR "Building in non-bundle mode on OSX is currently not supported. Comment this error out if you want to work on/test it.")
-
-# any other platform
-else()
-    set(BUILD_OWNCLOUD_OSX_BUNDLE OFF)
-endif()
-#####
-
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms
 option(TOKEN_AUTH_ONLY "TOKEN_AUTH_ONLY" OFF)
@@ -172,7 +153,7 @@ if(BUILD_CLIENT)
         find_package(Sparkle)
     endif(APPLE)
 
-    if(UNIX)
+    if(UNIX AND NOT APPLE)
         find_package(INotify REQUIRED)
     else()
         find_package(INotify)
@@ -202,6 +183,14 @@ endif( WIN32 )
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
 
+
+if(APPLE)
+    list(APPEND OWNCLOUD_BUNDLED_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/sync-exclude.lst)
+elseif(BUILD_CLIENT)
+    configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
+    install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
+endif()
+
 if(BUILD_CLIENT)
     add_subdirectory(src)
     if(NOT BUILD_LIBRARIES_ONLY)
@@ -228,11 +217,4 @@ endif()
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    install(FILES sync-exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
-    configure_file(sync-exclude.lst bin/${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/sync-exclude.lst COPYONLY)
-elseif(BUILD_CLIENT)
-    install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
-    configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
-endif()
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
