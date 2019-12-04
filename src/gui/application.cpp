@@ -281,7 +281,9 @@ Application::Application(int &argc, char **argv)
         if (QDir::isRelativePath(extraPluginPath))
             extraPluginPath = QDir(QApplication::applicationDirPath()).filePath(extraPluginPath);
         qCInfo(lcApplication) << "Adding extra plugin search path:" << extraPluginPath;
-        addLibraryPath(extraPluginPath);
+        QStringList pluginPath = libraryPaths();
+        pluginPath.prepend(extraPluginPath);
+        setLibraryPaths(pluginPath);
     }
 #endif
 
