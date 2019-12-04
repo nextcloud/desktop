@@ -207,6 +207,8 @@ struct OCSYNC_EXPORT csync_s {
 
   bool upload_conflict_files = false;
 
+  bool virtualDriveEnabled = false;
+
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);
   ~csync_s();
   int reinitialize();

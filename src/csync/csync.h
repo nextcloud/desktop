@@ -178,6 +178,8 @@ struct OCSYNC_EXPORT csync_file_stat_s {
 
   enum csync_instructions_e instruction; /* u32 */
 
+  bool virtualdrive BITFIELD(1);
+
   csync_file_stat_s()
     : modtime(0)
     , size(0)
@@ -188,6 +190,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
     , is_hidden(false)
     , error_status(CSYNC_STATUS_OK)
     , instruction(CSYNC_INSTRUCTION_NONE)
+	, virtualdrive(true)
   { }
 
   static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec);
