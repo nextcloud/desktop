@@ -151,6 +151,7 @@ void AccountManager::save(bool saveCredentials)
     qCInfo(lcAccountManager) << "Saved all account settings, status:" << settings->status();
 }
 
+//FIXME Save here the folder mapping to mount the drive
 void AccountManager::saveAccount(Account *a)
 {
     qCInfo(lcAccountManager) << "Saving account" << a->url().toString();

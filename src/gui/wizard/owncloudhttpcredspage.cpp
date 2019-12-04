@@ -154,7 +154,7 @@ bool OwncloudHttpCredsPage::validatePage()
 
 int OwncloudHttpCredsPage::nextId() const
 {
-    return WizardCommon::Page_Result;
+    return WizardCommon::Page_AdvancedSetup;
 }
 
 void OwncloudHttpCredsPage::setConnected()

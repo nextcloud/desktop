@@ -104,8 +104,7 @@ void Flow2AuthCredsPage::slotFlow2AuthResult(Flow2Auth::Result r, const QString 
 
 int Flow2AuthCredsPage::nextId() const
 {
-    //return WizardCommon::Page_AdvancedSetup;
-	return 0;
+    return WizardCommon::Page_AdvancedSetup;
 }
 
 void Flow2AuthCredsPage::setConnected()
