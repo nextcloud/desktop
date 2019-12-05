@@ -15,7 +15,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="450"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation>Çöp kutusuna taşıma işlemi platformda sağlanmıyor.</translation>
+        <translation>Çöp kutusuna taşıma işlemi bu platformda sağlanmıyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
@@ -340,7 +340,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="868"/>
         <source>Connecting to %1...</source>
-        <translation>Bağlanılıyor, %1...</translation>
+        <translation>%1 e bağlanılıyor...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="871"/>
@@ -416,7 +416,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="328"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Uygunluk</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="345"/>
@@ -615,7 +615,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="359"/>
         <source>New notifications for %1, %2 and other accounts.</source>
-        <translation type="unfinished"/>
+        <translation>%1, %2 ve diğer hesaplar için yeni bildirim</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="362"/>
@@ -674,42 +674,42 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="127"/>
+        <location filename="../src/gui/application.cpp" line="128"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Devam etmek &lt;b&gt;bu ayarları silmek anlamına gelir&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="129"/>
+        <location filename="../src/gui/application.cpp" line="130"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Devam etmek &lt;b&gt;bu ayarları iptal etmek anlamına gelir&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="135"/>
+        <location filename="../src/gui/application.cpp" line="136"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="142"/>
+        <location filename="../src/gui/application.cpp" line="143"/>
         <source>Quit</source>
         <translation>Çıkış</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="143"/>
+        <location filename="../src/gui/application.cpp" line="144"/>
         <source>Continue</source>
         <translation>Devam et</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="292"/>
+        <location filename="../src/gui/application.cpp" line="297"/>
         <source>Error accessing the configuration file</source>
         <translation>Konfigürasyon dosyasına erişimde hata</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="293"/>
+        <location filename="../src/gui/application.cpp" line="298"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Konfigürasyon dosyası %1 satirina erişimde hata</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="296"/>
+        <location filename="../src/gui/application.cpp" line="301"/>
         <source>Quit ownCloud</source>
         <translation>ownCloud&apos;dan çık</translation>
     </message>
@@ -792,7 +792,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="237"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Dizin %1&apos;i açılırken hata oluştu</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="239"/>
@@ -802,7 +802,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="243"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Dizin bulunamadı: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="274"/>
@@ -812,7 +812,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="293"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Dizin %1 okunurken hata oluştu</translation>
     </message>
 </context>
 <context>
@@ -1673,7 +1673,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation>Sorunlar listesi</translation>
+        <translation>Sorunların listesi</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -3042,22 +3042,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="88"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="114"/>
         <source>Activity</source>
         <translation>Etkinlik</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="97"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="123"/>
         <source>General</source>
         <translation>Genel</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="104"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="130"/>
         <source>Network</source>
         <translation>Ağ</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="215"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="140"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="143"/>
+        <source>Quit %1</source>
+        <translation>%1&apos;tan çık</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="144"/>
+        <source>Are you sure you want to quit %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="257"/>
         <source>Account</source>
         <translation>Hesap</translation>
     </message>
@@ -3145,7 +3156,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="237"/>
         <source>Download / View / Edit</source>
-        <translation type="unfinished"/>
+        <translation>İndir / Görüntüle / Düzenle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="297"/>
@@ -3283,7 +3294,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="599"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Herkese açık bağlantı</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="271"/>
@@ -4083,7 +4094,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="800"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1158"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1155"/>
         <source>About %1</source>
         <translation>%1 hakkında</translation>
     </message>

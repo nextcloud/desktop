@@ -524,7 +524,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="74"/>
         <source>%1 %2 on %3</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 на %3</translation>
     </message>
 </context>
 <context>
@@ -678,42 +678,42 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="127"/>
+        <location filename="../src/gui/application.cpp" line="128"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Продолжение будет означать &lt;b&gt;удаление этих настроек&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="129"/>
+        <location filename="../src/gui/application.cpp" line="130"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Продолжение будет означать &lt;b&gt;игнорирование этих настроек&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="135"/>
+        <location filename="../src/gui/application.cpp" line="136"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Некоторые настройки были сделаны в клиенте более новой версии, чем данный, и используют возможности, которые не доступны в этой версии.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Резервная копия текущей конфигурации уже сохранена в &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="142"/>
+        <location filename="../src/gui/application.cpp" line="143"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="143"/>
+        <location filename="../src/gui/application.cpp" line="144"/>
         <source>Continue</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="292"/>
+        <location filename="../src/gui/application.cpp" line="297"/>
         <source>Error accessing the configuration file</source>
         <translation>Ошибка при доступе к файлу конфигурации</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="293"/>
+        <location filename="../src/gui/application.cpp" line="298"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>При обращении к файлу конфигурации %1 произошла ошибка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="296"/>
+        <location filename="../src/gui/application.cpp" line="301"/>
         <source>Quit ownCloud</source>
         <translation>Выйти из ownCloud</translation>
     </message>
@@ -1909,7 +1909,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Замечание: настройки прокси не действуют для учётных записей на localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
@@ -3060,22 +3060,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="88"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="114"/>
         <source>Activity</source>
         <translation>События</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="97"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="123"/>
         <source>General</source>
         <translation>Основные</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="104"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="130"/>
         <source>Network</source>
         <translation>Сеть</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="215"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="140"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="143"/>
+        <source>Quit %1</source>
+        <translation>Закрыть %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="144"/>
+        <source>Are you sure you want to quit %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="257"/>
         <source>Account</source>
         <translation>Уч.запись</translation>
     </message>
@@ -4103,7 +4114,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="800"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1158"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1155"/>
         <source>About %1</source>
         <translation>Про %1</translation>
     </message>

@@ -674,42 +674,42 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="127"/>
+        <location filename="../src/gui/application.cpp" line="128"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Kontynuowanie oznacza &lt;b&gt; usunięcie tych ustawień &lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="129"/>
+        <location filename="../src/gui/application.cpp" line="130"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Kontynuowanie oznacza &lt;b&gt; zignorowanie tych ustawień &lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="135"/>
+        <location filename="../src/gui/application.cpp" line="136"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Część ustawień została skonfigurowana w nowszej wersji klienta i nie jest dostępna w tej wersji &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; Aktualna konfiguracja została zarchiwizowana w &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="142"/>
+        <location filename="../src/gui/application.cpp" line="143"/>
         <source>Quit</source>
         <translation>Wyjdź</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="143"/>
+        <location filename="../src/gui/application.cpp" line="144"/>
         <source>Continue</source>
         <translation>Kontynuuj </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="292"/>
+        <location filename="../src/gui/application.cpp" line="297"/>
         <source>Error accessing the configuration file</source>
         <translation>Błąd przy dostępie do pliku konfiguracji</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="293"/>
+        <location filename="../src/gui/application.cpp" line="298"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Wystąpił błąd podczas próby dostępu do pliku konfiguracyjnego %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="296"/>
+        <location filename="../src/gui/application.cpp" line="301"/>
         <source>Quit ownCloud</source>
         <translation>Wyłącz ownCloud</translation>
     </message>
@@ -3035,22 +3035,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="88"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="114"/>
         <source>Activity</source>
         <translation>Aktywność</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="97"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="123"/>
         <source>General</source>
         <translation>Ogólne</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="104"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="130"/>
         <source>Network</source>
         <translation>Sieć</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="215"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="140"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="143"/>
+        <source>Quit %1</source>
+        <translation>Wyjdź %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="144"/>
+        <source>Are you sure you want to quit %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="257"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
@@ -4076,7 +4087,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="800"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1158"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1155"/>
         <source>About %1</source>
         <translation>O %1</translation>
     </message>

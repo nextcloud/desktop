@@ -678,42 +678,42 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="127"/>
+        <location filename="../src/gui/application.cpp" line="128"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>กำลังทำต่อหมายถึง &lt;b&gt;กำลังลบการตั้งค่าเหล่านี้&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="129"/>
+        <location filename="../src/gui/application.cpp" line="130"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>กำลังทำต่อหมายถึง &lt;b&gt;กำลังละเว้นการตั้งค่าเหล่านี้&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="135"/>
+        <location filename="../src/gui/application.cpp" line="136"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>การตั้งค่าบางอย่างได้ถูกกำหนดค่าในเวอร์ชันที่ใหม่กว่าของไคลเอ็นต์นี้และเปิดใช้คุณลักษณะที่ไม่สามารถใช้ได้ในเวอร์ชันนี้ &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;ไฟล์การตั้งค่าปัจจุบันได้ถูกสำรองข้อมูลไปที่ &lt;i&gt;%2&lt;/i&gt; แล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="142"/>
+        <location filename="../src/gui/application.cpp" line="143"/>
         <source>Quit</source>
         <translation>ออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="143"/>
+        <location filename="../src/gui/application.cpp" line="144"/>
         <source>Continue</source>
         <translation>ดำเนินการต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="292"/>
+        <location filename="../src/gui/application.cpp" line="297"/>
         <source>Error accessing the configuration file</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังเข้าถึงไฟล์กำหนดค่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="293"/>
+        <location filename="../src/gui/application.cpp" line="298"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังเข้าถึงไฟล์กำหนดค่า %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="296"/>
+        <location filename="../src/gui/application.cpp" line="301"/>
         <source>Quit ownCloud</source>
         <translation>ออกจาก ownCloud</translation>
     </message>
@@ -3054,22 +3054,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ตั้งค่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="88"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="114"/>
         <source>Activity</source>
         <translation>กิจกรรม</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="97"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="123"/>
         <source>General</source>
         <translation>ทั่วไป</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="104"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="130"/>
         <source>Network</source>
         <translation>เครือข่าย</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="215"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="140"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="143"/>
+        <source>Quit %1</source>
+        <translation>ออก %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="144"/>
+        <source>Are you sure you want to quit %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="257"/>
         <source>Account</source>
         <translation>บัญชี</translation>
     </message>
@@ -4095,7 +4106,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="800"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1158"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1155"/>
         <source>About %1</source>
         <translation>เกี่ยวกับ %1</translation>
     </message>
