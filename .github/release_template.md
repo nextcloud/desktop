@@ -22,18 +22,11 @@ TODO: Handbook entry
 List of dependencies: qtkeychain, openssl, random linux stuff for old linux platforms like cmake.
 (e.g. [latest Qt version](http://qt-project.org/downloads#qt-lib) is installed on the machine and picked up (cmake output)
 
-* [ ] Review list of supported platforms. execute deprecations where announcment was already done.
-
-* [ ] Upload a daily build of the windows version to virustotal.com
-  * Contact AV vendors whose engine reports a virus.
-* [ ] check if Documentation is online before the release http://doc.owncloud.org/desktop/2.X/
-
-* [ ] Update Test Plans - [handbook](https://handbook.owncloud.com/release_processes/client/testlink.html)
-
-
-* [ ] Make sure to have `client/ChangeLog` updated
-TODO Handbok entry "Make Changelogs"
-  * use `git log --format=oneline v<lastrelease>...master` if your memory fails you
+* [ ] QA: [Antivirus scan](https://handbook.owncloud.com/release_processes/client/virus.html) - @HanaGemela @jnweiger 
+* [ ] QA: Update [Test Plans](https://handbook.owncloud.com/release_processes/client/testlink.html) - @HanaGemela @jnweiger
+* [ ] Review list of [supported platforms](https://handbook.owncloud.com/release_processes/client/supported_platforms.html)
+* [ ] Update [ChangeLog](https://handbook.owncloud.com/release_processes/client/change_log.html)
+* [ ] Update [documentation](https://handbook.owncloud.com/release_processes/client/documentation.html)
 
 * [ ] check for issues with current milestone
 TODO: Handbook: list repos (enterprise, onlineupdater, gitea..., client, QA, QA-Enterprise); 
