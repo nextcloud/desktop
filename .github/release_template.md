@@ -4,12 +4,18 @@ This is the template for new release issues.
 (20181109jw: One of these two should be deleted. They will never be in sync otherwise.)
 -->
 
-Copy below text into a task and tick the items:
+Open an issue called 'Release 2.x.0' in Client repository and copy below text into a task and tick the items:
 <hr>
 
-### Some weeks before the release:
+Major/Minor release templete. Enter here, when we have three estimated dates:
+* Date of feature freeze
+* Date of RC start
+* Date of final
+
+
+### Before branching off:
 * [ ] Check if we should update the bundled sqlite3
-TODO: Link to handbook with 
+TODO: Link to handbook with
   details about win mac linux e.g. (https://github.com/owncloud/client/tree/master/src/3rdparty/sqlite3)
   create github issue
 
@@ -32,40 +38,57 @@ List of dependencies: qtkeychain, openssl, random linux stuff for old linux plat
 TODO: Handbook: list repos (enterprise, onlineupdater, gitea..., client, QA, QA-Enterprise); 
 how to find the relevant issues.check if enterprise issues are fixed
 
-###############################################
 
-### For first Alpha/Beta of a Major or Minor release:
-* [ ] branch off master to new version branch (e.g. master -> 2.1, when releasing 2.1)
-* [ ] Adjust `VERSION.cmake` in master and count up (e.g. 2.2)
-* [ ] Add the new branch v2.X.X for the new version to gitea/jw/client-linux-build
+### On the day of the first daily build of the new branch:
+* [ ] Internally announce it feature freeze
+* [ ] branch off master to new version branch (e.g. master -> 2.7, when releasing 2.7), check that VERSION.cmake says 2.7
+* [ ] Adjust `VERSION.cmake` in master and count up (e.g. 2.8).
+* [ ] branch the templates of the build infrastructure (e.g. gitea/client, gitea/ownbrander/scritping ...) to v2.7.0 ... TODO...
 * [ ] Add the new version to gitea/ownbrander/scripting/client-linux/templates/client/2.X.X
-* [ ] Add branch to branches.only section in appveyor.yml, so PRs to that branch will be built by AppVeyor
-* [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) to point to the release branch (e.g. 2.1).
-* [ ] Make sure there is a job for the docs of the new master branch and the current release branch on rotor e.g. http://doc.owncloud.org/desktop/1.X/ exists
+* [ ] Add branch to branches.only section in appveyor.yml, so PRs to that branch will be built by AppVeyor @hvonreth
+* [ ] Add branch to drone.star, drone.yml @dschmidt
+* [ ] start running automated tests on the dailies
 
-### For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
-* [ ] check daily builds 
-TODO: describe what dailies we have in handbook.
-* [ ] Ensure the crash reporter server is up
-TODO: log into sentry, see if there is a fresh report. sentry.io and one more component in our infrastructure.
-* [ ] Check crash reporter for bad crashes (same crash happening to many users)
+* [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) to point to the release branch (e.g. 2.7). @dschmidt
+* [ ] use obs-copyprj.sh to backup the desktop project to desktop:client-2.6.x (unless already done) @jnweiger
 
-* [ ] Make sure previous major version's branch is merged into current major branch (or everything cherry-picked)
-* [ ] Add last updates to Changelog in the client source repository.
+### After the first daily build of the new branch:
+* [ ] Announce new branch to community and advertise dailies for public testing.
+
+
+TODO: WHen do we call it beta or RC?
+TODO: describe what dailies we have in documentation. (Platforms, Versions, Master, current preprelease, and last stable release branch.)
+### For all (betas?) and RCs (Copy this section for each beta/rc):
+* [ ] Ensure the crash reporter server is up.
+TODO: log into sentry, see if there is a fresh report. sentry.io and one more component in our infrastructure. And/or trigger a crash.
+( ongoing task: * [ ] Check crash reporter for bad crashes of the last stable (same crash happening to many users) )
+
+(ongoing * [ ] Make sure previous minor/major version's branch is merged into current major branch (or everything cherry-picked))
+* [ ] Add latest updates to Changelog in the client source repository.
 * [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
-* [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc. Commit the result to the release branch only
-* [ ] Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
-* [ ] Create build for theme 'ownCloud' using client-trigger (uncheck the "daily build" checkbox, use rcX or betaX dropdown for version suffix)
-* [ ] Create build for theme 'testpilotcloud' using client-trigger (uncheck the "daily build" checkbox, use the rcX or betaX dropdown for version suffix)
-* Build results are in https://download.owncloud.com/desktop/testing -- win and mac binaries are there, linux packages are listed in a *repo.html file.
+* [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc in the release branch.
+
+TODO: move to patch-release checklist * [ ] Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
+* [ ] jenkins.int: Create build for theme 'ownCloud' using client-trigger (uncheck the "daily build" checkbox, use rcX or betaX dropdown for version suffix)
+* [ ] jenkins.int: Create build for theme 'testpilotcloud' using client-trigger (uncheck the "daily build" checkbox, use the rcX or betaX dropdown for version suffix)
+* Build results are in https://download.owncloud.com/desktop/testing -- win and mac binaries are there, linux packages are listed in a *repo.html file pointing to the repository.
+
+SMOKE TESTING: TODO Move details to handbook.
 * [ ] Check if *tar.xz.asc files are there. If not resort to https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge
 * [ ] Mac: Perform smoke test of non-osx10.11 package (fresh install, perform upload/download, check the version in General tab)
 * [ ] Win: Perform smoke test of non-GPO package (fresh install, perform upload/download, check the version in General tab)
 * [ ] Linux: Perform smoke test two distro packages (fresh install, perform upload/download, check the version in General tab)
       Latest Ubuntu + Latest Fedora
 * [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh with repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
-* [ ] Linux: add/remove build targets in isv:ownCloud:Qt5121 and isv:ownCloud:desktop:testing to match the list of supported platforms and announced(!) deprecations. Keep in sync with https://doc.owncloud.org/server/latest/admin_manual/installation/system_requirements.html#desktop and https://github.com/owncloud/ownbrander/blob/master/brand-items.php#L1651
+* [ ] review everything :-)
+
+###############################################
+
+* [ ] Linux: add/remove build targets in isv:ownCloud:Qt51215 and isv:ownCloud:desktop:testing to match the list of supported platforms and announced(!) deprecations. Keep in sync with https://doc.owncloud.org/server/latest/admin_manual/installation/system_requirements.html#desktop and https://github.com/owncloud/ownbrander/blob/master/brand-items.php#L1651
+
+TODO guruz: is this still needed?
 * [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
+
 * [ ] update the wordpress content at owncloud.org/download (Attention: No staging!)
 * [ ] Inform packagers @dragotin (openSUSE), @hefee (Debian), ??? (Fedora)
 * [ ] Announce on https://central.owncloud.org
@@ -81,6 +104,7 @@ TODO: itemize what goes into the announcement: deprecation warnings. ...
 * [ ] Inform GCX knows the next version is about 1 week out (gcx@owncloud.com)
 
 ### One day before final Release:
+* [ ] Check crash reporter for bad crashes od this RC (same crash happening to many users)
 * [ ] Check the translations coming from transifex: All synchronized? (20181109jw: where? how?)
 * [ ] Run the tx.pl scripts on the final code tag (20181109jw: really? What does that test?)
 * [ ] Run ```make test```
