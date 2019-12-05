@@ -85,6 +85,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
             foreach (const auto &it, deleted) {
                 propagator()->_journal->deleteFileRecord(_item->_originalFile + path + QLatin1Char('/') + it.first,
                     it.second);
+				propagator()->_journal->deleteSyncMode(_item->_originalFile + path + QLatin1Char('/') + it.first);
             }
             success = false;
             deleted.clear();
@@ -96,6 +97,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
             // This succeeded, so we need to delete it from the database now because the caller won't
             propagator()->_journal->deleteFileRecord(_item->_originalFile + path + QLatin1Char('/') + di.fileName(),
                 isDir);
+			propagator()->_journal->deleteSyncMode(_item->_originalFile + path + QLatin1Char('/') + di.fileName());
         }
     }
     if (success) {
@@ -149,6 +151,7 @@ void PropagateLocalRemove::start()
     }
     propagator()->reportProgress(*_item, 0);
     propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory());
+	propagator()->_journal->deleteSyncMode(_item->_originalFile);
     propagator()->_journal->commit("Local remove");
     done(SyncFileItem::Success);
 }
