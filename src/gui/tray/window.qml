@@ -29,6 +29,9 @@ Window {
             currentAccountUser.text = systrayBackend.currentUserName()
             currentAccountServer.text = systrayBackend.currentUserServer()
         }
+        onNewUserSelected: {
+            accountMenu.close()
+        }
     }
 
     Rectangle {

@@ -6,9 +6,20 @@
 
 namespace OCC {
 
-User::User(const AccountStatePtr &account)
+User::User(AccountStatePtr &account, const bool &isCurrent)
     : _account(account)
+    , _isCurrentUser(isCurrent)
 {
+}
+
+bool User::operator==(const User &rhs) const
+{
+    return (this->_account->account() == rhs._account->account());
+}
+
+void User::setCurrentUser(const bool &isCurrent)
+{
+    _isCurrentUser = isCurrent;
 }
 
 QString User::name() const
@@ -57,9 +68,9 @@ QString User::avatar() const
     return img;
 }
 
-QString User::id() const
+bool User::isCurrentUser() const
 {
-    return _account->account()->id();
+    return _isCurrentUser;
 }
 
 bool User::isConnected() const
@@ -81,72 +92,73 @@ UserModel *UserModel::instance()
 
 UserModel::UserModel(QObject *parent)
     : QAbstractListModel()
-    , _currentUser(nullptr)
+    , _currentUserId()
 {
     // TODO: Remember selected user from last quit via settings file
     //  this is the reason why this looks like an unnecessary double check atm
-    if (AccountManager::instance()->accounts().size() > 0) {
-        addCurrentUser(AccountManager::instance()->accounts().first());
+    /*if (AccountManager::instance()->accounts().size() > 0) {
+        addUser(AccountManager::instance()->accounts().first(), true);
     } else {
         return;
+    }*/
+    if (AccountManager::instance()->accounts().size() > 0) {
+        initUserList();
     }
-
-    refreshUserList();
 }
 
-void UserModel::refreshUserList()
+void UserModel::initUserList()
 {
     for (int i = 0; i < AccountManager::instance()->accounts().size(); i++) {
         auto user = AccountManager::instance()->accounts().at(i);
-        if ((user->account()->id() != _currentUser->id())) {
-            addUser(user);
-        }
+        addUser(user);
     }
+    _users.first().setCurrentUser(true);
 }
 
 Q_INVOKABLE int UserModel::numUsers()
 {
-    auto test = _users.size();
     return _users.size();
 }
 
 Q_INVOKABLE bool UserModel::isCurrentUserConnected()
 {
-    return _currentUser->isConnected();
+    return _users[_currentUserId].isConnected();
 }
 
 Q_INVOKABLE QString UserModel::currentUserAvatar()
 {
-    return _currentUser->avatar();
+    return _users[_currentUserId].avatar();
 }
 
 Q_INVOKABLE QString UserModel::currentUserName()
 {
-    return _currentUser->name();
+    return _users[_currentUserId].name();
 }
 
 Q_INVOKABLE QString UserModel::currentUserServer()
 {
-    return _currentUser->server();
+    return _users[_currentUserId].server();
 }
 
-Q_INVOKABLE void UserModel::switchUser(const int id)
+void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 {
-    addCurrentUser(_users.at(id));
-    refreshUserList();
-    emit refreshCurrentUserGui();
-}
-
-void UserModel::addUser(const User &user)
-{
+    auto newUser = User(user, isCurrent);
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    _users << user;
+    _users << newUser;
+    if (isCurrent) {
+        _currentUserId = _users.indexOf(newUser);
+    }
     endInsertRows();
 }
 
-void UserModel::addCurrentUser(const User &user)
+Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
 {
-    _currentUser = new User(user);
+    _users[_currentUserId].setCurrentUser(false);
+    _users[id].setCurrentUser(true);
+    _currentUserId = id;
+    emit refreshCurrentUserGui();
+    emit refreshUserMenu();
+    emit newUserSelected();
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const
@@ -168,6 +180,8 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return user.server();
     } else if (role == AvatarRole) {
         return user.avatar();
+    } else if (role == IsCurrentUserRole) {
+        return user.isCurrentUser();
     }
     return QVariant();
 }
@@ -178,6 +192,7 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[NameRole] = "name";
     roles[ServerRole] = "server";
     roles[AvatarRole] = "avatar";
+    roles[IsCurrentUserRole] = "isCurrentUser";
     return roles;
 }
 }

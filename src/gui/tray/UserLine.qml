@@ -5,15 +5,23 @@ import QtQuick.Layouts 1.3
 
 MenuItem {
 
+    Connections {
+        target: systrayBackend
+        onRefreshUserMenu: {
+            userLine.visible = isCurrentUser ? false : true
+            userLine.height = isCurrentUser ? 0 : 60
+        }
+    }
+
     id: userLine
-    visible: true
+    visible: isCurrentUser ? false : true
     width: 216
-    height: 60
+    height: isCurrentUser ? 0 : 60
     //color: "transparent"
 
     Rectangle {
         id: userLineBackground
-        height: 60
+        height: userLine.height
         anchors.fill: parent
         color: "transparent"
 
@@ -35,7 +43,7 @@ MenuItem {
                 }
 
                 onClicked: {
-                    systrayBackend.switchUser(index)
+                    systrayBackend.switchCurrentUser(index)
                 }
 
                 RowLayout {
@@ -45,7 +53,7 @@ MenuItem {
                     spacing: 0
                     Image {
                         id: accountAvatar
-                        Layout.leftMargin: 6
+                        Layout.leftMargin: 4
                         verticalAlignment: Qt.AlignCenter
                         source: avatar
                         Layout.preferredHeight: (userLineBackground.height -16)
