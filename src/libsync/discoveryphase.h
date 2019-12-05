@@ -217,7 +217,6 @@ public:
     DiscoveryFolderFileList(AccountPtr account) : QObject(), _account(account), _DiscoveryFolderFileListResult(0), _firstFolderProcessed(false)
     { }
     QByteArray _dataFingerprint;
-    void setFolderContentSyncMode(QString path);
     
 public slots:
     // From Job:

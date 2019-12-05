@@ -785,7 +785,6 @@ void DiscoveryFolderFileList::singleDirectoryJobResultSlot()
         }*/
 
     emit gotDataSignal(_DiscoveryFolderFileListResult);
-    //setFolderContentSyncMode();
 }
 
 void DiscoveryFolderFileList::singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg)
@@ -800,27 +799,6 @@ void DiscoveryFolderFileList::singleDirectoryJobFinishedWithErrorSlot(int csyncE
     _DiscoveryFolderFileListResult->msg = msg;
 
     emit gotDataSignal(_DiscoveryFolderFileListResult);
-}
-
-void DiscoveryFolderFileList::setFolderContentSyncMode(QString path){
-    if (!_DiscoveryFolderFileListResult) {
-        return; // possibly aborted
-    }
-
-    for(unsigned long i=0; i < _DiscoveryFolderFileListResult->list.size(); i++){
-        QString discoveryPath = _DiscoveryFolderFileListResult->list.at(i)->path;
-
-        if(discoveryPath == path){
-            qDebug() << Q_FUNC_INFO << "Setting sync mode for: " << discoveryPath << _DiscoveryFolderFileListResult->list.at(i)->type;
-            if(SyncJournalDb::instance()->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE)
-                SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
-
-            if(SyncJournalDb::instance()->getSyncModeDownload(path) == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
-                SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
-
-            break;
-        }
-    }
 }
 
 }
