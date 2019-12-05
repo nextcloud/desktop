@@ -239,11 +239,17 @@ Application::Application(int &argc, char **argv)
         this, &Application::slotAccountStateAdded);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
-    connect(AccountManager::instance(), &AccountManager::mountVirtualDriveForAccount,
-        this, &Application::slotMountVirtualDrive);
+
+	ConfigFile configFile;
+	if(configFile.enableVirtualFileSystem())
+		connect(AccountManager::instance(), &AccountManager::mountVirtualDriveForAccount,
+			this, &Application::slotMountVirtualDrive);
+
     foreach (auto ai, AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
-		slotMountVirtualDrive(ai.data());
+
+		if(configFile.enableVirtualFileSystem())
+			slotMountVirtualDrive(ai.data());
     }
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
@@ -339,8 +345,6 @@ void Application::slotAccountStateAdded(AccountState *accountState)
         _folderManager.data(), &FolderMan::slotServerVersionChanged);
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
-
-	//slotMountVirtualDrive(accountState);
 }
 
 void Application::slotMountVirtualDrive(AccountState *accountState) {
@@ -384,15 +388,6 @@ void Application::slotMountVirtualDrive(AccountState *accountState) {
 	connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
 	_cronDeleteOnlineFiles->start(60000);
 	*/
-
-    /* See SocketApi::command_SET_DOWNLOAD_MODE
-    //< Dummy example; Not uncomment
-    SyncJournalDb::instance()->setSyncMode(QString("C:/Users/poncianoj/zd"), SyncJournalDb::SYNCMODE_OFFLINE);
-    SyncJournalDb::instance()->setSyncMode(QString("C:/Users/poncianoj/zf.txt"), SyncJournalDb::SYNCMODE_ONLINE);
-
-    SyncJournalDb::instance()->updateLastAccess(QString("C:/Users/poncianoj/zd"));
-    SyncJournalDb::instance()->updateLastAccess(QString("C:/Users/poncianoj/zf.txt"));
-    */
 }
 
 void Application::slotCleanup()

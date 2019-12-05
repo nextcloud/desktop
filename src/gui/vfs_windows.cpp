@@ -225,18 +225,22 @@ QString QSFileName;
         return;
 
 	//if(DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess()))
+
+	//FIXME this whole manipulation of the path is not good
 	if (DokanFileInfo->ProcessId == getExplorerID())
 	{
         QVariantMap error;
 
 		if (da == 1179776)		//< OpenFile
 		{
-			QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			//QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			QSFileName.replace("/", "");
 			VfsWindows::instance()->openFileAtPath(QSFileName, error);
 		}
 		else if (da == 65536)	//< DeleteFile
 		{
-			QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			//QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			QSFileName.replace("/", "");
 			VfsWindows::instance()->deleteFileAtPath(QSFileName, error);
 		}
 	}
@@ -406,6 +410,16 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 	MirrorCheckFlag(DesiredAccess, STANDARD_RIGHTS_WRITE);
 	MirrorCheckFlag(DesiredAccess, STANDARD_RIGHTS_EXECUTE);
 
+	// FIXME as dumm as it gets
+	// to fix error [_csync_vio_local_stat_mb CreateFileW failed on 
+	// \\?\C:\Users\smayr\AppData\Roaming\Nextcloud\cachedFiles\Nextcloud.png
+	size_t sz = sizeof(filePath);
+	for (size_t i = 0; i < sz; i++)
+	{
+		if (filePath[i] == '\\'){
+			filePath[i] = '/';
+		}
+	}
 	// When filePath is a directory, needs to change the flag so that the file can
 	// be opened.
 	fileAttr = GetFileAttributes(filePath);
@@ -2493,37 +2507,20 @@ void CleanIgnoredTask::run() {
 	VfsWindows::instance()->ignoredList.clear();
 }
 
-void VfsWindows::slotSyncFinish()
-{
-    _mutex.lock();
-    _syncCondition.wakeAll();
-    _mutex.unlock();
-
-/////////////////
-	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
-/////////////////
-}
-
 void VfsWindows::createFileAtPath(QString path, QVariantMap &error)
 {
-    //emit createItem(path);
 }
 
 void VfsWindows::moveFileAtPath(QString path, QString npath,QVariantMap &error)
 {
-    //TODO: remove old path
-	emit move(npath);
 }
 
 void VfsWindows::createDirectoryAtPath(QString path, QVariantMap &error)
 {
-    //emit createItem(path);
 }
 
 void VfsWindows::moveDirectoryAtPath(QString path, QString npath, QVariantMap &error)
 {
-	//TODO remove old path
-	emit move(npath);
 }
 
 void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
@@ -2547,10 +2544,6 @@ void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
  //                << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
 
 
-
-	_mutex.lock();
-    emit openFile(path);
-    _syncCondition.wait(&_mutex);
 /////////////////
 	//char fgv[5];
 	//fgv[0] = 'X';
@@ -2579,7 +2572,13 @@ void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
  //       SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.toStdWString().data(), NULL);
  //       SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, name.left(pos).toStdWString().data(), NULL);
         //	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
-        _mutex.unlock();
+	OCC::SyncJournalFileRecord rec;
+	if (SyncJournalDb::instance()->getFileRecord(path, &rec)) {
+			rec._virtualfile = 0;
+			SyncJournalDb::instance()->setFileRecordVirtualFile(rec);
+	} else {
+		//
+	}
 }
 
 void VfsWindows::writeFileAtPath(QString path, QVariantMap &error)
@@ -2597,13 +2596,11 @@ void VfsWindows::writeFileAtPath(QString path, QVariantMap &error)
  //   else if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
  //       qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_OFFLINE" \
  //                << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
-
-	emit writeFile(path);
 }
 
 void VfsWindows::deleteFileAtPath(QString path, QVariantMap &error)
 {
-    emit deleteItem(path);
+	SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
 }
 
 void VfsWindows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
@@ -2612,7 +2609,6 @@ void VfsWindows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
 
 void VfsWindows::endDeleteDirectoryAtPath(QString path, QVariantMap &error)
 {
-	emit deleteItem(path);
 }
 
 QStringList *VfsWindows::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
@@ -2731,17 +2727,6 @@ void VfsWindows::initialize(QString rootPath, WCHAR mountLetter, AccountState *a
 	_remotefileListJob->setParent(this);
 	connect(this, &VfsWindows::startRemoteFileListJob, _remotefileListJob, &OCC::DiscoveryFolderFileList::doGetFolderContent);
 	connect(_remotefileListJob, &OCC::DiscoveryFolderFileList::gotDataSignal, this, &VfsWindows::folderFileListFinish);
-
-	// "talk" to the sync engine
-	_syncWrapper = OCC::SyncWrapper::instance();
-	connect(this, &VfsWindows::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::QueuedConnection);
-	connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &VfsWindows::slotSyncFinish, Qt::QueuedConnection);
-
-	connect(this, &VfsWindows::createItem, _syncWrapper, &OCC::SyncWrapper::createItemAtPath, Qt::QueuedConnection);
-	connect(this, &VfsWindows::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::QueuedConnection);
-	connect(this, &VfsWindows::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::QueuedConnection);
-	connect(this, &VfsWindows::deleteItem, _syncWrapper, &OCC::SyncWrapper::deleteItemAtPath, Qt::QueuedConnection);
-	connect(this, &VfsWindows::move, _syncWrapper, &OCC::SyncWrapper::moveItemAtPath, Qt::QueuedConnection);
 }
 
 VfsWindows::VfsWindows()
