@@ -228,18 +228,22 @@ QString QSFileName;
         return;
 
 	//if(DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess()))
+
+	//FIXME this whole manipulation of the path is not good
 	if (DokanFileInfo->ProcessId == getExplorerID())
 	{
         QVariantMap error;
 
 		if (da == 1179776)		//< OpenFile
 		{
-			QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			//QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			QSFileName.replace("/", "");
 			VfsWindows::instance()->openFileAtPath(QSFileName, error);
 		}
 		else if (da == 65536)	//< DeleteFile
 		{
-			QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			//QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			QSFileName.replace("/", "");
 			VfsWindows::instance()->deleteFileAtPath(QSFileName, error);
 		}
 	}
@@ -409,6 +413,16 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 	MirrorCheckFlag(DesiredAccess, STANDARD_RIGHTS_WRITE);
 	MirrorCheckFlag(DesiredAccess, STANDARD_RIGHTS_EXECUTE);
 
+	// FIXME as dumm as it gets
+	// to fix error [_csync_vio_local_stat_mb CreateFileW failed on 
+	// \\?\C:\Users\smayr\AppData\Roaming\Nextcloud\cachedFiles\Nextcloud.png
+	size_t sz = sizeof(filePath);
+	for (size_t i = 0; i < sz; i++)
+	{
+		if (filePath[i] == '\\'){
+			filePath[i] = '/';
+		}
+	}
 	// When filePath is a directory, needs to change the flag so that the file can
 	// be opened.
 	fileAttr = GetFileAttributes(filePath);
@@ -2595,6 +2609,15 @@ void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
  //       SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, name.left(pos).toStdWString().data(), NULL);
         //	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
 
+	OCC::SyncJournalFileRecord rec;
+	if (SyncJournalDb::instance()->getFileRecord(path, &rec)) {
+			rec._virtualfile = 0;
+			SyncJournalDb::instance()->setFileRecordVirtualFile(rec);
+	} else {
+		//
+	}
+
+
 	auto job = new SearchJob(_accountState->account(), getRelativePath(path));
     job->setProperties(
         QList<QByteArray>()
@@ -2635,6 +2658,7 @@ void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
 			//}
 		}
 
+
 		// key is the handle that the SyncFileItem will have in the map.
 		QString key = fileUtf8;
 		if (instruction == CSYNC_INSTRUCTION_RENAME) {
@@ -2654,7 +2678,7 @@ void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
 
 void VfsWindows::deleteFileAtPath(QString path, QVariantMap &error)
 {
-
+    SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
 }
 
 void VfsWindows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
@@ -2663,7 +2687,6 @@ void VfsWindows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
 
 void VfsWindows::endDeleteDirectoryAtPath(QString path, QVariantMap &error)
 {
-
 }
 
 QStringList *VfsWindows::contentsOfDirectoryAtPath(QString path, QVariantMap &error)

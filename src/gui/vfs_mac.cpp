@@ -611,6 +611,10 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                     fm.createFileAtPath(completePath, attribs, fd, error);
                     close(fd.toInt());
                 }
+
+				// set all by default as online
+				SyncJournalDb::instance()->setSyncMode(_fileListMap.value(path)->list.at(i)->path, 
+					SyncJournalDb::SYNCMODE_ONLINE);
             }
     //        qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
         }

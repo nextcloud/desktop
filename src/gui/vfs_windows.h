@@ -29,7 +29,6 @@
 #include <QRunnable>
 #include <QThreadPool>
 #include <QStorageInfo>
-
 #include "syncfileitem.h"
 
 namespace OCC {
@@ -59,24 +58,24 @@ public:
     void setNumberOfFreeBytes(unsigned long long numberOfFreeBytes);
     unsigned long long getNumberOfFreeBytes();
 
-	QStringList* contentsOfDirectoryAtPath(QString path, QVariantMap &error);
-	QList<QString> ignoredList;
+    QStringList* contentsOfDirectoryAtPath(QString path, QVariantMap &error);
+    QList<QString> ignoredList;
 
-	void createFileAtPath(QString path, QVariantMap &error);
-	void moveFileAtPath(QString path, QString npath,QVariantMap &error);
-	void createDirectoryAtPath(QString path, QVariantMap &error);
-	void moveDirectoryAtPath(QString path, QString npath, QVariantMap &error);
+    void createFileAtPath(QString path, QVariantMap &error);
+    void moveFileAtPath(QString path, QString npath,QVariantMap &error);
+    void createDirectoryAtPath(QString path, QVariantMap &error);
+    void moveDirectoryAtPath(QString path, QString npath, QVariantMap &error);
 
-	void openFileAtPath(QString path, QVariantMap &error);
-	void writeFileAtPath(QString path, QVariantMap &error);
-	void deleteFileAtPath(QString path, QVariantMap &error);
-	void startDeleteDirectoryAtPath(QString path, QVariantMap &error);
-	void endDeleteDirectoryAtPath(QString path, QVariantMap &error);
+    void openFileAtPath(QString path, QVariantMap &error);
+    void writeFileAtPath(QString path, QVariantMap &error);
+    void deleteFileAtPath(QString path, QVariantMap &error);
+    void startDeleteDirectoryAtPath(QString path, QVariantMap &error);
+    void endDeleteDirectoryAtPath(QString path, QVariantMap &error);
 
-	QString getAvailableLogicalDrive();
+    QString getAvailableLogicalDrive();
 
 private:
-	VfsWindows();
+    VfsWindows();
     static VfsWindows *_instance;
     QMap<QString, OCC::DiscoveryDirectoryResult *> _fileListMap;
     QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
@@ -93,38 +92,13 @@ private:
     //*FreeBytesAvailable = (ULONGLONG)(*TotalNumberOfBytes - *TotalNumberOfFreeBytes); / *1024 * 1024 * 10;
     unsigned long long freeBytesAvailable = 0;
 
-	QMap<QString, SyncFileItemPtr> _syncItemMap;
-	AccountState* _accountState;
-	QString getRelativePath(const QString& path) const;
+    QMap<QString, SyncFileItemPtr> _syncItemMap;
+    AccountState* _accountState;
+    QString getRelativePath(const QString& path) const;
 
 signals:
 	void startRemoteFileListJob(QString path);
 
-    void getOperationCreateFile(QString, QString, QString);
-	void getOperationCleanup(QString, QString, QString);
-	void getOperationCloseFile(QString, QString, QString);
-	void getOperationReadFile(QString, QString, QString);
-	void getOperationWriteFile(QString, QString, QString);
-	void getOperationFlushFileBuffers(QString, QString, QString);
-	void getOperationGetFileInformation(QString, QString, QString);
-	void getOperationFindFiles(QString, QString, QString);
-	void getOperationFindFilesWithPattern(QString, QString, QString);
-	void getOperationSetFileAttributes(QString, QString, QString);
-	void getOperationSetFileTime(QString, QString, QString);
-	void getOperationDeleteFile(QString, QString, QString);
-	void getOperationDeleteDirectory(QString, QString, QString);
-	void getOperationMoveFile(QString, QString, QString);
-	void getOperationSetEndOfFile(QString, QString, QString);
-	void getOperationSetAllocationSize(QString, QString, QString);
-	void getOperationLockFile(QString, QString, QString);
-	void getOperationUnlockFile(QString, QString, QString);
-	void getOperationGetFileSecurity(QString, QString, QString);
-	void getOperationSetFileSecurity(QString, QString, QString);
-	void getOperationGetDiskFreeSpace(QString, QString, QString);
-	void getOperationGetVolumeInformation(QString, QString, QString);
-	void getOperationFindStreams(QString, QString, QString);
-		//< void getOperationUmounted(QString, QString, QString);
-		//< void getOperationMounted(QString, QString, QString);
 public slots:
 	void folderFileListFinish(OCC::DiscoveryDirectoryResult *dr);
 };

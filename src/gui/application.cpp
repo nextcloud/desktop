@@ -360,7 +360,7 @@ void Application::slotAccountStateAdded(AccountState* accountState)
 
 	_gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 
-	//slotMountVirtualDrive(accountState);
+	slotMountVirtualDrive(accountState);
 }
 
 void Application::slotMountVirtualDrive(AccountState* accountState) {
@@ -408,15 +408,6 @@ void Application::slotMountVirtualDrive(AccountState* accountState) {
  	/*_cronDeleteOnlineFiles = new QTimer(this);
 	connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
 	_cronDeleteOnlineFiles->start(60000);
-	*/
-
-	/* See SocketApi::command_SET_DOWNLOAD_MODE
-	//< Dummy example; Not uncomment
-	SyncJournalDb::instance()->setSyncMode(QString("C:/Users/poncianoj/zd"), SyncJournalDb::SYNCMODE_OFFLINE);
-	SyncJournalDb::instance()->setSyncMode(QString("C:/Users/poncianoj/zf.txt"), SyncJournalDb::SYNCMODE_ONLINE);
-
-	SyncJournalDb::instance()->updateLastAccess(QString("C:/Users/poncianoj/zd"));
-	SyncJournalDb::instance()->updateLastAccess(QString("C:/Users/poncianoj/zf.txt"));
 	*/
 }
 
