@@ -55,7 +55,7 @@ MenuItem {
                         id: accountAvatar
                         Layout.leftMargin: 4
                         verticalAlignment: Qt.AlignCenter
-                        source: avatar
+                        source: ("image://avatars/" + index)
                         Layout.preferredHeight: (userLineBackground.height -16)
                         Layout.preferredWidth: (userLineBackground.height -16)
                     }

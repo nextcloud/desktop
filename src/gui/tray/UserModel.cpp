@@ -41,30 +41,19 @@ QString User::server() const
     QString serverUrl = _account->account()->url().toString();
     serverUrl.replace(QLatin1String("https://"), QLatin1String(""));
     serverUrl.replace(QLatin1String("http://"), QLatin1String(""));
-    if (serverUrl.size() > 24) {
-        serverUrl.truncate(22);
+    if (serverUrl.size() > 21) {
+        serverUrl.truncate(19);
         serverUrl.append("...");
     }
     return serverUrl;
 }
 
-// TODO: Lots of memory shifting here
-// Probably OK because the avatar is not changing a trillion times per second
-// But should consider moving to a generic ImageProvider helper class for img/QML-provision
-QString User::avatar() const
+QImage User::avatar() const
 {
-    QByteArray bArray;
-    QBuffer buffer(&bArray);
-    buffer.open(QIODevice::WriteOnly);
-    AvatarJob::makeCircularAvatar(_account->account()->avatar()).save(&buffer, "PNG");
-
-    // If AvatarJob doesn't deliver anything, fall back to placeholder image (may be due to missing login session)
-    if (buffer.size() == 0) {
-        QIcon(":/client/resources/account.svg").pixmap(QSize(250, 250)).save(&buffer, "PNG");
+    QImage img = AvatarJob::makeCircularAvatar(_account->account()->avatar());
+    if (img.isNull()) {
+        img = QImage(":/client/resources/account.svg");
     }
-
-    QString img("data:image/png;base64,");
-    img.append(QString::fromLatin1(bArray.toBase64().data()));
     return img;
 }
 
@@ -125,9 +114,14 @@ Q_INVOKABLE bool UserModel::isCurrentUserConnected()
     return _users[_currentUserId].isConnected();
 }
 
-Q_INVOKABLE QString UserModel::currentUserAvatar()
+QImage UserModel::currentUserAvatar()
 {
     return _users[_currentUserId].avatar();
+}
+
+QImage UserModel::avatarById(const int &id)
+{
+    return _users[id].avatar();
 }
 
 Q_INVOKABLE QString UserModel::currentUserName()
@@ -156,9 +150,9 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
     _users[_currentUserId].setCurrentUser(false);
     _users[id].setCurrentUser(true);
     _currentUserId = id;
-    emit refreshCurrentUserGui();
-    emit refreshUserMenu();
     emit newUserSelected();
+    emit refreshUserMenu();
+    emit refreshCurrentUserGui();
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const
@@ -195,4 +189,22 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[IsCurrentUserRole] = "isCurrentUser";
     return roles;
 }
+
+/*-------------------------------------------------------------------------------------*/
+
+ImageProvider::ImageProvider()
+    : QQuickImageProvider(QQuickImageProvider::Image)
+{
+}
+
+QImage ImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    if (id == "currentUser") {
+        return UserModel::instance()->currentUserAvatar();
+    } else {
+        int uid = id.toInt();
+        return UserModel::instance()->avatarById(uid);
+    }
+}
+
 }

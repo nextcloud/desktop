@@ -2,7 +2,9 @@
 #define USERMODEL_H
 
 #include <QAbstractListModel>
+#include <QImage>
 #include <QStringList>
+#include <QQuickImageProvider>
 
 #include "accountmanager.h"
 
@@ -22,7 +24,7 @@ public:
     void logout();
     QString name() const;
     QString server() const;
-    QString avatar() const;
+    QImage avatar() const;
     QString id() const;
 
 private:
@@ -43,9 +45,11 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
+    QImage currentUserAvatar();
+    QImage avatarById(const int &id);
+
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE bool isCurrentUserConnected();
-    Q_INVOKABLE QString currentUserAvatar();
     Q_INVOKABLE QString currentUserName();
     Q_INVOKABLE QString currentUserServer();
     Q_INVOKABLE void switchCurrentUser(const int &id);
@@ -77,6 +81,13 @@ private:
     int _currentUserId;
 
     void initUserList();
+};
+
+class ImageProvider : public QQuickImageProvider
+{
+public:
+    ImageProvider();
+    QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
 };
 
 }

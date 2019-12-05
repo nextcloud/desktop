@@ -44,7 +44,9 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     _trayContext = engine->contextForObject(systray.create());
 
     _accountMenuModel = UserModel::instance();
+    systray.engine()->addImageProvider("avatars", new ImageProvider);
     systray.engine()->rootContext()->setContextProperty("systrayBackend", _accountMenuModel);
+    
 
     // TODO: hack to pass the icon to QML
     //ctxt->setContextProperty("theme", QLatin1String("colored"));
