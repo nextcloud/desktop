@@ -147,25 +147,31 @@ void WebFlowCredentials::fetchFromKeychain() {
 }
 
 void WebFlowCredentials::askFromUser() {
-    // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
-    bool useFlow2 = (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0));
+    // Determine if the old flow has to be used (GS for now)
+    // Do a DetermineAuthTypeJob to make sure that the server is still using Flow2
+    DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
+    connect(job, &DetermineAuthTypeJob::authType, [this](DetermineAuthTypeJob::AuthType type) {
+        // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
+        bool useFlow2 = (type != DetermineAuthTypeJob::WebViewFlow);
 
-    _askDialog = new WebFlowCredentialsDialog(_account, useFlow2);
+        _askDialog = new WebFlowCredentialsDialog(_account, useFlow2);
 
-    if (!useFlow2) {
-        QUrl url = _account->url();
-        QString path = url.path() + "/index.php/login/flow";
-        url.setPath(path);
-        _askDialog->setUrl(url);
-    }
+        if (!useFlow2) {
+            QUrl url = _account->url();
+            QString path = url.path() + "/index.php/login/flow";
+            url.setPath(path);
+            _askDialog->setUrl(url);
+        }
 
-    QString msg = tr("You have been logged out of %1 as user %2. Please login again")
-            .arg(_account->displayName(), _user);
-    _askDialog->setInfo(msg);
+        QString msg = tr("You have been logged out of %1 as user %2. Please login again")
+                .arg(_account->displayName(), _user);
+        _askDialog->setInfo(msg);
 
-    _askDialog->show();
+        _askDialog->show();
 
-    connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
+        connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
+    });
+    job->start();
 
     qCDebug(lcWebFlowCredentials()) << "User needs to reauth!";
 }
