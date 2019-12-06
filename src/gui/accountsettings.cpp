@@ -111,7 +111,7 @@ protected:
     }
 };
 
-  AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
+AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AccountSettings)
     , _wasDisabledBefore(false)
