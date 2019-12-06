@@ -237,6 +237,7 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
+                            systrayBackend.openLocalFolder()
                         }
                     }
 

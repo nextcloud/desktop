@@ -62,6 +62,7 @@ public:
     };
 
 signals:
+    Q_INVOKABLE void openLocalFolder();
     Q_INVOKABLE void login();
     Q_INVOKABLE void logout();
     Q_INVOKABLE void addAccount();
