@@ -58,7 +58,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     setupCustomization();
 
     connect(_ui.pbSelectLocalFolder, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectFolder);
-    setButtonText(QWizard::NextButton, tr("Connect..."));
+    setButtonText(QWizard::NextButton, tr("Connect …"));
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);

@@ -140,7 +140,7 @@ QString OCUpdater::statusString() const
 
     switch (downloadState()) {
     case Downloading:
-        return tr("Downloading version %1. Please wait...").arg(updateVersion);
+        return tr("Downloading version %1. Please wait …").arg(updateVersion);
     case DownloadComplete:
         return tr("%1 version %2 available. Restart application to start the update.").arg(Theme::instance()->appNameGUI(), updateVersion);
     case DownloadFailed:
@@ -150,7 +150,7 @@ QString OCUpdater::statusString() const
     case UpdateOnlyAvailableThroughSystem:
         return tr("New %1 version %2 is available. Please click <a href='%3'>here</a> to download the update.").arg(Theme::instance()->appNameGUI(), updateVersion, _updateInfo.web());
     case CheckingServer:
-        return tr("Checking update server...");
+        return tr("Checking update server …");
     case Unknown:
         return tr("Update status is unknown: Did not check for new updates.");
     case UpToDate:
