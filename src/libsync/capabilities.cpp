@@ -17,6 +17,13 @@
 #include <QVariantMap>
 #include <QDebug>
 
+namespace  {
+    QString FileSharingKey()
+    {
+        return QStringLiteral("files_sharing");
+    }
+}
+
 namespace OCC {
 
 
@@ -83,6 +90,11 @@ bool Capabilities::sharePublicLinkMultiple() const
 bool Capabilities::shareResharing() const
 {
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
+}
+
+int Capabilities::defaultPermissions() const
+{
+    return _capabilities.value(FileSharingKey()).toMap().value("default_permissions", 1).toInt();
 }
 
 bool Capabilities::notificationsAvailable() const

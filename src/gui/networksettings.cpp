@@ -55,6 +55,8 @@ NetworkSettings::NetworkSettings(QWidget *parent)
         _ui->manualSettings, &QWidget::setEnabled);
     connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
         _ui->typeComboBox, &QWidget::setEnabled);
+    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
+        this, &NetworkSettings::checkAccountLocalhost);
 
     loadProxySettings();
     loadBWLimitSettings();
@@ -80,6 +82,7 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     // Warn about empty proxy host
     connect(_ui->hostLineEdit, &QLineEdit::textChanged, this, &NetworkSettings::checkEmptyProxyHost);
     checkEmptyProxyHost();
+    checkAccountLocalhost();
 }
 
 NetworkSettings::~NetworkSettings()
@@ -229,8 +232,27 @@ void NetworkSettings::showEvent(QShowEvent *event)
         checkEmptyProxyHost();
         saveProxySettings();
     }
+    checkAccountLocalhost();
 
     QWidget::showEvent(event);
 }
+
+
+void NetworkSettings::checkAccountLocalhost()
+{
+    bool visible = false;
+    if (_ui->manualProxyRadioButton->isChecked()) {
+        // Check if at least one account is using localhost, because Qt proxy settings have no
+        // effect for localhost (#7169)
+        for (const auto &account : AccountManager::instance()->accounts()) {
+            const auto host = account->account()->url().host();
+            // Some typical url for localhost
+            if (host == "localhost" || host.startsWith("127.") || host == "[::1]")
+                visible = true;
+        }
+    }
+    _ui->labelLocalhost->setVisible(visible);
+}
+
 
 } // namespace OCC

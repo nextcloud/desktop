@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>542</width>
-    <height>396</height>
+    <width>623</width>
+    <height>581</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,6 +23,13 @@
       <string>Proxy Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="1">
+       <widget class="QComboBox" name="typeComboBox">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QRadioButton" name="noProxyRadioButton">
         <property name="text">
@@ -54,13 +61,6 @@
         <attribute name="buttonGroup">
          <string notr="true">proxyButtonGroup</string>
         </attribute>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="typeComboBox">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
        </widget>
       </item>
       <item row="3" column="0" colspan="2">
@@ -168,6 +168,13 @@
              </widget>
             </item>
            </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelLocalhost">
+           <property name="text">
+            <string>Note: proxy settings have no effects for accounts on localhost</string>
+           </property>
           </widget>
          </item>
         </layout>
