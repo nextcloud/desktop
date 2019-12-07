@@ -97,13 +97,12 @@ private:
      * Split the private key into chunks of 2048 bytes,
      * to allow 4k (4096 bit) keys to be saved (see limits above)
      */
-    void writeSingleClientCaKeyPEM(QKeychain::Job *incomingJob);
+    void writeSingleClientKeyChunkPEM(QKeychain::Job *incomingJob);
 
-    static constexpr int _clientSslCaKeyChunkSize = 2048;
-    static constexpr int _clientSslCaKeyMaxChunks = 10;
-    QQueue<QByteArray> _clientSslCaKeyWriteQueue;
-    int _clientSslCaKeyChunkCount = 0;
-    QByteArray _clientSslCaKeyReadBuffer;
+    static constexpr int _clientSslKeyChunkSize = 2048;
+    static constexpr int _clientSslKeyMaxChunks = 10;
+    int _clientSslKeyChunkCount = 0;
+    QByteArray _clientSslKeyChunkBufferPEM;
 
 protected:
     /** Reads data from keychain locations
