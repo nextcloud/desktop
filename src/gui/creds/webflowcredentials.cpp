@@ -276,7 +276,7 @@ void WebFlowCredentials::writeSingleClientKeyChunkPEM(QKeychain::Job *incomingJo
 #if defined(Q_OS_WIN)
         // Windows workaround: Split the private key into chunks of 2048 bytes,
         // to allow 4k (4096 bit) keys to be saved (obey Windows's limits)
-        auto chunk = _clientSslKeyChunkBufferPEM.left(_clientSslCaKeyChunkSize);
+        auto chunk = _clientSslKeyChunkBufferPEM.left(_clientSslKeyChunkSize);
 
         _clientSslKeyChunkBufferPEM = _clientSslKeyChunkBufferPEM.right(_clientSslKeyChunkBufferPEM.size() - chunk.size());
 #else
