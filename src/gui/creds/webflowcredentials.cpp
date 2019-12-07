@@ -246,15 +246,77 @@ void WebFlowCredentials::slotWriteClientCertPEMJobDone()
 {
     // write ssl key if there is one
     if (!_clientSslKey.isNull()) {
+        QByteArray sslKey = _clientSslKey.toPem();
+
+#if defined(Q_OS_WIN)
+        // Workaround: Split the private key into chunks of 2048 bytes,
+        // to allow 4k (4096 bit) keys to be saved (obey Windows's limits)
+        while (!sslKey.isEmpty()) {
+            QByteArray chunk = sslKey.left(_clientSslCaKeyChunkSize);
+
+            _clientSslCaKeyWriteQueue.append(chunk);
+
+            sslKey = sslKey.right(sslKey.size() - chunk.size());
+            chunk.clear();
+        }
+
+        _clientSslCaKeyChunkCount = _clientSslCaKeyWriteQueue.count();
+#else
+        // write full key in one slot on non-Windows, as usual
+        _clientSslCaKeyWriteQueue.append(sslKey);
+        _clientSslCaKeyChunkCount = 1;
+#endif
+
+        writeSingleClientCaKeyPEM(nullptr);
+
+        sslKey.clear();
+    } else {
+        // no key, just write credentials
+        slotWriteClientKeyPEMJobDone();
+    }
+}
+
+void WebFlowCredentials::writeSingleClientCaKeyPEM(QKeychain::Job *incomingJob)
+{
+    // errors?
+    if (incomingJob) {
+        WritePasswordJob *writeJob = static_cast<WritePasswordJob *>(incomingJob);
+
+        if (writeJob->error() != NoError) {
+            qCWarning(lcWebFlowCredentials) << "Error while writing client CA key chunk" << writeJob->errorString();
+
+            _clientSslCaKeyWriteQueue.clear();
+        }
+    }
+
+    // write a ca key chunk if there is any in the queue
+    if (!_clientSslCaKeyWriteQueue.isEmpty()) {
+        // grab and remove the first chunk from the queue
+        auto chunk = _clientSslCaKeyWriteQueue.dequeue();
+
+        auto index = (_clientSslCaKeyChunkCount - _clientSslCaKeyWriteQueue.count()) - 1;
+
+        // keep the limit
+        if (index > (_clientSslCaKeyMaxChunks - 1)) {
+            qCWarning(lcWebFlowCredentials) << "Maximum client CA key chunk count exceeded while writing slot" << QString::number(index) << "), cutting off after " << QString::number(_clientSslCaKeyMaxChunks) << "chunks";
+
+            _clientSslCaKeyWriteQueue.clear();
+
+            slotWriteClientKeyPEMJobDone();
+            return;
+        }
+
         WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
         addSettingsToJob(_account, job);
         job->setInsecureFallback(false);
-        connect(job, &Job::finished, this, &WebFlowCredentials::slotWriteClientKeyPEMJobDone);
-        job->setKey(keychainKey(_account->url().toString(), _user + clientKeyPEMC, _account->id()));
-        job->setBinaryData(_clientSslKey.toPem());
+        connect(job, &Job::finished, this, &WebFlowCredentials::writeSingleClientCaKeyPEM);
+        // only add the "index" after the first element, to stay compatible with older versions and non-Windows
+        job->setKey(keychainKey(_account->url().toString(), _user + clientKeyPEMC + (index > 0 ? QString::number(index) : QString()), _account->id()));
+        job->setBinaryData(chunk);
         job->start();
+
+        chunk.clear();
     } else {
-        // no key, just write credentials
         slotWriteClientKeyPEMJobDone();
     }
 }
@@ -472,6 +534,9 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incomingJo
     }
 
     // Load key too
+    _clientSslCaKeyChunkCount = 0;
+    _clientSslCaKeyReadBuffer.clear();
+
     const QString kck = keychainKey(
         _account->url().toString(),
         _user + clientKeyPEMC,
@@ -487,11 +552,45 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incomingJo
 
 void WebFlowCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob)
 {
-    // Store key in memory
+    // Errors or next ca key chunk?
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incomingJob);
 
+    if (readJob) {
     if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
-        QByteArray clientKeyPEM = readJob->binaryData();
+            _clientSslCaKeyReadBuffer.append(readJob->binaryData());
+            _clientSslCaKeyChunkCount++;
+
+#if defined(Q_OS_WIN)
+            // try to fetch next chunk
+            if (_clientSslCaKeyChunkCount < _clientSslCaKeyMaxChunks) {
+                const QString kck = keychainKey(
+                    _account->url().toString(),
+                    _user + clientKeyPEMC + QString::number(_clientSslCaKeyChunkCount),
+                    _keychainMigration ? QString() : _account->id());
+
+                ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+                addSettingsToJob(_account, job);
+                job->setInsecureFallback(false);
+                job->setKey(kck);
+                connect(job, &Job::finished, this, &WebFlowCredentials::slotReadClientKeyPEMJobDone);
+                job->start();
+
+                return;
+            } else {
+                qCWarning(lcWebFlowCredentials) << "Maximum client CA key chunk count reached, ignoring after " << _clientSslCaKeyMaxChunks;
+            }
+#endif
+        } else {
+            if (readJob->error() != QKeychain::Error::EntryNotFound ||
+                ((readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaKeyChunkCount == 0)) {
+                qCWarning(lcWebFlowCredentials) << "Unable to read client CA key chunk slot " << QString::number(_clientSslCaKeyChunkCount) << readJob->errorString();
+            }
+        }
+    }
+
+    // Store key in memory
+    if (_clientSslCaKeyReadBuffer.size() > 0) {
+        QByteArray clientKeyPEM = _clientSslCaKeyReadBuffer;
         // FIXME Unfortunately Qt has a bug and we can't just use QSsl::Opaque to let it
         // load whatever we have. So we try until it works.
         _clientSslKey = QSslKey(clientKeyPEM, QSsl::Rsa);
@@ -504,6 +603,9 @@ void WebFlowCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob
         if (_clientSslKey.isNull()) {
             qCWarning(lcWebFlowCredentials) << "Could not load SSL key into Qt!";
         }
+        clientKeyPEM.clear();
+        _clientSslCaKeyChunkCount = 0;
+        _clientSslCaKeyReadBuffer.clear();
     }
 
     // Start fetching client CA certs
