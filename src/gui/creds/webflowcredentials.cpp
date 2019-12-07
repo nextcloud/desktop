@@ -432,14 +432,7 @@ void WebFlowCredentials::forgetSensitiveData() {
 
     invalidateToken();
 
-    /* IMPORTANT
-     * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
-     *
-     *       Disabled as long as selecting another cert is not supported by the UI.
-     *
-     *       Being able to specify a new certificate is important anyway: expiry etc.
-    */
-    //deleteKeychainEntries();
+    deleteKeychainEntries();
 }
 
 void WebFlowCredentials::setAccount(Account *account) {
@@ -706,19 +699,34 @@ void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
     };
 
     startDeleteJob(_user);
-    startDeleteJob(_user + clientKeyPEMC);
-    startDeleteJob(_user + clientCertificatePEMC);
 
-    for (auto i = 0; i < _clientSslCaCertificates.count(); i++) {
-        startDeleteJob(_user + clientCaCertificatePEMC + QString::number(i));
-    }
+    /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
+      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
+      *
+      *       Disabled as long as selecting another cert is not supported by the UI.
+      *
+      *       Being able to specify a new certificate is important anyway: expiry etc.
+      *
+      *       We introduce this dirty hack here, to allow deleting them upon Remote Wipe.
+     */
+    if(_account->isRemoteWipeRequested_HACK()) {
+    // <-- FIXME MS@2019-12-07
+        startDeleteJob(_user + clientKeyPEMC);
+        startDeleteJob(_user + clientCertificatePEMC);
+
+        for (auto i = 0; i < _clientSslCaCertificates.count(); i++) {
+            startDeleteJob(_user + clientCaCertificatePEMC + QString::number(i));
+        }
 
 #if defined(Q_OS_WIN)
-    // also delete key sub-chunks (Windows workaround)
-    for (auto i = 1; i < _clientSslKeyChunkCount; i++) {
-        startDeleteJob(_user + clientKeyPEMC + QString(".") + QString::number(i));
-    }
+        // also delete key sub-chunks (Windows workaround)
+        for (auto i = 1; i < _clientSslKeyChunkCount; i++) {
+            startDeleteJob(_user + clientKeyPEMC + QString(".") + QString::number(i));
+        }
 #endif
+    // FIXME MS@2019-12-07 -->
+    }
+    // <-- FIXME MS@2019-12-07
 }
 
 }
