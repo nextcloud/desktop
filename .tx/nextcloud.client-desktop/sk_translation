@@ -201,4 +201,4 @@ X-GNOME-Autostart-Delay=3
 Icon[sk_SK]=@APPLICATION_ICON_NAME@
 Name[sk_SK]=@APPLICATION_NAME@ synchronizačný klient pre PC
 Comment[sk_SK]=@APPLICATION_NAME@ synchronizačný klient pre PC
-GenericName[sk_SK]=Synchnonizácia priečinkov
+GenericName[sk_SK]=Synchronizácia priečinkov

@@ -490,7 +490,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1035"/>
         <source>Connecting to %1 …</source>
-        <translation>%1 bağlantısı kuruluyor…</translation>
+        <translation>%1 bağlantısı kuruluyor …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1044"/>
@@ -1222,7 +1222,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
         <source>Fetching folder list from server …</source>
-        <translation>Sunucudan klasör listesi alınıyor…</translation>
+        <translation>Sunucudan klasör listesi alınıyor …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
@@ -1271,17 +1271,17 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting …</source>
-        <translation>Bekleniyor…</translation>
+        <translation>Bekleniyor …</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>%n diğer klasörler bekleniyor ...</numerusform><numerusform>%n diğer klasör bekleniyor ...</numerusform></translation>
+        <translation><numerusform>Diğer %n klasör bekleniyor …</numerusform><numerusform>Diğer %n klasör bekleniyor …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation>Senkronize için hazırlanılıyor ...</translation>
+        <translation>Eşitlemeye hazırlanılıyor …</translation>
     </message>
 </context>
 <context>
@@ -1911,7 +1911,7 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation>Versiyon %1 indiriliyor. Lütfen bekleyin ...</translation>
+        <translation>Lütfen bekleyin, %1 sürümü indiriliyor …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1931,7 +1931,7 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server …</source>
-        <translation>Güncelleme sunucusu kontrol ediliyor ...</translation>
+        <translation>Güncelleme sunucusu denetleniyor …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1969,7 +1969,7 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
         <source>Connect …</source>
-        <translation>Bağlan ...</translation>
+        <translation>Bağlantı kuruluyor …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2177,7 +2177,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation>%2 deki %1&apos;e bağlanılmaya çalışılıyor ...</translation>
+        <translation>%2 üzerindeki %1 ile bağlantı kuruluyor …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2187,7 +2187,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>%1 klasörüne yerel senkronizasyon oluşturuluyor ...</translation>
+        <translation>%1 yerel eşitleme klasörü oluşturuluyor …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="459"/>
@@ -2611,7 +2611,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation>Yükleniyor ...</translation>
+        <translation>Yükleniyor …</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2965,7 +2965,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="628"/>
         <source>Send private link by email …</source>
-        <translation>Gizli linki email ile paylaş ...</translation>
+        <translation>Kişisel bağlantıyı e-posta ile paylaş …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
@@ -3510,12 +3510,12 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation>%1 üzerindeki %2 kullanıcısı oturumunuzu kapattınız. Lütfen yeniden oturum açın</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="179"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="185"/>
         <source>Please login with the user: %1</source>
         <translation>Lütfen şu kullanıcı ile oturum açın: %1</translation>
     </message>
@@ -3661,7 +3661,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Log in …</source>
-        <translation>Giriş yap ...</translation>
+        <translation>Oturum aç …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="701"/>
@@ -3686,7 +3686,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="946"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>%1 / %2 senkronize ediliyor (%3 kaldı)</translation>
+        <translation>%1 / %2 eşitleniyor (%3 kaldı)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="803"/>
@@ -3702,17 +3702,17 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="789"/>
         <source>Settings …</source>
-        <translation>Ayarlar ...</translation>
+        <translation>Ayarlar …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>New account …</source>
-        <translation>Yeni hesap ...</translation>
+        <translation>Hesap ekle …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="791"/>
         <source>View more activity …</source>
-        <translation>Daha fazla aktivite görüntüle</translation>
+        <translation>Diğer işlemleri görüntüle …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="906"/>
@@ -4162,7 +4162,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation>İptal ediliyor ...</translation>
+        <translation>İptal ediliyor …</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
