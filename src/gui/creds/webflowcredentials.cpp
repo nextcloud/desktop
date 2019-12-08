@@ -246,15 +246,68 @@ void WebFlowCredentials::slotWriteClientCertPEMJobDone()
 {
     // write ssl key if there is one
     if (!_clientSslKey.isNull()) {
+        // Windows workaround: Split the private key into chunks of 2048 bytes,
+        // to allow 4k (4096 bit) keys to be saved (obey Windows's limits)
+        _clientSslKeyChunkBufferPEM = _clientSslKey.toPem();
+        _clientSslKeyChunkCount = 0;
+
+        writeSingleClientKeyChunkPEM(nullptr);
+    } else {
+        // no key, just write credentials
+        slotWriteClientKeyPEMJobDone();
+    }
+}
+
+void WebFlowCredentials::writeSingleClientKeyChunkPEM(QKeychain::Job *incomingJob)
+{
+    // errors?
+    if (incomingJob) {
+        WritePasswordJob *writeJob = static_cast<WritePasswordJob *>(incomingJob);
+
+        if (writeJob->error() != NoError) {
+            qCWarning(lcWebFlowCredentials) << "Error while writing client CA key chunk" << writeJob->errorString();
+
+            _clientSslKeyChunkBufferPEM.clear();
+        }
+    }
+
+    // write a key chunk if there is any in the buffer
+    if (!_clientSslKeyChunkBufferPEM.isEmpty()) {
+#if defined(Q_OS_WIN)
+        // Windows workaround: Split the private key into chunks of 2048 bytes,
+        // to allow 4k (4096 bit) keys to be saved (obey Windows's limits)
+        auto chunk = _clientSslKeyChunkBufferPEM.left(_clientSslKeyChunkSize);
+
+        _clientSslKeyChunkBufferPEM = _clientSslKeyChunkBufferPEM.right(_clientSslKeyChunkBufferPEM.size() - chunk.size());
+#else
+        // write full key in one slot on non-Windows, as usual
+        auto chunk = _clientSslKeyChunkBufferPEM;
+
+        _clientSslKeyChunkBufferPEM.clear();
+#endif
+        auto index = (_clientSslKeyChunkCount++);
+
+        // keep the limit
+        if (_clientSslKeyChunkCount > _clientSslKeyMaxChunks) {
+            qCWarning(lcWebFlowCredentials) << "Maximum client key chunk count exceeded while writing slot" << QString::number(index) << "cutting off after" << QString::number(_clientSslKeyMaxChunks) << "chunks";
+
+            _clientSslKeyChunkBufferPEM.clear();
+
+            slotWriteClientKeyPEMJobDone();
+            return;
+        }
+
         WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
         addSettingsToJob(_account, job);
         job->setInsecureFallback(false);
-        connect(job, &Job::finished, this, &WebFlowCredentials::slotWriteClientKeyPEMJobDone);
-        job->setKey(keychainKey(_account->url().toString(), _user + clientKeyPEMC, _account->id()));
-        job->setBinaryData(_clientSslKey.toPem());
+        connect(job, &Job::finished, this, &WebFlowCredentials::writeSingleClientKeyChunkPEM);
+        // only add the key's (sub)"index" after the first element, to stay compatible with older versions and non-Windows
+        job->setKey(keychainKey(_account->url().toString(), _user + clientKeyPEMC + (index > 0 ? (QString(".") + QString::number(index)) : QString()), _account->id()));
+        job->setBinaryData(chunk);
         job->start();
+
+        chunk.clear();
     } else {
-        // no key, just write credentials
         slotWriteClientKeyPEMJobDone();
     }
 }
@@ -270,7 +323,7 @@ void WebFlowCredentials::writeSingleClientCaCertPEM()
 
         // keep the limit
         if (index > (_clientSslCaCertificatesMaxCount - 1)) {
-            qCWarning(lcWebFlowCredentials) << "Maximum client CA cert count exceeded while writing slot" << QString::number(index) << "), cutting off after " << QString::number(_clientSslCaCertificatesMaxCount) << "certs";
+            qCWarning(lcWebFlowCredentials) << "Maximum client CA cert count exceeded while writing slot" << QString::number(index) << "cutting off after" << QString::number(_clientSslCaCertificatesMaxCount) << "certs";
 
             _clientSslCaCertificatesWriteQueue.clear();
 
@@ -379,14 +432,7 @@ void WebFlowCredentials::forgetSensitiveData() {
 
     invalidateToken();
 
-    /* IMPORTANT
-     * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
-     *
-     *       Disabled as long as selecting another cert is not supported by the UI.
-     *
-     *       Being able to specify a new certificate is important anyway: expiry etc.
-    */
-    //deleteKeychainEntries();
+    deleteKeychainEntries();
 }
 
 void WebFlowCredentials::setAccount(Account *account) {
@@ -472,6 +518,9 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incomingJo
     }
 
     // Load key too
+    _clientSslKeyChunkCount = 0;
+    _clientSslKeyChunkBufferPEM.clear();
+
     const QString kck = keychainKey(
         _account->url().toString(),
         _user + clientKeyPEMC,
@@ -487,23 +536,58 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incomingJo
 
 void WebFlowCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob)
 {
-    // Store key in memory
+    // Errors or next key chunk?
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incomingJob);
 
+    if (readJob) {
     if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
-        QByteArray clientKeyPEM = readJob->binaryData();
+            _clientSslKeyChunkBufferPEM.append(readJob->binaryData());
+            _clientSslKeyChunkCount++;
+
+#if defined(Q_OS_WIN)
+            // try to fetch next chunk
+            if (_clientSslKeyChunkCount < _clientSslKeyMaxChunks) {
+                const QString kck = keychainKey(
+                    _account->url().toString(),
+                    _user + clientKeyPEMC + QString(".") + QString::number(_clientSslKeyChunkCount),
+                    _keychainMigration ? QString() : _account->id());
+
+                ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+                addSettingsToJob(_account, job);
+                job->setInsecureFallback(false);
+                job->setKey(kck);
+                connect(job, &Job::finished, this, &WebFlowCredentials::slotReadClientKeyPEMJobDone);
+                job->start();
+
+                return;
+            } else {
+                qCWarning(lcWebFlowCredentials) << "Maximum client key chunk count reached, ignoring after" << _clientSslKeyMaxChunks;
+            }
+#endif
+        } else {
+            if (readJob->error() != QKeychain::Error::EntryNotFound ||
+                ((readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslKeyChunkCount == 0)) {
+                qCWarning(lcWebFlowCredentials) << "Unable to read client key chunk slot" << QString::number(_clientSslKeyChunkCount) << readJob->errorString();
+            }
+        }
+    }
+
+    // Store key in memory
+    if (_clientSslKeyChunkBufferPEM.size() > 0) {
         // FIXME Unfortunately Qt has a bug and we can't just use QSsl::Opaque to let it
         // load whatever we have. So we try until it works.
-        _clientSslKey = QSslKey(clientKeyPEM, QSsl::Rsa);
+        _clientSslKey = QSslKey(_clientSslKeyChunkBufferPEM, QSsl::Rsa);
         if (_clientSslKey.isNull()) {
-            _clientSslKey = QSslKey(clientKeyPEM, QSsl::Dsa);
+            _clientSslKey = QSslKey(_clientSslKeyChunkBufferPEM, QSsl::Dsa);
         }
         if (_clientSslKey.isNull()) {
-            _clientSslKey = QSslKey(clientKeyPEM, QSsl::Ec);
+            _clientSslKey = QSslKey(_clientSslKeyChunkBufferPEM, QSsl::Ec);
         }
         if (_clientSslKey.isNull()) {
             qCWarning(lcWebFlowCredentials) << "Could not load SSL key into Qt!";
         }
+        // clear key chunk buffer, but don't set _clientSslKeyChunkCount to zero because we need it for deleteKeychainEntries
+        _clientSslKeyChunkBufferPEM.clear();
     }
 
     // Start fetching client CA certs
@@ -528,7 +612,7 @@ void WebFlowCredentials::readSingleClientCaCertPEM()
         connect(job, &Job::finished, this, &WebFlowCredentials::slotReadClientCaCertsPEMJobDone);
         job->start();
     } else {
-        qCWarning(lcWebFlowCredentials) << "Maximum client CA cert count exceeded while reading, ignoring after " << _clientSslCaCertificatesMaxCount;
+        qCWarning(lcWebFlowCredentials) << "Maximum client CA cert count exceeded while reading, ignoring after" << _clientSslCaCertificatesMaxCount;
 
         slotReadClientCaCertsPEMJobDone(nullptr);
     }
@@ -551,7 +635,7 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(QKeychain::Job *incomin
         } else {
             if (readJob->error() != QKeychain::Error::EntryNotFound ||
                 ((readJob->error() == QKeychain::Error::EntryNotFound) && _clientSslCaCertificates.count() == 0)) {
-                qCWarning(lcWebFlowCredentials) << "Unable to read client CA cert slot " << QString::number(_clientSslCaCertificates.count()) << readJob->errorString();
+                qCWarning(lcWebFlowCredentials) << "Unable to read client CA cert slot" << QString::number(_clientSslCaCertificates.count()) << readJob->errorString();
             }
         }
     }
@@ -607,7 +691,7 @@ void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
     auto startDeleteJob = [this, oldKeychainEntries](QString user) {
         DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
         addSettingsToJob(_account, job);
-        job->setInsecureFallback(true);
+        job->setInsecureFallback(false);
         job->setKey(keychainKey(_account->url().toString(),
                                 user,
                                 oldKeychainEntries ? QString() : _account->id()));
@@ -615,12 +699,34 @@ void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
     };
 
     startDeleteJob(_user);
-    startDeleteJob(_user + clientKeyPEMC);
-    startDeleteJob(_user + clientCertificatePEMC);
 
-    for (auto i = 0; i < _clientSslCaCertificates.count(); i++) {
-        startDeleteJob(_user + clientCaCertificatePEMC + QString::number(i));
+    /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
+      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
+      *
+      *       Disabled as long as selecting another cert is not supported by the UI.
+      *
+      *       Being able to specify a new certificate is important anyway: expiry etc.
+      *
+      *       We introduce this dirty hack here, to allow deleting them upon Remote Wipe.
+     */
+    if(_account->isRemoteWipeRequested_HACK()) {
+    // <-- FIXME MS@2019-12-07
+        startDeleteJob(_user + clientKeyPEMC);
+        startDeleteJob(_user + clientCertificatePEMC);
+
+        for (auto i = 0; i < _clientSslCaCertificates.count(); i++) {
+            startDeleteJob(_user + clientCaCertificatePEMC + QString::number(i));
+        }
+
+#if defined(Q_OS_WIN)
+        // also delete key sub-chunks (Windows workaround)
+        for (auto i = 1; i < _clientSslKeyChunkCount; i++) {
+            startDeleteJob(_user + clientKeyPEMC + QString(".") + QString::number(i));
+        }
+#endif
+    // FIXME MS@2019-12-07 -->
     }
+    // <-- FIXME MS@2019-12-07
 }
 
 }
