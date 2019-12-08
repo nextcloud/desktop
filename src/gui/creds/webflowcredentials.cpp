@@ -691,7 +691,7 @@ void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
     auto startDeleteJob = [this, oldKeychainEntries](QString user) {
         DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
         addSettingsToJob(_account, job);
-        job->setInsecureFallback(true);
+        job->setInsecureFallback(false);
         job->setKey(keychainKey(_account->url().toString(),
                                 user,
                                 oldKeychainEntries ? QString() : _account->id()));
