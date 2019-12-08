@@ -41,7 +41,7 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     // Create QML tray engine, build component, set C++ backend context used in window.qml
     // Use pointer instead of engine() helper function until Qt 5.12 is minimum standard
     QQmlEngine *engine = new QQmlEngine;
-    QQmlComponent systray(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/init.qml")));
+    QQmlComponent systray(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/window.qml")));
     _trayContext = engine->contextForObject(systray.create());
 
     _accountMenuModel = UserModel::instance();
