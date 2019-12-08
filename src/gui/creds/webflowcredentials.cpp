@@ -586,7 +586,7 @@ void WebFlowCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob
         if (_clientSslKey.isNull()) {
             qCWarning(lcWebFlowCredentials) << "Could not load SSL key into Qt!";
         }
-        _clientSslKeyChunkCount = 0;
+        // clear key chunk buffer, but don't set _clientSslKeyChunkCount to zero because we need it for deleteKeychainEntries
         _clientSslKeyChunkBufferPEM.clear();
     }
 
