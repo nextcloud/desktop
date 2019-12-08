@@ -1651,7 +1651,7 @@ Položky u kterých je umožněno mazání budou smazány, pokud brání tomu, a
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="58"/>
         <source>Log Output</source>
-        <translation>Zaznamenat výstup</translation>
+        <translation>Zaznamenat (log) výstup</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
