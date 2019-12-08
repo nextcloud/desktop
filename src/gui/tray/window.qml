@@ -1,8 +1,8 @@
-import QtQml 2.2
+import QtQml 2.0
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
-import QtQuick.Layouts 1.3
+import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 
 Window {
@@ -25,8 +25,7 @@ Window {
     Connections {
         target: systrayBackend
         onRefreshCurrentUserGui: {
-            currentAccountAvatar.source = ""
-            currentAccountAvatar.source = "image://avatars/currentUser"
+            currentAccountAvatar.source = systrayBackend.currentUserAvatar()
             currentAccountUser.text = systrayBackend.currentUserName()
             currentAccountServer.text = systrayBackend.currentUserServer()
         }
@@ -65,7 +64,6 @@ Window {
                 Button {
                     id: currentAccountButton
                     Layout.preferredWidth: 220
-                    Layout.maximumWidth: 220
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     display: AbstractButton.IconOnly
                     flat: true
@@ -76,7 +74,6 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
-                            accountMenuLoginLogout.text = (systrayBackend.isCurrentUserConnected() ? "Logout" : "Login")
                             accountMenu.open()
                         }
 
@@ -101,7 +98,7 @@ Window {
                             MenuSeparator { id: accountMenuSeparator }
 
                             MenuItem {
-                                id: accountMenuLoginLogout
+                                text: (systrayBackend.isCurrentUserConnected() ? "Logout" : "Login")
                                 onClicked: (systrayBackend.isCurrentUserConnected()
                                             ? systrayBackend.logout()
                                             : systrayBackend.login() )
@@ -180,8 +177,7 @@ Window {
                             id: currentAccountAvatar
                             Layout.leftMargin: 8
                             verticalAlignment: Qt.AlignCenter
-                            cache: false
-                            source: "image://avatars/currentUser"
+                            source: systrayBackend.currentUserAvatar()
                             Layout.preferredHeight: (trayWindowHeaderBackground.height -16)
                             Layout.preferredWidth: (trayWindowHeaderBackground.height -16)
                         }
@@ -206,18 +202,19 @@ Window {
                             }
                         }
 
-                        Item {
-                            id: trayWindowHeaderSpacer
-                            Layout.fillWidth: true
-                        }
-
                         Image {
                             Layout.alignment: Qt.AlignLeft
                             verticalAlignment: Qt.AlignCenter
                             Layout.margins: 12
+                            //source: "../../theme/white/caret-down.svg"
                             source: "qrc:///client/theme/white/caret-down.svg"
                         }
                     }
+                }
+
+                Item {
+                    id: trayWindowHeaderSpacer
+                    Layout.fillWidth: true
                 }
 
                 Button {
@@ -228,6 +225,7 @@ Window {
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
 
+                    //icon.source: "../../theme/white/folder.svg"
                     icon.source: "qrc:///client/theme/white/folder.svg"
                     icon.color: "transparent"
 
@@ -237,7 +235,6 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
-                            systrayBackend.openLocalFolder()
                         }
                     }
 
@@ -256,6 +253,7 @@ Window {
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
 
+                    //icon.source: "../../theme/white/talk-app.svg"
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     icon.color: "transparent"
 
@@ -283,6 +281,7 @@ Window {
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
 
+                    //icon.source: "../../theme/white/more-apps.svg"
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
                     icon.color: "transparent"
 

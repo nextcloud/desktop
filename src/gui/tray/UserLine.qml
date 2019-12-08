@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
-import QtQuick.Layouts 1.3
+import QtQuick.Layouts 1.2
 
 MenuItem {
 
@@ -55,7 +55,7 @@ MenuItem {
                         id: accountAvatar
                         Layout.leftMargin: 4
                         verticalAlignment: Qt.AlignCenter
-                        source: ("image://avatars/" + index)
+                        source: avatar
                         Layout.preferredHeight: (userLineBackground.height -16)
                         Layout.preferredWidth: (userLineBackground.height -16)
                     }
