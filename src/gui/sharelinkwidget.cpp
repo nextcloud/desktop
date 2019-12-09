@@ -505,12 +505,15 @@ void ShareLinkWidget::customizeStyle()
     _addAnotherLinkAction->setIcon(Theme::createColorAwareIcon(":/client/resources/add.png"));
 
     _ui->enableShareLink->setIcon(Theme::createColorAwareIcon(":/client/resources/copy.svg"));
-    
-    _ui->shareLinkIconLabel->setPixmap(Theme::createColorAwarePixmap(":/client/resources/public.svg"));
-    
+
+// only on master, not in stable-2.6 yet
+//    _ui->shareLinkIconLabel->setPixmap(Theme::createColorAwarePixmap(":/client/resources/public.svg"));
+    _ui->createShareButton->setIcon(Theme::createColorAwareIcon(":/client/resources/public.svg"));
+
     _ui->shareLinkToolButton->setIcon(Theme::createColorAwareIcon(":/client/resources/more.svg"));
-    
-    _ui->confirmNote->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
+
+// only on master, not in stable-2.6 yet
+//    _ui->confirmNote->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
     _ui->confirmPassword->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
     _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
 }
