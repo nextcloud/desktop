@@ -43,7 +43,7 @@ static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, cons
         }
     } else if (!logger->isNoop()) {
         logger->doLog(qFormatLogMessage(type, ctx, message));
-    } else if(type >= QtCriticalMsg) {
+    } else if(type == QtCriticalMsg || type == QtFatalMsg) {
         std::cerr << qPrintable(qFormatLogMessage(type, ctx, message)) << std::endl;
     }
 
