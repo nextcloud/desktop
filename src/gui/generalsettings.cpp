@@ -57,6 +57,13 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
+    // Rename 'Explorer' appropriately on non-Windows
+#ifdef Q_OS_MAC
+    QString txt = _ui->showInExplorerNavigationPaneCheckBox->text();
+    txt.replace(QString::fromLatin1("Explorer"), QString::fromLatin1("Finder"));
+    _ui->showInExplorerNavigationPaneCheckBox->setText(txt);
+#endif
+
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
     connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
 
