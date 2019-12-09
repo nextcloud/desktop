@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[sk_SK]=@APPLICATION_ICON_NAME@
-Name[sk_SK]=@APPLICATION_NAME@ synchronizačný klient pre PC
-Comment[sk_SK]=@APPLICATION_NAME@ synchronizačný klient pre PC
-GenericName[sk_SK]=Synchronizácia priečinkov
+Icon[sw]=@APPLICATION_ICON_NAME@
+Name[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa
+Comment[sw]=Teja ya @APPLICATION_NAME@ ya kufanana faili kwa seva na faili ziko hapa 
+GenericName[sw]=Fanana Kabrasha

@@ -197,17 +197,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="282"/>
         <source>Connection timed out</source>
         <translation>Tenging féll á tíma</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="251"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="284"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Óþekkt villa: svari netkerfis var eytt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="436"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Þjónn svaraði &quot;%1 %2&quot; til &quot;%3 %4&quot;</translation>
     </message>
@@ -342,11 +342,6 @@
         <translation>Gerð möppu mistókst</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="749"/>
-        <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation>&lt;p&gt;Gat ekki búið til staðværa möppu &lt;i&gt;%1&lt;/i&gt;.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="802"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Staðfesta fjarlægingu á samstillingartengingu möppu</translation>
@@ -406,11 +401,6 @@
         <location filename="../src/gui/accountsettings.cpp" line="1031"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1035"/>
-        <source>Connecting to %1...</source>
-        <translation>Tengist við %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1038"/>
@@ -477,6 +467,11 @@ gagnageymslur: </translation>
         <translation>Gera hlé á samstillingu</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="749"/>
+        <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="803"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Viltu í alvörunni hætta að samstilla möppuna 
@@ -497,6 +492,11 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
         <location filename="../src/gui/accountsettings.cpp" line="978"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Það eru engar upplýsingar um gagnamagn fáanlegar í augnablikinu.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1035"/>
+        <source>Connecting to %1 …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1044"/>
@@ -927,36 +927,36 @@ nánari upplýsingar.</translation>
         <translation>Gat ekki lesið kerfisútilokunarskrána</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="964"/>
+        <location filename="../src/gui/folder.cpp" line="970"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Nýrri möppu stærri en %1 MB var bætt við: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="967"/>
+        <location filename="../src/gui/folder.cpp" line="973"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Möppu úr ytri gagnageymslu var bætt við.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="968"/>
+        <location filename="../src/gui/folder.cpp" line="974"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Farðu í stillingarnar til að velja hana ef þú vilt sækja hana.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1023"/>
+        <location filename="../src/gui/folder.cpp" line="1029"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1026"/>
+        <location filename="../src/gui/folder.cpp" line="1032"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1037"/>
+        <location filename="../src/gui/folder.cpp" line="1043"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -965,7 +965,7 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1082"/>
+        <location filename="../src/gui/folder.cpp" line="1088"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -973,46 +973,46 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1087"/>
+        <location filename="../src/gui/folder.cpp" line="1093"/>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <location filename="../src/gui/folder.cpp" line="1097"/>
         <source>Delete all files?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1094"/>
+        <location filename="../src/gui/folder.cpp" line="1100"/>
         <source>Delete all files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1095"/>
+        <location filename="../src/gui/folder.cpp" line="1101"/>
         <source>Restore deleted files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1112"/>
+        <location filename="../src/gui/folder.cpp" line="1118"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1117"/>
+        <location filename="../src/gui/folder.cpp" line="1123"/>
         <source>Backup detected</source>
         <translation>Öryggisafrit fannst</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1120"/>
+        <location filename="../src/gui/folder.cpp" line="1126"/>
         <source>Normal Synchronisation</source>
         <translation>Venjuleg samstilling</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1121"/>
+        <location filename="../src/gui/folder.cpp" line="1127"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Halda skrám á tölvunni við árekstra</translation>
     </message>
@@ -1169,11 +1169,6 @@ Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
         <translation>Skráð(ur) út</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
-        <source>Fetching folder list from server...</source>
-        <translation>Sæki lista yfir möppur frá þjóni...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>There are unresolved conflicts. Click for details.</source>
         <translation>Það eru óleystir árekstrar. Smelltu til að skoða nánar.</translation>
@@ -1225,6 +1220,11 @@ Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
         <translation>Athuga með breytingar í fjartengdri &apos;%1&apos;</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
+        <source>Fetching folder list from server …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Athuga með breytingar í staðværri &apos;%1&apos;</translation>
@@ -1270,18 +1270,18 @@ Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
-        <source>Waiting...</source>
-        <translation>Bíð...</translation>
+        <source>Waiting …</source>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
-        <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Bíð eftir %n möppu til viðbótar...</numerusform><numerusform>Bíð eftir %n möppum til viðbótar...</numerusform></translation>
+        <source>Waiting for %n other folder(s) …</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
-        <source>Preparing to sync...</source>
-        <translation>Undirbý samstillingu...</translation>
+        <source>Preparing to sync …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1632,8 +1632,8 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
-        <source>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Höfundarréttur 2017-2018 Nextcloud GmbH&lt;br /&gt;Höfundarréttur 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Copyright 2017-2019 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
@@ -1904,8 +1904,8 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
-        <source>Downloading version %1. Please wait...</source>
-        <translation>Sæki útgáfu &amp;1, bíddu aðeins...</translation>
+        <source>Downloading version %1. Please wait …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1918,19 +1918,19 @@ for additional privileges during the process.</source>
         <translation>Gat ekki athugað með nýjar uppfærslur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
-        <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation>%1 útgáfa %2 er tiltæk. Endurræstu forritið til að hefja uppfærslu.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
-        <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation>%1 útgáfa %2 er tiltæk. Notaðu uppfærslutól kerfisins til að setja hana upp.</translation>
+        <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
-        <source>Checking update server...</source>
-        <translation>Athuga með uppfærsluþjón...</translation>
+        <source>Checking update server …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
+        <source>%1 version %2 available. Restart application to start the update.</source>
+        <translation>%1 útgáfa %2 er tiltæk. Endurræstu forritið til að hefja uppfærslu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
@@ -1962,8 +1962,8 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
-        <source>Connect...</source>
-        <translation>Tengjast...</translation>
+        <source>Connect …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2147,11 +2147,6 @@ Ekki er mælt með því að hún sé notuð.
         <translation>Féll á tíma þegar reynt var að tengjast við %1 á %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
-        <source>Trying to connect to %1 at %2...</source>
-        <translation>Reyni að tengjast við %1 á %2...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation type="unfinished"/>
@@ -2177,14 +2172,19 @@ Ekki er mælt með því að hún sé notuð.
         <translation>Þjónninn tilkynnti eftirfarandi villu:</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
+        <source>Trying to connect to %1 at %2 …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
-        <source>Creating local sync folder %1...</source>
-        <translation>Bý til staðværu samstillingarmöppuna %1...</translation>
+        <source>Creating local sync folder %1 …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="459"/>
@@ -2607,8 +2607,8 @@ Ekki er mælt með því að hún sé notuð.
     <name>OCC::SelectiveSyncWidget</name>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
-        <source>Loading ...</source>
-        <translation>Hleð...</translation>
+        <source>Loading …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2760,11 +2760,6 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="318"/>
-        <source>TextLabel</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2963,18 +2958,18 @@ Ekki er mælt með því að hún sé notuð.
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
-        <source>Share via </source>
+        <source>Share via %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="628"/>
+        <source>Send private link by email …</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
         <source>Copy private link to clipboard</source>
         <translation>Afrita einkatengil á klippispjald</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="628"/>
-        <source>Send private link by email...</source>
-        <translation>Senda einkatengil með tölvupósti...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="653"/>
@@ -3514,12 +3509,12 @@ Ekki er mælt með því að hún sé notuð.
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation>Þú hefur verið skráður út af %1 sem notandinn %2. Skráðu þig aftur inn</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="179"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="185"/>
         <source>Please login with the user: %1</source>
         <translation>Skráðu þig inn með notandanafninu: %1</translation>
     </message>
@@ -3545,11 +3540,6 @@ Ekki er mælt með því að hún sé notuð.
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
         <source>Open in browser</source>
         <translation>Opna í vafra</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
-        <source>Log in...</source>
-        <translation>Skrá inn...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="428"/>
@@ -3580,11 +3570,6 @@ Ekki er mælt með því að hún sé notuð.
         <location filename="../src/gui/owncloudgui.cpp" line="785"/>
         <source>Unknown status</source>
         <translation>Unknown status</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="789"/>
-        <source>Settings...</source>
-        <translation>Stillingar...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="797"/>
@@ -3673,6 +3658,11 @@ Ekki er mælt með því að hún sé notuð.
         <translation>Setja allar möppur í bið</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
+        <source>Log in …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="701"/>
         <source>Resume all synchronization</source>
         <translation>Halda áfram með alla samstillingu</translation>
@@ -3693,13 +3683,8 @@ Ekki er mælt með því að hún sé notuð.
         <translation>Gera hlé á samstillingu</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
-        <source>New account...</source>
-        <translation>Nýr aðgangur...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
-        <source>View more activity...</source>
+        <location filename="../src/gui/owncloudgui.cpp" line="946"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3712,6 +3697,21 @@ Ekki er mælt með því að hún sé notuð.
         <location filename="../src/gui/owncloudgui.cpp" line="787"/>
         <source>Apps</source>
         <translation>Forrit</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="789"/>
+        <source>Settings …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
+        <source>New account …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
+        <source>View more activity …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="906"/>
@@ -3727,11 +3727,6 @@ Ekki er mælt með því að hún sé notuð.
         <location filename="../src/gui/owncloudgui.cpp" line="931"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Athuga með breytingar í staðværri &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="946"/>
-        <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Samstilli %1 af %2  (%3 eftir)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="951"/>
@@ -4169,8 +4164,8 @@ borð við &apos;trayer&apos; og reyna síðan aftur.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
-        <source>Aborting...</source>
-        <translation>Hætti við...</translation>
+        <source>Aborting …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
