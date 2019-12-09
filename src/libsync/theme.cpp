@@ -565,4 +565,76 @@ QString Theme::versionSwitchOutput() const
     return helpText;
 }
 
+bool Theme::isDarkColor(const QColor &color)
+{
+    // account for different sensitivity of the human eye to certain colors
+    double treshold = 1.0 - (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
+    return treshold > 0.5;
+}
+
+QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
+{
+    return QColor((isDarkColor(backgroundColor) ? QColor("#aabdff") : QGuiApplication::palette().color(QPalette::Link)));
+}
+
+QColor Theme::getBackgroundAwareLinkColor()
+{
+    return getBackgroundAwareLinkColor(QGuiApplication::palette().base().color());
+}
+
+void Theme::replaceLinkColorStringBackgroundAware(QString &linkString, const QColor &backgroundColor)
+{
+    linkString.replace(QRegularExpression("(<a href|<a style='color:#([a-zA-Z0-9]{6});' href)"), QString::fromLatin1("<a style='color:%1;' href").arg(getBackgroundAwareLinkColor(backgroundColor).name()));
+}
+
+void Theme::replaceLinkColorStringBackgroundAware(QString &linkString)
+{
+    replaceLinkColorStringBackgroundAware(linkString, QGuiApplication::palette().color(QPalette::Base));
+}
+
+QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette)
+{
+    QImage img(name);
+    QImage inverted(img);
+    inverted.invertPixels(QImage::InvertRgb);
+
+    QIcon icon;
+    if (Theme::isDarkColor(palette.color(QPalette::Base))) {
+        icon.addPixmap(QPixmap::fromImage(inverted));
+    } else {
+        icon.addPixmap(QPixmap::fromImage(img));
+    }
+    if (Theme::isDarkColor(palette.color(QPalette::HighlightedText))) {
+        icon.addPixmap(QPixmap::fromImage(img), QIcon::Normal, QIcon::On);
+    } else {
+        icon.addPixmap(QPixmap::fromImage(inverted), QIcon::Normal, QIcon::On);
+    }
+    return icon;
+}
+
+QIcon Theme::createColorAwareIcon(const QString &name)
+{
+    return createColorAwareIcon(name, QGuiApplication::palette());
+}
+
+QPixmap Theme::createColorAwarePixmap(const QString &name, const QPalette &palette)
+{
+    QImage img(name);
+    QImage inverted(img);
+    inverted.invertPixels(QImage::InvertRgb);
+
+    QPixmap pixmap;
+    if (Theme::isDarkColor(palette.color(QPalette::Base))) {
+        pixmap = QPixmap::fromImage(inverted);
+    } else {
+        pixmap = QPixmap::fromImage(img);
+    }
+    return pixmap;
+}
+
+QPixmap Theme::createColorAwarePixmap(const QString &name)
+{
+    return createColorAwarePixmap(name, QGuiApplication::palette());
+}
+
 } // end namespace client
