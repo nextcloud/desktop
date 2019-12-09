@@ -513,7 +513,18 @@ void Account::setNonShib(bool nonShib)
     }
 }
 
-void Account::setAppPassword(QString appPassword){
+void Account::writeAppPasswordOnce(QString appPassword){
+    if(_wroteAppPassword)
+        return;
+
+    // Fix: Password got written from Account Wizard, before finish.
+    // Only write the app password for a connected account, else
+    // there'll be a zombie keychain slot forever, never used again ;p
+    //
+    // Also don't write empty passwords (Log out -> Relaunch)
+    if(id().isEmpty() || appPassword.isEmpty())
+        return;
+
     const QString kck = AbstractCredentials::keychainKey(
                 url().toString(),
                 davUser() + app_password,
@@ -524,8 +535,15 @@ void Account::setAppPassword(QString appPassword){
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(appPassword.toLatin1());
-    connect(job, &WritePasswordJob::finished, [](Job *) {
-        qCInfo(lcAccount) << "appPassword stored in keychain";
+    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+        WritePasswordJob *writeJob = static_cast<WritePasswordJob *>(incoming);
+        if (writeJob->error() == NoError)
+            qCInfo(lcAccount) << "appPassword stored in keychain";
+        else
+            qCWarning(lcAccount) << "Unable to store appPassword in keychain" << writeJob->errorString();
+
+        // We don't try this again on error, to not raise CPU consumption
+        _wroteAppPassword = true;
     });
     job->start();
 }
@@ -540,7 +558,7 @@ void Account::retrieveAppPassword(){
     ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
-    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+    connect(job, &ReadPasswordJob::finished, [this](Job *incoming) {
         ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
         QString pwd("");
         // Error or no valid public key error out
@@ -569,6 +587,16 @@ void Account::deleteAppPassword(){
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
+    connect(job, &DeletePasswordJob::finished, [this](Job *incoming) {
+        DeletePasswordJob *deleteJob = static_cast<DeletePasswordJob *>(incoming);
+        if (deleteJob->error() == NoError)
+            qCInfo(lcAccount) << "appPassword deleted from keychain";
+        else
+            qCWarning(lcAccount) << "Unable to delete appPassword from keychain" << deleteJob->errorString();
+
+        // Allow storing a new app password on re-login
+        _wroteAppPassword = false;
+    });
     job->start();
 }
 

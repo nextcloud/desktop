@@ -422,13 +422,15 @@ signals:
     void authType(AuthType);
 
 private:
-    void checkBothDone();
+    void checkAllDone();
 
     AccountPtr _account;
     AuthType _resultGet = Basic;
     AuthType _resultPropfind = Basic;
+    AuthType _resultOldFlow = Basic;
     bool _getDone = false;
     bool _propfindDone = false;
+    bool _oldFlowDone = false;
 };
 
 /**

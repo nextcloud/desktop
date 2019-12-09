@@ -49,7 +49,7 @@ fi
 if [ ! -z "$identity" ]; then
 	echo "Will try to sign the installer"
 	pushd $install_path
-	productsign --sign "$identity" "$installer_file" "$installer_file.new"
+	productsign --timestamp --sign "$identity" "$installer_file" "$installer_file.new"
 	mv "$installer_file".new "$installer_file"
 	popd
 else
