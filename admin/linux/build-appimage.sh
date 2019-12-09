@@ -16,7 +16,7 @@ export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH
 export LINUX_APPLICATION_ID=com.nextcloud.desktopclient.nextcloud
 
 #set defaults
-export SUFFIX=${DRONE_PULL_REQUEST:=master}
+export SUFFIX=\${DRONE_PULL_REQUEST:=master}
 if [ $SUFFIX != "master" ]; then
     SUFFIX="PR-$SUFFIX"
 fi
