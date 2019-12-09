@@ -68,6 +68,10 @@ private slots:
 
 signals:
     void toggleAnimation(bool);
+    void styleChanged();
+
+protected:
+    void changeEvent(QEvent *) override;
 
 private:
     void showSharingUi();
