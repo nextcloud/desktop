@@ -35,11 +35,11 @@ public:
 
     QString contextMenuTitle() const
     {
-        return _strings.value("CONTEXT_MENU_TITLE", "ownCloud");
+        return _strings.value("CONTEXT_MENU_TITLE", "Nextcloud");
     }
     QString shareActionTitle() const
     {
-        return _strings.value("SHARE_MENU_TITLE", "Share...");
+        return _strings.value("SHARE_MENU_TITLE", "Share …");
     }
 
     QString copyPrivateLinkTitle() const { return _strings["COPY_PRIVATE_LINK_MENU_TITLE"]; }

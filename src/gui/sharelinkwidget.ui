@@ -315,7 +315,7 @@
       </palette>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>

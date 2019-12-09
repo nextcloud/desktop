@@ -83,13 +83,26 @@ private:
     void writeSingleClientCaCertPEM();
 
     /*
-     * Since we're limited by Windows limits we just create our own
+     * Since we're limited by Windows limits, we just create our own
      * limit to avoid evil things happening by endless recursion
      *
      * Better than storing the count and relying on maybe-hacked values
      */
     static constexpr int _clientSslCaCertificatesMaxCount = 10;
     QQueue<QSslCertificate> _clientSslCaCertificatesWriteQueue;
+
+    /*
+     * Workaround: ...and this time only on Windows:
+     *
+     * Split the private key into chunks of 2048 bytes,
+     * to allow 4k (4096 bit) keys to be saved (see limits above)
+     */
+    void writeSingleClientKeyChunkPEM(QKeychain::Job *incomingJob);
+
+    static constexpr int _clientSslKeyChunkSize = 2048;
+    static constexpr int _clientSslKeyMaxChunks = 10;
+    int _clientSslKeyChunkCount = 0;
+    QByteArray _clientSslKeyChunkBufferPEM;
 
 protected:
     /** Reads data from keychain locations

@@ -13,6 +13,7 @@
  * for more details.
  */
 
+#include <QJsonDocument>
 #include <QLoggingCategory>
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
@@ -872,14 +873,23 @@ void DetermineAuthTypeJob::start()
     // Don't send cookies, we can't determine the auth type if we're logged in
     req.setAttribute(QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual);
 
-    // Start two parallel requests, one determines whether it's a shib server
-    // and the other checks the HTTP auth method.
+    // Start three parallel requests
+
+    // 1. determines whether it's a shib server
     auto get = _account->sendRequest("GET", _account->davUrl(), req);
+
+    // 2. checks the HTTP auth method.
     auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
+
+    // 3. Determines if the old flow has to be used (GS for now)
+    auto oldFlowRequired = new JsonApiJob(_account, "/ocs/v2.php/cloud/capabilities", this);
+
     get->setTimeout(30 * 1000);
     propfind->setTimeout(30 * 1000);
+    oldFlowRequired->setTimeout(30 * 1000);
     get->setIgnoreCredentialFailure(true);
     propfind->setIgnoreCredentialFailure(true);
+    oldFlowRequired->setIgnoreCredentialFailure(true);
 
     connect(get, &AbstractNetworkJob::redirected, this, [this, get](QNetworkReply *, const QUrl &target, int) {
 #ifndef NO_SHIBBOLETH
@@ -897,7 +907,7 @@ void DetermineAuthTypeJob::start()
     });
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this]() {
         _getDone = true;
-        checkBothDone();
+        checkAllDone();
     });
     connect(propfind, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
@@ -907,14 +917,37 @@ void DetermineAuthTypeJob::start()
             qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
         }
         _propfindDone = true;
-        checkBothDone();
+        checkAllDone();
     });
+    connect(oldFlowRequired, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+        if (statusCode == 200) {
+            _resultOldFlow = LoginFlowV2;
+
+            auto data = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
+            auto gs = data.value("globalscale");
+            if (gs != QJsonValue::Undefined) {
+                auto flow = gs.toObject().value("desktoplogin");
+                if (flow != QJsonValue::Undefined) {
+                    if (flow.toInt() == 1) {
+                        _resultOldFlow = WebViewFlow;
+                    }
+                }
+            }
+        }
+        _oldFlowDone = true;
+        checkAllDone();
+    });
+
+    oldFlowRequired->start();
 }
 
-void DetermineAuthTypeJob::checkBothDone()
+void DetermineAuthTypeJob::checkAllDone()
 {
-    if (!_getDone || !_propfindDone)
+    // Do not conitunue until eve
+    if (!_getDone || !_propfindDone || !_oldFlowDone) {
         return;
+    }
+
     auto result = _resultPropfind;
     // OAuth > Shib > Basic
     if (_resultGet == Shibboleth && result != OAuth)
@@ -928,6 +961,11 @@ void DetermineAuthTypeJob::checkBothDone()
     // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
         result = LoginFlowV2;
+    }
+
+    // If we determined that we need the webview flow (GS for example) then we switch to that
+    if (_resultOldFlow == WebViewFlow) {
+        result = WebViewFlow;
     }
 
     qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
