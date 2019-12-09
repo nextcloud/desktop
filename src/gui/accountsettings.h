@@ -69,6 +69,7 @@ public slots:
     void slotOpenOC();
     void slotUpdateQuota(qint64, qint64);
     void slotAccountStateChanged();
+    void slotStyleChanged();
 
     AccountState *accountsState() { return _accountState; }
 
@@ -129,6 +130,7 @@ private:
     bool event(QEvent *) override;
     void createAccountToolbox();
     void openIgnoredFilesDialog(const QString & absFolderPath);
+    void customizeStyle();
 
     /// Returns the alias of the selected folder, empty string if none
     QString selectedFolderAlias() const;

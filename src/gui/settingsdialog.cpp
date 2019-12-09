@@ -104,6 +104,9 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
 
+    // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
+    connect(this, &SettingsDialog::styleChanged, generalSettings, &GeneralSettings::slotStyleChanged);
+
     QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
     _actionGroup->addAction(networkAction);
     _toolBar->addAction(networkAction);
@@ -156,6 +159,9 @@ void SettingsDialog::changeEvent(QEvent *e)
     case QEvent::PaletteChange:
     case QEvent::ThemeChange:
         customizeStyle();
+
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        emit styleChanged();
         break;
     default:
         break;
@@ -248,6 +254,9 @@ void SettingsDialog::accountAdded(AccountState *s)
     _actionGroupWidgets.insert(accountAction, accountSettings);
     _actionForAccount.insert(s->account().data(), accountAction);
     accountAction->trigger();
+    
+    // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
+    connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias,
