@@ -7,16 +7,16 @@ mkdir /build
 
 #Set Qt-5.12
 export QT_BASE_DIR=/opt/qt5.12.5
-export QTDIR=\$QT_BASE_DIR
-export PATH=\$QT_BASE_DIR/bin:\$PATH
-export LD_LIBRARY_PATH=\$QT_BASE_DIR/lib/x86_64-linux-gnu:\$QT_BASE_DIR/lib:/usr/local/lib:\$LD_LIBRARY_PATH
-export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH
+export QTDIR=$QT_BASE_DIR
+export PATH=$QT_BASE_DIR/bin:$PATH
+export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:/usr/local/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=$QT_BASE_DIR/lib/pkgconfig:$PKG_CONFIG_PATH
 
 #Set APPID for .desktop file processing
 export LINUX_APPLICATION_ID=com.nextcloud.desktopclient.nextcloud
 
 #set defaults
-export SUFFIX=\${DRONE_PULL_REQUEST:=master}
+export SUFFIX=${DRONE_PULL_REQUEST:=master}
 if [ $SUFFIX != "master" ]; then
     SUFFIX="PR-$SUFFIX"
 fi
