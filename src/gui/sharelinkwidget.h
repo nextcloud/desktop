@@ -65,6 +65,7 @@ public slots:
     void slotToggleAnimation(bool start);
     void slotServerError(int code, const QString &message);
     void slotCreateShareRequiresPassword(const QString &message);
+    void slotStyleChanged();
 
 private slots:
     void slotCreateShareLink(bool clicked);
@@ -106,6 +107,8 @@ private:
     QString shareName() const;
 
     void startAnimation(const int start, const int end);
+
+    void customizeStyle();
 
     Ui::ShareLinkWidget *_ui;
     AccountPtr _account;
