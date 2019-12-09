@@ -19,6 +19,7 @@
 #include "capabilities.h"
 #include "guiutility.h"
 #include "sharemanager.h"
+#include "theme.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -256,6 +257,8 @@ void ShareLinkWidget::setupUiOptions()
 
     //TO DO
     //startAnimation(0, height());
+
+    customizeStyle();
 }
 
 void ShareLinkWidget::setNote(const QString &note)
@@ -549,4 +552,27 @@ void ShareLinkWidget::displayError(const QString &errMsg)
     _ui->errorLabel->setText(errMsg);
     _ui->errorLabel->show();
 }
+
+void ShareLinkWidget::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void ShareLinkWidget::customizeStyle()
+{
+    _unshareLinkAction->setIcon(Theme::createColorAwareIcon(":/client/resources/delete.png"));
+
+    _addAnotherLinkAction->setIcon(Theme::createColorAwareIcon(":/client/resources/add.png"));
+
+    _ui->enableShareLink->setIcon(Theme::createColorAwareIcon(":/client/resources/copy.svg"));
+    
+    _ui->shareLinkIconLabel->setPixmap(Theme::createColorAwarePixmap(":/client/resources/public.svg"));
+    
+    _ui->shareLinkToolButton->setIcon(Theme::createColorAwareIcon(":/client/resources/more.svg"));
+    
+    _ui->confirmNote->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
+    _ui->confirmPassword->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
+    _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
+}
+
 }
