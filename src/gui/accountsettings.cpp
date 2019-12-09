@@ -202,6 +202,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     } else {
         ui->encryptionMessage->hide();
     }
+
+    customizeStyle();
 }
 
 
@@ -834,13 +836,16 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
                                            "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
                                            "border-radius:5px;");
     if (errors.isEmpty()) {
-        ui->connectLabel->setText(message);
+        QString msg = message;
+        Theme::replaceLinkColorStringBackgroundAware(msg);
+        ui->connectLabel->setText(msg);
         ui->connectLabel->setToolTip(QString());
         ui->connectLabel->setStyleSheet(QString());
     } else {
         errors.prepend(message);
-        const QString msg = errors.join(QLatin1String("\n"));
+        QString msg = errors.join(QLatin1String("\n"));
         qCDebug(lcAccountSettings) << msg;
+        Theme::replaceLinkColorStringBackgroundAware(msg, QColor("#bb4d4d"));
         ui->connectLabel->setText(msg);
         ui->connectLabel->setToolTip(QString());
         ui->connectLabel->setStyleSheet(errStyle);
@@ -1239,6 +1244,18 @@ bool AccountSettings::event(QEvent *e)
         }
     }
     return QWidget::event(e);
+}
+
+void AccountSettings::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void AccountSettings::customizeStyle()
+{
+    QString msg = ui->connectLabel->text();
+    Theme::replaceLinkColorStringBackgroundAware(msg);
+    ui->connectLabel->setText(msg);
 }
 
 } // namespace OCC

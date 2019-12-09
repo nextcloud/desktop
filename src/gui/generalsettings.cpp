@@ -70,7 +70,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &GeneralSettings::slotShowLegalNotice);
 
     loadMiscSettings();
-    slotUpdateInfo();
+    // updater info now set in: customizeStyle
+    //slotUpdateInfo();
 
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
@@ -109,6 +110,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     // accountAdded means the wizard was finished and the wizard might change some options.
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
+
+    customizeStyle();
 }
 
 GeneralSettings::~GeneralSettings()
@@ -149,7 +152,11 @@ void GeneralSettings::slotUpdateInfo()
         connect(updater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, updater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
-        _ui->updateStateLabel->setText(updater->statusString());
+
+        QString status = updater->statusString();
+        Theme::replaceLinkColorStringBackgroundAware(status);
+        _ui->updateStateLabel->setText(status);
+
         _ui->restartButton->setVisible(updater->downloadState() == OCUpdater::DownloadComplete);
     } else {
         // can't have those infos from sparkle currently
@@ -209,6 +216,22 @@ void GeneralSettings::slotShowLegalNotice()
     auto notice = new LegalNotice();
     notice->exec();
     delete notice;
+}
+
+void GeneralSettings::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void GeneralSettings::customizeStyle()
+{
+    // setup about section
+    QString about = Theme::instance()->about();
+    Theme::replaceLinkColorStringBackgroundAware(about);
+    _ui->aboutLabel->setText(about);
+
+    // updater info
+    slotUpdateInfo();
 }
 
 } // namespace OCC

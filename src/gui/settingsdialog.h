@@ -63,6 +63,9 @@ public slots:
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
 
+signals:
+    void styleChanged();
+
 protected:
     void reject() override;
     void accept() override;
