@@ -83,7 +83,7 @@ QString Theme::statusHeaderText(SyncResult::Status status) const
         resultStr = QCoreApplication::translate("theme", "Preparing to sync");
         break;
     case SyncResult::SyncAbortRequested:
-        resultStr = QCoreApplication::translate("theme", "Aborting...");
+        resultStr = QCoreApplication::translate("theme", "Aborting …");
         break;
     case SyncResult::Paused:
         resultStr = QCoreApplication::translate("theme", "Sync is paused");

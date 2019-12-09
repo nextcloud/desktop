@@ -433,7 +433,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
         }
 
         if (accountState->isSignedOut()) {
-            QAction *signin = menu->addAction(tr("Log in..."));
+            QAction *signin = menu->addAction(tr("Log in …"));
             signin->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(signin, &QAction::triggered, this, &ownCloudGui::slotLogin);
         } else {
@@ -798,9 +798,9 @@ void ownCloudGui::setupActions()
     _actionStatus->setEnabled(false);
     _navLinksMenu = new QMenu(tr("Apps"));
     _navLinksMenu->setEnabled(false);
-    _actionSettings = new QAction(tr("Settings..."), this);
-    _actionNewAccountWizard = new QAction(tr("New account..."), this);
-    _actionRecent = new QAction(tr("View more activity..."), this);
+    _actionSettings = new QAction(tr("Settings …"), this);
+    _actionNewAccountWizard = new QAction(tr("New account …"), this);
+    _actionRecent = new QAction(tr("View more activity …"), this);
     _actionRecent->setEnabled(true);
 
     QObject::connect(_actionRecent, &QAction::triggered, this, &ownCloudGui::slotShowSyncProtocol);
@@ -955,7 +955,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
         quint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
         QString msg;
         if (progress.trustEta()) {
-            msg = tr("Syncing %1 of %2  (%3 left)")
+            msg = tr("Syncing %1 of %2 (%3 left)")
                       .arg(currentFile)
                       .arg(totalFileCount)
                       .arg(Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta));

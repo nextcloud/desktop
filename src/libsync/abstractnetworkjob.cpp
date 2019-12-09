@@ -160,6 +160,39 @@ void AbstractNetworkJob::slotFinished()
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
 
+#if (QT_VERSION >= 0x050800)
+    // Qt doesn't yet transparently resend HTTP2 requests, do so here
+    const auto maxHttp2Resends = 5;
+    QByteArray verb = requestVerb(*reply());
+    if (_reply->error() == QNetworkReply::ContentReSendError
+        && _reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()) {
+
+        if ((_requestBody && !_requestBody->isSequential()) || verb.isEmpty()) {
+            qCWarning(lcNetworkJob) << "Can't resend HTTP2 request, verb or body not suitable"
+                                    << _reply->request().url() << verb << _requestBody;
+        } else if (_http2ResendCount >= maxHttp2Resends) {
+            qCWarning(lcNetworkJob) << "Not resending HTTP2 request, number of resends exhausted"
+                                    << _reply->request().url() << _http2ResendCount;
+        } else {
+            qCInfo(lcNetworkJob) << "HTTP2 resending" << _reply->request().url();
+            _http2ResendCount++;
+
+            resetTimeout();
+            if (_requestBody) {
+                if(!_requestBody->isOpen())
+                   _requestBody->open(QIODevice::ReadOnly);
+                _requestBody->seek(0);
+            }
+            sendRequest(
+                verb,
+                _reply->request().url(),
+                _reply->request(),
+                _requestBody);
+            return;
+        }
+    }
+#endif
+
     if (_reply->error() != QNetworkReply::NoError) {
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
             qCWarning(lcNetworkJob) << _reply->error() << errorString()
