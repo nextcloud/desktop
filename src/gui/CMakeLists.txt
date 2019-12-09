@@ -35,7 +35,6 @@ set(client_UI_SRCS
     addcertificatedialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
-    tray/init.qml
     tray/window.qml
     tray/UserLine.qml
     wizard/owncloudadvancedsetuppage.ui
