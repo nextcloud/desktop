@@ -51,19 +51,16 @@ const char propertyAccountC[] = "oc_account";
 
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
-    , _tray(nullptr)
+    , _tray(new Systray(this))
     , _settingsDialog(new SettingsDialog(this))
     , _logBrowser(nullptr)
     , _recentActionsMenu(nullptr)
     , _app(parent)
 {
-    _tray = new Systray();
-    _tray->setParent(this);
-
     // for the beginning, set the offline icon until the account was verified
     _tray->setIcon(Theme::instance()->folderOfflineIcon(/*systray?*/ true, /*currently visible?*/ false));
 
-    connect(_tray.data(), &QSystemTrayIcon::activated,
+    connect(_tray, &QSystemTrayIcon::activated,
         this, &ownCloudGui::slotTrayClicked);
 
     setupActions();
@@ -98,12 +95,17 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::slotShowGuiMessage);
 }
 
+ownCloudGui::~ownCloudGui()
+{
+    _settingsDialog->deleteLater();
+}
+
 // This should rather be in application.... or rather in ConfigFile?
 void ownCloudGui::slotOpenSettingsDialog()
 {
     // if account is set up, start the configuration wizard.
     if (!AccountManager::instance()->accounts().isEmpty()) {
-        if (_settingsDialog.isNull() || QApplication::activeWindow() != _settingsDialog) {
+        if (QApplication::activeWindow() != _settingsDialog) {
             slotShowSettings();
         } else {
             _settingsDialog->close();
@@ -139,8 +141,8 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
             // on macOS, a left click always opens menu.
             // However if the settings dialog is already visible but hidden
             // by other applications, this will bring it to the front.
-            if (!_settingsDialog.isNull() && _settingsDialog->isVisible()) {
-                raiseDialog(_settingsDialog.data());
+            if (_settingsDialog->isVisible()) {
+                raiseDialog(_settingsDialog);
             }
 #else
             slotOpenSettingsDialog();
@@ -746,10 +748,7 @@ void ownCloudGui::updateContextMenuNeeded()
 
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
 {
-    if (_tray)
-        _tray->showMessage(title, msg);
-    else
-        qCWarning(lcApplication) << "Tray not ready: " << msg;
+    _tray->showMessage(title, msg);
 }
 
 void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg)
@@ -1004,13 +1003,8 @@ void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &messag
 
 void ownCloudGui::slotShowSettings()
 {
-    if (_settingsDialog.isNull()) {
-        _settingsDialog =
-            new SettingsDialog(this);
-        _settingsDialog->setAttribute(Qt::WA_DeleteOnClose, true);
-        _settingsDialog->show();
-    }
-    raiseDialog(_settingsDialog.data());
+    _settingsDialog->show();
+    raiseDialog(_settingsDialog);
 }
 
 void ownCloudGui::slotShowSyncProtocol()
@@ -1026,8 +1020,7 @@ void ownCloudGui::slotShutdown()
     // that saving the geometries happens ASAP during a OS shutdown
 
     // those do delete on close
-    if (!_settingsDialog.isNull())
-        _settingsDialog->close();
+    _settingsDialog->close();
     if (!_logBrowser.isNull())
         _logBrowser->deleteLater();
 }

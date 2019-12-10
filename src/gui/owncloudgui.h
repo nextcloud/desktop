@@ -50,6 +50,7 @@ class ownCloudGui : public QObject
     Q_OBJECT
 public:
     explicit ownCloudGui(Application *parent = 0);
+    ~ownCloudGui();
 
     bool checkAccountExists(bool openSettings);
 
@@ -116,8 +117,8 @@ private:
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
 
-    QPointer<Systray> _tray;
-    QPointer<SettingsDialog> _settingsDialog;
+    Systray *_tray;
+    SettingsDialog *_settingsDialog;
     QPointer<LogBrowser> _logBrowser;
     // tray's menu
     QScopedPointer<QMenu> _contextMenu;

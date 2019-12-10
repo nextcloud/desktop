@@ -28,6 +28,11 @@
 
 namespace OCC {
 
+Systray::Systray(QObject *parent)
+    : QSystemTrayIcon(parent)
+{
+}
+
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)
 {
 #ifdef USE_FDO_NOTIFICATIONS

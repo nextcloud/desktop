@@ -84,13 +84,11 @@ QString shortDisplayNameForSettings(OCC::Account *account, int width)
 namespace OCC {
 
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent, Qt::WindowFlags() & ~Qt::WindowContextHelpButtonHint)
     , _ui(new Ui::SettingsDialog)
     , _gui(gui)
 {
     ConfigFile cfg;
-
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
