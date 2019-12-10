@@ -1,7 +1,24 @@
 ChangeLog
 =========
+version 2.6.1 (2019-12-6)
+(last update on 4bbd70b796b9fee53f518dead0eed20fbf916195)
 
-version 2.6.0 (2019-11-)
+Some smaller changes and bug fixes:
+* Vfs: Do not overwrite existing files by placeholder (#7557,  #7556)
+* Discovery:  Allow more HTTP error code to be treated as ignored dir (#7586)
+* GUI: Change the display name to "server (user name)", show the full text in the tooltip (#6728)
+* GUI: Limit the clickable region of the 'add folder' button (#7326)
+* GUI: Add quit button to the settings dialog (#7547)
+* GUI: Don't show the "All files deleted" popup when unselecting everything with selective sync (#7337)
+* GUI: Don't put a too big icon in about dialog (#7574)
+* GUI: Show a warning that proxy settings do not apply to localhost (#7169)
+* CLI: Make it possible to show settings/quit by command line invocatin (#7018, #7547)
+* Linux:  Add action to Desktop file to show settings, quit the client (#7018, #7547)
+* Shell Integration: Don't assume read-only folder when permissions are not known (#7330)
+* Sync: Temporary disable http2 support by default again (#7610)
+* Windows Installer: Remember install location on auto update (#7580)
+ 
+version 2.6.0 (2019-11-11)
 (last update on 5131f50ff048d5213aa69edfbae349de2822498a)
 
 Major changes and additions:
