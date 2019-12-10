@@ -259,8 +259,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1223"/>
+        <location filename="../src/gui/accountsettings.cpp" line="799"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1215"/>
         <source>Cancel</source>
         <translation>Atcelt</translation>
     </message>
@@ -270,230 +270,230 @@
         <translation>Savienojies ar &lt;server&gt; kā &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="190"/>
+        <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>No account configured.</source>
         <translation>Nav konfigurēts konts.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="218"/>
+        <location filename="../src/gui/accountsettings.cpp" line="216"/>
         <source>Add new</source>
         <translation>Pievienot jaunu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="226"/>
+        <location filename="../src/gui/accountsettings.cpp" line="224"/>
         <source>Remove</source>
         <translation>Noņemt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="230"/>
+        <location filename="../src/gui/accountsettings.cpp" line="228"/>
         <source>Account</source>
         <translation>Konts</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="240"/>
+        <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>This account supports end-to-end encryption</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="242"/>
+        <location filename="../src/gui/accountsettings.cpp" line="240"/>
         <source>Enable encryption</source>
         <translation>Ieslēgt šifrēšanu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="259"/>
+        <location filename="../src/gui/accountsettings.cpp" line="257"/>
         <source>Show E2E mnemonic</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="612"/>
+        <location filename="../src/gui/accountsettings.cpp" line="601"/>
         <source>Encrypt</source>
         <translation>Šifrēt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="620"/>
-        <location filename="../src/gui/accountsettings.cpp" line="656"/>
+        <location filename="../src/gui/accountsettings.cpp" line="609"/>
+        <location filename="../src/gui/accountsettings.cpp" line="645"/>
         <source>Edit Ignored Files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="660"/>
+        <location filename="../src/gui/accountsettings.cpp" line="649"/>
         <source>Choose what to sync</source>
         <translation>Izvēlies ko sinhronizēt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="666"/>
+        <location filename="../src/gui/accountsettings.cpp" line="655"/>
         <source>Force sync now</source>
         <translation>Piespeist tūlītēju sinhronizēšanu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="668"/>
+        <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>Restart sync</source>
         <translation>Restartēt sinronizāciju</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="677"/>
+        <location filename="../src/gui/accountsettings.cpp" line="666"/>
         <source>Remove folder sync connection</source>
         <translation>Noņemt mapes sinhronizācijas savienojumu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="748"/>
+        <location filename="../src/gui/accountsettings.cpp" line="737"/>
         <source>Folder creation failed</source>
         <translation>Mapes izveide neizdevās</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="791"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Noņemt mapes sinhronizācijas savienojuma noņemšanai</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="809"/>
+        <location filename="../src/gui/accountsettings.cpp" line="798"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Noņemt mapes sinhronizācijas savienojumu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="891"/>
+        <location filename="../src/gui/accountsettings.cpp" line="883"/>
         <source>Sync Running</source>
         <translation>Notiek Sinhronizācija</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="892"/>
+        <location filename="../src/gui/accountsettings.cpp" line="884"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Pašlaik notiek sinhronizācijas operācija.&lt;br/&gt;Vai to izbeigt?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="981"/>
+        <location filename="../src/gui/accountsettings.cpp" line="973"/>
         <source>%1 in use</source>
         <translation>%1 tiek lietots</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 kā &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1014"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1006"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
         <translation>Servera versija %1 ir novecojusi un netiek atbalstīta! Turpini un paša atbildību.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>Connected to %1.</source>
         <translation>Savienots ar %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Serveris %1 ir īslaicīgi nepiejams.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1020"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Serveris %1 pašlaik ir uzturēšanas režīmā</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>Signed out from %1.</source>
         <translation>Izrakstījies no %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1031"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1023"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Saņemam pilnvaru no pārlūka. &lt;a href=&apos;%1&apos;&gt;Noklikšķini šeit&lt;/a&gt;lai atkārtoti atvērtu pārlūku.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1038"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1030"/>
         <source>No connection to %1 at %2.</source>
         <translation>Nav savienojuma ar %1 pie %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1062"/>
         <source>Log in</source>
         <translation>Pieteikties</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1166"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1158"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Šīs mapes netika sinhronizētas, jo tās ir pārāk lielas:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1168"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1160"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Šīs mapes netika sinhronizētas, jo tās atrodas ārējās krātuvēs:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1169"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1161"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Šīs mapes netika sinhronizētas, jo tās ir pārāk lielas, vai atrodas ārējās krātuvēs:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1215"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1207"/>
         <source>Confirm Account Removal</source>
         <translation>Apstiprini Konta noņemšanai</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1216"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1208"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vai tiešām vēlaties noņemt savienojumu kontam &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Piezīme:&lt;/b&gt; Tas &lt;b&gt;neveiks&lt;/b&gt; nekādu datņu dzēšanu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1222"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1214"/>
         <source>Remove connection</source>
         <translation>Noņemt savienojumu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="596"/>
-        <location filename="../src/gui/accountsettings.cpp" line="653"/>
+        <location filename="../src/gui/accountsettings.cpp" line="585"/>
+        <location filename="../src/gui/accountsettings.cpp" line="642"/>
         <source>Open folder</source>
         <translation>Atvērt mapi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="222"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1072"/>
+        <location filename="../src/gui/accountsettings.cpp" line="220"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1064"/>
         <source>Log out</source>
         <translation>Iziet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="674"/>
+        <location filename="../src/gui/accountsettings.cpp" line="663"/>
         <source>Resume sync</source>
         <translation>Turpināt sinhronizāciju</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="674"/>
+        <location filename="../src/gui/accountsettings.cpp" line="663"/>
         <source>Pause sync</source>
         <translation>Apturēt sinhronizāciju</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="749"/>
+        <location filename="../src/gui/accountsettings.cpp" line="738"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="803"/>
+        <location filename="../src/gui/accountsettings.cpp" line="792"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vai tiešām vēlaties apturēt mapes &lt;i&gt;%1&lt;/i&gt; sinhronizēšanu?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Piezīme:&lt;/b&gt; Tas &lt;b&gt;neveiks&lt;/b&gt; nekādu datņu dzēšanu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="968"/>
+        <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) no %2 izmantots. Dažas mapes, tajā skaitā montētas no tīkla vai koplietotas, var saturēt dažādus ierobežojumus.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="969"/>
+        <location filename="../src/gui/accountsettings.cpp" line="961"/>
         <source>%1 of %2 in use</source>
         <translation>%1 no %2 izmantots</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="978"/>
+        <location filename="../src/gui/accountsettings.cpp" line="970"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Pašlaik nav pieejama diska vietas informācija.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1035"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
         <source>Connecting to %1 …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1036"/>
         <source>No %1 connection configured.</source>
         <translation>Nav %1 savienojums konfigurēts.</translation>
     </message>
@@ -2639,51 +2639,22 @@ It is not advisable to use it.</source>
         <translation>Iestatījumi</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="213"/>
         <source>Activity</source>
         <translation>Darbības</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="105"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="101"/>
         <source>General</source>
         <translation>Vispārīgs</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="111"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="110"/>
         <source>Network</source>
         <translation>Tīkls</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="234"/>
-        <source>Account</source>
-        <translation>Konts</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::SettingsDialogMac</name>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="92"/>
-        <source>%1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="155"/>
-        <source>Activity</source>
-        <translation>Darbības</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="106"/>
-        <source>General</source>
-        <translation>Vispārīgs</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="110"/>
-        <source>Network</source>
-        <translation>Tīkls</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="138"/>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="231"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="236"/>
         <source>Account</source>
         <translation>Konts</translation>
     </message>
@@ -2706,7 +2677,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="271"/>
+        <location filename="../src/gui/sharedialog.cpp" line="274"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation type="unfinished"/>
     </message>
@@ -2749,72 +2720,72 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="468"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
         <source>Delete</source>
         <translation>Dzēst</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="159"/>
         <source>Allow Editing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Read only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
         <source>Allow Upload &amp;&amp; Editing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>File Drop (Upload Only)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>Add note to recipient</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
         <source>Password Protect</source>
         <translation>Aizsargāts ar paroli</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="216"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
         <source>Expiration Date</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="235"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
         <source>Unshare</source>
         <translation>Atcelt koplietošanu</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="240"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
         <source>Add another link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="461"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Apstiprināt koplietošanas saites dzēšanu</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="462"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="469"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="472"/>
         <source>Cancel</source>
         <translation>Atcelt</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="487"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <source>Public link</source>
         <translation type="unfinished"/>
     </message>
@@ -2827,17 +2798,17 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="262"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="272"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="280"/>
         <source>No results for &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>I shared something with you</source>
         <translation type="unfinished"/>
     </message>
@@ -2855,27 +2826,27 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="388"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="409"/>
         <source>Can reshare</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="398"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="419"/>
         <source>Unshare</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="407"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="428"/>
         <source>Can create</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="413"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="434"/>
         <source>Can change</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="419"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
         <source>Can delete</source>
         <translation type="unfinished"/>
     </message>
@@ -3504,234 +3475,234 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Please sign in</source>
         <translation>Lūdzu piesakieties</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="348"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="339"/>
         <source>Folder %1: %2</source>
         <translation>Mape %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
         <source>There are no sync folders configured.</source>
         <translation>Nav konfigurētas sinhronizācijas mapes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="375"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Open in browser</source>
         <translation>Atvērt pārlūkā</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="428"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Atteikties</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>Recent Changes</source>
         <translation>Nesenās izmaiņas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="402"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
         <source>Managed Folders:</source>
         <translation>Pārvaldīt mapes:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="405"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Atvērt mapi &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="377"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="368"/>
         <source>Open %1 in browser</source>
         <translation>Atvērt %1 pārlūkā</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="785"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="776"/>
         <source>Unknown status</source>
         <translation>Nezināms statuss</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="797"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="788"/>
         <source>Help</source>
         <translation>Palīdzība</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="799"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Quit %1</source>
         <translation>Iziet %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
         <source>Disconnected from %1</source>
         <translation>Atvienojies no %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="233"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="224"/>
         <source>Unsupported Server Version</source>
         <translation>Neatbalstīta servera versija</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="234"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="225"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Serveris kontam %1 darbojās uz novecojušas un neatbalstītas versijas %2. Šī klienta izmantošana ar neatbalstītu servera versiju nav testēta un ir potenciāli bīstama. Turpini to uz sava riska.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="273"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="264"/>
         <source>Disconnected</source>
         <translation>Atvienojies</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="275"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="266"/>
         <source>Disconnected from some accounts</source>
         <translation>Atvienojies no dažiem kontiem</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="286"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Disconnected from accounts:</source>
         <translation>Atvienojies no kontiem:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="288"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="279"/>
         <source>Account %1: %2</source>
         <translation>Konts %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Signed out</source>
         <translation>Atteicies</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
         <source>Account synchronization is disabled</source>
         <translation>Konta sinhronizācija ir atspējota</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Synchronization is paused</source>
         <translation>Sinhronizācija ir apturēta</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="356"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="347"/>
         <source>Unresolved conflicts</source>
         <translation>Neatrisināts konflikts</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="363"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="354"/>
         <source>Error during synchronization</source>
         <translation>Kļuda sinhronizējot</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="358"/>
         <source>No sync folders configured</source>
         <translation>Nav konfigurētas sinhronizācijas mapes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="413"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="404"/>
         <source>Resume all folders</source>
         <translation>Turpināt visas mapes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Pause all folders</source>
         <translation>Apturēt visas mapes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="701"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
         <source>Resume all synchronization</source>
         <translation>Turpināt visu sinhronizāciju</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="703"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="694"/>
         <source>Resume synchronization</source>
         <translation>Turpināt sinhronizāciju</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="711"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="702"/>
         <source>Pause all synchronization</source>
         <translation>Apturēt visu sinhronizāciju</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="713"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="704"/>
         <source>Pause synchronization</source>
         <translation>Apturēt sinhronizāciju</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="946"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="803"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="794"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Nobrucināt tagad</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="787"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="778"/>
         <source>Apps</source>
         <translation>Lietotnes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="789"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="906"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>Nesen nekas netika sinhronizēts</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="928"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Pārbauda izmaiņas attālinātajā &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="931"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Pārbauda izmaiņas lokālajā &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="951"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="942"/>
         <source>Syncing %1 of %2</source>
         <translation>Sinhronizē %1 no %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="960"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="951"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sinhronizē %1 (%2 atlicis)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="963"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>Syncing %1</source>
         <translation>Sinhronizē %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="981"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="972"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="358"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="349"/>
         <source>Up to date</source>
         <translation>Atjaunināts</translation>
     </message>

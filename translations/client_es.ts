@@ -259,8 +259,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1223"/>
+        <location filename="../src/gui/accountsettings.cpp" line="799"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1215"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -270,230 +270,230 @@
         <translation>Conectado a &lt;server&gt; como &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="190"/>
+        <location filename="../src/gui/accountsettings.cpp" line="186"/>
         <source>No account configured.</source>
         <translation>No se ha configurado ninguna cuenta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="218"/>
+        <location filename="../src/gui/accountsettings.cpp" line="216"/>
         <source>Add new</source>
         <translation>Añadir nuevo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="226"/>
+        <location filename="../src/gui/accountsettings.cpp" line="224"/>
         <source>Remove</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="230"/>
+        <location filename="../src/gui/accountsettings.cpp" line="228"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="240"/>
+        <location filename="../src/gui/accountsettings.cpp" line="238"/>
         <source>This account supports end-to-end encryption</source>
         <translation>Esta cuenta soporta cifrado punto a punto</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="242"/>
+        <location filename="../src/gui/accountsettings.cpp" line="240"/>
         <source>Enable encryption</source>
         <translation>Habilitar cifrado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="259"/>
+        <location filename="../src/gui/accountsettings.cpp" line="257"/>
         <source>Show E2E mnemonic</source>
         <translation>Mostrar mnemotécnica E2E</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="612"/>
+        <location filename="../src/gui/accountsettings.cpp" line="601"/>
         <source>Encrypt</source>
         <translation>Cifrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="620"/>
-        <location filename="../src/gui/accountsettings.cpp" line="656"/>
+        <location filename="../src/gui/accountsettings.cpp" line="609"/>
+        <location filename="../src/gui/accountsettings.cpp" line="645"/>
         <source>Edit Ignored Files</source>
         <translation>Editar archivos ignorados</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="660"/>
+        <location filename="../src/gui/accountsettings.cpp" line="649"/>
         <source>Choose what to sync</source>
         <translation>Elija qué sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="666"/>
+        <location filename="../src/gui/accountsettings.cpp" line="655"/>
         <source>Force sync now</source>
         <translation>Forzar la sincronización ahora</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="668"/>
+        <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>Restart sync</source>
         <translation>Reiniciar sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="677"/>
+        <location filename="../src/gui/accountsettings.cpp" line="666"/>
         <source>Remove folder sync connection</source>
         <translation>Eliminar la sincronización de carpetas conectadas</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="748"/>
+        <location filename="../src/gui/accountsettings.cpp" line="737"/>
         <source>Folder creation failed</source>
         <translation>Ha fallado la creación de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="791"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Confirme la sincronización para la eliminación de la carpeta conectada</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="809"/>
+        <location filename="../src/gui/accountsettings.cpp" line="798"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Eliminar carpeta de sincronización conectada</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="891"/>
+        <location filename="../src/gui/accountsettings.cpp" line="883"/>
         <source>Sync Running</source>
         <translation>Sincronización en curso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="892"/>
+        <location filename="../src/gui/accountsettings.cpp" line="884"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>La sincronización está en curso.&lt;br/&gt;¿Desea interrumpirla?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="981"/>
+        <location filename="../src/gui/accountsettings.cpp" line="973"/>
         <source>%1 in use</source>
         <translation>%1 en uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1000"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 como &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1014"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1006"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
         <translation>¡La versión del servidor %1 es antigua y no está soportada! Si continúas, lo haces bajo tu propio riesgo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>Connected to %1.</source>
         <translation>Conectado a %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Servidor %1 no está disponible temporalmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1020"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>El servidor %1 está actualmente en modo mantenimiento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>Signed out from %1.</source>
         <translation>Cerró sesión desde %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1031"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1023"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Obteniendo autorización desde el navegador. &lt;a href=&apos;%1&apos;&gt;Haga clic aquí&lt;/a&gt; para re-abrir el navegador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1038"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1030"/>
         <source>No connection to %1 at %2.</source>
         <translation>Sin conexión a %1 en %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1070"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1062"/>
         <source>Log in</source>
         <translation>Iniciar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1166"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1158"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Hay carpetas que no se han sincronizado porque son demasiado grandes:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1168"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1160"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Hay carpetas que no se han sincronizado porque están en el almacenamiento externo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1169"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1161"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Hay carpetas que no se han sincronizado porque son demasiado grandes o están en el almacenamiento externo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1215"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1207"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmar eliminación de cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1216"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1208"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;¿De verdad quiere eliminar la conexión a la cuenta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Esto &lt;b&gt;no&lt;/b&gt; eliminará los archivos.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1222"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1214"/>
         <source>Remove connection</source>
         <translation>Eliminar conexión</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="596"/>
-        <location filename="../src/gui/accountsettings.cpp" line="653"/>
+        <location filename="../src/gui/accountsettings.cpp" line="585"/>
+        <location filename="../src/gui/accountsettings.cpp" line="642"/>
         <source>Open folder</source>
         <translation>Abrir carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="222"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1072"/>
+        <location filename="../src/gui/accountsettings.cpp" line="220"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1064"/>
         <source>Log out</source>
         <translation>Cerrar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="674"/>
+        <location filename="../src/gui/accountsettings.cpp" line="663"/>
         <source>Resume sync</source>
         <translation>Continuar sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="674"/>
+        <location filename="../src/gui/accountsettings.cpp" line="663"/>
         <source>Pause sync</source>
         <translation>Pausar sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="749"/>
+        <location filename="../src/gui/accountsettings.cpp" line="738"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="803"/>
+        <location filename="../src/gui/accountsettings.cpp" line="792"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;¿De verdad quiere dejar de sincronizar la carpeta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Esto &lt;b&gt;no&lt;/b&gt; elminará los archivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="968"/>
+        <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) de %2 en uso. Algunas carpetas, como carpetas de red o compartidas, podrían tener límites diferentes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="969"/>
+        <location filename="../src/gui/accountsettings.cpp" line="961"/>
         <source>%1 of %2 in use</source>
         <translation>%1 de %2 en uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="978"/>
+        <location filename="../src/gui/accountsettings.cpp" line="970"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Actualmente no hay información disponible sobre el uso de almacenamiento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1035"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
         <source>Connecting to %1 …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1036"/>
         <source>No %1 connection configured.</source>
         <translation>No hay ninguna conexión de %1 configurada.</translation>
     </message>
@@ -2657,51 +2657,22 @@ No se recomienda usarla.</translation>
         <translation>Ajustes</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="213"/>
         <source>Activity</source>
         <translation>Actividad</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="105"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="101"/>
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="111"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="110"/>
         <source>Network</source>
         <translation>Red</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="234"/>
-        <source>Account</source>
-        <translation>Cuenta</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::SettingsDialogMac</name>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="92"/>
-        <source>%1</source>
-        <translation>%1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="155"/>
-        <source>Activity</source>
-        <translation>Actividad</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="106"/>
-        <source>General</source>
-        <translation>General</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="110"/>
-        <source>Network</source>
-        <translation>Red</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="138"/>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="231"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="236"/>
         <source>Account</source>
         <translation>Cuenta</translation>
     </message>
@@ -2724,7 +2695,7 @@ No se recomienda usarla.</translation>
         <translation>Carpeta: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="271"/>
+        <location filename="../src/gui/sharedialog.cpp" line="274"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>El archivo no puede compartirse ya que ha sido compartido sin los permisos correspondientes.</translation>
     </message>
@@ -2767,72 +2738,72 @@ No se recomienda usarla.</translation>
         <translation>Expira:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="468"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
         <source>Delete</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="159"/>
         <source>Allow Editing</source>
         <translation>Permitir edición</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Read only</source>
         <translation>Solo lectura</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
         <source>Allow Upload &amp;&amp; Editing</source>
         <translation>Permitir la subida y la edición</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>File Drop (Upload Only)</source>
         <translation>Soltar archivo (solo subidas)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>Add note to recipient</source>
         <translation>Añadir nota al recipiente</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
         <source>Password Protect</source>
         <translation>Protección con contraseña</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="216"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
         <source>Expiration Date</source>
         <translation>Fecha de caducidad</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="235"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
         <source>Unshare</source>
         <translation>Dejar de compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="240"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
         <source>Add another link</source>
         <translation>Añadir otro enlace</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="461"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Confirmar eliminación de enlace de recurso compartido</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="462"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;¿Realmente desea borrar el enlace público compartido &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Nota: Esta acción no se puede deshacer&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="469"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="472"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="487"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <source>Public link</source>
         <translation>Enlace público</translation>
     </message>
@@ -2845,17 +2816,17 @@ No se recomienda usarla.</translation>
         <translation>Compartir con usuarios o grupos ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="262"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation>Copiar enlace</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="272"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="280"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>No hay resultados para &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>I shared something with you</source>
         <translation>He compartido algo contigo</translation>
     </message>
@@ -2873,27 +2844,27 @@ No se recomienda usarla.</translation>
         <translation>puede editar</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="388"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="409"/>
         <source>Can reshare</source>
         <translation>Puede compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="398"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="419"/>
         <source>Unshare</source>
         <translation>No compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="407"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="428"/>
         <source>Can create</source>
         <translation>Puede crear</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="413"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="434"/>
         <source>Can change</source>
         <translation>Puede cambiar</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="419"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="440"/>
         <source>Can delete</source>
         <translation>Puede eliminar</translation>
     </message>
@@ -3524,234 +3495,234 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Please sign in</source>
         <translation>Por favor, inicie sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="348"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="339"/>
         <source>Folder %1: %2</source>
         <translation>Archivo %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
         <source>There are no sync folders configured.</source>
         <translation>No hay carpetas configuradas para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="375"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Open in browser</source>
         <translation>Abrir en navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="428"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Cerrar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>Recent Changes</source>
         <translation>Cambios recientes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="402"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
         <source>Managed Folders:</source>
         <translation>Carpetas administradas:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="405"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Abrir carpeta &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="377"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="368"/>
         <source>Open %1 in browser</source>
         <translation>Abrir %1 en el navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="785"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="776"/>
         <source>Unknown status</source>
         <translation>Estado desconocido</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="797"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="788"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="799"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Quit %1</source>
         <translation>Salir de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
         <source>Disconnected from %1</source>
         <translation>Desconectado de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="233"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="224"/>
         <source>Unsupported Server Version</source>
         <translation>Versión del servidor no soportada</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="234"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="225"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>El servidor en la cuenta %1 usa una versión antigua y no soportada %2. Usando este cliente con las versiones de servidor no soportadas no está probado y es potencialmente peligroso. Procede bajo tu propio riesgo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="273"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="264"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="275"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="266"/>
         <source>Disconnected from some accounts</source>
         <translation>Desconectado desde varias cuentas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="286"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Disconnected from accounts:</source>
         <translation>Desconectado desde cuentas:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="288"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="279"/>
         <source>Account %1: %2</source>
         <translation>Cuenta %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>Signed out</source>
         <translation>Cerrar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
         <source>Account synchronization is disabled</source>
         <translation>La sincronización está deshabilitada</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Synchronization is paused</source>
         <translation>La sincronización se ha detenido</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="356"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="347"/>
         <source>Unresolved conflicts</source>
         <translation>Conflictos sin resolver</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="363"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="354"/>
         <source>Error during synchronization</source>
         <translation>Error durante la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="358"/>
         <source>No sync folders configured</source>
         <translation>No hay carpetas sincronizado configuradas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="413"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="404"/>
         <source>Resume all folders</source>
         <translation>Reanudar todas las carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Pause all folders</source>
         <translation>Pausar todas las carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="701"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
         <source>Resume all synchronization</source>
         <translation>Reanudar toda la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="703"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="694"/>
         <source>Resume synchronization</source>
         <translation>Reanudar la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="711"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="702"/>
         <source>Pause all synchronization</source>
         <translation>Pausar todas las sincronizaciones</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="713"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="704"/>
         <source>Pause synchronization</source>
         <translation>Pausar la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="946"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="803"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="794"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Se ha producido un fallo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="787"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="778"/>
         <source>Apps</source>
         <translation>Apps</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="789"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="906"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>No se han sincronizado elementos recientemente</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="928"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Buscando cambios en la carpeta remota &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="931"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Buscando cambios en la carpeta local &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="951"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="942"/>
         <source>Syncing %1 of %2</source>
         <translation>Sincronizando %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="960"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="951"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronizando %1 (quedan %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="963"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>Syncing %1</source>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="981"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="972"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="358"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="349"/>
         <source>Up to date</source>
         <translation>Actualizado</translation>
     </message>
