@@ -87,12 +87,15 @@ private:
     void finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
                   const QString &refreshToken, const QString &userId, const QUrl &messageUrl);
 
+    QByteArray generateRandomString(size_t size) const;
+
     Account* _account;
     QTcpServer _server;
     bool _wellKnownFinished = false;
     QUrl _authEndpoint;
     QUrl _tokenEndpoint;
     QByteArray _pkceCodeVerifier;
+    QByteArray _state;
 
 public:
     QString _expectedUser;

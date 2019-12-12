@@ -62,10 +62,9 @@ void OAuth::start()
         return;
     }
 
-    quint32 buffer[24];
-    QRandomGenerator::global()->fillRange(buffer);
-    _pkceCodeVerifier = QByteArray(reinterpret_cast<char*>(buffer), sizeof(buffer)).toBase64(QByteArray::Base64UrlEncoding);
-    Q_ASSERT(_pkceCodeVerifier.size() == 128);
+    _pkceCodeVerifier = generateRandomString(24);
+    ASSERT(_pkceCodeVerifier.size() == 128)
+    _state = generateRandomString(8);
 
     fetchWellKnown();
 
@@ -75,25 +74,28 @@ void OAuth::start()
         while (QPointer<QTcpSocket> socket = _server.nextPendingConnection()) {
             QObject::connect(socket.data(), &QTcpSocket::disconnected, socket.data(), &QTcpSocket::deleteLater);
             QObject::connect(socket.data(), &QIODevice::readyRead, this, [this, socket] {
-                QByteArray peek = socket->peek(qMin(socket->bytesAvailable(), 4000LL)); //The code should always be within the first 4K
+                const QByteArray peek = socket->peek(qMin(socket->bytesAvailable(), 4000LL)); //The code should always be within the first 4K
                 if (peek.indexOf('\n') < 0)
                     return; // wait until we find a \n
-                QRegExp rx("^GET /\\?code=([a-zA-Z0-9_-]+)[& ]"); // Match a  /?code=...  URL
-                if (rx.indexIn(peek) != 0) {
+                if (!peek.startsWith("GET /?")) {
                     httpReplyAndClose(socket, "404 Not Found", "<html><head><title>404 Not Found</title></head><body><center><h1>404 Not Found</h1></center></body></html>");
                     return;
                 }
+                const int offset = 6;
+                const QUrlQuery args(peek.mid(offset, peek.indexOf(' ', offset) - offset));
+                if (args.queryItemValue(QStringLiteral("state")) != _state) {
+                    httpReplyAndClose(socket, "400 Bad Request", "<html><head><title>400 Bad Request</title></head><body><center><h1>400 Bad Request</h1></center></body></html>");
+                    return;
+                }
 
-                QString code = rx.cap(1); // The 'code' is the first capture of the regexp
-
-                QUrl requestToken = _tokenEndpoint.isValid()
+                const QUrl requestTokenUrl = _tokenEndpoint.isValid()
                     ? _tokenEndpoint
                     : Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
 
                 QNetworkRequest req;
-                req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+                req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded; charset=UTF-8");
 
-                QString basicAuth = QString("%1:%2").arg(
+                const QString basicAuth = QStringLiteral("%1:%2").arg(
                     Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
                 req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
                 // We just added the Authorization header, don't let HttpCredentialsAccessManager tamper with it
@@ -101,13 +103,17 @@ void OAuth::start()
 
                 auto requestBody = new QBuffer;
                 QUrlQuery arguments;
-                arguments.setQueryItems({ { QStringLiteral("grant_type"), "authorization_code" },
-                    { QStringLiteral("code"), code },
+                arguments.setQueryItems({
+                    { QStringLiteral("grant_type"), "authorization_code" },
+                    { QStringLiteral("code"), args.queryItemValue(QStringLiteral("code")) },
+                    { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
+                    { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() },
                     { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(_server.serverPort()) },
                     { QStringLiteral("code_verifier"), _pkceCodeVerifier },
-                    { QStringLiteral("scope"), QStringLiteral("openid offline_access") } });
-                requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
-                auto job = _account->sendRequest("POST", requestToken, req, requestBody);
+                    { QStringLiteral("scope"), args.queryItemValue(QStringLiteral("scope")) },
+                });
+                requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
+                const auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
                 job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
                     auto jsonData = reply->readAll();
@@ -196,23 +202,33 @@ void OAuth::finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
     emit result(LoggedIn, user, accessToken, refreshToken);
 }
 
+QByteArray OAuth::generateRandomString(size_t size) const
+{
+    // TODO: do we need a varaible size?
+    std::vector<quint32> buffer(size, 0);
+    QRandomGenerator::global()->fillRange(buffer.data(), static_cast<qsizetype>(size));
+    return QByteArray(reinterpret_cast<char *>(buffer.data()), static_cast<int>(size * sizeof(quint32))).toBase64(QByteArray::Base64UrlEncoding);
+}
+
 QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
     QUrlQuery query;
     QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
         .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
-    query.setQueryItems({ { QLatin1String("response_type"), QLatin1String("code") },
+    query.setQueryItems({
+        { QLatin1String("response_type"), QLatin1String("code") },
         { QLatin1String("client_id"), Theme::instance()->oauthClientId() },
         { QLatin1String("redirect_uri"), QLatin1String("http://localhost:") + QString::number(_server.serverPort()) },
         { QLatin1String("code_challenge"), QString::fromLatin1(code_challenge) },
-        { QLatin1String("code_challenge_method"), QLatin1String("S256")},
+        { QLatin1String("code_challenge_method"), QLatin1String("S256") },
         { QLatin1String("scope"), QLatin1String("openid offline_access") },
-        { QLatin1String("prompt"), QLatin1String("consent")}
+        { QLatin1String("prompt"), QLatin1String("consent") },
+        { QStringLiteral("state"), _state },
     });
     if (!_expectedUser.isNull())
         query.addQueryItem("user", _expectedUser);
-    QUrl url = _authEndpoint.isValid()
+    const QUrl url = _authEndpoint.isValid()
         ? Utility::concatUrlPath(_authEndpoint, {}, query)
         : Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/authorize"), query);
     return url;
@@ -240,9 +256,9 @@ void OAuth::fetchWellKnown()
             emit this->authorisationLinkChanged(authorisationLink());
             return;
         }
-        auto jsonData = reply->readAll();
+        const auto jsonData = reply->readAll();
         QJsonParseError jsonParseError;
-        QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
 
         if (jsonParseError.error == QJsonParseError::NoError) {
             QString authEp = json["authorization_endpoint"].toString();
@@ -251,6 +267,8 @@ void OAuth::fetchWellKnown()
             QString tokenEp = json["token_endpoint"].toString();
             if (!tokenEp.isEmpty())
                 this->_tokenEndpoint = tokenEp;
+        } else if (jsonParseError.error == QJsonParseError::IllegalValue) {
+            qCDebug(lcOauth) << ".well-known did not return json, the server most does not support oidc";
         } else {
             qCWarning(lcOauth) << "Json parse error in well-known: " << jsonParseError.errorString();
         }

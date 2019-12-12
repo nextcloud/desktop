@@ -430,18 +430,18 @@ bool HttpCredentials::refreshAccessToken()
         }
 
         QNetworkRequest req;
-        req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-
-        QString basicAuth = QString("%1:%2").arg(
-            Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
-        req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
+        req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
+        const QString basicAuth = QStringLiteral("%1:%2").arg(Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret()).toUtf8().toBase64();
+        req.setRawHeader("Authorization", QStringLiteral("Basic %1").arg(basicAuth).toUtf8());
         req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
         auto requestBody = new QBuffer;
         QUrlQuery arguments;
-        arguments.setQueryItems({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
+        arguments.setQueryItems({ { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
+            { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() },
+            { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
             { QStringLiteral("refresh_token"), _refreshToken } });
-        requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
+        requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
 
         auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
         job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));

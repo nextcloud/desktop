@@ -159,7 +159,7 @@ public:
         QCOMPARE(query.queryItemValue(QLatin1String("client_id")), Theme::instance()->oauthClientId());
         QUrl redirectUri(query.queryItemValue(QLatin1String("redirect_uri")));
         QCOMPARE(redirectUri.host(), QLatin1String("localhost"));
-        redirectUri.setQuery("code=" + code);
+        redirectUri.setQuery(QStringLiteral("code=%1&state=%2").arg(code, query.queryItemValue(QStringLiteral("state"))));
         createBrowserReply(QNetworkRequest(redirectUri));
     }
 

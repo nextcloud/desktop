@@ -49,7 +49,7 @@ class SettingsDialog : public QDialog
     Q_PROPERTY(QWidget* currentPage READ currentPage)
 
 public:
-    explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = 0);
+    explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
     ~SettingsDialog();
 
     QWidget* currentPage();
