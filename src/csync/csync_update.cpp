@@ -403,7 +403,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
 		  if (ctx->virtualDriveEnabled) {
 			  if (fs->instruction == CSYNC_INSTRUCTION_NEW
-				  && fs->virtualdrive
+				  && fs->virtualfile
 				  && ctx->current == REMOTE_REPLICA) {
 				  fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
 			  }
@@ -560,8 +560,10 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
             st->instruction = CSYNC_INSTRUCTION_IGNORE;
         }
 
-        if(ctx->statedb->getSyncMode(rec._path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
-			st->instruction = CSYNC_INSTRUCTION_IGNORE;
+		if (ctx->virtualDriveEnabled) {
+			if (ctx->statedb->getSyncMode(rec._path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
+				st->instruction = CSYNC_INSTRUCTION_IGNORE;
+		}
 
         /* store into result list. */
         files[rec._path] = std::move(st);

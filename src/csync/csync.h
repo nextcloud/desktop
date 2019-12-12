@@ -155,7 +155,7 @@ struct OCSYNC_EXPORT csync_file_stat_t {
   bool has_ignored_files BITFIELD(1); // Specify that a directory, or child directory contains ignored files.
   bool is_hidden BITFIELD(1); // Not saved in the DB, only used during discovery for local files.
   bool isE2eEncrypted BITFIELD(1);
-  bool virtualdrive BITFIELD(1);
+  bool virtualfile BITFIELD(1);
 
   QByteArray path;
   QByteArray rename_path;
@@ -174,6 +174,7 @@ struct OCSYNC_EXPORT csync_file_stat_t {
 
   CSYNC_STATUS error_status = CSYNC_STATUS_OK;
 
+
   enum csync_instructions_e instruction = CSYNC_INSTRUCTION_NONE; /* u32 */
 
   csync_file_stat_t()
@@ -182,7 +183,7 @@ struct OCSYNC_EXPORT csync_file_stat_t {
     , has_ignored_files(false)
     , is_hidden(false)
     , isE2eEncrypted(false)
-	, virtualdrive(true)
+    , virtualfile(true)
   { }
 
   static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec);

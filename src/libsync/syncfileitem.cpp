@@ -36,6 +36,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._serverHasIgnoredFiles = _serverHasIgnoredFiles;
     rec._checksumHeader = _checksumHeader;
     rec._e2eMangledName = _encryptedFileName.toUtf8();
+	rec._virtualfile = _virtualfile;
 
     // Go through csync vio just to get the inode.
     csync_file_stat_t fs;
