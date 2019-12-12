@@ -198,4 +198,5 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+Icon[el]=@APPLICATION_ICON_NAME@
 GenericName[el]=Συγχρονισμός φακέλου
