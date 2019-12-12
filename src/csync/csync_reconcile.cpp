@@ -141,7 +141,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             /* file has been removed on the opposite replica */
         case CSYNC_INSTRUCTION_NONE:
         case CSYNC_INSTRUCTION_UPDATE_METADATA:
-			if (cur->virtualdrive) {
+			if (cur->virtualfile) {
                 /* */
                 break;
             }

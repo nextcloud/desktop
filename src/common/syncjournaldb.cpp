@@ -47,25 +47,25 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 
 #define GET_FILE_RECORD_QUERY \
-        "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize" \
-        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, virtualfile" \
+        "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize, virtualfile" \
+        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName" \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
 static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &query)
 {
-    rec._path = query.baValue(0);
+	rec._path = query.baValue(0);
     rec._inode = query.int64Value(1);
     rec._modtime = query.int64Value(2);
     rec._type = static_cast<ItemType>(query.intValue(3));
     rec._etag = query.baValue(4);
     rec._fileId = query.baValue(5);
     rec._remotePerm = RemotePermissions(query.baValue(6).constData());
-    rec._fileSize = query.int64Value(7);
-    rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
-    rec._checksumHeader = query.baValue(9);
-    rec._e2eMangledName = query.baValue(10);
-	rec._virtualfile = query.int64Value(1);
+	rec._fileSize = query.int64Value(7);
+	rec._virtualfile = query.int64Value(8);
+    rec._serverHasIgnoredFiles = (query.intValue(9) > 0);
+    rec._checksumHeader = query.baValue(10);
+    rec._e2eMangledName = query.baValue(11);	
 }
 
 static QByteArray defaultJournalMode(const QString &dbPath)
@@ -791,9 +791,9 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     if (!columns.contains("virtualfile")) {
         SqlQuery query(_db);
-        query.prepare("ALTER TABLE metadata ADD COLUMN virtualfile INTEGER;");
+        query.prepare("ALTER TABLE metadata ADD COLUMN virtualfile STATUS INTEGER DEFAULT 1;");
         if (!query.exec()) {
-            sqlFail("updateDatabaseStructure: add column virtualfile", query);
+            sqlFail("updateDatabaseStructure: add column virtualfile STATUS INTEGER DEFAULT 1", query);
             re = false;
         }
         commitInternal("update database structure: add virtualfile col");
@@ -962,7 +962,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         _setFileRecordQuery.bindValue(17, record._e2eMangledName);
 		//1 is 0 byte file or new fine, do not sync, 0 is touched by the user, 
 		//it should sync on open
-		_setFileRecordQuery.bindValue(18, 1);
+		_setFileRecordQuery.bindValue(18, record._virtualfile);
 
         if (!_setFileRecordQuery.exec()) {
             return false;
@@ -1349,6 +1349,7 @@ bool SyncJournalDb::setFileRecordMetadata(const SyncJournalFileRecord &record)
     existing._fileSize = record._fileSize;
     existing._serverHasIgnoredFiles = record._serverHasIgnoredFiles;
     existing._e2eMangledName = record._e2eMangledName;
+	existing._virtualfile = record._virtualfile;
     return setFileRecord(existing);
 }
 
@@ -1364,6 +1365,15 @@ bool SyncJournalDb::setFileRecordVirtualFile(const SyncJournalFileRecord &record
     }
 
     // Update the virtualfile flag on the existing record.
+	existing._inode = record._inode;
+    existing._modtime = record._modtime;
+    existing._type = record._type;
+    existing._etag = record._etag;
+    existing._fileId = record._fileId;
+    existing._remotePerm = record._remotePerm;
+    existing._fileSize = record._fileSize;
+    existing._serverHasIgnoredFiles = record._serverHasIgnoredFiles;
+    existing._e2eMangledName = record._e2eMangledName;
 	existing._virtualfile = record._virtualfile;
     return setFileRecord(existing);
 }
