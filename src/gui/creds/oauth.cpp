@@ -116,17 +116,27 @@ void OAuth::start()
                 const auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
                 job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
-                    auto jsonData = reply->readAll();
+                    const auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;
-                    QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-                    QString accessToken = json["access_token"].toString();
-                    QString refreshToken = json["refresh_token"].toString();
-                    QString user = json["user_id"].toString();
-                    QUrl messageUrl = json["message_url"].toString();
+                    const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+                    QString fieldsError;
+                    const auto getRequiredField = [&json, &fieldsError](const QString &s) {
+                        const auto out = json.constFind(s);
+                        if (out == json.constEnd()) {
+                            fieldsError.append(tr("\tError: Missing field %1\n").arg(s));
+                            return QJsonValue();
+                        }
+                        return *out;
+                    };
+                    const QString accessToken = getRequiredField(QStringLiteral("access_token")).toString();
+                    const QString refreshToken = getRequiredField(QStringLiteral("refresh_token")).toString();
+                    const QString tokenType = getRequiredField(QStringLiteral("token_type")).toString().toLower();
+                    const QString user = json[QStringLiteral("user_id")].toString();
+                    const QUrl messageUrl = json[QStringLiteral("message_url")].toString();
 
                     if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
-                        || jsonData.isEmpty() || json.isEmpty() || refreshToken.isEmpty() || accessToken.isEmpty()
-                        || json["token_type"].toString() != QLatin1String("Bearer")) {
+                        || !fieldsError.isEmpty()
+                        || tokenType != "bearer") {
                         QString errorReason;
                         QString errorFromJson = json["error_description"].toString();
                         if (errorFromJson.isEmpty())
@@ -146,8 +156,12 @@ void OAuth::start()
                         } else if (jsonParseError.error != QJsonParseError::NoError) {
                             errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
                                               .arg(jsonParseError.errorString());
+                        } else if (tokenType != QStringLiteral("bearer")) {
+                            errorReason = tr("Unsupported token type: %1").arg(tokenType);
+                        } else if (!fieldsError.isEmpty()) {
+                            errorReason = tr("The reply from the server did not contain all expected fields\n:%1").arg(fieldsError);
                         } else {
-                            errorReason = tr("The reply from the server did not contain all expected fields");
+                            errorReason = tr("Unknown Error");
                         }
                         qCWarning(lcOauth) << "Error when getting the accessToken" << jsonData << errorReason;
                         httpReplyAndClose(socket, "500 Internal Server Error",
