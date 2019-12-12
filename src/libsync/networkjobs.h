@@ -390,6 +390,7 @@ public:
         Basic, // also the catch-all fallback for backwards compatibility reasons
         OAuth,
     };
+    Q_ENUM(AuthType)
 
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = 0);
     void start();
