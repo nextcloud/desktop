@@ -443,6 +443,7 @@ public:
         WebViewFlow,
         LoginFlowV2
     };
+    Q_ENUM(AuthType)
 
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = nullptr);
     void start();
