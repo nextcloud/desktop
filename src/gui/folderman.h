@@ -182,6 +182,8 @@ public:
     void setDirtyProxy();
     void setDirtyNetworkLimits();
 
+    void syncAllFolders(const QStringList &priorityList);
+
     /**
      * Terminates the current folder sync.
      *

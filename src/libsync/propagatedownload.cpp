@@ -963,6 +963,13 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     if (isLikelyFinishedQuickly() && duration > 5 * 1000) {
         qCWarning(lcPropagateDownload) << "WARNING: Unexpectedly slow connection, took" << duration << "msec for" << _item->_size - _resumeStart << "bytes for" << _item->_file;
     }
+
+ 	SyncJournalFileRecord rec;
+	if (propagator()->_journal->getFileRecord(_item->_file, &rec)) {
+			rec._virtualfile = 0;
+			if(propagator()->_journal->setFileRecordVirtualFile(rec))
+				propagator()->_journal->commit("file is not virtualfile");
+	} 
 }
 
 void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)

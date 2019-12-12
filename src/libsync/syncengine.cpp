@@ -113,6 +113,11 @@ SyncEngine::~SyncEngine()
     _excludedFiles.reset();
 }
 
+void SyncEngine::setFilePriority(const QStringList &paths) {
+	_csync_ctx->priority.files << paths;
+	_csync_ctx->priority.files.removeDuplicates();
+}
+
 //Convert an error code from csync to a user readable string.
 // Keep that function thread safe as it can be called from the sync thread or the main thread
 QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
@@ -436,13 +441,13 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_checksumHeader = file->checksumHeader;
         item->_type = file->type;
     } else {
-        if (instruction != CSYNC_INSTRUCTION_NONE) {
-            qCWarning(lcEngine) << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
-            ASSERT(false);
-            // Set instruction to NONE for safety.
-            file->instruction = item->_instruction = instruction = CSYNC_INSTRUCTION_NONE;
-            return -1; // should lead to treewalk error
-        }
+        //if (instruction != CSYNC_INSTRUCTION_NONE) {
+        //    qCWarning(lcEngine) << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
+        //    ASSERT(false);
+        //    // Set instruction to NONE for safety.
+        //    file->instruction = item->_instruction = instruction = CSYNC_INSTRUCTION_NONE;
+        //    return -1; // should lead to treewalk error
+        //}
     }
 
     if (!file->file_id.isEmpty()) {
@@ -673,6 +678,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
             // An upload of an existing file means that the file was left unchanged on the server
             // This counts as a NONE for detecting if all the files on the server were changed
             _hasNoneFiles = true;
+
         } else if (!isDirectory) {
             auto difftime = std::difftime(file->modtime, other ? other->modtime : 0);
             if (difftime < -3600 * 2) {

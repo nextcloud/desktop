@@ -304,6 +304,15 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_EVAL:
+				if (ctx->virtualDriveEnabled) {
+					if (cur->virtualfile) {
+						if (ctx->priority.files.contains(cur->path)) {
+							cur->instruction = CSYNC_INSTRUCTION_NONE;
+							other->instruction = CSYNC_INSTRUCTION_SYNC;
+							break;
+						}
+					}
+				}
                 if (other->type == ItemTypeDirectory &&
                         cur->type == ItemTypeDirectory) {
                     // Folders of the same path are always considered equals
@@ -388,6 +397,18 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     cur->instruction = CSYNC_INSTRUCTION_SYNC;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
                 }
+
+				if (ctx->virtualDriveEnabled) {
+					if (cur->virtualfile) {
+						if (ctx->priority.files.contains(cur->path)) {
+							cur->instruction = CSYNC_INSTRUCTION_NONE;
+							other->instruction = CSYNC_INSTRUCTION_SYNC;
+						} else {
+							cur->instruction = CSYNC_INSTRUCTION_NONE;
+							other->instruction = CSYNC_INSTRUCTION_NONE;
+						}
+					}
+				}
                 break;
             case CSYNC_INSTRUCTION_IGNORE:
                 cur->instruction = CSYNC_INSTRUCTION_IGNORE;

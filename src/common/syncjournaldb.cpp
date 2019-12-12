@@ -62,7 +62,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._fileId = query.baValue(5);
     rec._remotePerm = RemotePermissions(query.baValue(6).constData());
 	rec._fileSize = query.int64Value(7);
-	rec._virtualfile = query.int64Value(8);
+	rec._virtualfile = query.intValue(8);
     rec._serverHasIgnoredFiles = (query.intValue(9) > 0);
     rec._checksumHeader = query.baValue(10);
     rec._e2eMangledName = query.baValue(11);	
@@ -935,6 +935,14 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         QByteArray checksumType, checksum;
         parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
         int contentChecksumTypeId = mapChecksumType(checksumType);
+
+		//FIXME I shouldn't change the virtualdrive value here, keep the same if the record already exists
+		SyncJournalFileRecord existing;
+		if (!getFileRecord(record._path, &existing)) {
+			record._virtualfile = 1;
+		} else {
+			record._virtualfile = record._virtualfile < 0 ? 1 : record._virtualfile;
+		}
 
         if (!_setFileRecordQuery.initOrReset(QByteArrayLiteral(
             "INSERT OR REPLACE INTO metadata "

@@ -52,6 +52,8 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
+#include <unordered_map>
+
 Q_LOGGING_CATEGORY(lcUpdate, "nextcloud.sync.csync.updater", QtInfoMsg)
 
 #ifdef NO_RENAME_EXTENSION
@@ -258,7 +260,15 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               fs->child_modified = true;
           }
 
-          fs->instruction = CSYNC_INSTRUCTION_EVAL;
+		  fs->instruction = CSYNC_INSTRUCTION_EVAL;
+
+		 // if (ctx->virtualDriveEnabled) {
+			//if (!ctx->priority.files.contains(base._path) && 
+			//	ctx->statedb->getSyncMode(base._path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+			//	fs->instruction = CSYNC_INSTRUCTION_IGNORE;
+			//} 
+		 // }
+
           goto out;
       }
       bool metadata_differ = (ctx->current == REMOTE_REPLICA && (fs->file_id != base._fileId
@@ -283,10 +293,19 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       if (metadata_differ) {
           /* file id or permissions has changed. Which means we need to update them in the DB. */
           qCInfo(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
-          fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+		  if (fs->virtualfile) {
+			  fs->instruction = CSYNC_INSTRUCTION_EVAL;
+		  } else {
+			 fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+		  }
       } else {
-          fs->instruction = CSYNC_INSTRUCTION_NONE;
+		  if (fs->virtualfile) {
+			  fs->instruction = CSYNC_INSTRUCTION_EVAL;
+		  } else {
+			  fs->instruction = CSYNC_INSTRUCTION_NONE;
+		  }
       }
+
   } else {
       /* check if it's a file and has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
@@ -330,6 +349,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   csync_rename_record(ctx, base._path, fs->path);
               }
           }
+
           goto out;
 
       } else {
@@ -400,6 +420,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               }
           }
 
+		  // First sync case
 		  if (ctx->virtualDriveEnabled) {
 			  if (fs->instruction == CSYNC_INSTRUCTION_NEW
 				  && fs->virtualfile
@@ -557,12 +578,13 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
             }
 
             st->instruction = CSYNC_INSTRUCTION_IGNORE;
-        }
 
-		if (ctx->virtualDriveEnabled) {
-			if (ctx->statedb->getSyncMode(rec._path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
-				st->instruction = CSYNC_INSTRUCTION_IGNORE;
-		}
+			//if (ctx->virtualDriveEnabled) {
+			//	if (ctx->statedb->getSyncMode(rec._path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+			//		st->instruction = CSYNC_INSTRUCTION_IGNORE;
+			//	} 
+			//}
+        }
 
         /* store into result list. */
         files[rec._path] = std::move(st);

@@ -515,6 +515,65 @@ void FolderMan::slotSyncOnceFileUnlocks(const QString &path)
     _lockWatcher->addFile(path);
 }
 
+void FolderMan::syncAllFolders(const QStringList &priorityList)
+{
+    foreach (Folder *f, _folderMap.values()) {
+        if (f && f->canSync()) {
+			auto alias = f->alias();
+
+			qCInfo(lcFolderMan) << "Schedule folder " << alias << " to sync!";
+
+			if (!f->canSync()) {
+				qCInfo(lcFolderMan) << "Folder is not ready to sync, not scheduled!";
+				_socketApi->slotUpdateFolderView(f);
+				return;
+			}
+			f->prepareToSync();
+			emit folderSyncStateChange(f);
+			_scheduledFolders.enqueue(f);
+			emit scheduleQueueChanged();
+
+			if (_startScheduledSyncTimer.isActive()) {
+				_startScheduledSyncTimer.stop();
+			}
+
+			if (!_syncEnabled) {
+				qCInfo(lcFolderMan) << "FolderMan: Syncing is disabled, no scheduling.";
+				return;
+			}
+
+			qCDebug(lcFolderMan) << "folderQueue size: " << _scheduledFolders.count();
+			if (_scheduledFolders.isEmpty()) {
+				return;
+			}
+
+			// Find the first folder in the queue that can be synced.
+			Folder *folder = nullptr;
+			while (!_scheduledFolders.isEmpty()) {
+				Folder *g = _scheduledFolders.dequeue();
+				if (g->canSync()) {
+					folder = g;
+					break;
+				}
+			}
+
+			emit scheduleQueueChanged();
+
+			// Start syncing this folder!
+			if (folder) {
+				// Safe to call several times, and necessary to try again if
+				// the folder path didn't exist previously.
+				folder->registerFolderWatcher();
+				registerFolderWithSocketApi(folder);
+
+				_currentSyncFolder = folder;
+				folder->startSync(priorityList);
+			}
+			
+        }
+    }
+}
+
 /*
   * if a folder wants to be synced, it calls this slot and is added
   * to the queue. The slot to actually start a sync is called afterwards.

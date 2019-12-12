@@ -622,8 +622,6 @@ bool Folder::reloadExcludes()
 
 void Folder::startSync(const QStringList &pathList)
 {
-    Q_UNUSED(pathList)
-
     if (isBusy()) {
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
@@ -680,7 +678,7 @@ void Folder::startSync(const QStringList &pathList)
         _previousLocalDiscoveryPaths.clear();
     }
     _localDiscoveryPaths.clear();
-
+	_engine->setFilePriority(pathList);
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);

@@ -125,6 +125,8 @@ public:
     /** Access the last sync run's local discovery style */
     LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
 
+	void setFilePriority(const QStringList &paths);
+
 signals:
     void csyncUnavailable();
 

@@ -171,7 +171,11 @@ struct OCSYNC_EXPORT csync_s {
   } renames;
 
   struct {
-    char *uri = nullptr;
+	QStringList files = {};
+  } priority;
+
+  struct {
+    char *uri = nullptr;	
     FileMap files;
   } local;
 

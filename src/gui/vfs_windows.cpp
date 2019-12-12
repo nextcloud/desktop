@@ -67,6 +67,8 @@ THE SOFTWARE.
 
 #include <shlobj_core.h>
 
+#include "folderman.h"
+
 namespace OCC {
 
 	QMutex _mutexMirrorFindFiles;
@@ -932,10 +934,10 @@ static NTSTATUS DOKAN_CALLBACK MirrorReadFile(LPCWSTR FileName, LPVOID Buffer,
 						LPDWORD ReadLength,
 						LONGLONG Offset,*/
 						
-					QVariantMap error;
-					QString QSFileNametoReal = QSFileName;
-					QSFileNametoReal.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-					VfsWindows::instance()->openFileAtPath(QSFileNametoReal, error);
+					//QVariantMap error;
+					//QString QSFileNametoReal = QSFileName;
+					//QSFileNametoReal.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+					//VfsWindows::instance()->openFileAtPath(QSFileNametoReal, error);
 				}
 			}
 		}
@@ -2509,98 +2511,36 @@ void CleanIgnoredTask::run() {
 
 void VfsWindows::createFileAtPath(QString path, QVariantMap &error)
 {
+	FolderMan::instance()->syncAllFolders(QStringList(path));
 }
 
 void VfsWindows::moveFileAtPath(QString path, QString npath,QVariantMap &error)
 {
+	FolderMan::instance()->syncAllFolders(QStringList(path));
 }
 
 void VfsWindows::createDirectoryAtPath(QString path, QVariantMap &error)
 {
+	FolderMan::instance()->syncAllFolders(QStringList(path));
 }
 
 void VfsWindows::moveDirectoryAtPath(QString path, QString npath, QVariantMap &error)
 {
+	FolderMan::instance()->syncAllFolders(QStringList(path));
 }
 
 void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
 {
-    //QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-    //QString relative_path = path;
-    //relative_path.replace(0, relative_prefix.length(), QString(""));
-
-		//< Alway ONLY FIRST >TIME when download file-open set SYNCMODE_ONLINE.
- //   if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_NONE)
- //       SyncJournalDb::instance()->setSyncMode(relative_path, SyncJournalDb::SYNCMODE_ONLINE);
- //
-	//	//< Set when file was opened or updated
- //   SyncJournalDb::instance()->updateLastAccess(relative_path);
-
-	//if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
- //       qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_ONLINE" \
- //                << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
- //   else if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
- //       qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_OFFLINE" \
- //                << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
-
-
-/////////////////
-	//char fgv[5];
-	//fgv[0] = 'X';
-	//fgv[1] = ':';
-	//fgv[2] = '\\';
-	//fgv[3] = 0;
-	////fgv[4] = 0;
-
-	//path.replace(0, relative_prefix.length(), fgv);
-
-	//// SI ESTA EN LA RAIZ SE VA ASI
- //       // 01-16 14:04:25:827 [ debug default ] 5928 OCC::VfsWindows::openFileAtPath:  gbh path:  "X:\\0706075.pdf"
-
-
- //       QString name = path;
- //       path.replace("\\", "/");
- //       name.replace("\\", "/");
-
-
- //       int pos = name.lastIndexOf(QChar('/'));
-
- //       qDebug() << " gbh path: " << path;
- //       qDebug() << " gbh fgv: " << fgv;
- //       qDebug() << " gbh name.left(pos): " << name.left(pos);
-
- //       SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.toStdWString().data(), NULL);
- //       SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, name.left(pos).toStdWString().data(), NULL);
-        //	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
-	OCC::SyncJournalFileRecord rec;
-	if (SyncJournalDb::instance()->getFileRecord(path, &rec)) {
-			rec._virtualfile = 0;
-			SyncJournalDb::instance()->setFileRecordVirtualFile(rec);
-	} else {
-		//
-	}
+	FolderMan::instance()->syncAllFolders(QStringList(path));
 }
 
 void VfsWindows::writeFileAtPath(QString path, QVariantMap &error)
 {
- //   QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
- //   QString relative_path = path;
- //   relative_path.replace(0, relative_prefix.length(), QString(""));
-
-	//		//< Set when file was opened or updated
- //   SyncJournalDb::instance()->updateLastAccess(relative_path);
-
-	//if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
- //       qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_ONLINE" \
- //                << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
- //   else if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
- //       qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_OFFLINE" \
- //                << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
 }
 
 void VfsWindows::deleteFileAtPath(QString path, QVariantMap &error)
 {
-	SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
+	FolderMan::instance()->syncAllFolders(QStringList(path));
 }
 
 void VfsWindows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)

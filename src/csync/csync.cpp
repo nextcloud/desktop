@@ -238,6 +238,7 @@ int csync_s::reinitialize() {
   read_remote_from_db = true;
 
   local.files.clear();
+  priority.files.clear();
   remote.files.clear();
 
   renames.folder_renamed_from.clear();
@@ -340,5 +341,6 @@ std::unique_ptr<csync_file_stat_t> csync_file_stat_s::fromSyncJournalFileRecord(
     st->has_ignored_files = rec._serverHasIgnoredFiles;
     st->checksumHeader = rec._checksumHeader;
     st->e2eMangledName = rec._e2eMangledName;
+	st->virtualfile = rec._virtualfile;
     return st;
 }
