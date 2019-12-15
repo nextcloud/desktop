@@ -3899,7 +3899,7 @@ No es recomendable usarlo. </translation>
     <message>
         <location filename="../src/common/utility.cpp" line="134"/>
         <source>%L1 MB</source>
-        <translation>%L1 GB</translation>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="138"/>

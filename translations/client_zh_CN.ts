@@ -2827,7 +2827,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>I shared something with you</source>
-        <translation>我向您共享了一些东西</translation>
+        <translation>我对您分享了一些东西</translation>
     </message>
 </context>
 <context>
@@ -2845,12 +2845,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="409"/>
         <source>Can reshare</source>
-        <translation>可以再分享</translation>
+        <translation>允许重新分享</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="419"/>
         <source>Unshare</source>
-        <translation>取消共享</translation>
+        <translation>取消分享</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="428"/>
