@@ -864,7 +864,7 @@ void FolderMan::slotWatchedFileUnlocked(const QString &path)
 {
     if (Folder *f = folderForPath(path)) {
         // Treat this equivalently to the file being reported by the file watcher
-        f->slotWatchedPathChanged(path);
+        f->slotWatchedPathChanged(path, Folder::ChangeReason::UnLock);
     }
 }
 

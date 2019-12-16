@@ -523,7 +523,7 @@ int Folder::slotWipeErrorBlacklist()
     return _journal.wipeErrorBlacklist();
 }
 
-void Folder::slotWatchedPathChanged(const QString &path)
+void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 {
     if (!path.startsWith(this->path())) {
         qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
@@ -554,27 +554,29 @@ void Folder::slotWatchedPathChanged(const QString &path)
     }
 #endif
 
-    // Check that the mtime/size actually changed or there was
-    // an attribute change (pin state) that caused the notification
-    bool spurious = false;
-    SyncJournalFileRecord record;
-    if (_journal.getFileRecord(relativePathBytes, &record)
-        && record.isValid()
-        && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
-        spurious = true;
 
-        if (auto pinState = _vfs->pinState(relativePath.toString())) {
-            if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
-                spurious = false;
-            if (*pinState == PinState::OnlineOnly && record.isFile())
-                spurious = false;
+    SyncJournalFileRecord record;
+    _journal.getFileRecord(relativePathBytes, &record);
+    if (reason != ChangeReason::UnLock) {
+        // Check that the mtime/size actually changed or there was
+        // an attribute change (pin state) that caused the notification
+        bool spurious = false;
+        if (record.isValid()
+            && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
+            spurious = true;
+
+            if (auto pinState = _vfs->pinState(relativePath.toString())) {
+                if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
+                    spurious = false;
+                if (*pinState == PinState::OnlineOnly && record.isFile())
+                    spurious = false;
+            }
+        }
+        if (spurious) {
+            qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
+            return; // probably a spurious notification
         }
     }
-    if (spurious) {
-        qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
-        return; // probably a spurious notification
-    }
-
     warnOnNewExcludedItem(record, relativePath);
 
     emit watchedFileChangedExternally(path);
@@ -1184,7 +1186,7 @@ void Folder::registerFolderWatcher()
 
     _folderWatcher.reset(new FolderWatcher(this));
     connect(_folderWatcher.data(), &FolderWatcher::pathChanged,
-        this, &Folder::slotWatchedPathChanged);
+        this, [this](const QString &path) { slotWatchedPathChanged(path, Folder::ChangeReason::Other); });
     connect(_folderWatcher.data(), &FolderWatcher::lostChanges,
         this, &Folder::slotNextSyncFullLocalDiscovery);
     connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,

@@ -113,6 +113,12 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
+    enum class ChangeReason {
+        Other,
+        UnLock
+    };
+    Q_ENUM(ChangeReason)
+
     /** Create a new Folder
      */
     Folder(const FolderDefinition &definition, AccountState *accountState, std::unique_ptr<Vfs> vfs, QObject *parent = 0L);
@@ -336,7 +342,7 @@ public slots:
        * changes. Needs to check whether this change should trigger a new
        * sync run to be scheduled.
        */
-    void slotWatchedPathChanged(const QString &path);
+    void slotWatchedPathChanged(const QString &path, ChangeReason reason);
 
     /**
      * Mark a virtual file as being requested for download, and start a sync.
