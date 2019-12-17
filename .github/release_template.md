@@ -14,7 +14,7 @@ Major/Minor release templete. Enter here, when we have three estimated dates:
 
 ### Before branching off:
 
-* [ ] Dev: Check [dependencies](https://handbook.owncloud.com/release_processes/client/dependencies.html) for updates - @TheOneRing @guruz
+* [ ] Dev: Check [dependencies](https://handbook.owncloud.com/release_processes/client/dependencies.html) for updates - @TheOneRing @guruz @jnweiger
 * [ ] Dev: Update [ChangeLog](https://handbook.owncloud.com/release_processes/client/change_log.html) - @TheOneRing @guruz
 * [ ] QA: [Antivirus scan](https://handbook.owncloud.com/release_processes/client/virus.html) - @HanaGemela @jnweiger 
 * [ ] QA: Update [Test Plans](https://handbook.owncloud.com/release_processes/client/testlink.html) - @HanaGemela @jnweiger
