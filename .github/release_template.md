@@ -12,52 +12,35 @@ Major/Minor release templete. Enter here, when we have three estimated dates:
 * Date of RC start
 * Date of final
 
-
 ### Before branching off:
-* [ ] Check if we should update the bundled sqlite3
-TODO: Link to handbook with
-  details about win mac linux e.g. (https://github.com/owncloud/client/tree/master/src/3rdparty/sqlite3)
-  create github issue
 
-* [ ] Check if we should update Sparkle
-TODO: Handbook has instruction how, and create issue if needed.
- on build machine (https://github.com/sparkle-project/Sparkle/releases)
-
-* [ ] Ensure up-to-date dependencies
-TODO: Handbook entry
-List of dependencies: qtkeychain, openssl, random linux stuff for old linux platforms like cmake.
-(e.g. [latest Qt version](http://qt-project.org/downloads#qt-lib) is installed on the machine and picked up (cmake output)
-
+* [ ] Dev: Check [dependencies](https://handbook.owncloud.com/release_processes/client/dependencies.html) for updates - @TheOneRing @guruz @jnweiger
+* [ ] Dev: Update [ChangeLog](https://handbook.owncloud.com/release_processes/client/change_log.html) - @TheOneRing @guruz
 * [ ] QA: [Antivirus scan](https://handbook.owncloud.com/release_processes/client/virus.html) - @HanaGemela @jnweiger 
 * [ ] QA: Update [Test Plans](https://handbook.owncloud.com/release_processes/client/testlink.html) - @HanaGemela @jnweiger
-* [ ] Review list of [supported platforms](https://handbook.owncloud.com/release_processes/client/supported_platforms.html)
-* [ ] Update [ChangeLog](https://handbook.owncloud.com/release_processes/client/change_log.html)
-* [ ] Update [documentation](https://handbook.owncloud.com/release_processes/client/documentation.html)
-
-* [ ] check for issues with current milestone
-TODO: Handbook: list repos (enterprise, onlineupdater, gitea..., client, QA, QA-Enterprise); 
-how to find the relevant issues.check if enterprise issues are fixed
-
+* [ ] QA: Review list of [supported platforms](https://handbook.owncloud.com/release_processes/client/supported_platforms.html) -  @HanaGemela @jnweiger @TheOneRing @guruz
+* [ ] QA: Update [documentation](https://handbook.owncloud.com/release_processes/client/documentation.html) -  @HanaGemela @jnweiger
+* [ ] QA: Check Sprint Board for remaining issues -  @HanaGemela @jnweiger
 
 ### On the day of the first daily build of the new branch:
-* [ ] Internally announce it feature freeze
-* [ ] branch off master to new version branch (e.g. master -> 2.7, when releasing 2.7), check that VERSION.cmake says 2.7
-* [ ] Adjust `VERSION.cmake` in master and count up (e.g. 2.8).
-* [ ] branch the templates of the build infrastructure (e.g. gitea/client, gitea/ownbrander/scritping ...) to v2.7.0 ... TODO...
-* [ ] Add the new version to gitea/ownbrander/scripting/client-linux/templates/client/2.X.X
-* [ ] Add branch to branches.only section in appveyor.yml, so PRs to that branch will be built by AppVeyor @hvonreth
-* [ ] Add branch to drone.star, drone.yml @dschmidt
-* [ ] start running automated tests on the dailies
+* [ ] Dev: Internally announce it feature freeze - @TheOneRing @guruz
+* [ ] Dev: Branch off master to new version branch (e.g. master -> 2.7, when releasing 2.7), check that `VERSION.cmake` says 2.7 - @TheOneRing @guruz
+* [ ] Dev: Adjust `VERSION.cmake` in master and count up (e.g. 2.8) - @TheOneRing @guruz
 
-* [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) to point to the release branch (e.g. 2.7). @dschmidt
-* [ ] use obs-copyprj.sh to backup the desktop project to desktop:client-2.6.x (unless already done) @jnweiger
+* [ ] QA: Branch the templates of the build infrastructure (e.g. gitea/client, gitea/ownbrander/scritping ...) to v2.7.0 ... TODO...
+* [ ] QA: Add the new version to `gitea/ownbrander/scripting/client-linux/templates/client/2.X.X`
+* [ ] QA: Add branch to `branches.only` section in `appveyor.yml`, so PRs to that branch will be built by AppVeyor - @hvonreth
+* [ ] QA: Add branch to `drone.star`, `drone.yml` - @dschmidt
+* [ ] QA: Start running automated tests on the dailies
+* [ ] QA: Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) to point to the release branch (e.g. 2.7) - @dschmidt
+* [ ] QA: Use `obs-copyprj.sh` to backup the desktop project to `desktop:client-2.6.x` (unless already done) - @jnweiger
 
 ### After the first daily build of the new branch:
-* [ ] Announce new branch to community and advertise dailies for public testing.
-
+* [ ] Announce the new branch to community and advertise dailies for public testing 
 
 TODO: WHen do we call it beta or RC?
 TODO: describe what dailies we have in documentation. (Platforms, Versions, Master, current preprelease, and last stable release branch.)
+
 ### For all (betas?) and RCs (Copy this section for each beta/rc):
 * [ ] Ensure the crash reporter server is up.
 TODO: log into sentry, see if there is a fresh report. sentry.io and one more component in our infrastructure. And/or trigger a crash.
