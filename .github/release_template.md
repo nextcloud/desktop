@@ -9,14 +9,13 @@ Open an issue called 'Release 2.x.0' in Client repository and copy below text in
 
 Major/Minor release templete. Enter here, when we have three estimated dates:
 * Date of feature freeze
-* Date of RC start
+* Date of QA start
 * Date of final
 
 ### Before branching off:
 
-* [ ] Dev: Check [dependencies](https://handbook.owncloud.com/release_processes/client/dependencies.html) for updates - @TheOneRing @guruz @jnweiger
+* [ ] Dev: Check [dependencies](https://handbook.owncloud.com/release_processes/client/dependencies.html) for updates - @TheOneRing @guruz
 * [ ] Dev: Update [ChangeLog](https://handbook.owncloud.com/release_processes/client/change_log.html) - @TheOneRing @guruz
-* [ ] QA: [Antivirus scan](https://handbook.owncloud.com/release_processes/client/virus.html) - @HanaGemela @jnweiger 
 * [ ] QA: Update [Test Plans](https://handbook.owncloud.com/release_processes/client/testlink.html) - @HanaGemela @jnweiger
 * [ ] QA: Review list of [supported platforms](https://handbook.owncloud.com/release_processes/client/supported_platforms.html) -  @HanaGemela @jnweiger @TheOneRing @guruz
 * [ ] QA: Update [documentation](https://handbook.owncloud.com/release_processes/client/documentation.html) -  @HanaGemela @jnweiger
@@ -40,6 +39,8 @@ Major/Minor release templete. Enter here, when we have three estimated dates:
 
 TODO: WHen do we call it beta or RC?
 TODO: describe what dailies we have in documentation. (Platforms, Versions, Master, current preprelease, and last stable release branch.)
+
+* [ ] QA: [Antivirus scan](https://handbook.owncloud.com/release_processes/client/virus.html) - @HanaGemela @jnweiger 
 
 ### For all (betas?) and RCs (Copy this section for each beta/rc):
 * [ ] Ensure the crash reporter server is up.
