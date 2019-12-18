@@ -294,18 +294,27 @@ void ActivityListModel::combineActivityLists()
 {
     ActivityList resultList;
 
-    std::sort(_notificationErrorsLists.begin(), _notificationErrorsLists.end());
-    resultList.append(_notificationErrorsLists);
-    resultList.append(_notificationIgnoredFiles);
+    if(_notificationErrorsLists.count() > 0) {
+        std::sort(_notificationErrorsLists.begin(), _notificationErrorsLists.end());
+        resultList.append(_notificationErrorsLists);
+    }
+    if(_listOfIgnoredFiles.size() > 0)
+        resultList.append(_notificationIgnoredFiles);
 
-    std::sort(_notificationLists.begin(), _notificationLists.end());
-    resultList.append(_notificationLists);
+    if(_notificationLists.count() > 0) {
+        std::sort(_notificationLists.begin(), _notificationLists.end());
+        resultList.append(_notificationLists);
+    }
 
-    std::sort(_syncFileItemLists.begin(), _syncFileItemLists.end());
-    resultList.append(_syncFileItemLists);
+    if(_syncFileItemLists.count() > 0) {
+        std::sort(_syncFileItemLists.begin(), _syncFileItemLists.end());
+        resultList.append(_syncFileItemLists);
+    }
 
-    std::sort(_activityLists.begin(), _activityLists.end());
-    resultList.append(_activityLists);
+    if(_activityLists.count() > 0) {
+        std::sort(_activityLists.begin(), _activityLists.end());
+        resultList.append(_activityLists);
+    }
 
     beginResetModel();
     _finalList.clear();
