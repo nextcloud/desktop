@@ -64,6 +64,7 @@ signals:
     void showIssuesList(AccountState *account);
     void requesetMnemonic();
     void removeAccountFolders(AccountState *account);
+    void styleChanged();
 
 public slots:
     void slotOpenOC();
