@@ -99,6 +99,6 @@ private:
 };
 }
 
-Q_DECLARE_METATYPE(OCC::ActivityListModel::ActionIcon);
+Q_DECLARE_METATYPE(OCC::ActivityListModel::ActionIcon)
 
 #endif // ACTIVITYLISTMODEL_H
