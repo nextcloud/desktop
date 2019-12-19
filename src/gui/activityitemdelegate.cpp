@@ -15,6 +15,7 @@
  */
 
 #include "activityitemdelegate.h"
+#include "activitylistmodel.h"
 #include "folderstatusmodel.h"
 #include "folderman.h"
 #include "accountstate.h"
@@ -39,6 +40,12 @@ int ActivityItemDelegate::_timeWidth = 0;
 int ActivityItemDelegate::_buttonHeight = 0;
 const QString ActivityItemDelegate::_remote_share("remote_share");
 const QString ActivityItemDelegate::_call("call");
+
+ActivityItemDelegate::ActivityItemDelegate()
+    : QStyledItemDelegate()
+{
+    customizeStyle();
+}
 
 int ActivityItemDelegate::iconHeight()
 {
@@ -89,10 +96,21 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int iconSize = 16;
     int iconOffset = qRound(fm.height() / 4.0 * 7.0);
     int offset = 4;
+    const bool isSelected = (option.state & QStyle::State_Selected);
 
     // get the data
     Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActionRole));
-    QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
+    QIcon actionIcon;
+    const ActivityListModel::ActionIcon icn = qvariant_cast<ActivityListModel::ActionIcon>(index.data(ActionIconRole));
+    switch(icn.iconType) {
+        case ActivityListModel::ActivityIconType::iconUseCached:        actionIcon = icn.cachedIcon;                                        break;
+        case ActivityListModel::ActivityIconType::iconActivity:         actionIcon = (isSelected ? _iconActivity_sel : _iconActivity);      break;
+        case ActivityListModel::ActivityIconType::iconBell:             actionIcon = (isSelected ? _iconBell_sel : _iconBell);              break;
+        case ActivityListModel::ActivityIconType::iconStateError:       actionIcon = _iconStateError;                                       break;
+        case ActivityListModel::ActivityIconType::iconStateWarning:     actionIcon = _iconStateWarning;                                     break;
+        case ActivityListModel::ActivityIconType::iconStateInfo:        actionIcon = _iconStateInfo;                                        break;
+        case ActivityListModel::ActivityIconType::iconStateSync:        actionIcon = _iconStateSync;                                        break;
+    }
     QString objectType = qvariant_cast<QString>(index.data(ObjectTypeRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
@@ -184,9 +202,9 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if(activityType == Activity::Type::NotificationType){
 
         // Secondary will be 'Dismiss' or '...' multiple options button
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/close.svg"));
+        secondaryButton.icon = (isSelected ? _iconClose_sel : _iconClose);
         if(customList.size() > 1)
-            secondaryButton.icon = QIcon(QLatin1String(":/client/resources/more.svg"));
+            secondaryButton.icon = (isSelected ? _iconMore_sel : _iconMore);
         secondaryButton.iconSize = QSize(iconSize, iconSize);
 
         // Primary button will be 'More Information' or 'Accept'
@@ -209,7 +227,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     } else if(activityType == Activity::SyncResultType){
 
         // Secondary will be 'open file manager' with the folder icon
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder.svg"));
+        secondaryButton.icon = _iconFolder;
         secondaryButton.iconSize = QSize(iconSize, iconSize);
 
         // Primary button will be 'open browser'
@@ -230,7 +248,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     } else if(activityType == Activity::SyncFileItemType){
 
         // Secondary will be 'open file manager' with the folder icon
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder.svg"));
+        secondaryButton.icon = _iconFolder;
         secondaryButton.iconSize = QSize(iconSize, iconSize);
 
         // No primary button on this case
@@ -255,7 +273,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         p.setCurrentColorGroup(QPalette::Disabled);
 
     // change pen color if the line is selected
-    if (option.state & QStyle::State_Selected)
+    if (isSelected)
         painter->setPen(p.color(QPalette::HighlightedText));
     else
         painter->setPen(p.color(QPalette::Text));
@@ -269,8 +287,15 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->drawText(actionTextBox, elidedAction);
 
     // draw the buttons
-    if(activityType == Activity::Type::NotificationType || activityType == Activity::Type::SyncResultType)
+    if(activityType == Activity::Type::NotificationType || activityType == Activity::Type::SyncResultType) {
+        primaryButton.palette = p;
+        if (isSelected)
+            primaryButton.palette.setColor(QPalette::ButtonText, p.color(QPalette::HighlightedText));
+        else
+            primaryButton.palette.setColor(QPalette::ButtonText, p.color(QPalette::Text));
+
         QApplication::style()->drawControl(QStyle::CE_PushButton, &primaryButton, painter);
+    }
 
     // Since they are errors on local syncing, there is nothing to do in the server
     if(activityType != Activity::Type::ActivityType)
@@ -284,7 +309,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
 
     // change pen color for the time
-    if (option.state & QStyle::State_Selected)
+    if (isSelected)
         painter->setPen(p.color(QPalette::Disabled, QPalette::HighlightedText));
     else
         painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
@@ -331,6 +356,34 @@ bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     }
 
     return QStyledItemDelegate::editorEvent(event, model, option, index);
+}
+
+void ActivityItemDelegate::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void ActivityItemDelegate::customizeStyle()
+{
+    QPalette pal;
+    pal.setColor(QPalette::Base, QColor(0,0,0));    // use dark background colour to invert icons
+
+    _iconClose        = Theme::createColorAwareIcon(QLatin1String(":/client/resources/close.svg"));
+    _iconClose_sel    = Theme::createColorAwareIcon(QLatin1String(":/client/resources/close.svg"), pal);
+    _iconMore         = Theme::createColorAwareIcon(QLatin1String(":/client/resources/more.svg"));
+    _iconMore_sel     = Theme::createColorAwareIcon(QLatin1String(":/client/resources/more.svg"), pal);
+
+    _iconFolder       = QIcon(QLatin1String(":/client/resources/folder.svg"));
+
+    _iconActivity     = Theme::createColorAwareIcon(QLatin1String(":/client/resources/activity.png"));
+    _iconActivity_sel = Theme::createColorAwareIcon(QLatin1String(":/client/resources/activity.png"), pal);
+    _iconBell         = Theme::createColorAwareIcon(QLatin1String(":/client/resources/bell.svg"));
+    _iconBell_sel     = Theme::createColorAwareIcon(QLatin1String(":/client/resources/bell.svg"), pal);
+
+    _iconStateError   = QIcon(QLatin1String(":/client/resources/state-error.svg"));
+    _iconStateWarning = QIcon(QLatin1String(":/client/resources/state-warning.svg"));
+    _iconStateInfo    = QIcon(QLatin1String(":/client/resources/state-info.svg"));
+    _iconStateSync    = QIcon(QLatin1String(":/client/resources/state-sync.svg"));
 }
 
 } // namespace OCC
