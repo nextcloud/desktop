@@ -136,7 +136,7 @@ private:
     /// Returns the alias of the selected folder, empty string if none
     QString selectedFolderAlias() const;
 
-    Ui::AccountSettings *ui;
+    Ui::AccountSettings *_ui;
 
     FolderStatusModel *_model;
     QUrl _OCUrl;
