@@ -516,6 +516,8 @@ void ShareLinkWidget::customizeStyle()
 //    _ui->confirmNote->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
     _ui->confirmPassword->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
     _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
+
+    _ui->progressIndicator->setColor(QGuiApplication::palette().color(QPalette::Text));
 }
 
 }

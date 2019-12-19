@@ -396,6 +396,8 @@ void OwncloudAdvancedSetupPage::slotStyleChanged()
 
 void OwncloudAdvancedSetupPage::customizeStyle()
 {
+    if(_progressIndi)
+        _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
 }
 
 } // namespace OCC
