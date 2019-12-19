@@ -109,39 +109,30 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                }
         } else {
             actionIcon.iconType = ActivityIconType::iconActivity;
-               }
+        }
         QVariant icn;
         icn.setValue(actionIcon);
         return icn;
-        }
-        break;
+    }
     case ActivityItemDelegate::ObjectTypeRole:
         return a._objectType;
-        break;
     case ActivityItemDelegate::ActionRole:{
         QVariant type;
         type.setValue(a._type);
         return type;
-        break;
     }
     case ActivityItemDelegate::ActionTextRole:
         return a._subject;
-        break;
     case ActivityItemDelegate::MessageRole:
         return a._message;
-        break;
     case ActivityItemDelegate::LinkRole:
         return a._link;
-        break;
     case ActivityItemDelegate::AccountRole:
         return a._accName;
-        break;
     case ActivityItemDelegate::PointInTimeRole:
         return Utility::timeAgoInWords(a._dateTime);
-        break;
     case ActivityItemDelegate::AccountConnectedRole:
         return (ast && ast->isConnected());
-        break;
     default:
         return QVariant();
     }
@@ -266,7 +257,7 @@ void ActivityListModel::clearNotifications() {
 }
 
 void ActivityListModel::removeActivityFromActivityList(int row) {
-    Activity activity =  _finalList.at(row);
+    Activity activity = _finalList.at(row);
     removeActivityFromActivityList(activity);
     combineActivityLists();
 }
