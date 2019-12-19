@@ -123,6 +123,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     FolderStatusDelegate *delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
+    // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
+    connect(this, &AccountSettings::styleChanged, delegate, &FolderStatusDelegate::slotStyleChanged);
+
     ui->_folderList->header()->hide();
     ui->_folderList->setItemDelegate(delegate);
     ui->_folderList->setModel(_model);
@@ -180,8 +183,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
 
 
-    QColor color = palette().highlight().color();
-    ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
+    // quotaProgressBar style now set in customizeStyle()
+    /*QColor color = palette().highlight().color();
+     ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));*/
 
     ui->connectLabel->setText(tr("No account configured."));
 
@@ -1249,6 +1253,9 @@ bool AccountSettings::event(QEvent *e)
 void AccountSettings::slotStyleChanged()
 {
     customizeStyle();
+
+    // Notify the other widgets (Dark-/Light-Mode switching)
+    emit styleChanged();
 }
 
 void AccountSettings::customizeStyle()
@@ -1256,6 +1263,9 @@ void AccountSettings::customizeStyle()
     QString msg = ui->connectLabel->text();
     Theme::replaceLinkColorStringBackgroundAware(msg);
     ui->connectLabel->setText(msg);
+
+    QColor color = palette().highlight().color();
+    ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
 }
 
 } // namespace OCC

@@ -78,12 +78,14 @@ public slots:
     void addError(const QString &folderAlias, const QString &message, ErrorCategory category);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
+    void slotStyleChanged();
 
 signals:
     void guiLog(const QString &, const QString &);
     void rowsInserted();
     void hideActivityTab(bool);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
+    void styleChanged();
 
 private slots:
     void slotBuildNotificationDisplay(const ActivityList &list);
@@ -96,6 +98,7 @@ private slots:
     void slotSecondaryButtonClickedOnListView(const QModelIndex &index);
 
 private:
+    void customizeStyle();
     void showLabels();
     QString timeString(QDateTime dt, QLocale::FormatType format) const;
     Ui::ActivityWidget *_ui;
@@ -137,6 +140,7 @@ public slots:
     void slotRefresh();
     void slotRemoveAccount();
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
+    void slotStyleChanged();
 
 private slots:
     void slotRegularNotificationCheck();
@@ -144,6 +148,7 @@ private slots:
 
 signals:
     void guiLog(const QString &, const QString &);
+    void styleChanged();
 
 private:
     bool event(QEvent *e) override;
