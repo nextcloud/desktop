@@ -27,6 +27,12 @@
 #include <QPainter>
 #include <QApplication>
 
+#define FIXME_USE_HIGH_DPI_RATIO
+#ifdef FIXME_USE_HIGH_DPI_RATIO
+    // FIXME: Find a better way to calculate the text width on high-dpi displays (Retina).
+    #include <QDesktopWidget>
+#endif
+
 #define HASQT5_11 (QT_VERSION >= QT_VERSION_CHECK(5,11,0))
 
 namespace OCC {
@@ -97,6 +103,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int iconOffset = qRound(fm.height() / 4.0 * 7.0);
     int offset = 4;
     const bool isSelected = (option.state & QStyle::State_Selected);
+#ifdef FIXME_USE_HIGH_DPI_RATIO
+    // FIXME: Find a better way to calculate the text width on high-dpi displays (Retina).
+    const int device_pixel_ration = QApplication::desktop()->devicePixelRatio();
+    int pixel_ratio = (device_pixel_ration > 1 ? device_pixel_ration : 1);
+#endif
 
     // get the data
     Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActionRole));
@@ -134,6 +145,10 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     actionTextBox.setTop(option.rect.top() + margin + offset/2);
     actionTextBox.setHeight(fm.height());
     actionTextBox.setLeft(actionIconRect.right() + margin);
+#ifdef FIXME_USE_HIGH_DPI_RATIO
+    // FIXME: Find a better way to calculate the text width on high-dpi displays (Retina).
+    actionTextBoxWidth *= pixel_ratio;
+#endif
     actionTextBox.setRight(actionTextBox.left() + actionTextBoxWidth + margin);
 
     // message text rect
@@ -167,6 +182,10 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     timeBox.setTop(timeTop);
     timeBox.setHeight(fm.height());
     timeBox.setBottom(timeBox.top() + fm.height());
+#ifdef FIXME_USE_HIGH_DPI_RATIO
+    // FIXME: Find a better way to calculate the text width on high-dpi displays (Retina).
+    timeTextWidth *= pixel_ratio;
+#endif
     timeBox.setRight(timeBox.left() + timeTextWidth + margin);
 
     // buttons - default values
