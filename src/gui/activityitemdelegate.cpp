@@ -174,7 +174,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 #if (HASQT5_11)
     int timeTextWidth = fm.horizontalAdvance(timeText);
 #else
-    int timeTextWidth = fm.width(timeStr);
+    int timeTextWidth = fm.width(timeText);
 #endif
     int timeTop = option.rect.top() + fm.height() + fm.height() + margin + offset/2;
     if(messageText.isEmpty() || actionText.isEmpty())
