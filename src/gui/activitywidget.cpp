@@ -643,6 +643,9 @@ ActivitySettings::~ActivitySettings()
 
 void ActivitySettings::slotStyleChanged()
 {
+    if(_progressIndicator)
+        _progressIndicator->setColor(QGuiApplication::palette().color(QPalette::Text));
+
     // Notify the other widgets (Dark-/Light-Mode switching)
     emit styleChanged();
 }
