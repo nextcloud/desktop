@@ -254,9 +254,6 @@ void SettingsDialog::accountAdded(AccountState *s)
     _actionGroupWidgets.insert(accountAction, accountSettings);
     _actionForAccount.insert(s->account().data(), accountAction);
     accountAction->trigger();
-    
-    // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
-    connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias,
@@ -267,6 +264,10 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     // Refresh immediatly when getting online
     connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
+
+    // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
+    connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
+    connect(this, &SettingsDialog::styleChanged, _activitySettings[s], &ActivitySettings::slotStyleChanged);
 
     activityAdded(s);
     slotRefreshActivity(s);

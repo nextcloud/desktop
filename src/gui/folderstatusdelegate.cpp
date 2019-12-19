@@ -40,7 +40,7 @@ namespace OCC {
 FolderStatusDelegate::FolderStatusDelegate()
     : QStyledItemDelegate()
 {
-    m_moreIcon = QIcon(QLatin1String(":/client/resources/more.svg"));
+    customizeStyle();
 }
 
 QString FolderStatusDelegate::addFolderText()
@@ -349,7 +349,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
         btnOpt.rect = optionsButtonVisualRect;
-        btnOpt.icon = m_moreIcon;
+        btnOpt.icon = _iconMore;
         int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
         btnOpt.iconSize = QSize(e,e);
         QApplication::style()->drawComplexControl(QStyle::CC_ToolButton, &btnOpt, painter);
@@ -423,5 +423,14 @@ QRect FolderStatusDelegate::errorsListRect(QRect within)
     return within;
 }
 
+void FolderStatusDelegate::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void FolderStatusDelegate::customizeStyle()
+{
+    _iconMore = Theme::createColorAwareIcon(QLatin1String(":/client/resources/more.svg"));
+}
 
 } // namespace OCC
