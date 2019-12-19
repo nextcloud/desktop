@@ -156,9 +156,8 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     // time box rect
     QRect timeBox = messageTextBox;
-    QString timeStr = tr("%1").arg(timeText);
 #if (HASQT5_11)
-    int timeTextWidth = fm.horizontalAdvance(timeStr);
+    int timeTextWidth = fm.horizontalAdvance(timeText);
 #else
     int timeTextWidth = fm.width(timeStr);
 #endif
@@ -315,7 +314,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
 
     // draw the time
-    const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, spaceLeftForText);
+    const QString elidedTime = fm.elidedText(timeText, Qt::ElideRight, spaceLeftForText);
     painter->drawText(timeBox, elidedTime);
 
     painter->restore();
