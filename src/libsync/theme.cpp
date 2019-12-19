@@ -584,12 +584,17 @@ QColor Theme::getBackgroundAwareLinkColor()
 
 void Theme::replaceLinkColorStringBackgroundAware(QString &linkString, const QColor &backgroundColor)
 {
-    linkString.replace(QRegularExpression("(<a href|<a style='color:#([a-zA-Z0-9]{6});' href)"), QString::fromLatin1("<a style='color:%1;' href").arg(getBackgroundAwareLinkColor(backgroundColor).name()));
+    replaceLinkColorString(linkString, getBackgroundAwareLinkColor(backgroundColor));
 }
 
 void Theme::replaceLinkColorStringBackgroundAware(QString &linkString)
 {
     replaceLinkColorStringBackgroundAware(linkString, QGuiApplication::palette().color(QPalette::Base));
+}
+
+void Theme::replaceLinkColorString(QString &linkString, const QColor &newColor)
+{
+    linkString.replace(QRegularExpression("(<a href|<a style='color:#([a-zA-Z0-9]{6});' href)"), QString::fromLatin1("<a style='color:%1;' href").arg(newColor.name()));
 }
 
 QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette)
