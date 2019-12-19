@@ -89,29 +89,15 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     connect(_ui.nextButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::nextSlide);
     connect(_ui.prevButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::prevSlide);
 
-	auto widgetBgLightness = OwncloudSetupPage::palette().color(OwncloudSetupPage::backgroundRole()).lightness();
-	bool widgetHasDarkBg =
-        (widgetBgLightness >= 125)
-        ? false
-        : true;
-	_ui.nextButton->setIcon(theme->uiThemeIcon(QString("control-next.svg"), widgetHasDarkBg));
-    _ui.prevButton->setIcon(theme->uiThemeIcon(QString("control-prev.svg"), widgetHasDarkBg));
-
-	// QPushButtons are a mess when it comes to consistent background coloring without stylesheets,
-	// so we do it here even though this is an exceptional styling method here
-    _ui.createAccountButton->setStyleSheet("QPushButton {background-color: #0082C9; color: white}");
-
     _ui.slideShow->startShow();
-
-    QPalette pal = _ui.slideShow->palette();
-    pal.setColor(QPalette::WindowText, theme->wizardHeaderBackgroundColor());
-    _ui.slideShow->setPalette(pal);
 #else
     _ui.createAccountButton->hide();
     _ui.loginButton->hide();
     _ui.installLink->hide();
     _ui.slideShow->hide();
 #endif
+
+    customizeStyle();
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
@@ -432,6 +418,30 @@ void OwncloudSetupPage::slotCertificateAccepted()
 
 OwncloudSetupPage::~OwncloudSetupPage()
 {
+}
+
+void OwncloudSetupPage::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void OwncloudSetupPage::customizeStyle()
+{
+#ifdef WITH_PROVIDERS
+    Theme *theme = Theme::instance();
+
+    bool widgetHasDarkBg = Theme::isDarkColor(QGuiApplication::palette().base().color());
+    _ui.nextButton->setIcon(theme->uiThemeIcon(QString("control-next.svg"), widgetHasDarkBg));
+    _ui.prevButton->setIcon(theme->uiThemeIcon(QString("control-prev.svg"), widgetHasDarkBg));
+
+    // QPushButtons are a mess when it comes to consistent background coloring without stylesheets,
+    // so we do it here even though this is an exceptional styling method here
+    _ui.createAccountButton->setStyleSheet("QPushButton {background-color: #0082C9; color: white}");
+
+    QPalette pal = _ui.slideShow->palette();
+    pal.setColor(QPalette::WindowText, theme->wizardHeaderBackgroundColor());
+    _ui.slideShow->setPalette(pal);
+#endif
 }
 
 } // namespace OCC
