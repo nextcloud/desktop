@@ -574,7 +574,7 @@ bool Theme::isDarkColor(const QColor &color)
 
 QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
 {
-    return QColor((isDarkColor(backgroundColor) ? QColor("#aabdff") : QGuiApplication::palette().color(QPalette::Link)));
+    return QColor((isDarkColor(backgroundColor) ? QColor("#6193dc") : QGuiApplication::palette().color(QPalette::Link)));
 }
 
 QColor Theme::getBackgroundAwareLinkColor()
