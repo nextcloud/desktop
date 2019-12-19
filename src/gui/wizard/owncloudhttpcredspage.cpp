@@ -194,5 +194,13 @@ AbstractCredentials *OwncloudHttpCredsPage::getCredentials() const
     return new HttpCredentialsGui(_ui.leUsername->text(), _ui.lePassword->text(), _ocWizard->_clientSslCertificate, _ocWizard->_clientSslKey);
 }
 
+void OwncloudHttpCredsPage::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void OwncloudHttpCredsPage::customizeStyle()
+{
+}
 
 } // namespace OCC

@@ -100,6 +100,13 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
     setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
+
+
+    // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
+    connect(this, &OwncloudWizard::styleChanged, _setupPage, &OwncloudSetupPage::slotStyleChanged);
+    connect(this, &OwncloudWizard::styleChanged, _advancedSetupPage, &OwncloudAdvancedSetupPage::slotStyleChanged);
+
+    customizeStyle();
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)
@@ -275,6 +282,29 @@ AbstractCredentials *OwncloudWizard::getCredentials() const
     }
 
     return nullptr;
+}
+
+void OwncloudWizard::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::StyleChange:
+    case QEvent::PaletteChange:
+    case QEvent::ThemeChange:
+        customizeStyle();
+
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        emit styleChanged();
+        break;
+    default:
+        break;
+    }
+
+    QWizard::changeEvent(e);
+}
+
+void OwncloudWizard::customizeStyle()
+{
+    // HINT: Customize wizard's own style here, if necessary in the future (Dark-/Light-Mode switching)
 }
 
 } // end namespace

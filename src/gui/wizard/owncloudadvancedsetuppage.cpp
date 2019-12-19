@@ -389,4 +389,13 @@ QString OwncloudAdvancedSetupPage::checkLocalSpace(qint64 remoteSize) const
     return (availableLocalSpace()>remoteSize) ? QString() : tr("There isn't enough free space in the local folder!");
 }
 
+void OwncloudAdvancedSetupPage::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void OwncloudAdvancedSetupPage::customizeStyle()
+{
+}
+
 } // namespace OCC

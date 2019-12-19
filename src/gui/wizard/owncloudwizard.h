@@ -96,8 +96,14 @@ signals:
     void basicSetupFinished(int);
     void skipFolderConfiguration();
     void needCertificate();
+    void styleChanged();
+
+protected:
+    void changeEvent(QEvent *) override;
 
 private:
+    void customizeStyle();
+
     AccountPtr _account;
     OwncloudSetupPage *_setupPage;
     OwncloudHttpCredsPage *_httpCredsPage;
