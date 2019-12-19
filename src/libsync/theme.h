@@ -403,6 +403,15 @@ public:
     static void replaceLinkColorStringBackgroundAware(QString &linkString);
 
     /**
+     * @brief Appends a CSS-style colour value to all HTML link tags in a given string, as specified by newColor.
+     *
+     * 2019/12/19: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
+     *
+     * This way we also avoid having certain strings re-translated on Transifex.
+     */
+    static void replaceLinkColorString(QString &linkString, const QColor &newColor);
+
+    /**
      * @brief Creates a colour-aware icon based on the specified palette's base colour.
      *
      * @return QIcon, colour-aware (inverted on dark backgrounds).
