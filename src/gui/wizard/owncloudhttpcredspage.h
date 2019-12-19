@@ -46,10 +46,14 @@ public:
 Q_SIGNALS:
     void connectToOCUrl(const QString &);
 
+public slots:
+    void slotStyleChanged();
+
 private:
     void startSpinner();
     void stopSpinner();
     void setupCustomization();
+    void customizeStyle();
 
     Ui_OwncloudHttpCredsPage _ui;
     bool _connected;

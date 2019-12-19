@@ -62,6 +62,7 @@ public slots:
     void startSpinner();
     void stopSpinner();
     void slotCertificateAccepted();
+    void slotStyleChanged();
 
 protected slots:
     void slotUrlChanged(const QString &);
@@ -78,6 +79,7 @@ signals:
 
 private:
     bool urlHasChanged();
+    void customizeStyle();
 
     Ui_OwncloudSetupPage _ui;
 
