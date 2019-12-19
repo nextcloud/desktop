@@ -132,7 +132,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 #if defined(Q_OS_MAC)
     _ui->_folderList->setMinimumWidth(400);
 #else
-    ui->_folderList->setMinimumWidth(300);
+    _ui->_folderList->setMinimumWidth(300);
 #endif
     new ToolTipUpdater(_ui->_folderList);
 
