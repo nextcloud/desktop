@@ -43,6 +43,8 @@ public:
         AccountConnectedRole,
         SyncFileStatusRole };
 
+    ActivityItemDelegate();
+
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
@@ -51,11 +53,16 @@ public:
     static int rowHeight();
     static int iconHeight();
 
+public slots:
+    void slotStyleChanged();
+
 signals:
     void primaryButtonClickedOnItemView(const QModelIndex &index);
     void secondaryButtonClickedOnItemView(const QModelIndex &index);
 
 private:
+    void customizeStyle();
+
     static int _margin;
     static int _iconHeight;
     static int _primaryButtonWidth;
@@ -65,6 +72,23 @@ private:
     static int _buttonHeight;
     static const QString _remote_share;
     static const QString _call;
+
+    QIcon _iconClose;
+    QIcon _iconClose_sel;
+    QIcon _iconMore;
+    QIcon _iconMore_sel;
+
+    QIcon _iconFolder;
+
+    QIcon _iconActivity;
+    QIcon _iconActivity_sel;
+    QIcon _iconBell;
+    QIcon _iconBell_sel;
+
+    QIcon _iconStateError;
+    QIcon _iconStateWarning;
+    QIcon _iconStateInfo;
+    QIcon _iconStateSync;
 };
 
 } // namespace OCC

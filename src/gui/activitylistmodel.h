@@ -38,6 +38,20 @@ class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
+    enum ActivityIconType {
+        iconUseCached = 0,
+        iconActivity,
+        iconBell,
+        iconStateError,
+        iconStateWarning,
+        iconStateInfo,
+        iconStateSync
+    };
+    struct ActionIcon {
+        ActivityIconType iconType;
+        QIcon cachedIcon;
+    };
+
     explicit ActivityListModel(AccountState *accountState, QWidget *parent = nullptr);
 
     QVariant data(const QModelIndex &index, int role) const override;
@@ -84,4 +98,7 @@ private:
     int _currentItem = 0;
 };
 }
+
+Q_DECLARE_METATYPE(OCC::ActivityListModel::ActionIcon);
+
 #endif // ACTIVITYLISTMODEL_H

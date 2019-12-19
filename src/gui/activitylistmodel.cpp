@@ -79,31 +79,41 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         }
         return customList;
     }
-    case ActivityItemDelegate::ActionIconRole:
+    case ActivityItemDelegate::ActionIconRole:{
+        ActionIcon actionIcon;
         if(a._type == Activity::NotificationType){
            QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
-           if(!cachedIcon.isNull())
-               return cachedIcon;
-           else return QIcon(QLatin1String(":/client/resources/bell.svg"));
+            if(!cachedIcon.isNull()) {
+               actionIcon.iconType = ActivityIconType::iconUseCached;
+               actionIcon.cachedIcon = cachedIcon;
+            } else {
+                actionIcon.iconType = ActivityIconType::iconBell;
+            }
         } else if(a._type == Activity::SyncResultType){
-            return QIcon(QLatin1String(":/client/resources/state-error.svg"));
+            actionIcon.iconType = ActivityIconType::iconStateError;
         } else if(a._type == Activity::SyncFileItemType){
                if(a._status == SyncFileItem::NormalError
                    || a._status == SyncFileItem::FatalError
                    || a._status == SyncFileItem::DetailError
                    || a._status == SyncFileItem::BlacklistedError) {
-                   return QIcon(QLatin1String(":/client/resources/state-error.svg"));
+                   actionIcon.iconType = ActivityIconType::iconStateError;
                } else if(a._status == SyncFileItem::SoftError
                          || a._status == SyncFileItem::Conflict
                          || a._status == SyncFileItem::Restoration
                          || a._status == SyncFileItem::FileLocked){
-                   return QIcon(QLatin1String(":/client/resources/state-warning.svg"));
+                   actionIcon.iconType = ActivityIconType::iconStateWarning;
                } else if(a._status == SyncFileItem::FileIgnored){
-                   return QIcon(QLatin1String(":/client/resources/state-info.svg"));
+                   actionIcon.iconType = ActivityIconType::iconStateInfo;
+               } else {
+                   actionIcon.iconType = ActivityIconType::iconStateSync;
                }
-               return QIcon(QLatin1String(":/client/resources/state-sync.svg"));
+        } else {
+            actionIcon.iconType = ActivityIconType::iconActivity;
+               }
+        QVariant icn;
+        icn.setValue(actionIcon);
+        return icn;
         }
-        return QIcon(QLatin1String(":/client/resources/activity.png"));
         break;
     case ActivityItemDelegate::ObjectTypeRole:
         return a._objectType;
