@@ -380,6 +380,12 @@ void ShareUserGroupWidget::slotStyleChanged()
 void ShareUserGroupWidget::customizeStyle()
 {
     _ui->confirmShare->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
+
+    _pi_sharee.setColor(QGuiApplication::palette().color(QPalette::Text));
+
+    foreach (auto pi, _parentScrollArea->findChildren<QProgressIndicator *>()) {
+        pi->setColor(QGuiApplication::palette().color(QPalette::Text));;
+    }
 }
 
 ShareUserLine::ShareUserLine(QSharedPointer<Share> share,

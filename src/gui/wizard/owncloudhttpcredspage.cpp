@@ -201,6 +201,8 @@ void OwncloudHttpCredsPage::slotStyleChanged()
 
 void OwncloudHttpCredsPage::customizeStyle()
 {
+    if(_progressIndi)
+        _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
 }
 
 } // namespace OCC

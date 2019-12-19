@@ -442,6 +442,9 @@ void OwncloudSetupPage::customizeStyle()
     pal.setColor(QPalette::WindowText, theme->wizardHeaderBackgroundColor());
     _ui.slideShow->setPalette(pal);
 #endif
+
+    if(_progressIndi)
+        _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
 }
 
 } // namespace OCC
