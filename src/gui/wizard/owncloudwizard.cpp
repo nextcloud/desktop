@@ -107,6 +107,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(this, &OwncloudWizard::styleChanged, _advancedSetupPage, &OwncloudAdvancedSetupPage::slotStyleChanged);
 
     customizeStyle();
+
+    // allow Flow2 page to poll on window activation
+    connect(this, &OwncloudWizard::onActivate, _flow2CredsPage, &Flow2AuthCredsPage::slotPollNow);
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)
@@ -294,6 +297,10 @@ void OwncloudWizard::changeEvent(QEvent *e)
 
         // Notify the other widgets (Dark-/Light-Mode switching)
         emit styleChanged();
+        break;
+    case QEvent::ActivationChange:
+        if(isActiveWindow())
+            emit onActivate();
         break;
     default:
         break;
