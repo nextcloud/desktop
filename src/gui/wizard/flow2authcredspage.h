@@ -47,9 +47,11 @@ public:
 
 public Q_SLOTS:
     void asyncAuthResult(Flow2Auth::Result, const QString &user, const QString &appPassword);
+    void slotPollNow();
 
 signals:
     void connectToOCUrl(const QString &);
+    void pollNow();
 
 public:
     QString _user;

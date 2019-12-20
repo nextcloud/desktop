@@ -57,6 +57,7 @@ void Flow2AuthCredsPage::initializePage()
     ocWizard->account()->setCredentials(CredentialsFactory::create("http"));
     _asyncAuth.reset(new Flow2Auth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
+    connect(this, &Flow2AuthCredsPage::pollNow, _asyncAuth.data(), &Flow2Auth::slotPollNow);
     _asyncAuth->start();
 
     // Don't hide the wizard (avoid user confusion)!
@@ -151,6 +152,11 @@ void Flow2AuthCredsPage::slotCopyLinkToClipboard()
 {
     if (_asyncAuth)
         QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+}
+
+void Flow2AuthCredsPage::slotPollNow()
+{
+    emit pollNow();
 }
 
 } // namespace OCC
