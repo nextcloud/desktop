@@ -54,13 +54,8 @@ TODO: move to patch-release checklist * [ ] Make sure to increase the version nu
 * [ ] jenkins.int: Create build for theme 'ownCloud' using client-trigger (uncheck the "daily build" checkbox, use rcX or betaX dropdown for version suffix)
 * [ ] jenkins.int: Create build for theme 'testpilotcloud' using client-trigger (uncheck the "daily build" checkbox, use the rcX or betaX dropdown for version suffix)
 * Build results are in https://download.owncloud.com/desktop/testing -- win and mac binaries are there, linux packages are listed in a *repo.html file pointing to the repository.
-
-SMOKE TESTING: TODO Move details to handbook.
 * [ ] Check if *tar.xz.asc files are there. If not resort to https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge
-* [ ] Mac: Perform smoke test of non-osx10.11 package (fresh install, perform upload/download, check the version in General tab)
-* [ ] Win: Perform smoke test of non-GPO package (fresh install, perform upload/download, check the version in General tab)
-* [ ] Linux: Perform smoke test two distro packages (fresh install, perform upload/download, check the version in General tab)
-      Latest Ubuntu + Latest Fedora
+* [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
 * [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh with repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
 * [ ] review everything :-)
 
