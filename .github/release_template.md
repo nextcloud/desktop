@@ -23,16 +23,14 @@ Major/Minor release templete. Enter here, when we have three estimated dates:
 
 ### On the day of the first daily build of the new branch:
 * [ ] Dev: Internally announce it feature freeze - @TheOneRing @guruz
-* [ ] Dev: Branch off master to new version branch (e.g. master -> 2.7, when releasing 2.7), check that `VERSION.cmake` says 2.7 - @TheOneRing @guruz
-* [ ] Dev: Adjust `VERSION.cmake` in master and count up (e.g. 2.8) - @TheOneRing @guruz
-
-* [ ] QA: Branch the templates of the build infrastructure (e.g. gitea/client, gitea/ownbrander/scritping ...) to v2.7.0 ... TODO...
-* [ ] QA: Add the new version to `gitea/ownbrander/scripting/client-linux/templates/client/2.X.X`
-* [ ] QA: Add branch to `branches.only` section in `appveyor.yml`, so PRs to that branch will be built by AppVeyor - @hvonreth
-* [ ] QA: Add branch to `drone.star`, `drone.yml` - @dschmidt
-* [ ] QA: Start running automated tests on the dailies
-* [ ] QA: Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) to point to the release branch (e.g. 2.7) - @dschmidt
-* [ ] QA: Use `obs-copyprj.sh` to backup the desktop project to `desktop:client-2.6.x` (unless already done) - @jnweiger
+* [ ] Dev: Edit [`VERSION.cmake`](https://handbook.owncloud.com/release_processes/client/branch.html#version-cmake) - @TheOneRing @guruz
+* [ ] QA: Adjust [Linux Templates](https://handbook.owncloud.com/release_processes/client/branch.html#linux-templates) - @HanaGemela @jnweiger
+* [ ] QA: Adjust [ownBrander](https://handbook.owncloud.com/release_processes/client/branch.html#ownbrander) - @HanaGemela @jnweiger
+* [ ] QA: Adjust [AppVeyor](https://handbook.owncloud.com/release_processes/client/branch.html#appveyor) - @HanaGemela @jnweiger
+* [ ] QA: Adjust [drone](https://handbook.owncloud.com/release_processes/client/branch.html#drone) - @HanaGemela @jnweiger
+* [ ] QA: Adjust [translation jobs](https://handbook.owncloud.com/release_processes/client/branch.html#translations) - @HanaGemela @jnweiger
+* [ ] QA: Use `obs-copyprj.sh` to backup the desktop project to `desktop:client-2.6.x` - @HanaGemela @jnweiger
+* [ ] Dev: Start running automated tests on the dailies - @TheOneRing @guruz
 
 ### After the first daily build of the new branch:
 * [ ] Announce the new branch to community and advertise dailies for public testing 
