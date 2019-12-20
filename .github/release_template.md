@@ -29,7 +29,7 @@ Major/Minor release templete. Enter here, when we have three estimated dates:
 * [ ] QA: Adjust [AppVeyor](https://handbook.owncloud.com/release_processes/client/branch.html#appveyor) - @HanaGemela @jnweiger
 * [ ] QA: Adjust [drone](https://handbook.owncloud.com/release_processes/client/branch.html#drone) - @HanaGemela @jnweiger
 * [ ] QA: Adjust [translation jobs](https://handbook.owncloud.com/release_processes/client/branch.html#translations) - @HanaGemela @jnweiger
-* [ ] QA: Use `obs-copyprj.sh` to backup the desktop project to `desktop:client-2.6.x` - @HanaGemela @jnweiger
+* [ ] QA: Use `obs-copyprj.sh` to backup the desktop project to `desktop:client-2.6.x` (unless already done) - @HanaGemela @jnweiger
 * [ ] Dev: Start running automated tests on the dailies - @TheOneRing @guruz
 
 ### After the first daily build of the new branch:
