@@ -113,7 +113,11 @@ int Flow2AuthCredsPage::nextId() const
 
 void Flow2AuthCredsPage::setConnected()
 {
-    wizard()->show();
+    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+    Q_ASSERT(ocWizard);
+
+    // bring wizard to top
+    ocWizard->bringToTop();
 }
 
 AbstractCredentials *Flow2AuthCredsPage::getCredentials() const

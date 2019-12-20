@@ -307,4 +307,11 @@ void OwncloudWizard::customizeStyle()
     // HINT: Customize wizard's own style here, if necessary in the future (Dark-/Light-Mode switching)
 }
 
+void OwncloudWizard::bringToTop()
+{
+    // bring wizard to top
+    show();
+    raise();
+}
+
 } // end namespace

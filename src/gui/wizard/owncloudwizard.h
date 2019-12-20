@@ -74,6 +74,8 @@ public:
     void displayError(const QString &, bool retryHTTPonly);
     AbstractCredentials *getCredentials() const;
 
+    void bringToTop();
+
     // FIXME: Can those be local variables?
     // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
     QSslKey _clientSslKey;
