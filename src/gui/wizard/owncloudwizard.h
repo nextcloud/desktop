@@ -99,6 +99,7 @@ signals:
     void skipFolderConfiguration();
     void needCertificate();
     void styleChanged();
+    void onActivate();
 
 protected:
     void changeEvent(QEvent *) override;

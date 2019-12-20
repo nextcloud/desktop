@@ -25,7 +25,6 @@ namespace OCC {
  * Job that does the authorization, grants and fetches the access token via Login Flow v2
  *
  * See: https://docs.nextcloud.com/server/latest/developer_manual/client_apis/LoginFlow/index.html#login-flow-v2
- *
  */
 class Flow2Auth : public QObject
 {
@@ -52,6 +51,9 @@ signals:
      * when logged in, appPassword has the value of the app password.
      */
     void result(Flow2Auth::Result result, const QString &user = QString(), const QString &appPassword = QString());
+
+public slots:
+    void slotPollNow();
 
 private slots:
     void slotPollTimerTimeout();
