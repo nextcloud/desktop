@@ -28,6 +28,8 @@
 #include "theme.h"
 #include "wizard/owncloudwizardcommon.h"
 
+#include "QProgressIndicator.h"
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFlow2AuthWidget, "gui.wizard.flow2authwidget", QtInfoMsg)
@@ -37,6 +39,7 @@ Flow2AuthWidget::Flow2AuthWidget(Account *account, QWidget *parent)
     : QWidget(parent)
     , _account(account)
     , _ui()
+    , _progressIndi(new QProgressIndicator(this))
 {
     _ui.setupUi(this);
 
@@ -53,8 +56,12 @@ Flow2AuthWidget::Flow2AuthWidget(Account *account, QWidget *parent)
     connect(_ui.openLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthWidget::slotOpenBrowser);
     connect(_ui.copyLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthWidget::slotCopyLinkToClipboard);
 
+    _ui.horizontalLayout->addWidget(_progressIndi);
+    stopSpinner(false);
+
     _asyncAuth.reset(new Flow2Auth(_account, this));
     connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthWidget::asyncAuthResult, Qt::QueuedConnection);
+    connect(_asyncAuth.data(), &Flow2Auth::statusChanged, this, &Flow2AuthWidget::slotStatusChanged);
     connect(this, &Flow2AuthWidget::pollNow, _asyncAuth.data(), &Flow2Auth::slotPollNow);
     _asyncAuth->start();
 }
@@ -62,6 +69,8 @@ Flow2AuthWidget::Flow2AuthWidget(Account *account, QWidget *parent)
 void Flow2AuthWidget::asyncAuthResult(Flow2Auth::Result r, const QString &user,
     const QString &appPassword)
 {
+    stopSpinner(false);
+
     switch (r) {
     case Flow2Auth::NotSupported:
         /* Flow2Auth can't open browser */
@@ -116,6 +125,40 @@ void Flow2AuthWidget::slotCopyLinkToClipboard()
 void Flow2AuthWidget::slotPollNow()
 {
     emit pollNow();
+}
+
+void Flow2AuthWidget::slotStatusChanged(int secondsLeft)
+{
+    const bool pollingNow = (secondsLeft == 0);
+
+    _ui.statusLabel->setText(tr("Polling for authorization") + (pollingNow ? "" : QString(" " + tr("in %1 seconds").arg(secondsLeft))) + "...");
+
+    if(pollingNow)
+        startSpinner();
+    else
+        stopSpinner(true);
+}
+
+void Flow2AuthWidget::startSpinner()
+{
+    _ui.horizontalLayout->setEnabled(true);
+    _ui.statusLabel->setVisible(true);
+    _progressIndi->setVisible(true);
+    _progressIndi->startAnimation();
+
+    _ui.openLinkButton->setEnabled(false);
+    _ui.copyLinkButton->setEnabled(false);
+}
+
+void Flow2AuthWidget::stopSpinner(bool showStatusLabel)
+{
+    _ui.horizontalLayout->setEnabled(false);
+    _ui.statusLabel->setVisible(showStatusLabel);
+    _progressIndi->setVisible(false);
+    _progressIndi->stopAnimation();
+
+    _ui.openLinkButton->setEnabled(true);
+    _ui.copyLinkButton->setEnabled(true);
 }
 
 } // namespace OCC
