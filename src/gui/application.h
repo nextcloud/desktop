@@ -82,6 +82,7 @@ protected:
 signals:
     void folderRemoved();
     void folderStateChanged(Folder *);
+    void isShowingSettingsDialog();
 
 protected slots:
     void slotParseMessage(const QString &, QObject *);
@@ -91,6 +92,7 @@ protected slots:
     void slotAccountStateAdded(AccountState *accountState);
     void slotAccountStateRemoved(AccountState *accountState);
     void slotSystemOnlineConfigurationChanged(QNetworkConfiguration);
+    void slotGuiIsShowingSettings();
 
 private:
     void setHelp();

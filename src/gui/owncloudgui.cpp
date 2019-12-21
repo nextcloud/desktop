@@ -1075,6 +1075,11 @@ void ownCloudGui::slotShowSettings()
     raiseDialog(_settingsDialog.data());
 }
 
+void ownCloudGui::slotSettingsDialogActivated()
+{
+    emit isShowingSettingsDialog();
+}
+
 void ownCloudGui::slotShowSyncProtocol()
 {
     slotShowSettings();

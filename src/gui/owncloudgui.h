@@ -70,6 +70,7 @@ public:
 signals:
     void setupProxy();
     void serverError(int code, const QString &message);
+    void isShowingSettingsDialog();
 
 public slots:
     void setupContextMenu();
@@ -93,6 +94,7 @@ public slots:
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
     void slotOpenSettingsDialog();
+    void slotSettingsDialogActivated();
     void slotHelp();
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
