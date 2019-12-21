@@ -64,6 +64,8 @@ Flow2AuthWidget::Flow2AuthWidget(Account *account, QWidget *parent)
     connect(_asyncAuth.data(), &Flow2Auth::statusChanged, this, &Flow2AuthWidget::slotStatusChanged);
     connect(this, &Flow2AuthWidget::pollNow, _asyncAuth.data(), &Flow2Auth::slotPollNow);
     _asyncAuth->start();
+
+    customizeStyle();
 }
 
 void Flow2AuthWidget::asyncAuthResult(Flow2Auth::Result r, const QString &user,
@@ -159,6 +161,17 @@ void Flow2AuthWidget::stopSpinner(bool showStatusLabel)
 
     _ui.openLinkButton->setEnabled(true);
     _ui.copyLinkButton->setEnabled(true);
+}
+
+void Flow2AuthWidget::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void Flow2AuthWidget::customizeStyle()
+{
+    if(_progressIndi)
+        _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
 }
 
 } // namespace OCC

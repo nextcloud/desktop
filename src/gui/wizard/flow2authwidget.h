@@ -39,6 +39,7 @@ public Q_SLOTS:
     void asyncAuthResult(Flow2Auth::Result, const QString &user, const QString &appPassword);
     void slotPollNow();
     void slotStatusChanged(int secondsLeft);
+    void slotStyleChanged();
 
 signals:
     void urlCatched(const QString user, const QString pass, const QString host);
@@ -58,6 +59,7 @@ protected slots:
 private:
     void startSpinner();
     void stopSpinner(bool showStatusLabel);
+    void customizeStyle();
 
     QProgressIndicator *_progressIndi;
 };

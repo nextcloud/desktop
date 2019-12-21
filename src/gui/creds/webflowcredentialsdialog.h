@@ -37,9 +37,12 @@ public slots:
 
 signals:
     void urlCatched(const QString user, const QString pass, const QString host);
+    void styleChanged();
     void onActivate();
 
 private:
+    void customizeStyle();
+
     bool _useFlow2;
 
     Flow2AuthWidget *_flow2AuthWidget;

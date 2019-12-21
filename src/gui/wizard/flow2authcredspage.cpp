@@ -55,6 +55,8 @@ Flow2AuthCredsPage::Flow2AuthCredsPage()
 
     _ui.horizontalLayout->addWidget(_progressIndi);
     stopSpinner(false);
+
+    customizeStyle();
 }
 
 void Flow2AuthCredsPage::initializePage()
@@ -201,6 +203,17 @@ void Flow2AuthCredsPage::stopSpinner(bool showStatusLabel)
 
     _ui.openLinkButton->setEnabled(true);
     _ui.copyLinkButton->setEnabled(true);
+}
+
+void Flow2AuthCredsPage::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void Flow2AuthCredsPage::customizeStyle()
+{
+    if(_progressIndi)
+        _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
 }
 
 } // namespace OCC
