@@ -99,8 +99,11 @@ void Flow2Auth::openBrowser()
         ConfigFile cfg;
         std::chrono::milliseconds polltime = cfg.remotePollInterval();
         qCInfo(lcFlow2auth) << "setting remote poll timer interval to" << polltime.count() << "msec";
-        _pollTimer.setInterval(polltime.count());
+        _pollTimer.setInterval(1000);
         QObject::connect(&_pollTimer, &QTimer::timeout, this, &Flow2Auth::slotPollTimerTimeout);
+        _secondsInterval = (polltime.count() / 1000);
+        _secondsLeft = _secondsInterval;
+        emit statusChanged(_secondsLeft);
         _pollTimer.start();
 
 
@@ -116,6 +119,14 @@ void Flow2Auth::openBrowser()
 void Flow2Auth::slotPollTimerTimeout()
 {
     _pollTimer.stop();
+
+    _secondsLeft--;
+    emit statusChanged(_secondsLeft);
+
+    if(_secondsLeft > 0) {
+        _pollTimer.start();
+        return;
+    }
 
     // Step 2: Poll
     QNetworkRequest req;
@@ -160,6 +171,7 @@ void Flow2Auth::slotPollTimerTimeout()
             loginName.clear();
 
             // Failed: poll again
+            _secondsLeft = _secondsInterval;
             _pollTimer.start();
             return;
         }
@@ -180,8 +192,10 @@ void Flow2Auth::slotPollTimerTimeout()
 void Flow2Auth::slotPollNow()
 {
     // poll now if we're not already doing so
-    if(_pollTimer.isActive())
+    if(_pollTimer.isActive()) {
+        _secondsLeft = 1;
         slotPollTimerTimeout();
+    }
 }
 
 } // namespace OCC

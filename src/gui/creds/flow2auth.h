@@ -52,6 +52,8 @@ signals:
      */
     void result(Flow2Auth::Result result, const QString &user = QString(), const QString &appPassword = QString());
 
+    void statusChanged(int secondsLeft);
+
 public slots:
     void slotPollNow();
 
@@ -64,6 +66,8 @@ private:
     QString _pollToken;
     QString _pollEndpoint;
     QTimer _pollTimer;
+    int _secondsLeft;
+    int _secondsInterval;
 };
 
 
