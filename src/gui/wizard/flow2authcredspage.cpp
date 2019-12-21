@@ -30,6 +30,7 @@ namespace OCC {
 
 Flow2AuthCredsPage::Flow2AuthCredsPage()
     : AbstractCredentialsWizardPage()
+    , _ui()
 {
     _ui.setupUi(this);
 

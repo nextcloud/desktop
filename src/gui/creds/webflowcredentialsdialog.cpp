@@ -112,4 +112,4 @@ void WebFlowCredentialsDialog::slotShowSettingsDialog()
     });
 }
 
-}
+} // namespace OCC

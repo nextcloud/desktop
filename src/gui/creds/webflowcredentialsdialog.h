@@ -50,6 +50,6 @@ private:
     QVBoxLayout *_layout;
 };
 
-}
+} // namespace OCC
 
 #endif // WEBFLOWCREDENTIALSDIALOG_H

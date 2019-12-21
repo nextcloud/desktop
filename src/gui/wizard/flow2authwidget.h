@@ -53,6 +53,6 @@ protected slots:
     void slotCopyLinkToClipboard();
 };
 
-}
+} // namespace OCC
 
 #endif // FLOW2AUTHWIDGET_H

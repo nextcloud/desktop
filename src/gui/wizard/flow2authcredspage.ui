@@ -61,7 +61,6 @@
     <widget class="QCommandLinkButton" name="copyLinkButton">
      <property name="font">
       <font>
-       <family>Segoe UI</family>
        <weight>50</weight>
        <bold>false</bold>
       </font>
