@@ -32,6 +32,9 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
         _layout->addWidget(_flow2AuthWidget);
 
         connect(_flow2AuthWidget, &Flow2AuthWidget::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
+
+        // allow Flow2 page to poll on window activation
+        connect(this, &WebFlowCredentialsDialog::onActivate, _flow2AuthWidget, &Flow2AuthWidget::slotPollNow);
     } else {
         _webView = new WebView();
         _layout->addWidget(_webView);
@@ -85,6 +88,20 @@ void WebFlowCredentialsDialog::setError(const QString &error) {
         _errorLabel->setText(error);
         _errorLabel->show();
     }
+}
+
+void WebFlowCredentialsDialog::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::ActivationChange:
+        if(isActiveWindow())
+            emit onActivate();
+        break;
+    default:
+        break;
+    }
+
+    QDialog::changeEvent(e);
 }
 
 void WebFlowCredentialsDialog::slotShowSettingsDialog()

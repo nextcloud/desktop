@@ -30,12 +30,14 @@ public:
 
 protected:
     void closeEvent(QCloseEvent * e) override;
+    void changeEvent(QEvent *) override;
 
 public slots:
     void slotShowSettingsDialog();
 
 signals:
     void urlCatched(const QString user, const QString pass, const QString host);
+    void onActivate();
 
 private:
     bool _useFlow2;
