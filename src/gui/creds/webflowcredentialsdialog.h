@@ -31,6 +31,9 @@ public:
 protected:
     void closeEvent(QCloseEvent * e) override;
 
+public slots:
+    void slotShowSettingsDialog();
+
 signals:
     void urlCatched(const QString user, const QString pass, const QString host);
 
