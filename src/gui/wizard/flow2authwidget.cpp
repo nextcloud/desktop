@@ -34,9 +34,9 @@ Q_LOGGING_CATEGORY(lcFlow2AuthWidget, "gui.wizard.flow2authwidget", QtInfoMsg)
 
 
 Flow2AuthWidget::Flow2AuthWidget(Account *account, QWidget *parent)
-    : QWidget(parent),
-      _account(account),
-      _ui()
+    : QWidget(parent)
+    , _account(account)
+    , _ui()
 {
     _ui.setupUi(this);
 

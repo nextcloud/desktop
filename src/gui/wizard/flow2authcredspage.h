@@ -30,7 +30,6 @@
 
 namespace OCC {
 
-
 class Flow2AuthCredsPage : public AbstractCredentialsWizardPage
 {
     Q_OBJECT
