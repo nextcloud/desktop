@@ -55,6 +55,7 @@ Flow2AuthWidget::Flow2AuthWidget(Account *account, QWidget *parent)
 
     _asyncAuth.reset(new Flow2Auth(_account, this));
     connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthWidget::asyncAuthResult, Qt::QueuedConnection);
+    connect(this, &Flow2AuthWidget::pollNow, _asyncAuth.data(), &Flow2Auth::slotPollNow);
     _asyncAuth->start();
 }
 
@@ -110,6 +111,11 @@ void Flow2AuthWidget::slotCopyLinkToClipboard()
 {
     if (_asyncAuth)
         QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+}
+
+void Flow2AuthWidget::slotPollNow()
+{
+    emit pollNow();
 }
 
 } // namespace OCC
