@@ -82,6 +82,9 @@ void WebFlowCredentialsDialog::setInfo(const QString &msg) {
 }
 
 void WebFlowCredentialsDialog::setError(const QString &error) {
+    // bring window to top
+    slotShowSettingsDialog();
+
     if (_useFlow2 && _flow2AuthWidget) {
         _flow2AuthWidget->setError(error);
         return;
