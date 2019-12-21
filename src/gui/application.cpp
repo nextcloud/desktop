@@ -263,6 +263,9 @@ Application::Application(int &argc, char **argv)
 
     // Cleanup at Quit.
     connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
+
+    // Allow other classes to hook into isShowingSettingsDialog() signals (re-auth widgets, for example)
+    connect(_gui.data(), &ownCloudGui::isShowingSettingsDialog, this, &Application::slotGuiIsShowingSettings);
 }
 
 Application::~Application()
@@ -655,5 +658,9 @@ void Application::showSettingsDialog()
     _gui->slotShowSettings();
 }
 
+void Application::slotGuiIsShowingSettings()
+{
+    emit isShowingSettingsDialog();
+}
 
 } // namespace OCC

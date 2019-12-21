@@ -127,6 +127,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow);
 
+    connect(this, &SettingsDialog::onActivate, gui, &ownCloudGui::slotSettingsDialogActivated);
+
     customizeStyle();
 
     cfg.restoreGeometry(this);
@@ -162,6 +164,10 @@ void SettingsDialog::changeEvent(QEvent *e)
 
         // Notify the other widgets (Dark-/Light-Mode switching)
         emit styleChanged();
+        break;
+    case QEvent::ActivationChange:
+        if(isActiveWindow())
+            emit onActivate();
         break;
     default:
         break;
