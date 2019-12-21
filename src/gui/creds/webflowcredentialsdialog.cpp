@@ -33,6 +33,9 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
 
         connect(_flow2AuthWidget, &Flow2AuthWidget::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
 
+        // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
+        connect(this, &WebFlowCredentialsDialog::styleChanged, _flow2AuthWidget, &Flow2AuthWidget::slotStyleChanged);
+
         // allow Flow2 page to poll on window activation
         connect(this, &WebFlowCredentialsDialog::onActivate, _flow2AuthWidget, &Flow2AuthWidget::slotPollNow);
     } else {
@@ -52,6 +55,8 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     WizardCommon::initErrorLabel(_errorLabel);
 
     setLayout(_layout);
+
+    customizeStyle();
 }
 
 void WebFlowCredentialsDialog::closeEvent(QCloseEvent* e) {
@@ -93,6 +98,14 @@ void WebFlowCredentialsDialog::setError(const QString &error) {
 void WebFlowCredentialsDialog::changeEvent(QEvent *e)
 {
     switch (e->type()) {
+    case QEvent::StyleChange:
+    case QEvent::PaletteChange:
+    case QEvent::ThemeChange:
+        customizeStyle();
+
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        emit styleChanged();
+        break;
     case QEvent::ActivationChange:
         if(isActiveWindow())
             emit onActivate();
@@ -102,6 +115,11 @@ void WebFlowCredentialsDialog::changeEvent(QEvent *e)
     }
 
     QDialog::changeEvent(e);
+}
+
+void WebFlowCredentialsDialog::customizeStyle()
+{
+    // HINT: Customize dialog's own style here, if necessary in the future (Dark-/Light-Mode switching)
 }
 
 void WebFlowCredentialsDialog::slotShowSettingsDialog()
