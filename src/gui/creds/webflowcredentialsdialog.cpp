@@ -4,6 +4,8 @@
 #include <QLabel>
 
 #include "theme.h"
+#include "application.h"
+#include "owncloudgui.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/webview.h"
 #include "wizard/flow2authwidget.h"
@@ -36,6 +38,9 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
 
         connect(_webView, &WebView::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
     }
+
+    auto app = static_cast<Application *>(qApp);
+    connect(app, &Application::isShowingSettingsDialog, this, &WebFlowCredentialsDialog::slotShowSettingsDialog);
 
     _errorLabel = new QLabel();
     _errorLabel->hide();
@@ -80,6 +85,14 @@ void WebFlowCredentialsDialog::setError(const QString &error) {
         _errorLabel->setText(error);
         _errorLabel->show();
     }
+}
+
+void WebFlowCredentialsDialog::slotShowSettingsDialog()
+{
+    // bring window to top but slightly delay, to avoid being hidden behind the SettingsDialog
+    QTimer::singleShot(100, this, [this] {
+        ownCloudGui::raiseDialog(this);
+    });
 }
 
 }
