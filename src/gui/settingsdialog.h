@@ -65,6 +65,7 @@ public slots:
 
 signals:
     void styleChanged();
+    void onActivate();
 
 protected:
     void reject() override;
