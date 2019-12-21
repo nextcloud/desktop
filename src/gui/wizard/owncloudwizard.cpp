@@ -16,6 +16,7 @@
 #include "account.h"
 #include "configfile.h"
 #include "theme.h"
+#include "owncloudgui.h"
 
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudsetuppage.h"
@@ -317,8 +318,7 @@ void OwncloudWizard::customizeStyle()
 void OwncloudWizard::bringToTop()
 {
     // bring wizard to top
-    show();
-    raise();
+    ownCloudGui::raiseDialog(this);
 }
 
 } // end namespace
