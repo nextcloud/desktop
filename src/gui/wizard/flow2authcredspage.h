@@ -27,6 +27,7 @@
 
 #include "ui_flow2authcredspage.h"
 
+class QProgressIndicator;
 
 namespace OCC {
 
@@ -47,6 +48,7 @@ public:
 public Q_SLOTS:
     void asyncAuthResult(Flow2Auth::Result, const QString &user, const QString &appPassword);
     void slotPollNow();
+    void slotStatusChanged(int secondsLeft);
 
 signals:
     void connectToOCUrl(const QString &);
@@ -61,6 +63,12 @@ public:
 protected slots:
     void slotOpenBrowser();
     void slotCopyLinkToClipboard();
+
+private:
+    void startSpinner();
+    void stopSpinner(bool showStatusLabel);
+
+    QProgressIndicator *_progressIndi;
 };
 
 } // namespace OCC

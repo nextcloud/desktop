@@ -22,6 +22,8 @@
 
 #include "ui_flow2authwidget.h"
 
+class QProgressIndicator;
+
 namespace OCC {
 
 class Flow2AuthWidget : public QWidget
@@ -36,6 +38,7 @@ public:
 public Q_SLOTS:
     void asyncAuthResult(Flow2Auth::Result, const QString &user, const QString &appPassword);
     void slotPollNow();
+    void slotStatusChanged(int secondsLeft);
 
 signals:
     void urlCatched(const QString user, const QString pass, const QString host);
@@ -51,6 +54,12 @@ private:
 protected slots:
     void slotOpenBrowser();
     void slotCopyLinkToClipboard();
+
+private:
+    void startSpinner();
+    void stopSpinner(bool showStatusLabel);
+
+    QProgressIndicator *_progressIndi;
 };
 
 } // namespace OCC

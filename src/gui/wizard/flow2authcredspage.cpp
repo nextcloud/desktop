@@ -26,11 +26,14 @@
 #include "creds/credentialsfactory.h"
 #include "creds/webflowcredentials.h"
 
+#include "QProgressIndicator.h"
+
 namespace OCC {
 
 Flow2AuthCredsPage::Flow2AuthCredsPage()
     : AbstractCredentialsWizardPage()
     , _ui()
+    , _progressIndi(new QProgressIndicator(this))
 {
     _ui.setupUi(this);
 
@@ -49,6 +52,9 @@ Flow2AuthCredsPage::Flow2AuthCredsPage()
 
     connect(_ui.openLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthCredsPage::slotOpenBrowser);
     connect(_ui.copyLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthCredsPage::slotCopyLinkToClipboard);
+
+    _ui.horizontalLayout->addWidget(_progressIndi);
+    stopSpinner(false);
 }
 
 void Flow2AuthCredsPage::initializePage()
@@ -58,6 +64,7 @@ void Flow2AuthCredsPage::initializePage()
     ocWizard->account()->setCredentials(CredentialsFactory::create("http"));
     _asyncAuth.reset(new Flow2Auth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
+    connect(_asyncAuth.data(), &Flow2Auth::statusChanged, this, &Flow2AuthCredsPage::slotStatusChanged);
     connect(this, &Flow2AuthCredsPage::pollNow, _asyncAuth.data(), &Flow2Auth::slotPollNow);
     _asyncAuth->start();
 
@@ -79,6 +86,8 @@ void OCC::Flow2AuthCredsPage::cleanupPage()
 void Flow2AuthCredsPage::asyncAuthResult(Flow2Auth::Result r, const QString &user,
     const QString &appPassword)
 {
+    stopSpinner(false);
+
     switch (r) {
     case Flow2Auth::NotSupported: {
         /* Flow2Auth not supported (can't open browser) */
@@ -158,6 +167,40 @@ void Flow2AuthCredsPage::slotCopyLinkToClipboard()
 void Flow2AuthCredsPage::slotPollNow()
 {
     emit pollNow();
+}
+
+void Flow2AuthCredsPage::slotStatusChanged(int secondsLeft)
+{
+    const bool pollingNow = (secondsLeft == 0);
+
+    _ui.statusLabel->setText(tr("Polling for authorization") + (pollingNow ? "" : QString(" " + tr("in %1 seconds").arg(secondsLeft))) + "...");
+
+    if(pollingNow)
+        startSpinner();
+    else
+        stopSpinner(true);
+}
+
+void Flow2AuthCredsPage::startSpinner()
+{
+    _ui.horizontalLayout->setEnabled(true);
+    _ui.statusLabel->setVisible(true);
+    _progressIndi->setVisible(true);
+    _progressIndi->startAnimation();
+
+    _ui.openLinkButton->setEnabled(false);
+    _ui.copyLinkButton->setEnabled(false);
+}
+
+void Flow2AuthCredsPage::stopSpinner(bool showStatusLabel)
+{
+    _ui.horizontalLayout->setEnabled(false);
+    _ui.statusLabel->setVisible(showStatusLabel);
+    _progressIndi->setVisible(false);
+    _progressIndi->stopAnimation();
+
+    _ui.openLinkButton->setEnabled(true);
+    _ui.copyLinkButton->setEnabled(true);
 }
 
 } // namespace OCC
