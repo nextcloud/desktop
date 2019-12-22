@@ -2678,7 +2678,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>jagamise silt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>

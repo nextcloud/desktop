@@ -2693,7 +2693,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>merki á sameign</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
@@ -2703,7 +2703,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Táknmynd</translation>
     </message>
 </context>
 <context>

@@ -2684,7 +2684,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>Tittel for deling</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>

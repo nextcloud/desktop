@@ -2691,7 +2691,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>partekatu etiketa</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
