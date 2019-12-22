@@ -64,6 +64,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActivityItemDelegate::PathRole:
         if(!a._file.isEmpty()){
             auto folder = FolderMan::instance()->folder(a._folder);
+            if(!folder)
+                return QVariant();
             list = FolderMan::instance()->findFileInLocalFolders(folder->remotePath(), ast->account());
             if (list.count() > 0) {
                 return QVariant(list.at(0));
