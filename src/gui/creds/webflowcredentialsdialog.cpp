@@ -6,6 +6,7 @@
 #include "theme.h"
 #include "application.h"
 #include "owncloudgui.h"
+#include "headerbanner.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/webview.h"
 #include "wizard/flow2authwidget.h"
@@ -21,15 +22,30 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     _layout = new QVBoxLayout(this);
+    int spacing = _layout->spacing();
+    int margin = _layout->margin();
+    _layout->setSpacing(0);
+    _layout->setMargin(0);
 
-    //QString msg = tr("You have been logged out of %1 as user %2, please login again")
-    //        .arg(_account->displayName(), _user);
+    if(_useFlow2) {
+        _headerBanner = new HeaderBanner(this);
+        _layout->addWidget(_headerBanner);
+        Theme *theme = Theme::instance();
+        _headerBanner->setup(tr("Log in"), theme->wizardHeaderLogo(), theme->wizardHeaderBanner(),
+                             Qt::AutoText, QString::fromLatin1("color:#fff;"));
+    }
+
+    _containerLayout = new QVBoxLayout(this);
+    _containerLayout->setSpacing(spacing);
+    _containerLayout->setMargin(margin);
+
     _infoLabel = new QLabel();
-    _layout->addWidget(_infoLabel);
+    _containerLayout->addWidget(_infoLabel);
 
     if (_useFlow2) {
         _flow2AuthWidget = new Flow2AuthWidget(account);
-        _layout->addWidget(_flow2AuthWidget);
+        _flow2AuthWidget = new Flow2AuthWidget();
+        _containerLayout->addWidget(_flow2AuthWidget);
 
         connect(_flow2AuthWidget, &Flow2AuthWidget::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
 
@@ -40,7 +56,7 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
         connect(this, &WebFlowCredentialsDialog::onActivate, _flow2AuthWidget, &Flow2AuthWidget::slotPollNow);
     } else {
         _webView = new WebView();
-        _layout->addWidget(_webView);
+        _containerLayout->addWidget(_webView);
 
         connect(_webView, &WebView::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
     }
@@ -50,10 +66,11 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
 
     _errorLabel = new QLabel();
     _errorLabel->hide();
-    _layout->addWidget(_errorLabel);
+    _containerLayout->addWidget(_errorLabel);
 
     WizardCommon::initErrorLabel(_errorLabel);
 
+    _layout->addLayout(_containerLayout);
     setLayout(_layout);
 
     customizeStyle();

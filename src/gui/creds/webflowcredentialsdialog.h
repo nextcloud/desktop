@@ -11,6 +11,7 @@ class QVBoxLayout;
 
 namespace OCC {
 
+class HeaderBanner;
 class WebView;
 class Flow2AuthWidget;
 
@@ -52,6 +53,8 @@ private:
     QLabel *_errorLabel;
     QLabel *_infoLabel;
     QVBoxLayout *_layout;
+    QVBoxLayout *_containerLayout;
+    HeaderBanner *_headerBanner;
 };
 
 } // namespace OCC
