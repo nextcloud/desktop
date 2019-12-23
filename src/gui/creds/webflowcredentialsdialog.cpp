@@ -43,17 +43,18 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     _containerLayout->addWidget(_infoLabel);
 
     if (_useFlow2) {
-        _flow2AuthWidget = new Flow2AuthWidget(account);
         _flow2AuthWidget = new Flow2AuthWidget();
         _containerLayout->addWidget(_flow2AuthWidget);
 
-        connect(_flow2AuthWidget, &Flow2AuthWidget::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
+        connect(_flow2AuthWidget, &Flow2AuthWidget::authResult, this, &WebFlowCredentialsDialog::slotFlow2AuthResult);
 
         // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
         connect(this, &WebFlowCredentialsDialog::styleChanged, _flow2AuthWidget, &Flow2AuthWidget::slotStyleChanged);
 
         // allow Flow2 page to poll on window activation
         connect(this, &WebFlowCredentialsDialog::onActivate, _flow2AuthWidget, &Flow2AuthWidget::slotPollNow);
+
+        _flow2AuthWidget->startAuth(account);
     } else {
         _webView = new WebView();
         _containerLayout->addWidget(_webView);
@@ -87,6 +88,7 @@ void WebFlowCredentialsDialog::closeEvent(QCloseEvent* e) {
     }
 
     if (_flow2AuthWidget) {
+        _flow2AuthWidget->resetAuth();
         _flow2AuthWidget->deleteLater();
         _flow2AuthWidget = nullptr;
     }
@@ -153,6 +155,16 @@ void WebFlowCredentialsDialog::slotShowSettingsDialog()
     QTimer::singleShot(100, this, [this] {
         ownCloudGui::raiseDialog(this);
     });
+}
+
+void WebFlowCredentialsDialog::slotFlow2AuthResult(Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
+{
+    if(r == Flow2Auth::LoggedIn) {
+        emit urlCatched(user, appPassword, QString());
+    } else {
+        // bring window to top
+        slotShowSettingsDialog();
+    }
 }
 
 } // namespace OCC

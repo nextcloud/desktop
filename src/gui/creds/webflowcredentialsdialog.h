@@ -5,6 +5,7 @@
 #include <QUrl>
 
 #include "accountfwd.h"
+#include "creds/flow2auth.h"
 
 class QLabel;
 class QVBoxLayout;
@@ -34,6 +35,7 @@ protected:
     void changeEvent(QEvent *) override;
 
 public slots:
+    void slotFlow2AuthResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
     void slotShowSettingsDialog();
 
 signals:
