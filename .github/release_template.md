@@ -9,14 +9,13 @@ Open an issue called 'Release 2.x.0' in Client repository and copy below text in
 
 Major/Minor release templete. Enter here, when we have three estimated dates:
 * Date of feature freeze
-* Date of RC start
+* Date of QA start
 * Date of final
 
 ### Before branching off:
 
-* [ ] Dev: Check [dependencies](https://handbook.owncloud.com/release_processes/client/dependencies.html) for updates - @TheOneRing @guruz @jnweiger
+* [ ] Dev: Check [dependencies](https://handbook.owncloud.com/release_processes/client/dependencies.html) for updates - @TheOneRing @guruz
 * [ ] Dev: Update [ChangeLog](https://handbook.owncloud.com/release_processes/client/change_log.html) - @TheOneRing @guruz
-* [ ] QA: [Antivirus scan](https://handbook.owncloud.com/release_processes/client/virus.html) - @HanaGemela @jnweiger 
 * [ ] QA: Update [Test Plans](https://handbook.owncloud.com/release_processes/client/testlink.html) - @HanaGemela @jnweiger
 * [ ] QA: Review list of [supported platforms](https://handbook.owncloud.com/release_processes/client/supported_platforms.html) -  @HanaGemela @jnweiger @TheOneRing @guruz
 * [ ] QA: Update [documentation](https://handbook.owncloud.com/release_processes/client/documentation.html) -  @HanaGemela @jnweiger
@@ -24,22 +23,22 @@ Major/Minor release templete. Enter here, when we have three estimated dates:
 
 ### On the day of the first daily build of the new branch:
 * [ ] Dev: Internally announce it feature freeze - @TheOneRing @guruz
-* [ ] Dev: Branch off master to new version branch (e.g. master -> 2.7, when releasing 2.7), check that `VERSION.cmake` says 2.7 - @TheOneRing @guruz
-* [ ] Dev: Adjust `VERSION.cmake` in master and count up (e.g. 2.8) - @TheOneRing @guruz
-
-* [ ] QA: Branch the templates of the build infrastructure (e.g. gitea/client, gitea/ownbrander/scritping ...) to v2.7.0 ... TODO...
-* [ ] QA: Add the new version to `gitea/ownbrander/scripting/client-linux/templates/client/2.X.X`
-* [ ] QA: Add branch to `branches.only` section in `appveyor.yml`, so PRs to that branch will be built by AppVeyor - @hvonreth
-* [ ] QA: Add branch to `drone.star`, `drone.yml` - @dschmidt
-* [ ] QA: Start running automated tests on the dailies
-* [ ] QA: Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) to point to the release branch (e.g. 2.7) - @dschmidt
-* [ ] QA: Use `obs-copyprj.sh` to backup the desktop project to `desktop:client-2.6.x` (unless already done) - @jnweiger
+* [ ] Dev: Edit [`VERSION.cmake`](https://handbook.owncloud.com/release_processes/client/branch.html#version-cmake) - @TheOneRing @guruz
+* [ ] QA: Adjust [Linux Templates](https://handbook.owncloud.com/release_processes/client/branch.html#linux-templates) - @HanaGemela @jnweiger
+* [ ] QA: Adjust [ownBrander](https://handbook.owncloud.com/release_processes/client/branch.html#ownbrander) - @HanaGemela @jnweiger
+* [ ] QA: Adjust [AppVeyor](https://handbook.owncloud.com/release_processes/client/branch.html#appveyor) - @HanaGemela @jnweiger
+* [ ] QA: Adjust [drone](https://handbook.owncloud.com/release_processes/client/branch.html#drone) - @HanaGemela @jnweiger
+* [ ] QA: Adjust [translation jobs](https://handbook.owncloud.com/release_processes/client/branch.html#translations) - @HanaGemela @jnweiger
+* [ ] QA: Use `obs-copyprj.sh` to backup the desktop project to `desktop:client-2.6.x` (unless already done) - @HanaGemela @jnweiger
+* [ ] Dev: Start running automated tests on the dailies - @TheOneRing @guruz
 
 ### After the first daily build of the new branch:
 * [ ] Announce the new branch to community and advertise dailies for public testing 
 
 TODO: WHen do we call it beta or RC?
 TODO: describe what dailies we have in documentation. (Platforms, Versions, Master, current preprelease, and last stable release branch.)
+
+* [ ] QA: [Antivirus scan](https://handbook.owncloud.com/release_processes/client/virus.html) - @HanaGemela @jnweiger 
 
 ### For all (betas?) and RCs (Copy this section for each beta/rc):
 * [ ] Ensure the crash reporter server is up.
@@ -55,13 +54,8 @@ TODO: move to patch-release checklist * [ ] Make sure to increase the version nu
 * [ ] jenkins.int: Create build for theme 'ownCloud' using client-trigger (uncheck the "daily build" checkbox, use rcX or betaX dropdown for version suffix)
 * [ ] jenkins.int: Create build for theme 'testpilotcloud' using client-trigger (uncheck the "daily build" checkbox, use the rcX or betaX dropdown for version suffix)
 * Build results are in https://download.owncloud.com/desktop/testing -- win and mac binaries are there, linux packages are listed in a *repo.html file pointing to the repository.
-
-SMOKE TESTING: TODO Move details to handbook.
 * [ ] Check if *tar.xz.asc files are there. If not resort to https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge
-* [ ] Mac: Perform smoke test of non-osx10.11 package (fresh install, perform upload/download, check the version in General tab)
-* [ ] Win: Perform smoke test of non-GPO package (fresh install, perform upload/download, check the version in General tab)
-* [ ] Linux: Perform smoke test two distro packages (fresh install, perform upload/download, check the version in General tab)
-      Latest Ubuntu + Latest Fedora
+* [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
 * [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh with repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
 * [ ] review everything :-)
 
