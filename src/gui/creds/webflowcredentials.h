@@ -61,6 +61,7 @@ private slots:
     void slotFinished(QNetworkReply *reply);
 
     void slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host);
+    void slotAskFromUserCancelled();
 
     void slotReadClientCertPEMJobDone(QKeychain::Job *incomingJob);
     void slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob);

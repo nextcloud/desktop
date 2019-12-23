@@ -170,6 +170,7 @@ void WebFlowCredentials::askFromUser() {
         _askDialog->show();
 
         connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
+        connect(_askDialog, &WebFlowCredentialsDialog::onClose, this, &WebFlowCredentials::slotAskFromUserCancelled);
     });
     job->start();
 
@@ -205,10 +206,18 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
     emit asked();
 
     _askDialog->close();
-    delete _askDialog;
+    _askDialog->deleteLater();
     _askDialog = nullptr;
 }
 
+void WebFlowCredentials::slotAskFromUserCancelled() {
+    qCDebug(lcWebFlowCredentials()) << "User cancelled reauth!";
+
+    emit asked();
+
+    _askDialog->deleteLater();
+    _askDialog = nullptr;
+}
 
 bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
     if (reply->error() != QNetworkReply::NoError) {

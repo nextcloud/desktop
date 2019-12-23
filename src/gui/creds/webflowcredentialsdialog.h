@@ -39,6 +39,7 @@ signals:
     void urlCatched(const QString user, const QString pass, const QString host);
     void styleChanged();
     void onActivate();
+    void onClose();
 
 private:
     void customizeStyle();

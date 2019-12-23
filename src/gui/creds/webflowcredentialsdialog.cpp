@@ -65,11 +65,16 @@ void WebFlowCredentialsDialog::closeEvent(QCloseEvent* e) {
     if (_webView) {
         // Force calling WebView::~WebView() earlier so that _profile and _page are
         // deleted in the correct order.
-        delete _webView;
+        _webView->deleteLater();
+        _webView = nullptr;
     }
 
-    if (_flow2AuthWidget)
-        delete _flow2AuthWidget;
+    if (_flow2AuthWidget) {
+        _flow2AuthWidget->deleteLater();
+        _flow2AuthWidget = nullptr;
+    }
+
+    emit onClose();
 }
 
 void WebFlowCredentialsDialog::setUrl(const QUrl &url) {
