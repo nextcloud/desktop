@@ -30,6 +30,7 @@ Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
     , _account(nullptr)
     , _ui()
     , _progressIndi(new QProgressIndicator(this))
+    , _statusUpdateSkipCount(0)
 {
     _ui.setupUi(this);
 
@@ -51,14 +52,16 @@ void Flow2AuthWidget::startAuth(Account *account)
     if(oldAuth)
         oldAuth->deleteLater();
 
+    _statusUpdateSkipCount = 0;
+
     if(account) {
         _account = account;
 
-    _asyncAuth.reset(new Flow2Auth(_account, this));
+        _asyncAuth.reset(new Flow2Auth(_account, this));
         connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthWidget::slotAuthResult, Qt::QueuedConnection);
-    connect(_asyncAuth.data(), &Flow2Auth::statusChanged, this, &Flow2AuthWidget::slotStatusChanged);
-    connect(this, &Flow2AuthWidget::pollNow, _asyncAuth.data(), &Flow2Auth::slotPollNow);
-    _asyncAuth->start();
+        connect(_asyncAuth.data(), &Flow2Auth::statusChanged, this, &Flow2AuthWidget::slotStatusChanged);
+        connect(this, &Flow2AuthWidget::pollNow, _asyncAuth.data(), &Flow2Auth::slotPollNow);
+        _asyncAuth->start();
     }
 }
 
@@ -131,21 +134,28 @@ void Flow2AuthWidget::slotPollNow()
 void Flow2AuthWidget::slotStatusChanged(Flow2Auth::PollStatus status, int secondsLeft)
 {
     switch(status)
-{
+    {
     case Flow2Auth::statusPollCountdown:
-        _ui.statusLabel->setText(tr("Waiting for authorization") + QString(" (%1)").arg(secondsLeft));
+        if(_statusUpdateSkipCount > 0) {
+            _statusUpdateSkipCount--;
+            break;
+        }
+        _ui.statusLabel->setText(tr("Waiting for authorization") + QString("… (%1)").arg(secondsLeft));
         stopSpinner(true);
         break;
     case Flow2Auth::statusPollNow:
-        _ui.statusLabel->setText(tr("Polling for authorization") + "...");
+        _statusUpdateSkipCount = 0;
+        _ui.statusLabel->setText(tr("Polling for authorization") + "…");
         startSpinner();
         break;
     case Flow2Auth::statusFetchToken:
-        _ui.statusLabel->setText(tr("Starting authorization") + "...");
+        _statusUpdateSkipCount = 0;
+        _ui.statusLabel->setText(tr("Starting authorization") + "…");
         startSpinner();
         break;
     case Flow2Auth::statusCopyLinkToClipboard:
         _ui.statusLabel->setText(tr("Link copied to clipboard."));
+        _statusUpdateSkipCount = 3;
         stopSpinner(true);
         break;
     }
@@ -169,8 +179,8 @@ void Flow2AuthWidget::stopSpinner(bool showStatusLabel)
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 
-    _ui.openLinkButton->setEnabled(true);
-    _ui.copyLinkButton->setEnabled(true);
+    _ui.openLinkButton->setEnabled(_statusUpdateSkipCount == 0);
+    _ui.copyLinkButton->setEnabled(_statusUpdateSkipCount == 0);
 }
 
 void Flow2AuthWidget::slotStyleChanged()
