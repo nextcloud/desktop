@@ -62,6 +62,7 @@ private:
     void customizeStyle();
 
     QProgressIndicator *_progressIndi;
+    int _statusUpdateSkipCount;
 };
 
 } // namespace OCC
