@@ -25,7 +25,6 @@
 
 #include "common/utility.h"
 #include "account.h"
-#include "theme.h"
 #include "wizard/owncloudwizardcommon.h"
 
 #include "QProgressIndicator.h"
@@ -42,14 +41,6 @@ Flow2AuthWidget::Flow2AuthWidget(Account *account, QWidget *parent)
     , _progressIndi(new QProgressIndicator(this))
 {
     _ui.setupUi(this);
-
-    Theme *theme = Theme::instance();
-    _ui.topLabel->hide();
-    _ui.bottomLabel->hide();
-    QVariant variant = theme->customMedia(Theme::oCSetupTop);
-    WizardCommon::setupCustomMedia(variant, _ui.topLabel);
-    variant = theme->customMedia(Theme::oCSetupBottom);
-    WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
 
     WizardCommon::initErrorLabel(_ui.errorLabel);
 

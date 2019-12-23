@@ -103,6 +103,7 @@ set(client_SRCS
     servernotificationhandler.cpp
     guiutility.cpp
     elidedlabel.cpp
+    headerbanner.cpp
     iconjob.cpp
     remotewipe.cpp
     creds/credentialsfactory.cpp
