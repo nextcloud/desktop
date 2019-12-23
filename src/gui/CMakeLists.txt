@@ -35,12 +35,11 @@ set(client_UI_SRCS
     addcertificatedialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
+    wizard/flow2authwidget.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudoauthcredspage.ui
-    wizard/flow2authcredspage.ui
-    wizard/flow2authwidget.ui
     wizard/owncloudsetupnocredspage.ui
     wizard/owncloudwizardresultpage.ui
     wizard/webview.ui
