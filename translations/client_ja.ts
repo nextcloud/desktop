@@ -1279,7 +1279,8 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>この問題は通常、 inotify watches が使い果たされた場合に発生します。
+詳細については、FAQ を参照してください。</translation>
     </message>
 </context>
 <context>

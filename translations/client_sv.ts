@@ -730,7 +730,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="193"/>
         <source>The provided credentials are not correct</source>
-        <translation>De angivna uppgifterna stämmer ej</translation>
+        <translation>De angivna uppgifterna stämmer inte</translation>
     </message>
 </context>
 <context>
@@ -2084,7 +2084,7 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation>Håll din data säker och under din kontroll</translation>
+        <translation>Håll dina data säker och under din kontroll</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
@@ -3099,7 +3099,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>Untrusted Certificate</source>
-        <translation>Ej betrott certifikat</translation>
+        <translation>Otillförlitligt certifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
