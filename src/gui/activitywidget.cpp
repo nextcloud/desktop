@@ -179,7 +179,7 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
         Activity activity;
         activity._type = Activity::SyncFileItemType; //client activity
         activity._status = item->_status;
-        activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        activity._dateTime = QDateTime::currentDateTime();
         activity._message = item->_originalFile;
         activity._link = folderInstance->accountState()->account()->url();
         activity._accName = folderInstance->accountState()->account()->displayName();
