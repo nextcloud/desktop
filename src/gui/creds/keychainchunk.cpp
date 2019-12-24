@@ -174,9 +174,6 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
     QKeychain::ReadPasswordJob *readJob = static_cast<QKeychain::ReadPasswordJob *>(incomingJob);
 
     if (readJob) {
-        _error = readJob->error();
-        _errorString = readJob->errorString();
-
         if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
             _chunkBuffer.append(readJob->binaryData());
             _chunkCount++;
@@ -205,7 +202,12 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
             }
 #endif
         } else {
+            if (readJob->error() != QKeychain::Error::EntryNotFound ||
+                ((readJob->error() == QKeychain::Error::EntryNotFound) && _chunkCount == 0)) {
+                _error = readJob->error();
+                _errorString = readJob->errorString();
                 qCWarning(lcKeychainChunk) << "Unable to read" << readJob->key() << "chunk" << QString::number(_chunkCount) << readJob->errorString();
+            }
         }
 
         readJob->deleteLater();
