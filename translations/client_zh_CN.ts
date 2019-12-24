@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation>%1（%2，%3）</translation>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
-        <translation>注销</translation>
+        <translation>登出</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>为了保护您的加密身份，我们用 12 个助记词对其进行了加密。请将它们抄下来并妥善保管。在您向账户添加其他设备（手机或笔记本电脑）时需要用到。</translation>
+        <translation>为了保护您的加密身份，我们用 12 个助记词对其进行了加密。请将它们抄下来并妥善保管。在您向账号添加其他设备（手机或笔记本电脑）时需要用到。</translation>
     </message>
 </context>
 <context>
@@ -272,7 +272,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
         <source>No account configured.</source>
-        <translation>没有配置的帐号。</translation>
+        <translation>没有配置的账号。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -287,7 +287,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>Account</source>
-        <translation>账户</translation>
+        <translation>账号</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="242"/>
@@ -543,7 +543,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="143"/>
         <source>Unknown account state</source>
-        <translation>未知的账户状态</translation>
+        <translation>未知的账号状态</translation>
     </message>
 </context>
 <context>
@@ -597,7 +597,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="346"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation>&lt;br/&gt;帐户%1没有同步活动。</translation>
+        <translation>&lt;br/&gt; 账号 %1 没有同步活动。</translation>
     </message>
 </context>
 <context>
@@ -1355,7 +1355,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="317"/>
         <source>Choose this to sync the entire account</source>
-        <translation>选择此项以同步整个账户</translation>
+        <translation>选择此项以同步整个账号</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="447"/>
@@ -1516,7 +1516,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>请输入 %1 密码：&lt;br&gt;&lt;br&gt;用户：%2&lt;br&gt;账户：%3&lt;br&gt;</translation>
+        <translation>请输入 %1 密码：&lt;br&gt;&lt;br&gt;用户：%2&lt;br&gt;账号：%3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
@@ -2668,7 +2668,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="236"/>
         <source>Account</source>
-        <translation>账户</translation>
+        <translation>账号</translation>
     </message>
 </context>
 <context>
@@ -3561,7 +3561,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="225"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>账户 %1 的服务器运行着一个古老而不受支持的版本 %2。使用该客户端未支持的服务器版本未经测试并且可能存在潜在危险。继续操作需要自行承担风险。</translation>
+        <translation>账号 %1 的服务器运行着一个古老而不受支持的版本 %2。使用该客户端未支持的服务器版本未经测试并且可能存在潜在危险。继续操作需要自行承担风险。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="264"/>
@@ -3571,17 +3571,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="266"/>
         <source>Disconnected from some accounts</source>
-        <translation>已从某些账户断开</translation>
+        <translation>已从某些账号断开</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Disconnected from accounts:</source>
-        <translation>已断开账户：</translation>
+        <translation>已断开账号：</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="279"/>
         <source>Account %1: %2</source>
-        <translation>账户 %1：%2</translation>
+        <translation>账号 %1：%2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="294"/>
@@ -3591,7 +3591,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="298"/>
         <source>Account synchronization is disabled</source>
-        <translation>帐户同步被禁用</translation>
+        <translation>账号同步被禁用</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="299"/>
@@ -3834,7 +3834,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>您的整个账户将被同步到本地文件夹</translation>
+        <translation>您的整个账号将被同步到本地文件夹</translation>
     </message>
 </context>
 <context>
