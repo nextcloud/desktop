@@ -22,35 +22,49 @@
 
 #include "ui_flow2authwidget.h"
 
+class QProgressIndicator;
+
 namespace OCC {
 
 class Flow2AuthWidget : public QWidget
 {
     Q_OBJECT
 public:
-    Flow2AuthWidget(Account *account, QWidget *parent = nullptr);
+    Flow2AuthWidget(QWidget *parent = nullptr);
     virtual ~Flow2AuthWidget();
 
+    void startAuth(Account *account);
+    void resetAuth(Account *account = nullptr);
     void setError(const QString &error);
 
 public Q_SLOTS:
-    void asyncAuthResult(Flow2Auth::Result, const QString &user, const QString &appPassword);
+    void slotAuthResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
+    void slotPollNow();
+    void slotStatusChanged(Flow2Auth::PollStatus status, int secondsLeft);
+    void slotStyleChanged();
 
 signals:
-    void urlCatched(const QString user, const QString pass, const QString host);
+    void authResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
+    void pollNow();
 
 private:
     Account *_account;
-    QString _user;
-    QString _appPassword;
     QScopedPointer<Flow2Auth> _asyncAuth;
     Ui_Flow2AuthWidget _ui;
 
 protected slots:
     void slotOpenBrowser();
     void slotCopyLinkToClipboard();
+
+private:
+    void startSpinner();
+    void stopSpinner(bool showStatusLabel);
+    void customizeStyle();
+
+    QProgressIndicator *_progressIndi;
+    int _statusUpdateSkipCount;
 };
 
-}
+} // namespace OCC
 
 #endif // FLOW2AUTHWIDGET_H

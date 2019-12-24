@@ -63,6 +63,10 @@ public slots:
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
 
+signals:
+    void styleChanged();
+    void onActivate();
+
 protected:
     void reject() override;
     void accept() override;
@@ -76,7 +80,6 @@ private:
     void customizeStyle();
     void activityAdded(AccountState *);
 
-    QIcon createColorAwareIcon(const QString &name);
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
 

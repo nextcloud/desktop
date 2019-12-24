@@ -64,9 +64,18 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActivityItemDelegate::PathRole:
         if(!a._file.isEmpty()){
             auto folder = FolderMan::instance()->folder(a._folder);
-            list = FolderMan::instance()->findFileInLocalFolders(folder->remotePath(), ast->account());
+            QString relPath(a._file);
+            if(folder) relPath.prepend(folder->remotePath());
+            list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
             if (list.count() > 0) {
                 return QVariant(list.at(0));
+            }
+            // File does not exist anymore? Let's try to open its path
+            if(QFileInfo(relPath).exists()) {
+                list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(relPath).path(), ast->account());
+                if (list.count() > 0) {
+                    return QVariant(list.at(0));
+                }
             }
         }
         return QVariant();
@@ -79,59 +88,60 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         }
         return customList;
     }
-    case ActivityItemDelegate::ActionIconRole:
+    case ActivityItemDelegate::ActionIconRole:{
+        ActionIcon actionIcon;
         if(a._type == Activity::NotificationType){
            QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
-           if(!cachedIcon.isNull())
-               return cachedIcon;
-           else return QIcon(QLatin1String(":/client/resources/bell.svg"));
+            if(!cachedIcon.isNull()) {
+               actionIcon.iconType = ActivityIconType::iconUseCached;
+               actionIcon.cachedIcon = cachedIcon;
+            } else {
+                actionIcon.iconType = ActivityIconType::iconBell;
+            }
         } else if(a._type == Activity::SyncResultType){
-            return QIcon(QLatin1String(":/client/resources/state-error.svg"));
+            actionIcon.iconType = ActivityIconType::iconStateError;
         } else if(a._type == Activity::SyncFileItemType){
                if(a._status == SyncFileItem::NormalError
                    || a._status == SyncFileItem::FatalError
                    || a._status == SyncFileItem::DetailError
                    || a._status == SyncFileItem::BlacklistedError) {
-                   return QIcon(QLatin1String(":/client/resources/state-error.svg"));
+                   actionIcon.iconType = ActivityIconType::iconStateError;
                } else if(a._status == SyncFileItem::SoftError
                          || a._status == SyncFileItem::Conflict
                          || a._status == SyncFileItem::Restoration
                          || a._status == SyncFileItem::FileLocked){
-                   return QIcon(QLatin1String(":/client/resources/state-warning.svg"));
+                   actionIcon.iconType = ActivityIconType::iconStateWarning;
                } else if(a._status == SyncFileItem::FileIgnored){
-                   return QIcon(QLatin1String(":/client/resources/state-info.svg"));
+                   actionIcon.iconType = ActivityIconType::iconStateInfo;
+               } else {
+                   actionIcon.iconType = ActivityIconType::iconStateSync;
                }
-               return QIcon(QLatin1String(":/client/resources/state-sync.svg"));
+        } else {
+            actionIcon.iconType = ActivityIconType::iconActivity;
         }
-        return QIcon(QLatin1String(":/client/resources/activity.png"));
-        break;
+        QVariant icn;
+        icn.setValue(actionIcon);
+        return icn;
+    }
     case ActivityItemDelegate::ObjectTypeRole:
         return a._objectType;
-        break;
     case ActivityItemDelegate::ActionRole:{
         QVariant type;
         type.setValue(a._type);
         return type;
-        break;
     }
     case ActivityItemDelegate::ActionTextRole:
         return a._subject;
-        break;
     case ActivityItemDelegate::MessageRole:
         return a._message;
-        break;
     case ActivityItemDelegate::LinkRole:
         return a._link;
-        break;
     case ActivityItemDelegate::AccountRole:
         return a._accName;
-        break;
     case ActivityItemDelegate::PointInTimeRole:
-        return Utility::timeAgoInWords(a._dateTime);
-        break;
+        return QString("%1 (%2)").arg(a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate), Utility::timeAgoInWords(a._dateTime.toLocalTime()));
     case ActivityItemDelegate::AccountConnectedRole:
         return (ast && ast->isConnected());
-        break;
     default:
         return QVariant();
     }
@@ -256,7 +266,7 @@ void ActivityListModel::clearNotifications() {
 }
 
 void ActivityListModel::removeActivityFromActivityList(int row) {
-    Activity activity =  _finalList.at(row);
+    Activity activity = _finalList.at(row);
     removeActivityFromActivityList(activity);
     combineActivityLists();
 }
@@ -294,18 +304,27 @@ void ActivityListModel::combineActivityLists()
 {
     ActivityList resultList;
 
-    std::sort(_notificationErrorsLists.begin(), _notificationErrorsLists.end());
-    resultList.append(_notificationErrorsLists);
-    resultList.append(_notificationIgnoredFiles);
+    if(_notificationErrorsLists.count() > 0) {
+        std::sort(_notificationErrorsLists.begin(), _notificationErrorsLists.end());
+        resultList.append(_notificationErrorsLists);
+    }
+    if(_listOfIgnoredFiles.size() > 0)
+        resultList.append(_notificationIgnoredFiles);
 
-    std::sort(_notificationLists.begin(), _notificationLists.end());
-    resultList.append(_notificationLists);
+    if(_notificationLists.count() > 0) {
+        std::sort(_notificationLists.begin(), _notificationLists.end());
+        resultList.append(_notificationLists);
+    }
 
-    std::sort(_syncFileItemLists.begin(), _syncFileItemLists.end());
-    resultList.append(_syncFileItemLists);
+    if(_syncFileItemLists.count() > 0) {
+        std::sort(_syncFileItemLists.begin(), _syncFileItemLists.end());
+        resultList.append(_syncFileItemLists);
+    }
 
-    std::sort(_activityLists.begin(), _activityLists.end());
-    resultList.append(_activityLists);
+    if(_activityLists.count() > 0) {
+        std::sort(_activityLists.begin(), _activityLists.end());
+        resultList.append(_activityLists);
+    }
 
     beginResetModel();
     _finalList.clear();

@@ -20,12 +20,7 @@
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
 #include "sharedialog.h"
-#if defined(Q_OS_MAC)
-#include "settingsdialogmac.h"
-#include "macwindow.h" // qtmacgoodies
-#else
 #include "settingsdialog.h"
-#endif
 #include "logger.h"
 #include "logbrowser.h"
 #include "account.h"
@@ -62,11 +57,7 @@ const char propertyAccountC[] = "oc_account";
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
     , _tray(nullptr)
-#if defined(Q_OS_MAC)
-    , _settingsDialog(new SettingsDialogMac(this))
-#else
     , _settingsDialog(new SettingsDialog(this))
-#endif
     , _logBrowser(nullptr)
 #ifdef WITH_LIBCLOUDPROVIDERS
     , _bus(QDBusConnection::sessionBus())
@@ -1077,16 +1068,16 @@ void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &messag
 void ownCloudGui::slotShowSettings()
 {
     if (_settingsDialog.isNull()) {
-        _settingsDialog =
-#if defined(Q_OS_MAC)
-            new SettingsDialogMac(this);
-#else
-            new SettingsDialog(this);
-#endif
+        _settingsDialog = new SettingsDialog(this);
         _settingsDialog->setAttribute(Qt::WA_DeleteOnClose, true);
         _settingsDialog->show();
     }
     raiseDialog(_settingsDialog.data());
+}
+
+void ownCloudGui::slotSettingsDialogActivated()
+{
+    emit isShowingSettingsDialog();
 }
 
 void ownCloudGui::slotShowSyncProtocol()
@@ -1143,10 +1134,6 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
         raiseWidget->raise();
         raiseWidget->activateWindow();
 
-#if defined(Q_OS_MAC)
-        // viel hilft viel ;-)
-        MacWindow::bringToFront(raiseWidget);
-#endif
 #if defined(Q_OS_X11)
         WId wid = widget->winId();
         NETWM::init();

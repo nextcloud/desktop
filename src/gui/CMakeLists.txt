@@ -35,12 +35,11 @@ set(client_UI_SRCS
     addcertificatedialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
+    wizard/flow2authwidget.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudoauthcredspage.ui
-    wizard/flow2authcredspage.ui
-    wizard/flow2authwidget.ui
     wizard/owncloudsetupnocredspage.ui
     wizard/owncloudwizardresultpage.ui
     wizard/webview.ui
@@ -103,12 +102,14 @@ set(client_SRCS
     servernotificationhandler.cpp
     guiutility.cpp
     elidedlabel.cpp
+    headerbanner.cpp
     iconjob.cpp
     remotewipe.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
     creds/flow2auth.cpp
+    creds/keychainchunk.cpp
     creds/webflowcredentials.cpp
     creds/webflowcredentialsdialog.cpp
     wizard/postfixlineedit.cpp
@@ -145,8 +146,6 @@ set(updater_SRCS
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
-    list(APPEND client_SRCS settingsdialogmac.cpp)
-    list(REMOVE_ITEM client_SRCS settingsdialog.cpp)
     list(APPEND client_SRCS socketapisocket_mac.mm)
     list(APPEND client_SRCS systray.mm)
 
@@ -175,17 +174,6 @@ set(3rdparty_SRC
     ../3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
     ../3rdparty/kmessagewidget/kmessagewidget.cpp
    )
-
-if (APPLE)
-    list(APPEND 3rdparty_SRC
-        ../3rdparty/qtmacgoodies/src/macpreferenceswindow.mm
-        ../3rdparty/qtmacgoodies/src/macstandardicon.mm
-        ../3rdparty/qtmacgoodies/src/macwindow.mm
-        )
-    # We want to access Cocoa specific structures in the code above
-    # and need the platform plugin interface for that - which is private.
-    include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
-endif()
 
 if(NOT WIN32)
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
@@ -342,7 +330,6 @@ ENDIF()
 target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
     ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
     ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
     ${CMAKE_CURRENT_BINARY_DIR}

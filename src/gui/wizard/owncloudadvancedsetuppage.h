@@ -51,6 +51,7 @@ signals:
 
 public slots:
     void setErrorString(const QString &);
+    void slotStyleChanged();
 
 private slots:
     void slotSelectFolder();
@@ -67,6 +68,7 @@ private:
     QUrl serverUrl() const;
     qint64 availableLocalSpace() const;
     QString checkLocalSpace(qint64 remoteSize) const;
+    void customizeStyle();
 
     Ui_OwncloudAdvancedSetupPage _ui;
     bool _checking;

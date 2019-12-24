@@ -14,10 +14,12 @@
  */
 
 #include <QDesktopServices>
+#include <QApplication>
+#include <QClipboard>
 #include <QTimer>
 #include <QBuffer>
 #include "account.h"
-#include "creds/flow2auth.h"
+#include "flow2auth.h"
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "theme.h"
@@ -27,6 +29,17 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFlow2auth, "nextcloud.sync.credentials.flow2auth", QtInfoMsg)
+
+
+Flow2Auth::Flow2Auth(Account *account, QObject *parent)
+    : QObject(parent)
+    , _account(account)
+    , _isBusy(false)
+    , _hasToken(false)
+{
+    _pollTimer.setInterval(1000);
+    QObject::connect(&_pollTimer, &QTimer::timeout, this, &Flow2Auth::slotPollTimerTimeout);
+}
 
 Flow2Auth::~Flow2Auth()
 {
@@ -47,7 +60,23 @@ QUrl Flow2Auth::authorisationLink() const
 
 void Flow2Auth::openBrowser()
 {
-    _pollTimer.stop();
+    fetchNewToken(TokenAction::actionOpenBrowser);
+}
+
+void Flow2Auth::copyLinkToClipboard()
+{
+    fetchNewToken(TokenAction::actionCopyLinkToClipboard);
+}
+
+void Flow2Auth::fetchNewToken(const TokenAction action)
+{
+    if(_isBusy)
+        return;
+
+    _isBusy = true;
+    _hasToken = false;
+
+    emit statusChanged(PollStatus::statusFetchToken, 0);
 
     // Step 1: Initiate a login, do an anonymous POST request
     QUrl url = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/login/v2"));
@@ -59,14 +88,18 @@ void Flow2Auth::openBrowser()
     auto job = _account->sendRequest("POST", url, req);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
 
-    QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
+    QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, action](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
         QJsonParseError jsonParseError;
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        QString pollToken, pollEndpoint, loginUrl;
 
-        QString pollToken = json.value("poll").toObject().value("token").toString();
-        QString pollEndpoint = json.value("poll").toObject().value("endpoint").toString();
-        QUrl loginUrl = json["login"].toString();
+        if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
+            && !json.isEmpty()) {
+            pollToken = json.value("poll").toObject().value("token").toString();
+            pollEndpoint = json.value("poll").toObject().value("endpoint").toString();
+            loginUrl = json["login"].toString();
+        }
 
         if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
             || json.isEmpty() || pollToken.isEmpty() || pollEndpoint.isEmpty() || loginUrl.isEmpty()) {
@@ -85,7 +118,9 @@ void Flow2Auth::openBrowser()
                 errorReason = tr("The reply from the server did not contain all expected fields");
             }
             qCWarning(lcFlow2auth) << "Error when getting the loginUrl" << json << errorReason;
-            emit result(Error);
+            emit result(Error, errorReason);
+            _pollTimer.stop();
+            _isBusy = false;
             return;
         }
 
@@ -99,23 +134,50 @@ void Flow2Auth::openBrowser()
         ConfigFile cfg;
         std::chrono::milliseconds polltime = cfg.remotePollInterval();
         qCInfo(lcFlow2auth) << "setting remote poll timer interval to" << polltime.count() << "msec";
-        _pollTimer.setInterval(polltime.count());
-        QObject::connect(&_pollTimer, &QTimer::timeout, this, &Flow2Auth::slotPollTimerTimeout);
-        _pollTimer.start();
+        _secondsInterval = (polltime.count() / 1000);
+        _secondsLeft = _secondsInterval;
+        emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
 
-
-        // Try to open Browser
-        if (!QDesktopServices::openUrl(authorisationLink())) {
-            // We cannot open the browser, then we claim we don't support Flow2Auth.
-            // Our UI callee should ask the user to copy and open the link.
-            emit result(NotSupported, QString());
+        if(!_pollTimer.isActive()) {
+            _pollTimer.start();
         }
+
+
+        switch(action)
+        {
+        case actionOpenBrowser:
+            // Try to open Browser
+            if (!QDesktopServices::openUrl(authorisationLink())) {
+                // We cannot open the browser, then we claim we don't support Flow2Auth.
+                // Our UI callee will ask the user to copy and open the link.
+                emit result(NotSupported);
+            }
+            break;
+        case actionCopyLinkToClipboard:
+            QApplication::clipboard()->setText(authorisationLink().toString(QUrl::FullyEncoded));
+            emit statusChanged(PollStatus::statusCopyLinkToClipboard, 0);
+            break;
+        }
+
+        _isBusy = false;
+        _hasToken = true;
     });
 }
 
 void Flow2Auth::slotPollTimerTimeout()
 {
-    _pollTimer.stop();
+    if(_isBusy || !_hasToken)
+        return;
+
+    _isBusy = true;
+
+    _secondsLeft--;
+    if(_secondsLeft > 0) {
+        emit statusChanged(PollStatus::statusPollCountdown, _secondsLeft);
+        _isBusy = false;
+        return;
+    }
+    emit statusChanged(PollStatus::statusPollNow, 0);
 
     // Step 2: Poll
     QNetworkRequest req;
@@ -132,10 +194,15 @@ void Flow2Auth::slotPollTimerTimeout()
         auto jsonData = reply->readAll();
         QJsonParseError jsonParseError;
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+        QUrl serverUrl;
+        QString loginName, appPassword;
 
-        QUrl serverUrl = json["server"].toString();
-        QString loginName = json["loginName"].toString();
-        QString appPassword = json["appPassword"].toString();
+        if (reply->error() == QNetworkReply::NoError && jsonParseError.error == QJsonParseError::NoError
+            && !json.isEmpty()) {
+            serverUrl = json["server"].toString();
+            loginName = json["loginName"].toString();
+            appPassword = json["appPassword"].toString();
+        }
 
         if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
             || json.isEmpty() || serverUrl.isEmpty() || loginName.isEmpty() || appPassword.isEmpty()) {
@@ -155,26 +222,50 @@ void Flow2Auth::slotPollTimerTimeout()
             }
             qCDebug(lcFlow2auth) << "Error when polling for the appPassword" << json << errorReason;
 
+            // We get a 404 until authentication is done, so don't show this error in the GUI.
+            if(reply->error() != QNetworkReply::ContentNotFoundError)
+                emit result(Error, errorReason);
+
             // Forget sensitive data
             appPassword.clear();
             loginName.clear();
 
             // Failed: poll again
-            _pollTimer.start();
+            _secondsLeft = _secondsInterval;
+            _isBusy = false;
             return;
         }
+
+        _pollTimer.stop();
 
         // Success
         qCInfo(lcFlow2auth) << "Success getting the appPassword for user: " << loginName << ", server: " << serverUrl.toString();
 
         _account->setUrl(serverUrl);
 
-        emit result(LoggedIn, loginName, appPassword);
+        emit result(LoggedIn, QString(), loginName, appPassword);
 
         // Forget sensitive data
         appPassword.clear();
         loginName.clear();
+
+        _loginUrl.clear();
+        _pollToken.clear();
+        _pollEndpoint.clear();
+
+        _isBusy = false;
+        _hasToken = false;
     });
+}
+
+void Flow2Auth::slotPollNow()
+{
+    // poll now if we're not already doing so
+    if(_isBusy || !_hasToken)
+        return;
+
+    _secondsLeft = 1;
+    slotPollTimerTimeout();
 }
 
 } // namespace OCC
