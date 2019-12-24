@@ -19,6 +19,11 @@ namespace QKeychain {
 
 namespace OCC {
 
+namespace KeychainChunk {
+    class ReadJob;
+    class WriteJob;
+}
+
 class WebFlowCredentialsDialog;
 
 class WebFlowCredentials : public AbstractCredentials
@@ -62,14 +67,14 @@ private slots:
 
     void slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host);
 
-    void slotReadClientCertPEMJobDone(QKeychain::Job *incomingJob);
-    void slotReadClientKeyPEMJobDone(QKeychain::Job *incomingJob);
-    void slotReadClientCaCertsPEMJobDone(QKeychain::Job *incommingJob);
+    void slotReadClientCertPEMJobDone(KeychainChunk::ReadJob *readJob);
+    void slotReadClientKeyPEMJobDone(KeychainChunk::ReadJob *readJob);
+    void slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob *readJob);
     void slotReadPasswordJobDone(QKeychain::Job *incomingJob);
 
-    void slotWriteClientCertPEMJobDone();
-    void slotWriteClientKeyPEMJobDone();
-    void slotWriteClientCaCertsPEMJobDone(QKeychain::Job *incomingJob);
+    void slotWriteClientCertPEMJobDone(KeychainChunk::WriteJob *writeJob);
+    void slotWriteClientKeyPEMJobDone(KeychainChunk::WriteJob *writeJob);
+    void slotWriteClientCaCertsPEMJobDone(KeychainChunk::WriteJob *writeJob);
     void slotWriteJobDone(QKeychain::Job *);
 
 private:
@@ -90,19 +95,6 @@ private:
      */
     static constexpr int _clientSslCaCertificatesMaxCount = 10;
     QQueue<QSslCertificate> _clientSslCaCertificatesWriteQueue;
-
-    /*
-     * Workaround: ...and this time only on Windows:
-     *
-     * Split the private key into chunks of 2048 bytes,
-     * to allow 4k (4096 bit) keys to be saved (see limits above)
-     */
-    void writeSingleClientKeyChunkPEM(QKeychain::Job *incomingJob);
-
-    static constexpr int _clientSslKeyChunkSize = 2048;
-    static constexpr int _clientSslKeyMaxChunks = 10;
-    int _clientSslKeyChunkCount = 0;
-    QByteArray _clientSslKeyChunkBufferPEM;
 
 protected:
     /** Reads data from keychain locations
@@ -134,6 +126,6 @@ protected:
     WebFlowCredentialsDialog *_askDialog;
 };
 
-}
+} // namespace OCC
 
 #endif // WEBFLOWCREDENTIALS_H
