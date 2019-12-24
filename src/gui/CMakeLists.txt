@@ -109,6 +109,7 @@ set(client_SRCS
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
     creds/flow2auth.cpp
+    creds/keychainchunk.cpp
     creds/webflowcredentials.cpp
     creds/webflowcredentialsdialog.cpp
     wizard/postfixlineedit.cpp
