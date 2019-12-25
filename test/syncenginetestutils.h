@@ -716,7 +716,7 @@ class FakeErrorReply : public QNetworkReply
 public:
     FakeErrorReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
                    QObject *parent, int httpErrorCode)
-    : QNetworkReply{parent},{
+    QNetworkReply{parent},{
         setRequest(request);
         setUrl(request.url());
         setOperation(op);
