@@ -31,9 +31,12 @@ class PropagateRemoteMkdir : public PropagateItemJob
 public:
     PropagateRemoteMkdir(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateItemJob(propagator, item)
+        , _propagator(propagator)
         , _deleteExisting(false)
+        , _needsEncryption(false)
     {
     }
+
     void start() override;
     void abort(PropagatorJob::AbortType abortType) override;
 
@@ -48,11 +51,30 @@ public:
      */
     void setDeleteExisting(bool enabled);
 
+
 private slots:
+    void slotFolderEncryptedStatusFetched(const QString &folder, bool isEncrypted);
+    void slotFolderEncryptedStatusError(int error);
+    void slotStartMkdir();
     void slotStartMkcolJob();
     void slotMkcolJobFinished();
     void propfindResult(const QVariantMap &);
     void propfindError();
+
+    // Encryption Related Stuff.
+    void slotStartMarkEncryptedJob();
+    void slotEncryptionFlagSuccess(const QByteArray &folderId);
+    void slotEncryptionFlagError(const QByteArray &folderId, int httpReturnCode);
+    void slotLockForEncryptionSuccess(const QByteArray& folderId, const QByteArray& token);
+    void slotLockForEncryptionError(const QByteArray &folderId, int httpReturnCode);
+    void slotUnlockFolderSuccess(const QByteArray& folderId);
+    void slotUnlockFolderError(const QByteArray& folderId, int httpReturnCode);
+    void slotUploadMetadataSuccess(const QByteArray& folderId);
+    void slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode);
+
     void success();
+private:
+    OwncloudPropagator *_propagator;
+    bool _needsEncryption;
 };
 }
