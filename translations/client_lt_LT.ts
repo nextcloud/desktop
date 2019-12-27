@@ -786,7 +786,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Nuoroda nukopijuota į iškarpinę.</translation>
     </message>
 </context>
 <context>
