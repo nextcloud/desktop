@@ -31,7 +31,9 @@ class PropagateRemoteMkdir : public PropagateItemJob
 public:
     PropagateRemoteMkdir(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateItemJob(propagator, item)
+        ,  _propagator(propagator)
         , _deleteExisting(false)
+        , _needsEncryption(false)
     {
     }
     void start() override;
