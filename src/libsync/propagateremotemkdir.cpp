@@ -166,6 +166,8 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
     // mark folder encrypted on the server after creating it but before adding any more files to it
     if (_needsEncryption) {
         slotStartMarkEncryptedJob();
+    } else {
+        success();
     }
 }
 
@@ -182,6 +184,8 @@ void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
     // mark folder encrypted on the server after creating it but before adding any more files to it
     if (_needsEncryption) {
         slotStartMarkEncryptedJob();
+    } else {
+        success();
     }
 }
 
