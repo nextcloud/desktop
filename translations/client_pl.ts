@@ -380,7 +380,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1066"/>
         <source>Log in</source>
-        <translation>Zaloguj</translation>
+        <translation>Zaloguj się</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1162"/>
@@ -3480,7 +3480,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentialsdialog.cpp" line="34"/>
         <source>Log in</source>
-        <translation>Zaloguj</translation>
+        <translation>Zaloguj się</translation>
     </message>
 </context>
 <context>
@@ -3624,7 +3624,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
-        <translation>Zaloguj...</translation>
+        <translation>Zaloguj się...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="692"/>
@@ -3818,7 +3818,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
-        <translation>Zaloguj</translation>
+        <translation>Zaloguj się</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
