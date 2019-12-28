@@ -17,6 +17,8 @@
 #include "account.h"
 #include "common/syncjournalfilerecord.h"
 #include "propagateremotedelete.h"
+#include "clientsideencryptionjobs.h"
+#include "clientsideencryption.h"
 #include "common/asserts.h"
 
 #include <QFile>
@@ -26,7 +28,46 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagateRemoteMkdir, "nextcloud.sync.propagator.remotemkdir", QtInfoMsg)
 
+
 void PropagateRemoteMkdir::start()
+{
+    if (_propagator->account()->capabilities().clientSideEncryptionAvaliable()) {
+        int slashPos = _item->_file.lastIndexOf('/');
+        QString parentDir = slashPos <= 0 ? "" : _item->_file.mid(0, slashPos);
+        qCInfo(lcPropagateRemoteMkdir) << "JORE parentDir=" << parentDir;
+
+        // code to check if parentDir is encrypted on the server 
+        auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), parentDir);
+
+        connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
+              this, &PropagateRemoteMkdir::slotFolderEncryptedStatusFetched);
+        connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
+             this, &PropagateRemoteMkdir::slotFolderEncryptedStatusError);
+        getEncryptedStatus->start();
+        _job = getEncryptedStatus;
+    } else {
+        slotStartMkdir();
+    }
+}
+
+void PropagateRemoteMkdir::slotFolderEncryptedStatusFetched(const QString &folder, bool isEncrypted)
+{
+    qCDebug(lcPropagateRemoteMkdir) << "Encrypted Status Fetched" << folder << isEncrypted;
+
+    if (isEncrypted) {
+        /* We are inside an encrypted folder, we need to mark the current (new) directory as encrypted */
+        qCDebug(lcPropagateRemoteMkdir) << "Parent Folder is encrypted, let's encrypt this new folder.";
+        _needsEncryption = true;
+    }
+    slotStartMkdir();
+}
+
+void PropagateRemoteMkdir::slotFolderEncryptedStatusError(int error)
+{
+    qCInfo(lcPropagateRemoteMkdir) << "Failed to retrieve the encryption status of the parent folder." << error;
+}
+
+void PropagateRemoteMkdir::slotStartMkdir()
 {
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
@@ -121,7 +162,11 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         _job = propfindJob;
         return;
     }
-    success();
+
+    // mark folder encrypted on the server after creating it but before adding any more files to it
+    if (_needsEncryption) {
+        slotStartMarkEncryptedJob();
+    }
 }
 
 void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
@@ -133,7 +178,11 @@ void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
     if (result.contains("id")) {
         _item->_fileId = result["id"].toByteArray();
     }
-    success();
+
+    // mark folder encrypted on the server after creating it but before adding any more files to it
+    if (_needsEncryption) {
+        slotStartMarkEncryptedJob();
+    }
 }
 
 void PropagateRemoteMkdir::propfindError()
@@ -143,6 +192,127 @@ void PropagateRemoteMkdir::propfindError()
     done(SyncFileItem::Success);
 }
 
+
+/////////////////////////////////////////
+// Encryption functions 
+//
+
+void PropagateRemoteMkdir::slotStartMarkEncryptedJob()
+{
+    qCInfo(lcPropagateRemoteMkdir) << "Encrypting the new folder " << _item->_file;
+    propagator()->_activeJobList.append(this);
+    auto encryptJob = new OCC::SetEncryptionFlagApiJob(_job->account(), _item->_fileId);
+    connect(encryptJob, &OCC::SetEncryptionFlagApiJob::success, this, &PropagateRemoteMkdir::slotEncryptionFlagSuccess);
+    connect(encryptJob, &OCC::SetEncryptionFlagApiJob::error, this, &PropagateRemoteMkdir::slotEncryptionFlagError);
+    encryptJob->start();
+    _job = encryptJob;
+}
+
+void PropagateRemoteMkdir::slotEncryptionFlagSuccess(const QByteArray& fileId)
+{
+    _job->account()->e2e()->setFolderEncryptedStatus(_item->_file, true);
+    auto lockJob = new LockEncryptFolderApiJob(_job->account(), fileId);
+    connect(lockJob, &LockEncryptFolderApiJob::success,
+            this, &PropagateRemoteMkdir::slotLockForEncryptionSuccess);
+    connect(lockJob, &LockEncryptFolderApiJob::error,
+            this, &PropagateRemoteMkdir::slotLockForEncryptionError);
+    lockJob->start();
+    _job = lockJob;
+}
+
+void PropagateRemoteMkdir::slotEncryptionFlagError(const QByteArray& fileId, int httpErrorCode)
+{
+    propagator()->_activeJobList.removeOne(this);
+
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
+    qDebug() << "Error on the encryption flag";
+}
+
+void PropagateRemoteMkdir::slotLockForEncryptionSuccess(const QByteArray& fileId, const QByteArray &token)
+{
+    _job->account()->e2e()->setTokenForFolder(fileId, token);
+
+    FolderMetadata emptyMetadata(_job->account());
+    auto encryptedMetadata = emptyMetadata.encryptedMetadata();
+    if (encryptedMetadata.isEmpty()) {
+        //TODO: Mark the folder as unencrypted as the metadata generation failed.
+        // TODO: delete the folder and fail the operation !!
+        qCWarning(lcPropagateRemoteMkdir) << "Error marking the folder as encrypted. This is a problem.";
+        return;
+    }
+    auto storeMetadataJob = new StoreMetaDataApiJob(_job->account(), fileId, emptyMetadata.encryptedMetadata());
+    connect(storeMetadataJob, &StoreMetaDataApiJob::success,
+                    this, &PropagateRemoteMkdir::slotUploadMetadataSuccess);
+    connect(storeMetadataJob, &StoreMetaDataApiJob::error,
+                    this, &PropagateRemoteMkdir::slotUpdateMetadataError);
+
+    storeMetadataJob->start();
+    _job = storeMetadataJob;
+}
+
+void PropagateRemoteMkdir::slotUploadMetadataSuccess(const QByteArray& folderId)
+{
+    const auto token = _job->account()->e2e()->tokenForFolder(folderId);
+    auto unlockJob = new UnlockEncryptFolderApiJob(_job->account(), folderId, token);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success,
+                    this, &PropagateRemoteMkdir::slotUnlockFolderSuccess);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error,
+                    this, &PropagateRemoteMkdir::slotUnlockFolderError);
+    unlockJob->start();
+    _job = unlockJob;
+}
+
+void PropagateRemoteMkdir::slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode)
+{
+    Q_UNUSED(httpReturnCode);
+
+    const auto token = _job->account()->e2e()->tokenForFolder(folderId);
+    auto unlockJob = new UnlockEncryptFolderApiJob(_job->account(), folderId, token);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success,
+                    this, &PropagateRemoteMkdir::slotUnlockFolderSuccess);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error,
+                    this, &PropagateRemoteMkdir::slotUnlockFolderError);
+    unlockJob->start();
+    _job = unlockJob;
+}
+
+void PropagateRemoteMkdir::slotLockForEncryptionError(const QByteArray& fileId, int httpErrorCode)
+{
+    propagator()->_activeJobList.removeOne(this);
+
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
+
+    qCInfo(lcPropagateRemoteMkdir) << "Locking error" << httpErrorCode;
+
+    done(SyncFileItem::NormalError, "Error locking directory");
+}
+
+void PropagateRemoteMkdir::slotUnlockFolderError(const QByteArray& fileId, int httpErrorCode)
+{
+    propagator()->_activeJobList.removeOne(this);
+
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
+
+    qCInfo(lcPropagateRemoteMkdir) << "Unlocking error!" << _item->_file;
+
+    done(SyncFileItem::NormalError, "Error unlocking directory");
+}
+
+void PropagateRemoteMkdir::slotUnlockFolderSuccess(const QByteArray& fileId)
+{
+    propagator()->_activeJobList.removeOne(this);
+
+    Q_UNUSED(fileId);
+
+    qCInfo(lcPropagateRemoteMkdir) << "Unlocking success!" << _item->_file;
+
+    success();
+}
+
+// call when all is done (including encryption, locking, etc)
 void PropagateRemoteMkdir::success()
 {
     // save the file id already so we can detect rename or remove
@@ -152,6 +322,8 @@ void PropagateRemoteMkdir::success()
         return;
     }
 
+    qCInfo(lcPropagateRemoteMkdir) << "Marking job as a success" << _item->_file;
     done(SyncFileItem::Success);
 }
-}
+
+} // namespace OCC
