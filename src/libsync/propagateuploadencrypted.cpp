@@ -11,6 +11,7 @@
 #include <QTemporaryFile>
 #include <QLoggingCategory>
 #include <QMimeDatabase>
+#include <QRandomGenerator>
 
 namespace OCC {
 
@@ -98,8 +99,6 @@ void PropagateUploadEncrypted::slotTryLock(const QByteArray& fileId)
 void PropagateUploadEncrypted::slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token)
 {
   qCDebug(lcPropagateUploadEncrypted) << "Folder" << fileId << "Locked Successfully for Upload, Fetching Metadata";
-  // Should I use a mutex here?
-  _currentLockingInProgress = true;
   _folderToken = token;
   _folderId = fileId;
 
@@ -230,20 +229,16 @@ void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId,
 void PropagateUploadEncrypted::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
 {
     Q_UNUSED(httpErrorCode);
-    /* try to call the lock from 5 to 5 seconds
-     * and fail if it's more than 5 minutes. */
-    QTimer::singleShot(5000, this, [this, fileId]{
-        if (!_currentLockingInProgress) {
-            qCDebug(lcPropagateUploadEncrypted) << "Error locking the folder while no other update is locking it up.";
-            qCDebug(lcPropagateUploadEncrypted) << "Perhaps another client locked it.";
-            qCDebug(lcPropagateUploadEncrypted) << "Abort";
-        return;
-        }
 
+    // wait for a random time between 100ms and 3 seconds, this tries to race less between multiple 
+    // files in one directory
+    int waitTimeMs = QRandomGenerator::securelySeeded().bounded(100, 3000);
+    qCInfo(lcPropagateUploadEncrypted) << "Failed to lock folder. Waiting " << waitTimeMs << " ms before trying again";
+    QTimer::singleShot(waitTimeMs, this, [this, fileId]{
         // Perhaps I should remove the elapsed timer if the lock is from this client?
         if (_folderLockFirstTry.elapsed() > /* five minutes */ 1000 * 60 * 5 ) {
-            qCDebug(lcPropagateUploadEncrypted) << "One minute passed, ignoring more attemps to lock the folder.";
-        return;
+            qCDebug(lcPropagateUploadEncrypted) << "Five minutes passed, ignoring more attemps to lock the folder.";
+            emit error();        
         }
         slotTryLock(fileId);
     });
