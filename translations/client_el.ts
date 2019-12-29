@@ -771,7 +771,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="143"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Αναμονή εξουσιοδότησης</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
@@ -786,7 +786,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Ο σύνδεσμος αντιγράφηκε στο πρόχειρο.</translation>
     </message>
 </context>
 <context>
@@ -2904,7 +2904,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Επιλογές κοινής χρήσης</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="626"/>
@@ -3474,7 +3474,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentialsdialog.cpp" line="34"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Είσοδος</translation>
     </message>
 </context>
 <context>
@@ -3794,7 +3794,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Επανεκκίνηση Περιηγητή</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
