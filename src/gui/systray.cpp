@@ -37,7 +37,6 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     : _currentAccount(nullptr)
     , _trayComponent(nullptr)
     , _trayContext(nullptr)
-    , _accountMenuModel(nullptr)
 {
     // Create QML tray engine, build component, set C++ backend context used in window.qml
     // Use pointer instead of engine() helper function until Qt 5.12 is minimum standard
@@ -45,10 +44,9 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     _trayComponent = new QQmlComponent(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/window.qml")));
     _trayContext = engine->contextForObject(_trayComponent->create());
 
-    _accountMenuModel = UserModel::instance();
-
     engine->addImageProvider("avatars", new ImageProvider);
-    engine->rootContext()->setContextProperty("systrayBackend", _accountMenuModel);
+    engine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
+    engine->rootContext()->setContextProperty("systrayBackend", this);
 
     // TODO: hack to pass the icon to QML
     //ctxt->setContextProperty("theme", QLatin1String("colored"));
@@ -60,7 +58,7 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
 
     //connect(AccountManager::instance(), &AccountManager::accountAdded,
     //    this, &Systray::slotChangeActivityModel);
-    UserModel::instance()->hideWindow();
+    hideWindow();
 }
 
 Systray::~Systray()

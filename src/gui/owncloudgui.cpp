@@ -188,7 +188,7 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
                 raiseDialog(_settingsDialog.data());
             }
 #else
-            UserModel::instance()->showWindow();
+            _tray->showWindow();
             //slotOpenSettingsDialog();
 #endif
         }

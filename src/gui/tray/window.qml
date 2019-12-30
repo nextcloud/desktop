@@ -29,15 +29,19 @@ Window {
     }
 
     Connections {
-        target: systrayBackend
+        target: userModelBackend
         onRefreshCurrentUserGui: {
-            currentAccountAvatar.source = systrayBackend.currentUserAvatar()
-            currentAccountUser.text = systrayBackend.currentUserName()
-            currentAccountServer.text = systrayBackend.currentUserServer()
+            currentAccountAvatar.source = userModelBackend.currentUserAvatar()
+            currentAccountUser.text = userModelBackend.currentUserName()
+            currentAccountServer.text = userModelBackend.currentUserServer()
         }
         onNewUserSelected: {
             accountMenu.close()
         }
+    }
+
+    Connections {
+        target: systrayBackend
         onShowWindow: {
             trayWindow.show();
             trayWindow.requestActivate();
@@ -102,7 +106,7 @@ Window {
                             }
 
                             Instantiator {
-                                model: systrayBackend
+                                model: userModelBackend
                                 delegate: UserLine {}
                                 onObjectAdded: accountMenu.insertItem(index, object)
                                 onObjectRemoved: accountMenu.removeItem(object)
@@ -111,22 +115,22 @@ Window {
                             MenuSeparator { id: accountMenuSeparator }
 
                             MenuItem {
-                                text: (systrayBackend.isCurrentUserConnected() ? "Logout" : "Login")
-                                onClicked: (systrayBackend.isCurrentUserConnected()
-                                            ? systrayBackend.logout()
-                                            : systrayBackend.login() )
+                                text: (userModelBackend.isCurrentUserConnected() ? "Logout" : "Login")
+                                onClicked: (userModelBackend.isCurrentUserConnected()
+                                            ? userModelBackend.logout()
+                                            : userModelBackend.login() )
                             }
                             MenuItem {
                                 text: "Add Account"
-                                onClicked: systrayBackend.addAccount()
+                                onClicked: userModelBackend.addAccount()
                             }
                             MenuItem {
                                 text: "Remove Account"
-                                onClicked: systrayBackend.removeAccount()
+                                onClicked: userModelBackend.removeAccount()
                             }
 
                             Component.onCompleted: {
-                                if(systrayBackend.numUsers() === 0) {
+                                if(userModelBackend.numUsers() === 0) {
                                     accountMenuSeparator.height = 0
                                 } else {
                                     accountMenuSeparator.height = 13
@@ -190,7 +194,7 @@ Window {
                             id: currentAccountAvatar
                             Layout.leftMargin: 8
                             verticalAlignment: Qt.AlignCenter
-                            source: systrayBackend.currentUserAvatar()
+                            source: userModelBackend.currentUserAvatar()
                             Layout.preferredHeight: (trayWindowHeaderBackground.height -16)
                             Layout.preferredWidth: (trayWindowHeaderBackground.height -16)
                         }
@@ -202,14 +206,14 @@ Window {
                             Layout.leftMargin: 6
                             Label {
                                 id: currentAccountUser
-                                text: systrayBackend.currentUserName()
+                                text: userModelBackend.currentUserName()
                                 color: "white"
                                 font.pointSize: 9
                                 font.bold: true
                             }
                             Label {
                                 id: currentAccountServer
-                                text: systrayBackend.currentUserServer()
+                                text: userModelBackend.currentUserServer()
                                 color: "white"
                                 font.pointSize: 8
                             }

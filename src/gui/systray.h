@@ -47,11 +47,12 @@ public:
     ~Systray();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
-    void showWindow();
-    void hideWindow();
 
 signals:
     void currentUserChanged();
+
+    Q_INVOKABLE void hideWindow();
+    Q_INVOKABLE void showWindow();
 
 private slots:
     void slotChangeActivityModel(const AccountStatePtr account);
@@ -60,7 +61,6 @@ private:
     AccountStatePtr _currentAccount;
     QQmlComponent *_trayComponent;
     QQmlContext *_trayContext;
-    UserModel *_accountMenuModel;
 };
 
 } // namespace OCC
