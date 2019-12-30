@@ -20,14 +20,6 @@ Window {
         }
     }
 
-    Component.onCompleted: {
-        /* desktopAvailableWidth and Height doesn't include the system tray bar
-               but breaks application anyway on windows when using multi monitor setup,
-               will look for a better solution later, for now just get this thing complete */
-        //setX(Screen.desktopAvailableWidth - width);
-        //setY(Screen.desktopAvailableHeight + height);
-    }
-
     Connections {
         target: userModelBackend
         onRefreshCurrentUserGui: {
@@ -45,6 +37,8 @@ Window {
         onShowWindow: {
             trayWindow.show();
             trayWindow.requestActivate();
+            trayWindow.setX( systrayBackend.calcTrayWindowX());
+            trayWindow.setY( systrayBackend.calcTrayWindowY());
         }
         onHideWindow: {
             trayWindow.hide();

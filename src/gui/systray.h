@@ -48,6 +48,9 @@ public:
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
 
+    Q_INVOKABLE int calcTrayWindowX();
+    Q_INVOKABLE int calcTrayWindowY();
+
 signals:
     void currentUserChanged();
 

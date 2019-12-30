@@ -18,8 +18,10 @@
 #include "config.h"
 #include "tray/UserModel.h"
 
+#include <QGuiApplication>
 #include <QQmlComponent>
 #include <QQmlEngine>
+#include <QScreen>
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
@@ -96,5 +98,61 @@ void Systray::setToolTip(const QString &tip)
 {
     QSystemTrayIcon::setToolTip(tr("%1: %2").arg(Theme::instance()->appNameGUI(), tip));
 }
+
+int Systray::calcTrayWindowX()
+{
+    QScreen* trayScreen = QGuiApplication::screenAt(this->geometry().topRight());
+    // get coordinates from top center point of tray icon
+    int trayIconTopCenterX = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).x();
+    int trayIconTopCenterY = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).y();
+
+    if ( (trayScreen->geometry().width() - trayIconTopCenterX) < (trayScreen->geometry().width() * 0.5) ) {
+        // tray icon is on right side of the screen
+        if ( ((trayScreen->geometry().width() - trayIconTopCenterX) < trayScreen->geometry().height() - trayIconTopCenterY)
+            && ((trayScreen->geometry().width() - trayIconTopCenterX) < trayIconTopCenterY) ) {
+            // taskbar is on the right
+            return trayScreen->availableSize().width() - 400 - 6;
+        } else {
+            // taskbar is on the bottom or top
+            if (trayIconTopCenterX - (400 * 0.5) < 0) {
+                return 6;
+            } else if (trayIconTopCenterX - (400 * 0.5) > trayScreen->geometry().width()) {
+                return trayScreen->geometry().width() - 406;
+            } else {
+                return trayIconTopCenterX - (400 * 0.5);
+            }
+        }
+    } else {
+        // tray icon is on left side of the screen
+        return (trayScreen->geometry().width() - trayScreen->availableGeometry().width()) + 6;
+    }
+}
+int Systray::calcTrayWindowY()
+{
+    QScreen *trayScreen = QGuiApplication::screenAt(this->geometry().topRight());
+    // get coordinates from top center point of tray icon
+    int trayIconTopCenterX = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).x();
+    int trayIconTopCenterY = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).y();
+
+    if ( (trayScreen->geometry().height() - trayIconTopCenterY) < (trayScreen->geometry().height() * 0.5) ) {
+        // tray icon is on bottom side of the screen
+        if ( ((trayScreen->geometry().height() - trayIconTopCenterY) < trayScreen->geometry().width() - trayIconTopCenterX )
+            && ((trayScreen->geometry().height() - trayIconTopCenterY) < trayIconTopCenterX) ) {
+            // taskbar is on the bottom
+            return trayScreen->availableSize().height() - 500 - 6;
+        } else {
+            // taskbar is on the right or left
+            if (trayIconTopCenterY - 500 > 0) {
+                return trayIconTopCenterY - 500;
+            } else {
+                return 6;
+            }
+        }
+    } else {
+        // tray icon is on the top
+        return (trayScreen->geometry().height() - trayScreen->availableGeometry().height()) + 6;
+    }
+}
+
 
 } // namespace OCC
