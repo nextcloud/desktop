@@ -35,14 +35,15 @@ namespace OCC {
 
 Systray::Systray() // TODO: make singleton, provide ::instance()
     : _currentAccount(nullptr)
+    , _trayComponent(nullptr)
     , _trayContext(nullptr)
     , _accountMenuModel(nullptr)
 {
     // Create QML tray engine, build component, set C++ backend context used in window.qml
     // Use pointer instead of engine() helper function until Qt 5.12 is minimum standard
     QQmlEngine *engine = new QQmlEngine;
-    QQmlComponent systray(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/window.qml")));
-    _trayContext = engine->contextForObject(systray.create());
+    _trayComponent = new QQmlComponent(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/window.qml")));
+    _trayContext = engine->contextForObject(_trayComponent->create());
 
     _accountMenuModel = UserModel::instance();
 
@@ -54,12 +55,12 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     //ctxt->setContextProperty("filename", "state-offline");
 
     if (!AccountManager::instance()->accounts().isEmpty()) {
-
         slotChangeActivityModel(AccountManager::instance()->accounts().first());
     }
 
     //connect(AccountManager::instance(), &AccountManager::accountAdded,
     //    this, &Systray::slotChangeActivityModel);
+    UserModel::instance()->hideWindow();
 }
 
 Systray::~Systray()

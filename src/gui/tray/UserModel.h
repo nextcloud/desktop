@@ -45,9 +45,9 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-    QImage currentUserAvatar();
     QImage avatarById(const int &id);
 
+    Q_INVOKABLE QImage currentUserAvatar();
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE bool isCurrentUserConnected();
     Q_INVOKABLE QString currentUserName();
@@ -71,6 +71,9 @@ signals:
     Q_INVOKABLE void refreshCurrentUserGui();
     Q_INVOKABLE void newUserSelected();
     Q_INVOKABLE void refreshUserMenu();
+
+    Q_INVOKABLE void hideWindow();
+    Q_INVOKABLE void showWindow();
 
 protected:
     QHash<int, QByteArray> roleNames() const;

@@ -47,6 +47,8 @@ public:
     ~Systray();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
+    void showWindow();
+    void hideWindow();
 
 signals:
     void currentUserChanged();
@@ -56,6 +58,7 @@ private slots:
 
 private:
     AccountStatePtr _currentAccount;
+    QQmlComponent *_trayComponent;
     QQmlContext *_trayContext;
     UserModel *_accountMenuModel;
 };

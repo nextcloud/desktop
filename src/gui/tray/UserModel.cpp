@@ -114,7 +114,7 @@ Q_INVOKABLE bool UserModel::isCurrentUserConnected()
     return _users[_currentUserId].isConnected();
 }
 
-QImage UserModel::currentUserAvatar()
+Q_INVOKABLE QImage UserModel::currentUserAvatar()
 {
     return _users[_currentUserId].avatar();
 }

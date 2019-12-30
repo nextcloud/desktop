@@ -14,6 +14,12 @@ Window {
     color: "transparent"
     flags: Qt.FramelessWindowHint
 
+    onActiveChanged: {
+        if(!active) {
+            trayWindow.hide();
+        }
+    }
+
     Component.onCompleted: {
         /* desktopAvailableWidth and Height doesn't include the system tray bar
                but breaks application anyway on windows when using multi monitor setup,
@@ -31,6 +37,13 @@ Window {
         }
         onNewUserSelected: {
             accountMenu.close()
+        }
+        onShowWindow: {
+            trayWindow.show();
+            trayWindow.requestActivate();
+        }
+        onHideWindow: {
+            trayWindow.hide();
         }
     }
 
