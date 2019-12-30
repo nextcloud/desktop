@@ -771,22 +771,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="143"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>等待授权</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>轮询授权</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>开始授权</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>链接已复制到剪贴板。</translation>
     </message>
 </context>
 <context>
@@ -2080,7 +2080,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>易用的邮件、日历和联系人</translation>
+        <translation>易用的网页邮件、日历 &amp; 联系人</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
@@ -3478,7 +3478,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentialsdialog.cpp" line="34"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>登录</translation>
     </message>
 </context>
 <context>

@@ -771,17 +771,17 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="143"/>
         <source>Waiting for authorization</source>
-        <translation>Agardando pola autorización</translation>
+        <translation>Agardando autorización</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
         <source>Polling for authorization</source>
-        <translation>Enquisas por autorización</translation>
+        <translation>Solicitando autorización</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Iniciando autorización</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>

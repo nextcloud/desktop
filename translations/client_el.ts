@@ -285,7 +285,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="613"/>
         <location filename="../src/gui/accountsettings.cpp" line="649"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Έλεγχος εξαιρούμενων</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="653"/>
@@ -295,7 +295,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="659"/>
         <source>Force sync now</source>
-        <translation>Εξαναγκασμός συγχρονισμού τώρα</translation>
+        <translation>Συγχρονισμός τώρα</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="661"/>
@@ -305,22 +305,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="670"/>
         <source>Remove folder sync connection</source>
-        <translation>Αφαίρεση σύνδεσης συγχρονισμού φακέλου</translation>
+        <translation>Αφαίρεση συγχρονισμού φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="741"/>
         <source>Folder creation failed</source>
-        <translation>Αποτυχία αφαίρεσης φακέλου</translation>
+        <translation>Αποτυχία δημιουρργίας φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="795"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Επιβεβαίωση αφαίρεσης σύνδεσης συγχρονισμού φακέλου</translation>
+        <translation>Επιβεβαίωση αφαίρεσης συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="802"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Αφαίρεση σύνδεσης συγχρονισμού φακέλου</translation>
+        <translation>Αφαίρεση συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="887"/>
