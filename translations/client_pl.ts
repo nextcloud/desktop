@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="239"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation>Pliki z listy ignorowanych oraz linki symboliczne nie są synchronizowane. Zawarte:</translation>
+        <translation>Pliki z listy ignorowanych oraz dowiązania symboliczne nie są synchronizowane. Uwzględnia to:</translation>
     </message>
 </context>
 <context>
@@ -625,7 +625,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="206"/>
         <source>Quit %1</source>
-        <translation>Wyjdź %1</translation>
+        <translation>Wyjdź z %1</translation>
     </message>
 </context>
 <context>
@@ -1531,7 +1531,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>Ustawienia ignorowanych plików (pomijanych)</translation>
+        <translation>Ustawienia ignorowanych plików</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -1583,7 +1583,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Pliki lub foldery pasujące do szablonu nie będą zsynchronizowane.
 
-Elementy, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawnienia folderu dopuszczają usuwanie. Jest to przydatne dla metadanych.</translation>
+Elementy, których usunięcie jest dozwolone, zostaną usunięte, jeżeli uniemożliwiają usunięcie katalogu. Jest to przydatne w przypadku metadanych.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -3543,7 +3543,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Quit %1</source>
-        <translation>Wyjdź %1</translation>
+        <translation>Wyjdź z %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
