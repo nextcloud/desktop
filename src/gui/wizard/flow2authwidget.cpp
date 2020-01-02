@@ -14,53 +14,66 @@
 
 #include "flow2authwidget.h"
 
-#include <QDesktopServices>
-#include <QProgressBar>
-#include <QLoggingCategory>
-#include <QLocale>
-#include <QMessageBox>
-
-#include <QMenu>
-#include <QClipboard>
-
 #include "common/utility.h"
 #include "account.h"
-#include "theme.h"
 #include "wizard/owncloudwizardcommon.h"
+
+#include "QProgressIndicator.h"
 
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFlow2AuthWidget, "gui.wizard.flow2authwidget", QtInfoMsg)
 
 
-Flow2AuthWidget::Flow2AuthWidget(Account *account, QWidget *parent)
-    : QWidget(parent),
-      _account(account),
-      _ui()
+Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)
+    : QWidget(parent)
+    , _account(nullptr)
+    , _ui()
+    , _progressIndi(new QProgressIndicator(this))
+    , _statusUpdateSkipCount(0)
 {
     _ui.setupUi(this);
 
-    Theme *theme = Theme::instance();
-    _ui.topLabel->hide();
-    _ui.bottomLabel->hide();
-    QVariant variant = theme->customMedia(Theme::oCSetupTop);
-    WizardCommon::setupCustomMedia(variant, _ui.topLabel);
-    variant = theme->customMedia(Theme::oCSetupBottom);
-    WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
-
     WizardCommon::initErrorLabel(_ui.errorLabel);
+    _ui.errorLabel->setTextFormat(Qt::RichText);
 
     connect(_ui.openLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthWidget::slotOpenBrowser);
     connect(_ui.copyLinkButton, &QCommandLinkButton::clicked, this, &Flow2AuthWidget::slotCopyLinkToClipboard);
 
-    _asyncAuth.reset(new Flow2Auth(_account, this));
-    connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthWidget::asyncAuthResult, Qt::QueuedConnection);
-    _asyncAuth->start();
+    _ui.horizontalLayout->addWidget(_progressIndi);
+    stopSpinner(false);
+
+    customizeStyle();
 }
 
-void Flow2AuthWidget::asyncAuthResult(Flow2Auth::Result r, const QString &user,
-    const QString &appPassword)
+void Flow2AuthWidget::startAuth(Account *account)
 {
+    Flow2Auth *oldAuth = _asyncAuth.take();
+    if(oldAuth)
+        oldAuth->deleteLater();
+
+    _statusUpdateSkipCount = 0;
+
+    if(account) {
+        _account = account;
+
+        _asyncAuth.reset(new Flow2Auth(_account, this));
+        connect(_asyncAuth.data(), &Flow2Auth::result, this, &Flow2AuthWidget::slotAuthResult, Qt::QueuedConnection);
+        connect(_asyncAuth.data(), &Flow2Auth::statusChanged, this, &Flow2AuthWidget::slotStatusChanged);
+        connect(this, &Flow2AuthWidget::pollNow, _asyncAuth.data(), &Flow2Auth::slotPollNow);
+        _asyncAuth->start();
+    }
+}
+
+void Flow2AuthWidget::resetAuth(Account *account)
+{
+    startAuth(account);
+}
+
+void Flow2AuthWidget::slotAuthResult(Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
+{
+    stopSpinner(false);
+
     switch (r) {
     case Flow2Auth::NotSupported:
         /* Flow2Auth can't open browser */
@@ -69,15 +82,16 @@ void Flow2AuthWidget::asyncAuthResult(Flow2Auth::Result r, const QString &user,
         break;
     case Flow2Auth::Error:
         /* Error while getting the access token.  (Timeout, or the server did not accept our client credentials */
+        _ui.errorLabel->setText(errorString);
         _ui.errorLabel->show();
         break;
     case Flow2Auth::LoggedIn: {
-        _user = user;
-        _appPassword = appPassword;
-        emit urlCatched(_user, _appPassword, QString());
+        _ui.errorLabel->hide();
         break;
     }
     }
+
+    emit authResult(r, errorString, user, appPassword);
 }
 
 void Flow2AuthWidget::setError(const QString &error) {
@@ -90,11 +104,8 @@ void Flow2AuthWidget::setError(const QString &error) {
 }
 
 Flow2AuthWidget::~Flow2AuthWidget() {
-    _asyncAuth.reset();
-
     // Forget sensitive data
-    _appPassword.clear();
-    _user.clear();
+    _asyncAuth.reset();
 }
 
 void Flow2AuthWidget::slotOpenBrowser()
@@ -108,8 +119,79 @@ void Flow2AuthWidget::slotOpenBrowser()
 
 void Flow2AuthWidget::slotCopyLinkToClipboard()
 {
+    if (_ui.errorLabel)
+        _ui.errorLabel->hide();
+
     if (_asyncAuth)
-        QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+        _asyncAuth->copyLinkToClipboard();
+}
+
+void Flow2AuthWidget::slotPollNow()
+{
+    emit pollNow();
+}
+
+void Flow2AuthWidget::slotStatusChanged(Flow2Auth::PollStatus status, int secondsLeft)
+{
+    switch(status)
+    {
+    case Flow2Auth::statusPollCountdown:
+        if(_statusUpdateSkipCount > 0) {
+            _statusUpdateSkipCount--;
+            break;
+        }
+        _ui.statusLabel->setText(tr("Waiting for authorization") + QString("… (%1)").arg(secondsLeft));
+        stopSpinner(true);
+        break;
+    case Flow2Auth::statusPollNow:
+        _statusUpdateSkipCount = 0;
+        _ui.statusLabel->setText(tr("Polling for authorization") + "…");
+        startSpinner();
+        break;
+    case Flow2Auth::statusFetchToken:
+        _statusUpdateSkipCount = 0;
+        _ui.statusLabel->setText(tr("Starting authorization") + "…");
+        startSpinner();
+        break;
+    case Flow2Auth::statusCopyLinkToClipboard:
+        _ui.statusLabel->setText(tr("Link copied to clipboard."));
+        _statusUpdateSkipCount = 3;
+        stopSpinner(true);
+        break;
+    }
+}
+
+void Flow2AuthWidget::startSpinner()
+{
+    _ui.horizontalLayout->setEnabled(true);
+    _ui.statusLabel->setVisible(true);
+    _progressIndi->setVisible(true);
+    _progressIndi->startAnimation();
+
+    _ui.openLinkButton->setEnabled(false);
+    _ui.copyLinkButton->setEnabled(false);
+}
+
+void Flow2AuthWidget::stopSpinner(bool showStatusLabel)
+{
+    _ui.horizontalLayout->setEnabled(false);
+    _ui.statusLabel->setVisible(showStatusLabel);
+    _progressIndi->setVisible(false);
+    _progressIndi->stopAnimation();
+
+    _ui.openLinkButton->setEnabled(_statusUpdateSkipCount == 0);
+    _ui.copyLinkButton->setEnabled(_statusUpdateSkipCount == 0);
+}
+
+void Flow2AuthWidget::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void Flow2AuthWidget::customizeStyle()
+{
+    if(_progressIndi)
+        _progressIndi->setColor(QGuiApplication::palette().color(QPalette::Text));
 }
 
 } // namespace OCC

@@ -34,7 +34,6 @@ namespace OCC {
 class Folder;
 
 class SettingsDialog;
-class SettingsDialogMac;
 class ShareDialog;
 class Application;
 class LogBrowser;
@@ -71,6 +70,7 @@ public:
 signals:
     void setupProxy();
     void serverError(int code, const QString &message);
+    void isShowingSettingsDialog();
 
 public slots:
     void setupContextMenu();
@@ -94,6 +94,7 @@ public slots:
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
     void slotOpenSettingsDialog();
+    void slotSettingsDialogActivated();
     void slotHelp();
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
@@ -131,11 +132,7 @@ private:
     void buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;
-#if defined(Q_OS_MAC)
-    QPointer<SettingsDialogMac> _settingsDialog;
-#else
     QPointer<SettingsDialog> _settingsDialog;
-#endif
     QPointer<LogBrowser> _logBrowser;
     // tray's menu
     QScopedPointer<QMenu> _contextMenu;

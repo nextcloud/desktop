@@ -407,7 +407,8 @@ void OwncloudSetupWizard::slotAuthError()
         errorMsg = tr("There was an invalid response to an authenticated webdav request");
     }
 
-    _ocWizard->show();
+    // bring wizard to top
+    _ocWizard->bringToTop();
     if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds || _ocWizard->currentId() == WizardCommon::Page_OAuthCreds || _ocWizard->currentId() == WizardCommon::Page_Flow2AuthCreds) {
         _ocWizard->back();
     }

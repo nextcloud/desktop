@@ -25,11 +25,12 @@
 #include "accountfwd.h"
 #include "creds/flow2auth.h"
 
-#include "ui_flow2authcredspage.h"
-
+class QVBoxLayout;
+class QProgressIndicator;
 
 namespace OCC {
 
+class Flow2AuthWidget;
 
 class Flow2AuthCredsPage : public AbstractCredentialsWizardPage
 {
@@ -46,20 +47,22 @@ public:
     bool isComplete() const override;
 
 public Q_SLOTS:
-    void asyncAuthResult(Flow2Auth::Result, const QString &user, const QString &appPassword);
+    void slotFlow2AuthResult(Flow2Auth::Result, const QString &errorString, const QString &user, const QString &appPassword);
+    void slotPollNow();
+    void slotStyleChanged();
 
 signals:
     void connectToOCUrl(const QString &);
+    void pollNow();
+    void styleChanged();
 
 public:
     QString _user;
     QString _appPassword;
-    QScopedPointer<Flow2Auth> _asyncAuth;
-    Ui_Flow2AuthCredsPage _ui;
 
-protected slots:
-    void slotOpenBrowser();
-    void slotCopyLinkToClipboard();
+private:
+    Flow2AuthWidget *_flow2AuthWidget;
+    QVBoxLayout *_layout;
 };
 
 } // namespace OCC

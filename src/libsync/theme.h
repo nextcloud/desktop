@@ -24,6 +24,7 @@ class QObject;
 class QPixmap;
 class QColor;
 class QPaintDevice;
+class QPalette;
 
 namespace OCC {
 
@@ -355,6 +356,96 @@ public:
     * (actually 2019/09/13 only systray theming).
     */
 	virtual QIcon uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const;
+    
+    /**
+     * @brief Perform a calculation to check if a colour is dark or light and accounts for different sensitivity of the human eye.
+     *
+     * @return True if the specified colour is dark.
+     *
+     * 2019/12/08: Moved here from SettingsDialog.
+     */
+    static bool isDarkColor(const QColor &color);
+    
+    /**
+     * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette or given colour (Dark-/Light-Mode switching).
+     *
+     * @return Background-aware colour for HTML links, based on the current app palette or given colour.
+     *
+     * 2019/12/08: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
+     */
+    static QColor getBackgroundAwareLinkColor(const QColor &backgroundColor);
+    
+    /**
+     * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette (Dark-/Light-Mode switching).
+     *
+     * @return Background-aware colour for HTML links, based on the current app palette.
+     *
+     * 2019/12/08: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
+     */
+    static QColor getBackgroundAwareLinkColor();
+
+    /**
+     * @brief Appends a CSS-style colour value to all HTML link tags in a given string, based on the current app palette or given colour (Dark-/Light-Mode switching).
+     *
+     * 2019/12/08: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
+     *
+     * This way we also avoid having certain strings re-translated on Transifex.
+     */
+    static void replaceLinkColorStringBackgroundAware(QString &linkString, const QColor &backgroundColor);
+
+    /**
+     * @brief Appends a CSS-style colour value to all HTML link tags in a given string, based on the current app palette (Dark-/Light-Mode switching).
+     *
+     * 2019/12/08: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
+     *
+     * This way we also avoid having certain strings re-translated on Transifex.
+     */
+    static void replaceLinkColorStringBackgroundAware(QString &linkString);
+
+    /**
+     * @brief Appends a CSS-style colour value to all HTML link tags in a given string, as specified by newColor.
+     *
+     * 2019/12/19: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
+     *
+     * This way we also avoid having certain strings re-translated on Transifex.
+     */
+    static void replaceLinkColorString(QString &linkString, const QColor &newColor);
+
+    /**
+     * @brief Creates a colour-aware icon based on the specified palette's base colour.
+     *
+     * @return QIcon, colour-aware (inverted on dark backgrounds).
+     *
+     * 2019/12/09: Moved here from SettingsDialog.
+     */
+    static QIcon createColorAwareIcon(const QString &name, const QPalette &palette);
+
+    /**
+     * @brief Creates a colour-aware icon based on the app palette's base colour (Dark-/Light-Mode switching).
+     *
+     * @return QIcon, colour-aware (inverted on dark backgrounds).
+     *
+     * 2019/12/09: Moved here from SettingsDialog.
+     */
+    static QIcon createColorAwareIcon(const QString &name);
+
+    /**
+     * @brief Creates a colour-aware pixmap based on the specified palette's base colour.
+     *
+     * @return QPixmap, colour-aware (inverted on dark backgrounds).
+     *
+     * 2019/12/09: Adapted from createColorAwareIcon.
+     */
+    static QPixmap createColorAwarePixmap(const QString &name, const QPalette &palette);
+
+    /**
+     * @brief Creates a colour-aware pixmap based on the app palette's base colour (Dark-/Light-Mode switching).
+     *
+     * @return QPixmap, colour-aware (inverted on dark backgrounds).
+     *
+     * 2019/12/09: Adapted from createColorAwareIcon.
+     */
+    static QPixmap createColorAwarePixmap(const QString &name);
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>280</height>
+    <width>580</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,22 +26,6 @@
    <string>Browser Authentication</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QLabel" name="topLabel">
-     <property name="text">
-      <string notr="true">TextLabel</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::RichText</enum>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
@@ -73,7 +57,6 @@
     <widget class="QCommandLinkButton" name="copyLinkButton">
      <property name="font">
       <font>
-       <family>Segoe UI</family>
        <weight>50</weight>
        <bold>false</bold>
       </font>
@@ -84,6 +67,32 @@
     </widget>
    </item>
    <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string notr="true">TextLabel</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout"/>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -91,20 +100,10 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>127</height>
+       <height>107</height>
       </size>
      </property>
     </spacer>
-   </item>
-   <item>
-    <widget class="QLabel" name="bottomLabel">
-     <property name="text">
-      <string notr="true">TextLabel</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::RichText</enum>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

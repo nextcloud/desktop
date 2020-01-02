@@ -156,6 +156,9 @@ void ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
     connect(_linkWidgetList.at(index), &ShareLinkWidget::deleteLinkShare, this, &ShareDialog::slotDeleteShare);
     //connect(_linkWidgetList.at(index), &ShareLinkWidget::resizeRequested, this, &ShareDialog::slotAdjustScrollWidgetSize);
 
+    // Connect styleChanged events to our widget, so it can adapt (Dark-/Light-Mode switching)
+    connect(this, &ShareDialog::styleChanged, _linkWidgetList.at(index), &ShareLinkWidget::slotStyleChanged);
+
     _ui->verticalLayout->insertWidget(_linkWidgetList.size()+1, _linkWidgetList.at(index));
     _linkWidgetList.at(index)->setupUiOptions();
 }
@@ -281,6 +284,10 @@ void ShareDialog::showSharingUi()
 
     if (userGroupSharing) {
         _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, _privateLinkUrl, this);
+
+        // Connect styleChanged events to our widget, so it can adapt (Dark-/Light-Mode switching)
+        connect(this, &ShareDialog::styleChanged, _userGroupWidget, &ShareUserGroupWidget::slotStyleChanged);
+
         _ui->verticalLayout->insertWidget(1, _userGroupWidget);
         _userGroupWidget->getShares();
     }
@@ -334,4 +341,21 @@ void ShareDialog::slotAccountStateChanged(int state)
         }
     }
 }
+
+void ShareDialog::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::StyleChange:
+    case QEvent::PaletteChange:
+    case QEvent::ThemeChange:
+        // Notify the other widgets (Dark-/Light-Mode switching)
+        emit styleChanged();
+        break;
+    default:
+        break;
+    }
+
+    QDialog::changeEvent(e);
+}
+
 }

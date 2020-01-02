@@ -40,7 +40,7 @@ namespace OCC {
 FolderStatusDelegate::FolderStatusDelegate()
     : QStyledItemDelegate()
 {
-    m_moreIcon = QIcon(QLatin1String(":/client/resources/more.svg"));
+    customizeStyle();
 }
 
 QString FolderStatusDelegate::addFolderText()
@@ -273,6 +273,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         rect.setHeight(texts.count() * subFm.height() + 2 * margin);
         rect.setRight(option.rect.right() - margin);
 
+        // save previous state to not mess up colours with the background (fixes issue: https://github.com/nextcloud/desktop/issues/1237)
+        auto oldBrush = painter->brush();
+        auto oldPen = painter->pen();
+        auto oldFont = painter->font();
+
         painter->setBrush(color);
         painter->setPen(QColor(0xaa, 0xaa, 0xaa));
         painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, rect),
@@ -289,6 +294,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
                 subFm.elidedText(eText, Qt::ElideLeft, textRect.width()));
             textRect.translate(0, textRect.height());
         }
+
+        // restore previous state
+        painter->setBrush(oldBrush);
+        painter->setPen(oldPen);
+        painter->setFont(oldFont);
 
         h = rect.bottom() + margin;
     };
@@ -349,7 +359,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
         btnOpt.rect = optionsButtonVisualRect;
-        btnOpt.icon = m_moreIcon;
+        btnOpt.icon = _iconMore;
         int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
         btnOpt.iconSize = QSize(e,e);
         QApplication::style()->drawComplexControl(QStyle::CC_ToolButton, &btnOpt, painter);
@@ -423,5 +433,14 @@ QRect FolderStatusDelegate::errorsListRect(QRect within)
     return within;
 }
 
+void FolderStatusDelegate::slotStyleChanged()
+{
+    customizeStyle();
+}
+
+void FolderStatusDelegate::customizeStyle()
+{
+    _iconMore = Theme::createColorAwareIcon(QLatin1String(":/client/resources/more.svg"));
+}
 
 } // namespace OCC
