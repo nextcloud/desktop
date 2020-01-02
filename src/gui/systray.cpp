@@ -101,7 +101,12 @@ void Systray::setToolTip(const QString &tip)
 
 int Systray::calcTrayWindowX()
 {
-    QScreen* trayScreen = QGuiApplication::screenAt(this->geometry().topRight());
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    QScreen *trayScreen = QGuiApplication::screenAt(this->geometry().topRight());
+#else
+    QScreen *trayScreen = QGuiApplication::primaryScreen();
+#endif
+
     // get coordinates from top center point of tray icon
     int trayIconTopCenterX = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).x();
     int trayIconTopCenterY = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).y();
@@ -129,7 +134,12 @@ int Systray::calcTrayWindowX()
 }
 int Systray::calcTrayWindowY()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
     QScreen *trayScreen = QGuiApplication::screenAt(this->geometry().topRight());
+#else
+    QScreen *trayScreen = QGuiApplication::primaryScreen();
+#endif
+    
     // get coordinates from top center point of tray icon
     int trayIconTopCenterX = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).x();
     int trayIconTopCenterY = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).y();
