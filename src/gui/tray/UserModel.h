@@ -21,7 +21,7 @@ public:
     bool isConnected() const;
     bool isCurrentUser() const;
     void setCurrentUser(const bool &isCurrent);
-    Folder* getFolder();
+    Folder *getFolder();
     void openLocalFolder();
     QString name() const;
     QString server() const;
@@ -83,6 +83,40 @@ private:
     int _currentUserId;
 
     void initUserList();
+};
+
+class UserActivity
+{
+public:
+    QString type() const;
+    QString fileName() const;
+    QString info() const;
+};
+
+class ActivityModel : public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    static ActivityModel *instance();
+    virtual ~ActivityModel() {};
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    void addActivity(const UserActivity &activity);
+
+    enum ActivityRoles {
+        TypeRole = Qt::UserRole + 1,
+        FileNameRole,
+        InfoRole
+    };
+
+protected:
+    QHash<int, QByteArray> roleNames() const;
+
+private:
+    static ActivityModel *_instance;
+    ActivityModel(QObject *parent = 0);
+    QList<UserActivity> _activities;
 };
 
 class ImageProvider : public QQuickImageProvider

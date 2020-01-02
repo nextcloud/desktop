@@ -23,7 +23,7 @@ void User::setCurrentUser(const bool &isCurrent)
     _isCurrentUser = isCurrent;
 }
 
-Folder* User::getFolder()
+Folder *User::getFolder()
 {
     foreach (Folder *folder, FolderMan::instance()->map()) {
         if (folder->accountState() == _account.data()) {
@@ -99,12 +99,6 @@ UserModel::UserModel(QObject *parent)
     , _currentUserId()
 {
     // TODO: Remember selected user from last quit via settings file
-    //  this is the reason why this looks like an unnecessary double check atm
-    /*if (AccountManager::instance()->accounts().size() > 0) {
-        addUser(AccountManager::instance()->accounts().first(), true);
-    } else {
-        return;
-    }*/
     if (AccountManager::instance()->accounts().size() > 0) {
         initUserList();
     }
@@ -208,6 +202,76 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[AvatarRole] = "avatar";
     roles[IsCurrentUserRole] = "isCurrentUser";
     return roles;
+}
+
+/*-------------------------------------------------------------------------------------*/
+
+QString UserActivity::type() const
+{
+    return "Test";
+}
+QString UserActivity::fileName() const
+{
+    return "Test";
+}
+
+QString UserActivity::info() const
+{
+    return "Test";
+}
+
+
+ActivityModel *ActivityModel::_instance = nullptr;
+
+ActivityModel *ActivityModel::instance()
+{
+    if (_instance == nullptr) {
+        _instance = new ActivityModel();
+    }
+    return _instance;
+}
+
+ActivityModel::ActivityModel(QObject *parent)
+    : QAbstractListModel()
+{
+}
+
+QHash<int, QByteArray> ActivityModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[TypeRole] = "type";
+    roles[FileNameRole] = "filename";
+    roles[InfoRole] = "info";
+    return roles;
+}
+
+int ActivityModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return _activities.count();
+}
+
+QVariant ActivityModel::data(const QModelIndex &index, int role) const
+{
+    if (index.row() < 0 || index.row() >= _activities.count()) {
+        return QVariant();
+    }
+
+    const UserActivity &activity = _activities[index.row()];
+    if (role == TypeRole)
+        return activity.type();
+    else if (role == FileNameRole)
+        return activity.fileName();
+    else if (role == InfoRole)
+        return activity.info();
+    return QVariant();
+}
+
+void ActivityModel::addActivity(const UserActivity &activity)
+{
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    _activities << activity;
+    endInsertRows();
 }
 
 /*-------------------------------------------------------------------------------------*/

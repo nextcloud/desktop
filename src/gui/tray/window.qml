@@ -263,7 +263,6 @@ Window {
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
 
-                    //icon.source: "../../theme/white/talk-app.svg"
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     icon.color: "transparent"
 
@@ -291,7 +290,6 @@ Window {
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
 
-                    //icon.source: "../../theme/white/more-apps.svg"
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
                     icon.color: "transparent"
 
@@ -355,10 +353,6 @@ Window {
             }
         }   // Rectangle trayWindowHeaderBackground
 
-        ListModel {
-            id: activityListModel
-        }
-
         ListView {
             id: activityListView
             anchors.top: trayWindowHeaderBackground.bottom
@@ -366,7 +360,7 @@ Window {
             height: trayWindowBackground.height - trayWindowHeaderBackground.height
             clip: true
 
-            model: activityListModel
+            model: activityModel
 
             delegate: RowLayout {
                 id: activityItem
@@ -389,12 +383,12 @@ Window {
                     Layout.alignment: Qt.AlignLeft
                     Text {
                         id: activityTextTitle
-                        text: name
+                        text: filename
                         font.pointSize: 9
                     }
                     Text {
                         id: activityTextInfo
-                        text: "Lorem ipsum dolor sit amet"
+                        text: info
                         font.pointSize: 8
                     }
                 }

@@ -48,6 +48,7 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
 
     engine->addImageProvider("avatars", new ImageProvider);
     engine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
+    engine->rootContext()->setContextProperty("activityModel", ActivityModel::instance());
     engine->rootContext()->setContextProperty("systrayBackend", this);
 
     // TODO: hack to pass the icon to QML
