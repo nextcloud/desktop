@@ -2,6 +2,7 @@
 #include "owncloudgui.h"
 #include "UserModel.h"
 
+#include <QDesktopServices>
 #include <QIcon>
 
 namespace OCC {
@@ -20,6 +21,20 @@ bool User::operator==(const User &rhs) const
 void User::setCurrentUser(const bool &isCurrent)
 {
     _isCurrentUser = isCurrent;
+}
+
+Folder* User::getFolder()
+{
+    foreach (Folder *folder, FolderMan::instance()->map()) {
+        if (folder->accountState() == _account.data()) {
+            return folder;
+        }
+    }
+}
+
+void User::openLocalFolder()
+{
+    QDesktopServices::openUrl(this->getFolder()->path());
 }
 
 QString User::name() const
@@ -143,6 +158,11 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         _currentUserId = _users.indexOf(newUser);
     }
     endInsertRows();
+}
+
+Q_INVOKABLE void UserModel::openCurrentAccountLocalFolder()
+{
+    _users[_currentUserId].openLocalFolder();
 }
 
 Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)

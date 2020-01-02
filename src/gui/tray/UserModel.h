@@ -7,6 +7,7 @@
 #include <QQuickImageProvider>
 
 #include "accountmanager.h"
+#include "folderman.h"
 
 namespace OCC {
 
@@ -20,8 +21,8 @@ public:
     bool isConnected() const;
     bool isCurrentUser() const;
     void setCurrentUser(const bool &isCurrent);
-    void login();
-    void logout();
+    Folder* getFolder();
+    void openLocalFolder();
     QString name() const;
     QString server() const;
     QImage avatar() const;
@@ -47,6 +48,7 @@ public:
 
     QImage avatarById(const int &id);
 
+    Q_INVOKABLE void openCurrentAccountLocalFolder();
     Q_INVOKABLE QImage currentUserAvatar();
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE bool isCurrentUserConnected();
@@ -62,7 +64,6 @@ public:
     };
 
 signals:
-    Q_INVOKABLE void openLocalFolder();
     Q_INVOKABLE void login();
     Q_INVOKABLE void logout();
     Q_INVOKABLE void addAccount();

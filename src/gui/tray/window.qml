@@ -217,7 +217,6 @@ Window {
                             Layout.alignment: Qt.AlignLeft
                             verticalAlignment: Qt.AlignCenter
                             Layout.margins: 12
-                            //source: "../../theme/white/caret-down.svg"
                             source: "qrc:///client/theme/white/caret-down.svg"
                         }
                     }
@@ -236,7 +235,6 @@ Window {
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
 
-                    //icon.source: "../../theme/white/folder.svg"
                     icon.source: "qrc:///client/theme/white/folder.svg"
                     icon.color: "transparent"
 
@@ -246,6 +244,7 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
+                            userModelBackend.openCurrentAccountLocalFolder();
                         }
                     }
 
