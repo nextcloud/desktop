@@ -285,6 +285,7 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
+                            userModelBackend.openCurrentAccountTalk();
                         }
                     }
 
@@ -302,7 +303,6 @@ Window {
                     Layout.preferredWidth: (trayWindowHeaderBackground.height)
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
-                    visible: false
 
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
                     icon.color: "transparent"
@@ -313,6 +313,7 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
+                            userModelBackend.openCurrentAccountServer();
                         }
                     }
 

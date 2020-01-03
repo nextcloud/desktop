@@ -57,14 +57,16 @@ QString User::name() const
     return name;
 }
 
-QString User::server() const
+QString User::server(bool shortened) const
 {
     QString serverUrl = _account->account()->url().toString();
-    serverUrl.replace(QLatin1String("https://"), QLatin1String(""));
-    serverUrl.replace(QLatin1String("http://"), QLatin1String(""));
-    if (serverUrl.size() > 21) {
-        serverUrl.truncate(19);
-        serverUrl.append("...");
+    if (shortened) {
+        serverUrl.replace(QLatin1String("https://"), QLatin1String(""));
+        serverUrl.replace(QLatin1String("http://"), QLatin1String(""));
+        if (serverUrl.size() > 21) {
+            serverUrl.truncate(19);
+            serverUrl.append("...");
+        }
     }
     return serverUrl;
 }
@@ -179,6 +181,24 @@ int UserModel::currentUserIndex()
 Q_INVOKABLE void UserModel::openCurrentAccountLocalFolder()
 {
     _users[_currentUserId].openLocalFolder();
+}
+
+Q_INVOKABLE void UserModel::openCurrentAccountTalk()
+{
+    QString url = _users[_currentUserId].server(false) + "/apps/spreed";
+    if (!(url.contains("http://") || url.contains("https://"))) {
+        url = "https://" + _users[_currentUserId].server(false) + "/apps/spreed";
+    }
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+Q_INVOKABLE void UserModel::openCurrentAccountServer()
+{
+    QString url = _users[_currentUserId].server(false);
+    if (! (url.contains("http://") || url.contains("https://")) ) {
+        url = "https://" + _users[_currentUserId].server(false);
+    }
+    QDesktopServices::openUrl(QUrl(url));
 }
 
 Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)

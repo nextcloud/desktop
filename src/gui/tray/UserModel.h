@@ -26,7 +26,7 @@ public:
     ActivityListModel *getActivityModel();
     void openLocalFolder();
     QString name() const;
-    QString server() const;
+    QString server(bool shortened = true) const;
     bool serverHasTalk() const;
     QImage avatar() const;
     QString id() const;
@@ -54,6 +54,8 @@ public:
     QImage avatarById(const int &id);
 
     Q_INVOKABLE void openCurrentAccountLocalFolder();
+    Q_INVOKABLE void openCurrentAccountTalk();
+    Q_INVOKABLE void openCurrentAccountServer();
     Q_INVOKABLE QImage currentUserAvatar();
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE bool isCurrentUserConnected();
