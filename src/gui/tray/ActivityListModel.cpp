@@ -45,6 +45,10 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[PathRole] = "path";
     roles[MessageRole] = "message";
+    roles[ActionRole] = "type";
+    roles[ActionIconRole] = "icon";
+    roles[ActionTextRole] = "subject";
+    roles[ObjectTypeRole] = "objectType";
     return roles;
 }
 
@@ -73,7 +77,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             if(folder) relPath.prepend(folder->remotePath());
             list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
             if (list.count() > 0) {
-                return QVariant(list.at(0));
+                QString path = "file:///" + QString(list.at(0));
+                return QUrl(path);
             }
             // File does not exist anymore? Let's try to open its path
             if(QFileInfo(relPath).exists()) {
@@ -83,7 +88,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 }
             }
         }
-        return QVariant();
+        return QString();
      case ActionsLinksRole:{
         QList<QVariant> customList;
         foreach (ActivityLink customItem, a._links) {
@@ -96,13 +101,13 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActionIconRole:{
         ActionIcon actionIcon;
         if(a._type == Activity::NotificationType){
-           /*QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
+           QIcon cachedIcon;
             if(!cachedIcon.isNull()) {
                actionIcon.iconType = ActivityIconType::iconUseCached;
                actionIcon.cachedIcon = cachedIcon;
             } else {
                 actionIcon.iconType = ActivityIconType::iconBell;
-            }*/
+            }
         } else if(a._type == Activity::SyncResultType){
             actionIcon.iconType = ActivityIconType::iconStateError;
         } else if(a._type == Activity::SyncFileItemType){
@@ -131,13 +136,25 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ObjectTypeRole:
         return a._objectType;
     case ActionRole:{
-        QVariant type;
-        type.setValue(a._type);
-        return type;
+        switch (a._type) {
+        case Activity::ActivityType:
+            return "Activity";
+        case Activity::NotificationType:
+            return "Notification";
+        case Activity::SyncFileItemType:
+            return "File";
+        case Activity::SyncResultType:
+            return "Sync";
+        default:
+            return QVariant();
+        }
     }
     case ActionTextRole:
         return a._subject;
     case MessageRole:
+        if (a._message.isEmpty()) {
+            return QString("No description available.");
+        }
         return a._message;
     case LinkRole:
         return a._link;

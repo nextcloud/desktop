@@ -393,17 +393,22 @@ Window {
                     sourceSize.width: 48
                 }
                 Column {
+                    id: activityTextColumn
                     Layout.leftMargin: 6
                     spacing: 4
                     Layout.alignment: Qt.AlignLeft
                     Text {
                         id: activityTextTitle
-                        text: path
+                        text: subject
+                        width: 220
+                        elide: Text.ElideRight
                         font.pointSize: 9
                     }
                     Text {
                         id: activityTextInfo
-                        text: message
+                        text: path
+                        width: 220
+                        elide: Text.ElideRight
                         font.pointSize: 8
                     }
                 }
@@ -412,19 +417,28 @@ Window {
                     Layout.fillWidth: true
                 }
                 Button {
+                    id: activityButton1
                     Layout.preferredWidth: activityItem.height
                     Layout.preferredHeight: activityItem.height
                     Layout.alignment: Qt.AlignRight
                     flat: true
+                    hoverEnabled: false
+                    visible: (path === "") ? false : true
                     display: AbstractButton.IconOnly
                     icon.source: "qrc:///client/resources/files.svg"
                     icon.color: "transparent"
+
+                    onClicked:
+                    {
+                         Qt.openUrlExternally(path)
+                    }
                 }
                 Button {
                     Layout.preferredWidth: activityItem.height
                     Layout.preferredHeight: activityItem.height
                     Layout.alignment: Qt.AlignRight
                     flat: true
+                    hoverEnabled: false
                     display: AbstractButton.IconOnly
                     icon.source: "qrc:///client/resources/public.svg"
                     icon.color: "transparent"

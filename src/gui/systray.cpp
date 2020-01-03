@@ -18,6 +18,7 @@
 #include "config.h"
 #include "tray/UserModel.h"
 
+#include <QDesktopServices>
 #include <QGuiApplication>
 #include <QQmlComponent>
 #include <QQmlEngine>
@@ -36,8 +37,7 @@
 namespace OCC {
 
 Systray::Systray() // TODO: make singleton, provide ::instance()
-    : _currentAccount(nullptr)
-    , _trayComponent(nullptr)
+    : _trayComponent(nullptr)
     , _trayContext(nullptr)
 {
     // Create QML tray engine, build component, set C++ backend context used in window.qml
@@ -46,16 +46,16 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     _trayEngine->addImageProvider("avatars", new ImageProvider);
     _trayEngine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
     _trayEngine->rootContext()->setContextProperty("systrayBackend", this);
+
     _trayComponent = new QQmlComponent(_trayEngine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml")));
     _trayContext = _trayEngine->contextForObject(_trayComponent->create());
 
-    // TODO: hack to pass the icon to QML
-    //ctxt->setContextProperty("theme", QLatin1String("colored"));
-    //ctxt->setContextProperty("filename", "state-offline");
-
     if (!AccountManager::instance()->accounts().isEmpty()) {
-        slotChangeActivityModel(AccountManager::instance()->accounts().first());
+        slotChangeActivityModel();
     }
+
+    connect(UserModel::instance(), &UserModel::newUserSelected,
+        this, &Systray::slotChangeActivityModel);
 
     hideWindow();
 }
@@ -64,11 +64,10 @@ Systray::~Systray()
 {
 }
 
-void Systray::slotChangeActivityModel(const AccountStatePtr account)
+void Systray::slotChangeActivityModel()
 {
-    _currentAccount = account;
-    emit currentUserChanged();
     _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
+    emit currentUserChanged();
 }
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)
@@ -109,10 +108,10 @@ int Systray::calcTrayWindowX()
     int trayIconTopCenterX = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).x();
     int trayIconTopCenterY = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).y();
 
-    if ( (trayScreen->geometry().width() - trayIconTopCenterX) < (trayScreen->geometry().width() * 0.5) ) {
+    if ((trayScreen->geometry().width() - trayIconTopCenterX) < (trayScreen->geometry().width() * 0.5)) {
         // tray icon is on right side of the screen
-        if ( ((trayScreen->geometry().width() - trayIconTopCenterX) < trayScreen->geometry().height() - trayIconTopCenterY)
-            && ((trayScreen->geometry().width() - trayIconTopCenterX) < trayIconTopCenterY) ) {
+        if (((trayScreen->geometry().width() - trayIconTopCenterX) < trayScreen->geometry().height() - trayIconTopCenterY)
+            && ((trayScreen->geometry().width() - trayIconTopCenterX) < trayIconTopCenterY)) {
             // taskbar is on the right
             return trayScreen->availableSize().width() - 400 - 6;
         } else {
@@ -132,20 +131,20 @@ int Systray::calcTrayWindowX()
 }
 int Systray::calcTrayWindowY()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,10,0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     QScreen *trayScreen = QGuiApplication::screenAt(this->geometry().topRight());
 #else
     QScreen *trayScreen = QGuiApplication::primaryScreen();
 #endif
-    
+
     // get coordinates from top center point of tray icon
     int trayIconTopCenterX = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).x();
     int trayIconTopCenterY = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).y();
 
-    if ( (trayScreen->geometry().height() - trayIconTopCenterY) < (trayScreen->geometry().height() * 0.5) ) {
+    if ((trayScreen->geometry().height() - trayIconTopCenterY) < (trayScreen->geometry().height() * 0.5)) {
         // tray icon is on bottom side of the screen
-        if ( ((trayScreen->geometry().height() - trayIconTopCenterY) < trayScreen->geometry().width() - trayIconTopCenterX )
-            && ((trayScreen->geometry().height() - trayIconTopCenterY) < trayIconTopCenterX) ) {
+        if (((trayScreen->geometry().height() - trayIconTopCenterY) < trayScreen->geometry().width() - trayIconTopCenterX)
+            && ((trayScreen->geometry().height() - trayIconTopCenterY) < trayIconTopCenterX)) {
             // taskbar is on the bottom
             return trayScreen->availableSize().height() - 500 - 6;
         } else {
@@ -161,6 +160,4 @@ int Systray::calcTrayWindowY()
         return (trayScreen->geometry().height() - trayScreen->availableGeometry().height()) + 6;
     }
 }
-
-
 } // namespace OCC

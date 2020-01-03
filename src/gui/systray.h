@@ -58,10 +58,9 @@ signals:
     Q_INVOKABLE void showWindow();
 
 private slots:
-    void slotChangeActivityModel(const AccountStatePtr account);
+    void slotChangeActivityModel();
 
 private:
-    AccountStatePtr _currentAccount;
     QQmlEngine *_trayEngine;
     QQmlComponent *_trayComponent;
     QQmlContext *_trayContext;

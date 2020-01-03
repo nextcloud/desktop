@@ -86,6 +86,11 @@ bool User::serverHasTalk() const
     return _account->hasTalk();
 }
 
+bool User::hasActivities() const
+{
+    return _account->account()->capabilities().hasActivities();
+}
+
 bool User::isCurrentUser() const
 {
     return _isCurrentUser;
@@ -195,7 +200,7 @@ Q_INVOKABLE void UserModel::openCurrentAccountTalk()
 Q_INVOKABLE void UserModel::openCurrentAccountServer()
 {
     QString url = _users[_currentUserId].server(false);
-    if (! (url.contains("http://") || url.contains("https://")) ) {
+    if (!(url.contains("http://") || url.contains("https://"))) {
         url = "https://" + _users[_currentUserId].server(false);
     }
     QDesktopServices::openUrl(QUrl(url));
@@ -249,6 +254,11 @@ QHash<int, QByteArray> UserModel::roleNames() const
 ActivityListModel *UserModel::currentActivityModel()
 {
     return _users[currentUserIndex()].getActivityModel();
+}
+
+bool UserModel::currentUserHasActivities()
+{
+    return _users[currentUserIndex()].hasActivities();
 }
 
 /*-------------------------------------------------------------------------------------*/

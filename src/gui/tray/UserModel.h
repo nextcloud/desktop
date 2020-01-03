@@ -28,6 +28,7 @@ public:
     QString name() const;
     QString server(bool shortened = true) const;
     bool serverHasTalk() const;
+    bool hasActivities() const;
     QImage avatar() const;
     QString id() const;
 
@@ -61,6 +62,7 @@ public:
     Q_INVOKABLE bool isCurrentUserConnected();
     Q_INVOKABLE QString currentUserName();
     Q_INVOKABLE QString currentUserServer();
+    Q_INVOKABLE bool currentUserHasActivities();
     Q_INVOKABLE bool currentServerHasTalk();
     Q_INVOKABLE void switchCurrentUser(const int &id);
 
