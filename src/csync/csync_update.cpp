@@ -111,6 +111,10 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   Q_ASSERT(fs);
   OCC::SyncJournalFileRecord base;
   CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
+  if (fs->path == "todo.md" && ctx->current == LOCAL_REPLICA) {
+	  qDebug() << "";
+  }
+
   if (fs->type == ItemTypeSkip) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
   } else {
@@ -259,7 +263,19 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               fs->child_modified = true;
           }
 
-          fs->instruction = CSYNC_INSTRUCTION_EVAL;
+	  fs->instruction = CSYNC_INSTRUCTION_EVAL;
+
+	  // this needs to be moved somewhere else, eval needs to be kept
+	  // sync needs to happen after changing the file
+	  // or this check needs to happen in reconcile
+	  if (ctx->virtualDriveEnabled) {
+	      if (ctx->statedb->getSyncMode(base._path) == OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+	          fs->instruction = CSYNC_INSTRUCTION_EVAL;
+	      } else {
+	          fs->instruction = CSYNC_INSTRUCTION_NONE;
+	      }
+	  }
+
           goto out;
       }
       bool metadata_differ = (ctx->current == REMOTE_REPLICA && (fs->file_id != base._fileId
@@ -281,10 +297,16 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       if( ctx->current == REMOTE_REPLICA ) {
           fs->has_ignored_files = base._serverHasIgnoredFiles;
       }
+
+      // second run or when the user opens a file
       if (metadata_differ) {
           /* file id or permissions has changed. Which means we need to update them in the DB. */
           qCInfo(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
-          fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+          if (ctx->virtualDriveEnabled && ctx->statedb->getSyncMode(fs->path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+              fs->instruction = CSYNC_INSTRUCTION_NONE;
+          } else {
+              fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+          }
       } else {
           fs->instruction = CSYNC_INSTRUCTION_NONE;
       }
@@ -401,13 +423,13 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               }
           }
 
-		  if (ctx->virtualDriveEnabled) {
-			  if (fs->instruction == CSYNC_INSTRUCTION_NEW
-				  && fs->virtualfile
-				  && ctx->current == REMOTE_REPLICA) {
-				  fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-			  }
-		  }
+         if (ctx->virtualDriveEnabled) {
+	     if (fs->instruction == CSYNC_INSTRUCTION_NEW
+	        && fs->virtualfile
+	        && ctx->current == REMOTE_REPLICA) {
+	        fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+	     }
+         }
           goto out;
       }
   }

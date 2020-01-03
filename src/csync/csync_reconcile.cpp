@@ -141,7 +141,9 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             /* file has been removed on the opposite replica */
         case CSYNC_INSTRUCTION_NONE:
         case CSYNC_INSTRUCTION_UPDATE_METADATA:
-			if (cur->virtualfile) {
+			// First sync situation, we don't have the file locally, only remote
+			if (ctx->virtualDriveEnabled && 
+				cur->virtualfile) {
                 /* */
                 break;
             }
@@ -318,6 +320,19 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_EVAL:
+		// First time user opened the file
+		if (ctx->virtualDriveEnabled) {
+		    if (cur->virtualfile) {
+		        if (ctx->statedb->getSyncMode(cur->path) == 
+			    OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+			    if (ctx->current == LOCAL_REPLICA) {
+			        cur->instruction = CSYNC_INSTRUCTION_NONE;
+			        other->instruction = CSYNC_INSTRUCTION_SYNC;
+			        break;
+			    }
+		        }
+		    }
+		}
                 if (other->type == ItemTypeDirectory &&
                         cur->type == ItemTypeDirectory) {
                     // Folders of the same path are always considered equals
@@ -404,6 +419,17 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     cur->instruction = CSYNC_INSTRUCTION_SYNC;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
                 }
+		//FIXME it doesn't work to only check if file is offline
+		if (ctx->virtualDriveEnabled) {
+			if (ctx->statedb->getSyncMode(cur->path) == 
+			OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+				cur->instruction = CSYNC_INSTRUCTION_SYNC;
+				other->instruction = CSYNC_INSTRUCTION_NONE;
+			} else {
+				cur->instruction = CSYNC_INSTRUCTION_NONE;
+				other->instruction = CSYNC_INSTRUCTION_NONE;
+			}
+		}
                 break;
             case CSYNC_INSTRUCTION_IGNORE:
                 cur->instruction = CSYNC_INSTRUCTION_IGNORE;
@@ -417,8 +443,21 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             // NEW is safer than EVAL because it will end up with
             // propagation unless it's changed by something, and EVAL and
             // NEW are treated equivalently during reconcile.
-            if (cur->instruction == CSYNC_INSTRUCTION_EVAL)
-                cur->instruction = CSYNC_INSTRUCTION_NEW;
+	    if (cur->instruction == CSYNC_INSTRUCTION_EVAL) {
+		cur->instruction = CSYNC_INSTRUCTION_NEW;
+
+		//another another case
+		if (ctx->virtualDriveEnabled) {
+		    if (ctx->statedb->getSyncMode(cur->path) == 
+                        OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+		        cur->instruction = CSYNC_INSTRUCTION_NONE;
+		        other->instruction = CSYNC_INSTRUCTION_SYNC;
+		    } else {
+		        cur->instruction = CSYNC_INSTRUCTION_NONE;
+		        other->instruction = CSYNC_INSTRUCTION_NONE;
+		    }
+		}
+	    }
             break;
         default:
             break;
