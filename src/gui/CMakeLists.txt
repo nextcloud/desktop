@@ -24,7 +24,6 @@ set(client_UI_SRCS
     ignorelisteditor.ui
     ignorelisttablewidget.ui
     networksettings.ui
-    activitywidget.ui
     synclogdialog.ui
     settingsdialog.ui
     sharedialog.ui
@@ -35,7 +34,7 @@ set(client_UI_SRCS
     addcertificatedialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
-    tray/window.qml
+    tray/Window.qml
     tray/UserLine.qml
     wizard/flow2authwidget.ui
     wizard/owncloudadvancedsetuppage.ui
@@ -75,10 +74,6 @@ set(client_SRCS
     openfilemanager.cpp
     owncloudgui.cpp
     owncloudsetupwizard.cpp
-    activitydata.cpp
-    activitylistmodel.cpp
-    activitywidget.cpp
-    activityitemdelegate.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
     sharedialog.cpp
@@ -101,12 +96,13 @@ set(client_SRCS
     synclogdialog.cpp
     tooltipupdater.cpp
     notificationconfirmjob.cpp
-    servernotificationhandler.cpp
     guiutility.cpp
     elidedlabel.cpp
     headerbanner.cpp
     iconjob.cpp
     remotewipe.cpp
+    tray/ActivityData.cpp
+    tray/ActivityListModel.cpp
     tray/UserModel.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp

@@ -23,7 +23,6 @@
 #include "configfile.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
-#include "activitywidget.h"
 #include "accountmanager.h"
 
 #include <QLabel>
@@ -189,55 +188,19 @@ void SettingsDialog::showFirstPage()
     }
 }
 
-void SettingsDialog::showActivityPage()
-{
-    if (auto account = qvariant_cast<AccountState*>(sender()->property("account"))) {
-        _activitySettings[account]->show();
-        _ui->stack->setCurrentWidget(_activitySettings[account]);
-    }
-}
-
 void SettingsDialog::showIssuesList(AccountState *account) {
-    for (auto it = _actionGroupWidgets.begin(); it != _actionGroupWidgets.end(); ++it) {
+    /*for (auto it = _actionGroupWidgets.begin(); it != _actionGroupWidgets.end(); ++it) {
         if (it.value() == _activitySettings[account]) {
             it.key()->activate(QAction::ActionEvent::Trigger);
             break;
         }
-    }
-}
-
-void SettingsDialog::activityAdded(AccountState *s){
-    _ui->stack->addWidget(_activitySettings[s]);
-    connect(_activitySettings[s], &ActivitySettings::guiLog, _gui,
-        &ownCloudGui::slotShowOptionalTrayMessage);
-
-    ConfigFile cfg;
-    _activitySettings[s]->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
-
-    // Note: all the actions have a '\n' because the account name is in two lines and
-    // all buttons must have the same size in order to keep a good layout
-    QAction *action = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
-    action->setProperty("account", QVariant::fromValue(s));
-    _toolBar->insertAction(_actionBefore, action);
-    _actionGroup->addAction(action);
-    _actionGroupWidgets.insert(action, _activitySettings[s]);
-    connect(action, &QAction::triggered, this, &SettingsDialog::showActivityPage);
+    }*/
 }
 
 void SettingsDialog::accountAdded(AccountState *s)
 {
     auto height = _toolBar->sizeHint().height();
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
-
-    _activitySettings[s] = new ActivitySettings(s, this);
-
-
-
-    // if this is not the first account, then before we continue to add more accounts we add a separator
-    if(AccountManager::instance()->accounts().first().data() != s &&
-        AccountManager::instance()->accounts().size() >= 1){
-        _actionGroupWidgets.insert(_toolBar->insertSeparator(_actionBefore), _activitySettings[s]);
-    }
 
     QAction *accountAction;
     QImage avatar = s->account()->avatar();
@@ -270,15 +233,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
-    // Refresh immediatly when getting online
-    connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
-
     // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
-    connect(this, &SettingsDialog::styleChanged, _activitySettings[s], &ActivitySettings::slotStyleChanged);
-
-    activityAdded(s);
-    slotRefreshActivity(s);
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
@@ -332,19 +288,6 @@ void SettingsDialog::accountRemoved(AccountState *s)
 
     if (_actionForAccount.contains(s->account().data())) {
         _actionForAccount.remove(s->account().data());
-    }
-
-    if(_activitySettings.contains(s)){
-        _activitySettings[s]->slotRemoveAccount();
-        _activitySettings[s]->hide();
-
-        // get the settings widget and the separator
-        foreach(QAction *action, _actionGroupWidgets.keys(_activitySettings[s])){
-            _actionGroupWidgets.remove(action);
-            _toolBar->removeAction(action);
-        }
-        _toolBar->widgetForAction(_actionBefore)->hide();
-        _activitySettings.remove(s);
     }
 
     // Hide when the last account is deleted. We want to enter the same
@@ -414,17 +357,6 @@ QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const Q
     // all buttons must have the same size in order to keep a good layout
     QIcon coloredIcon = Theme::createColorAwareIcon(iconPath, palette());
     return createActionWithIcon(coloredIcon, text, iconPath);
-}
-
-void SettingsDialog::slotRefreshActivityAccountStateSender()
-{
-    slotRefreshActivity(qobject_cast<AccountState*>(sender()));
-}
-
-void SettingsDialog::slotRefreshActivity(AccountState *accountState)
-{
-    if (accountState->isConnected())
-        _activitySettings[accountState]->slotRefresh();
 }
 
 } // namespace OCC

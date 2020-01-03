@@ -24,21 +24,18 @@
 #include "accountmanager.h"
 #include "folderman.h"
 #include "accessmanager.h"
-#include "activityitemdelegate.h"
 
-#include "activitydata.h"
-#include "activitylistmodel.h"
+#include "ActivityData.h"
+#include "ActivityListModel.h"
 
 #include "theme.h"
-
-#include "servernotificationhandler.h"
 
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
 
-ActivityListModel::ActivityListModel(AccountState *accountState, QWidget *parent)
-    : QAbstractListModel(parent)
+ActivityListModel::ActivityListModel(AccountState *accountState, QObject* parent)
+    : QAbstractListModel()
     , _accountState(accountState)
 {
 }
@@ -61,7 +58,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     QStringList list;
 
     switch (role) {
-    case ActivityItemDelegate::PathRole:
+    case PathRole:
         if(!a._file.isEmpty()){
             auto folder = FolderMan::instance()->folder(a._folder);
             QString relPath(a._file);
@@ -79,7 +76,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
         }
         return QVariant();
-     case ActivityItemDelegate::ActionsLinksRole:{
+     case ActionsLinksRole:{
         QList<QVariant> customList;
         foreach (ActivityLink customItem, a._links) {
             QVariant customVariant;
@@ -88,16 +85,16 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         }
         return customList;
     }
-    case ActivityItemDelegate::ActionIconRole:{
+    case ActionIconRole:{
         ActionIcon actionIcon;
         if(a._type == Activity::NotificationType){
-           QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
+           /*QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
             if(!cachedIcon.isNull()) {
                actionIcon.iconType = ActivityIconType::iconUseCached;
                actionIcon.cachedIcon = cachedIcon;
             } else {
                 actionIcon.iconType = ActivityIconType::iconBell;
-            }
+            }*/
         } else if(a._type == Activity::SyncResultType){
             actionIcon.iconType = ActivityIconType::iconStateError;
         } else if(a._type == Activity::SyncFileItemType){
@@ -123,24 +120,24 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         icn.setValue(actionIcon);
         return icn;
     }
-    case ActivityItemDelegate::ObjectTypeRole:
+    case ObjectTypeRole:
         return a._objectType;
-    case ActivityItemDelegate::ActionRole:{
+    case ActionRole:{
         QVariant type;
         type.setValue(a._type);
         return type;
     }
-    case ActivityItemDelegate::ActionTextRole:
+    case ActionTextRole:
         return a._subject;
-    case ActivityItemDelegate::MessageRole:
+    case MessageRole:
         return a._message;
-    case ActivityItemDelegate::LinkRole:
+    case LinkRole:
         return a._link;
-    case ActivityItemDelegate::AccountRole:
+    case AccountRole:
         return a._accName;
-    case ActivityItemDelegate::PointInTimeRole:
+    case PointInTimeRole:
         return QString("%1 (%2)").arg(a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate), Utility::timeAgoInWords(a._dateTime.toLocalTime()));
-    case ActivityItemDelegate::AccountConnectedRole:
+    case AccountConnectedRole:
         return (ast && ast->isConnected());
     default:
         return QVariant();

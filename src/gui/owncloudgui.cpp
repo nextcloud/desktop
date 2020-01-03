@@ -207,10 +207,6 @@ void ownCloudGui::slotSyncStateChange(Folder *folder)
         || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();
     }
-
-    if (result.status() == SyncResult::NotYetStarted) {
-        _settingsDialog->slotRefreshActivity(folder->accountState());
-    }
 }
 
 void ownCloudGui::slotFoldersChanged()
@@ -792,10 +788,7 @@ void ownCloudGui::setupActions()
     _navLinksMenu->setEnabled(false);
     _actionSettings = new QAction(tr("Settings …"), this);
     _actionNewAccountWizard = new QAction(tr("New account …"), this);
-    _actionRecent = new QAction(tr("View more activity …"), this);
-    _actionRecent->setEnabled(true);
 
-    QObject::connect(_actionRecent, &QAction::triggered, this, &ownCloudGui::slotShowSyncProtocol);
     QObject::connect(_actionSettings, &QAction::triggered, this, &ownCloudGui::slotShowSettings);
     QObject::connect(_actionNewAccountWizard, &QAction::triggered, this, &ownCloudGui::slotNewAccountWizard);
     _actionHelp = new QAction(tr("Help"), this);
@@ -909,8 +902,6 @@ void ownCloudGui::slotRebuildRecentMenus()
     } else {
         _recentActionsMenu->addAction(tr("No items synced recently"))->setEnabled(false);
     }
-    // add a more... entry.
-    _recentActionsMenu->addAction(_actionRecent);
 }
 
 /// Returns true if the completion of a given item should show up in the
@@ -969,8 +960,6 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
         }
         _actionStatus->setText(msg);
     }
-
-    _actionRecent->setIcon(QIcon()); // Fixme: Set a "in-progress"-item eventually.
 
     if (!progress._lastCompletedItem.isEmpty()
         && shouldShowInRecentsMenu(progress._lastCompletedItem)) {

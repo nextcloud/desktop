@@ -62,6 +62,7 @@ private slots:
 
 private:
     AccountStatePtr _currentAccount;
+    QQmlEngine *_trayEngine;
     QQmlComponent *_trayComponent;
     QQmlContext *_trayContext;
 };

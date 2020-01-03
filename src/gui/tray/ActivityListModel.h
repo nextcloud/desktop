@@ -47,12 +47,27 @@ public:
         iconStateInfo,
         iconStateSync
     };
+
+    enum datarole { ActionIconRole = Qt::UserRole + 1,
+        UserIconRole,
+    AccountRole,
+    ObjectTypeRole,
+    ActionsLinksRole,
+    ActionTextRole,
+    ActionRole,
+    MessageRole,
+    PathRole,
+    LinkRole,
+    PointInTimeRole,
+    AccountConnectedRole,
+    SyncFileStatusRole };
+
     struct ActionIcon {
         ActivityIconType iconType;
         QIcon cachedIcon;
     };
 
-    explicit ActivityListModel(AccountState *accountState, QWidget *parent = nullptr);
+    explicit ActivityListModel(AccountState *accountState, QObject* parent = 0);
 
     QVariant data(const QModelIndex &index, int role) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

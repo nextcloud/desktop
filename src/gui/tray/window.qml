@@ -20,15 +20,25 @@ Window {
         }
     }
 
+    onVisibleChanged: {
+        currentAccountAvatar.source = ""
+        currentAccountAvatar.source = "image://avatars/currentUser"
+        currentAccountUser.text = userModelBackend.currentUserName();
+        currentAccountServer.text = userModelBackend.currentUserServer();
+        trayWindowTalkButton.visible = userModelBackend.currentServerHasTalk() ? true : false;
+    }
+
     Connections {
         target: userModelBackend
         onRefreshCurrentUserGui: {
-            currentAccountAvatar.source = userModelBackend.currentUserAvatar()
-            currentAccountUser.text = userModelBackend.currentUserName()
-            currentAccountServer.text = userModelBackend.currentUserServer()
+            currentAccountAvatar.source = ""
+            currentAccountAvatar.source = "image://avatars/currentUser"
+            currentAccountUser.text = userModelBackend.currentUserName();
+            currentAccountServer.text = userModelBackend.currentUserServer();
         }
         onNewUserSelected: {
-            accountMenu.close()
+            accountMenu.close();
+            trayWindowTalkButton.visible = userModelBackend.currentServerHasTalk() ? true : false;
         }
     }
 
@@ -85,6 +95,7 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
+                            accMenuLoginButton.text = (userModelBackend.isCurrentUserConnected() ? "Logout" : "Login")
                             accountMenu.open()
                         }
 
@@ -109,7 +120,7 @@ Window {
                             MenuSeparator { id: accountMenuSeparator }
 
                             MenuItem {
-                                text: (userModelBackend.isCurrentUserConnected() ? "Logout" : "Login")
+                                id: accMenuLoginButton
                                 onClicked: (userModelBackend.isCurrentUserConnected()
                                             ? userModelBackend.logout()
                                             : userModelBackend.login() )
@@ -188,7 +199,8 @@ Window {
                             id: currentAccountAvatar
                             Layout.leftMargin: 8
                             verticalAlignment: Qt.AlignCenter
-                            source: userModelBackend.currentUserAvatar()
+                            cache: false
+                            source: "image://avatars/currentUser"
                             Layout.preferredHeight: (trayWindowHeaderBackground.height -16)
                             Layout.preferredWidth: (trayWindowHeaderBackground.height -16)
                         }
@@ -262,6 +274,7 @@ Window {
                     Layout.preferredWidth: (trayWindowHeaderBackground.height)
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
+                    visible: userModelBackend.currentServerHasTalk() ? true : false
 
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     icon.color: "transparent"
@@ -289,6 +302,7 @@ Window {
                     Layout.preferredWidth: (trayWindowHeaderBackground.height)
                     Layout.preferredHeight: (trayWindowHeaderBackground.height)
                     flat: true
+                    visible: false
 
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
                     icon.color: "transparent"

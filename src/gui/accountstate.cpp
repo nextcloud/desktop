@@ -74,6 +74,11 @@ AccountPtr AccountState::account() const
     return _account;
 }
 
+bool AccountState::hasTalk() const
+{
+    return _hasTalk;
+}
+
 AccountState::ConnectionStatus AccountState::connectionStatus() const
 {
     return _connectionStatus;
@@ -87,6 +92,23 @@ QStringList AccountState::connectionErrors() const
 AccountState::State AccountState::state() const
 {
     return _state;
+}
+
+void AccountState::setTalkCapability()
+{
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    connect(manager, &QNetworkAccessManager::finished,
+        this, [=](QNetworkReply *reply) {
+            if (reply->error()) {
+                return;
+            }
+            //TODO: This is **** dirty, but atm I don't see a capability-way to determine talk integration
+            _hasTalk = (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 303) ? true : false;
+        });
+    QNetworkRequest request;
+    QString url = this->account()->url().toString() + "/apps/spreed";
+    request.setUrl(QUrl(url));
+    manager->get(request);
 }
 
 void AccountState::setState(State state)
@@ -267,7 +289,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     // Come online gradually from 503 or maintenance mode
     if (status == ConnectionValidator::Connected
         && (_connectionStatus == ConnectionValidator::ServiceUnavailable
-               || _connectionStatus == ConnectionValidator::MaintenanceMode)) {
+            || _connectionStatus == ConnectionValidator::MaintenanceMode)) {
         if (!_timeSinceMaintenanceOver.isValid()) {
             qCInfo(lcAccountState) << "AccountState reconnection: delaying for"
                                    << _maintenanceToConnectedDelay << "ms";
@@ -293,6 +315,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::Connected:
         if (_state != Connected) {
             setState(Connected);
+            setTalkCapability();
         }
         break;
     case ConnectionValidator::Undefined:

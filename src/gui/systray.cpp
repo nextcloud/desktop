@@ -42,14 +42,12 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
 {
     // Create QML tray engine, build component, set C++ backend context used in window.qml
     // Use pointer instead of engine() helper function until Qt 5.12 is minimum standard
-    QQmlEngine *engine = new QQmlEngine;
-    _trayComponent = new QQmlComponent(engine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/window.qml")));
-    _trayContext = engine->contextForObject(_trayComponent->create());
-
-    engine->addImageProvider("avatars", new ImageProvider);
-    engine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
-    engine->rootContext()->setContextProperty("activityModel", ActivityModel::instance());
-    engine->rootContext()->setContextProperty("systrayBackend", this);
+    _trayEngine = new QQmlEngine;
+    _trayEngine->addImageProvider("avatars", new ImageProvider);
+    _trayEngine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
+    _trayEngine->rootContext()->setContextProperty("systrayBackend", this);
+    _trayComponent = new QQmlComponent(_trayEngine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/window.qml")));
+    _trayContext = _trayEngine->contextForObject(_trayComponent->create());
 
     // TODO: hack to pass the icon to QML
     //ctxt->setContextProperty("theme", QLatin1String("colored"));
@@ -59,8 +57,6 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
         slotChangeActivityModel(AccountManager::instance()->accounts().first());
     }
 
-    //connect(AccountManager::instance(), &AccountManager::accountAdded,
-    //    this, &Systray::slotChangeActivityModel);
     hideWindow();
 }
 
@@ -72,6 +68,7 @@ void Systray::slotChangeActivityModel(const AccountStatePtr account)
 {
     _currentAccount = account;
     emit currentUserChanged();
+    _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
 }
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)

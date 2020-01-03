@@ -10,6 +10,7 @@ namespace OCC {
 User::User(AccountStatePtr &account, const bool &isCurrent)
     : _account(account)
     , _isCurrentUser(isCurrent)
+    , _activityModel(new ActivityListModel(_account.data()))
 {
 }
 
@@ -30,6 +31,11 @@ Folder *User::getFolder()
             return folder;
         }
     }
+}
+
+ActivityListModel *User::getActivityModel()
+{
+    return _activityModel;
 }
 
 void User::openLocalFolder()
@@ -67,9 +73,15 @@ QImage User::avatar() const
 {
     QImage img = AvatarJob::makeCircularAvatar(_account->account()->avatar());
     if (img.isNull()) {
-        img = QImage(":/client/resources/account.svg");
+        img = AvatarJob::makeCircularAvatar(QImage(":/client/resources/account.png"));
     }
     return img;
+}
+
+bool User::serverHasTalk() const
+{
+    auto test = _account->hasTalk();
+    return _account->hasTalk();
 }
 
 bool User::isCurrentUser() const
@@ -79,6 +91,7 @@ bool User::isCurrentUser() const
 
 bool User::isConnected() const
 {
+    bool test = (_account->connectionStatus() == AccountState::ConnectionStatus::Connected);
     return (_account->connectionStatus() == AccountState::ConnectionStatus::Connected);
 }
 
@@ -143,15 +156,24 @@ Q_INVOKABLE QString UserModel::currentUserServer()
     return _users[_currentUserId].server();
 }
 
+Q_INVOKABLE bool UserModel::currentServerHasTalk()
+{
+    return _users[_currentUserId].serverHasTalk();
+}
+
 void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 {
-    auto newUser = User(user, isCurrent);
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    _users << newUser;
+    _users << User(user, isCurrent);
     if (isCurrent) {
-        _currentUserId = _users.indexOf(newUser);
+        _currentUserId = _users.indexOf(_users.last());
     }
     endInsertRows();
+}
+
+int UserModel::currentUserIndex()
+{
+    return _currentUserId;
 }
 
 Q_INVOKABLE void UserModel::openCurrentAccountLocalFolder()
@@ -204,74 +226,9 @@ QHash<int, QByteArray> UserModel::roleNames() const
     return roles;
 }
 
-/*-------------------------------------------------------------------------------------*/
-
-QString UserActivity::type() const
+ActivityListModel *UserModel::currentActivityModel()
 {
-    return "Test";
-}
-QString UserActivity::fileName() const
-{
-    return "Test";
-}
-
-QString UserActivity::info() const
-{
-    return "Test";
-}
-
-
-ActivityModel *ActivityModel::_instance = nullptr;
-
-ActivityModel *ActivityModel::instance()
-{
-    if (_instance == nullptr) {
-        _instance = new ActivityModel();
-    }
-    return _instance;
-}
-
-ActivityModel::ActivityModel(QObject *parent)
-    : QAbstractListModel()
-{
-}
-
-QHash<int, QByteArray> ActivityModel::roleNames() const
-{
-    QHash<int, QByteArray> roles;
-    roles[TypeRole] = "type";
-    roles[FileNameRole] = "filename";
-    roles[InfoRole] = "info";
-    return roles;
-}
-
-int ActivityModel::rowCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return _activities.count();
-}
-
-QVariant ActivityModel::data(const QModelIndex &index, int role) const
-{
-    if (index.row() < 0 || index.row() >= _activities.count()) {
-        return QVariant();
-    }
-
-    const UserActivity &activity = _activities[index.row()];
-    if (role == TypeRole)
-        return activity.type();
-    else if (role == FileNameRole)
-        return activity.fileName();
-    else if (role == InfoRole)
-        return activity.info();
-    return QVariant();
-}
-
-void ActivityModel::addActivity(const UserActivity &activity)
-{
-    beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    _activities << activity;
-    endInsertRows();
+    return _users[currentUserIndex()].getActivityModel();
 }
 
 /*-------------------------------------------------------------------------------------*/

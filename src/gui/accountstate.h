@@ -101,6 +101,8 @@ public:
 
     bool isSignedOut() const;
 
+    bool hasTalk() const;
+
     /** A user-triggered sign out which disconnects, stops syncs
      * for the account and forgets the password. */
     void signOutByUi();
@@ -161,6 +163,7 @@ public slots:
 
 private:
     void setState(State state);
+    void setTalkCapability();
 
 signals:
     void stateChanged(int state);
@@ -182,6 +185,7 @@ private:
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;
     bool _waitingForNewCredentials;
+    bool _hasTalk;
     QElapsedTimer _timeSinceLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
     QByteArray _notificationsEtagResponseHeader;

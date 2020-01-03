@@ -6,6 +6,7 @@
 #include <QStringList>
 #include <QQuickImageProvider>
 
+#include "ActivityListModel.h"
 #include "accountmanager.h"
 #include "folderman.h"
 
@@ -22,15 +23,18 @@ public:
     bool isCurrentUser() const;
     void setCurrentUser(const bool &isCurrent);
     Folder *getFolder();
+    ActivityListModel *getActivityModel();
     void openLocalFolder();
     QString name() const;
     QString server() const;
+    bool serverHasTalk() const;
     QImage avatar() const;
     QString id() const;
 
 private:
     AccountStatePtr _account;
     bool _isCurrentUser;
+    ActivityListModel *_activityModel;
 };
 
 class UserModel : public QAbstractListModel
@@ -41,6 +45,7 @@ public:
     virtual ~UserModel() {};
 
     void addUser(AccountStatePtr &user, const bool &isCurrent = false);
+    int currentUserIndex();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
@@ -54,7 +59,10 @@ public:
     Q_INVOKABLE bool isCurrentUserConnected();
     Q_INVOKABLE QString currentUserName();
     Q_INVOKABLE QString currentUserServer();
+    Q_INVOKABLE bool currentServerHasTalk();
     Q_INVOKABLE void switchCurrentUser(const int &id);
+
+    ActivityListModel *currentActivityModel();
 
     enum UserRoles {
         NameRole = Qt::UserRole + 1,
@@ -83,40 +91,6 @@ private:
     int _currentUserId;
 
     void initUserList();
-};
-
-class UserActivity
-{
-public:
-    QString type() const;
-    QString fileName() const;
-    QString info() const;
-};
-
-class ActivityModel : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    static ActivityModel *instance();
-    virtual ~ActivityModel() {};
-
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-    void addActivity(const UserActivity &activity);
-
-    enum ActivityRoles {
-        TypeRole = Qt::UserRole + 1,
-        FileNameRole,
-        InfoRole
-    };
-
-protected:
-    QHash<int, QByteArray> roleNames() const;
-
-private:
-    static ActivityModel *_instance;
-    ActivityModel(QObject *parent = 0);
-    QList<UserActivity> _activities;
 };
 
 class ImageProvider : public QQuickImageProvider
