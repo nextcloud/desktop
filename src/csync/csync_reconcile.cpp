@@ -141,7 +141,9 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             /* file has been removed on the opposite replica */
         case CSYNC_INSTRUCTION_NONE:
         case CSYNC_INSTRUCTION_UPDATE_METADATA:
-			if (cur->virtualfile) {
+			// First sync situation, we don't have the file locally, only remote
+			if (ctx->virtualDriveEnabled && 
+				cur->virtualfile) {
                 /* */
                 break;
             }
@@ -304,12 +306,15 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_EVAL:
+				// First time user opened the file
 				if (ctx->virtualDriveEnabled) {
 					if (cur->virtualfile) {
 						if (ctx->priority.files.contains(cur->path)) {
-							cur->instruction = CSYNC_INSTRUCTION_NONE;
-							other->instruction = CSYNC_INSTRUCTION_SYNC;
-							break;
+							if (ctx->current == LOCAL_REPLICA) {
+								cur->instruction = CSYNC_INSTRUCTION_NONE;
+								other->instruction = CSYNC_INSTRUCTION_SYNC;
+								break;
+							}
 						}
 					}
 				}
@@ -398,15 +403,16 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     other->instruction = CSYNC_INSTRUCTION_NONE;
                 }
 
+				//another case
 				if (ctx->virtualDriveEnabled) {
-					if (cur->virtualfile) {
-						if (ctx->priority.files.contains(cur->path)) {
-							cur->instruction = CSYNC_INSTRUCTION_NONE;
-							other->instruction = CSYNC_INSTRUCTION_SYNC;
-						} else {
-							cur->instruction = CSYNC_INSTRUCTION_NONE;
-							other->instruction = CSYNC_INSTRUCTION_NONE;
-						}
+					if (ctx->priority.files.contains(cur->path) ||
+					ctx->statedb->getSyncMode(cur->path) == 
+					OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+						cur->instruction = CSYNC_INSTRUCTION_SYNC;
+						other->instruction = CSYNC_INSTRUCTION_NONE;
+					} else {
+						cur->instruction = CSYNC_INSTRUCTION_NONE;
+						other->instruction = CSYNC_INSTRUCTION_NONE;
 					}
 				}
                 break;
@@ -422,8 +428,22 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             // NEW is safer than EVAL because it will end up with
             // propagation unless it's changed by something, and EVAL and
             // NEW are treated equivalently during reconcile.
-            if (cur->instruction == CSYNC_INSTRUCTION_EVAL)
-                cur->instruction = CSYNC_INSTRUCTION_NEW;
+			if (cur->instruction == CSYNC_INSTRUCTION_EVAL) {
+				cur->instruction = CSYNC_INSTRUCTION_NEW;
+
+				//another another case
+				if (ctx->virtualDriveEnabled) {
+					if (ctx->priority.files.contains(cur->path) ||
+						ctx->statedb->getSyncMode(cur->path) ==
+						OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+						cur->instruction = CSYNC_INSTRUCTION_NONE;
+						other->instruction = CSYNC_INSTRUCTION_SYNC;
+					} else {
+						cur->instruction = CSYNC_INSTRUCTION_NONE;
+						other->instruction = CSYNC_INSTRUCTION_NONE;
+					}
+				}
+			}
             break;
         default:
             break;

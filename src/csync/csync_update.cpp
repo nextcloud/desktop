@@ -113,6 +113,10 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   Q_ASSERT(fs);
   OCC::SyncJournalFileRecord base;
   CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
+  if (fs->path == "todo.md" && ctx->current == LOCAL_REPLICA) {
+	  qDebug() << "";
+  }
+
   if (fs->type == ItemTypeSkip) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
   } else {
@@ -262,12 +266,17 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
 		  fs->instruction = CSYNC_INSTRUCTION_EVAL;
 
-		 // if (ctx->virtualDriveEnabled) {
-			//if (!ctx->priority.files.contains(base._path) && 
-			//	ctx->statedb->getSyncMode(base._path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
-			//	fs->instruction = CSYNC_INSTRUCTION_IGNORE;
-			//} 
-		 // }
+		  // this needs to be moved somewhere else, eval needs to be kept
+		  // sync needs to happen after changing the file
+		  // or this check needs to happen in reconcile
+		  if (ctx->virtualDriveEnabled) {
+			if (ctx->priority.files.contains(base._path) ||
+				ctx->statedb->getSyncMode(base._path) == OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+				fs->instruction = CSYNC_INSTRUCTION_EVAL;
+			} else {
+				fs->instruction = CSYNC_INSTRUCTION_NONE;
+			}
+		  }
 
           goto out;
       }
@@ -290,16 +299,20 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       if( ctx->current == REMOTE_REPLICA ) {
           fs->has_ignored_files = base._serverHasIgnoredFiles;
       }
+
+	  // second run or when the user opens a file
       if (metadata_differ) {
           /* file id or permissions has changed. Which means we need to update them in the DB. */
           qCInfo(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
-		  if (fs->virtualfile) {
-			  fs->instruction = CSYNC_INSTRUCTION_EVAL;
-		  } else {
+		  if (ctx->priority.files.contains(fs->path) ||
+			  ctx->statedb->getSyncMode(fs->path) == OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
 			 fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+		  } else {
+		    fs->instruction = CSYNC_INSTRUCTION_NONE;
 		  }
       } else {
-		  if (fs->virtualfile) {
+		  if (ctx->priority.files.contains(fs->path) ||
+			  ctx->statedb->getSyncMode(fs->path) == OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
 			  fs->instruction = CSYNC_INSTRUCTION_EVAL;
 		  } else {
 			  fs->instruction = CSYNC_INSTRUCTION_NONE;
