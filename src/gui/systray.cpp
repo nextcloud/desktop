@@ -46,7 +46,7 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     _trayEngine->addImageProvider("avatars", new ImageProvider);
     _trayEngine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
     _trayEngine->rootContext()->setContextProperty("systrayBackend", this);
-    _trayComponent = new QQmlComponent(_trayEngine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/window.qml")));
+    _trayComponent = new QQmlComponent(_trayEngine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml")));
     _trayContext = _trayEngine->contextForObject(_trayComponent->create());
 
     // TODO: hack to pass the icon to QML

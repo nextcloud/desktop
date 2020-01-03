@@ -17,7 +17,7 @@
 
 #include <QtCore>
 
-#include "activitydata.h"
+#include "ActivityData.h"
 
 class QJsonDocument;
 
@@ -48,8 +48,9 @@ public:
         iconStateSync
     };
 
-    enum datarole { ActionIconRole = Qt::UserRole + 1,
-        UserIconRole,
+    enum datarole {
+    ActionIconRole = Qt::UserRole + 1,
+    UserIconRole,
     AccountRole,
     ObjectTypeRole,
     ActionsLinksRole,
@@ -94,6 +95,9 @@ private slots:
 
 signals:
     void activityJobStatusCode(int statusCode);
+
+protected:
+    QHash<int, QByteArray> roleNames() const;
 
 private:
     void startFetchJob();

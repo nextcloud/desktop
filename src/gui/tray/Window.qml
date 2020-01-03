@@ -397,12 +397,12 @@ Window {
                     Layout.alignment: Qt.AlignLeft
                     Text {
                         id: activityTextTitle
-                        text: filename
+                        text: path
                         font.pointSize: 9
                     }
                     Text {
                         id: activityTextInfo
-                        text: info
+                        text: message
                         font.pointSize: 8
                     }
                 }

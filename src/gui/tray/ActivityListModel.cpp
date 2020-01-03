@@ -40,6 +40,14 @@ ActivityListModel::ActivityListModel(AccountState *accountState, QObject* parent
 {
 }
 
+QHash<int, QByteArray> ActivityListModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[PathRole] = "path";
+    roles[MessageRole] = "message";
+    return roles;
+}
+
 QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 {
     Activity a;
