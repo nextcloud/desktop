@@ -14,7 +14,7 @@
 
 #include <QtCore>
 
-#include "activitydata.h"
+#include "ActivityData.h"
 
 
 namespace OCC {
