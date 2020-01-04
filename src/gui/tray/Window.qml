@@ -95,7 +95,7 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
-                            accMenuLoginButton.text = (userModelBackend.isCurrentUserConnected() ? "Logout" : "Login")
+                            accMenuLoginButton.text = (userModelBackend.isCurrentUserConnected() ? "Log out" : "Log in")
                             accountMenu.open()
                         }
 
@@ -120,17 +120,17 @@ Window {
                             MenuSeparator { id: accountMenuSeparator }
 
                             MenuItem {
+                                text: "Add account"
+                                onClicked: userModelBackend.addAccount()
+                            }
+                            MenuItem {
                                 id: accMenuLoginButton
                                 onClicked: (userModelBackend.isCurrentUserConnected()
                                             ? userModelBackend.logout()
                                             : userModelBackend.login() )
                             }
                             MenuItem {
-                                text: "Add Account"
-                                onClicked: userModelBackend.addAccount()
-                            }
-                            MenuItem {
-                                text: "Remove Account"
+                                text: "Remove account"
                                 onClicked: userModelBackend.removeAccount()
                             }
 
