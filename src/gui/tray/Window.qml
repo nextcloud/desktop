@@ -113,8 +113,20 @@ Window {
                             Instantiator {
                                 model: userModelBackend
                                 delegate: UserLine {}
-                                onObjectAdded: accountMenu.insertItem(index, object)
+                                onObjectAdded: accountMenu.insertItem(3, object)
                                 onObjectRemoved: accountMenu.removeItem(object)
+                            }
+
+                            MenuItem {
+                                id: accMenuLoginButton
+                                onClicked: (userModelBackend.isCurrentUserConnected()
+                                            ? userModelBackend.logout()
+                                            : userModelBackend.login() )
+                            }
+
+                            MenuItem {
+                                text: "Remove account"
+                                onClicked: userModelBackend.removeAccount()
                             }
 
                             MenuSeparator { id: accountMenuSeparator }
@@ -123,23 +135,25 @@ Window {
                                 text: "Add account"
                                 onClicked: userModelBackend.addAccount()
                             }
+
+                            MenuSeparator { id: otherMenuSeparator }
+
                             MenuItem {
-                                id: accMenuLoginButton
-                                onClicked: (userModelBackend.isCurrentUserConnected()
-                                            ? userModelBackend.logout()
-                                            : userModelBackend.login() )
-                            }
-                            MenuItem {
-                                text: "Remove account"
-                                onClicked: userModelBackend.removeAccount()
+                                text: "Open settings"
+                                onClicked: systrayBackend.openSettings()
                             }
 
-                            Component.onCompleted: {
-                                if(userModelBackend.numUsers() === 0) {
+                            MenuItem {
+                                text: "Quit Nextcloud"
+                                onClicked: systrayBackend.shutdown()
+                            }
+
+                            Component.onCompleted: {/*
+                                if(userModelBackend.numUsers() === 1) {
                                     accountMenuSeparator.height = 0
                                 } else {
                                     accountMenuSeparator.height = 13
-                                }
+                                }*/
                             }
                         }
                     }
@@ -214,14 +228,14 @@ Window {
                                 id: currentAccountUser
                                 text: userModelBackend.currentUserName()
                                 color: "white"
-                                font.pointSize: 9
+                                font.pixelSize: 12
                                 font.bold: true
                             }
                             Label {
                                 id: currentAccountServer
                                 text: userModelBackend.currentUserServer()
                                 color: "white"
-                                font.pointSize: 8
+                                font.pixelSize: 10
                             }
                         }
 

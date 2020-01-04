@@ -68,14 +68,14 @@ MenuItem {
                             id: accountUser
                             text: name
                             color: "black"
-                            font.pointSize: 9
+                            font.pixelSize: 12
                             font.bold: true
                         }
                         Label {
                             id: accountServer
                             text: server
                             color: "black"
-                            font.pointSize: 8
+                            font.pixelSize: 10
                         }
                     }
 

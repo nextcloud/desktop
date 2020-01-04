@@ -85,6 +85,12 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &QSystemTrayIcon::activated,
         this, &ownCloudGui::slotTrayClicked);
 
+    connect(_tray.data(), &Systray::openSettings,
+        this, &ownCloudGui::slotShowSettings);
+
+    connect(_tray.data(), &Systray::shutdown,
+        this, &ownCloudGui::slotShutdown);
+
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,
         &ownCloudGui::slotUpdateProgress);
@@ -171,17 +177,7 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
                 raiseDialog(shareDialog);
             }
         } else {
-#ifdef Q_OS_MAC
-            // on macOS, a left click always opens menu.
-            // However if the settings dialog is already visible but hidden
-            // by other applications, this will bring it to the front.
-            if (!_settingsDialog.isNull() && _settingsDialog->isVisible()) {
-                raiseDialog(_settingsDialog.data());
-            }
-#else
             _tray->showWindow();
-            //slotOpenSettingsDialog();
-#endif
         }
     }
     // FIXME: Also make sure that any auto updater dialogue https://github.com/owncloud/client/issues/5613
@@ -521,10 +517,6 @@ void ownCloudGui::setupContextMenu()
     _contextMenu->setTitle(Theme::instance()->appNameGUI());
 
     _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
-
-    // this must be called only once after creating the context menu, or
-    // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
-    _tray->setContextMenu(_contextMenu.data());
 
     // The tray menu is surprisingly problematic. Being able to switch to
     // a minimal version of it is a useful workaround and testing tool.
@@ -1099,6 +1091,7 @@ void ownCloudGui::slotShutdown()
         _settingsDialog->close();
     if (!_logBrowser.isNull())
         _logBrowser->deleteLater();
+    _app->quit();
 }
 
 void ownCloudGui::slotToggleLogBrowser()

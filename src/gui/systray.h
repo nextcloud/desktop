@@ -53,6 +53,8 @@ public:
 
 signals:
     void currentUserChanged();
+    void openSettings();
+    void shutdown();
 
     Q_INVOKABLE void hideWindow();
     Q_INVOKABLE void showWindow();
