@@ -422,7 +422,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="224"/>
         <location filename="../src/gui/accountsettings.cpp" line="1068"/>
         <source>Log out</source>
-        <translation>注销</translation>
+        <translation>登出</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="667"/>
@@ -1875,7 +1875,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;错误的用户&lt;/h1&gt;&lt;p&gt;您必须登录用户&lt;em&gt;%2&lt;/em&gt;，但您登录了用户&lt;em&gt;%1&lt;/em&gt;。&lt;br&gt;请在另一个标签中注销%3，然后&lt;a href=&apos;%4&apos;&gt;点击这里&lt;/a&gt;登录用户%2&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;错误的用户&lt;/h1&gt;&lt;p&gt;您必须登录用户&lt;em&gt;%2&lt;/em&gt;，但您登录了用户&lt;em&gt;%1&lt;/em&gt;。&lt;br&gt;请在另一个标签中登出%3，然后&lt;a href=&apos;%4&apos;&gt;点击这里&lt;/a&gt;登录为用户%2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3465,7 +3465,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="169"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation>您已经以用户 %2 的身份从 %1 中注销，请重新登录</translation>
+        <translation>您已经以用户 %2 的身份从 %1 中登出，请重新登录</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
@@ -3506,7 +3506,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
-        <translation>注销</translation>
+        <translation>登出</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="514"/>
@@ -3576,7 +3576,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="279"/>
         <source>Account %1: %2</source>
-        <translation>账号 %1：%2</translation>
+        <translation>账号 %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="294"/>
@@ -3586,7 +3586,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="298"/>
         <source>Account synchronization is disabled</source>
-        <translation>账号同步被禁用</translation>
+        <translation>账号同步已禁用</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="299"/>

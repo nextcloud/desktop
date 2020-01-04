@@ -2931,7 +2931,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link</source>
-        <translation>パブリックリンクのコピー</translation>
+        <translation>公開リンクのコピー</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
