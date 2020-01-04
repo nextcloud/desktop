@@ -230,6 +230,8 @@ Window {
                             verticalAlignment: Qt.AlignCenter
                             Layout.margins: 12
                             source: "qrc:///client/theme/white/caret-down.svg"
+                            sourceSize.width: 20
+                            sourceSize.height: 20
                         }
                     }
                 }
