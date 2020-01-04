@@ -132,7 +132,7 @@ int Systray::calcTrayWindowX()
 int Systray::calcTrayWindowY()
 {
 #ifdef Q_OS_OSX
-    // macOS menu bar is always 22 (effective) pixels and at the top
+    // macOS menu bar is always 22 (effective) pixels
     // don't use availableGeometry() here, because this also excludes the dock
     return 22+6;
 #else
@@ -162,7 +162,8 @@ int Systray::calcTrayWindowY()
         }
     } else {
         // tray icon is on the top
-#endif
+        return (trayScreen->geometry().height() - trayScreen->availableGeometry().height()) + 6;
     }
+#endif
 }
 } // namespace OCC
