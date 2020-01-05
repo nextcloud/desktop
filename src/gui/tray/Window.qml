@@ -17,6 +17,7 @@ Window {
     onActiveChanged: {
         if(!active) {
             trayWindow.hide();
+            systrayBackend.setClosed();
         }
     }
 
@@ -45,13 +46,17 @@ Window {
     Connections {
         target: systrayBackend
         onShowWindow: {
+            accountMenu.close();
             trayWindow.show();
+            trayWindow.raise();
             trayWindow.requestActivate();
             trayWindow.setX( systrayBackend.calcTrayWindowX());
             trayWindow.setY( systrayBackend.calcTrayWindowY());
+            systrayBackend.setOpened();
         }
         onHideWindow: {
             trayWindow.hide();
+            systrayBackend.setClosed();
         }
     }
 
@@ -137,6 +142,11 @@ Window {
                             }
 
                             MenuSeparator { id: otherMenuSeparator }
+
+                            MenuItem {
+                                text: systrayBackend.syncIsPaused() ? "Resume syncing" : "Pause syncing"
+                                onClicked: systrayBackend.pauseResumeSync()
+                            }
 
                             MenuItem {
                                 text: "Open settings"

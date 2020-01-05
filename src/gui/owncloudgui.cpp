@@ -176,6 +176,8 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
                 Q_ASSERT(shareDialog.data());
                 raiseDialog(shareDialog);
             }
+        } else if (_tray->isOpen()) {
+            _tray->hideWindow();
         } else {
             _tray->showWindow();
         }

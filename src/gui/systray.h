@@ -47,9 +47,12 @@ public:
     ~Systray();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
+    bool isOpen();
 
     Q_INVOKABLE int calcTrayWindowX();
     Q_INVOKABLE int calcTrayWindowY();
+    Q_INVOKABLE void setOpened();
+    Q_INVOKABLE void setClosed();
 
 signals:
     void currentUserChanged();
@@ -63,6 +66,7 @@ private slots:
     void slotChangeActivityModel();
 
 private:
+    bool _isOpen;
     QQmlEngine *_trayEngine;
     QQmlComponent *_trayComponent;
     QQmlContext *_trayContext;

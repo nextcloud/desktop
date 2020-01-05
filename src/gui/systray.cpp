@@ -37,7 +37,8 @@
 namespace OCC {
 
 Systray::Systray() // TODO: make singleton, provide ::instance()
-    : _trayComponent(nullptr)
+    : _isOpen(false)
+    , _trayComponent(nullptr)
     , _trayContext(nullptr)
 {
     // Create QML tray engine, build component, set C++ backend context used in window.qml
@@ -68,6 +69,21 @@ void Systray::slotChangeActivityModel()
 {
     _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
     emit currentUserChanged();
+}
+
+bool Systray::isOpen()
+{
+    return _isOpen;
+}
+
+Q_INVOKABLE void Systray::setOpened()
+{
+    _isOpen = true;
+}
+
+Q_INVOKABLE void Systray::setClosed()
+{
+    _isOpen = false;
 }
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)
