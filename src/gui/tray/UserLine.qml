@@ -12,7 +12,7 @@ MenuItem {
     }
 
     id: userLine
-    width: 216
+    width: 220
     height: 60
 
     Rectangle {
@@ -79,13 +79,8 @@ MenuItem {
                             font.pixelSize: 10
                         }
                     }
-
-                    Item {
-                        id: userLineSpacer
-                        Layout.fillWidth: true
-                    }
                 }
-            }
+            } // accountButton
         }
     }   // Rectangle userLineBackground
 }   // MenuItem userLine

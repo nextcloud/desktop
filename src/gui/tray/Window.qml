@@ -108,7 +108,7 @@ Window {
                             id: accountMenu
                             x: (currentAccountButton.x + 2)
                             y: (currentAccountButton.y + currentAccountButton.height + 2)
-                            width: (currentAccountButton.width - 4)
+                            width: (currentAccountButton.width)
                             closePolicy: "CloseOnPressOutside"
 
                             background: Rectangle {
