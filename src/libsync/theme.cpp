@@ -123,11 +123,11 @@ QIcon Theme::applicationIcon() const
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.
  */
-QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible) const
+QIcon Theme::themeIcon(const QString &name, bool sysTray) const
 {
     QString flavor;
     if (sysTray) {
-        flavor = systrayIconFlavor(_mono, sysTrayMenuVisible);
+        flavor = systrayIconFlavor(_mono);
     } else {
         flavor = QLatin1String("colored");
     }
@@ -170,7 +170,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
     // This defines the icon as a template and enables automatic macOS color handling
     // See https://bugreports.qt.io/browse/QTBUG-42109
-    cached.setIsMask(_mono && sysTray && !sysTrayMenuVisible);
+    cached.setIsMask(_mono && sysTray);
 #endif
 #endif
 
@@ -270,18 +270,11 @@ QString Theme::defaultClientFolder() const
     return appName();
 }
 
-QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
+QString Theme::systrayIconFlavor(bool mono) const
 {
-    Q_UNUSED(sysTrayMenuVisible)
     QString flavor;
     if (mono) {
         flavor = Utility::hasDarkSystray() ? QLatin1String("white") : QLatin1String("black");
-
-#ifdef Q_OS_MAC
-        if (sysTrayMenuVisible) {
-            flavor = QLatin1String("white");
-        }
-#endif
     } else {
         flavor = QLatin1String("colored");
     }
@@ -395,7 +388,7 @@ QVariant Theme::customMedia(CustomMediaType type)
     return re;
 }
 
-QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTrayMenuVisible) const
+QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray) const
 {
     // FIXME: Mind the size!
     QString statusIcon;
@@ -427,7 +420,7 @@ QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTray
         statusIcon = QLatin1String("state-error");
     }
 
-    return themeIcon(statusIcon, sysTray, sysTrayMenuVisible);
+    return themeIcon(statusIcon, sysTray);
 }
 
 QIcon Theme::folderDisabledIcon() const
@@ -435,9 +428,9 @@ QIcon Theme::folderDisabledIcon() const
     return themeIcon(QLatin1String("state-pause"));
 }
 
-QIcon Theme::folderOfflineIcon(bool sysTray, bool sysTrayMenuVisible) const
+QIcon Theme::folderOfflineIcon(bool sysTray) const
 {
-    return themeIcon(QLatin1String("state-offline"), sysTray, sysTrayMenuVisible);
+    return themeIcon(QLatin1String("state-offline"), sysTray);
 }
 
 QColor Theme::wizardHeaderTitleColor() const

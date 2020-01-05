@@ -64,25 +64,16 @@ public:
     bool cloudProviderApiAvailable();
 #endif
 
-    /// Whether the tray menu is visible
-    bool contextMenuVisible() const;
-
 signals:
     void setupProxy();
     void serverError(int code, const QString &message);
     void isShowingSettingsDialog();
 
 public slots:
-    void setupContextMenu();
-    void updateContextMenu();
-    void updateContextMenuNeeded();
-    void slotContextMenuAboutToShow();
-    void slotContextMenuAboutToHide();
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction(const QString &alias);
-    void slotRebuildRecentMenus();
     void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
@@ -126,22 +117,12 @@ private slots:
 
 private:
     void setPauseOnAllFoldersHelper(bool pause);
-    void setupActions();
-    void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
     void fetchNavigationApps(AccountStatePtr account);
     void buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;
     QPointer<SettingsDialog> _settingsDialog;
     QPointer<LogBrowser> _logBrowser;
-    // tray's menu
-    QScopedPointer<QMenu> _contextMenu;
-
-    // Manually tracking whether the context menu is visible via aboutToShow
-    // and aboutToHide. Unfortunately aboutToHide isn't reliable everywhere
-    // so this only gets used with _workaroundManualVisibility (when the tray's
-    // isVisible() is unreliable)
-    bool _contextMenuVisibleManual = false;
 
 #ifdef WITH_LIBCLOUDPROVIDERS
     QDBusConnection _bus;
@@ -149,21 +130,12 @@ private:
 
     QMenu *_recentActionsMenu;
     QVector<QMenu *> _accountMenus;
-    bool _workaroundShowAndHideTray = false;
-    bool _workaroundNoAboutToShowUpdate = false;
-    bool _workaroundFakeDoubleClick = false;
-    bool _workaroundManualVisibility = false;
-    QTimer _delayedTrayUpdateTimer;
     QMap<QString, QPointer<ShareDialog>> _shareDialogs;
 
     QAction *_actionNewAccountWizard;
     QAction *_actionSettings;
-    QAction *_actionStatus;
     QAction *_actionEstimate;
-    QAction *_actionRecent;
-    QAction *_actionHelp;
-    QAction *_actionQuit;
-    QAction *_actionCrash;
+
 
     QMenu *_navLinksMenu;
     QMap<AccountStatePtr, QJsonArray> _navApps;

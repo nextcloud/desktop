@@ -49,15 +49,20 @@ public:
     void setToolTip(const QString &tip);
     bool isOpen();
 
+    Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE int calcTrayWindowX();
     Q_INVOKABLE int calcTrayWindowY();
+    Q_INVOKABLE bool syncIsPaused();
     Q_INVOKABLE void setOpened();
     Q_INVOKABLE void setClosed();
 
 signals:
     void currentUserChanged();
     void openSettings();
+    void openHelp();
     void shutdown();
+    void pauseSync();
+    void resumeSync();
 
     Q_INVOKABLE void hideWindow();
     Q_INVOKABLE void showWindow();
@@ -67,6 +72,7 @@ private slots:
 
 private:
     bool _isOpen;
+    bool _syncIsPaused;
     QQmlEngine *_trayEngine;
     QQmlComponent *_trayComponent;
     QQmlContext *_trayContext;

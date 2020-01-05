@@ -8,15 +8,12 @@ MenuItem {
     Connections {
         target: userModelBackend
         onRefreshUserMenu: {
-            userLine.visible = isCurrentUser ? false : true
-            userLine.height = isCurrentUser ? 0 : 60
         }
     }
 
     id: userLine
-    visible: isCurrentUser ? false : true
     width: 216
-    height: isCurrentUser ? 0 : 60
+    height: 60
 
     Rectangle {
         id: userLineBackground
@@ -52,7 +49,7 @@ MenuItem {
                     spacing: 0
                     Image {
                         id: accountAvatar
-                        Layout.leftMargin: 4
+                        Layout.leftMargin: 2
                         verticalAlignment: Qt.AlignCenter
                         source: ("image://avatars/" + index)
                         Layout.preferredHeight: (userLineBackground.height -16)
@@ -66,14 +63,18 @@ MenuItem {
                         Layout.leftMargin: 12
                         Label {
                             id: accountUser
+                            width: 120
                             text: name
+                            elide: Text.ElideRight
                             color: "black"
                             font.pixelSize: 12
                             font.bold: true
                         }
                         Label {
                             id: accountServer
+                            width: 120
                             text: server
+                            elide: Text.ElideRight
                             color: "black"
                             font.pixelSize: 10
                         }

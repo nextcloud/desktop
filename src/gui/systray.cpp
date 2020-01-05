@@ -38,6 +38,7 @@ namespace OCC {
 
 Systray::Systray() // TODO: make singleton, provide ::instance()
     : _isOpen(false)
+    , _syncIsPaused(false)
     , _trayComponent(nullptr)
     , _trayContext(nullptr)
 {
@@ -182,4 +183,21 @@ int Systray::calcTrayWindowY()
     }
 #endif
 }
+
+bool Systray::syncIsPaused()
+{
+    return _syncIsPaused;
+}
+
+void Systray::pauseResumeSync()
+{
+    if (_syncIsPaused) {
+        _syncIsPaused = false;
+        emit resumeSync();
+    } else {
+        _syncIsPaused = true;
+        emit pauseSync();
+    }
+}
+
 } // namespace OCC

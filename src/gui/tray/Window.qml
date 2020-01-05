@@ -100,7 +100,7 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
-                            accMenuLoginButton.text = (userModelBackend.isCurrentUserConnected() ? "Log out" : "Log in")
+                            syncPauseButton.text = systrayBackend.syncIsPaused() ? "Resume sync for all" : "Pause sync for all"
                             accountMenu.open()
                         }
 
@@ -109,6 +109,7 @@ Window {
                             x: (currentAccountButton.x + 2)
                             y: (currentAccountButton.y + currentAccountButton.height + 2)
                             width: (currentAccountButton.width - 4)
+                            closePolicy: "CloseOnPressOutside"
 
                             background: Rectangle {
                                 border.color: "#0082c9"
@@ -118,39 +119,30 @@ Window {
                             Instantiator {
                                 model: userModelBackend
                                 delegate: UserLine {}
-                                onObjectAdded: accountMenu.insertItem(3, object)
+                                onObjectAdded: accountMenu.insertItem(index, object)
                                 onObjectRemoved: accountMenu.removeItem(object)
                             }
-
-                            MenuItem {
-                                id: accMenuLoginButton
-                                onClicked: (userModelBackend.isCurrentUserConnected()
-                                            ? userModelBackend.logout()
-                                            : userModelBackend.login() )
-                            }
-
-                            MenuItem {
-                                text: "Remove account"
-                                onClicked: userModelBackend.removeAccount()
-                            }
-
-                            MenuSeparator { id: accountMenuSeparator }
 
                             MenuItem {
                                 text: "Add account"
                                 onClicked: userModelBackend.addAccount()
                             }
 
-                            MenuSeparator { id: otherMenuSeparator }
+                            MenuSeparator { id: accountMenuSeparator }
 
                             MenuItem {
-                                text: systrayBackend.syncIsPaused() ? "Resume syncing" : "Pause syncing"
+                                id: syncPauseButton
                                 onClicked: systrayBackend.pauseResumeSync()
                             }
 
                             MenuItem {
                                 text: "Open settings"
                                 onClicked: systrayBackend.openSettings()
+                            }
+
+                            MenuItem {
+                                text: "Help"
+                                onClicked: systrayBackend.openHelp()
                             }
 
                             MenuItem {
@@ -236,23 +228,27 @@ Window {
                             Layout.leftMargin: 6
                             Label {
                                 id: currentAccountUser
+                                width: 128
                                 text: userModelBackend.currentUserName()
+                                elide: Text.ElideRight
                                 color: "white"
                                 font.pixelSize: 12
                                 font.bold: true
                             }
                             Label {
                                 id: currentAccountServer
+                                width: 128
                                 text: userModelBackend.currentUserServer()
+                                elide: Text.ElideRight
                                 color: "white"
                                 font.pixelSize: 10
                             }
                         }
 
                         Image {
-                            Layout.alignment: Qt.AlignLeft
+                            Layout.alignment: Qt.AlignRight
                             verticalAlignment: Qt.AlignCenter
-                            Layout.margins: 12
+                            Layout.margins: 8
                             source: "qrc:///client/theme/white/caret-down.svg"
                             sourceSize.width: 20
                             sourceSize.height: 20

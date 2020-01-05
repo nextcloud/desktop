@@ -50,10 +50,6 @@ QString User::name() const
     if (name == "") {
         name = _account->account()->credentials()->user();
     }
-    if (name.size() > 19) {
-        name.truncate(17);
-        name.append("...");
-    }
     return name;
 }
 
@@ -63,10 +59,6 @@ QString User::server(bool shortened) const
     if (shortened) {
         serverUrl.replace(QLatin1String("https://"), QLatin1String(""));
         serverUrl.replace(QLatin1String("http://"), QLatin1String(""));
-        if (serverUrl.size() > 21) {
-            serverUrl.truncate(19);
-            serverUrl.append("...");
-        }
     }
     return serverUrl;
 }
