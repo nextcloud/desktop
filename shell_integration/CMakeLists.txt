@@ -11,8 +11,6 @@ if( UNIX AND NOT APPLE )
   endif()
 
   if(BUILD_SHELL_INTEGRATION_DOLPHIN)
-    find_package(ECM 1.2.0 NO_MODULE QUIET)
-    set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
     find_package(KF5 "5.16" COMPONENTS KIO)
     if(KF5_FOUND)
       add_subdirectory(dolphin)

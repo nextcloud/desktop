@@ -14,9 +14,6 @@ if(NOT BUILD_LIBRARIES_ONLY)
 
     # Need tokenizer for netrc parser
     target_include_directories(${cmd_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
+    install(TARGETS ${cmd_NAME} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 endif()
 
-install(TARGETS ${cmd_NAME}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})

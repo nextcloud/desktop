@@ -1,6 +1,3 @@
-PROJECT( CrashReporter )
-cmake_policy(SET CMP0017 NEW)
-
 # TODO: differentiate release channel
 # if(BUILD_RELEASE)
 #     set(CRASHREPORTER_RELEASE_CHANNEL "release")
@@ -32,7 +29,7 @@ list(APPEND crashreporter_RC "${CMAKE_CURRENT_BINARY_DIR}/resources.qrc")
 
 
 if(NOT BUILD_LIBRARIES_ONLY)
-    add_executable( ${CRASHREPORTER_EXECUTABLE}
+    add_executable(${CRASHREPORTER_EXECUTABLE}
         ${crashreporter_SOURCES}
         ${crashreporter_HEADERS_MOC}
         ${crashreporter_UI_HEADERS}
@@ -42,20 +39,9 @@ if(NOT BUILD_LIBRARIES_ONLY)
     find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
     target_include_directories(${CRASHREPORTER_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-    set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES AUTOMOC ON)
-    set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES AUTORCC ON)
-    set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
     target_link_libraries(${CRASHREPORTER_EXECUTABLE}
         crashreporter-gui
         Qt5::Core Qt5::Widgets
     )
-
-    if(BUILD_OWNCLOUD_OSX_BUNDLE)
-        install(TARGETS ${CRASHREPORTER_EXECUTABLE} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
-    elseif(NOT BUILD_LIBRARIES_ONLY)
-        install(TARGETS ${CRASHREPORTER_EXECUTABLE}
-            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-    endif()
+    install(TARGETS ${CRASHREPORTER_EXECUTABLE} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 endif()

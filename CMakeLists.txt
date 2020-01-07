@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 14)
 
-project(client LANGUAGES CXX C VERSION 2.7.0)
+include(VERSION.cmake)
+project(client LANGUAGES CXX C VERSION ${MIRALL_VERSION_MAJOR}.${MIRALL_VERSION_MINOR}.${MIRALL_VERSION_PATCH})
 include(FeatureSummary)
 find_package(ECM 5.50.0  NO_MODULE)
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules")
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules ${ECM_MODULE_PATH} ${CMAKE_MODULE_PATH})
+
+# disable pointless warning in KDECMakeSettings
+set(APPLE_SUPPRESS_X11_WARNING ON)
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
@@ -16,14 +20,9 @@ include(ECMMarkNonGuiExecutable)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_AUTOUIC ON)
 
 if (APPLE OR WIN32)
     set(USE_OUR_OWN_SQLITE3 TRUE)
-    set(SQLITE3_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3)
-    set(SQLITE3_LIBRARIES "")
-    set(SQLITE3_SOURCE ${SQLITE3_INCLUDE_DIR}/sqlite3.c)
-    MESSAGE(STATUS "Using own sqlite3 from " ${SQLITE3_INCLUDE_DIR})
 else()
     find_package(SQLite3 3.9.0 REQUIRED)
 endif()
@@ -185,7 +184,7 @@ set(TRANSLATIONS ${TRANS_FILES})
 
 
 if(APPLE)
-    list(APPEND OWNCLOUD_BUNDLED_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/sync-exclude.lst)
+    list(APPEND OWNCLOUD_BUNDLED_RESOURCES "${CMAKE_CURRENT_SOURCE_DIR}/sync-exclude.lst")
 elseif(BUILD_CLIENT)
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )

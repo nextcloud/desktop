@@ -198,7 +198,8 @@ if(APPLE)
 endif()
 ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
-add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
+add_executable(${APPLICATION_EXECUTABLE} main.cpp ${final_src})
+set_target_properties(${APPLICATION_EXECUTABLE} PROPERTIES AUTOUIC ON AUTORCC ON)
 
 if(NOT APPLE)
     if(NOT WIN32)

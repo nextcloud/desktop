@@ -47,7 +47,10 @@ if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
 endif()
 
 if (USE_OUR_OWN_SQLITE3)
-    list(APPEND csync_SRCS ${SQLITE3_SOURCE})
+    add_library(sqlite STATIC ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3/sqlite3.c)
+    target_include_directories(sqlite PUBLIC ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3)
+    add_library(SQLite::SQLite3 ALIAS sqlite)
+    MESSAGE(STATUS "Using own sqlite3 from " ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3/)
 endif()
 
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
@@ -59,14 +62,6 @@ target_include_directories(
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/std
 )
 
-if (USE_OUR_OWN_SQLITE3)
-    # make sure that the path for the local sqlite3 is before the system one
-    target_include_directories("${csync_NAME}" BEFORE PRIVATE ${SQLITE3_INCLUDE_DIR})
-else()
-    target_include_directories("${csync_NAME}" PRIVATE ${SQLITE3_INCLUDE_DIR})
-endif()
-
-
 generate_export_header("${csync_NAME}"
   EXPORT_MACRO_NAME OCSYNC_EXPORT
   EXPORT_FILE_NAME ocsynclib.h
@@ -74,7 +69,7 @@ generate_export_header("${csync_NAME}"
 
 target_link_libraries("${csync_NAME}"
   ${CSYNC_REQUIRED_LIBRARIES}
-  ${SQLITE3_LIBRARIES}
+  SQLite::SQLite3
   Qt5::Core Qt5::Concurrent
 )
 
