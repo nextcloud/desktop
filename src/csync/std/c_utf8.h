@@ -58,7 +58,7 @@
  * @see c_utf8_to_locale()
  *
  */
- QByteArray c_utf8_from_locale(const mbchar_t *str);
+ OCSYNC_EXPORT QByteArray c_utf8_from_locale(const mbchar_t *str);
 
 extern "C" {
 
@@ -89,7 +89,7 @@ extern "C" {
  * @see c_utf8_from_locale()
  *
  */
-mbchar_t* c_utf8_string_to_locale(const char *wstr);
+OCSYNC_EXPORT mbchar_t* c_utf8_string_to_locale(const char *wstr);
 
 /**
  * @brief c_utf8_path_to_locale converts a unixoid path to the locale aware format
@@ -103,7 +103,7 @@ mbchar_t* c_utf8_string_to_locale(const char *wstr);
  * @return a pointer to the converted string. Caller has to free it using the
  *         function c_free_locale_string.
  */
-mbchar_t* c_utf8_path_to_locale(const char *str);
+OCSYNC_EXPORT mbchar_t* c_utf8_path_to_locale(const char *str);
 
 /**
  * @brief Free buffer malloced by c_utf8_to_locale().

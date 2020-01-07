@@ -60,7 +60,7 @@ int c_strncasecmp(const char *a, const char *b, size_t n);
  *
  * @return  1 if they are equal, 0 if not.
  */
-int c_streq(const char *a, const char *b);
+OCSYNC_EXPORT int c_streq(const char *a, const char *b);
 
 
 /**

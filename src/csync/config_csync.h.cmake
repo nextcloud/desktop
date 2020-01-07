@@ -1,3 +1,4 @@
+#include "ocsynclib.h"
 #cmakedefine PACKAGE "${APPLICATION_NAME}"
 #cmakedefine VERSION "${APPLICATION_VERSION}"
 #cmakedefine LOCALEDIR "${LOCALE_INSTALL_DIR}"

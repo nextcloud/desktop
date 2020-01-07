@@ -34,6 +34,8 @@
 #ifndef _C_ALLOC_H
 #define _C_ALLOC_H
 
+#include "c_private.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -66,7 +68,7 @@ void *c_calloc(size_t count, size_t size);
  * @return A unique pointer value that can later be successfully passed to
  *         free(). If size or count is 0, NULL will be returned.
  */
-void *c_malloc(size_t size);
+OCSYNC_EXPORT void* c_malloc(size_t size);
 
 /**
  * @brief Changes the size of the memory block pointed to.
@@ -96,7 +98,7 @@ void *c_realloc(void *ptr, size_t size);
  * memory was available.
  *
  */
-char *c_strdup(const char *str);
+OCSYNC_EXPORT char* c_strdup(const char *str);
 
 /**
  * @brief Duplicate a string.
@@ -112,7 +114,7 @@ char *c_strdup(const char *str);
  * memory was available. A terminating null byte '\0' is added.
  *
  */
-char *c_strndup(const char *str, size_t size);
+OCSYNC_EXPORT char* c_strndup(const char *str, size_t size);
 
 /**
  * }@
