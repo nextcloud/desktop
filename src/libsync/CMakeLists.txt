@@ -6,12 +6,6 @@ if ( APPLE )
     )
 endif()
 
-IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD|NetBSD|OpenBSD")
-    list(APPEND OS_SPECIFIC_LINK_LIBRARIES
-	inotify
-    )
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD|NetBSD|OpenBSD")
-
 set(libsync_SRCS
     account.cpp
     bandwidthmanager.cpp
@@ -130,10 +124,9 @@ if (NOT TOKEN_AUTH_ONLY)
     target_include_directories(${synclib_NAME} PRIVATE ${QTKEYCHAIN_INCLUDE_DIR})
 endif()
 
-if(INOTIFY_FOUND)
-    target_include_directories(${synclib_NAME} PRIVATE ${INOTIFY_INCLUDE_DIR})
-    link_directories(${INOTIFY_LIBRARY_DIR})
-    target_link_libraries(${synclib_NAME} ${INOTIFY_LIBRARY} )
+if(Inotify_FOUND)
+    target_include_directories(${synclib_NAME} PRIVATE ${Inotify_INCLUDE_DIRS})
+    target_link_libraries(${synclib_NAME} ${Inotify_LIBRARIES} )
 endif()
 
 GENERATE_EXPORT_HEADER( ${synclib_NAME}
