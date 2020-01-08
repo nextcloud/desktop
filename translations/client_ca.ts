@@ -9,12 +9,12 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation>S&apos;estan comprovant canvis a &apos;%1&apos;</translation>
+        <translation>S&apos;està comprovant si hi ha canvis a «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>S&apos;està sincronitzant %1 de %2  (%3 pendents)</translation>
+        <translation>S&apos;està sincronitzant %1 de %2  (%3 restants)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Escull...</translation>
+        <translation>&amp;Tria...</translation>
     </message>
 </context>
 <context>
@@ -244,7 +244,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
         <source>No account configured.</source>
-        <translation>No hi ha cap compte configurat</translation>
+        <translation>No hi ha cap compte configurat.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -510,7 +510,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="141"/>
         <source>Asking Credentials</source>
-        <translation>S&apos;estan preguntant les credencials</translation>
+        <translation>S&apos;estan demanant les credencials</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="143"/>
@@ -559,12 +559,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="192"/>
         <source>Synced</source>
-        <translation>Sincronitzat</translation>
+        <translation>S&apos;ha sincronitzat</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="231"/>
         <source>Retry all uploads</source>
-        <translation>Torna a provar totes les pujades</translation>
+        <translation>Torna a intentar totes les pujades</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="346"/>
@@ -597,17 +597,17 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password :</source>
-        <translation>Contrasenya del certificat :</translation>
+        <translation>Contrasenya del certificat:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Select a certificate</source>
-        <translation>Selecciona un certificat</translation>
+        <translation>Seleccioneu un certificat</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>Fitxers de certificats (*.p12 *.pfx)</translation>
+        <translation>Fitxers de certificats (*.p12, *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -758,7 +758,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation>Inicieu la sessió al vostre navegador (Flux d&apos;entrada v2)</translation>
+        <translation>Inici de sessió al navegador (Flux d&apos;inici de sessió v2)</translation>
     </message>
 </context>
 <context>
@@ -1413,7 +1413,7 @@ Continuar la sincronització com a normal farà que tots els vostres fitxers sig
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Mostra &amp;Notificacions del servidor</translation>
+        <translation>Mostra les &amp;notificacions del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1917,7 +1917,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server …</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està comprovant el servidor d&apos;actualitzacions...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1945,12 +1945,12 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
         <source>Connect to %1</source>
-        <translation>Connecta a %1</translation>
+        <translation>Connexió a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="52"/>
         <source>Setup local folder options</source>
-        <translation>Estableix les opcions de carpeta local</translation>
+        <translation>Configuració dels paràmetres de la carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
@@ -1965,7 +1965,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation>Sincronitza el directori &apos;%1&apos;</translation>
+        <translation>Sincronitza la carpeta «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="167"/>
@@ -2055,7 +2055,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation>Inicieu la sessió al vostre navegador</translation>
+        <translation>Inici de sessió al navegador</translation>
     </message>
 </context>
 <context>
@@ -2068,7 +2068,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="55"/>
         <source>Setup %1 server</source>
-        <translation>Configura el sevidor %1</translation>
+        <translation>Configuració del sevidor %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
@@ -3756,7 +3756,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
         <source>Choose what to sync</source>
-        <translation>Trieu què sincronitzar</translation>
+        <translation>Trieu què voleu sincronitzar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
@@ -3815,7 +3815,7 @@ No és aconsellable fer-la servir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
-        <translation>Registreu-vos amb un proveïdor</translation>
+        <translation>Registra&apos;m amb un proveïdor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
