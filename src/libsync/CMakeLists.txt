@@ -52,35 +52,26 @@ endif()
 
 ## begin zsync
 
-include_directories( ${CMAKE_SOURCE_DIR}/src/3rdparty/zsync/c )
-
-set( libsync_SRCS
-    ${libsync_SRCS}
-    ../3rdparty/zsync/c/librcksum/hash.c
-    ../3rdparty/zsync/c/librcksum/md4.c
-    ../3rdparty/zsync/c/librcksum/range.c
-    ../3rdparty/zsync/c/librcksum/rsum.c
-    ../3rdparty/zsync/c/librcksum/state.c
-    ../3rdparty/zsync/c/libzsync/sha1.c
-    ../3rdparty/zsync/c/libzsync/zsync.c
-    ../3rdparty/zsync/c/libzsync/zsyncfile.c
-    ../3rdparty/zsync/c/progress.c
+add_library(zsync STATIC ../3rdparty/zsync/c/librcksum/hash.c
+                        ../3rdparty/zsync/c/librcksum/md4.c
+                        ../3rdparty/zsync/c/librcksum/range.c
+                        ../3rdparty/zsync/c/librcksum/rsum.c
+                        ../3rdparty/zsync/c/librcksum/state.c
+                        ../3rdparty/zsync/c/libzsync/sha1.c
+                        ../3rdparty/zsync/c/libzsync/zsync.c
+                        ../3rdparty/zsync/c/libzsync/zsyncfile.c
+                        ../3rdparty/zsync/c/progress.c
 )
+set_target_properties(zsync PROPERTIES C_STANDARD 99)
+target_include_directories(zsync PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/3rdparty/zsync/c>)
 
 if ( WIN32 )
-    # ntohs
-    list(APPEND OS_SPECIFIC_LINK_LIBRARIES
-        ws2_32
-    )
+    target_link_libraries(zsync PUBLIC ws2_32)
     # ensure size_t is 64 bits
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_FILE_OFFSET_BITS=64")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FILE_OFFSET_BITS=64")
+    target_compile_definitions(zsync PRIVATE _FILE_OFFSET_BITS=64)
 endif()
 
-set_source_files_properties( ../3rdparty/zsync/c/libzsync/zsync.c
-    PROPERTIES COMPILE_FLAGS -DVERSION=\\"0.6.3\\" )
-set_source_files_properties( ../3rdparty/zsync/c/libzsync/zsyncfile.c
-    PROPERTIES COMPILE_FLAGS "-DVERSION=\\\"0.6.3\\\" -DSIZEOF_OFF_T=8" )
+target_compile_definitions(zsync PRIVATE VERSION="0.6.3" SIZEOF_OFF_T=8)
 
 ## end zsync
 
@@ -116,6 +107,7 @@ target_link_libraries(${synclib_NAME}
     "${csync_NAME}"
     ${OS_SPECIFIC_LINK_LIBRARIES}
     Qt5::Core Qt5::Network
+    zsync
 )
 
 if (NOT TOKEN_AUTH_ONLY)
