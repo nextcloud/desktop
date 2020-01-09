@@ -49,6 +49,7 @@
 #include <QLocalSocket>
 #include <QStringBuilder>
 #include <QMessageBox>
+#include <QInputDialog>
 
 #include <QClipboard>
 
@@ -477,6 +478,8 @@ public:
             this, &GetOrCreatePublicLinkShare::linkShareCreated);
         connect(&_shareManager, &ShareManager::serverError,
             this, &GetOrCreatePublicLinkShare::serverError);
+        connect(&_shareManager, &ShareManager::linkShareRequiresPassword,
+            this, &GetOrCreatePublicLinkShare::passwordRequired);
     }
 
     void run()
@@ -510,6 +513,24 @@ private slots:
     {
         qCDebug(lcPublicLink) << "New share created";
         success(share->getLink().toString());
+    }
+
+    void passwordRequired() {
+        bool ok;
+        QString password = QInputDialog::getText(nullptr,
+                                                 tr("Password for share required"),
+                                                 tr("Please enter a password for your link share:"),
+                                                 QLineEdit::Normal,
+                                                 QString(),
+                                                 &ok);
+
+        if (!ok) {
+            // The dialog was canceled so no need to do anything
+            return;
+        }
+
+        // Try to create the link share again with the newly entered password
+        _shareManager.createLinkShare(_localFile, QString(), password);
     }
 
     void serverError(int code, const QString &message)
