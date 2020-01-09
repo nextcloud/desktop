@@ -2075,17 +2075,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation>安全的协作 &amp; 文件交换</translation>
+        <translation>安全的协作和文件交换</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation>易用的网页邮件、日历 &amp; 联系人</translation>
+        <translation>易于使用的网页邮件、日历和联系人</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>屏幕共享，在线视频和网络会议</translation>
+        <translation>屏幕共享，线上见面和网络会议</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
