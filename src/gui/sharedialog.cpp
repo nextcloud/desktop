@@ -28,6 +28,7 @@
 
 #include <QFileInfo>
 #include <QFileIconProvider>
+#include <QInputDialog>
 #include <QPointer>
 #include <QPushButton>
 #include <QFrame>
@@ -137,6 +138,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         _manager = new ShareManager(accountState->account(), this);
         connect(_manager, &ShareManager::sharesFetched, this, &ShareDialog::slotSharesFetched);
         connect(_manager, &ShareManager::linkShareCreated, this, &ShareDialog::slotAddLinkShareWidget);
+        connect(_manager, &ShareManager::linkShareRequiresPassword, this, &ShareDialog::slotLinkShareRequiresPassword);
     }
 }
 
@@ -303,6 +305,24 @@ void ShareDialog::slotCreateLinkShare()
     _manager->createLinkShare(_sharePath, QString(), QString());
 }
 
+void ShareDialog::slotLinkShareRequiresPassword()
+{
+    bool ok;
+    QString password = QInputDialog::getText(this,
+                                             tr("Password for share required"),
+                                             tr("Please enter a password for your link share:"),
+                                             QLineEdit::Normal,
+                                             QString(),
+                                             &ok);
+
+    if (!ok) {
+        // The dialog was canceled so no need to do anything
+        return;
+    }
+
+    // Try to create the link share again with the newly entered password
+    _manager->createLinkShare(_sharePath, QString(), password);
+}
 
 void ShareDialog::slotDeleteShare()
 {
