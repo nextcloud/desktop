@@ -15,13 +15,13 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 
 ### Before Branching Off:
 
+* [ ] Dev: Make sure previous minor/major version's branch is merged into current master branch e.g. 2.6 into master "one flow" - @TheOneRing @guruz
 * [ ] Dev: Check [dependencies](https://handbook.owncloud.com/release_processes/client/dependencies.html) for updates - @TheOneRing @guruz
 * [ ] Dev: Update [ChangeLog](https://handbook.owncloud.com/release_processes/client/change_log.html) - @TheOneRing @guruz
 * [ ] QA: Update [Test Plans](https://handbook.owncloud.com/release_processes/client/testlink.html) - @HanaGemela @jnweiger
 * [ ] QA: Review list of [supported platforms](https://handbook.owncloud.com/release_processes/client/supported_platforms.html) -  @HanaGemela @jnweiger @TheOneRing @guruz
 * [ ] QA: Update [documentation](https://handbook.owncloud.com/release_processes/client/documentation.html) -  @HanaGemela @jnweiger
 * [ ] QA: Check Sprint Board for remaining issues -  @HanaGemela @jnweiger
-
 
 ### On the Day of the First Daily Build of the New Branch:
 
@@ -37,12 +37,10 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 
 ### After the First Daily Build of the New Branch:
 
-* [ ] Announce the new branch to community and advertise dailies for public testing 
+* [ ] Announce the new branch to community and advertise dailies for public testing - marketing
 * [ ] QA: [Antivirus scan](https://handbook.owncloud.com/release_processes/client/virus.html) - @HanaGemela @jnweiger 
 
 ### For All Sprint Builds:
-
-(ongoing * [ ] Make sure previous minor/major version's branch is merged into current major branch (or everything cherry-picked))
 
 * [ ] Add latest updates to Changelog in the client source repository.
 * [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
@@ -51,38 +49,31 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 * [ ] jenkins.int: Create build for theme 'ownCloud' using client-trigger (uncheck the "daily build" checkbox, use rcX or betaX dropdown for version suffix)
 * [ ] jenkins.int: Create build for theme 'testpilotcloud' using client-trigger (uncheck the "daily build" checkbox, use the rcX or betaX dropdown for version suffix)
 * [ ] Build results are in https://download.owncloud.com/desktop/testing -- win and mac binaries are there, linux packages are listed in a *repo.html file pointing to the repository.
-* [ ] Check if *tar.xz.asc files are there. If not resort to https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge
+* [ ] Check if *tar.xz.asc files are there. If not follow the [instructions](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
 * [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh with repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
-* [ ] review everything :-)
-
 * [ ] Linux: add/remove [build targets](https://handbook.owncloud.com/release_processes/client/supported_platforms.html) @hvonreth @jnweiger
-* [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge) @guruz @jnweiger (TODO: is this still needed?)
+* [ ] Create a [signed tag](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge) using ```git tag -u E94E7B37 tagname```  @guruz @jnweiger (TODO: is this still needed?)
 * [ ] Update the wordpress content at owncloud.org/download @florian 
 * [ ] Inform packagers: @dragotin (openSUSE)
-* [ ] Announce on https://central.owncloud.org (copy old announcement, link to changelog, download links etc) TODO: itemize what goes into the announcement: deprecation warnings. ... @guruz @hvonreth
+* [ ] Announce on [central](https://central.owncloud.org) (copy old announcement, link to changelog, download links etc) TODO: itemize what goes into the announcement: deprecation warnings. ... @guruz @hvonreth
 * [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there.
 * [ ] Check crash reporter after some days https://handbook.owncloud.com/release_processes/client/desktop.html#update-the-updater @guruz @hvonreth
 * [ ] Update unstable channel in the owncloud hosted [auto updater](https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy) @hgemela @jnweiger
 
-
-### One Week Before the Final Release:
-
-Skip this section for patch releases.
+### One Week Before the Final Release (Skip this section for patch releases):
 
 * [ ] Communicate the release schedule on rocket-chat #release-coordination and mailinglist release-coordination@owncloud.com. Give a high level overview of the upcoming new features, changes etc.
 * [ ] Ensure marketing is aware (marketing@owncloud.com) and prepared for the release (social, .com website, cust.communications)
-* [ ] Inform GCX knows the next version is about 1 week out (gcx@owncloud.com)
-
+* [ ] Inform GCX knows the next version is about 1 week out (gcx@owncloud.com) - marketing
 
 ### One Day Before the Final Release:
 * [ ] Check [crash reporter](https://handbook.owncloud.com/release_processes/client/desktop.html#crash-reporter) for bad crashes of this RC (same crash happening to many users) @guruz @hvonreth
 * [ ] Check the translations coming from transifex: All synchronized? TODO: (20181109jw: where? how?)
-* [ ] Review drone results: `make test` TDOD: Mac, Lin, Win? https://drone.owncloud.services/client/build-linux
+* [ ] Review drone results: `make test` TODO: Mac, Lin, Win? https://drone.owncloud.services/client/build-linux
 * [ ] Run the tx.pl scripts on the final code tag (20181109jw: really? What does that test?) @oggofart
 * [ ] Run smashbox (20180719 jw: FIXME: add details, how?) (ask @dschmidt, put link to smashbox results here)
 * [ ] Inform product management and marketing that we are 1 day out
-
 
 ### On Release Day (for the Final Release):
 For major, minor, and patch releases, but skip this section for ALPHA/BETA
@@ -93,17 +84,14 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] Create build for theme 'ownCloud' using jenkins-int client-trigger (uncheck "daily build", uncheck "private", version suffix "") @jnweiger @hvonreth
 * [ ] Create build for theme 'testpilotcloud' using jenkins-int client-trigger (uncheck "daily build", uncheck "private", version suffix "") @jnweiger @hvonreth
 * Build results are in https://download.owncloud.com/desktop/testing -- Win and Mac binaries are there, Linux packages are listed in a *repo.html file
-
-###############################################
-
 * [ ] Check if *tar.xz.asc files are there. If not resort to https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge
-* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z using https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/ (the Linux packages will always land in the :testing repository) - @jnweigert
+* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z using https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/ (the Linux packages will always land in the :testing repository) - @jnweiger
   ```obs-deepcopy-prj.sh isv:ownCloud:desktop isv:ownCloud:desktop:client-2.5.1```
 * [ ] Mac: Perform smoke test of non-osx10.11 package (fresh install, perform upload/download, check the version in General tab)
 * [ ] Win: Perform smoke test of non-GPO package (fresh install, perform upload/download, check the version in General tab)
 * [ ] Linux: Perform smoke test two distro packages (fresh install, perform upload/download, check the version in General tab)
       Latest Ubuntu + Latest Fedora
-* [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing - @jnweigert
+* [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing - @jnweiger
 * [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too.
 * [ ] Linux: also copy the *.linux-repo.html files from ```testing``` to ```stable``` **and** edit away the `:testing` strings.
 * [ ] Linux: disable publishing on project isv:ownCloud:desktop
@@ -137,16 +125,10 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] Take pride and celebrate!
 * [ ] Tell GCX to increment the minimum supported version for enterprise customers - @mstingl
 * [ ] Check if minimum.supported.desktop.version (https://github.com/owncloud/core/blob/master/config/config.sample.php#L1152) needs to be updated in server 
-
-### 15 Minutes After the Release:
-
-* [ ] Disable publishing in OBS to prevent that accidential rebuilds hit the end users.- jnweigert TODO
+ * [ ] Ensure that the [client release template](https://github.com/owncloud/client/edit/notes-from-the-etherpad/.github/release_template.md) is up to date
+* [ ] After OBS built everything, disable publishing in OBS to prevent that accidential rebuilds hit the end users.- jnweiger
 
 ## A few days after the release (for final release)
 
 * [ ] Check the crash reporter if auto update is a good idea or we need a new release
 * [ ] Update the owncloud hosted auto [updater](https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy)  
-
-### Finally
-
- * [ ] Ensure that the [client release template](https://github.com/owncloud/client/edit/notes-from-the-etherpad/.github/release_template.md) is up to date
