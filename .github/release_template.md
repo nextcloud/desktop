@@ -46,9 +46,7 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 * [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
 * [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc in the release branch.
 * [ ] (TODO: move to patch-release checklist) Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
-* [ ] jenkins.int: Create build for theme 'ownCloud' using client-trigger (uncheck the "daily build" checkbox, use rcX or betaX dropdown for version suffix)
-* [ ] jenkins.int: Create build for theme 'testpilotcloud' using client-trigger (uncheck the "daily build" checkbox, use the rcX or betaX dropdown for version suffix)
-* [ ] Build results are in https://download.owncloud.com/desktop/testing -- win and mac binaries are there, linux packages are listed in a *repo.html file pointing to the repository.
+* [ ] Create [builds](https://handbook.owncloud.com/release_processes/client/build.html#sprint-build) for theme 'ownCloud' and 'testpilotcloud'  @jnweiger @hvonreth
 * [ ] Check if *tar.xz.asc files are there. If not follow the [instructions](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
 * [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh with repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
@@ -81,16 +79,11 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] Add last updates to Changelog in the client source repository @hvonreth @hgemela
 * [ ] Branch off a release branch once QA is done, tag with a release vA.B.C (with v, as v is for tags) @hvonreth @guruz
 * [ ] Edit ```VERSION.cmake``` hange suffix from 'git' or 'rc' to empty string "". Commit the result to the release branch only @hvonreth @guruz
-* [ ] Create build for theme 'ownCloud' using jenkins-int client-trigger (uncheck "daily build", uncheck "private", version suffix "") @jnweiger @hvonreth
-* [ ] Create build for theme 'testpilotcloud' using jenkins-int client-trigger (uncheck "daily build", uncheck "private", version suffix "") @jnweiger @hvonreth
-* Build results are in https://download.owncloud.com/desktop/testing -- Win and Mac binaries are there, Linux packages are listed in a *repo.html file
-* [ ] Check if *tar.xz.asc files are there. If not resort to https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge
+* [ ] Create [builds](https://handbook.owncloud.com/release_processes/client/build.html#final-build) for theme 'ownCloud' and 'testpilotcloud'  @jnweiger @hvonreth
+* [ ] Check if *tar.xz.asc files are [here](https://download.owncloud.com/desktop/testing). If not follow the [instructions](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z using https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/ (the Linux packages will always land in the :testing repository) - @jnweiger
   ```obs-deepcopy-prj.sh isv:ownCloud:desktop isv:ownCloud:desktop:client-2.5.1```
-* [ ] Mac: Perform smoke test of non-osx10.11 package (fresh install, perform upload/download, check the version in General tab)
-* [ ] Win: Perform smoke test of non-GPO package (fresh install, perform upload/download, check the version in General tab)
-* [ ] Linux: Perform smoke test two distro packages (fresh install, perform upload/download, check the version in General tab)
-      Latest Ubuntu + Latest Fedora
+* [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
 * [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing - @jnweiger
 * [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too.
 * [ ] Linux: also copy the *.linux-repo.html files from ```testing``` to ```stable``` **and** edit away the `:testing` strings.
