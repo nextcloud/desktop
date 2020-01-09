@@ -35,6 +35,7 @@
 #include <QMessageBox>
 #include <QDialog>
 #include <QHBoxLayout>
+#include <QScreen>
 
 #if defined(Q_OS_X11)
 #include <QX11Info>
@@ -1152,8 +1153,7 @@ void ownCloudGui::slotRemoveDestroyedShareDialogs()
 
 void ownCloudGui::slotAbout()
 {
-    QString title = tr("About %1").arg(Theme::instance()->appNameGUI());
-    QString about = Theme::instance()->about();
+    const QString title = tr("About %1").arg(Theme::instance()->appNameGUI());
     QMessageBox *msgBox = new QMessageBox(this->_settingsDialog);
 #ifdef Q_OS_MAC
     // From Qt doc: "On macOS, the window title is ignored (as required by the macOS Guidelines)."
@@ -1164,20 +1164,9 @@ void ownCloudGui::slotAbout()
     msgBox->setAttribute(Qt::WA_DeleteOnClose, true);
     msgBox->setTextFormat(Qt::RichText);
     msgBox->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    msgBox->setInformativeText("<qt>"+about+"</qt>");
+    msgBox->setInformativeText(QStringLiteral("<qt>%1</qt>").arg(Theme::instance()->about()));
     msgBox->setStandardButtons(QMessageBox::Ok);
-    QIcon appIcon = Theme::instance()->applicationIcon();
-    const auto sizes = appIcon.availableSizes();
-    QSize size;
-    for (auto it = sizes.crbegin(); it != sizes.crend(); ++it) {
-        if (it->width() > 600)
-            continue;
-        size = *it;
-        break;
-    }
-    QPixmap iconPixmap = appIcon.pixmap(size);
-    iconPixmap.setDevicePixelRatio(2);
-    msgBox->setIconPixmap(iconPixmap);
+    msgBox->setIconPixmap(Theme::instance()->applicationIcon().pixmap(qApp->primaryScreen()->availableSize().width() / 4));
     msgBox->show();
 }
 

@@ -140,6 +140,8 @@ public:
 
 private:
     QVariantMap _capabilities;
+    QVariantMap _fileSharingCapabilities;
+    QVariantMap _fileSharingPublicCapabilities;
 };
 }
 
