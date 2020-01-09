@@ -174,7 +174,7 @@ if( WIN32 )
     add_definitions(-D_WIN32_WINNT=0x0600)
     add_definitions(-DWINVER=0x0600)
     add_definitions(-DNTDDI_VERSION=0x0A000003)
-endif( WIN32 )
+endif()
 
 # Handle Translations, pick all client_* files from trans directory.
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
