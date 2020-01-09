@@ -62,8 +62,8 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 ### One Week Before the Final Release (Skip this section for patch releases):
 
 * [ ] Communicate the release schedule on rocket-chat #release-coordination and mailinglist release-coordination@owncloud.com. Give a high level overview of the upcoming new features, changes etc.
-* [ ] Ensure marketing is aware (marketing@owncloud.com) and prepared for the release (social, .com website, cust.communications)
-* [ ] Inform GCX knows the next version is about 1 week out (gcx@owncloud.com) - marketing
+* [ ] Ensure marketing is aware (marketing@owncloud.com) and prepared for the release (social, .com website, cust.communications) - 1 week before minor, 2 weeks before major (minor/major is about impact)
+* [ ] Inform Achim (ageissel@owncloud.com) and GCX that the next version will be in 1 week (gcx@owncloud.com) - marketing
 
 ### One Day Before the Final Release:
 * [ ] Check [crash reporter](https://handbook.owncloud.com/release_processes/client/desktop.html#crash-reporter) for bad crashes of this RC (same crash happening to many users) @guruz @hvonreth
@@ -71,7 +71,7 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 * [ ] Review drone results: `make test` TODO: Mac, Lin, Win? https://drone.owncloud.services/client/build-linux
 * [ ] Run the tx.pl scripts on the final code tag (20181109jw: really? What does that test?) @oggofart
 * [ ] Run smashbox (20180719 jw: FIXME: add details, how?) (ask @dschmidt, put link to smashbox results here)
-* [ ] Inform product management and marketing that we are 1 day out
+* [ ] Inform product management and marketing and #general channel in rocker chat that we are 1 day out
 
 ### On Release Day (for the Final Release):
 For major, minor, and patch releases, but skip this section for ALPHA/BETA
@@ -100,12 +100,12 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] Create same tag for Windows toolchain - domme
 * [ ] Create same tag (actually a symlink) for macOS toolchain - domme
 * [ ] Create a (draft) release on https://github.com/owncloud/client/releases
+* [ ] 1h later check https://owncloud.org/changelog/desktop-client/ -> it pulls from the master branch ChangeLog file hourly.  - jnweiger
+* [ ] Update https://owncloud.org/download/#owncloud-desktop-client -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
+* [ ] add the previous release to https://owncloud.org/download/older-versions/ -jnw + franka
 
 ## Marketing
 
-* [ ] 1h later check https://owncloud.org/changelog/desktop-client/ -> it pulls from the master branch ChangeLog file hourly. 
-* [ ] Update https://owncloud.org/download/#owncloud-desktop-client -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
-* [ ] add the previous release to https://owncloud.org/download/older-versions/
 * [ ] Update https://owncloud.com/download/#desktop-clients (both de & en, achim via #marketing) 
 * [ ] Announce on https://central.owncloud.org 
 * [ ] Announce on announcements@owncloud.org Link to the central post so discussion happens there. 
