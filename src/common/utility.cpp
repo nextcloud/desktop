@@ -170,24 +170,20 @@ static QLatin1String platform()
 #elif defined(Q_OS_SOLARIS)
     return QLatin1String("Solaris");
 #else
-    return QLatin1String("Unknown OS");
+    return QSysInfo::productType();
 #endif
 }
 
 QByteArray Utility::userAgentString()
 {
-    QString re = QString::fromLatin1("Mozilla/5.0 (%1) mirall/%2")
-                     .arg(platform(), QLatin1String(MIRALL_VERSION_STRING));
-
-    QLatin1String appName(APPLICATION_SHORTNAME);
-
-    // this constant "ownCloud" is defined in the default OEM theming
-    // that is used for the standard client. If it is changed there,
-    // it needs to be adjusted here.
-    if (appName != QLatin1String("ownCloud")) {
-        re += QString(" (%1)").arg(appName);
-    }
-    return re.toLatin1();
+    return QStringLiteral("Mozilla/5.0 (%1) mirall/%2 (%3, %4-%5 ClientArchitecture: %6 OsArchitecture: %7)")
+                     .arg(platform(),
+                         QLatin1String(MIRALL_VERSION_STRING),
+                         qApp->applicationName(),
+                         QSysInfo::productType(),
+                         QSysInfo::kernelVersion(),
+                         QSysInfo::buildCpuArchitecture(),
+                         QSysInfo::currentCpuArchitecture()).toLatin1();
 }
 
 bool Utility::hasSystemLaunchOnStartup(const QString &appName)
