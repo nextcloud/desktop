@@ -52,12 +52,12 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 * [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh with repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
 * [ ] Linux: add/remove [build targets](https://handbook.owncloud.com/release_processes/client/supported_platforms.html) @hvonreth @jnweiger
 * [ ] Create a [signed tag](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge) using ```git tag -u E94E7B37 tagname```  @guruz @jnweiger (TODO: is this still needed?)
-* [ ] Update the wordpress content at owncloud.org/download @florian 
+* [ ] Update the wordpress content at owncloud.org/download @florian - marketing
 * [ ] Inform packagers: @dragotin (openSUSE)
-* [ ] Announce on [central](https://central.owncloud.org) (copy old announcement, link to changelog, download links etc) TODO: itemize what goes into the announcement: deprecation warnings. ... @guruz @hvonreth
-* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there.
-* [ ] Check crash reporter after some days https://handbook.owncloud.com/release_processes/client/desktop.html#update-the-updater @guruz @hvonreth
-* [ ] Update unstable channel in the owncloud hosted [auto updater](https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy) @hgemela @jnweiger
+* [ ] Announce on [central](https://central.owncloud.org) (copy old announcement, link to changelog, download links etc) TODO: itemize what goes into the announcement: deprecation warnings. ... - marketing
+* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there. - marketing
+* [ ] Check crash reporter after some days  @guruz @hvonreth
+* [ ] Update unstable channel in the owncloud hosted auto updater. Instructions [here](https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy) and [here](https://handbook.owncloud.com/release_processes/client/desktop.html#update-the-updater) @hgemela @jnweiger
 
 ### One Week Before the Final Release (Skip this section for patch releases):
 
@@ -103,18 +103,7 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] 1h later check https://owncloud.org/changelog/desktop-client/ -> it pulls from the master branch ChangeLog file hourly.  - jnweiger
 * [ ] Update https://owncloud.org/download/#owncloud-desktop-client -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
 * [ ] add the previous release to https://owncloud.org/download/older-versions/ -jnw + franka
-
-## Marketing
-
-* [ ] Update https://owncloud.com/download/#desktop-clients (both de & en, achim via #marketing) 
-* [ ] Announce on https://central.owncloud.org 
-* [ ] Announce on announcements@owncloud.org Link to the central post so discussion happens there. 
-* [ ] Inform packagers @dragotin (openSUSE) - to build their own openSUSE builds -
-* [ ] Send out Social (tweet, blog, other) 
-* [ ] Send out customer communication (if any) 
-* [ ] Inform GCX (gcx@owncloud.com), release-coordination@owncloud.com and marketing (marketing@owncloud.com)  that the new version is released (gcx@owncloud.com)
-
-
+* [ ] Ping marketing to do their [actions](https://handbook.owncloud.com/release_processes/client/marketing.html)
 * [ ] Take pride and celebrate!
 * [ ] Tell GCX to increment the minimum supported version for enterprise customers - @mstingl
 * [ ] Check if minimum.supported.desktop.version (https://github.com/owncloud/core/blob/master/config/config.sample.php#L1152) needs to be updated in server 
