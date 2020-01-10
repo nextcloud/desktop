@@ -81,7 +81,7 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] Edit ```VERSION.cmake``` hange suffix from 'git' or 'rc' to empty string "". Commit the result to the release branch only @hvonreth @guruz
 * [ ] Create [builds](https://handbook.owncloud.com/release_processes/client/build.html#final-build) for theme 'ownCloud' and 'testpilotcloud'  @jnweiger @hvonreth
 * [ ] Check if *tar.xz.asc files are [here](https://download.owncloud.com/desktop/testing). If not follow the [instructions](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
-* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z using https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/ the Linux packages will always land in the :testing repository - @jnweiger
+* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z using [obs_integration](https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/) the Linux packages will always land in the :testing repository - @jnweiger
   ```obs-deepcopy-prj.sh isv:ownCloud:desktop isv:ownCloud:desktop:client-2.5.1```
 * [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
 * [ ] Linux: Run [test](https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh) repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing - @jnweiger
@@ -96,11 +96,11 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] Linux: Wait until everything is built and published, then disable publishing on project isv:ownCloud:desktop
 * [ ] Create git [signed](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge) tag in client repository using ```git tag -u E94E7B37 tagname``` 
 * [ ] Increment version number in daily builds. Special case: after the last release in a branch, jump forward to the 'next release branch'... That may mean, this is nightly is the same as edge then.
-* [ ] Create same tag for MSI code - domme
-* [ ] Create same tag for Windows toolchain - domme
-* [ ] Create same tag (actually a symlink) for macOS toolchain - domme
+* [ ] Create same tag for MSI code - @dschmidt 
+* [ ] Create same tag for Windows toolchain - @dschmidt 
+* [ ] Create same tag (actually a symlink) for macOS toolchain - @dschmidt 
 * [ ] Create a (draft) release [here](https://github.com/owncloud/client/releases)
-* [ ] 1h later check [changelog on website](https://owncloud.org/changelog/desktop-client/) -> it pulls from the master branch ChangeLog file hourly.  - jnweiger
+* [ ] 1h later check [changelog on website](https://owncloud.org/changelog/desktop-client/) -> it pulls from the master branch ChangeLog file hourly.  - @jnweiger
 * [ ] Update [org website](https://owncloud.org/download/#owncloud-desktop-client) -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
 * [ ] Add the previous release to [older version](https://owncloud.org/download/older-versions/) @jnweiger + fwittek
 * [ ] Ping marketing to do their [actions](https://handbook.owncloud.com/release_processes/client/marketing.html)
@@ -108,7 +108,7 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] Tell GCX to increment the minimum supported version for enterprise customers - @mstingl
 * [ ] Check if [minimum.supported.desktop.version](https://github.com/owncloud/core/blob/master/config/config.sample.php#L1152) needs to be updated in server 
  * [ ] Ensure that the [client release template](https://github.com/owncloud/client/edit/notes-from-the-etherpad/.github/release_template.md) is up to date
-* [ ] After OBS built everything, disable publishing in OBS to prevent that accidential rebuilds hit the end users.- jnweiger
+* [ ] After OBS built everything, disable publishing in OBS to prevent that accidential rebuilds hit the end users.- @jnweiger
 
 ## A few days after the release (for final release)
 
