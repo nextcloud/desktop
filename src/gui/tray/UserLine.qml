@@ -4,33 +4,19 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.2
 
 MenuItem {
-
-    Connections {
-        target: userModelBackend
-        onRefreshUserMenu: {
-        }
-    }
-
     id: userLine
-    width: 220
     height: 60
-
-    Rectangle {
-        id: userLineBackground
-        height: userLine.height
-        anchors.fill: parent
-        color: "transparent"
 
         RowLayout {
             id: userLineLayout
             spacing: 0
-            anchors.fill: parent
+            width: 220
+            height: 60
 
             Button {
                 id: accountButton
-                anchors.centerIn: parent
-                Layout.preferredWidth: (userLine.width - 4)
-                Layout.preferredHeight: (userLineBackground.height - 2)
+                Layout.preferredWidth: (userLineLayout.width * (5/6))
+                Layout.preferredHeight: (userLineLayout.height)
                 display: AbstractButton.IconOnly
                 flat: true
 
@@ -49,21 +35,22 @@ MenuItem {
                     spacing: 0
                     Image {
                         id: accountAvatar
-                        Layout.leftMargin: 2
+                        Layout.leftMargin: 4
                         verticalAlignment: Qt.AlignCenter
+                        cache: false
                         source: ("image://avatars/" + index)
-                        Layout.preferredHeight: (userLineBackground.height -16)
-                        Layout.preferredWidth: (userLineBackground.height -16)
+                        Layout.preferredHeight: (userLineLayout.height -16)
+                        Layout.preferredWidth: (userLineLayout.height -16)
                     }
 
                     Column {
                         id: accountLabels
                         spacing: 4
                         Layout.alignment: Qt.AlignLeft
-                        Layout.leftMargin: 12
+                        Layout.leftMargin: 6
                         Label {
                             id: accountUser
-                            width: 120
+                            width: 128
                             text: name
                             elide: Text.ElideRight
                             color: "black"
@@ -72,7 +59,7 @@ MenuItem {
                         }
                         Label {
                             id: accountServer
-                            width: 120
+                            width: 128
                             text: server
                             elide: Text.ElideRight
                             color: "black"
@@ -81,6 +68,51 @@ MenuItem {
                     }
                 }
             } // accountButton
+
+            Button {
+                id: userMoreButton
+                Layout.preferredWidth: (userLineLayout.width * (1/6))
+                Layout.preferredHeight: userLineLayout.height
+                flat: true
+
+                icon.source: "qrc:///client/resources/more.svg"
+                icon.color: "transparent"
+
+                MouseArea {
+                    id: userMoreButtonMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked:
+                    {
+                        userMoreButtonMenu.popup()
+                    }
+                }
+                background:
+                    Rectangle {
+                    color: userMoreButtonMouseArea.containsMouse ? "grey" : "transparent"
+                    opacity: 0.2
+                }
+
+                Menu {
+                    id: userMoreButtonMenu
+                    width: 100
+
+                    background: Rectangle {
+                        border.color: "#0082c9"
+                        radius: 2
+                    }
+
+                    MenuItem {
+                        text: userModelBackend.isCurrentUserConnected() ? "Log out" : "Log in"
+                        onClicked: {
+                            userModelBackend.isCurrentUserConnected() ? userModelBackend.logout(index) : userModelBackend.logout(index)
+                        }
+                    }
+
+                    MenuItem {
+                        text: "Remove Account"
+                    }
+                }
+            }
         }
-    }   // Rectangle userLineBackground
 }   // MenuItem userLine

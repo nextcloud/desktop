@@ -108,7 +108,7 @@ Window {
                             id: accountMenu
                             x: (currentAccountButton.x + 2)
                             y: (currentAccountButton.y + currentAccountButton.height + 2)
-                            width: (currentAccountButton.width)
+                            width: (currentAccountButton.width - 2)
                             closePolicy: "CloseOnPressOutside"
 
                             background: Rectangle {
@@ -116,7 +116,13 @@ Window {
                                 radius: 2
                             }
 
+                            onClosed: {
+                                userLineInstantiator.active = false;
+                                userLineInstantiator.active = true;
+                            }
+
                             Instantiator {
+                                id: userLineInstantiator
                                 model: userModelBackend
                                 delegate: UserLine {}
                                 onObjectAdded: accountMenu.insertItem(index, object)

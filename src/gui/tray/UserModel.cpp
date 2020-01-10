@@ -43,6 +43,16 @@ void User::openLocalFolder()
     QDesktopServices::openUrl(this->getFolder()->path());
 }
 
+void User::login() const
+{
+    _account->signIn();
+}
+
+void User::logout() const
+{
+    _account->signOutByUi();
+}
+
 QString User::name() const
 {
     // If davDisplayName is empty (can be several reasons, simplest is missing login at startup), fall back to username
@@ -206,6 +216,20 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
     emit newUserSelected();
     emit refreshUserMenu();
     emit refreshCurrentUserGui();
+}
+
+Q_INVOKABLE void UserModel::login(const int &id) {
+    _users[id].login();
+}
+
+Q_INVOKABLE void UserModel::logout(const int &id)
+{
+    _users[id].logout();
+}
+
+Q_INVOKABLE void UserModel::removeAccount(const int &id)
+{
+    _users[id].logout();
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const

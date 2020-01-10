@@ -31,6 +31,8 @@ public:
     bool hasActivities() const;
     QImage avatar() const;
     QString id() const;
+    void login() const;
+    void logout() const;
 
 private:
     AccountStatePtr _account;
@@ -65,6 +67,9 @@ public:
     Q_INVOKABLE bool currentUserHasActivities();
     Q_INVOKABLE bool currentServerHasTalk();
     Q_INVOKABLE void switchCurrentUser(const int &id);
+    Q_INVOKABLE void login(const int &id);
+    Q_INVOKABLE void logout(const int &id);
+    Q_INVOKABLE void removeAccount(const int &id);
 
     ActivityListModel *currentActivityModel();
 
@@ -76,11 +81,7 @@ public:
     };
 
 signals:
-    Q_INVOKABLE void login();
-    Q_INVOKABLE void logout();
     Q_INVOKABLE void addAccount();
-    Q_INVOKABLE void removeAccount();
-
     Q_INVOKABLE void refreshCurrentUserGui();
     Q_INVOKABLE void newUserSelected();
     Q_INVOKABLE void refreshUserMenu();

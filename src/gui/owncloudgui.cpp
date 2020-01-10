@@ -110,12 +110,6 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::slotShowOptionalTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage,
         this, &ownCloudGui::slotShowGuiMessage);
-
-
-    connect(UserModel::instance(), &UserModel::login,
-        this, &ownCloudGui::slotLogin);
-    connect(UserModel::instance(), &UserModel::logout,
-        this, &ownCloudGui::slotLogout);
 }
 
 #ifdef WITH_LIBCLOUDPROVIDERS

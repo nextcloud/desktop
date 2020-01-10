@@ -232,8 +232,6 @@ void AccountSettings::createAccountToolbox()
     menu->addAction(action);
 
     connect(action, &QAction::triggered, this, &AccountSettings::slotDeleteAccount);
-    connect(UserModel::instance(), &UserModel::removeAccount,
-        this, &AccountSettings::slotOpenAccountWizard);
 
     _ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
     _ui->_accountToolbox->setMenu(menu);
