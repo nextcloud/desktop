@@ -35,9 +35,9 @@ class GeneralSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit GeneralSettings(QWidget *parent = 0);
+    explicit GeneralSettings(QWidget *parent = nullptr);
     ~GeneralSettings();
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 signals:
     void showAbout();
@@ -52,7 +52,12 @@ private slots:
     void slotIgnoreFilesEditor();
     void loadMiscSettings();
 
+protected:
+    void showEvent(QShowEvent *event) override;
+
 private:
+    void updateAutoStartInfo();
+
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
     QPointer<SyncLogDialog> _syncLogDialog;

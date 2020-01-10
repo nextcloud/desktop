@@ -52,14 +52,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
-    if(Utility::hasSystemLaunchOnStartup(Theme::instance()->appName())) {
-        _ui->autostartCheckBox->setChecked(true);
-        _ui->autostartCheckBox->setDisabled(true);
-        _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
-    } else {
-        _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
-        connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
-    }
+    updateAutoStartInfo();
     loadMiscSettings();
     slotUpdateInfo();
 
@@ -146,6 +139,11 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->deltaSyncCheckBox->setChecked(cfgFile.deltaSyncEnabled());
     _ui->deltaSyncSpinBox->setValue(cfgFile.deltaSyncMinFileSize() / (1024 * 1024));
+}
+
+void GeneralSettings::showEvent(QShowEvent *)
+{
+    updateAutoStartInfo();
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -270,6 +268,18 @@ void GeneralSettings::slotIgnoreFilesEditor()
         _ignoreEditor->open();
     } else {
         ownCloudGui::raiseDialog(_ignoreEditor);
+    }
+}
+
+void GeneralSettings::updateAutoStartInfo()
+{
+    if (Utility::hasSystemLaunchOnStartup(Theme::instance()->appName())) {
+        _ui->autostartCheckBox->setChecked(true);
+        _ui->autostartCheckBox->setDisabled(true);
+        _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
+    } else {
+        _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
+        connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
     }
 }
 
