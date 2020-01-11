@@ -117,7 +117,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     // accountAdded means the wizard was finished and the wizard might change some options.
     // Update 01/2020: Show new tray window instead
-    // connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
 
     customizeStyle();
 }
