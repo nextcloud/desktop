@@ -109,8 +109,13 @@ bool User::isCurrentUser() const
 
 bool User::isConnected() const
 {
-    bool test = (_account->connectionStatus() == AccountState::ConnectionStatus::Connected);
     return (_account->connectionStatus() == AccountState::ConnectionStatus::Connected);
+}
+
+void User::removeAccount() const
+{
+    AccountManager::instance()->deleteAccount(_account.data());
+    AccountManager::instance()->save();
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -239,6 +244,11 @@ Q_INVOKABLE void UserModel::logout(const int &id)
 Q_INVOKABLE void UserModel::removeAccount(const int &id)
 {
     _users[id].logout();
+    _users[id].removeAccount();
+    if (_users.count() > 1) {
+        id == 0 ? switchCurrentUser(1) : switchCurrentUser(0);
+    }
+    _users.removeAt(id);
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const

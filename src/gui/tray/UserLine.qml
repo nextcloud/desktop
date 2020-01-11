@@ -113,6 +113,9 @@ MenuItem {
 
                     MenuItem {
                         text: "Remove Account"
+                        onClicked: {
+                            userModelBackend.removeAccount(index)
+                        }
                     }
                 }
             }

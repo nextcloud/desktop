@@ -33,6 +33,7 @@ public:
     QString id() const;
     void login() const;
     void logout() const;
+    void removeAccount() const;
 
 private:
     AccountStatePtr _account;
