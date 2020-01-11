@@ -116,7 +116,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
 
     // accountAdded means the wizard was finished and the wizard might change some options.
-    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
+    // Update 01/2020: Show new tray window instead
+    // connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
 
     customizeStyle();
 }

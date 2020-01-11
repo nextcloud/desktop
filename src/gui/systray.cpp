@@ -57,6 +57,9 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
         this, &Systray::slotChangeActivityModel);
+
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &Systray::showWindow);
 }
 
 Systray::~Systray()

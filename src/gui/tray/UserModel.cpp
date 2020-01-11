@@ -4,8 +4,10 @@
 
 #include <QDesktopServices>
 #include <QIcon>
+#include <QMessageBox>
 #include <QSvgRenderer>
 #include <QPainter>
+#include <QPushButton>
 
 namespace OCC {
 
@@ -281,6 +283,21 @@ Q_INVOKABLE void UserModel::logout(const int &id)
 
 Q_INVOKABLE void UserModel::removeAccount(const int &id)
 {
+    QMessageBox messageBox(QMessageBox::Question,
+        tr("Confirm Account Removal"),
+        tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
+           "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
+            .arg(_users[id].name()),
+        QMessageBox::NoButton);
+    QPushButton *yesButton =
+        messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+    messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
+
+    messageBox.exec();
+    if (messageBox.clickedButton() != yesButton) {
+        return;
+    }
+
     _users[id].logout();
     _users[id].removeAccount();
     if (_users.count() > 1) {
