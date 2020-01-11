@@ -128,7 +128,32 @@ Window {
                             }
 
                             MenuItem {
-                                text: "Add account"
+                                id: addAccountButton
+                                height: 60
+
+                                RowLayout {
+                                    width: addAccountButton.width
+                                    height: addAccountButton.height
+                                    spacing: 0
+
+                                    Image {
+                                        Layout.leftMargin: 8
+                                        verticalAlignment: Qt.AlignCenter
+                                        source: "qrc:///client/theme/black/add.svg"
+                                        sourceSize.width: addAccountButton.height - 24
+                                        sourceSize.height: addAccountButton.height - 24
+                                    }
+                                    Label {
+                                        Layout.leftMargin: 10
+                                        text: "Add account"
+                                        color: "black"
+                                        font.pixelSize: 12
+                                    }
+                                    Item {
+                                        Layout.fillWidth: true
+                                        Layout.fillHeight: true
+                                    }
+                                }
                                 onClicked: userModelBackend.addAccount()
                             }
 

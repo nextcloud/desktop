@@ -138,5 +138,7 @@
         <file>theme/black/caret-down.svg</file>
         <file>theme/white/user.svg</file>
         <file>theme/black/user.svg</file>
+        <file>theme/white/add.svg</file>
+        <file>theme/black/add.svg</file>
     </qresource>
 </RCC>
