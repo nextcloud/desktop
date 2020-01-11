@@ -45,6 +45,7 @@ class Systray
 public:
     explicit Systray();
     ~Systray();
+    void create();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
     bool isOpen();

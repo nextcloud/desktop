@@ -27,6 +27,9 @@ Window {
         currentAccountUser.text = userModelBackend.currentUserName();
         currentAccountServer.text = userModelBackend.currentUserServer();
         trayWindowTalkButton.visible = userModelBackend.currentServerHasTalk() ? true : false;
+
+        userLineInstantiator.active = false;
+        userLineInstantiator.active = true;
     }
 
     Connections {
@@ -114,11 +117,6 @@ Window {
                             background: Rectangle {
                                 border.color: "#0082c9"
                                 radius: 2
-                            }
-
-                            onClosed: {
-                                userLineInstantiator.active = false;
-                                userLineInstantiator.active = true;
                             }
 
                             Instantiator {

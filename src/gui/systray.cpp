@@ -50,7 +50,6 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
     _trayEngine->rootContext()->setContextProperty("systrayBackend", this);
 
     _trayComponent = new QQmlComponent(_trayEngine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml")));
-    _trayContext = _trayEngine->contextForObject(_trayComponent->create());
 
     if (!AccountManager::instance()->accounts().isEmpty()) {
         slotChangeActivityModel();
@@ -58,12 +57,18 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
         this, &Systray::slotChangeActivityModel);
-
-    hideWindow();
 }
 
 Systray::~Systray()
 {
+}
+
+void Systray::create()
+{
+    if (_trayContext == nullptr) {
+        _trayContext = _trayEngine->contextForObject(_trayComponent->create());
+        hideWindow();
+    }
 }
 
 void Systray::slotChangeActivityModel()

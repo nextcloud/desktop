@@ -110,6 +110,8 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::slotShowOptionalTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage,
         this, &ownCloudGui::slotShowGuiMessage);
+
+    _tray->create();
 }
 
 #ifdef WITH_LIBCLOUDPROVIDERS
