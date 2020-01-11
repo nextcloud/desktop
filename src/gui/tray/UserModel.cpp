@@ -167,7 +167,17 @@ Q_INVOKABLE bool UserModel::isCurrentUserConnected()
 
 Q_INVOKABLE QImage UserModel::currentUserAvatar()
 {
-    return _users[_currentUserId].avatar();
+    if (_users.count() >= 1) {
+        return _users[_currentUserId].avatar();
+    } else {
+        QImage image(128, 128, QImage::Format_ARGB32);
+        image.fill(Qt::GlobalColor::transparent);
+        QPainter painter(&image);
+        QSvgRenderer renderer(QString(":/client/theme/white/user.svg"));
+        renderer.render(&painter);
+
+        return image;
+    }
 }
 
 QImage UserModel::avatarById(const int &id)
@@ -177,17 +187,29 @@ QImage UserModel::avatarById(const int &id)
 
 Q_INVOKABLE QString UserModel::currentUserName()
 {
-    return _users[_currentUserId].name();
+    if (_users.count() >= 1) {
+        return _users[_currentUserId].name();
+    } else {
+        return QString("No users");
+    }
 }
 
 Q_INVOKABLE QString UserModel::currentUserServer()
 {
-    return _users[_currentUserId].server();
+    if (_users.count() >= 1) {
+        return _users[_currentUserId].server();
+    } else {
+        return QString("");
+    }
 }
 
 Q_INVOKABLE bool UserModel::currentServerHasTalk()
 {
-    return _users[_currentUserId].serverHasTalk();
+    if (_users.count() >= 1) {
+        return _users[_currentUserId].serverHasTalk();
+    } else {
+        return false;
+    }
 }
 
 void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
