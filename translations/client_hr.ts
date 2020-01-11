@@ -437,7 +437,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="742"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Nije moguće stvoriti lokalnu mapu &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="796"/>
@@ -462,7 +462,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1031"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Povezivanje s %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1040"/>
@@ -883,7 +883,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 i %n druga datoteka trenutno su zaključane.</numerusform><numerusform>%1 i %n druge datoteke trenutno su zaključane.</numerusform><numerusform>%1 i %n drugih datoteka trenutno su zaključane.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
@@ -1206,7 +1206,7 @@ Nastavljanje sinkronizacije uzrokovat će zamjenu svih vaših datoteka starijim 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Dohvaćanje popisa mapa s poslužitelja…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
@@ -1255,17 +1255,17 @@ Nastavljanje sinkronizacije uzrokovat će zamjenu svih vaših datoteka starijim 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>Čekanje…</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Čeka se %n druga mapa…</numerusform><numerusform>Čekaju se %n druge mape…</numerusform><numerusform>Čeka se %n drugih mapa…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Priprema za sinkronizaciju…</translation>
     </message>
 </context>
 <context>
@@ -1905,7 +1905,7 @@ dodatne ovlasti tijekom postupka.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Preuzimanje inačice %1. Pričekajte…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1925,7 +1925,7 @@ dodatne ovlasti tijekom postupka.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server …</source>
-        <translation type="unfinished"/>
+        <translation>Provjera poslužitelja za ažuriranje…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1963,7 +1963,7 @@ dodatne ovlasti tijekom postupka.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>Poveži…</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2171,7 +2171,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished"/>
+        <translation>Pokušaj povezivanja s %1 na %2…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
@@ -2181,7 +2181,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Stvaranje mape za lokalnu sinkronizaciju %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
@@ -2605,7 +2605,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Učitavanje…</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2935,12 +2935,12 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="647"/>
         <source>Share via %1</source>
-        <translation type="unfinished"/>
+        <translation>Dijeli putem %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="649"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Pošalji privatnu poveznicu e-poštom…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="648"/>
@@ -3644,7 +3644,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
-        <translation type="unfinished"/>
+        <translation>Prijava…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="692"/>
@@ -3669,7 +3669,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="937"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizacija %1 od %2 (preostalo %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
@@ -3685,17 +3685,17 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Postavke…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Novi račun…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži više aktivnosti…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
@@ -4145,7 +4145,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Prekidanje…</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>

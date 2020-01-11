@@ -1486,12 +1486,12 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Passwort für die Freigabe erforderlich</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="522"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Bitte Passwort für die Link-Freigabe eingeben:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="541"/>
@@ -2694,12 +2694,12 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="311"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Passwort für die Freigabe erforderlich</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="312"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Bitte Passwort für die Link-Freigabe eingeben:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>

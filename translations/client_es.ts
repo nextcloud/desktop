@@ -1486,12 +1486,12 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Se requiere contraseña para compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="522"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, introduce una contraseña para tu enlace compartido:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="541"/>
@@ -2694,12 +2694,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="311"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Se requiere contraseña para compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="312"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, introduce una contraseña para tu enlace compartido:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>

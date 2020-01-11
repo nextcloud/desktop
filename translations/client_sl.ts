@@ -758,7 +758,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation>Prijava v brskalniku (Prijavni Tok v2)</translation>
+        <translation>Prijava v brskalniku (potek prijave 2)</translation>
     </message>
 </context>
 <context>
