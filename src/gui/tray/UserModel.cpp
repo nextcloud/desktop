@@ -136,17 +136,23 @@ UserModel::UserModel(QObject *parent)
 {
     // TODO: Remember selected user from last quit via settings file
     if (AccountManager::instance()->accounts().size() > 0) {
-        initUserList();
+        buildUserList();
     }
+
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &UserModel::buildUserList);
 }
 
-void UserModel::initUserList()
+void UserModel::buildUserList()
 {
     for (int i = 0; i < AccountManager::instance()->accounts().size(); i++) {
         auto user = AccountManager::instance()->accounts().at(i);
         addUser(user);
     }
-    _users.first().setCurrentUser(true);
+    if (_init) {
+        _users.first().setCurrentUser(true);
+        _init = false;
+    }
 }
 
 Q_INVOKABLE int UserModel::numUsers()
@@ -186,12 +192,22 @@ Q_INVOKABLE bool UserModel::currentServerHasTalk()
 
 void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 {
-    beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    _users << User(user, isCurrent);
-    if (isCurrent) {
-        _currentUserId = _users.indexOf(_users.last());
+    bool containsUser = false;
+    for (int i = 0; i < _users.size(); i++) {
+        if (_users[i] == user) {
+            containsUser = true;
+            continue;
+        }
     }
-    endInsertRows();
+
+    if (!containsUser) {
+        beginInsertRows(QModelIndex(), rowCount(), rowCount());
+        _users << User(user, isCurrent);
+        if (isCurrent) {
+            _currentUserId = _users.indexOf(_users.last());
+        }
+        endInsertRows();
+    }
 }
 
 int UserModel::currentUserIndex()

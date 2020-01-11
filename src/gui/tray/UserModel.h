@@ -95,8 +95,9 @@ private:
     UserModel(QObject *parent = 0);
     QList<User> _users;
     int _currentUserId;
+    bool _init = true;
 
-    void initUserList();
+    void buildUserList();
 };
 
 class ImageProvider : public QQuickImageProvider
