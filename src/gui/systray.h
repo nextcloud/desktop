@@ -43,8 +43,9 @@ class Systray
 {
     Q_OBJECT
 public:
-    explicit Systray();
-    ~Systray();
+    static Systray *instance();
+    virtual ~Systray() {};
+
     void create();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
@@ -72,6 +73,8 @@ private slots:
     void slotChangeActivityModel();
 
 private:
+    static Systray *_instance;
+    Systray();
     bool _isOpen;
     bool _syncIsPaused;
     QQmlEngine *_trayEngine;

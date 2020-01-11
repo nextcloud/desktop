@@ -36,7 +36,17 @@
 
 namespace OCC {
 
-Systray::Systray() // TODO: make singleton, provide ::instance()
+Systray *Systray::_instance = nullptr;
+
+Systray *Systray::instance()
+{
+    if (_instance == nullptr) {
+        _instance = new Systray();
+    }
+    return _instance;
+}
+
+Systray::Systray()
     : _isOpen(false)
     , _syncIsPaused(false)
     , _trayComponent(nullptr)
@@ -60,10 +70,6 @@ Systray::Systray() // TODO: make singleton, provide ::instance()
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Systray::showWindow);
-}
-
-Systray::~Systray()
-{
 }
 
 void Systray::create()

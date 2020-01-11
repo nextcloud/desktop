@@ -390,7 +390,7 @@ void Application::slotownCloudWizardDone(int res)
             Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
         }
 
-        _gui->slotShowSettings();
+        Systray::instance()->showWindow();
     }
 }
 
