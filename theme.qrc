@@ -136,5 +136,7 @@
         <file>theme/white/talk-app.svg</file>
         <file>theme/white/caret-down.svg</file>
         <file>theme/black/caret-down.svg</file>
+        <file>theme/white/user.svg</file>
+        <file>theme/black/user.svg</file>
     </qresource>
 </RCC>

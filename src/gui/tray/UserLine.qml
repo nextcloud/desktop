@@ -91,11 +91,13 @@ MenuItem {
                     Rectangle {
                     color: userMoreButtonMouseArea.containsMouse ? "grey" : "transparent"
                     opacity: 0.2
+                    height: userMoreButton.height - 2
+                    y: userMoreButton.y + 1
                 }
 
                 Menu {
                     id: userMoreButtonMenu
-                    width: 100
+                    width: 120
 
                     background: Rectangle {
                         border.color: "#0082c9"

@@ -4,6 +4,8 @@
 
 #include <QDesktopServices>
 #include <QIcon>
+#include <QSvgRenderer>
+#include <QPainter>
 
 namespace OCC {
 
@@ -73,18 +75,25 @@ QString User::server(bool shortened) const
     return serverUrl;
 }
 
-QImage User::avatar() const
+QImage User::avatar(bool whiteBg) const
 {
     QImage img = AvatarJob::makeCircularAvatar(_account->account()->avatar());
     if (img.isNull()) {
-        img = AvatarJob::makeCircularAvatar(QImage(":/client/resources/account.png"));
+        QImage image(128, 128, QImage::Format_ARGB32);
+        image.fill(Qt::GlobalColor::transparent);
+        QPainter painter(&image);
+
+        QSvgRenderer renderer(QString(whiteBg ? ":/client/theme/black/user.svg" : ":/client/theme/white/user.svg"));
+        renderer.render(&painter);
+
+        return image;
+    } else {
+        return img;
     }
-    return img;
 }
 
 bool User::serverHasTalk() const
 {
-    auto test = _account->hasTalk();
     return _account->hasTalk();
 }
 
@@ -152,7 +161,7 @@ Q_INVOKABLE QImage UserModel::currentUserAvatar()
 
 QImage UserModel::avatarById(const int &id)
 {
-    return _users[id].avatar();
+    return _users[id].avatar(true);
 }
 
 Q_INVOKABLE QString UserModel::currentUserName()

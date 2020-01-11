@@ -1,5 +1,5 @@
 project(gui)
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
 set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(CMAKE_AUTORCC TRUE)
@@ -297,7 +297,7 @@ else()
 endif()
 
 add_library(updater STATIC ${updater_SRCS})
-target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml Qt5::WebEngineWidgets)
+target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml Qt5::WebEngineWidgets)
 target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
@@ -307,7 +307,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
-target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::Xml)
+target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )

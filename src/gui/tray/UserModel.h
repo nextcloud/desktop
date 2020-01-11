@@ -29,7 +29,7 @@ public:
     QString server(bool shortened = true) const;
     bool serverHasTalk() const;
     bool hasActivities() const;
-    QImage avatar() const;
+    QImage avatar(bool whiteBg = false) const;
     QString id() const;
     void login() const;
     void logout() const;
