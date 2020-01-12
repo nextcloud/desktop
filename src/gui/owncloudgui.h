@@ -63,6 +63,7 @@ public:
     void setupCloudProviders();
     bool cloudProviderApiAvailable();
 #endif
+    void createTray();
 
 signals:
     void setupProxy();

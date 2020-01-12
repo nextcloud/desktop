@@ -31,10 +31,6 @@ Window {
         currentAccountStateIndicator.source = ""
         currentAccountStateIndicator.source = userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
 
-        if (userModelBackend.isUserConnected(userModelBackend.currentUserId())) {
-            systrayBackend.slotChangeActivityModel()
-        }
-
         userLineInstantiator.active = false;
         userLineInstantiator.active = true;
     }
@@ -65,6 +61,7 @@ Window {
             trayWindow.setX( systrayBackend.calcTrayWindowX());
             trayWindow.setY( systrayBackend.calcTrayWindowY());
             systrayBackend.setOpened();
+            userModelBackend.fetchCurrentActivityModel();
         }
         onHideWindow: {
             trayWindow.hide();

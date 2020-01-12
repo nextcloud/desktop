@@ -111,6 +111,10 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(Logger::instance(), &Logger::guiMessage,
         this, &ownCloudGui::slotShowGuiMessage);
 
+}
+
+void ownCloudGui::createTray()
+{
     _tray->create();
 }
 

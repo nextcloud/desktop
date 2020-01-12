@@ -58,6 +58,7 @@ public:
 
     QImage avatarById(const int &id);
 
+    Q_INVOKABLE void fetchCurrentActivityModel();
     Q_INVOKABLE void openCurrentAccountLocalFolder();
     Q_INVOKABLE void openCurrentAccountTalk();
     Q_INVOKABLE void openCurrentAccountServer();

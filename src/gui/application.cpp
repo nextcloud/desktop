@@ -266,6 +266,8 @@ Application::Application(int &argc, char **argv)
 
     // Allow other classes to hook into isShowingSettingsDialog() signals (re-auth widgets, for example)
     connect(_gui.data(), &ownCloudGui::isShowingSettingsDialog, this, &Application::slotGuiIsShowingSettings);
+
+    _gui->createTray();
 }
 
 Application::~Application()

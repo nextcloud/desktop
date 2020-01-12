@@ -71,6 +71,7 @@ Systray::Systray()
 void Systray::create()
 {
     if (_trayContext == nullptr) {
+        _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
         _trayContext = _trayEngine->contextForObject(_trayComponent->create());
         hideWindow();
     }

@@ -275,8 +275,8 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
     _users[_currentUserId]->setCurrentUser(false);
     _users[id]->setCurrentUser(true);
     _currentUserId = id;
-    emit newUserSelected();
     emit refreshCurrentUserGui();
+    emit newUserSelected();
 }
 
 Q_INVOKABLE void UserModel::login(const int &id) {
@@ -369,6 +369,13 @@ ActivityListModel *UserModel::currentActivityModel()
 bool UserModel::currentUserHasActivities()
 {
     return _users[currentUserIndex()]->hasActivities();
+}
+
+void UserModel::fetchCurrentActivityModel()
+{
+    if (_users[currentUserId()]->isConnected()) {
+        _users[currentUserId()]->getActivityModel()->fetchMore(QModelIndex());
+    }
 }
 
 /*-------------------------------------------------------------------------------------*/
