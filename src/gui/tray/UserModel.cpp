@@ -281,11 +281,13 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
 
 Q_INVOKABLE void UserModel::login(const int &id) {
     _users[id].login();
+    emit refreshCurrentUserGui();
 }
 
 Q_INVOKABLE void UserModel::logout(const int &id)
 {
     _users[id].logout();
+    emit refreshCurrentUserGui();
 }
 
 Q_INVOKABLE void UserModel::removeAccount(const int &id)
