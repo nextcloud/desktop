@@ -61,10 +61,6 @@ Systray::Systray()
 
     _trayComponent = new QQmlComponent(_trayEngine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml")));
 
-    if (!AccountManager::instance()->accounts().isEmpty()) {
-        slotChangeActivityModel();
-    }
-
     connect(UserModel::instance(), &UserModel::newUserSelected,
         this, &Systray::slotChangeActivityModel);
 
@@ -83,7 +79,7 @@ void Systray::create()
 void Systray::slotChangeActivityModel()
 {
     _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
-    emit currentUserChanged();
+    //UserModel::instance()->currentActivityModel()->slotRefreshActivity();
 }
 
 bool Systray::isOpen()

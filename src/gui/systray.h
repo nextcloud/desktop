@@ -69,7 +69,7 @@ signals:
     Q_INVOKABLE void hideWindow();
     Q_INVOKABLE void showWindow();
 
-private slots:
+public slots:
     void slotChangeActivityModel();
 
 private:

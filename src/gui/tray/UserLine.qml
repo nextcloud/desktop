@@ -25,7 +25,11 @@ MenuItem {
                 }
 
                 onClicked: {
-                    userModelBackend.switchCurrentUser(index)
+                    if (!isCurrentUser) {
+                        userModelBackend.switchCurrentUser(id)
+                    } else {
+                        accountMenu.close()
+                    }
                 }
 
                 RowLayout {

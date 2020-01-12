@@ -192,6 +192,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(_accountState, &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
     slotAccountStateChanged();
 
+    if (!AccountManager::instance()->accounts().isEmpty()) {
+        Systray::instance()->slotChangeActivityModel();
+    }
+
     connect(&_quotaInfo, &QuotaInfo::quotaUpdated,
         this, &AccountSettings::slotUpdateQuota);
 
