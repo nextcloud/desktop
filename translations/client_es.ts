@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="239"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation>Los archivos de la la lista a ignorar así como los enlace simbólicos no están sincronizados: Esto incluye:</translation>
+        <translation>Los archivos de la la lista de ignorados así como los enlace simbólicos no están sincronizados: Esto incluye:</translation>
     </message>
 </context>
 <context>
@@ -739,7 +739,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="218"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>No se puede procesar el código JSON recibido del servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>No se pudo procesar el código JSON recibido del servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
@@ -776,7 +776,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
         <source>Polling for authorization</source>
-        <translation>Votando para autorización</translation>
+        <translation>Pidiendo autorización</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
@@ -948,10 +948,10 @@ Esto significa que el cliente de sincronización podría no subir inmediatamente
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Todos los archivos en la carpeta de sincronización &apos;%1&apos; han sido eliminados en el servidor.
-Este borrado se sincronizará con tu carpeta de sincronización local, haciendo que esos archivos no estén disponibles a no ser que tengas derecho a restaurarlos.
-SI decides restaurar los archivos, volverán a sincronizarse con el servidor si tienes derecho a hacer esto.
-SI decides eliminar los archivos, no podrás disponer de ellos, a no ser que seas el propietario.</translation>
+        <translation>Todos los archivos de la carpeta de sincronización &apos;%1&apos; han sido eliminados del servidor.
+Este borrado se sincronizará con tu carpeta de sincronización local, haciendo que esos archivos no estén disponibles a no ser que tengas permisos para restaurarlos.
+Si decides restaurar los archivos, si tienes permisos para hacer esto volverán a sincronizarse con el servidor.
+Si decides eliminar los archivos, no volverás a disponer de ellos, a no ser que seas el propietario.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1093"/>
@@ -960,7 +960,7 @@ These files will be deleted from the server and will not be available on your ot
 If this action was unintended you can restore the lost data now.</source>
         <translation>Todos los archivos han sido eliminados de tu carpeta local sincronizada &apos;%1&apos;.
 Estos archivos se eliminarán del servidor y no estarán disponibles en tus otros dispositivos si no se restauran.
-Si no querías realizar esta acción, puedes recuperar ahora los datos perdidos.</translation>
+Si no querías realizar esta acción, ahora se pueden recuperar los datos perdidos.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1097"/>
@@ -1260,7 +1260,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Esperando a otra %n carpeta ...</numerusform><numerusform>Esperando a otras %n carpetas ...</numerusform></translation>
+        <translation><numerusform>Esperando a otra %n carpeta ...</numerusform><numerusform>Esperando a %n carpeta(s)…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
@@ -1484,12 +1484,22 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="520"/>
+        <location filename="../src/gui/socketapi.cpp" line="521"/>
+        <source>Password for share required</source>
+        <translation>Se requiere contraseña para compartir</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="522"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Por favor, introduce una contraseña para tu enlace compartido:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="541"/>
         <source>Sharing error</source>
         <translation>Error al compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="521"/>
+        <location filename="../src/gui/socketapi.cpp" line="542"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -1583,12 +1593,12 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Los archivos o carpetas que coincidan con un patrón no se sincronizarán.
 
-Los elemntos en los que se permite el borrado se eliminarán si impiden que un directorio se elimine. Esto es útil para los metadatos.</translation>
+Los elementos que se permite su borrado se eliminarán si impiden que un directorio se elimine. Esto es útil para los metadatos.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation>No se ha podido abrir el archivo.</translation>
+        <translation>No se ha podido abrir el archivo</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
@@ -1620,8 +1630,8 @@ Los elemntos en los que se permite el borrado se eliminarán si impiden que un d
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
-        <source>&lt;p&gt;Copyright 2017-2019 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Copyright 2017-2019 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
@@ -2662,24 +2672,34 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="104"/>
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>%1 Sharing</source>
         <translation>%1 Compartiendo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="80"/>
+        <location filename="../src/gui/sharedialog.cpp" line="81"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="101"/>
+        <location filename="../src/gui/sharedialog.cpp" line="102"/>
         <source>Folder: %2</source>
         <translation>Carpeta: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="274"/>
+        <location filename="../src/gui/sharedialog.cpp" line="276"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>El archivo no puede compartirse ya que ha sido compartido sin los permisos correspondientes.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="311"/>
+        <source>Password for share required</source>
+        <translation>Se requiere contraseña para compartir</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="312"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Por favor, introduce una contraseña para tu enlace compartido:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
@@ -2717,7 +2737,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation>Expira:</translation>
+        <translation>Caduca:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
@@ -2747,7 +2767,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>Add note to recipient</source>
-        <translation>Añadir nota al recipiente</translation>
+        <translation>Agregar nota al destinatario</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
@@ -2890,60 +2910,60 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="457"/>
+        <location filename="../src/gui/socketapi.cpp" line="458"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
         <translation>Compartir con %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="491"/>
+        <location filename="../src/gui/socketapi.cpp" line="494"/>
         <source>Context menu share</source>
         <translation>Compartir en menú contextual</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="612"/>
+        <location filename="../src/gui/socketapi.cpp" line="633"/>
         <source>I shared something with you</source>
         <translation>He compartido algo contigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="625"/>
-        <location filename="../src/gui/socketapi.cpp" line="655"/>
+        <location filename="../src/gui/socketapi.cpp" line="646"/>
+        <location filename="../src/gui/socketapi.cpp" line="676"/>
         <source>Share options</source>
         <translation>Opciones de compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="626"/>
+        <location filename="../src/gui/socketapi.cpp" line="647"/>
         <source>Share via %1</source>
         <translation>Compartir vía %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="628"/>
+        <location filename="../src/gui/socketapi.cpp" line="649"/>
         <source>Send private link by email …</source>
         <translation>Enviar enlace privado por correo electrónico ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="627"/>
+        <location filename="../src/gui/socketapi.cpp" line="648"/>
         <source>Copy private link to clipboard</source>
         <translation>Copiar enlace privado al portapapeles</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="653"/>
+        <location filename="../src/gui/socketapi.cpp" line="674"/>
         <source>Resharing this file is not allowed</source>
         <translation>No está permitido compartir de nuevo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="666"/>
-        <location filename="../src/gui/socketapi.cpp" line="668"/>
+        <location filename="../src/gui/socketapi.cpp" line="687"/>
+        <location filename="../src/gui/socketapi.cpp" line="689"/>
         <source>Copy public link</source>
         <translation>Copiar enlace público</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="672"/>
+        <location filename="../src/gui/socketapi.cpp" line="693"/>
         <source>Copy internal link</source>
         <translation>Copiar enlace interno</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="722"/>
+        <location filename="../src/gui/socketapi.cpp" line="743"/>
         <source>Open in browser</source>
         <translation>Abrir en navegador</translation>
     </message>
@@ -3130,12 +3150,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Huella dactirlar (SHA-256):&lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Huella digital (SHA-256):&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Huella dactilar (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>Huella digital (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
@@ -3458,7 +3478,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="209"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>El host &quot;%1&quot; ha ofrecido un certificado no válido. ¿Continuar?</translation>
+        <translation>El host &quot;%1&quot; ha entregado un certificado no válido. ¿Continuar?</translation>
     </message>
 </context>
 <context>
