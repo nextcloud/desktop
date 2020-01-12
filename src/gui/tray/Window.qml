@@ -39,6 +39,8 @@ Window {
             currentAccountAvatar.source = "image://avatars/currentUser"
             currentAccountUser.text = userModelBackend.currentUserName();
             currentAccountServer.text = userModelBackend.currentUserServer();
+            currentAccountStateIndicator.source = ""
+            currentAccountStateIndicator.source = userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
         }
         onNewUserSelected: {
             accountMenu.close();
@@ -248,6 +250,15 @@ Window {
                             source: "image://avatars/currentUser"
                             Layout.preferredHeight: (trayWindowHeaderBackground.height -16)
                             Layout.preferredWidth: (trayWindowHeaderBackground.height -16)
+                            Image {
+                                id: currentAccountStateIndicator
+                                source: userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+                                cache: false
+                                anchors.bottom: currentAccountAvatar.bottom
+                                anchors.right: currentAccountAvatar.right
+                                sourceSize.width: 16
+                                sourceSize.height: 16
+                            }
                         }
 
                         Column {

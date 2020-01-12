@@ -163,6 +163,11 @@ Q_INVOKABLE int UserModel::numUsers()
     return _users.size();
 }
 
+Q_INVOKABLE int UserModel::currentUserId()
+{
+    return _currentUserId;
+}
+
 Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
 {
     return _users[id].isConnected();

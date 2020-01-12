@@ -41,6 +41,15 @@ MenuItem {
                         source: ("image://avatars/" + index)
                         Layout.preferredHeight: (userLineLayout.height -16)
                         Layout.preferredWidth: (userLineLayout.height -16)
+                        Image {
+                            id: accountStateIndicator
+                            source: userModelBackend.isUserConnected(index) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+                            cache: false
+                            anchors.bottom: accountAvatar.bottom
+                            anchors.right: accountAvatar.right
+                            sourceSize.width: 16
+                            sourceSize.height: 16
+                        }
                     }
 
                     Column {
