@@ -105,9 +105,9 @@ MenuItem {
                     }
 
                     MenuItem {
-                        text: userModelBackend.isCurrentUserConnected() ? "Log out" : "Log in"
+                        text: userModelBackend.isUserConnected(index) ? "Log out" : "Log in"
                         onClicked: {
-                            userModelBackend.isCurrentUserConnected() ? userModelBackend.logout(index) : userModelBackend.logout(index)
+                            userModelBackend.isUserConnected(index) ? userModelBackend.logout(index) : userModelBackend.logout(index)
                         }
                     }
 

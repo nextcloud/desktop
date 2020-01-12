@@ -163,9 +163,9 @@ Q_INVOKABLE int UserModel::numUsers()
     return _users.size();
 }
 
-Q_INVOKABLE bool UserModel::isCurrentUserConnected()
+Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
 {
-    return _users[_currentUserId].isConnected();
+    return _users[id].isConnected();
 }
 
 Q_INVOKABLE QImage UserModel::currentUserAvatar()

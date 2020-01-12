@@ -62,11 +62,11 @@ public:
     Q_INVOKABLE void openCurrentAccountServer();
     Q_INVOKABLE QImage currentUserAvatar();
     Q_INVOKABLE int numUsers();
-    Q_INVOKABLE bool isCurrentUserConnected();
     Q_INVOKABLE QString currentUserName();
     Q_INVOKABLE QString currentUserServer();
     Q_INVOKABLE bool currentUserHasActivities();
     Q_INVOKABLE bool currentServerHasTalk();
+    Q_INVOKABLE bool isUserConnected(const int &id);
     Q_INVOKABLE void switchCurrentUser(const int &id);
     Q_INVOKABLE void login(const int &id);
     Q_INVOKABLE void logout(const int &id);
