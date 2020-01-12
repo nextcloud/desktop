@@ -143,9 +143,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _ui->_folderList->setAttribute(Qt::WA_Hover, true);
     _ui->_folderList->installEventFilter(mouseCursorChanger);
 
-    createAccountToolbox();
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &AccountSettings::slotAccountAdded);
     connect(this, &AccountSettings::removeAccountFolders,
             AccountManager::instance(), &AccountManager::removeAccountFolders);
     connect(_ui->_folderList, &QWidget::customContextMenuRequested,
@@ -211,37 +208,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         _ui->encryptionMessage->hide();
     }
 
-    customizeStyle();
-}
-
-
-void AccountSettings::createAccountToolbox()
-{
-    QMenu *menu = new QMenu();
-
-    connect(menu, &QMenu::aboutToShow, this, &AccountSettings::slotMenuBeforeShow);
-
-    _addAccountAction = new QAction(tr("Add new"), this);
-    menu->addAction(_addAccountAction);
-    
-    connect(_addAccountAction, &QAction::triggered, this, &AccountSettings::slotOpenAccountWizard);
     connect(UserModel::instance(), &UserModel::addAccount,
-        this, &AccountSettings::slotOpenAccountWizard);
+         this, &AccountSettings::slotOpenAccountWizard);
 
-    _toggleSignInOutAction = new QAction(tr("Log out"), this);
-    connect(_toggleSignInOutAction, &QAction::triggered, this, &AccountSettings::slotToggleSignInState);
-    menu->addAction(_toggleSignInOutAction);
-
-    QAction *action = new QAction(tr("Remove"), this);
-    menu->addAction(action);
-
-    connect(action, &QAction::triggered, this, &AccountSettings::slotDeleteAccount);
-
-    _ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
-    _ui->_accountToolbox->setMenu(menu);
-    _ui->_accountToolbox->setPopupMode(QToolButton::InstantPopup);
-
-    slotAccountAdded(_accountState);
+    customizeStyle();
 }
 
 
@@ -256,24 +226,6 @@ void AccountSettings::slotNewMnemonicGenerated()
     _ui->encryptionMessage->addAction(mnemonic);
     _ui->encryptionMessage->show();
 }
-
-void AccountSettings::slotMenuBeforeShow() {
-    if (_menuShown) {
-        return;
-    }
-
-    auto menu = _ui->_accountToolbox->menu();
-
-    // We can't check this during the initial creation as there is no account yet then
-    if (_accountState->account()->capabilities().clientSideEncryptionAvaliable()) {
-        QAction *mnemonic = new QAction(tr("Show E2E mnemonic"), this);
-        connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
-        menu->addAction(mnemonic);
-    }
-
-    _menuShown = true;
-}
-
 
 QString AccountSettings::selectedFolderAlias() const
 {
@@ -1068,21 +1020,12 @@ void AccountSettings::slotAccountStateChanged()
     // sync user interface buttons.
     refreshSelectiveSyncStatus();
 
-    /* set the correct label for the Account toolbox button */
-    if (_accountState) {
-        if (_accountState->isSignedOut()) {
-            _toggleSignInOutAction->setText(tr("Log in"));
-        } else {
-            _toggleSignInOutAction->setText(tr("Log out"));
-        }
-    }
-
     if (state == AccountState::State::Connected) {
         /* TODO: We should probably do something better here.
          * Verify if the user has a private key already uploaded to the server,
          * if it has, do not offer to create one.
          */
-        qCInfo(lcAccountSettings) << "Accout" << accountsState()->account()->displayName()
+        qCInfo(lcAccountSettings) << "Account" << accountsState()->account()->displayName()
             << "Client Side Encryption" << accountsState()->account()->capabilities().clientSideEncryptionAvaliable();
     }
 }
@@ -1195,18 +1138,6 @@ void AccountSettings::refreshSelectiveSyncStatus()
                 _ui->selectiveSyncStatus->hide();
             }
         });
-    }
-}
-
-void AccountSettings::slotAccountAdded(AccountState *)
-{
-    // if the theme is limited to single account, the button must hide if
-    // there is already one account.
-    int s = AccountManager::instance()->accounts().size();
-    if (s > 0 && !Theme::instance()->multiAccount()) {
-        _addAccountAction->setVisible(false);
-    } else {
-        _addAccountAction->setVisible(true);
     }
 }
 

@@ -90,7 +90,6 @@ protected slots:
     void slotDeleteAccount();
     void slotToggleSignInState();
     void slotOpenAccountWizard();
-    void slotAccountAdded(AccountState *);
     void refreshSelectiveSyncStatus();
     void slotMarkSubfolderEncrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
     void slotMarkSubfolderDecrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
@@ -99,8 +98,6 @@ protected slots:
     void slotFolderListClicked(const QModelIndex &indx);
     void doExpand();
     void slotLinkActivated(const QString &link);
-
-    void slotMenuBeforeShow();
 
     // Encryption Related Stuff.
     void slotShowMnemonic(const QString &mnemonic);

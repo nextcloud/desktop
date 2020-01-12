@@ -79,7 +79,6 @@ void Systray::create()
 void Systray::slotChangeActivityModel()
 {
     _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
-    //UserModel::instance()->currentActivityModel()->slotRefreshActivity();
 }
 
 bool Systray::isOpen()
