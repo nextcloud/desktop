@@ -11,16 +11,17 @@
 
 namespace OCC {
 
-User::User(AccountStatePtr &account, const bool &isCurrent)
-    : _account(account)
+User::User(AccountStatePtr &account, const bool &isCurrent, QObject* parent)
+    : QObject(parent)
+    , _account(account)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data()))
 {
 }
 
-bool User::operator==(const User &rhs) const
+AccountPtr User::account() const
 {
-    return (this->_account->account() == rhs._account->account());
+    return _account->account();
 }
 
 void User::setCurrentUser(const bool &isCurrent)
@@ -135,7 +136,7 @@ UserModel *UserModel::instance()
 }
 
 UserModel::UserModel(QObject *parent)
-    : QAbstractListModel()
+    : QAbstractListModel(parent)
     , _currentUserId()
 {
     // TODO: Remember selected user from last quit via settings file
@@ -154,7 +155,7 @@ void UserModel::buildUserList()
         addUser(user);
     }
     if (_init) {
-        _users.first().setCurrentUser(true);
+        _users.first()->setCurrentUser(true);
         _init = false;
     }
 }
@@ -171,13 +172,13 @@ Q_INVOKABLE int UserModel::currentUserId()
 
 Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
 {
-    return _users[id].isConnected();
+    return _users[id]->isConnected();
 }
 
 Q_INVOKABLE QImage UserModel::currentUserAvatar()
 {
     if (_users.count() >= 1) {
-        return _users[_currentUserId].avatar();
+        return _users[_currentUserId]->avatar();
     } else {
         QImage image(128, 128, QImage::Format_ARGB32);
         image.fill(Qt::GlobalColor::transparent);
@@ -191,13 +192,13 @@ Q_INVOKABLE QImage UserModel::currentUserAvatar()
 
 QImage UserModel::avatarById(const int &id)
 {
-    return _users[id].avatar(true);
+    return _users[id]->avatar(true);
 }
 
 Q_INVOKABLE QString UserModel::currentUserName()
 {
     if (_users.count() >= 1) {
-        return _users[_currentUserId].name();
+        return _users[_currentUserId]->name();
     } else {
         return QString("No users");
     }
@@ -206,7 +207,7 @@ Q_INVOKABLE QString UserModel::currentUserName()
 Q_INVOKABLE QString UserModel::currentUserServer()
 {
     if (_users.count() >= 1) {
-        return _users[_currentUserId].server();
+        return _users[_currentUserId]->server();
     } else {
         return QString("");
     }
@@ -215,7 +216,7 @@ Q_INVOKABLE QString UserModel::currentUserServer()
 Q_INVOKABLE bool UserModel::currentServerHasTalk()
 {
     if (_users.count() >= 1) {
-        return _users[_currentUserId].serverHasTalk();
+        return _users[_currentUserId]->serverHasTalk();
     } else {
         return false;
     }
@@ -225,7 +226,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 {
     bool containsUser = false;
     for (int i = 0; i < _users.size(); i++) {
-        if (_users[i] == user) {
+        if (_users[i]->account() == user->account()) {
             containsUser = true;
             continue;
         }
@@ -233,7 +234,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 
     if (!containsUser) {
         beginInsertRows(QModelIndex(), rowCount(), rowCount());
-        _users << User(user, isCurrent);
+        _users << new User(user, isCurrent);
         if (isCurrent) {
             _currentUserId = _users.indexOf(_users.last());
         }
@@ -248,45 +249,44 @@ int UserModel::currentUserIndex()
 
 Q_INVOKABLE void UserModel::openCurrentAccountLocalFolder()
 {
-    _users[_currentUserId].openLocalFolder();
+    _users[_currentUserId]->openLocalFolder();
 }
 
 Q_INVOKABLE void UserModel::openCurrentAccountTalk()
 {
-    QString url = _users[_currentUserId].server(false) + "/apps/spreed";
+    QString url = _users[_currentUserId]->server(false) + "/apps/spreed";
     if (!(url.contains("http://") || url.contains("https://"))) {
-        url = "https://" + _users[_currentUserId].server(false) + "/apps/spreed";
+        url = "https://" + _users[_currentUserId]->server(false) + "/apps/spreed";
     }
     QDesktopServices::openUrl(QUrl(url));
 }
 
 Q_INVOKABLE void UserModel::openCurrentAccountServer()
 {
-    QString url = _users[_currentUserId].server(false);
+    QString url = _users[_currentUserId]->server(false);
     if (!(url.contains("http://") || url.contains("https://"))) {
-        url = "https://" + _users[_currentUserId].server(false);
+        url = "https://" + _users[_currentUserId]->server(false);
     }
     QDesktopServices::openUrl(QUrl(url));
 }
 
 Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
 {
-    _users[_currentUserId].setCurrentUser(false);
-    _users[id].setCurrentUser(true);
+    _users[_currentUserId]->setCurrentUser(false);
+    _users[id]->setCurrentUser(true);
     _currentUserId = id;
     emit newUserSelected();
-    emit refreshUserMenu();
     emit refreshCurrentUserGui();
 }
 
 Q_INVOKABLE void UserModel::login(const int &id) {
-    _users[id].login();
+    _users[id]->login();
     emit refreshCurrentUserGui();
 }
 
 Q_INVOKABLE void UserModel::logout(const int &id)
 {
-    _users[id].logout();
+    _users[id]->logout();
     emit refreshCurrentUserGui();
 }
 
@@ -296,7 +296,7 @@ Q_INVOKABLE void UserModel::removeAccount(const int &id)
         tr("Confirm Account Removal"),
         tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
            "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-            .arg(_users[id].name()),
+            .arg(_users[id]->name()),
         QMessageBox::NoButton);
     QPushButton *yesButton =
         messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
@@ -307,12 +307,18 @@ Q_INVOKABLE void UserModel::removeAccount(const int &id)
         return;
     }
 
-    _users[id].logout();
-    _users[id].removeAccount();
-    if (_users.count() > 1) {
+    if (_users[id]->isCurrentUser() && _users.count() > 1) {
         id == 0 ? switchCurrentUser(1) : switchCurrentUser(0);
     }
+
+    _users[id]->logout();
+    _users[id]->removeAccount();
+
+    beginRemoveRows(QModelIndex(), id, id);
     _users.removeAt(id);
+    endRemoveRows();
+
+    emit refreshCurrentUserGui();
 }
 
 int UserModel::rowCount(const QModelIndex &parent) const
@@ -327,15 +333,18 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    const User &user = _users[index.row()];
     if (role == NameRole) {
-        return user.name();
+        return _users[index.row()]->name();
     } else if (role == ServerRole) {
-        return user.server();
+        return _users[index.row()]->server();
     } else if (role == AvatarRole) {
-        return user.avatar();
+        return _users[index.row()]->avatar();
     } else if (role == IsCurrentUserRole) {
-        return user.isCurrentUser();
+        return _users[index.row()]->isCurrentUser();
+    } else if (role == IsConnectedRole) {
+        return _users[index.row()]->isConnected();
+    } else if (role == IdRole) {
+        return index.row();
     }
     return QVariant();
 }
@@ -347,17 +356,19 @@ QHash<int, QByteArray> UserModel::roleNames() const
     roles[ServerRole] = "server";
     roles[AvatarRole] = "avatar";
     roles[IsCurrentUserRole] = "isCurrentUser";
+    roles[IsConnectedRole] = "isConnected";
+    roles[IdRole] = "id";
     return roles;
 }
 
 ActivityListModel *UserModel::currentActivityModel()
 {
-    return _users[currentUserIndex()].getActivityModel();
+    return _users[currentUserIndex()]->getActivityModel();
 }
 
 bool UserModel::currentUserHasActivities()
 {
-    return _users[currentUserIndex()].hasActivities();
+    return _users[currentUserIndex()]->hasActivities();
 }
 
 /*-------------------------------------------------------------------------------------*/

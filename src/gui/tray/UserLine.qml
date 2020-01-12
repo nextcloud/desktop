@@ -38,12 +38,12 @@ MenuItem {
                         Layout.leftMargin: 4
                         verticalAlignment: Qt.AlignCenter
                         cache: false
-                        source: ("image://avatars/" + index)
+                        source: ("image://avatars/" + id)
                         Layout.preferredHeight: (userLineLayout.height -16)
                         Layout.preferredWidth: (userLineLayout.height -16)
                         Image {
                             id: accountStateIndicator
-                            source: userModelBackend.isUserConnected(index) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+                            source: isConnected ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
                             cache: false
                             anchors.bottom: accountAvatar.bottom
                             anchors.right: accountAvatar.right
@@ -114,9 +114,9 @@ MenuItem {
                     }
 
                     MenuItem {
-                        text: userModelBackend.isUserConnected(index) ? "Log out" : "Log in"
+                        text: isConnected ? "Log out" : "Log in"
                         onClicked: {
-                            userModelBackend.isUserConnected(index) ? userModelBackend.logout(index) : userModelBackend.login(index)
+                            isConnected ? userModelBackend.logout(index) : userModelBackend.login(index)
                             accountMenu.close()
                         }
                     }
@@ -125,6 +125,7 @@ MenuItem {
                         text: "Remove Account"
                         onClicked: {
                             userModelBackend.removeAccount(index)
+                            accountMenu.close()
                         }
                     }
                 }

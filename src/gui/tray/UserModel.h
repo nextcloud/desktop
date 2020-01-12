@@ -12,12 +12,13 @@
 
 namespace OCC {
 
-class User
+class User : public QObject
 {
+    Q_OBJECT
 public:
-    User(AccountStatePtr &account, const bool &isCurrent = false);
+    User(AccountStatePtr &account, const bool &isCurrent = false, QObject* parent = 0);
 
-    bool operator==(const User &) const;
+    AccountPtr account() const;
 
     bool isConnected() const;
     bool isCurrentUser() const;
@@ -79,14 +80,15 @@ public:
         NameRole = Qt::UserRole + 1,
         ServerRole,
         AvatarRole,
-        IsCurrentUserRole
+        IsCurrentUserRole,
+        IsConnectedRole,
+        IdRole
     };
 
 signals:
     Q_INVOKABLE void addAccount();
     Q_INVOKABLE void refreshCurrentUserGui();
     Q_INVOKABLE void newUserSelected();
-    Q_INVOKABLE void refreshUserMenu();
 
 protected:
     QHash<int, QByteArray> roleNames() const;
@@ -94,7 +96,7 @@ protected:
 private:
     static UserModel *_instance;
     UserModel(QObject *parent = 0);
-    QList<User> _users;
+    QList<User*> _users;
     int _currentUserId;
     bool _init = true;
 
