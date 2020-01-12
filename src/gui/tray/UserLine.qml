@@ -116,7 +116,8 @@ MenuItem {
                     MenuItem {
                         text: userModelBackend.isUserConnected(index) ? "Log out" : "Log in"
                         onClicked: {
-                            userModelBackend.isUserConnected(index) ? userModelBackend.logout(index) : userModelBackend.logout(index)
+                            userModelBackend.isUserConnected(index) ? userModelBackend.logout(index) : userModelBackend.login(index)
+                            accountMenu.close()
                         }
                     }
 

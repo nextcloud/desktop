@@ -27,6 +27,8 @@ Window {
         currentAccountUser.text = userModelBackend.currentUserName();
         currentAccountServer.text = userModelBackend.currentUserServer();
         trayWindowTalkButton.visible = userModelBackend.currentServerHasTalk() ? true : false;
+        currentAccountStateIndicator.source = ""
+        currentAccountStateIndicator.source = userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
 
         userLineInstantiator.active = false;
         userLineInstantiator.active = true;
@@ -119,6 +121,11 @@ Window {
                             background: Rectangle {
                                 border.color: "#0082c9"
                                 radius: 2
+                            }
+
+                            onClosed: {
+                                userLineInstantiator.active = false;
+                                userLineInstantiator.active = true;
                             }
 
                             Instantiator {
