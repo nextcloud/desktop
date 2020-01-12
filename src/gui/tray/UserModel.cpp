@@ -50,6 +50,7 @@ void User::openLocalFolder()
 
 void User::login() const
 {
+    _account->account()->resetRejectedCertificates();
     _account->signIn();
 }
 
