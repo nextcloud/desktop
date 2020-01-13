@@ -45,7 +45,11 @@ ActivityListModel *User::getActivityModel()
 
 void User::openLocalFolder()
 {
+#ifdef Q_OS_WIN
+    QString path = "file:///" + this->getFolder()->path();
+#else
     QString path = "file://" + this->getFolder()->path();
+#endif
     QDesktopServices::openUrl(path);
 }
 
