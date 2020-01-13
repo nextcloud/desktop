@@ -125,36 +125,44 @@ void Systray::setToolTip(const QString &tip)
 
 int Systray::calcTrayWindowX()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    QScreen *trayScreen = QGuiApplication::screenAt(this->geometry().topRight());
+#ifdef Q_OS_OSX
+    // macOS handles DPI awareness differently
+    // and menu bar is always at the top, icons starting from the right
+
+    QPoint topLeft = this->geometry().topLeft();
+    QPoint topRight = this->geometry().topRight();
+    int trayIconTopCenterX = (topRight - ((topRight - topLeft) * 0.5)).x();
+    return trayIconTopCenterX - (400 * 0.5);
 #else
-    QScreen *trayScreen = QGuiApplication::primaryScreen();
-#endif
+
+    int screenWidth = trayScreen->geometry().width();
+    int screenHeight = trayScreen->geometry().height();
+    int availableWidth = trayScreen->availableGeometry().width();
+    int availableHeight = trayScreen->availableGeometry().height();
+    QPoint topRightDpiAware = this->geometry().topRight() / trayScreen->devicePixelRatio();
+    QPoint topLeftDpiAware = this->geometry().topLeft() / trayScreen->devicePixelRatio();
 
     // get coordinates from top center point of tray icon
-    int trayIconTopCenterX = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).x();
-    int trayIconTopCenterY = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).y();
+    int trayIconTopCenterX = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).x();
+    int trayIconTopCenterY = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).y();
 
-    if ((trayScreen->geometry().width() - trayIconTopCenterX) < (trayScreen->geometry().width() * 0.5)) {
-        // tray icon is on right side of the screen
-        if (((trayScreen->geometry().width() - trayIconTopCenterX) < trayScreen->geometry().height() - trayIconTopCenterY)
-            && ((trayScreen->geometry().width() - trayIconTopCenterX) < trayIconTopCenterY)) {
-            // taskbar is on the right
-            return trayScreen->availableSize().width() - 400 - 6;
+    if (availableHeight < screenHeight) {
+        // taskbar is on top or bottom
+        if (trayIconTopCenterX + (400 * 0.5) > availableWidth) {
+            return availableWidth - 400 - 12;
         } else {
-            // taskbar is on the bottom or top
-            if (trayIconTopCenterX - (400 * 0.5) < 0) {
-                return 6;
-            } else if (trayIconTopCenterX - (400 * 0.5) > trayScreen->geometry().width()) {
-                return trayScreen->geometry().width() - 406;
-            } else {
-                return trayIconTopCenterX - (400 * 0.5);
-            }
+            return trayIconTopCenterX - (400 * 0.5);
         }
     } else {
-        // tray icon is on left side of the screen
-        return (trayScreen->geometry().width() - trayScreen->availableGeometry().width()) + 6;
+        if (trayScreen->availableGeometry().x() > trayScreen->geometry().x()) {
+            // on the left
+            return (screenWidth - availableWidth) + 6;
+        } else {
+            // on the right
+            return screenWidth - 400 - (screenWidth - availableWidth) - 6;
+        }
     }
+#endif
 }
 int Systray::calcTrayWindowY()
 {
@@ -163,33 +171,29 @@ int Systray::calcTrayWindowY()
     // don't use availableGeometry() here, because this also excludes the dock
     return 22+6;
 #else
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    QScreen *trayScreen = QGuiApplication::screenAt(this->geometry().topRight());
-#else
     QScreen *trayScreen = QGuiApplication::primaryScreen();
-#endif
+    int screenWidth = trayScreen->geometry().width();
+    int screenHeight = trayScreen->geometry().height();
+    int availableHeight = trayScreen->availableGeometry().height();
+    QPoint topRightDpiAware = this->geometry().topRight() / trayScreen->devicePixelRatio();
+    QPoint topLeftDpiAware = this->geometry().topLeft() / trayScreen->devicePixelRatio();
 
     // get coordinates from top center point of tray icon
-    int trayIconTopCenterX = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).x();
-    int trayIconTopCenterY = (this->geometry().topRight() - ((this->geometry().topRight() - this->geometry().topLeft()) * 0.5)).y();
+    int trayIconTopCenterX = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).x();
+    int trayIconTopCenterY = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).y();
 
-    if ((trayScreen->geometry().height() - trayIconTopCenterY) < (trayScreen->geometry().height() * 0.5)) {
-        // tray icon is on bottom side of the screen
-        if (((trayScreen->geometry().height() - trayIconTopCenterY) < trayScreen->geometry().width() - trayIconTopCenterX)
-            && ((trayScreen->geometry().height() - trayIconTopCenterY) < trayIconTopCenterX)) {
-            // taskbar is on the bottom
-            return trayScreen->availableSize().height() - 500 - 6;
+    if (availableHeight < screenHeight) {
+        // taskbar is on top or bottom
+        if (trayScreen->availableGeometry().y() > trayScreen->geometry().y()) {
+            // on top
+            return (screenHeight - availableHeight) + 6;
         } else {
-            // taskbar is on the right or left
-            if (trayIconTopCenterY - 500 > 0) {
-                return trayIconTopCenterY - 500;
-            } else {
-                return 6;
-            }
+            // on bottom
+            return screenHeight - 500 - (screenHeight - availableHeight) - 6;
         }
     } else {
-        // tray icon is on the top
-        return (trayScreen->geometry().height() - trayScreen->availableGeometry().height()) + 6;
+        // on the left or right
+        return (trayIconTopCenterY - 500 + 12);
     }
 #endif
 }
