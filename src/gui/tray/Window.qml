@@ -445,6 +445,9 @@ Window {
             width:  trayWindowBackground.width
             height: trayWindowBackground.height - trayWindowHeaderBackground.height
             clip: true
+            ScrollBar.vertical: ScrollBar {
+                id: listViewScrollbar
+            }
 
             model: activityModel
 
@@ -460,7 +463,8 @@ Window {
                     Layout.preferredWidth: 48
                     Layout.preferredHeight: 48
                     verticalAlignment: Qt.AlignCenter
-                    source: "qrc:///client/theme/black/state-sync.svg"
+                    cache: true
+                    source: icon
                     sourceSize.height: 48
                     sourceSize.width: 48
                 }
@@ -539,8 +543,6 @@ Window {
             displaced: Transition {
                 NumberAnimation { properties: "y"; duration: 100; easing.type: Easing.Linear }
             }
-
-            focus: true
         }
 
     }       // Rectangle trayWindowBackground

@@ -38,17 +38,7 @@ class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum ActivityIconType {
-        iconUseCached = 0,
-        iconActivity,
-        iconBell,
-        iconStateError,
-        iconStateWarning,
-        iconStateInfo,
-        iconStateSync
-    };
-
-    enum datarole {
+    enum DataRole {
     ActionIconRole = Qt::UserRole + 1,
     UserIconRole,
     AccountRole,
@@ -62,11 +52,6 @@ public:
     PointInTimeRole,
     AccountConnectedRole,
     SyncFileStatusRole };
-
-    struct ActionIcon {
-        ActivityIconType iconType;
-        QIcon cachedIcon;
-    };
 
     explicit ActivityListModel(AccountState *accountState, QObject* parent = 0);
 
@@ -117,7 +102,5 @@ private:
     int _currentItem = 0;
 };
 }
-
-Q_DECLARE_METATYPE(OCC::ActivityListModel::ActionIcon)
 
 #endif // ACTIVITYLISTMODEL_H

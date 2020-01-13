@@ -15,7 +15,6 @@
 #include <QtCore>
 #include <QAbstractListModel>
 #include <QWidget>
-#include <QIcon>
 #include <QJsonObject>
 #include <QJsonDocument>
 
@@ -56,10 +55,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 {
     Activity a;
 
-    // filter the get action here
-    // send only the text of the get action
-    // if there is more than one send the icon? the ...
-
     if (!index.isValid())
         return QVariant();
 
@@ -99,39 +94,29 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return customList;
     }
     case ActionIconRole:{
-        ActionIcon actionIcon;
         if(a._type == Activity::NotificationType){
-           QIcon cachedIcon;
-            if(!cachedIcon.isNull()) {
-               actionIcon.iconType = ActivityIconType::iconUseCached;
-               actionIcon.cachedIcon = cachedIcon;
-            } else {
-                actionIcon.iconType = ActivityIconType::iconBell;
-            }
+            return "qrc:///client/resources/bell.svg";
         } else if(a._type == Activity::SyncResultType){
-            actionIcon.iconType = ActivityIconType::iconStateError;
+            return "qrc:///client/resources/state-error.svg";
         } else if(a._type == Activity::SyncFileItemType){
                if(a._status == SyncFileItem::NormalError
                    || a._status == SyncFileItem::FatalError
                    || a._status == SyncFileItem::DetailError
                    || a._status == SyncFileItem::BlacklistedError) {
-                   actionIcon.iconType = ActivityIconType::iconStateError;
+                    return "qrc:///client/resources/state-error.svg";
                } else if(a._status == SyncFileItem::SoftError
                          || a._status == SyncFileItem::Conflict
                          || a._status == SyncFileItem::Restoration
                          || a._status == SyncFileItem::FileLocked){
-                   actionIcon.iconType = ActivityIconType::iconStateWarning;
+                        return "qrc:///client/resources/state-warning.svg";
                } else if(a._status == SyncFileItem::FileIgnored){
-                   actionIcon.iconType = ActivityIconType::iconStateInfo;
+                   return "qrc:///client/resources/state-info.svg";
                } else {
-                   actionIcon.iconType = ActivityIconType::iconStateSync;
+                   return "qrc:///client/resources/state-sync.svg";
                }
         } else {
-            actionIcon.iconType = ActivityIconType::iconActivity;
+            return "qrc:///client/resources/activity.svg";
         }
-        QVariant icn;
-        icn.setValue(actionIcon);
-        return icn;
     }
     case ObjectTypeRole:
         return a._objectType;

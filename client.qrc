@@ -2,6 +2,7 @@
     <qresource prefix="/client">
         <file>resources/settings.png</file>
         <file>resources/settings@2x.png</file>
+        <file>resources/activity.svg</file>
         <file>resources/activity.png</file>
         <file>resources/activity@2x.png</file>
         <file>resources/network.png</file>
