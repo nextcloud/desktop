@@ -474,7 +474,7 @@ Window {
                     Layout.alignment: Qt.AlignLeft
                     Text {
                         id: activityTextTitle
-                        text: subject
+                        text: (type === "Activity") ? subject : message
                         width: 220
                         elide: Text.ElideRight
                         font.pointSize: 9

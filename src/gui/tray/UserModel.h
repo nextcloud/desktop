@@ -36,6 +36,9 @@ public:
     void logout() const;
     void removeAccount() const;
 
+public slots:
+    void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
+
 private:
     AccountStatePtr _account;
     bool _isCurrentUser;

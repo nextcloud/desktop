@@ -17,6 +17,48 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject* parent)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data()))
 {
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
+        this, &User::slotItemCompleted);
+}
+
+void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
+{
+    auto folderInstance = FolderMan::instance()->folder(folder);
+
+    if (!folderInstance)
+        return;
+
+    // check if we are adding it to the right account and if it is useful information (protocol errors)
+    if (folderInstance->accountState() == _account.data()) {
+        qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in " << item->_errorString;
+
+        Activity activity;
+        activity._type = Activity::SyncFileItemType; //client activity
+        activity._status = item->_status;
+        activity._dateTime = QDateTime::currentDateTime();
+        activity._message = item->_originalFile;
+        activity._link = folderInstance->accountState()->account()->url();
+        activity._accName = folderInstance->accountState()->account()->displayName();
+        activity._file = item->_file;
+        activity._folder = folder;
+
+        if (item->_status == SyncFileItem::NoStatus || item->_status == SyncFileItem::Success) {
+            qCWarning(lcActivity) << "Item " << item->_file << " retrieved successfully.";
+            activity._message.prepend(" ");
+            activity._message.prepend(tr("Synced"));
+            _activityModel->addSyncFileItemToActivityList(activity);
+        } else {
+            qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in error " << item->_errorString;
+            activity._subject = item->_errorString;
+
+            if (item->_status == SyncFileItem::Status::FileIgnored) {
+                _activityModel->addIgnoredFileToList(activity);
+            } else {
+                // add 'protocol error' to activity list
+                _activityModel->addErrorToActivityList(activity);
+            }
+        }
+    }
 }
 
 AccountPtr User::account() const
