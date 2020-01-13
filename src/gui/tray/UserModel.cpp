@@ -19,6 +19,42 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject* parent)
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
         this, &User::slotItemCompleted);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
+        this, &User::slotAddError);
+}
+
+void User::slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category)
+{
+    auto folderInstance = FolderMan::instance()->folder(folderAlias);
+    if (!folderInstance)
+        return;
+
+    if (folderInstance->accountState() == _account.data()) {
+        qCWarning(lcActivity) << "Item " << folderInstance->shortGuiLocalPath() << " retrieved resulted in " << message;
+
+        Activity activity;
+        activity._type = Activity::SyncResultType;
+        activity._status = SyncResult::Error;
+        activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        activity._subject = message;
+        activity._message = folderInstance->shortGuiLocalPath();
+        activity._link = folderInstance->shortGuiLocalPath();
+        activity._accName = folderInstance->accountState()->account()->displayName();
+        activity._folder = folderAlias;
+
+
+        if (category == ErrorCategory::InsufficientRemoteStorage) {
+            ActivityLink link;
+            link._label = tr("Retry all uploads");
+            link._link = folderInstance->path();
+            link._verb = "";
+            link._isPrimary = true;
+            activity._links.append(link);
+        }
+
+        // add 'other errors' to activity list
+        _activityModel->addErrorToActivityList(activity);
+    }
 }
 
 void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
