@@ -38,6 +38,7 @@ public:
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
+    void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category);
 
 private:

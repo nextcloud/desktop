@@ -1,6 +1,7 @@
 #include "accountmanager.h"
 #include "owncloudgui.h"
 #include "UserModel.h"
+#include "syncengine.h"
 
 #include <QDesktopServices>
 #include <QIcon>
@@ -17,10 +18,78 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject* parent)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data()))
 {
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
+        this, &User::slotProgressInfo);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
         this, &User::slotItemCompleted);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
         this, &User::slotAddError);
+}
+
+void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
+{
+    if (progress.status() == ProgressInfo::Reconcile) {
+        // Wipe all non-persistent entries - as well as the persistent ones
+        // in cases where a local discovery was done.
+        auto f = FolderMan::instance()->folder(folder);
+        if (!f)
+            return;
+        const auto &engine = f->syncEngine();
+        const auto style = engine.lastLocalDiscoveryStyle();
+        foreach (Activity activity, _activityModel->errorsList()) {
+            if (activity._folder != folder) {
+                continue;
+            }
+
+            if (style == LocalDiscoveryStyle::FilesystemOnly) {
+                _activityModel->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+            if (activity._status == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()) {
+                _activityModel->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+            if (activity._status == SyncFileItem::FileLocked && !QFileInfo(f->path() + activity._file).exists()) {
+                _activityModel->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+
+            if (activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()) {
+                _activityModel->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+
+            if (!QFileInfo(f->path() + activity._file).exists()) {
+                _activityModel->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+            auto path = QFileInfo(activity._file).dir().path().toUtf8();
+            if (path == ".")
+                path.clear();
+
+            if (engine.shouldDiscoverLocally(path))
+                _activityModel->removeActivityFromActivityList(activity);
+        }
+    }
+
+    if (progress.status() == ProgressInfo::Done) {
+        // We keep track very well of pending conflicts.
+        // Inform other components about them.
+        QStringList conflicts;
+        foreach (Activity activity, _activityModel->errorsList()) {
+            if (activity._folder == folder
+                && activity._status == SyncFileItem::Conflict) {
+                conflicts.append(activity._file);
+            }
+        }
+
+        emit ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
+    }
 }
 
 void User::slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category)
