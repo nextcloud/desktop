@@ -47,6 +47,7 @@ public:
     ActionTextRole,
     ActionRole,
     MessageRole,
+    DisplayPathRole,
     PathRole,
     LinkRole,
     PointInTimeRole,

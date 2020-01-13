@@ -61,7 +61,6 @@ Window {
             trayWindow.setX( systrayBackend.calcTrayWindowX());
             trayWindow.setY( systrayBackend.calcTrayWindowY());
             systrayBackend.setOpened();
-            userModelBackend.fetchCurrentActivityModel();
         }
         onHideWindow: {
             trayWindow.hide();
@@ -470,7 +469,7 @@ Window {
                 }
                 Column {
                     id: activityTextColumn
-                    Layout.leftMargin: 6
+                    Layout.leftMargin: 4
                     spacing: 4
                     Layout.alignment: Qt.AlignLeft
                     Text {
@@ -482,7 +481,7 @@ Window {
                     }
                     Text {
                         id: activityTextInfo
-                        text: path
+                        text: displaypath
                         width: 220
                         elide: Text.ElideRight
                         font.pointSize: 8
@@ -499,13 +498,12 @@ Window {
                     Layout.alignment: Qt.AlignRight
                     flat: true
                     hoverEnabled: false
-                    visible: (path === "") ? false : true
+                    visible: (path !== "") ? true : false
                     display: AbstractButton.IconOnly
                     icon.source: "qrc:///client/resources/files.svg"
                     icon.color: "transparent"
 
-                    onClicked:
-                    {
+                    onClicked: {
                          Qt.openUrlExternally(path)
                     }
                 }
@@ -515,14 +513,19 @@ Window {
                     Layout.alignment: Qt.AlignRight
                     flat: true
                     hoverEnabled: false
+                    visible: (link !== "") ? true : false
                     display: AbstractButton.IconOnly
                     icon.source: "qrc:///client/resources/public.svg"
                     icon.color: "transparent"
+
+                    onClicked: {
+                        Qt.openUrlExternally(link)
+                    }
                 }
             }
 
             populate: Transition {
-                NumberAnimation { properties: "y"; from: -60; duration: 100; easing.type: Easing.Linear }
+                // prevent animations on initial list population
             }
 
             add: Transition {
