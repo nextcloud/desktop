@@ -32,6 +32,11 @@ NavigationPaneHelper::NavigationPaneHelper(FolderMan *folderMan)
 
     _updateCloudStorageRegistryTimer.setSingleShot(true);
     connect(&_updateCloudStorageRegistryTimer, &QTimer::timeout, this, &NavigationPaneHelper::updateCloudStorageRegistry);
+
+    // Ensure that the folder integration stays persistent in Explorer,
+    // the uninstaller removes the folder upon updating the client.
+    _showInExplorerNavigationPane = !_showInExplorerNavigationPane;
+    setShowInExplorerNavigationPane(!_showInExplorerNavigationPane);
 }
 
 void NavigationPaneHelper::setShowInExplorerNavigationPane(bool show)
@@ -139,7 +144,9 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
 #else
             // This code path should only occur on Windows (the config will be false, and the checkbox invisible on other platforms).
             // Add runtime checks rather than #ifdefing out the whole code to help catch breakages when developing on other platforms.
-            Q_ASSERT(false);
+
+            // Don't crash, by any means!
+            // Q_ASSERT(false);
 #endif
         }
     }
