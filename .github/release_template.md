@@ -42,22 +42,22 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 
 ### For All Sprint Builds:
 
-* [ ] Add latest updates to Changelog in the client source repository.
+* [ ] Add latest updates to Changelog in the client source repository
 * [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
-* [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc in the release branch.
+* [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc in the release branch
 * [ ] (TODO: move to patch-release checklist) Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
 * [ ] Create [builds](https://handbook.owncloud.com/release_processes/client/build.html#sprint-build) for theme 'ownCloud' and 'testpilotcloud'  @jnweiger @hvonreth
 * [ ] Check if *tar.xz.asc files are there. If not follow the [instructions](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
-* [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh with repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
+* [ ] Linux: Run [test](https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh) with repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
 * [ ] Linux: add/remove [build targets](https://handbook.owncloud.com/release_processes/client/supported_platforms.html) @hvonreth @jnweiger
 * [ ] Create a [signed tag](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge) using ```git tag -u E94E7B37 tagname```  @guruz @jnweiger (TODO: is this still needed?)
-* [ ] Update the wordpress content at owncloud.org/download @florian 
-* [ ] Inform packagers: @dragotin (openSUSE)
-* [ ] Announce on [central](https://central.owncloud.org) (copy old announcement, link to changelog, download links etc) TODO: itemize what goes into the announcement: deprecation warnings. ... @guruz @hvonreth
-* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there.
-* [ ] Check crash reporter after some days https://handbook.owncloud.com/release_processes/client/desktop.html#update-the-updater @guruz @hvonreth
-* [ ] Update unstable channel in the owncloud hosted [auto updater](https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy) @hgemela @jnweiger
+* [ ] Update the wordpress content at owncloud.org/download @florian - marketing
+* [ ] Inform packagers: @dragotin (openSUSE) - marketing
+* [ ] Announce on [central](https://central.owncloud.org) (copy old announcement, link to changelog, download links etc) TODO: itemize what goes into the announcement: deprecation warnings. ... - marketing
+* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there. - marketing
+* [ ] Check crash reporter after some days  @guruz @hvonreth
+* [ ] Update unstable channel in the owncloud hosted auto updater. Instructions [here](https://github.com/owncloud/enterprise/blob/master/client_update_checker/README.md#deploy) and [here](https://handbook.owncloud.com/release_processes/client/desktop.html#update-the-updater) @hgemela @jnweiger
 
 ### One Week Before the Final Release (Skip this section for patch releases):
 
@@ -68,7 +68,7 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 ### One Day Before the Final Release:
 * [ ] Check [crash reporter](https://handbook.owncloud.com/release_processes/client/desktop.html#crash-reporter) for bad crashes of this RC (same crash happening to many users) @guruz @hvonreth
 * [ ] Check the translations coming from transifex: All synchronized? TODO: (20181109jw: where? how?)
-* [ ] Review drone results: `make test` TODO: Mac, Lin, Win? https://drone.owncloud.services/client/build-linux
+* [ ] Review drone results: `make test` TODO: Mac, [Lin](https://drone.owncloud.services/client/build-linux), Win? 
 * [ ] Run the tx.pl scripts on the final code tag (20181109jw: really? What does that test?) @oggofart
 * [ ] Run smashbox (20180719 jw: FIXME: add details, how?) (ask @dschmidt, put link to smashbox results here)
 * [ ] Inform product management and marketing and #general channel in rocker chat that we are 1 day out
@@ -81,10 +81,10 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] Edit ```VERSION.cmake``` hange suffix from 'git' or 'rc' to empty string "". Commit the result to the release branch only @hvonreth @guruz
 * [ ] Create [builds](https://handbook.owncloud.com/release_processes/client/build.html#final-build) for theme 'ownCloud' and 'testpilotcloud'  @jnweiger @hvonreth
 * [ ] Check if *tar.xz.asc files are [here](https://download.owncloud.com/desktop/testing). If not follow the [instructions](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
-* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z using https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/ (the Linux packages will always land in the :testing repository) - @jnweiger
+* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z using [obs_integration](https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/) the Linux packages will always land in the :testing repository - @jnweiger
   ```obs-deepcopy-prj.sh isv:ownCloud:desktop isv:ownCloud:desktop:client-2.5.1```
 * [ ] Run [the smoke test](https://handbook.owncloud.com/release_processes/client/smoke_test.html)
-* [ ] Linux: Run https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing - @jnweiger
+* [ ] Linux: Run [test](https://gitea.owncloud.services/client/linux-docker-install/src/branch/master/RUN.sh) repo=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing - @jnweiger
 * [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too.
 * [ ] Linux: also copy the *.linux-repo.html files from ```testing``` to ```stable``` **and** edit away the `:testing` strings.
 * [ ] Linux: disable publishing on project isv:ownCloud:desktop
@@ -94,32 +94,21 @@ For major, minor, and patch releases, but skip this section for ALPHA/BETA
 * [ ] Linux: Re-enable OBS publishing on the project after official release date and if all distros build (check for accidentially disabled packages too) 
 * [ ] Test all advertised download links to have the expected version
 * [ ] Linux: Wait until everything is built and published, then disable publishing on project isv:ownCloud:desktop
-* [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
+* [ ] Create git [signed](https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge) tag in client repository using ```git tag -u E94E7B37 tagname``` 
 * [ ] Increment version number in daily builds. Special case: after the last release in a branch, jump forward to the 'next release branch'... That may mean, this is nightly is the same as edge then.
-* [ ] Create same tag for MSI code - domme
-* [ ] Create same tag for Windows toolchain - domme
-* [ ] Create same tag (actually a symlink) for macOS toolchain - domme
-* [ ] Create a (draft) release on https://github.com/owncloud/client/releases
-* [ ] 1h later check https://owncloud.org/changelog/desktop-client/ -> it pulls from the master branch ChangeLog file hourly.  - jnweiger
-* [ ] Update https://owncloud.org/download/#owncloud-desktop-client -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
-* [ ] add the previous release to https://owncloud.org/download/older-versions/ -jnw + franka
-
-## Marketing
-
-* [ ] Update https://owncloud.com/download/#desktop-clients (both de & en, achim via #marketing) 
-* [ ] Announce on https://central.owncloud.org 
-* [ ] Announce on announcements@owncloud.org Link to the central post so discussion happens there. 
-* [ ] Inform packagers @dragotin (openSUSE) - to build their own openSUSE builds -
-* [ ] Send out Social (tweet, blog, other) 
-* [ ] Send out customer communication (if any) 
-* [ ] Inform GCX (gcx@owncloud.com), release-coordination@owncloud.com and marketing (marketing@owncloud.com)  that the new version is released (gcx@owncloud.com)
-
-
+* [ ] Create same tag for MSI code - @dschmidt 
+* [ ] Create same tag for Windows toolchain - @dschmidt 
+* [ ] Create same tag (actually a symlink) for macOS toolchain - @dschmidt 
+* [ ] Create a (draft) release [here](https://github.com/owncloud/client/releases)
+* [ ] 1h later check [changelog on website](https://owncloud.org/changelog/desktop-client/) -> it pulls from the master branch ChangeLog file hourly.  - @jnweiger
+* [ ] Update [org website](https://owncloud.org/download/#owncloud-desktop-client) -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
+* [ ] Add the previous release to [older version](https://owncloud.org/download/older-versions/) @jnweiger + fwittek
+* [ ] Ping marketing to do their [actions](https://handbook.owncloud.com/release_processes/client/marketing.html)
 * [ ] Take pride and celebrate!
 * [ ] Tell GCX to increment the minimum supported version for enterprise customers - @mstingl
-* [ ] Check if minimum.supported.desktop.version (https://github.com/owncloud/core/blob/master/config/config.sample.php#L1152) needs to be updated in server 
+* [ ] Check if [minimum.supported.desktop.version](https://github.com/owncloud/core/blob/master/config/config.sample.php#L1152) needs to be updated in server 
  * [ ] Ensure that the [client release template](https://github.com/owncloud/client/edit/notes-from-the-etherpad/.github/release_template.md) is up to date
-* [ ] After OBS built everything, disable publishing in OBS to prevent that accidential rebuilds hit the end users.- jnweiger
+* [ ] After OBS built everything, disable publishing in OBS to prevent that accidential rebuilds hit the end users.- @jnweiger
 
 ## A few days after the release (for final release)
 
