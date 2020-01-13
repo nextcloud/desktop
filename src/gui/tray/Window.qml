@@ -453,6 +453,7 @@ Window {
                 width: activityListView.width
                 height: trayWindowHeaderLayout.height
                 spacing: 0
+                visible: (activityListView.model.rowCount() > 0)
                 Image {
                     id: activityIcon
                     Layout.leftMargin: 6
