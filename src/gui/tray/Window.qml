@@ -516,18 +516,19 @@ Window {
                 }
             }
 
+            populate: Transition {
+                NumberAnimation { properties: "y"; from: -60; duration: 100; easing.type: Easing.Linear }
+            }
+
             add: Transition {
-                enabled: false
                 NumberAnimation { properties: "y"; from: -60; duration: 100; easing.type: Easing.Linear }
             }
 
             remove: Transition {
-                enabled: false
                 NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 100 }
             }
 
             removeDisplaced: Transition {
-                enabled: false
                 SequentialAnimation {
                     PauseAnimation { duration: 100}
                     NumberAnimation { properties: "y"; duration: 100; easing.type: Easing.Linear }
@@ -535,7 +536,6 @@ Window {
             }
 
             displaced: Transition {
-                enabled: false
                 NumberAnimation { properties: "y"; duration: 100; easing.type: Easing.Linear }
             }
 
