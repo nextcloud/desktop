@@ -1,7 +1,12 @@
+#include "NotificationHandler.h"
+#include "UserModel.h"
+
 #include "accountmanager.h"
 #include "owncloudgui.h"
-#include "UserModel.h"
 #include "syncengine.h"
+#include "ocsjob.h"
+#include "configfile.h"
+#include "notificationconfirmjob.h"
 
 #include <QDesktopServices>
 #include <QIcon>
@@ -10,13 +15,18 @@
 #include <QPainter>
 #include <QPushButton>
 
+// time span in milliseconds which has to be between two
+// refreshes of the notifications
+#define NOTIFICATION_REQUEST_FREE_PERIOD 15000
+
 namespace OCC {
 
-User::User(AccountStatePtr &account, const bool &isCurrent, QObject* parent)
+User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     : QObject(parent)
     , _account(account)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data()))
+    , _notificationRequestsRunning(0)
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);
@@ -24,6 +34,183 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject* parent)
         this, &User::slotItemCompleted);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
         this, &User::slotAddError);
+
+    connect(&_notificationCheckTimer, &QTimer::timeout,
+        this, &User::slotRefresh);
+
+    connect(_account.data(), &AccountState::stateChanged,
+            [=]() { if (isConnected()) {slotRefresh();} });
+}
+
+void User::slotBuildNotificationDisplay(const ActivityList &list)
+{
+    // Whether a new notification was added to the list
+    bool newNotificationShown = false;
+
+    _activityModel->clearNotifications();
+
+    foreach (auto activity, list) {
+        if (_blacklistedNotifications.contains(activity)) {
+            qCInfo(lcActivity) << "Activity in blacklist, skip";
+            continue;
+        }
+
+        // handle gui logs. In order to NOT annoy the user with every fetching of the
+        // notifications the notification id is stored in a Set. Only if an id
+        // is not in the set, it qualifies for guiLog.
+        // Important: The _guiLoggedNotifications set must be wiped regularly which
+        // will repeat the gui log.
+
+        // after one hour, clear the gui log notification store
+        if (_guiLogTimer.elapsed() > 60 * 60 * 1000) {
+            _guiLoggedNotifications.clear();
+        }
+
+        if (!_guiLoggedNotifications.contains(activity._id)) {
+            newNotificationShown = true;
+            _guiLoggedNotifications.insert(activity._id);
+
+            // Assemble a tray notification for the NEW notification
+            ConfigFile cfg;
+            if (cfg.optionalServerNotifications()) {
+                if (AccountManager::instance()->accounts().count() == 1) {
+                    emit guiLog(activity._subject, "");
+                } else {
+                    emit guiLog(activity._subject, activity._accName);
+                }
+            }
+        }
+
+        _activityModel->addNotificationToActivityList(activity);
+    }
+
+    // restart the gui log timer now that we show a new notification
+    if (newNotificationShown) {
+        _guiLogTimer.start();
+    }
+}
+
+void User::setNotificationRefreshInterval(std::chrono::milliseconds interval)
+{
+    qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000 << " sec interval";
+    _notificationCheckTimer.start(interval.count());
+}
+
+void User::slotRefresh()
+{
+    // QElapsedTimer isn't actually constructed as invalid.
+    if (!_timeSinceLastCheck.contains(_account.data())) {
+        _timeSinceLastCheck[_account.data()].invalidate();
+    }
+    QElapsedTimer &timer = _timeSinceLastCheck[_account.data()];
+
+    // Fetch Activities only if visible and if last check is longer than 15 secs ago
+    if (timer.isValid() && timer.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD) {
+        qCDebug(lcActivity) << "Do not check as last check is only secs ago: " << timer.elapsed() / 1000;
+        return;
+    }
+    if (_account.data() && _account.data()->isConnected()) {
+        if (!timer.isValid()) {
+            this->slotRefreshActivities();
+        }
+        this->slotRefreshNotifications();
+        timer.start();
+    }
+}
+
+void User::slotRefreshActivities()
+{
+    _activityModel->slotRefreshActivity();
+}
+
+void User::slotRefreshNotifications()
+{
+    // start a server notification handler if no notification requests
+    // are running
+    if (_notificationRequestsRunning == 0) {
+        ServerNotificationHandler *snh = new ServerNotificationHandler(_account.data());
+        connect(snh, &ServerNotificationHandler::newNotificationList,
+            this, &User::slotBuildNotificationDisplay);
+
+        snh->slotFetchNotifications();
+    } else {
+        qCWarning(lcActivity) << "Notification request counter not zero.";
+    }
+}
+
+void User::slotNotificationRequestFinished(int statusCode)
+{
+    int row = sender()->property("activityRow").toInt();
+
+    // the ocs API returns stat code 100 or 200 inside the xml if it succeeded.
+    if (statusCode != OCS_SUCCESS_STATUS_CODE && statusCode != OCS_SUCCESS_STATUS_CODE_V2) {
+        qCWarning(lcActivity) << "Notification Request to Server failed, leave notification visible.";
+    } else {
+        // to do use the model to rebuild the list or remove the item
+        qCWarning(lcActivity) << "Notification Request to Server successed, rebuilding list.";
+        _activityModel->removeActivityFromActivityList(row);
+    }
+}
+
+void User::slotEndNotificationRequest(int replyCode)
+{
+    _notificationRequestsRunning--;
+    slotNotificationRequestFinished(replyCode);
+}
+
+void User::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row)
+{
+    qCInfo(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
+
+    const QStringList validVerbs = QStringList() << "GET"
+                                                 << "PUT"
+                                                 << "POST"
+                                                 << "DELETE";
+
+    if (validVerbs.contains(verb)) {
+        AccountStatePtr acc = AccountManager::instance()->account(accountName);
+        if (acc) {
+            NotificationConfirmJob *job = new NotificationConfirmJob(acc->account());
+            QUrl l(link);
+            job->setLinkAndVerb(l, verb);
+            job->setProperty("activityRow", QVariant::fromValue(row));
+            connect(job, &AbstractNetworkJob::networkError,
+                this, &User::slotNotifyNetworkError);
+            connect(job, &NotificationConfirmJob::jobFinished,
+                this, &User::slotNotifyServerFinished);
+            job->start();
+
+            // count the number of running notification requests. If this member var
+            // is larger than zero, no new fetching of notifications is started
+            _notificationRequestsRunning++;
+        }
+    } else {
+        qCWarning(lcActivity) << "Notification Links: Invalid verb:" << verb;
+    }
+}
+
+void User::slotNotifyNetworkError(QNetworkReply *reply)
+{
+    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob *>(sender());
+    if (!job) {
+        return;
+    }
+
+    int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    slotEndNotificationRequest(resultCode);
+    qCWarning(lcActivity) << "Server notify job failed with code " << resultCode;
+}
+
+void User::slotNotifyServerFinished(const QString &reply, int replyCode)
+{
+    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob *>(sender());
+    if (!job) {
+        return;
+    }
+
+    slotEndNotificationRequest(replyCode);
+    qCInfo(lcActivity) << "Server Notification reply code" << replyCode << reply;
 }
 
 void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
@@ -390,6 +577,8 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
             _currentUserId = _users.indexOf(_users.last());
         }
         endInsertRows();
+        ConfigFile cfg;
+        _users.last()->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
     }
 }
 
@@ -430,7 +619,8 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
     emit newUserSelected();
 }
 
-Q_INVOKABLE void UserModel::login(const int &id) {
+Q_INVOKABLE void UserModel::login(const int &id)
+{
     _users[id]->login();
     emit refreshCurrentUserGui();
 }
@@ -524,9 +714,7 @@ bool UserModel::currentUserHasActivities()
 
 void UserModel::fetchCurrentActivityModel()
 {
-    if (_users[currentUserId()]->isConnected()) {
-        _users[currentUserId()]->getActivityModel()->fetchMore(QModelIndex());
-    }
+    _users[currentUserId()]->slotRefresh();
 }
 
 /*-------------------------------------------------------------------------------------*/

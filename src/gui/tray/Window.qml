@@ -61,6 +61,7 @@ Window {
             trayWindow.setX( systrayBackend.calcTrayWindowX());
             trayWindow.setY( systrayBackend.calcTrayWindowY());
             systrayBackend.setOpened();
+            userModelBackend.fetchCurrentActivityModel();
         }
         onHideWindow: {
             trayWindow.hide();

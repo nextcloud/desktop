@@ -3,12 +3,14 @@
 
 #include <QAbstractListModel>
 #include <QImage>
+#include <QDateTime>
 #include <QStringList>
 #include <QQuickImageProvider>
 
 #include "ActivityListModel.h"
 #include "accountmanager.h"
 #include "folderman.h"
+#include <chrono>
 
 namespace OCC {
 
@@ -36,15 +38,39 @@ public:
     void logout() const;
     void removeAccount() const;
 
+signals:
+    void guiLog(const QString &, const QString &);
+
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category);
+    void slotNotificationRequestFinished(int statusCode);
+    void slotNotifyNetworkError(QNetworkReply *reply);
+    void slotEndNotificationRequest(int replyCode);
+    void slotNotifyServerFinished(const QString &reply, int replyCode);
+    void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
+    void slotBuildNotificationDisplay(const ActivityList &list);
+    void slotRefreshNotifications();
+    void slotRefreshActivities();
+    void slotRefresh();
+    void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 
 private:
     AccountStatePtr _account;
     bool _isCurrentUser;
     ActivityListModel *_activityModel;
+    ActivityList _blacklistedNotifications;
+
+    QTimer _notificationCheckTimer;
+    QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
+
+    QElapsedTimer _guiLogTimer;
+    QSet<int> _guiLoggedNotifications;
+
+    // number of currently running notification requests. If non zero,
+    // no query for notifications is started.
+    int _notificationRequestsRunning;
 };
 
 class UserModel : public QAbstractListModel
