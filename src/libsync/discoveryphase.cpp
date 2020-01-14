@@ -384,7 +384,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         propertyMapToFileStat(map, file_stat.get());
         if (file_stat->type == ItemTypeDirectory)
             file_stat->size = 0;
-        if (remotePerm.hasPermission(RemotePermissions::IsShared) && file_stat->etag.isEmpty()) {
+        if (perm.hasPermission(RemotePermissions::IsShared) && file_stat->etag.isEmpty()) {
             /* Handle broken shared file error gracefully instead of stopping sync in the desktop client.
                DO not set _error */
             qCWarning(lcDiscovery)
