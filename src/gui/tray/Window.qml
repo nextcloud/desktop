@@ -172,21 +172,25 @@ Window {
 
                             MenuItem {
                                 id: syncPauseButton
+                                font.pixelSize: 12
                                 onClicked: systrayBackend.pauseResumeSync()
                             }
 
                             MenuItem {
                                 text: qsTr("Open settings")
+                                font.pixelSize: 12
                                 onClicked: systrayBackend.openSettings()
                             }
 
                             MenuItem {
                                 text: qsTr("Help")
+                                font.pixelSize: 12
                                 onClicked: systrayBackend.openHelp()
                             }
 
                             MenuItem {
                                 text: qsTr("Quit Nextcloud")
+                                font.pixelSize: 12
                                 onClicked: systrayBackend.shutdown()
                             }
                         }
@@ -449,16 +453,17 @@ Window {
                 height: trayWindowHeaderLayout.height
                 spacing: 0
                 visible: (activityListView.model.rowCount() > 0)
+
                 Image {
                     id: activityIcon
-                    Layout.leftMargin: 6
-                    Layout.preferredWidth: 48
-                    Layout.preferredHeight: 48
+                    Layout.leftMargin: 8
+                    Layout.preferredWidth: activityButton1.icon.width
+                    Layout.preferredHeight: activityButton1.icon.height
                     verticalAlignment: Qt.AlignCenter
                     cache: true
                     source: icon
-                    sourceSize.height: 48
-                    sourceSize.width: 48
+                    sourceSize.height: activityButton1.icon.height
+                    sourceSize.width: activityButton1.icon.width
                 }
                 Column {
                     id: activityTextColumn
@@ -468,16 +473,18 @@ Window {
                     Text {
                         id: activityTextTitle
                         text: (type === "Activity") ? subject : message
-                        width: 220
+                        width: 236
                         elide: Text.ElideRight
-                        font.pointSize: 9
+                        font.pixelSize: 12
                     }
+
                     Text {
                         id: activityTextInfo
                         text: displaypath
-                        width: 220
+                        height: (displaypath === "") ? 0 : activityTextTitle.height
+                        width: 236
                         elide: Text.ElideRight
-                        font.pointSize: 8
+                        font.pixelSize: 10
                     }
                 }
                 Item {

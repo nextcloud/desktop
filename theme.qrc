@@ -140,5 +140,8 @@
         <file>theme/black/user.svg</file>
         <file>theme/white/add.svg</file>
         <file>theme/black/add.svg</file>
+        <file>theme/black/activity.svg</file>
+        <file>theme/black/bell.svg</file>
+        <file>theme/black/state-info.svg</file>
     </qresource>
 </RCC>

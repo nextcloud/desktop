@@ -111,27 +111,27 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     }
     case ActionIconRole: {
         if (a._type == Activity::NotificationType) {
-            return "qrc:///client/resources/bell.svg";
+            return "qrc:///client/theme/black/bell.svg";
         } else if (a._type == Activity::SyncResultType) {
-            return "qrc:///client/resources/state-error.svg";
+            return "qrc:///client/theme/black/state-error.svg";
         } else if (a._type == Activity::SyncFileItemType) {
             if (a._status == SyncFileItem::NormalError
                 || a._status == SyncFileItem::FatalError
                 || a._status == SyncFileItem::DetailError
                 || a._status == SyncFileItem::BlacklistedError) {
-                return "qrc:///client/resources/state-error.svg";
+                return "qrc:///client/theme/black/state-error.svg";
             } else if (a._status == SyncFileItem::SoftError
                 || a._status == SyncFileItem::Conflict
                 || a._status == SyncFileItem::Restoration
                 || a._status == SyncFileItem::FileLocked) {
-                return "qrc:///client/resources/state-warning.svg";
+                return "qrc:///client/theme/black/state-warning.svg";
             } else if (a._status == SyncFileItem::FileIgnored) {
-                return "qrc:///client/resources/state-info.svg";
+                return "qrc:///client/theme/black/state-info.svg";
             } else {
-                return "qrc:///client/resources/state-sync.svg";
+                return "qrc:///client/theme/black/state-sync.svg";
             }
         } else {
-            return "qrc:///client/resources/activity.svg";
+            return "qrc:///client/theme/black/activity.svg";
         }
     }
     case ObjectTypeRole:
