@@ -134,7 +134,7 @@ int Systray::calcTrayWindowX()
     int trayIconTopCenterX = (topRight - ((topRight - topLeft) * 0.5)).x();
     return trayIconTopCenterX - (400 * 0.5);
 #else
-
+    QScreen *trayScreen = QGuiApplication::primaryScreen();
     int screenWidth = trayScreen->geometry().width();
     int screenHeight = trayScreen->geometry().height();
     int availableWidth = trayScreen->availableGeometry().width();
