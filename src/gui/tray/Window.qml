@@ -109,7 +109,7 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
-                            syncPauseButton.text = systrayBackend.syncIsPaused() ? "Resume sync for all" : "Pause sync for all"
+                            syncPauseButton.text = systrayBackend.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             accountMenu.open()
                         }
 
@@ -156,7 +156,7 @@ Window {
                                     }
                                     Label {
                                         Layout.leftMargin: 10
-                                        text: "Add account"
+                                        text: qsTr("Add account")
                                         color: "black"
                                         font.pixelSize: 12
                                     }
@@ -176,26 +176,18 @@ Window {
                             }
 
                             MenuItem {
-                                text: "Open settings"
+                                text: qsTr("Open settings")
                                 onClicked: systrayBackend.openSettings()
                             }
 
                             MenuItem {
-                                text: "Help"
+                                text: qsTr("Help")
                                 onClicked: systrayBackend.openHelp()
                             }
 
                             MenuItem {
-                                text: "Quit Nextcloud"
+                                text: qsTr("Quit Nextcloud")
                                 onClicked: systrayBackend.shutdown()
-                            }
-
-                            Component.onCompleted: {/*
-                                if(userModelBackend.numUsers() === 1) {
-                                    accountMenuSeparator.height = 0
-                                } else {
-                                    accountMenuSeparator.height = 13
-                                }*/
                             }
                         }
                     }

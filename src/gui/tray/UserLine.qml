@@ -118,7 +118,7 @@ MenuItem {
                     }
 
                     MenuItem {
-                        text: isConnected ? "Log out" : "Log in"
+                        text: isConnected ? qsTr("Log out") : qsTr("Log in")
                         onClicked: {
                             isConnected ? userModelBackend.logout(index) : userModelBackend.login(index)
                             accountMenu.close()
@@ -126,7 +126,7 @@ MenuItem {
                     }
 
                     MenuItem {
-                        text: "Remove Account"
+                        text: qsTr("Remove Account")
                         onClicked: {
                             userModelBackend.removeAccount(index)
                             accountMenu.close()
