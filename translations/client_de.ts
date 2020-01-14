@@ -385,17 +385,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1162"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Einige Verzeichnisse konnten nicht synchronisiert werden, da sie zu groß sind:</translation>
+        <translation>Einige Verzeichnisse konnten nicht synchronisiert werden, da sie zu groß sind: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1164"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie externe Speicher sind:</translation>
+        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie externe Speicher sind: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1165"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie zu groß oder externe Speicher sind:</translation>
+        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie zu groß oder externe Speicher sind: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1211"/>
