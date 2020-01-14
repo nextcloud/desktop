@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;选择...</translation>
+        <translation>选择(&amp;C)...</translation>
     </message>
 </context>
 <context>
@@ -643,12 +643,12 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;User:</source>
-        <translation>&amp;用户名：</translation>
+        <translation>用户名(&amp;U)：</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
         <source>&amp;Password:</source>
-        <translation>&amp;密码：</translation>
+        <translation>密码(&amp;P)：</translation>
     </message>
 </context>
 <context>
@@ -1411,7 +1411,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>显示服务器&amp;通知</translation>
+        <translation>显示服务器通知(&amp;N)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1437,27 +1437,27 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>在系统启动时启动</translation>
+        <translation>在系统启动时启动(&amp;L)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>使用单色图标</translation>
+        <translation>使用单色图标(&amp;M)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>编辑忽略的文件</translation>
+        <translation>编辑忽略的文件(&amp;I)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>在文件管理器的导航显示同步文件夹</translation>
+        <translation>在文件管理器的导航显示同步文件夹(&amp;E)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
         <source>S&amp;how crash reporter</source>
-        <translation>显示崩溃报告器</translation>
+        <translation>显示崩溃报告器(&amp;H)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
@@ -1473,7 +1473,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="124"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>重启并更新</translation>
+        <translation>重启并更新(&amp;R)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="56"/>
@@ -1649,17 +1649,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>&amp;Search:</source>
-        <translation>&amp;搜索：</translation>
+        <translation>搜索(&amp;S)：</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>&amp;Find</source>
-        <translation>&amp;查找</translation>
+        <translation>查找(&amp;F)</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation>抓取调试消息</translation>
+        <translation>抓取调试消息(&amp;C)</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -1688,7 +1688,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="122"/>
         <source>S&amp;ave</source>
-        <translation>保存</translation>
+        <translation>保存(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
@@ -2039,7 +2039,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation>&amp;电子邮件</translation>
+        <translation>电子邮件(&amp;E)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
@@ -2111,7 +2111,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
         <source>&amp;Next &gt;</source>
-        <translation>&amp;下一步 &gt;</translation>
+        <translation>下一步(&amp;N) &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="285"/>
@@ -2756,7 +2756,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation>允许上传 &amp;&amp; 编辑</translation>
+        <translation>允许上传和编辑</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
@@ -3751,7 +3751,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>开始全新同步（将清空本地文件夹！）</translation>
+        <translation>开始全新同步（将清空本地文件夹！）(&amp;C)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
