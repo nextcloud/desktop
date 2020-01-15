@@ -428,6 +428,7 @@ Window {
                                 onObjectRemoved: appsMenu.removeItem(object)
                                 delegate: MenuItem {
                                     text: appName
+                                    font.pixelSize: 12
                                     onTriggered: appsMenuModelBackend.openAppUrl(appUrl)
                                 }
                             }

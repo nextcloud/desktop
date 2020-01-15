@@ -132,6 +132,7 @@ MenuItem {
 
                     MenuItem {
                         text: isConnected ? qsTr("Log out") : qsTr("Log in")
+                        font.pixelSize: 12
                         onClicked: {
                             isConnected ? userModelBackend.logout(index) : userModelBackend.login(index)
                             accountMenu.close()
@@ -140,6 +141,7 @@ MenuItem {
 
                     MenuItem {
                         text: qsTr("Remove Account")
+                        font.pixelSize: 12
                         onClicked: {
                             userModelBackend.removeAccount(index)
                             accountMenu.close()
