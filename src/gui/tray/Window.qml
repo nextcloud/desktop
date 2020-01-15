@@ -140,7 +140,7 @@ Window {
 
                             MenuItem {
                                 id: addAccountButton
-                                height: 60
+                                height: 50
 
                                 RowLayout {
                                     width: addAccountButton.width
@@ -148,14 +148,14 @@ Window {
                                     spacing: 0
 
                                     Image {
-                                        Layout.leftMargin: 8
+                                        Layout.leftMargin: 14
                                         verticalAlignment: Qt.AlignCenter
                                         source: "qrc:///client/theme/black/add.svg"
-                                        sourceSize.width: addAccountButton.height - 24
-                                        sourceSize.height: addAccountButton.height - 24
+                                        sourceSize.width: openLocalFolderButton.icon.width
+                                        sourceSize.height: openLocalFolderButton.icon.height
                                     }
                                     Label {
-                                        Layout.leftMargin: 10
+                                        Layout.leftMargin: 14
                                         text: qsTr("Add account")
                                         color: "black"
                                         font.pixelSize: 12
