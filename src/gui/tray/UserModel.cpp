@@ -785,6 +785,10 @@ void UserAppsModel::buildAppList()
 
     if(UserModel::instance()->appList().count() > 0) {
         foreach(AccountApp *app, UserModel::instance()->appList()) {
+            // Filter out Talk because we have a dedicated button for it
+            if(app->id() == QLatin1String("spreed"))
+                continue;
+
             beginInsertRows(QModelIndex(), rowCount(), rowCount());
             _apps << app;
             endInsertRows();
