@@ -400,7 +400,6 @@ Window {
 
                         Menu {
                             id: appsMenu
-                            x: (trayWindowAppsButton.x + 2)
                             y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
                             width: (trayWindowAppsButton.width - 2)
                             closePolicy: "CloseOnPressOutside"
