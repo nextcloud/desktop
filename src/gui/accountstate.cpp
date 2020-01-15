@@ -45,6 +45,7 @@ AccountState::AccountState(AccountPtr account)
     , _notificationsEtagResponseHeader("*")
     , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
     , _remoteWipe(new RemoteWipe(_account))
+    , _hasTalk(false)
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
@@ -94,23 +95,6 @@ QStringList AccountState::connectionErrors() const
 AccountState::State AccountState::state() const
 {
     return _state;
-}
-
-void AccountState::setTalkCapability()
-{
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-    connect(manager, &QNetworkAccessManager::finished,
-        this, [=](QNetworkReply *reply) {
-            if (reply->error()) {
-                return;
-            }
-            //TODO: This is **** dirty, but atm I don't see a capability-way to determine talk integration
-            _hasTalk = (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 303) ? true : false;
-        });
-    QNetworkRequest request;
-    QString url = this->account()->url().toString() + "/apps/spreed";
-    request.setUrl(QUrl(url));
-    manager->get(request);
 }
 
 void AccountState::setState(State state)
@@ -320,7 +304,6 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::Connected:
         if (_state != Connected) {
             setState(Connected);
-            setTalkCapability();
 
             // Get the Apps available on the server.
             fetchNavigationApps();
@@ -479,6 +462,9 @@ void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int sta
                             navLink.value("id").toString(), QUrl(navLink.value("icon").toString()));
 
                         _apps << app;
+
+                        if(app->id() == QLatin1String("spreed"))
+                            _hasTalk = true;
                     }
                 }
             }

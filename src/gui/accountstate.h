@@ -167,7 +167,6 @@ public slots:
 
 private:
     void setState(State state);
-    void setTalkCapability();
     void fetchNavigationApps();
 
 signals:
