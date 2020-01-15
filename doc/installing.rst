@@ -27,7 +27,7 @@ download page.
 System Requirements
 ----------------------------------
 
-- Windows 7+
+- Windows 8.1+
 - macOS 10.7+ (**64-bit only**)
 - CentOS 6 & 7 (64-bit only)
 - Debian 8.0 & 9.0
