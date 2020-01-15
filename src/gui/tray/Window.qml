@@ -107,6 +107,9 @@ Window {
                         id: accountBtnMouseArea
                         anchors.fill: parent
                         hoverEnabled: true
+                        onContainsMouseChanged: {
+                            currentAccountStateIndicatorBackground.color = (containsMouse ? "#009dd9" : "#0082c9")
+                        }
                         onClicked:
                         {
                             syncPauseButton.text = systrayBackend.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
@@ -255,12 +258,21 @@ Window {
                             source: "image://avatars/currentUser"
                             Layout.preferredHeight: (trayWindowHeaderBackground.height -16)
                             Layout.preferredWidth: (trayWindowHeaderBackground.height -16)
+                            Rectangle {
+                                id: currentAccountStateIndicatorBackground
+                                width: currentAccountStateIndicator.sourceSize.width + 2
+                                height: width
+                                anchors.bottom: currentAccountAvatar.bottom
+                                anchors.right: currentAccountAvatar.right
+                                color: "#0082c9"
+                                radius: width*0.5
+                            }
                             Image {
                                 id: currentAccountStateIndicator
                                 source: userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
                                 cache: false
-                                anchors.bottom: currentAccountAvatar.bottom
-                                anchors.right: currentAccountAvatar.right
+                                x: currentAccountStateIndicatorBackground.x + 1
+                                y: currentAccountStateIndicatorBackground.y + 1
                                 sourceSize.width: 16
                                 sourceSize.height: 16
                             }

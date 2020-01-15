@@ -20,6 +20,10 @@ MenuItem {
                 display: AbstractButton.IconOnly
                 flat: true
 
+                onHoveredChanged: {
+                    accountStateIndicatorBackground.color = (containsMouse ? "#f6f6f6" : "white")
+                }
+
                 background: Rectangle {
                     color: "transparent"
                 }
@@ -45,12 +49,21 @@ MenuItem {
                         source: ("image://avatars/" + id)
                         Layout.preferredHeight: (userLineLayout.height -16)
                         Layout.preferredWidth: (userLineLayout.height -16)
+                        Rectangle {
+                            id: accountStateIndicatorBackground
+                            width: accountStateIndicator.sourceSize.width + 2
+                            height: width
+                            anchors.bottom: accountAvatar.bottom
+                            anchors.right: accountAvatar.right
+                            color: "white"
+                            radius: width*0.5
+                        }
                         Image {
                             id: accountStateIndicator
                             source: isConnected ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
                             cache: false
-                            anchors.bottom: accountAvatar.bottom
-                            anchors.right: accountAvatar.right
+                            x: accountStateIndicatorBackground.x + 1
+                            y: accountStateIndicatorBackground.y + 1
                             sourceSize.width: 16
                             sourceSize.height: 16
                         }
