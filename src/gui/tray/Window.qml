@@ -512,7 +512,7 @@ Window {
                     Text {
                         id: activityTextTitle
                         text: (type === "Activity") ? subject : message
-                        width: 236
+                        width: 240 + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
                         font.pixelSize: 12
                     }
@@ -521,7 +521,7 @@ Window {
                         id: activityTextInfo
                         text: displaypath
                         height: (displaypath === "") ? 0 : activityTextTitle.height
-                        width: 236
+                        width: 240 + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
                         font.pixelSize: 10
                     }
@@ -532,12 +532,12 @@ Window {
                 }
                 Button {
                     id: activityButton1
-                    Layout.preferredWidth: activityItem.height
+                    Layout.preferredWidth: (path === "") ? 0 : activityItem.height
                     Layout.preferredHeight: activityItem.height
                     Layout.alignment: Qt.AlignRight
                     flat: true
                     hoverEnabled: false
-                    visible: (path !== "") ? true : false
+                    visible: (path === "") ? false : true
                     display: AbstractButton.IconOnly
                     icon.source: "qrc:///client/resources/files.svg"
                     icon.color: "transparent"
@@ -547,12 +547,13 @@ Window {
                     }
                 }
                 Button {
-                    Layout.preferredWidth: activityItem.height
-                    Layout.preferredHeight: activityItem.height
+                    id: activityButton2
+                    Layout.preferredWidth: (link === "") ? 0 : activityItem.height
+                    Layout.preferredHeight:  activityItem.height
                     Layout.alignment: Qt.AlignRight
                     flat: true
                     hoverEnabled: false
-                    visible: (link !== "") ? true : false
+                    visible: (link === "") ? false : true
                     display: AbstractButton.IconOnly
                     icon.source: "qrc:///client/resources/public.svg"
                     icon.color: "transparent"
