@@ -380,7 +380,46 @@ Window {
                         hoverEnabled: true
                         onClicked:
                         {
+                            /*
+                            // The count() property was introduced in QtQuick.Controls 2.3 (Qt 5.10)
+                            // so we handle this with userModelBackend.openCurrentAccountServer()
+                            //
+                            // See UserModel::openCurrentAccountServer() to disable this workaround
+                            // in the future for Qt >= 5.10
+
+                            if(appsMenu.count() > 0) {
+                                appsMenu.popup();
+                            } else {
+                                userModelBackend.openCurrentAccountServer();
+                            }
+                            */
+
+                            appsMenu.open();
                             userModelBackend.openCurrentAccountServer();
+                        }
+
+                        Menu {
+                            id: appsMenu
+                            x: (trayWindowAppsButton.x + 2)
+                            y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
+                            width: (trayWindowAppsButton.width - 2)
+                            closePolicy: "CloseOnPressOutside"
+
+                            background: Rectangle {
+                                border.color: "#0082c9"
+                                radius: 2
+                            }
+
+                            Instantiator {
+                                id: appsMenuInstantiator
+                                model: appsMenuModelBackend
+                                onObjectAdded: appsMenu.insertItem(index, object)
+                                onObjectRemoved: appsMenu.removeItem(object)
+                                delegate: MenuItem {
+                                    text: appName
+                                    onTriggered: appsMenuModelBackend.openAppUrl(appUrl)
+                                }
+                            }
                         }
                     }
 

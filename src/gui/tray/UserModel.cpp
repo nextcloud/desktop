@@ -40,6 +40,8 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
     connect(_account.data(), &AccountState::stateChanged,
             [=]() { if (isConnected()) {slotRefresh();} });
+    connect(_account.data(), &AccountState::hasFetchedNavigationApps,
+        this, &User::slotRebuildNavigationAppList);
 }
 
 void User::slotBuildNotificationDisplay(const ActivityList &list)
@@ -136,6 +138,12 @@ void User::slotRefreshNotifications()
     } else {
         qCWarning(lcActivity) << "Notification request counter not zero.";
     }
+}
+
+void User::slotRebuildNavigationAppList()
+{
+    // Rebuild App list
+    UserAppsModel::instance()->buildAppList();
 }
 
 void User::slotNotificationRequestFinished(int statusCode)
@@ -445,6 +453,11 @@ bool User::hasActivities() const
     return _account->account()->capabilities().hasActivities();
 }
 
+AccountAppList User::appList() const
+{
+    return _account->appList();
+}
+
 bool User::isCurrentUser() const
 {
     return _isCurrentUser;
@@ -603,6 +616,10 @@ Q_INVOKABLE void UserModel::openCurrentAccountTalk()
 
 Q_INVOKABLE void UserModel::openCurrentAccountServer()
 {
+    // Don't open this URL when the QML appMenu pops up on click (see Window.qml)
+    if(appList().count() > 0)
+        return;
+
     QString url = _users[_currentUserId]->server(false);
     if (!(url.contains("http://") || url.contains("https://"))) {
         url = "https://" + _users[_currentUserId]->server(false);
@@ -717,6 +734,15 @@ void UserModel::fetchCurrentActivityModel()
     _users[currentUserId()]->slotRefresh();
 }
 
+AccountAppList UserModel::appList() const
+{
+    if (_users.count() >= 1) {
+        return _users[_currentUserId]->appList();
+    } else {
+        return AccountAppList();
+    }
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 ImageProvider::ImageProvider()
@@ -732,6 +758,71 @@ QImage ImageProvider::requestImage(const QString &id, QSize *size, const QSize &
         int uid = id.toInt();
         return UserModel::instance()->avatarById(uid);
     }
+}
+
+/*-------------------------------------------------------------------------------------*/
+
+UserAppsModel *UserAppsModel::_instance = nullptr;
+
+UserAppsModel *UserAppsModel::instance()
+{
+    if (_instance == nullptr) {
+        _instance = new UserAppsModel();
+    }
+    return _instance;
+}
+
+UserAppsModel::UserAppsModel(QObject *parent)
+    : QAbstractListModel(parent)
+{
+}
+
+void UserAppsModel::buildAppList()
+{
+    beginRemoveRows(QModelIndex(), 0, rowCount());
+    _apps.clear();
+    endRemoveRows();
+
+    if(UserModel::instance()->appList().count() > 0) {
+        foreach(AccountApp *app, UserModel::instance()->appList()) {
+            beginInsertRows(QModelIndex(), rowCount(), rowCount());
+            _apps << app;
+            endInsertRows();
+        }
+    }
+}
+
+void UserAppsModel::openAppUrl(const QUrl &url)
+{
+    QDesktopServices::openUrl(url);
+}
+
+int UserAppsModel::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent);
+    return _apps.count();
+}
+
+QVariant UserAppsModel::data(const QModelIndex &index, int role) const
+{
+    if (index.row() < 0 || index.row() >= _apps.count()) {
+        return QVariant();
+    }
+
+    if (role == NameRole) {
+        return _apps[index.row()]->name();
+    } else if (role == UrlRole) {
+        return _apps[index.row()]->url();
+    }
+    return QVariant();
+}
+
+QHash<int, QByteArray> UserAppsModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[NameRole] = "appName";
+    roles[UrlRole] = "appUrl";
+    return roles;
 }
 
 }

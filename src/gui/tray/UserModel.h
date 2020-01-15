@@ -32,6 +32,7 @@ public:
     QString server(bool shortened = true) const;
     bool serverHasTalk() const;
     bool hasActivities() const;
+    AccountAppList appList() const;
     QImage avatar(bool whiteBg = false) const;
     QString id() const;
     void login() const;
@@ -55,6 +56,7 @@ public slots:
     void slotRefreshActivities();
     void slotRefresh();
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
+    void slotRebuildNavigationAppList();
 
 private:
     AccountStatePtr _account;
@@ -117,6 +119,8 @@ public:
         IdRole
     };
 
+    AccountAppList appList() const;
+
 signals:
     Q_INVOKABLE void addAccount();
     Q_INVOKABLE void refreshCurrentUserGui();
@@ -140,6 +144,37 @@ class ImageProvider : public QQuickImageProvider
 public:
     ImageProvider();
     QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
+};
+
+class UserAppsModel : public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    static UserAppsModel *instance();
+    virtual ~UserAppsModel() {};
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
+    enum UserAppsRoles {
+        NameRole = Qt::UserRole + 1,
+        UrlRole
+    };
+
+    void buildAppList();
+
+public slots:
+    void openAppUrl(const QUrl &url);
+
+protected:
+    QHash<int, QByteArray> roleNames() const;
+
+private:
+    static UserAppsModel *_instance;
+    UserAppsModel(QObject *parent = 0);
+
+    AccountAppList _apps;
 };
 
 }

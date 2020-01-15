@@ -57,12 +57,13 @@ Systray::Systray()
     _trayEngine = new QQmlEngine;
     _trayEngine->addImageProvider("avatars", new ImageProvider);
     _trayEngine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
+    _trayEngine->rootContext()->setContextProperty("appsMenuModelBackend", UserAppsModel::instance());
     _trayEngine->rootContext()->setContextProperty("systrayBackend", this);
 
     _trayComponent = new QQmlComponent(_trayEngine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml")));
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
-        this, &Systray::slotChangeActivityModel);
+        this, &Systray::slotNewUserSelected);
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Systray::showWindow);
@@ -77,9 +78,13 @@ void Systray::create()
     }
 }
 
-void Systray::slotChangeActivityModel()
+void Systray::slotNewUserSelected()
 {
+    // Change ActivityModel
     _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
+
+    // Rebuild App list
+    UserAppsModel::instance()->buildAppList();
 }
 
 bool Systray::isOpen()

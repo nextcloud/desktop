@@ -70,7 +70,7 @@ signals:
     Q_INVOKABLE void showWindow();
 
 public slots:
-    void slotChangeActivityModel();
+    void slotNewUserSelected();
 
 private:
     static Systray *_instance;
