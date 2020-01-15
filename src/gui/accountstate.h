@@ -29,9 +29,11 @@ namespace OCC {
 
 class AccountState;
 class Account;
+class AccountApp;
 class RemoteWipe;
 
 typedef QExplicitlySharedDataPointer<AccountState> AccountStatePtr;
+typedef QList<AccountApp*> AccountAppList;
 
 /**
  * @brief Extra info about an ownCloud server account.
@@ -103,6 +105,8 @@ public:
 
     bool hasTalk() const;
 
+    AccountAppList appList() const;
+
     /** A user-triggered sign out which disconnects, stops syncs
      * for the account and forgets the password. */
     void signOutByUi();
@@ -164,10 +168,12 @@ public slots:
 private:
     void setState(State state);
     void setTalkCapability();
+    void fetchNavigationApps();
 
 signals:
     void stateChanged(int state);
     void isConnectedChanged();
+    void hasFetchedNavigationApps();
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
@@ -178,6 +184,10 @@ protected Q_SLOTS:
 
     void slotCredentialsFetched(AbstractCredentials *creds);
     void slotCredentialsAsked(AbstractCredentials *creds);
+
+    void slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode);
+    void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
+    void slotOcsError(int statusCode, const QString &message);
 
 private:
     AccountPtr _account;
@@ -209,7 +219,34 @@ private:
      */
     RemoteWipe *_remoteWipe;
 
+    /**
+     * Holds the App names and URLs available on the server
+     */
+    AccountAppList _apps;
+
 };
+
+class AccountApp : public QObject
+{
+    Q_OBJECT
+public:
+    AccountApp(const QString &name, const QUrl &url,
+        const QString &id, const QUrl &iconUrl,
+        QObject* parent = 0);
+
+    QString name() const;
+    QUrl url() const;
+    QString id() const;
+    QUrl iconUrl() const;
+
+private:
+    QString _name;
+    QUrl _url;
+
+    QString _id;
+    QUrl _iconUrl;
+};
+
 }
 
 Q_DECLARE_METATYPE(OCC::AccountState *)

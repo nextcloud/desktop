@@ -91,8 +91,6 @@ public slots:
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(Account *account);
-    void slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode);
-    void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
 
 
     /**
@@ -106,9 +104,6 @@ public slots:
 
     void slotRemoveDestroyedShareDialogs();
 
-protected slots:
-    void slotOcsError(int statusCode, const QString &message);
-
 private slots:
     void slotLogin();
     void slotLogout();
@@ -118,8 +113,6 @@ private slots:
 
 private:
     void setPauseOnAllFoldersHelper(bool pause);
-    void fetchNavigationApps(AccountStatePtr account);
-    void buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;
     QPointer<SettingsDialog> _settingsDialog;
@@ -129,17 +122,12 @@ private:
     QDBusConnection _bus;
 #endif
 
-    QMenu *_recentActionsMenu;
-    QVector<QMenu *> _accountMenus;
     QMap<QString, QPointer<ShareDialog>> _shareDialogs;
 
     QAction *_actionNewAccountWizard;
     QAction *_actionSettings;
     QAction *_actionEstimate;
 
-
-    QMenu *_navLinksMenu;
-    QMap<AccountStatePtr, QJsonArray> _navApps;
 
     QList<QAction *> _recentItemsActions;
     Application *_app;

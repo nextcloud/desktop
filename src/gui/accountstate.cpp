@@ -20,6 +20,7 @@
 #include "creds/httpcredentials.h"
 #include "logger.h"
 #include "configfile.h"
+#include "ocsnavigationappsjob.h"
 
 #include <QSettings>
 #include <QTimer>
@@ -27,6 +28,7 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QNetworkRequest>
 #include <QBuffer>
 
@@ -259,6 +261,9 @@ void AccountState::checkConnectivity()
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
         conValidator->checkAuthentication();
+
+        // Get the Apps available on the server.
+        fetchNavigationApps();
     } else {
         // Check the server and then the auth.
 
@@ -316,6 +321,9 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         if (_state != Connected) {
             setState(Connected);
             setTalkCapability();
+
+            // Get the Apps available on the server.
+            fetchNavigationApps();
         }
         break;
     case ConnectionValidator::Undefined:
@@ -427,5 +435,97 @@ std::unique_ptr<QSettings> AccountState::settings()
     s->beginGroup(_account->id());
     return s;
 }
+
+void AccountState::fetchNavigationApps(){
+    OcsNavigationAppsJob *job = new OcsNavigationAppsJob(_account);
+    job->addRawHeader("If-None-Match", navigationAppsEtagResponseHeader());
+    connect(job, &OcsNavigationAppsJob::appsJobFinished, this, &AccountState::slotNavigationAppsFetched);
+    connect(job, &OcsNavigationAppsJob::etagResponseHeaderReceived, this, &AccountState::slotEtagResponseHeaderReceived);
+    connect(job, &OcsNavigationAppsJob::ocsError, this, &AccountState::slotOcsError);
+    job->getNavigationApps();
+}
+
+void AccountState::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
+    if(statusCode == 200){
+        qCDebug(lcAccountState) << "New navigation apps ETag Response Header received " << value;
+        setNavigationAppsEtagResponseHeader(value);
+    }
+}
+
+void AccountState::slotOcsError(int statusCode, const QString &message)
+{
+    qCDebug(lcAccountState) << "Error " << statusCode << " while fetching new navigation apps: " << message;
+}
+
+void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode)
+{
+    if(_account){
+        if (statusCode == 304) {
+            qCWarning(lcAccountState) << "Status code " << statusCode << " Not Modified - No new navigation apps.";
+        } else {
+            _apps.clear();
+            _hasTalk = false;
+
+            if(!reply.isEmpty()){
+                printf("%s\n", reply.toJson().toStdString().c_str());
+                auto element = reply.object().value("ocs").toObject().value("data");
+                auto navLinks = element.toArray();
+
+                if(navLinks.size() > 0){
+                    foreach (const QJsonValue &value, navLinks) {
+                        auto navLink = value.toObject();
+
+                        AccountApp *app = new AccountApp(navLink.value("name").toString(), QUrl(navLink.value("href").toString()),
+                            navLink.value("id").toString(), QUrl(navLink.value("icon").toString()));
+
+                        _apps << app;
+                    }
+                }
+            }
+
+            emit hasFetchedNavigationApps();
+        }
+    }
+}
+
+AccountAppList AccountState::appList() const
+{
+    return _apps;
+}
+
+/*-------------------------------------------------------------------------------------*/
+
+AccountApp::AccountApp(const QString &name, const QUrl &url,
+    const QString &id, const QUrl &iconUrl,
+    QObject *parent)
+    : QObject(parent)
+    , _name(name)
+    , _url(url)
+    , _id(id)
+    , _iconUrl(iconUrl)
+{
+}
+
+QString AccountApp::name() const
+{
+    return _name;
+}
+
+QUrl AccountApp::url() const
+{
+    return _url;
+}
+
+QString AccountApp::id() const
+{
+    return _id;
+}
+
+QUrl AccountApp::iconUrl() const
+{
+    return _iconUrl;
+}
+
+/*-------------------------------------------------------------------------------------*/
 
 } // namespace OCC

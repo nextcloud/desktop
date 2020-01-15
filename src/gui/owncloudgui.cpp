@@ -14,7 +14,6 @@
 
 #include "application.h"
 #include "owncloudgui.h"
-#include "ocsnavigationappsjob.h"
 #include "theme.h"
 #include "folderman.h"
 #include "progressdispatcher.h"
@@ -46,10 +45,6 @@
 #include <QX11Info>
 #endif
 
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-
 #include <QQmlEngine>
 #include <QQmlComponent>
 #include <QQmlApplicationEngine>
@@ -68,7 +63,6 @@ ownCloudGui::ownCloudGui(Application *parent)
 #ifdef WITH_LIBCLOUDPROVIDERS
     , _bus(QDBusConnection::sessionBus())
 #endif
-    , _recentActionsMenu(nullptr)
     , _app(parent)
 {
     _tray = Systray::instance();
@@ -369,7 +363,6 @@ void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QStrin
     slotShowTrayMessage(title, msg);
 }
 
-
 /*
  * open the folder with the given Alias
  */
@@ -391,93 +384,6 @@ void ownCloudGui::slotFolderOpenAction(const QString &alias)
 #endif
         QDesktopServices::openUrl(url);
     }
-}
-
-void ownCloudGui::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
-    if(statusCode == 200){
-        qCDebug(lcApplication) << "New navigation apps ETag Response Header received " << value;
-        auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC));
-        account->setNavigationAppsEtagResponseHeader(value);
-    }
-}
-
-void ownCloudGui::fetchNavigationApps(AccountStatePtr account){
-    OcsNavigationAppsJob *job = new OcsNavigationAppsJob(account->account());
-    job->setProperty(propertyAccountC, QVariant::fromValue(account));
-    job->addRawHeader("If-None-Match", account->navigationAppsEtagResponseHeader());
-    connect(job, &OcsNavigationAppsJob::appsJobFinished, this, &ownCloudGui::slotNavigationAppsFetched);
-    connect(job, &OcsNavigationAppsJob::etagResponseHeaderReceived, this, &ownCloudGui::slotEtagResponseHeaderReceived);
-    connect(job, &OcsNavigationAppsJob::ocsError, this, &ownCloudGui::slotOcsError);
-    job->getNavigationApps();
-}
-
-void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu){
-    auto navLinks = _navApps.value(account);
-
-    _navLinksMenu->clear();
-    _navLinksMenu->setEnabled(navLinks.size() > 0);
-
-    if(navLinks.size() > 0){
-        // when there is only one account add the nav links above the settings
-        QAction *actionBefore = _actionSettings;
-
-        // when there is more than one account add the nav links above pause/unpause folder or logout action
-        if(AccountManager::instance()->accounts().size() > 1){
-            foreach(QAction *action, accountMenu->actions()){
-
-                // pause/unpause folder and logout actions have propertyAccountC
-                if(auto actionAccount = qvariant_cast<AccountStatePtr>(action->property(propertyAccountC))){
-                    if(actionAccount == account){
-                        actionBefore = action;
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Create submenu with links
-        foreach (const QJsonValue &value, navLinks) {
-            auto navLink = value.toObject();
-            QAction *action = new QAction(navLink.value("name").toString(), this);
-            QUrl href(navLink.value("href").toString());
-            connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
-            _navLinksMenu->addAction(action);
-        }
-    }
-}
-
-void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode)
-{
-    if(auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))){
-        if (statusCode == 304) {
-            qCWarning(lcApplication) << "Status code " << statusCode << " Not Modified - No new navigation apps.";
-        } else {
-            if(!reply.isEmpty()){
-                auto element = reply.object().value("ocs").toObject().value("data");
-                auto navLinks = element.toArray();
-                _navApps.insert(account, navLinks);
-            }
-        }
-
-        // TODO see pull #523
-        auto accountList = AccountManager::instance()->accounts();
-        if(accountList.size() > 1){
-            // the list of apps will be displayed under the account that it belongs to
-            foreach (QMenu *accountMenu, _accountMenus) {
-                if(accountMenu->title() == account->account()->displayName()){
-                    buildNavigationAppsMenu(account, accountMenu);
-                    break;
-                }
-            }
-        } else if(accountList.size() == 1){
-            //buildNavigationAppsMenu(account, _contextMenu.data());
-        }
-    }
-}
-
-void ownCloudGui::slotOcsError(int statusCode, const QString &message)
-{
-    emit serverError(statusCode, message);
 }
 
 void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &progress)
