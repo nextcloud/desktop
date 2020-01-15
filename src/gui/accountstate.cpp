@@ -450,7 +450,6 @@ void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int sta
             _hasTalk = false;
 
             if(!reply.isEmpty()){
-                printf("%s\n", reply.toJson().toStdString().c_str());
                 auto element = reply.object().value("ocs").toObject().value("data");
                 auto navLinks = element.toArray();
 
