@@ -496,6 +496,7 @@ Window {
                 Image {
                     id: activityIcon
                     Layout.leftMargin: 8
+                    Layout.rightMargin: 8
                     Layout.preferredWidth: activityButton1.icon.width
                     Layout.preferredHeight: activityButton1.icon.height
                     verticalAlignment: Qt.AlignCenter
@@ -506,7 +507,6 @@ Window {
                 }
                 Column {
                     id: activityTextColumn
-                    Layout.leftMargin: 4
                     spacing: 4
                     Layout.alignment: Qt.AlignLeft
                     Text {

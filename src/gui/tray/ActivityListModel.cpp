@@ -76,7 +76,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
             list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
             if (list.count() > 0) {
-                return list.at(0);
+                if (relPath.startsWith('/') || relPath.startsWith('\\')) {
+                    return relPath.remove(0,1);
+                } else {
+                    return relPath;
+                }
             }
         }
         return QString();
