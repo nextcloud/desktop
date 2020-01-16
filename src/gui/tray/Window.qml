@@ -11,7 +11,7 @@ Window {
     id: trayWindow
     visible: true
     width: 400
-    height: 500
+    height: 510
     color: "transparent"
     flags: Qt.FramelessWindowHint
 

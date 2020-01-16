@@ -52,7 +52,7 @@ public:
     LinkRole,
     PointInTimeRole,
     AccountConnectedRole,
-    SyncFileStatusRole };
+    SyncFileStatusRole};
 
     explicit ActivityListModel(AccountState *accountState, QObject* parent = 0);
 

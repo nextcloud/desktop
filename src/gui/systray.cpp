@@ -194,11 +194,11 @@ int Systray::calcTrayWindowY()
             return (screenHeight - availableHeight) + 6;
         } else {
             // on bottom
-            return screenHeight - 500 - (screenHeight - availableHeight) - 6;
+            return screenHeight - 510 - (screenHeight - availableHeight) - 6;
         }
     } else {
         // on the left or right
-        return (trayIconTopCenterY - 500 + 12);
+        return (trayIconTopCenterY - 510 + 12);
     }
 #endif
 }
