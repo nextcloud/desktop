@@ -203,13 +203,14 @@ void ActivityListModel::startFetchJob()
     if (!_accountState->isConnected()) {
         return;
     }
-    JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/cloud/activity"), this);
+    //JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/cloud/activity"), this);
+    JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
     QObject::connect(job, &JsonApiJob::jsonReceived,
         this, &ActivityListModel::slotActivitiesReceived);
 
     QUrlQuery params;
-    params.addQueryItem(QLatin1String("start"), QString::number(_currentItem));
-    params.addQueryItem(QLatin1String("count"), QString::number(100));
+    params.addQueryItem(QLatin1String("since"), QString::number(_currentItem));
+    params.addQueryItem(QLatin1String("limit"), QString::number(50));
     job->addQueryParams(params);
 
     _currentlyFetching = true;
@@ -239,13 +240,16 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
 
         Activity a;
         a._type = Activity::ActivityType;
+        a._objectType = json.value("object_type").toString();
         a._accName = ast->account()->displayName();
         a._id = json.value("id").toInt();
+        a._fileAction = json.value("type").toString();
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
-        a._file = json.value("file").toString();
+        a._file = json.value("object_name").toString();
         a._link = QUrl(json.value("link").toString());
-        a._dateTime = QDateTime::fromString(json.value("date").toString(), Qt::ISODate);
+        a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
+        a._icon = json.value("icon").toString();
         list.append(a);
     }
 

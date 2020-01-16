@@ -102,6 +102,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
+        a._icon = json.value("icon").toString();
 
         if (!json.value("icon").toString().isEmpty()) {
             IconJob *iconJob = new IconJob(QUrl(json.value("icon").toString()));

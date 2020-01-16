@@ -56,6 +56,7 @@ public:
 
     Type _type;
     qlonglong _id;
+    QString _fileAction;
     QString _objectType;
     QString _subject;
     QString _message;
@@ -64,6 +65,7 @@ public:
     QUrl _link;
     QDateTime _dateTime;
     QString _accName;
+    QString _icon;
 
     // Stores information about the error
     int _status;
