@@ -8,7 +8,7 @@
 #include <QtTest/QtTest>
 #include <QDesktopServices>
 
-#include "gui/creds/oauth.h"
+#include "libsync/creds/oauth.h"
 #include "syncenginetestutils.h"
 #include "theme.h"
 #include "common/asserts.h"

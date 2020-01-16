@@ -99,7 +99,6 @@ set(client_SRCS
     guiutility.cpp
     elidedlabel.cpp
     creds/httpcredentialsgui.cpp
-    creds/oauth.cpp
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp

@@ -17,6 +17,7 @@
 #include <QTcpServer>
 #include <QUrl>
 #include "accountfwd.h"
+#include "owncloudlib.h"
 
 namespace OCC {
 
@@ -44,7 +45,7 @@ namespace OCC {
  *              finalize(...): emit result(...)
  *
  */
-class OAuth : public QObject
+class OWNCLOUDSYNC_EXPORT OAuth : public QObject
 {
     Q_OBJECT
 public:
