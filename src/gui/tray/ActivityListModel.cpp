@@ -133,7 +133,14 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             } else if (a._status == SyncFileItem::FileIgnored) {
                 return "qrc:///client/theme/black/state-info.svg";
             } else {
-                return "qrc:///client/theme/black/state-sync.svg";
+                // File sync successful
+                if (a._fileAction == "file_created") {
+                    return "qrc:///client/resources/add-color.svg";
+                } else if (a._fileAction == "file_deleted") {
+                    return "qrc:///client/resources/delete-color.svg";
+                } else {
+                    return "qrc:///client/resources/change.svg";
+                }
             }
         } else {
             // We have an activity
@@ -209,7 +216,6 @@ void ActivityListModel::startFetchJob()
     if (!_accountState->isConnected()) {
         return;
     }
-    //JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/cloud/activity"), this);
     JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
     QObject::connect(job, &JsonApiJob::jsonReceived,
         this, &ActivityListModel::slotActivitiesReceived);

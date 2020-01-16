@@ -30,7 +30,10 @@
         <file>resources/copy.svg</file>
         <file>resources/state-sync.svg</file>
         <file>resources/add.png</file>
+        <file>resources/add-color.svg</file>
         <file>resources/state-info.svg</file>
+        <file>resources/change.svg</file>
+        <file>resources/delete-color.svg</file>
     </qresource>
     <qresource prefix="/"/>
     <qresource prefix="/qml">

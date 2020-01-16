@@ -341,11 +341,32 @@ void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
         activity._accName = folderInstance->accountState()->account()->displayName();
         activity._file = item->_file;
         activity._folder = folder;
+        activity._fileAction = "";
+
+        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+            activity._fileAction = "file_deleted";
+        } else if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
+            activity._fileAction = "file_created";
+        } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
+            activity._fileAction = "file_renamed";
+        } else {
+            activity._fileAction = "file_changed";
+        }
+
 
         if (item->_status == SyncFileItem::NoStatus || item->_status == SyncFileItem::Success) {
             qCWarning(lcActivity) << "Item " << item->_file << " retrieved successfully.";
-            activity._message.prepend(" ");
-            activity._message.prepend(tr("Synced"));
+            
+            if (activity._fileAction == "file_renamed") {
+                activity._message.prepend(tr("You renamed") + " ");
+            } else if (activity._fileAction == "file_deleted") {
+                activity._message.prepend(tr("You deleted") + " ");
+            } else if (activity._fileAction == "file_created") {
+                activity._message.prepend(tr("You created") + " ");
+            } else {
+                activity._message.prepend(tr("You changed") + " ");
+            }
+
             _activityModel->addSyncFileItemToActivityList(activity);
         } else {
             qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in error " << item->_errorString;
