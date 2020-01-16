@@ -90,34 +90,13 @@ void OAuth::startAuthentification()
                     httpReplyAndClose(socket, "400 Bad Request", "<html><head><title>400 Bad Request</title></head><body><center><h1>400 Bad Request</h1></center></body></html>");
                     return;
                 }
-
-                const QUrl requestTokenUrl = _tokenEndpoint.isValid()
-                    ? _tokenEndpoint
-                    : Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
-
-                QNetworkRequest req;
-                req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded; charset=UTF-8");
-
-                const QString basicAuth = QStringLiteral("%1:%2").arg(
-                    Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
-                req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
-                // We just added the Authorization header, don't let HttpCredentialsAccessManager tamper with it
-                req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
-
-                auto requestBody = new QBuffer;
-                QUrlQuery arguments;
-                arguments.setQueryItems({
+              auto job = postTokenRequest({
                     { QStringLiteral("grant_type"), "authorization_code" },
                     { QStringLiteral("code"), args.queryItemValue(QStringLiteral("code")) },
-                    { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
-                    { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() },
                     { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(_server.serverPort()) },
                     { QStringLiteral("code_verifier"), _pkceCodeVerifier },
                     { QStringLiteral("scope"), args.queryItemValue(QStringLiteral("scope")) },
-                });
-                requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
-                const auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
-                job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+                    });
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
                     const auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;
@@ -198,24 +177,8 @@ void OAuth::startAuthentification()
 void OAuth::refreshAuthentification(const QString &refreshToken)
 {
     QObject::connect(this, &OAuth::fetchWellKnownFinished, this, [this, &refreshToken]() {
-        const QUrl requestTokenUrl = _tokenEndpoint.isEmpty() ? Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token")) : _tokenEndpoint;
-
-        QNetworkRequest req;
-        req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
-        const QString basicAuth = QStringLiteral("%1:%2").arg(Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret()).toUtf8().toBase64();
-        req.setRawHeader("Authorization", QStringLiteral("Basic %1").arg(basicAuth).toUtf8());
-        req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
-
-        auto requestBody = new QBuffer;
-        QUrlQuery arguments;
-        arguments.setQueryItems({ { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
-            { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() },
-            { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
+        auto job = postTokenRequest({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
             { QStringLiteral("refresh_token"), refreshToken } });
-        requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
-
-        auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
-        job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
         QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
             auto jsonData = reply->readAll();
             QJsonParseError jsonParseError;
@@ -259,6 +222,27 @@ void OAuth::finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
         httpReplyAndClose(socket, "200 OK", loginSuccessfullHtml);
     }
     emit result(LoggedIn, user, accessToken, refreshToken);
+}
+
+SimpleNetworkJob *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &queryItems)
+{
+    const QUrl requestTokenUrl = _tokenEndpoint.isEmpty() ? Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token")) : _tokenEndpoint;
+    QNetworkRequest req;
+    req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
+    const QString basicAuth = QStringLiteral("%1:%2").arg(Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret()).toUtf8().toBase64();
+    req.setRawHeader("Authorization", QStringLiteral("Basic %1").arg(basicAuth).toUtf8());
+    req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+
+    auto requestBody = new QBuffer;
+    QUrlQuery arguments;
+    arguments.setQueryItems(QList<QPair<QString, QString>>{ { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
+                                        { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() } } << queryItems);
+
+    requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
+
+    auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
+    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+    return job;
 }
 
 QByteArray OAuth::generateRandomString(size_t size) const
