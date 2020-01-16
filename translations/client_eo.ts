@@ -708,7 +708,7 @@
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="631"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="638"/>
         <source>Aborted by the user</source>
         <translation>Haltigita de la uzanto</translation>
     </message>
@@ -716,7 +716,7 @@
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>The server file discovery reply is missing data.</source>
         <translation>La servila respondo pri dosiera malkovro havas mankantajn datumojn.</translation>
     </message>

@@ -207,12 +207,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>取消选中的文件夹将会从本地&lt;b&gt;删除&lt;/b&gt;，并不再同步到这台电脑上。</translation>
+        <translation>未选中的文件夹将从您的本地文件系统中&lt;b&gt;移除&lt;/b&gt;，并且不再与该计算机同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="77"/>
         <source>Synchronize all</source>
-        <translation>同步所有</translation>
+        <translation>全部同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="84"/>
@@ -239,12 +239,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="174"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>&lt;user&gt; 已经连接到 &lt;server&gt; </translation>
+        <translation>与 &lt;server&gt; 连接为 &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
         <source>No account configured.</source>
-        <translation>没有配置的账号。</translation>
+        <translation>没有配置账号。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -330,12 +330,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="888"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>同步操作正在进行。&lt;br /&gt;您确定要停止吗？</translation>
+        <translation>同步操作正在进行。&lt;br/&gt;您确定要停止吗？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>%1 in use</source>
-        <translation>%1 已使用</translation>
+        <translation>已使用 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1004"/>
@@ -365,7 +365,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1018"/>
         <source>Signed out from %1.</source>
-        <translation>从 %1 退出。</translation>
+        <translation>从 %1 登出。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1027"/>
@@ -708,7 +708,7 @@
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="631"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="638"/>
         <source>Aborted by the user</source>
         <translation>用户撤销</translation>
     </message>
@@ -716,7 +716,7 @@
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>The server file discovery reply is missing data.</source>
         <translation>服务器文件发现的应答缺少数据。</translation>
     </message>
@@ -1190,13 +1190,13 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>下载 %1/s</translation>
+        <translation>每秒下载 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>上传 %1/s</translation>
+        <translation>每秒上传 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
@@ -1216,12 +1216,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1002"/>
         <source>↓ %1/s</source>
-        <translation>↓ %1/s</translation>
+        <translation>↓ %1 每秒</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1012"/>
         <source>↑ %1/s</source>
-        <translation>↑ %1/s</translation>
+        <translation>↑ %1 每秒</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1018"/>
@@ -1528,7 +1528,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;点击这里&lt;/a&gt;从 web 界面请求一个 app 密码。</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;点击这里&lt;/a&gt;从网页界面请求一个应用密码。</translation>
     </message>
 </context>
 <context>

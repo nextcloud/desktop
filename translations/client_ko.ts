@@ -708,7 +708,7 @@
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="631"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="638"/>
         <source>Aborted by the user</source>
         <translation>사용자로부터 중단되었습니다.</translation>
     </message>
@@ -716,7 +716,7 @@
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>The server file discovery reply is missing data.</source>
         <translation>서버 파일 감지 응답에 데이터가 없습니다.</translation>
     </message>
