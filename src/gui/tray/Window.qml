@@ -73,6 +73,7 @@ Window {
         id: trayWindowBackground
         anchors.fill: parent
         radius: 10
+        border.color: "#0082c9"
 
         Rectangle {
             id: trayWindowHeaderBackground
