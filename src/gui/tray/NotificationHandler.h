@@ -14,7 +14,7 @@ class ServerNotificationHandler : public QObject
     Q_OBJECT
 public:
     explicit ServerNotificationHandler(AccountState *accountState, QObject *parent = nullptr);
-    static QMap<int, QIcon> iconCache;
+    static QMap<int, QByteArray> iconCache;
 
 signals:
     void newNotificationList(ActivityList);

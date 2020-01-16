@@ -17,7 +17,7 @@ const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/a
 const char propertyAccountStateC[] = "oc_account_state";
 const int successStatusCode = 200;
 const int notModifiedStatusCode = 304;
-QMap<int, QIcon> ServerNotificationHandler::iconCache;
+QMap<int, QByteArray> ServerNotificationHandler::iconCache;
 
 ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState, QObject *parent)
     : QObject(parent)
@@ -64,9 +64,7 @@ void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray 
 
 void ServerNotificationHandler::slotIconDownloaded(QByteArray iconData)
 {
-    QPixmap pixmap;
-    pixmap.loadFromData(iconData);
-    iconCache.insert(sender()->property("activityId").toInt(), QIcon(pixmap));
+    iconCache.insert(sender()->property("activityId").toInt(),iconData);
 }
 
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
@@ -94,7 +92,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         auto json = element.toObject();
         a._type = Activity::NotificationType;
         a._accName = ai->account()->displayName();
-        a._id = json.value("notification_id").toInt();
+        a._id = json.value("activity_id").toInt();
 
         //need to know, specially for remote_share
         a._objectType = json.value("object_type").toString();
@@ -104,8 +102,8 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._message = json.value("message").toString();
         a._icon = json.value("icon").toString();
 
-        if (!json.value("icon").toString().isEmpty()) {
-            IconJob *iconJob = new IconJob(QUrl(json.value("icon").toString()));
+        if (!a._icon.isEmpty()) {
+            IconJob *iconJob = new IconJob(QUrl(a._icon));
             iconJob->setProperty("activityId", a._id);
             connect(iconJob, &IconJob::jobFinished, this, &ServerNotificationHandler::slotIconDownloaded);
         }

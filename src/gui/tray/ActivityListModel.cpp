@@ -22,6 +22,7 @@
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "folderman.h"
+#include "iconjob.h"
 #include "accessmanager.h"
 
 #include "ActivityData.h"
@@ -77,7 +78,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
             if (list.count() > 0) {
                 if (relPath.startsWith('/') || relPath.startsWith('\\')) {
-                    return relPath.remove(0,1);
+                    return relPath.remove(0, 1);
                 } else {
                     return relPath;
                 }
@@ -135,6 +136,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 return "qrc:///client/theme/black/state-sync.svg";
             }
         } else {
+            // We have an activity
+            if (!a._iconData.isEmpty()) {
+                QString svgData = "data:image/svg+xml;utf8," + a._iconData;
+                return svgData;
+            }
             return "qrc:///client/theme/black/activity.svg";
         }
     }
@@ -242,7 +248,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         a._type = Activity::ActivityType;
         a._objectType = json.value("object_type").toString();
         a._accName = ast->account()->displayName();
-        a._id = json.value("id").toInt();
+        a._id = json.value("activity_id").toInt();
         a._fileAction = json.value("type").toString();
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
@@ -250,6 +256,13 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         a._link = QUrl(json.value("link").toString());
         a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
         a._icon = json.value("icon").toString();
+
+        if (!a._icon.isEmpty()) {
+            IconJob *iconJob = new IconJob(QUrl(a._icon));
+            iconJob->setProperty("activityId", a._id);
+            connect(iconJob, &IconJob::jobFinished, this, &ActivityListModel::slotIconDownloaded);
+        }
+
         list.append(a);
     }
 
@@ -258,6 +271,15 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     emit activityJobStatusCode(statusCode);
 
     combineActivityLists();
+}
+
+void ActivityListModel::slotIconDownloaded(QByteArray iconData)
+{
+    for (size_t i = 0; i < _activityLists.count(); i++) {
+        if (_activityLists[i]._id == sender()->property("activityId").toLongLong()) {
+            _activityLists[i]._iconData = iconData;
+        }
+    }
 }
 
 void ActivityListModel::addErrorToActivityList(Activity activity)

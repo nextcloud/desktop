@@ -78,6 +78,7 @@ public slots:
 
 private slots:
     void slotActivitiesReceived(const QJsonDocument &json, int statusCode);
+    void slotIconDownloaded(QByteArray iconData);
 
 signals:
     void activityJobStatusCode(int statusCode);

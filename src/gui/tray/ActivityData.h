@@ -66,6 +66,7 @@ public:
     QDateTime _dateTime;
     QString _accName;
     QString _icon;
+    QString _iconData;
 
     // Stores information about the error
     int _status;
