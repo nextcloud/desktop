@@ -779,9 +779,11 @@ UserAppsModel::UserAppsModel(QObject *parent)
 
 void UserAppsModel::buildAppList()
 {
-    beginRemoveRows(QModelIndex(), 0, rowCount());
-    _apps.clear();
-    endRemoveRows();
+    if (rowCount() > 0) {
+        beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+        _apps.clear();
+        endRemoveRows();
+    }
 
     if(UserModel::instance()->appList().count() > 0) {
         foreach(AccountApp *app, UserModel::instance()->appList()) {
