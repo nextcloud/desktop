@@ -342,6 +342,14 @@ public:
     virtual QString oauthClientSecret() const;
 
     /**
+     * By default the client tries to get the OAuth access endpoint and the OAuth token endpoint from /.well-known/openid-configuration
+     * Setting this allow authentication without a well known url
+     *
+     * @return QPair<OAuth access endpoint, OAuth token endpoint>
+     */
+    virtual QPair<QString, QString> oauthOverrideAuthUrl() const;
+
+    /**
      * @brief What should be output for the --version command line switch.
      *
      * By default, it's a combination of appName(), version(), the GIT SHA1 and some

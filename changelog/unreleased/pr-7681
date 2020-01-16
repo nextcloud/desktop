@@ -1,0 +1,7 @@
+Change: Allow OpenID Connect authentication without a .well-known configuration
+
+A user might not want to provide .well-known/openid-configuration.
+The new changes enable us to authenticate with OpenID Connect without it,
+by directly compiling the required urls into the client.
+
+https://github.com/owncloud/client/pull/7681

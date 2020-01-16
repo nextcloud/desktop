@@ -51,17 +51,13 @@ class OWNCLOUDSYNC_EXPORT OAuth : public QObject
 {
     Q_OBJECT
 public:
-    OAuth(Account *account, QObject *parent)
-        : QObject(parent)
-        , _account(account)
-    {
-    }
-    ~OAuth();
-
     enum Result { NotSupported,
         LoggedIn,
         Error };
     Q_ENUM(Result);
+
+    OAuth(Account *account, QObject *parent);
+    ~OAuth();
     void startAuthentification();
     void refreshAuthentification(const QString &refreshToken);
     void openBrowser();

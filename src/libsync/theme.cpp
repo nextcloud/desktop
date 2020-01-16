@@ -548,6 +548,11 @@ QString Theme::oauthClientSecret() const
     return "UBntmLjC2yYCeHwsyj73Uwo9TAaecAetRwMw0xYcvNL9yRdLSUi0hUAHfvCHFeFh";
 }
 
+QPair<QString, QString> Theme::oauthOverrideAuthUrl() const
+{
+    return {};
+}
+
 QString Theme::versionSwitchOutput() const
 {
     QString helpText;

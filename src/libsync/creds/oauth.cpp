@@ -29,12 +29,18 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
 
+OAuth::OAuth(Account *account, QObject *parent)
+: QObject(parent)
+, _account(account)
+{
+}
+
 OAuth::~OAuth()
 {
 }
 
 static void httpReplyAndClose(QTcpSocket *socket, const char *code, const char *html,
-    const char *moreHeaders = nullptr)
+const char *moreHeaders = nullptr)
 {
     if (!socket)
         return; // socket can have been deleted if the browser was closed
@@ -288,35 +294,47 @@ void OAuth::authorisationLinkAsync(std::function<void (const QUrl &)> callback) 
 
 void OAuth::fetchWellKnown()
 {
-    QUrl wellKnownUrl = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/.well-known/openid-configuration"));
-    QNetworkRequest req;
-    auto job = _account->sendRequest("GET", wellKnownUrl);
-    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
-    QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
+    const QPair<QString, QString> urls = Theme::instance()->oauthOverrideAuthUrl();
+    if (!urls.first.isNull())
+    {
+        ASSERT(!urls.second.isNull());
+        _authEndpoint = urls.first;
+        _tokenEndpoint = urls.second;
         _wellKnownFinished = true;
-        if (reply->error() != QNetworkReply::NoError) {
-            // Most likely the file does not exist, default to the normal endpoint
-            Q_EMIT fetchWellKnownFinished();
-            return;
-        }
-        const auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError;
-        const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+         Q_EMIT fetchWellKnownFinished();
+    }
+    else
+    {
+        QUrl wellKnownUrl = Utility::concatUrlPath(_account->url(), QStringLiteral("/.well-known/openid-configuration"));
+        QNetworkRequest req;
+        auto job = _account->sendRequest("GET", wellKnownUrl);
+        job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+        QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
+            _wellKnownFinished = true;
+            if (reply->error() != QNetworkReply::NoError) {
+                // Most likely the file does not exist, default to the normal endpoint
+                Q_EMIT fetchWellKnownFinished();
+                return;
+            }
+            const auto jsonData = reply->readAll();
+            QJsonParseError jsonParseError;
+            const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
 
-        if (jsonParseError.error == QJsonParseError::NoError) {
-            QString authEp = json["authorization_endpoint"].toString();
-            if (!authEp.isEmpty())
-                this->_authEndpoint = authEp;
-            QString tokenEp = json["token_endpoint"].toString();
-            if (!tokenEp.isEmpty())
-                this->_tokenEndpoint = tokenEp;
-        } else if (jsonParseError.error == QJsonParseError::IllegalValue) {
-            qCDebug(lcOauth) << ".well-known did not return json, the server most does not support oidc";
-        } else {
-            qCWarning(lcOauth) << "Json parse error in well-known: " << jsonParseError.errorString();
-        }
-        Q_EMIT fetchWellKnownFinished();
-    });
+            if (jsonParseError.error == QJsonParseError::NoError) {
+                QString authEp = json["authorization_endpoint"].toString();
+                if (!authEp.isEmpty())
+                    this->_authEndpoint = authEp;
+                QString tokenEp = json["token_endpoint"].toString();
+                if (!tokenEp.isEmpty())
+                    this->_tokenEndpoint = tokenEp;
+            } else if (jsonParseError.error == QJsonParseError::IllegalValue) {
+                qCDebug(lcOauth) << ".well-known did not return json, the server most does not support oidc";
+            } else {
+                qCWarning(lcOauth) << "Json parse error in well-known: " << jsonParseError.errorString();
+            }
+            Q_EMIT fetchWellKnownFinished();
+        });
+    }
 }
 
 void OAuth::openBrowser()
