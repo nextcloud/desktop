@@ -577,11 +577,7 @@ Window {
                 }
             }
 
-            populate: Transition {
-                // prevent animations on initial list population
-            }
-
-            add: Transition {
+            /*add: Transition {
                 NumberAnimation { properties: "y"; from: -60; duration: 100; easing.type: Easing.Linear }
             }
 
@@ -598,7 +594,7 @@ Window {
 
             displaced: Transition {
                 NumberAnimation { properties: "y"; duration: 100; easing.type: Easing.Linear }
-            }
+            }*/
         }
 
     }       // Rectangle trayWindowBackground
