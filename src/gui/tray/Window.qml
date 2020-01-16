@@ -499,12 +499,13 @@ Window {
 
             model: activityModel
 
+            visible: (model.rowCount() > 0)
+
             delegate: RowLayout {
                 id: activityItem
                 width: activityListView.width
                 height: trayWindowHeaderLayout.height
                 spacing: 0
-                visible: (activityListView.model.rowCount() > 0)
 
                 Image {
                     id: activityIcon
