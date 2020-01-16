@@ -840,6 +840,8 @@ QVariant UserAppsModel::data(const QModelIndex &index, int role) const
         return _apps[index.row()]->name();
     } else if (role == UrlRole) {
         return _apps[index.row()]->url();
+    } else if (role == IconUrlRole) {
+        return _apps[index.row()]->iconUrl().toString();
     }
     return QVariant();
 }
@@ -849,6 +851,7 @@ QHash<int, QByteArray> UserAppsModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[NameRole] = "appName";
     roles[UrlRole] = "appUrl";
+    roles[IconUrlRole] = "appIconUrl";
     return roles;
 }
 

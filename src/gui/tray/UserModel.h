@@ -159,7 +159,8 @@ public:
 
     enum UserAppsRoles {
         NameRole = Qt::UserRole + 1,
-        UrlRole
+        UrlRole,
+        IconUrlRole
     };
 
     void buildAppList();

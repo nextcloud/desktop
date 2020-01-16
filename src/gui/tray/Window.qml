@@ -414,7 +414,7 @@ Window {
                         Menu {
                             id: appsMenu
                             y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
-                            width: (trayWindowAppsButton.width * 2)
+                            width: (trayWindowAppsButton.width * 3)
                             closePolicy: "CloseOnPressOutside"
 
                             background: Rectangle {
@@ -430,6 +430,7 @@ Window {
                                 delegate: MenuItem {
                                     text: appName
                                     font.pixelSize: 12
+                                    icon.source: appIconUrl
                                     onTriggered: appsMenuModelBackend.openAppUrl(appUrl)
                                 }
                             }
