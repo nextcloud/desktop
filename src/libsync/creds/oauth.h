@@ -60,7 +60,8 @@ public:
         LoggedIn,
         Error };
     Q_ENUM(Result);
-    void start();
+    void startAuthentification();
+    void refreshAuthentification(const QString &refreshToken);
     void openBrowser();
     QUrl authorisationLink() const;
     /**
@@ -81,6 +82,10 @@ signals:
      * emitted when the call to the well-known endpoint is finished
      */
     void authorisationLinkChanged(const QUrl &);
+
+    void refreshFinished(const QString &accessToken, const QString &refreshToken);
+
+    void fetchWellKnownFinished();
 
 private:
 

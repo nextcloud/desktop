@@ -54,7 +54,7 @@ static void httpReplyAndClose(QTcpSocket *socket, const char *code, const char *
     socket->setParent(nullptr);
 }
 
-void OAuth::start()
+void OAuth::startAuthentification()
 {
     // Listen on the socket to get a port which will be used in the redirect_uri
     if (!_server.listen(QHostAddress::LocalHost)) {
@@ -66,6 +66,9 @@ void OAuth::start()
     ASSERT(_pkceCodeVerifier.size() == 128)
     _state = generateRandomString(8);
 
+    connect(this, &OAuth::fetchWellKnownFinished, this, [this]{
+        Q_EMIT authorisationLinkChanged(authorisationLink());
+    });
     fetchWellKnown();
 
     openBrowser();
@@ -192,6 +195,48 @@ void OAuth::start()
     });
 }
 
+void OAuth::refreshAuthentification(const QString &refreshToken)
+{
+    QObject::connect(this, &OAuth::fetchWellKnownFinished, this, [this, &refreshToken]() {
+        const QUrl requestTokenUrl = _tokenEndpoint.isEmpty() ? Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token")) : _tokenEndpoint;
+
+        QNetworkRequest req;
+        req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
+        const QString basicAuth = QStringLiteral("%1:%2").arg(Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret()).toUtf8().toBase64();
+        req.setRawHeader("Authorization", QStringLiteral("Basic %1").arg(basicAuth).toUtf8());
+        req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+
+        auto requestBody = new QBuffer;
+        QUrlQuery arguments;
+        arguments.setQueryItems({ { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
+            { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() },
+            { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
+            { QStringLiteral("refresh_token"), refreshToken } });
+        requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
+
+        auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
+        job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+        QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
+            auto jsonData = reply->readAll();
+            QJsonParseError jsonParseError;
+            const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+            const QString accessToken = json["access_token"].toString();
+            if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
+                // Invalid or empty JSON: Network error maybe?
+                qCWarning(lcOauth) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
+            } else if (accessToken.isEmpty()) {
+                // If the json was valid, but the reply did not contain an access token, the token
+                // is considered expired. (Usually the HTTP reply code is 400)
+                qCDebug(lcOauth) << "Expired refresh token. Logging out";
+                Q_EMIT refreshFinished(QString(), QString());
+            } else {
+                Q_EMIT refreshFinished(accessToken, json["refresh_token"].toString());
+            }
+        });
+    });
+    fetchWellKnown();
+}
+
 void OAuth::finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
                      const QString &refreshToken, const QString &user, const QUrl &messageUrl) {
     if (!_account->davUser().isNull() && user != _account->davUser()) {
@@ -267,7 +312,7 @@ void OAuth::fetchWellKnown()
         _wellKnownFinished = true;
         if (reply->error() != QNetworkReply::NoError) {
             // Most likely the file does not exist, default to the normal endpoint
-            emit this->authorisationLinkChanged(authorisationLink());
+            Q_EMIT fetchWellKnownFinished();
             return;
         }
         const auto jsonData = reply->readAll();
@@ -286,8 +331,7 @@ void OAuth::fetchWellKnown()
         } else {
             qCWarning(lcOauth) << "Json parse error in well-known: " << jsonParseError.errorString();
         }
-
-        emit this->authorisationLinkChanged(authorisationLink());
+        Q_EMIT fetchWellKnownFinished();
     });
 }
 

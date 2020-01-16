@@ -29,6 +29,7 @@
 #include "configfile.h"
 #include "theme.h"
 #include "syncengine.h"
+#include "oauth.h"
 #include "creds/credentialscommon.h"
 #include "creds/httpcredentials.h"
 #include <QAuthenticator>
@@ -412,71 +413,28 @@ bool HttpCredentials::refreshAccessToken()
     if (_refreshToken.isEmpty())
         return false;
 
-    QUrl wellKnownUrl = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/.well-known/openid-configuration"));
-    QNetworkRequest req;
-    auto job = _account->sendRequest("GET", wellKnownUrl);
-    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
-    QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        QUrl requestTokenUrl = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
-        if (reply->error() == QNetworkReply::NoError) {
-            auto jsonData = reply->readAll();
-            QJsonParseError jsonParseError;
-            QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-            if (jsonParseError.error == QJsonParseError::NoError) {
-                QString tokenEp = json["token_endpoint"].toString();
-                if (!tokenEp.isEmpty())
-                    requestTokenUrl = tokenEp;
-            }
+    OAuth *oauth = new OAuth(_account, this);
+    connect(oauth, &OAuth::refreshFinished, this, [this, oauth](const QString &accessToken, const QString &refreshToken){
+        oauth->deleteLater();
+        _refreshToken = refreshToken;
+        if (!accessToken.isNull())
+        {
+            _ready = true;
+            _password = accessToken;
+            persist();
         }
-
-        QNetworkRequest req;
-        req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
-        const QString basicAuth = QStringLiteral("%1:%2").arg(Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret()).toUtf8().toBase64();
-        req.setRawHeader("Authorization", QStringLiteral("Basic %1").arg(basicAuth).toUtf8());
-        req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
-
-        auto requestBody = new QBuffer;
-        QUrlQuery arguments;
-        arguments.setQueryItems({ { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
-            { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() },
-            { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
-            { QStringLiteral("refresh_token"), _refreshToken } });
-        requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
-
-        auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
-        job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
-        QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-            auto jsonData = reply->readAll();
-            QJsonParseError jsonParseError;
-            QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-            QString accessToken = json["access_token"].toString();
-            if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
-                // Invalid or empty JSON: Network error maybe?
-                qCWarning(lcHttpCredentials) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
-            } else if (accessToken.isEmpty()) {
-                // If the json was valid, but the reply did not contain an access token, the token
-                // is considered expired. (Usually the HTTP reply code is 400)
-                qCDebug(lcHttpCredentials) << "Expired refresh token. Logging out";
-                _refreshToken.clear();
-            } else {
-                _ready = true;
-                _password = accessToken;
-                _refreshToken = json["refresh_token"].toString();
-                persist();
-            }
-            _isRenewingOAuthToken = false;
-            for (const auto &job : _retryQueue) {
-                if (job)
-                    job->retry();
-            }
-            _retryQueue.clear();
-            emit fetched();
-        });
+        _isRenewingOAuthToken = false;
+        for (const auto &job : _retryQueue) {
+            if (job)
+                job->retry();
+        }
+        _retryQueue.clear();
+        emit fetched();
     });
+    oauth->refreshAuthentification(_refreshToken);
     _isRenewingOAuthToken = true;
     return true;
 }
-
 
 void HttpCredentials::invalidateToken()
 {

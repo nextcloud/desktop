@@ -145,7 +145,7 @@ public:
 
         oauth.reset(new OAuth(account.data(), nullptr));
         QObject::connect(oauth.data(), &OAuth::result, this, &OAuthTestCase::oauthResult);
-        oauth->start();
+        oauth->startAuthentification();
         QTRY_VERIFY(done());
     }
 
