@@ -404,9 +404,11 @@ void ActivityListModel::combineActivityLists()
     _finalList.clear();
     endResetModel();
 
-    beginInsertRows(QModelIndex(), 0, resultList.count());
-    _finalList = resultList;
-    endInsertRows();
+    if (resultList.count() > 0) {
+        beginInsertRows(QModelIndex(), 0, resultList.count() - 1);
+        _finalList = resultList;
+        endInsertRows();
+    }
 }
 
 bool ActivityListModel::canFetchActivities() const
