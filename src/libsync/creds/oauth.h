@@ -97,9 +97,6 @@ private:
     QUrl _tokenEndpoint;
     QByteArray _pkceCodeVerifier;
     QByteArray _state;
-
-public:
-    QString _expectedUser;
 };
 
 

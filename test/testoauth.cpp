@@ -199,7 +199,7 @@ public:
                 { "access_token", "123" },
                 { "refresh_token" , "456" },
                 { "message_url",  "owncloud://success"},
-                { "user_id", "789" },
+                { "user_id", "admin" },
                 { "token_type", "Bearer" }
         });
         return jsondata.toJson();
@@ -208,7 +208,7 @@ public:
     virtual void oauthResult(OAuth::Result result, const QString &user, const QString &token , const QString &refreshToken) {
         QCOMPARE(state, TokenAsked);
         QCOMPARE(result, OAuth::LoggedIn);
-        QCOMPARE(user, QString("789"));
+        QCOMPARE(user, QString("admin"));
         QCOMPARE(token, QString("123"));
         QCOMPARE(refreshToken, QString("456"));
         gotAuthOk = true;

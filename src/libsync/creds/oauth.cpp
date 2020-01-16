@@ -194,13 +194,13 @@ void OAuth::start()
 
 void OAuth::finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
                      const QString &refreshToken, const QString &user, const QUrl &messageUrl) {
-    if (!_expectedUser.isNull() && user != _expectedUser) {
+    if (!_account->davUser().isNull() && user != _account->davUser()) {
         // Connected with the wrong user
         QString message = tr("<h1>Wrong user</h1>"
                                 "<p>You logged-in with user <em>%1</em>, but must login with user <em>%2</em>.<br>"
                                 "Please log out of %3 in another tab, then <a href='%4'>click here</a> "
                                 "and log in as user %2</p>")
-                                .arg(user, _expectedUser, Theme::instance()->appNameGUI(),
+                                .arg(user, _account->davUser(), Theme::instance()->appNameGUI(),
                                     authorisationLink().toString(QUrl::FullyEncoded));
         httpReplyAndClose(socket, "200 OK", message.toUtf8().constData());
         // We are still listening on the socket so we will get the new connection
@@ -240,8 +240,8 @@ QUrl OAuth::authorisationLink() const
         { QLatin1String("prompt"), QLatin1String("consent") },
         { QStringLiteral("state"), _state },
     });
-    if (!_expectedUser.isNull())
-        query.addQueryItem("user", _expectedUser);
+    if (!_account->davUser().isNull())
+        query.addQueryItem("user", _account->davUser());
     const QUrl url = _authEndpoint.isValid()
         ? Utility::concatUrlPath(_authEndpoint, {}, query)
         : Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/authorize"), query);
