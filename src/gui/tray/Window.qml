@@ -518,8 +518,8 @@ Window {
                     verticalAlignment: Qt.AlignCenter
                     cache: true
                     source: icon
-                    sourceSize.height: activityButton1.icon.height
-                    sourceSize.width: activityButton1.icon.width
+                    sourceSize.height: 64
+                    sourceSize.width: 64
                 }
                 Column {
                     id: activityTextColumn
