@@ -50,6 +50,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ActionRole] = "type";
     roles[ActionIconRole] = "icon";
     roles[ActionTextRole] = "subject";
+    roles[ActionTextColorRole] = "activityTextTitleColor";
     roles[ObjectTypeRole] = "objectType";
     roles[PointInTimeRole] = "dateTime";
     return roles;
@@ -170,6 +171,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     }
     case ActionTextRole:
         return a._subject;
+    case ActionTextColorRole:
+        return a._id == -1 ? QLatin1String("#808080") : QLatin1String("#222");   // FIXME: This is a temporary workaround for _showMoreActivitiesAvailableEntry
     case MessageRole:
         if (a._message.isEmpty()) {
             return QString("No description available.");
@@ -185,7 +188,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case AccountRole:
         return a._accName;
     case PointInTimeRole:
-        return QString("%1 - %2").arg(Utility::timeAgoInWords(a._dateTime.toLocalTime()), a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate));
+        return a._id == -1 ? "" : QString("%1 - %2").arg(Utility::timeAgoInWords(a._dateTime.toLocalTime()), a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate));
     case AccountConnectedRole:
         return (ast && ast->isConnected());
     default:
@@ -279,6 +282,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         if(_totalActivitiesFetched == _maxActivities ||
             a._dateTime < oldestDate) {
 
+            _showMoreActivitiesAvailableEntry = true;
             _doneFetching = true;
             break;
         }
@@ -410,6 +414,22 @@ void ActivityListModel::combineActivityLists()
     if (_activityLists.count() > 0) {
         std::sort(_activityLists.begin(), _activityLists.end());
         resultList.append(_activityLists);
+
+        if(_showMoreActivitiesAvailableEntry) {
+            Activity a;
+            a._type = Activity::ActivityType;
+            a._accName = _accountState->account()->displayName();
+            a._id = -1;
+            a._subject = tr("For more activities please open the Activity app.");
+            a._dateTime = QDateTime::currentDateTime();
+
+            AccountApp *app = _accountState->findApp(QLatin1String("activity"));
+            if(app) {
+                a._link = app->url();
+            }
+
+            resultList.append(a);
+        }
     }
 
     beginResetModel();
@@ -444,6 +464,7 @@ void ActivityListModel::slotRefreshActivity()
     _doneFetching = false;
     _currentItem = 0;
     _totalActivitiesFetched = 0;
+    _showMoreActivitiesAvailableEntry = false;
 
     if (canFetchActivities()) {
         startFetchJob();
@@ -461,5 +482,6 @@ void ActivityListModel::slotRemoveAccount()
     _doneFetching = false;
     _currentItem = 0;
     _totalActivitiesFetched = 0;
+    _showMoreActivitiesAvailableEntry = false;
 }
 }

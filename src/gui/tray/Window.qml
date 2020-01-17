@@ -528,6 +528,7 @@ Window {
                         width: 240 + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
                         font.pixelSize: 12
+                        color: activityTextTitleColor
                     }
 
                     Text {

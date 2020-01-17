@@ -45,6 +45,7 @@ public:
     ObjectTypeRole,
     ActionsLinksRole,
     ActionTextRole,
+    ActionTextColorRole,
     ActionRole,
     MessageRole,
     DisplayPathRole,
@@ -106,6 +107,7 @@ private:
     int _totalActivitiesFetched = 0;
     int _maxActivities = 100;
     int _maxActivitiesDays = 30;
+    bool _showMoreActivitiesAvailableEntry = false;
 };
 }
 
