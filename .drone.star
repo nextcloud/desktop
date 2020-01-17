@@ -9,14 +9,48 @@ def main(ctx):
     translations_trigger = {
         "cron": ["translations"],
     }
+    build_trigger = {
+        "event": [
+            "push",
+            "pull_request",
+            "tag",
+        ],
+    }
+    changelog_trigger = {
+         "ref": [
+            "refs/heads/master",
+            "refs/pull/**",
+        ],
+    }
     pipelines = [
+        # Build changelog
+        changelog(
+            ctx,
+            trigger = changelog_trigger,
+            depends_on = [],
+        ),
         # Build client and docs
-        build_and_test_client(ctx, "gcc", "g++", "Release", "Unix Makefiles"),
-        build_and_test_client(ctx, "clang", "clang++", "Debug", "Ninja"),
+        build_and_test_client(
+            ctx,
+            "gcc",
+            "g++",
+            "Release",
+            "Unix Makefiles",
+            trigger = build_trigger,
+        ),
+        build_and_test_client(
+            ctx,
+            "clang",
+            "clang++",
+            "Debug",
+            "Ninja",
+            trigger = build_trigger,
+        ),
         build_client_docs(ctx),
         notification(
             name = "build",
             depends_on = [
+                "changelog",
                 "gcc-release-make",
                 "clang-debug-ninja",
                 "build-docs",
@@ -78,7 +112,7 @@ def from_secret(name):
         "from_secret": name,
     }
 
-def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator):
+def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, trigger = {}, depends_on = []):
     build_command = "ninja" if generator == "Ninja" else "make"
     pipeline_name = c_compiler + "-" + build_type.lower() + "-" + build_command
     build_dir = "build-" + pipeline_name
@@ -138,13 +172,9 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator):
                 ],
             },
         ],
-        "trigger": {
-            "event": [
-                "push",
-                "pull_request",
-                "tag",
-            ],
-        },
+        
+        "trigger": trigger,
+        "depends_on": depends_on,
     }
 
 def build_client_docs(ctx):
@@ -261,6 +291,90 @@ def build_client_docs(ctx):
             ],
         },
     }
+
+def changelog(ctx, trigger = {}, depends_on = []):
+    pipelines = []
+
+    result = {
+        'kind': 'pipeline',
+        'type': 'docker',
+        'name': 'changelog',
+        'clone': {
+            'disable': True,
+        },
+        'steps': [
+            {
+                'name': 'clone',
+                'image': 'plugins/git-action:1',
+                'pull': 'always',
+                'settings': {
+                    'actions': [
+                        'clone',
+                    ],
+                    'remote': 'https://github.com/%s' % (ctx.repo.slug),
+                    'branch': ctx.build.source if ctx.build.event == 'pull_request' else 'master',
+                    'path': '/drone/src',
+                    'netrc_machine': 'github.com',
+                    'netrc_username': from_secret('github_username'),
+                    'netrc_password': from_secret('github_token'),
+                },
+            },
+            {
+                'name': 'generate',
+                'image': 'toolhippie/calens:latest',
+                'pull': 'always',
+                'commands': [
+                    'calens >| CHANGELOG.md',
+                ],
+            },
+            {
+                'name': 'diff',
+                'image': 'owncloud/alpine:latest',
+                'pull': 'always',
+                'commands': [
+                    'git diff',
+                ],
+            },
+            {
+                'name': 'output',
+                'image': 'toolhippie/calens:latest',
+                'pull': 'always',
+                'commands': [
+                    'cat CHANGELOG.md',
+                ],
+            },
+            {
+                'name': 'publish',
+                'image': 'plugins/git-action:1',
+                'pull': 'always',
+                'settings': {
+                    'actions': [
+                        'commit',
+                        'push',
+                    ],
+                    'message': 'Automated changelog update [skip ci]',
+                    'branch': 'master',
+                    'author_email': 'devops@owncloud.com',
+                    'author_name': 'ownClouders',
+                    'netrc_machine': 'github.com',
+                    'netrc_username': from_secret('github_username'),
+                    'netrc_password': from_secret('github_token'),
+                },
+                'when': {
+                    'ref': {
+                        'exclude': [
+                            'refs/pull/**',
+                            'refs/tags/**'
+                        ],
+                    },
+                },
+            },
+        ],
+        'trigger': trigger,
+        'depends_on': depends_on,
+    }
+
+    return result
 
 def make(target, path, image = "owncloudci/transifex:latest"):
     return {

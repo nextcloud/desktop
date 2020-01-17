@@ -1,0 +1,28 @@
+{{- range $index, $changes := . }}{{ with $changes -}}
+Changelog for ownCloud Desktop Client {{ .Version }} ({{ .Date }})
+=======
+
+Summary
+-------
+{{ range $entry := .Entries }}{{ with $entry }}
+* {{ .Type }} - {{ .Title }}: [#{{ .PrimaryID }}]({{ .PrimaryURL }})
+{{- end }}{{ end }}
+
+Details
+-------
+{{ range $entry := .Entries }}{{ with $entry }}
+* {{ .Type }} - {{ .Title }}: [#{{ .PrimaryID }}]({{ .PrimaryURL }})
+{{ range $par := .Paragraphs }}
+   {{ wrapIndent $par 80 3 }}
+{{ end -}}
+{{ range $url := .IssueURLs }}
+   {{ $url -}}
+{{ end -}}
+{{ range $url := .PRURLs }}
+   {{ $url -}}
+{{ end -}}
+{{ range $url := .OtherURLs }}
+   {{ $url -}}
+{{ end }}
+{{ end }}{{ end }}
+{{ end }}{{ end -}}
