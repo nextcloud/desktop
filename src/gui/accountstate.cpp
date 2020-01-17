@@ -477,6 +477,18 @@ AccountAppList AccountState::appList() const
     return _apps;
 }
 
+AccountApp* AccountState::findApp(const QString &appId) const
+{
+    if(!appId.isEmpty()) {
+        foreach(AccountApp *app, appList()) {
+            if(app->id() == appId)
+                return app;
+        }
+    }
+
+    return nullptr;
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 AccountApp::AccountApp(const QString &name, const QUrl &url,

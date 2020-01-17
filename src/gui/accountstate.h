@@ -106,6 +106,7 @@ public:
     bool hasTalk() const;
 
     AccountAppList appList() const;
+    AccountApp* findApp(const QString &appId) const;
 
     /** A user-triggered sign out which disconnects, stops syncs
      * for the account and forgets the password. */
