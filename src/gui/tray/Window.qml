@@ -62,7 +62,6 @@ Window {
             trayWindow.setY( systrayBackend.calcTrayWindowY());
             systrayBackend.setOpened();
             userModelBackend.fetchCurrentActivityModel();
-            activityListView.visible = (activityListView.model.rowCount() > 0)
         }
         onHideWindow: {
             trayWindow.hide();
@@ -500,8 +499,6 @@ Window {
             }
 
             model: activityModel
-
-            visible: (model.rowCount() > 0)
 
             delegate: RowLayout {
                 id: activityItem
