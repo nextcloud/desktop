@@ -524,7 +524,7 @@ Window {
                     Layout.alignment: Qt.AlignLeft
                     Text {
                         id: activityTextTitle
-                        text: (type === "Activity") ? subject : message
+                        text: (type === "Activity" || type === "Notification") ? subject : message
                         width: 240 + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
                         font.pixelSize: 12
@@ -532,8 +532,8 @@ Window {
 
                     Text {
                         id: activityTextInfo
-                        text: displaypath
-                        height: (displaypath === "") ? 0 : activityTextTitle.height
+                        text: (type === "Activity" || type === "File" || type === "Sync") ? displaypath : message
+                        height: (text === "") ? 0 : activityTextTitle.height
                         width: 240 + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
                         font.pixelSize: 10
