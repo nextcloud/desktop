@@ -51,6 +51,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ActionIconRole] = "icon";
     roles[ActionTextRole] = "subject";
     roles[ObjectTypeRole] = "objectType";
+    roles[PointInTimeRole] = "dateTime";
     return roles;
 }
 
@@ -184,7 +185,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case AccountRole:
         return a._accName;
     case PointInTimeRole:
-        return QString("%1 (%2)").arg(a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate), Utility::timeAgoInWords(a._dateTime.toLocalTime()));
+        return QString("%1 - %2").arg(Utility::timeAgoInWords(a._dateTime.toLocalTime()), a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate));
     case AccountConnectedRole:
         return (ast && ast->isConnected());
     default:

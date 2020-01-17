@@ -538,6 +538,16 @@ Window {
                         elide: Text.ElideRight
                         font.pixelSize: 10
                     }
+
+                    Text {
+                        id: activityTextDateTime
+                        text: dateTime
+                        height: (text === "") ? 0 : activityTextTitle.height
+                        width: 240 + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
+                        elide: Text.ElideRight
+                        font.pixelSize: 10
+                        color: "#808080"
+                    }
                 }
                 Item {
                     id: activityItemFiller
