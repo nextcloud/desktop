@@ -20,20 +20,23 @@ MenuItem {
                 display: AbstractButton.IconOnly
                 flat: true
 
-                onHoveredChanged: {
-                    accountStateIndicatorBackground.color = (containsMouse ? "#f6f6f6" : "white")
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onContainsMouseChanged: {
+                        accountStateIndicatorBackground.color = (containsMouse ? "#f6f6f6" : "white")
+                    }
+                    onClicked: {
+                        if (!isCurrentUser) {
+                            userModelBackend.switchCurrentUser(id)
+                        } else {
+                            accountMenu.close()
+                        }
+                    }
                 }
 
                 background: Rectangle {
                     color: "transparent"
-                }
-
-                onClicked: {
-                    if (!isCurrentUser) {
-                        userModelBackend.switchCurrentUser(id)
-                    } else {
-                        accountMenu.close()
-                    }
                 }
 
                 RowLayout {
