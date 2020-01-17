@@ -102,6 +102,10 @@ private:
     bool _currentlyFetching = false;
     bool _doneFetching = false;
     int _currentItem = 0;
+
+    int _totalActivitiesFetched = 0;
+    int _maxActivities = 100;
+    int _maxActivitiesDays = 30;
 };
 }
 

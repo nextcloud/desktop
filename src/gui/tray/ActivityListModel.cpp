@@ -247,6 +247,9 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
 
     _currentlyFetching = false;
 
+    QDateTime oldestDate = QDateTime::currentDateTime();
+    oldestDate = oldestDate.addDays(_maxActivitiesDays * -1);
+
     foreach (auto activ, activities) {
         auto json = activ.toObject();
 
@@ -271,6 +274,14 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
 
         list.append(a);
         _currentItem = list.last()._id;
+
+        _totalActivitiesFetched++;
+        if(_totalActivitiesFetched == _maxActivities ||
+            a._dateTime < oldestDate) {
+
+            _doneFetching = true;
+            break;
+        }
     }
 
     _activityLists.append(list);
@@ -432,6 +443,7 @@ void ActivityListModel::slotRefreshActivity()
     _activityLists.clear();
     _doneFetching = false;
     _currentItem = 0;
+    _totalActivitiesFetched = 0;
 
     if (canFetchActivities()) {
         startFetchJob();
@@ -448,5 +460,6 @@ void ActivityListModel::slotRemoveAccount()
     _currentlyFetching = false;
     _doneFetching = false;
     _currentItem = 0;
+    _totalActivitiesFetched = 0;
 }
 }
