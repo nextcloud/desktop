@@ -55,6 +55,7 @@ public slots:
     void slotRefreshNotifications();
     void slotRefreshActivities();
     void slotRefresh();
+    void slotRefreshImmediately();
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
     void slotRebuildNavigationAppList();
 

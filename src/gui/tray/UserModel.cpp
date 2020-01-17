@@ -98,6 +98,13 @@ void User::setNotificationRefreshInterval(std::chrono::milliseconds interval)
     _notificationCheckTimer.start(interval.count());
 }
 
+void User::slotRefreshImmediately() {
+    if (_account.data() && _account.data()->isConnected()) {
+        this->slotRefreshActivities();
+    }
+    this->slotRefreshNotifications();
+}
+
 void User::slotRefresh()
 {
     // QElapsedTimer isn't actually constructed as invalid.
