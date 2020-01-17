@@ -62,7 +62,10 @@ add_library(zsync STATIC ../3rdparty/zsync/c/librcksum/hash.c
                         ../3rdparty/zsync/c/libzsync/zsyncfile.c
                         ../3rdparty/zsync/c/progress.c
 )
-set_target_properties(zsync PROPERTIES C_STANDARD 99)
+set_target_properties(zsync PROPERTIES C_STANDARD 11)
+if (CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID MATCHES "Clang")
+    target_compile_options(zsync PRIVATE -Wno-unused-parameter -Wno-unused-function)
+endif()
 target_include_directories(zsync PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/3rdparty/zsync/c>)
 
 if ( WIN32 )
@@ -127,9 +130,6 @@ GENERATE_EXPORT_HEADER( ${synclib_NAME}
         EXPORT_FILE_NAME owncloudlib.h
 	STATIC_DEFINE OWNCLOUD_BUILT_AS_STATIC
 )
-
-target_include_directories(${synclib_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${MIRALL_VERSION}
