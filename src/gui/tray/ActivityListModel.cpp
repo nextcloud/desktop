@@ -245,7 +245,6 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     }
 
     _currentlyFetching = false;
-    _currentItem += activities.size();
 
     foreach (auto activ, activities) {
         auto json = activ.toObject();
@@ -270,6 +269,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         }
 
         list.append(a);
+        _currentItem = list.last()._id;
     }
 
     _activityLists.append(list);
