@@ -166,7 +166,12 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
         } else if (_tray->isOpen()) {
             _tray->hideWindow();
         } else {
-            _tray->showWindow();
+            if (AccountManager::instance()->accounts().isEmpty()) {
+                this->slotOpenSettingsDialog();
+            } else {
+                _tray->showWindow();
+            }
+
         }
     }
     // FIXME: Also make sure that any auto updater dialogue https://github.com/owncloud/client/issues/5613

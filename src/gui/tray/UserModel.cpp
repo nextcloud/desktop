@@ -551,7 +551,12 @@ Q_INVOKABLE int UserModel::currentUserId()
 
 Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
 {
-    return _users[id]->isConnected();
+    if (!_users.isEmpty()) {
+        return _users[id]->isConnected();
+    } else {
+        return false;
+    }
+
 }
 
 Q_INVOKABLE QImage UserModel::currentUserAvatar()
@@ -620,6 +625,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         endInsertRows();
         ConfigFile cfg;
         _users.last()->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
+        emit newUserSelected();
     }
 }
 
