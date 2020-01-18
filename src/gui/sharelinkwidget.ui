@@ -25,7 +25,7 @@
         <string notr="true"/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../client.qrc">:/client/resources/public.svg</pixmap>
+        <pixmap resource="../../theme.qrc">:/client/theme/public.svg</pixmap>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -74,8 +74,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../client.qrc">
-         <normaloff>:/client/resources/add.png</normaloff>:/client/resources/add.png</iconset>
+        <iconset resource="../../theme.qrc">
+         <normaloff>:/client/theme/add.svg</normaloff>:/client/theme/add.svg</iconset>
        </property>
        <property name="checkable">
         <bool>false</bool>
@@ -97,8 +97,8 @@
         </sizepolicy>
        </property>
        <property name="icon">
-        <iconset resource="../../client.qrc">
-         <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
+        <iconset resource="../../theme.qrc">
+         <normaloff>:/client/theme/more.svg</normaloff>:/client/theme/more.svg</iconset>
        </property>
        <property name="popupMode">
         <enum>QToolButton::InstantPopup</enum>
@@ -162,8 +162,8 @@
      <item>
       <widget class="QToolButton" name="confirmNote">
        <property name="icon">
-        <iconset resource="../../client.qrc">
-         <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
+        <iconset resource="../../theme.qrc">
+         <normaloff>:/client/theme/confirm.svg</normaloff>:/client/theme/confirm.svg</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -215,8 +215,8 @@
      <item>
       <widget class="QToolButton" name="confirmPassword">
        <property name="icon">
-        <iconset resource="../../client.qrc">
-         <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
+        <iconset resource="../../theme.qrc">
+         <normaloff>:/client/theme/confirm.svg</normaloff>:/client/theme/confirm.svg</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -265,8 +265,8 @@
      <item>
       <widget class="QToolButton" name="confirmExpirationDate">
        <property name="icon">
-        <iconset resource="../../client.qrc">
-         <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
+        <iconset resource="../../theme.qrc">
+         <normaloff>:/client/theme/confirm.svg</normaloff>:/client/theme/confirm.svg</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -337,7 +337,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../client.qrc"/>
+  <include location="../../theme.qrc"/>
  </resources>
  <connections/>
 </ui>

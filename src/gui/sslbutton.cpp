@@ -169,11 +169,11 @@ void SslButton::updateAccountState(AccountState *accountState)
 
     AccountPtr account = _accountState->account();
     if (account->url().scheme() == QLatin1String("https")) {
-        setIcon(QIcon(QLatin1String(":/client/resources/lock-https.png")));
+        setIcon(QIcon(QLatin1String(":/client/theme/lock-https.svg")));
         QSslCipher cipher = account->_sessionCipher;
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
     } else {
-        setIcon(QIcon(QLatin1String(":/client/resources/lock-http.png")));
+        setIcon(QIcon(QLatin1String(":/client/theme/lock-http.svg")));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
     }
 }

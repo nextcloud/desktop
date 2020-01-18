@@ -5,8 +5,7 @@ set(CMAKE_AUTOUIC TRUE)
 set(CMAKE_AUTORCC TRUE)
 add_subdirectory(updater)
 
-#TODO Move resources files
-set(MIRALL_RC_SRC ../../client.qrc)
+set(MIRALL_RC_SRC ../../resources.qrc)
 if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
     list(APPEND MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
     set(theme_dir ${OEM_THEME_DIR}/theme)

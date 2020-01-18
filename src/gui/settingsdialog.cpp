@@ -97,7 +97,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _toolBar->addWidget(spacer);
 
-    QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
+    QAction *generalAction = createColorAwareAction(QLatin1String(":/client/theme/settings.svg"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
@@ -106,7 +106,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, generalSettings, &GeneralSettings::slotStyleChanged);
 
-    QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
+    QAction *networkAction = createColorAwareAction(QLatin1String(":/client/theme/network.svg"), tr("Network"));
     _actionGroup->addAction(networkAction);
     _toolBar->addAction(networkAction);
     NetworkSettings *networkSettings = new NetworkSettings;
@@ -206,7 +206,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     QImage avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     if (avatar.isNull()) {
-        accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
+        accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"),
             actionText);
     } else {
         QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));

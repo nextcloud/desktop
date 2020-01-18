@@ -104,7 +104,7 @@ MenuItem {
                 Layout.preferredHeight: userLineLayout.height
                 flat: true
 
-                icon.source: "qrc:///client/resources/more.svg"
+                icon.source: "qrc:///client/theme/more.svg"
                 icon.color: "transparent"
 
                 MouseArea {

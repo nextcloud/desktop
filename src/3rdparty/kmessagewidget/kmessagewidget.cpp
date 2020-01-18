@@ -94,7 +94,7 @@ void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)
     QAction *closeAction = new QAction(q);
     closeAction->setText(KMessageWidget::tr("&Close"));
     closeAction->setToolTip(KMessageWidget::tr("Close message"));
-    closeAction->setIcon(QIcon(":/client/resources/close.svg")); // ivan: NC customization
+    closeAction->setIcon(QIcon(":/client/theme/close.svg")); // ivan: NC customization
 
     QObject::connect(closeAction, &QAction::triggered, q, &KMessageWidget::animatedHide);
 

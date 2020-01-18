@@ -68,7 +68,9 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _ui.lServerIcon->setText(QString());
     _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
     _ui.lLocalIcon->setText(QString());
-    _ui.lLocalIcon->setPixmap(QPixmap(Theme::hidpiFileName(":/client/resources/folder-sync.png")));
+    
+    // TO DO: File doesn't exist anymore - unneccessary or replacement needed?
+    _ui.lLocalIcon->setPixmap(QPixmap(Theme::hidpiFileName(":/client/theme/folder-sync.png")));
 
     if (theme->wizardHideExternalStorageConfirmationCheckbox()) {
         _ui.confCheckBoxExternal->hide();
