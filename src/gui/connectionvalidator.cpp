@@ -249,6 +249,11 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
         return;
     }
 
+    // Check for the directEditing capability
+    QUrl directEditingURL = QUrl(caps["files"].toObject()["directEditing"].toObject()["url"].toString());
+    QString directEditingETag = caps["files"].toObject()["directEditing"].toObject()["etag"].toString();
+    _account->fetchDirectEditors(directEditingURL, directEditingETag);
+
     fetchUser();
 }
 

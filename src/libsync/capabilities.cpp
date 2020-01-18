@@ -176,4 +176,85 @@ bool Capabilities::uploadConflictFiles() const
 
     return _capabilities["uploadConflictFiles"].toBool();
 }
+
+/*-------------------------------------------------------------------------------------*/
+
+// Direct Editing
+void Capabilities::addDirectEditor(DirectEditor* directEditor)
+{
+    if(directEditor)
+        _directEditors.append(directEditor);
+}
+
+DirectEditor* Capabilities::getDirectEditorForMimetype(const QMimeType &mimeType)
+{
+    foreach(DirectEditor* editor, _directEditors) {
+        if(editor->hasMimetype(mimeType))
+            return editor;
+    }
+
+    return nullptr;
+}
+
+DirectEditor* Capabilities::getDirectEditorForOptionalMimetype(const QMimeType &mimeType)
+{
+    foreach(DirectEditor* editor, _directEditors) {
+        if(editor->hasOptionalMimetype(mimeType))
+            return editor;
+    }
+
+    return nullptr;
+}
+
+/*-------------------------------------------------------------------------------------*/
+
+DirectEditor::DirectEditor(const QString &id, const QString &name, QObject* parent)
+    : QObject(parent)
+    , _id(id)
+    , _name(name)
+{
+}
+
+QString DirectEditor::id() const
+{
+    return _id;
+}
+
+QString DirectEditor::name() const
+{
+    return _name;
+}
+
+void DirectEditor::addMimetype(const QByteArray &mimeType)
+{
+    _mimeTypes.append(mimeType);
+}
+
+void DirectEditor::addOptionalMimetype(const QByteArray &mimeType)
+{
+    _optionalMimeTypes.append(mimeType);
+}
+
+QList<QByteArray> DirectEditor::mimeTypes() const
+{
+    return _mimeTypes;
+}
+
+QList<QByteArray> DirectEditor::optionalMimeTypes() const
+{
+    return _optionalMimeTypes;
+}
+
+bool DirectEditor::hasMimetype(const QMimeType &mimeType)
+{
+    return _mimeTypes.contains(mimeType.name().toLatin1());
+}
+
+bool DirectEditor::hasOptionalMimetype(const QMimeType &mimeType)
+{
+    return _optionalMimeTypes.contains(mimeType.name().toLatin1());
+}
+
+/*-------------------------------------------------------------------------------------*/
+
 }
