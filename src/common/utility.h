@@ -20,6 +20,7 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
+
 #include "ocsynclib.h"
 #include <QString>
 #include <QByteArray>
@@ -29,6 +30,7 @@
 #include <QMap>
 #include <QUrl>
 #include <QUrlQuery>
+#include <QtQuick/QQuickImageProvider>
 #include <functional>
 #include <memory>
 

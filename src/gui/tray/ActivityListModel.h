@@ -17,7 +17,7 @@
 
 #include <QtCore>
 
-#include "activitydata.h"
+#include "ActivityData.h"
 
 class QJsonDocument;
 
@@ -38,21 +38,24 @@ class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum ActivityIconType {
-        iconUseCached = 0,
-        iconActivity,
-        iconBell,
-        iconStateError,
-        iconStateWarning,
-        iconStateInfo,
-        iconStateSync
-    };
-    struct ActionIcon {
-        ActivityIconType iconType;
-        QIcon cachedIcon;
-    };
+    enum DataRole {
+    ActionIconRole = Qt::UserRole + 1,
+    UserIconRole,
+    AccountRole,
+    ObjectTypeRole,
+    ActionsLinksRole,
+    ActionTextRole,
+    ActionTextColorRole,
+    ActionRole,
+    MessageRole,
+    DisplayPathRole,
+    PathRole,
+    LinkRole,
+    PointInTimeRole,
+    AccountConnectedRole,
+    SyncFileStatusRole};
 
-    explicit ActivityListModel(AccountState *accountState, QWidget *parent = nullptr);
+    explicit ActivityListModel(AccountState *accountState, QObject* parent = 0);
 
     QVariant data(const QModelIndex &index, int role) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -76,9 +79,13 @@ public slots:
 
 private slots:
     void slotActivitiesReceived(const QJsonDocument &json, int statusCode);
+    void slotIconDownloaded(QByteArray iconData);
 
 signals:
     void activityJobStatusCode(int statusCode);
+
+protected:
+    QHash<int, QByteArray> roleNames() const override;
 
 private:
     void startFetchJob();
@@ -96,9 +103,12 @@ private:
     bool _currentlyFetching = false;
     bool _doneFetching = false;
     int _currentItem = 0;
+
+    int _totalActivitiesFetched = 0;
+    int _maxActivities = 100;
+    int _maxActivitiesDays = 30;
+    bool _showMoreActivitiesAvailableEntry = false;
 };
 }
-
-Q_DECLARE_METATYPE(OCC::ActivityListModel::ActionIcon)
 
 #endif // ACTIVITYLISTMODEL_H

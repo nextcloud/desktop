@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>582</width>
+    <width>581</width>
     <height>557</height>
    </rect>
   </property>
@@ -181,13 +181,6 @@
         </property>
         <property name="openExternalLinks">
          <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QToolButton" name="_accountToolbox">
-        <property name="text">
-         <string notr="true">...</string>
         </property>
        </widget>
       </item>

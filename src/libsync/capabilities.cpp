@@ -103,7 +103,8 @@ bool Capabilities::isValid() const
     return !_capabilities.isEmpty();
 }
 
-bool Capabilities::hasActivities() const {
+bool Capabilities::hasActivities() const
+{
     return _capabilities.contains("activity");
 }
 

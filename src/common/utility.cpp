@@ -255,7 +255,7 @@ void Utility::usleep(int usec)
 }
 
 // This can be overriden from the tests
-OCSYNC_EXPORT bool fsCasePreserving_override = []()-> bool {
+OCSYNC_EXPORT bool fsCasePreserving_override = []() -> bool {
     QByteArray env = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING");
     if (!env.isEmpty())
         return env.toInt();
@@ -362,12 +362,12 @@ QString Utility::fileNameForGuiUse(const QString &fName)
 QByteArray Utility::normalizeEtag(QByteArray etag)
 {
     /* strip "XXXX-gzip" */
-    if(etag.startsWith('"') && etag.endsWith("-gzip\"")) {
+    if (etag.startsWith('"') && etag.endsWith("-gzip\"")) {
         etag.chop(6);
         etag.remove(0, 1);
     }
     /* strip trailing -gzip */
-    if(etag.endsWith("-gzip")) {
+    if (etag.endsWith("-gzip")) {
         etag.chop(5);
     }
     /* strip normal quotes */
@@ -400,7 +400,7 @@ void Utility::crash()
 // without compiler warnings about possible truncation
 uint Utility::convertSizeToUint(size_t &convertVar)
 {
-    if( convertVar > UINT_MAX ) {
+    if (convertVar > UINT_MAX) {
         //throw std::bad_cast();
         convertVar = UINT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
     }
@@ -409,7 +409,7 @@ uint Utility::convertSizeToUint(size_t &convertVar)
 
 uint Utility::convertSizeToInt(size_t &convertVar)
 {
-    if( convertVar > INT_MAX ) {
+    if (convertVar > INT_MAX) {
         //throw std::bad_cast();
         convertVar = INT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
     }
@@ -465,7 +465,7 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
 
         if (floor(secs / 3600.0) > 0) {
             int hours = floor(secs / 3600.0);
-            if(hours == 1){
+            if (hours == 1) {
                 return (QObject::tr("%n hour ago", "", hours));
             } else {
                 return (QObject::tr("%n hours ago", "", hours));
@@ -480,7 +480,7 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
                     return QObject::tr("Less than a minute ago");
                 }
 
-            } else if(minutes == 1){
+            } else if (minutes == 1) {
                 return (QObject::tr("%n minute ago", "", minutes));
             } else {
                 return (QObject::tr("%n minutes ago", "", minutes));

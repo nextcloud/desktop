@@ -16,6 +16,10 @@
 #define SYSTRAY_H
 
 #include <QSystemTrayIcon>
+#include <QQmlContext>
+
+#include "accountmanager.h"
+#include "tray/UserModel.h"
 
 class QIcon;
 
@@ -26,16 +30,56 @@ bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 #endif
 
+namespace Ui {
+    class Systray;
+}
+
 /**
  * @brief The Systray class
  * @ingroup gui
  */
-class Systray : public QSystemTrayIcon
+class Systray
+    : public QSystemTrayIcon
 {
     Q_OBJECT
 public:
+    static Systray *instance();
+    virtual ~Systray() {};
+
+    void create();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
     void setToolTip(const QString &tip);
+    bool isOpen();
+
+    Q_INVOKABLE void pauseResumeSync();
+    Q_INVOKABLE int calcTrayWindowX();
+    Q_INVOKABLE int calcTrayWindowY();
+    Q_INVOKABLE bool syncIsPaused();
+    Q_INVOKABLE void setOpened();
+    Q_INVOKABLE void setClosed();
+
+signals:
+    void currentUserChanged();
+    void openSettings();
+    void openHelp();
+    void shutdown();
+    void pauseSync();
+    void resumeSync();
+
+    Q_INVOKABLE void hideWindow();
+    Q_INVOKABLE void showWindow();
+
+public slots:
+    void slotNewUserSelected();
+
+private:
+    static Systray *_instance;
+    Systray();
+    bool _isOpen;
+    bool _syncIsPaused;
+    QQmlEngine *_trayEngine;
+    QQmlComponent *_trayComponent;
+    QQmlContext *_trayContext;
 };
 
 } // namespace OCC

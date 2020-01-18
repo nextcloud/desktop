@@ -1,18 +1,5 @@
-/*
- * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
- */
+#include "NotificationHandler.h"
 
-#include "servernotificationhandler.h"
 #include "accountstate.h"
 #include "capabilities.h"
 #include "networkjobs.h"
@@ -30,7 +17,7 @@ const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/a
 const char propertyAccountStateC[] = "oc_account_state";
 const int successStatusCode = 200;
 const int notModifiedStatusCode = 304;
-QMap<int, QIcon> ServerNotificationHandler::iconCache;
+QMap<int, QByteArray> ServerNotificationHandler::iconCache;
 
 ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState, QObject *parent)
     : QObject(parent)
@@ -41,9 +28,7 @@ ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState,
 void ServerNotificationHandler::slotFetchNotifications()
 {
     // check connectivity and credentials
-    if (!(_accountState && _accountState->isConnected() &&
-          _accountState->account() && _accountState->account()->credentials() &&
-          _accountState->account()->credentials()->ready())) {
+    if (!(_accountState && _accountState->isConnected() && _accountState->account() && _accountState->account()->credentials() && _accountState->account()->credentials()->ready())) {
         deleteLater();
         return;
     }
@@ -68,18 +53,18 @@ void ServerNotificationHandler::slotFetchNotifications()
     _notificationJob->start();
 }
 
-void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
-    if(statusCode == successStatusCode){
+void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode)
+{
+    if (statusCode == successStatusCode) {
         qCWarning(lcServerNotification) << "New Notification ETag Response Header received " << value;
         AccountState *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
         account->setNotificationsEtagResponseHeader(value);
     }
 }
 
-void ServerNotificationHandler::slotIconDownloaded(QByteArray iconData){
-    QPixmap pixmap;
-    pixmap.loadFromData(iconData);
-    iconCache.insert(sender()->property("activityId").toInt(), QIcon(pixmap));
+void ServerNotificationHandler::slotIconDownloaded(QByteArray iconData)
+{
+    iconCache.insert(sender()->property("activityId").toInt(),iconData);
 }
 
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
@@ -107,7 +92,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         auto json = element.toObject();
         a._type = Activity::NotificationType;
         a._accName = ai->account()->displayName();
-        a._id = json.value("notification_id").toInt();
+        a._id = json.value("activity_id").toInt();
 
         //need to know, specially for remote_share
         a._objectType = json.value("object_type").toString();
@@ -115,16 +100,17 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
+        a._icon = json.value("icon").toString();
 
-        if(!json.value("icon").toString().isEmpty()){
-            IconJob *iconJob = new IconJob(QUrl(json.value("icon").toString()));
+        if (!a._icon.isEmpty()) {
+            IconJob *iconJob = new IconJob(QUrl(a._icon));
             iconJob->setProperty("activityId", a._id);
             connect(iconJob, &IconJob::jobFinished, this, &ServerNotificationHandler::slotIconDownloaded);
         }
 
         QUrl link(json.value("link").toString());
         if (!link.isEmpty()) {
-            if(link.host().isEmpty()){
+            if (link.host().isEmpty()) {
                 link.setScheme(ai->account()->url().scheme());
                 link.setHost(ai->account()->url().host());
             }
@@ -151,8 +137,8 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
         ActivityLink al;
         al._label = tr("Dismiss");
-        al._link  = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
-        al._verb  = "DELETE";
+        al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
+        al._verb = "DELETE";
         al._isPrimary = false;
         a._links.append(al);
 

@@ -43,7 +43,7 @@
         <file>theme/white/state-sync-64.png</file>
         <file>theme/white/state-sync-128.png</file>
         <file>theme/white/state-sync-256.png</file>
-		<file>theme/black/state-error-32.png</file>
+        <file>theme/black/state-error-32.png</file>
         <file>theme/black/state-error-64.png</file>
         <file>theme/black/state-error-128.png</file>
         <file>theme/black/state-error-256.png</file>
@@ -80,7 +80,7 @@
         <file>theme/colored/state-warning-128.png</file>
         <file>theme/colored/state-warning-256.png</file>
         <file>theme/black/control-next.svg</file>
-		<file>theme/black/control-prev.svg</file>
+        <file>theme/black/control-prev.svg</file>
         <file>theme/black/state-error.svg</file>
         <file>theme/black/state-error-16.png</file>
         <file>theme/black/state-offline.svg</file>
@@ -101,8 +101,8 @@
         <file>theme/black/state-warning-64.png</file>
         <file>theme/black/state-warning-128.png</file>
         <file>theme/black/state-warning-256.png</file>
-		<file>theme/white/control-next.svg</file>
-		<file>theme/white/control-prev.svg</file>
+        <file>theme/white/control-next.svg</file>
+        <file>theme/white/control-prev.svg</file>
         <file>theme/white/state-error.svg</file>
         <file>theme/white/state-error-16.png</file>
         <file>theme/white/state-offline.svg</file>
@@ -131,5 +131,17 @@
         <file>theme/colored/wizard-nextcloud@2x.png</file>
         <file>theme/colored/wizard-talk.png</file>
         <file>theme/colored/wizard-talk@2x.png</file>
+        <file>theme/white/folder.svg</file>
+        <file>theme/white/more-apps.svg</file>
+        <file>theme/white/talk-app.svg</file>
+        <file>theme/white/caret-down.svg</file>
+        <file>theme/black/caret-down.svg</file>
+        <file>theme/white/user.svg</file>
+        <file>theme/black/user.svg</file>
+        <file>theme/white/add.svg</file>
+        <file>theme/black/add.svg</file>
+        <file>theme/black/activity.svg</file>
+        <file>theme/black/bell.svg</file>
+        <file>theme/black/state-info.svg</file>
     </qresource>
 </RCC>

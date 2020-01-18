@@ -1078,7 +1078,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // Get CHANGE instructions to the top first
     if (syncItems.count() > 0) {
         std::sort(syncItems.begin(), syncItems.end(),
-            [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool {
+            [](SyncFileItemVector::const_reference &a, SyncFileItemVector::const_reference &b) -> bool {
 				return ((a->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) && (b->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE));
             });
         if (syncItems.at(0)->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
@@ -1089,7 +1089,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
             std::sort(syncItems.begin(), syncItems.begin() + lastChangeInstruction);
             if (syncItems.count() > lastChangeInstruction) {
                 std::sort(syncItems.begin() + (lastChangeInstruction + 1), syncItems.end(),
-                    [](const SyncFileItemVector::const_reference &a, const SyncFileItemVector::const_reference &b) -> bool {
+                    [](SyncFileItemVector::const_reference &a, SyncFileItemVector::const_reference &b) -> bool {
                         return ((a->_instruction == CSYNC_INSTRUCTION_REMOVE) && (b->_instruction != CSYNC_INSTRUCTION_REMOVE));
                     });
                 if (syncItems.at(lastChangeInstruction + 1)->_instruction == CSYNC_INSTRUCTION_REMOVE) {

@@ -914,6 +914,8 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
                 _folderWatcher->removePath(path() + item->_file);
                 _folderWatcher->addPath(path() + item->destination());
 	    break;
+        default:
+        break;
 	}
     }
 

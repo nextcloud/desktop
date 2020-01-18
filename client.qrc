@@ -2,6 +2,7 @@
     <qresource prefix="/client">
         <file>resources/settings.png</file>
         <file>resources/settings@2x.png</file>
+        <file>resources/activity.svg</file>
         <file>resources/activity.png</file>
         <file>resources/activity@2x.png</file>
         <file>resources/network.png</file>
@@ -11,6 +12,7 @@
         <file>resources/lock-https.png</file>
         <file>resources/lock-https@2x.png</file>
         <file>resources/account.png</file>
+        <file>resources/account.svg</file>
         <file>resources/more.svg</file>
         <file>resources/delete.png</file>
         <file>resources/close.svg</file>
@@ -28,7 +30,14 @@
         <file>resources/copy.svg</file>
         <file>resources/state-sync.svg</file>
         <file>resources/add.png</file>
+        <file>resources/add-color.svg</file>
         <file>resources/state-info.svg</file>
+        <file>resources/change.svg</file>
+        <file>resources/delete-color.svg</file>
     </qresource>
     <qresource prefix="/"/>
+    <qresource prefix="/qml">
+        <file>src/gui/tray/Window.qml</file>
+        <file>src/gui/tray/UserLine.qml</file>
+    </qresource>
 </RCC>
