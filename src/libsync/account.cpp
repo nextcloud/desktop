@@ -35,6 +35,9 @@
 #include <QSslKey>
 #include <QAuthenticator>
 #include <QStandardPaths>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <keychain.h>
 #include "creds/abstractcredentials.h"
@@ -598,6 +601,51 @@ void Account::deleteAppPassword(){
         _wroteAppPassword = false;
     });
     job->start();
+}
+
+void Account::fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag)
+{
+    if(directEditingURL.isEmpty() || directEditingETag.isEmpty())
+        return;
+
+    // Check for the directEditing capability
+    if (!directEditingURL.isEmpty() &&
+        (directEditingETag.isEmpty() || directEditingETag != _lastDirectEditingETag)) {
+            // Fetch the available editors and their mime types
+            JsonApiJob *job = new JsonApiJob(sharedFromThis(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing"), this);
+            QObject::connect(job, &JsonApiJob::jsonReceived, this, &Account::slotDirectEditingRecieved);
+            job->start();
+    }
+}
+
+void Account::slotDirectEditingRecieved(const QJsonDocument &json)
+{
+    auto data = json.object().value("ocs").toObject().value("data").toObject();
+    auto editors = data.value("editors").toObject();
+
+    foreach (auto editorKey, editors.keys()) {
+        auto editor = editors.value(editorKey).toObject();
+
+        const QString id = editor.value("id").toString();
+        const QString name = editor.value("name").toString();
+
+        if(!id.isEmpty() && !name.isEmpty()) {
+            auto mimeTypes = editor.value("mimetypes").toArray();
+            auto optionalMimeTypes = editor.value("optionalMimetypes").toArray();
+
+            DirectEditor *directEditor = new DirectEditor(id, name);
+
+            foreach(auto mimeType, mimeTypes) {
+                directEditor->addMimetype(mimeType.toString().toLatin1());
+            }
+
+            foreach(auto optionalMimeType, optionalMimeTypes) {
+                directEditor->addOptionalMimetype(optionalMimeType.toString().toLatin1());
+            }
+
+            _capabilities.addDirectEditor(directEditor);
+        }
+    }
 }
 
 } // namespace OCC

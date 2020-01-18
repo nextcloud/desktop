@@ -246,6 +246,10 @@ public:
     void writeAppPasswordOnce(QString appPassword);
     void deleteAppPassword();
 
+    /// Direct Editing
+    // Check for the directEditing capability
+    void fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -278,6 +282,7 @@ signals:
 protected Q_SLOTS:
     void slotCredentialsFetched();
     void slotCredentialsAsked();
+    void slotDirectEditingRecieved(const QJsonDocument &json);
 
 private:
     Account(QObject *parent = nullptr);
@@ -323,6 +328,9 @@ private:
     bool _wroteAppPassword = false;
 
     friend class AccountManager;
+
+    // Direct Editing
+    QString _lastDirectEditingETag;
 
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
