@@ -85,7 +85,7 @@ signals:
     void activityJobStatusCode(int statusCode);
 
 protected:
-    QHash<int, QByteArray> roleNames() const;
+    QHash<int, QByteArray> roleNames() const override;
 
 private:
     void startFetchJob();

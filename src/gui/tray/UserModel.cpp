@@ -780,6 +780,9 @@ ImageProvider::ImageProvider()
 
 QImage ImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
 {
+    Q_UNUSED(size)
+    Q_UNUSED(requestedSize)
+
     if (id == "currentUser") {
         return UserModel::instance()->currentUserAvatar();
     } else {
