@@ -373,6 +373,16 @@ public:
     void addQueryParams(const QUrlQuery &params);
     void addRawHeader(const QByteArray &headerName, const QByteArray &value);
 
+    /**
+     * @brief usePOST - allow job to do an anonymous POST request instead of GET
+     * @param params: (optional) true for POST, false for GET (default).
+     *
+     * This function needs to be called before start() obviously.
+     */
+    void usePOST(bool usePOST = true) {
+        _usePOST = usePOST;
+    }
+
 public slots:
     void start() override;
 
@@ -398,6 +408,8 @@ signals:
 private:
     QUrlQuery _additionalParams;
     QNetworkRequest _request;
+
+    bool _usePOST = false;
 };
 
 /**
