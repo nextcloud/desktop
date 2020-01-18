@@ -128,7 +128,7 @@ signals:
     Q_INVOKABLE void newUserSelected();
 
 protected:
-    QHash<int, QByteArray> roleNames() const;
+    QHash<int, QByteArray> roleNames() const override;
 
 private:
     static UserModel *_instance;
@@ -170,7 +170,7 @@ public slots:
     void openAppUrl(const QUrl &url);
 
 protected:
-    QHash<int, QByteArray> roleNames() const;
+    QHash<int, QByteArray> roleNames() const override;
 
 private:
     static UserAppsModel *_instance;
