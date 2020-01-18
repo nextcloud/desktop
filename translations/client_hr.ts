@@ -771,22 +771,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="143"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Čekanje autorizacije</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Dohvaćanje podataka za autorizaciju</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Pokretanje autorizacije</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Poveznica je kopirana u međuspremnik.</translation>
     </message>
 </context>
 <context>
@@ -1486,12 +1486,12 @@ Nastavljanje sinkronizacije uzrokovat će zamjenu svih vaših datoteka starijim 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Potrebna je zaporka za dijeljenje</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="522"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Unesite zaporku svoje poveznice dijeljenja:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="541"/>
@@ -1631,7 +1631,7 @@ Stavke za koje je dopušteno brisanje bit će izbrisane ako sprječavaju uklanja
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
         <source>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Autorska prava 2017. – 2020. Nextcloud GmbH&lt;br /&gt;Autorska prava 2012. – 2018. ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
@@ -2695,12 +2695,12 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="311"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Potrebna je zaporka za dijeljenje</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="312"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Unesite zaporku svoje poveznice dijeljenja:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
@@ -3500,7 +3500,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentialsdialog.cpp" line="34"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Prijava</translation>
     </message>
 </context>
 <context>
