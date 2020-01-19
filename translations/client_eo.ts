@@ -200,7 +200,7 @@
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="211"/>
+        <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: ...</source>
         <translation>Konserveja spaco: ...</translation>
     </message>
@@ -231,8 +231,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
-        <location filename="../src/gui/accountsettings.cpp" line="803"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1219"/>
+        <location filename="../src/gui/accountsettings.cpp" line="759"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1154"/>
         <source>Cancel</source>
         <translation>Nuligi</translation>
     </message>
@@ -242,230 +242,199 @@
         <translation>Konektita kun servilo &lt;server&gt; kiel uzanto &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="190"/>
+        <location filename="../src/gui/accountsettings.cpp" line="187"/>
         <source>No account configured.</source>
         <translation>Neniu konto agordita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="220"/>
-        <source>Add new</source>
-        <translation>Aldoni novan</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="228"/>
-        <source>Remove</source>
-        <translation>Forigi</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="232"/>
-        <source>Account</source>
-        <translation>Konto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="242"/>
+        <location filename="../src/gui/accountsettings.cpp" line="216"/>
         <source>This account supports end-to-end encryption</source>
         <translation>Tiu konto subtenas tutvojan ĉifradon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="244"/>
+        <location filename="../src/gui/accountsettings.cpp" line="218"/>
         <source>Enable encryption</source>
         <translation>Ebligi ĉifradon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="261"/>
-        <source>Show E2E mnemonic</source>
-        <translation>Montri E2E memorigilon</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="605"/>
+        <location filename="../src/gui/accountsettings.cpp" line="561"/>
         <source>Encrypt</source>
         <translation>Ĉifri</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="613"/>
-        <location filename="../src/gui/accountsettings.cpp" line="649"/>
+        <location filename="../src/gui/accountsettings.cpp" line="569"/>
+        <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Edit Ignored Files</source>
         <translation>Redakti ignoritajn dosierojn</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="653"/>
+        <location filename="../src/gui/accountsettings.cpp" line="609"/>
         <source>Choose what to sync</source>
         <translation>Elekti tion, kion sinkronigi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="659"/>
+        <location filename="../src/gui/accountsettings.cpp" line="615"/>
         <source>Force sync now</source>
         <translation>Sinkronigi nun</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="661"/>
+        <location filename="../src/gui/accountsettings.cpp" line="617"/>
         <source>Restart sync</source>
         <translation>Rekomenci sinkronigon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="670"/>
+        <location filename="../src/gui/accountsettings.cpp" line="626"/>
         <source>Remove folder sync connection</source>
         <translation>Ne plu sinkronigi tiun dosierujon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="741"/>
+        <location filename="../src/gui/accountsettings.cpp" line="697"/>
         <source>Folder creation failed</source>
         <translation>Kreo de dosierujo malsukcesis</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="795"/>
+        <location filename="../src/gui/accountsettings.cpp" line="751"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Konfirmu la forigadon de la sinkronigo de tiu dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="758"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Ne plu sinkronigi tiun dosierujon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="887"/>
+        <location filename="../src/gui/accountsettings.cpp" line="843"/>
         <source>Sync Running</source>
         <translation>Sinkronigo ruliĝanta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="888"/>
+        <location filename="../src/gui/accountsettings.cpp" line="844"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sinkronigo estas ruliĝanta.&lt;br/&gt;Ĉu vi volas fini ĝin?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <location filename="../src/gui/accountsettings.cpp" line="933"/>
         <source>%1 in use</source>
         <translation>%1 uzata(j)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1004"/>
+        <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 per la konto &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
+        <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
         <translation>La servilo je versio %1 estas malnova kaj nesubtenata. Daŭrigu je via risko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
+        <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>Connected to %1.</source>
         <translation>Konektita al %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1014"/>
+        <location filename="../src/gui/accountsettings.cpp" line="970"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Servilo %1 dumtempe ne disponeblas</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
+        <location filename="../src/gui/accountsettings.cpp" line="972"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>La servilo %1 estas en reĝimo de prizorgado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="974"/>
         <source>Signed out from %1.</source>
         <translation>Elsalutita de %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
+        <location filename="../src/gui/accountsettings.cpp" line="983"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Atendante rajtigon el la retumilo. &lt;a href=&apos;%1&apos;&gt;Alklaku ĉi tie&lt;/a&gt; por remalfermi la retumilon.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1034"/>
+        <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <source>No connection to %1 at %2.</source>
         <translation>Neniu konekto al servilo %1 je la adreso %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1066"/>
-        <source>Log in</source>
-        <translation>Ensaluti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1162"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1109"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas tro grandaj:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1164"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1111"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas konservataj en ekstera konservejo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1165"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1112"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas tro grandaj âù konservataj en ekstera konservejo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1211"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1146"/>
         <source>Confirm Account Removal</source>
         <translation>Konfirmi forigadon de la konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1212"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1147"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ĉu vi vere volas forigi konekton al la konto &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notu:&lt;/b&gt; Tio &lt;b&gt;ne&lt;/b&gt; forigos la dosierojn.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1218"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1153"/>
         <source>Remove connection</source>
         <translation>Forigi konekton</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="589"/>
-        <location filename="../src/gui/accountsettings.cpp" line="646"/>
+        <location filename="../src/gui/accountsettings.cpp" line="545"/>
+        <location filename="../src/gui/accountsettings.cpp" line="602"/>
         <source>Open folder</source>
         <translation>Malfermi dosierujon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="224"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1068"/>
-        <source>Log out</source>
-        <translation>Elsaluti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="667"/>
+        <location filename="../src/gui/accountsettings.cpp" line="623"/>
         <source>Resume sync</source>
         <translation>Daŭrigi sinkronigon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="667"/>
+        <location filename="../src/gui/accountsettings.cpp" line="623"/>
         <source>Pause sync</source>
         <translation>Paŭzigi sinkronigon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="742"/>
+        <location filename="../src/gui/accountsettings.cpp" line="698"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="796"/>
+        <location filename="../src/gui/accountsettings.cpp" line="752"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ĉu vi vere volas ĉesi sinkronigi la dosierujon &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notu:&lt;/b&gt; Tio &lt;b&gt;ne&lt;/b&gt; forigos la dosierojn.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="964"/>
+        <location filename="../src/gui/accountsettings.cpp" line="920"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) el %2 uzataj. Certaj dosierujoj, inkluzive de rete muntitaj aŭ kunhavigitaj dosierujoj, eble havas aliajn limigojn.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="965"/>
+        <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>%1 of %2 in use</source>
         <translation>%1 el %2 uzitaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="974"/>
+        <location filename="../src/gui/accountsettings.cpp" line="930"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Ĉi-momente estas neniu informo pri konservejospaco.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1031"/>
+        <location filename="../src/gui/accountsettings.cpp" line="987"/>
         <source>Connecting to %1 …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1040"/>
+        <location filename="../src/gui/accountsettings.cpp" line="996"/>
         <source>No %1 connection configured.</source>
         <translation>Neniu konekto al %1 agordita.</translation>
     </message>
@@ -473,103 +442,62 @@
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="127"/>
+        <location filename="../src/gui/accountstate.cpp" line="134"/>
         <source>Signed out</source>
         <translation>Elsalutita</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="129"/>
+        <location filename="../src/gui/accountstate.cpp" line="136"/>
         <source>Disconnected</source>
         <translation>Malkonektita</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="131"/>
+        <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Connected</source>
         <translation>Konektita</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="133"/>
+        <location filename="../src/gui/accountstate.cpp" line="140"/>
         <source>Service unavailable</source>
         <translation>Servo nedisponebla</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="135"/>
+        <location filename="../src/gui/accountstate.cpp" line="142"/>
         <source>Maintenance mode</source>
         <translation>Reĝimo de prizorgado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="137"/>
+        <location filename="../src/gui/accountstate.cpp" line="144"/>
         <source>Network error</source>
         <translation>Reta eraro</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="139"/>
+        <location filename="../src/gui/accountstate.cpp" line="146"/>
         <source>Configuration error</source>
         <translation>Agorda eraro</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="141"/>
+        <location filename="../src/gui/accountstate.cpp" line="148"/>
         <source>Asking Credentials</source>
         <translation>Akreditiloj petitaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="143"/>
+        <location filename="../src/gui/accountstate.cpp" line="150"/>
         <source>Unknown account state</source>
         <translation>Konto-stato nekonita</translation>
     </message>
 </context>
 <context>
-    <name>OCC::ActivityItemDelegate</name>
-    <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="229"/>
-        <source>More information</source>
-        <translation>Pli da informoj</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="230"/>
-        <source>Accept</source>
-        <translation>Akcepti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="231"/>
-        <source>Join</source>
-        <translation>Aliĝi</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="252"/>
-        <source>Open Browser</source>
-        <translation>Malfermi retumilon</translation>
-    </message>
-</context>
-<context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/activitylistmodel.cpp" line="239"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="321"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Dosieroj el la listo de ignoritaj dosieroj kaj ankaŭ simbolaj ligiloj ne sinkroniĝas. Tio entenas:</translation>
     </message>
-</context>
-<context>
-    <name>OCC::ActivityWidget</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="56"/>
-        <source>Accept</source>
-        <translation>Akcepti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="192"/>
-        <source>Synced</source>
-        <translation>Sinkronigita</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="231"/>
-        <source>Retry all uploads</source>
-        <translation>Reprovi ĉiujn alŝutoj</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="346"/>
-        <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation>&lt;br/&gt;Konto %1 ne havas ebligitajn aktivaĵojn.</translation>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="423"/>
+        <source>For more activities please open the Activity app.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -680,12 +608,12 @@
         <translation>Neniu own-Cloud-konto agordita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="282"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>The configured server for this client is too old</source>
         <translation>La servilo agordita por tiu ĉi kliento estas tro malnova</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="283"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="288"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Bv. ĝisdatigi la servilon, kaj remalfermi la klienton.</translation>
     </message>
@@ -901,36 +829,36 @@
         <translation>Ne eblis legi la sisteman dosieron pri esceptoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="970"/>
+        <location filename="../src/gui/folder.cpp" line="972"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Nova dosierujo pli granda ol %1 MB estis aldonita: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="973"/>
+        <location filename="../src/gui/folder.cpp" line="975"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Dosierujo el ekstera konservejo estis aldonita.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="974"/>
+        <location filename="../src/gui/folder.cpp" line="976"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Bv. iri al la agordoj por elekti, ĉu vi volas elŝuti ĝin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1029"/>
+        <location filename="../src/gui/folder.cpp" line="1031"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>La dosierujo %1 estis kreita sed estis eksigita el sinkronigo antaŭe. Datumoj ene de ĝi ne estos sinkronigitaj.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1032"/>
+        <location filename="../src/gui/folder.cpp" line="1034"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>La dosiero %1 estis kreita sed estis eksigita el sinkronigo antaŭe. Ĝi ne estos sinkronigita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1043"/>
+        <location filename="../src/gui/folder.cpp" line="1045"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -943,7 +871,7 @@ Tio signifas, ke la sinkroniga kliento eble ne alŝutas tuj lokajn ŝanĝojn kaj
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1088"/>
+        <location filename="../src/gui/folder.cpp" line="1090"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -954,7 +882,7 @@ Se vi decidas restaŭri la dosierojn, ili estos resinkronigitaj al la servilo, s
 Se vi decidas forigi la dosierojn, ili ne plu estos haveblaj al vi, krom se vi estas la posedanto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1093"/>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
@@ -963,22 +891,22 @@ Tiuj dosieroj estos forigitaj el la servilo kaj ne plu disponeblos en viaj aliaj
 Se tiu ago ne estis dezirata, vi povas restaŭri la perditajn datumojn nun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1097"/>
+        <location filename="../src/gui/folder.cpp" line="1099"/>
         <source>Delete all files?</source>
         <translation>Forigi ĉiujn dosierojn?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1100"/>
+        <location filename="../src/gui/folder.cpp" line="1102"/>
         <source>Delete all files</source>
         <translation>Forigi ĉiujn dosierojn</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1101"/>
+        <location filename="../src/gui/folder.cpp" line="1103"/>
         <source>Restore deleted files</source>
         <translation>Restaŭri forigitajn dosierojn</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1118"/>
+        <location filename="../src/gui/folder.cpp" line="1120"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -987,17 +915,17 @@ Tio estas eble kaŭzita de restaŭro de savkopio ĉe la servilo.
 Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per antaŭaj versioj el viaj dosieroj. Ĉu vi volas gardi la plej freŝajn dosierojn kiel konfliktajn dosierojn?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1123"/>
+        <location filename="../src/gui/folder.cpp" line="1125"/>
         <source>Backup detected</source>
         <translation>Savkopio eltrovita</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1126"/>
+        <location filename="../src/gui/folder.cpp" line="1128"/>
         <source>Normal Synchronisation</source>
         <translation>Kutima sinkronigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1127"/>
+        <location filename="../src/gui/folder.cpp" line="1129"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Konservi la lokajn dosierojn kiel konfliktojn</translation>
     </message>
@@ -1484,22 +1412,22 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="521"/>
+        <location filename="../src/gui/socketapi.cpp" line="556"/>
         <source>Password for share required</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="522"/>
+        <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>Please enter a password for your link share:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="541"/>
+        <location filename="../src/gui/socketapi.cpp" line="576"/>
         <source>Sharing error</source>
         <translation>Eraro de kunhavigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="542"/>
+        <location filename="../src/gui/socketapi.cpp" line="577"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -2636,7 +2564,7 @@ Uzi ĝin ne konsilindas.</translation>
 <context>
     <name>OCC::ServerNotificationHandler</name>
     <message>
-        <location filename="../src/gui/servernotificationhandler.cpp" line="153"/>
+        <location filename="../src/gui/tray/NotificationHandler.cpp" line="139"/>
         <source>Dismiss</source>
         <translation>Ignori</translation>
     </message>
@@ -2649,22 +2577,17 @@ Uzi ĝin ne konsilindas.</translation>
         <translation>Agordoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="219"/>
-        <source>Activity</source>
-        <translation>Aktivaĵoj</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="101"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="100"/>
         <source>General</source>
         <translation>Ĝenerala</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="110"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="109"/>
         <source>Network</source>
         <translation>Reto</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="242"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="207"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
@@ -2910,60 +2833,54 @@ Uzi ĝin ne konsilindas.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="458"/>
-        <source>Share with %1</source>
-        <comment>parameter is Nextcloud</comment>
-        <translation>Kunhavigi kun %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="494"/>
+        <location filename="../src/gui/socketapi.cpp" line="529"/>
         <source>Context menu share</source>
         <translation>Menuo pri kunhavigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="633"/>
+        <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>I shared something with you</source>
         <translation>Mi kunhavigis ion kun vi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="646"/>
-        <location filename="../src/gui/socketapi.cpp" line="676"/>
+        <location filename="../src/gui/socketapi.cpp" line="681"/>
+        <location filename="../src/gui/socketapi.cpp" line="711"/>
         <source>Share options</source>
         <translation>Opcioj pri kunhavigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="647"/>
-        <source>Share via %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="649"/>
+        <location filename="../src/gui/socketapi.cpp" line="684"/>
         <source>Send private link by email …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="648"/>
+        <location filename="../src/gui/socketapi.cpp" line="683"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopii privatan ligilon al tondujo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="674"/>
+        <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Resharing this file is not allowed</source>
         <translation>Re-kunhavigi ne estas permesata</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="687"/>
-        <location filename="../src/gui/socketapi.cpp" line="689"/>
+        <location filename="../src/gui/socketapi.cpp" line="722"/>
+        <location filename="../src/gui/socketapi.cpp" line="724"/>
         <source>Copy public link</source>
         <translation>Kopii publikan ligilon</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="693"/>
+        <location filename="../src/gui/socketapi.cpp" line="728"/>
         <source>Copy internal link</source>
         <translation>Kopii internan ligilon</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="743"/>
+        <location filename="../src/gui/socketapi.cpp" line="782"/>
+        <source>Edit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="784"/>
         <source>Open in browser</source>
         <translation>Malfermi per retumilo</translation>
     </message>
@@ -3449,7 +3366,7 @@ Uzi ĝin ne konsilindas.</translation>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="54"/>
+        <location filename="../src/gui/systray.cpp" line="128"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -3457,14 +3374,65 @@ Uzi ĝin ne konsilindas.</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="352"/>
+        <location filename="../src/libsync/theme.cpp" line="345"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Versio %1. Por pli da informoj, alklaku &lt;a href=&apos;%2&apos;&gt;ĉi tie&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="356"/>
+        <location filename="../src/libsync/theme.cpp" line="349"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Tiu eldono estis liverita de %1&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::User</name>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="319"/>
+        <source>Retry all uploads</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="368"/>
+        <source>You renamed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="370"/>
+        <source>You deleted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
+        <source>You created</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
+        <source>You changed</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::UserModel</name>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="682"/>
+        <source>Confirm Account Removal</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="683"/>
+        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="688"/>
+        <source>Remove connection</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="689"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3504,234 +3472,113 @@ Uzi ĝin ne konsilindas.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
         <source>Please sign in</source>
         <translation>Bv. ensaluti</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="339"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="330"/>
         <source>Folder %1: %2</source>
         <translation>Dosierujo %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="348"/>
         <source>There are no sync folders configured.</source>
         <translation>Neniu sinkroniga dosiero agordita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
-        <source>Open in browser</source>
-        <translation>Malfermi per retumilo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="419"/>
-        <source>Log out</source>
-        <translation>Elsaluti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
-        <source>Recent Changes</source>
-        <translation>Ŝanĝitaj antaŭ nelonge</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
-        <source>Managed Folders:</source>
-        <translation>Agorditaj dosierujoj:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="396"/>
-        <source>Open folder &apos;%1&apos;</source>
-        <translation>Malfermi dosierujon „%1“</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="368"/>
-        <source>Open %1 in browser</source>
-        <translation>Malfermi %1 per la retumilo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="776"/>
-        <source>Unknown status</source>
-        <translation>Nekonata stato</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="788"/>
-        <source>Help</source>
-        <translation>Helpo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
-        <source>Quit %1</source>
-        <translation>Fini %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="265"/>
         <source>Disconnected from %1</source>
         <translation>Malkonektita el %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="224"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="215"/>
         <source>Unsupported Server Version</source>
         <translation>Nesubtenata versio de servilo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="225"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="216"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>La servilo el la konto %1 uzas malnovan kaj nesubtenatan version. La uzado de tiu ĉi kliento kun nesubtenataj servil-versioj estas ne elprovita kaj eble danĝera. Daŭrigu je via risko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="264"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="255"/>
         <source>Disconnected</source>
         <translation>Malkonektita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="266"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="257"/>
         <source>Disconnected from some accounts</source>
         <translation>Malkonektita el kelkaj kontoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Disconnected from accounts:</source>
         <translation>Malkonektita el la jenaj kontoj:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="279"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="270"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
         <source>Signed out</source>
         <translation>Elsalutita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="289"/>
         <source>Account synchronization is disabled</source>
         <translation>Konta sinkronigo estas malebligita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="290"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="343"/>
         <source>Synchronization is paused</source>
         <translation>Sinkronigo estas paŭzigita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="347"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="338"/>
         <source>Unresolved conflicts</source>
         <translation>Nesolvitaj konfliktoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="354"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="345"/>
         <source>Error during synchronization</source>
         <translation>Eraro dum sinkronigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="358"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="349"/>
         <source>No sync folders configured</source>
         <translation>Neniu sinkroniga dosiero agordita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="404"/>
-        <source>Resume all folders</source>
-        <translation>Daŭrigi ĉiujn dosierujon</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
-        <source>Pause all folders</source>
-        <translation>Paŭzigi ĉiujn dosierujon</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="415"/>
-        <source>Log in …</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
-        <source>Resume all synchronization</source>
-        <translation>Daŭrigi ĉiujn sinkronigojn</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="694"/>
-        <source>Resume synchronization</source>
-        <translation>Daŭrigi sinkronigon</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="702"/>
-        <source>Pause all synchronization</source>
-        <translation>Paŭzigi ĉiujn sinkronigojn</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="704"/>
-        <source>Pause synchronization</source>
-        <translation>Paŭzigi sinkronigon</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="413"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="794"/>
-        <source>Crash now</source>
-        <comment>Only shows in debug mode to allow testing the crash handler</comment>
-        <translation>Kraŝi nun</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="778"/>
-        <source>Apps</source>
-        <translation>Aplikaĵoj</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="780"/>
-        <source>Settings …</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
-        <source>New account …</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
-        <source>View more activity …</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="897"/>
-        <source>No items synced recently</source>
-        <translation>Neniu elemento sinkronigita freŝdate</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Kontrolante por ŝanĝoj en fora „%1“</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Kontrolante por ŝanĝoj en loka „%1“</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="942"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Syncing %1 of %2</source>
         <translation>Sinkronigo de %1 el %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="951"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="427"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sinkronigo de %1 (%2 restas)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="954"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="430"/>
         <source>Syncing %1</source>
         <translation>Sinkronigo de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="972"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="440"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="349"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="340"/>
         <source>Up to date</source>
         <translation>Ĝisdata</translation>
     </message>
@@ -4003,7 +3850,7 @@ Uzi ĝin ne konsilindas.</translation>
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="336"/>
+        <location filename="../src/libsync/theme.cpp" line="329"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Konstruita el Git-a revizio &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; je %3, %4, uzante Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
