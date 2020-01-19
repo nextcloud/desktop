@@ -23,7 +23,9 @@ IconJob::IconJob(const QUrl &url, QObject *parent) :
             this, &IconJob::finished);
 
     QNetworkRequest request(url);
+#if (QT_VERSION >= 0x050600)
     request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+#endif
     _accessManager.get(request);
 }
 
