@@ -91,7 +91,7 @@ chmod a+x linuxdeployqt*.AppImage
 rm ./linuxdeployqt-continuous-x86_64.AppImage
 unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/app/usr/lib/
-./squashfs-root/AppRun ${DESKTOP_FILE} -bundle-non-qt-libs -qmldir=/build/desktop/src/gui
+./squashfs-root/AppRun ${DESKTOP_FILE} -bundle-non-qt-libs -qmldir=$DRONE_WORKSPACE/src/gui
 
 # Set origin
 ./squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/' /app/usr/lib/libnextcloudsync.so.0
