@@ -3,15 +3,18 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.2
 
+// Custom qml modules are in /theme (and included by resources.qrc)
+import Style 1.0
+
 MenuItem {
     id: userLine
-    height: 60
+    height: Style.trayWindowHeaderHeight
 
         RowLayout {
             id: userLineLayout
             spacing: 0
-            width: 220
-            height: 60
+            width: Style.currentAccountButtonWidth
+            height: parent.height
 
             Button {
                 id: accountButton
@@ -67,8 +70,8 @@ MenuItem {
                             cache: false
                             x: accountStateIndicatorBackground.x + 1
                             y: accountStateIndicatorBackground.y + 1
-                            sourceSize.width: 16
-                            sourceSize.height: 16
+                            sourceSize.width: Style.accountAvatarStateIndicatorSize
+                            sourceSize.height: Style.accountAvatarStateIndicatorSize
                         }
                     }
 
@@ -129,13 +132,13 @@ MenuItem {
                     width: 120
 
                     background: Rectangle {
-                        border.color: "#0082c9"
+                        border.color: Style.ncBlue
                         radius: 2
                     }
 
                     MenuItem {
                         text: isConnected ? qsTr("Log out") : qsTr("Log in")
-                        font.pixelSize: 12
+                        font.pixelSize: Style.topLinePixelSize
                         onClicked: {
                             isConnected ? userModelBackend.logout(index) : userModelBackend.login(index)
                             accountMenu.close()
@@ -144,7 +147,7 @@ MenuItem {
 
                     MenuItem {
                         text: qsTr("Remove Account")
-                        font.pixelSize: 12
+                        font.pixelSize: Style.topLinePixelSize
                         onClicked: {
                             userModelBackend.removeAccount(index)
                             accountMenu.close()
