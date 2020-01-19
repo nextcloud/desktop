@@ -55,6 +55,7 @@ Systray::Systray()
     // Create QML tray engine, build component, set C++ backend context used in window.qml
     // Use pointer instead of engine() helper function until Qt 5.12 is minimum standard
     _trayEngine = new QQmlEngine;
+    _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
     _trayEngine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
     _trayEngine->rootContext()->setContextProperty("appsMenuModelBackend", UserAppsModel::instance());

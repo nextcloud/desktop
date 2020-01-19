@@ -6,15 +6,18 @@ import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 
+// Custom qml modules are in /theme (and included by resources.qrc)
+import Style 1.0
+
 Window {
+    id:         trayWindow
 
-    id: trayWindow
-    visible: true
-    width: 400
-    height: 510
-    color: "transparent"
-    flags: Qt.FramelessWindowHint
+    width:      Style.trayWindowWidth
+    height:     Style.trayWindowHeight
+    color:      "transparent"
+    flags:      Qt.FramelessWindowHint
 
+    // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
         if(!active) {
             trayWindow.hide();
@@ -31,6 +34,8 @@ Window {
         currentAccountStateIndicator.source = ""
         currentAccountStateIndicator.source = userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
 
+        // HACK: reload account Instantiator immediately by restting it - could be done better I guess
+        // see also id:accountMenu below
         userLineInstantiator.active = false;
         userLineInstantiator.active = true;
     }
@@ -71,46 +76,62 @@ Window {
 
     Rectangle {
         id: trayWindowBackground
-        anchors.fill: parent
-        radius: 10
-        border.color: "#0082c9"
+
+        anchors.fill:   parent
+        radius:         Style.trayWindowRadius
+        border.width:   Style.trayWindowBorderWidth
+        border.color:   Style.ncBlue
 
         Rectangle {
             id: trayWindowHeaderBackground
-            anchors.left: trayWindowBackground.left
-            anchors.top: trayWindowBackground.top
-            height: 60
-            width: parent.width
-            radius: 9
-            color: "#0082c9"
 
+            anchors.left:   trayWindowBackground.left
+            anchors.top:    trayWindowBackground.top
+            height:         Style.trayWindowHeaderHeight
+            width:          Style.trayWindowWidth
+            radius:         (Style.trayWindowRadius > 0) ? (Style.trayWindowRadius - 1) : 0
+            color:          Style.ncBlue
+
+            // The overlay rectangle below eliminates the rounded corners from the bottom of the header
+            // as Qt only allows setting the radius for all corners right now, not specific ones
             Rectangle {
-                anchors.left: trayWindowHeaderBackground.left
+                id: trayWindowHeaderButtomHalfBackground
+
+                anchors.left:   trayWindowHeaderBackground.left
                 anchors.bottom: trayWindowHeaderBackground.bottom
-                height: 30
-                width: parent.width
-                color: "#0082c9"
+                height:         Style.trayWindowHeaderHeight / 2
+                width:          Style.trayWindowWidth
+                color:          Style.ncBlue
             }
 
             RowLayout {
                 id: trayWindowHeaderLayout
-                spacing: 0
-                anchors.fill: parent
+
+                spacing:        0
+                anchors.fill:   parent
 
                 Button {
                     id: currentAccountButton
-                    Layout.preferredWidth: 220
-                    Layout.preferredHeight: (trayWindowHeaderBackground.height)
-                    display: AbstractButton.IconOnly
-                    flat: true
+
+                    Layout.preferredWidth:  Style.currentAccountButtonWidth
+                    Layout.preferredHeight: Style.trayWindowHeaderHeight
+                    display:                AbstractButton.IconOnly
+                    flat:                   true
 
                     MouseArea {
                         id: accountBtnMouseArea
-                        anchors.fill: parent
-                        hoverEnabled: true
+
+                        anchors.fill:   parent
+                        hoverEnabled:   Style.hoverEffectsEnabled
+
+                        // HACK: Imitate Qt hover effect brightness (which is not accessible as property)
+                        // so that indicator background also flicks when hovered
                         onContainsMouseChanged: {
-                            currentAccountStateIndicatorBackground.color = (containsMouse ? "#009dd9" : "#0082c9")
+                            currentAccountStateIndicatorBackground.color = (containsMouse ? Style.ncBlueHover : Style.ncBlue)
                         }
+
+                        // We call open() instead of popup() because we want to position it
+                        // exactly below the dropdown button, not the mouse
                         onClicked:
                         {
                             syncPauseButton.text = systrayBackend.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
@@ -119,17 +140,23 @@ Window {
 
                         Menu {
                             id: accountMenu
+
+                            // x coordinate grows towards the right
+                            // y coordinate grows towards the bottom
                             x: (currentAccountButton.x + 2)
-                            y: (currentAccountButton.y + currentAccountButton.height + 2)
-                            width: (currentAccountButton.width - 2)
+                            y: (currentAccountButton.y + Style.trayWindowHeaderHeight + 2)
+
+                            width: (Style.currentAccountButtonWidth - 2)
                             closePolicy: "CloseOnPressOutside"
 
                             background: Rectangle {
-                                border.color: "#0082c9"
-                                radius: 2
+                                border.color: Style.ncBlue
+                                radius: Style.currentAccountButtonRadius
                             }
 
                             onClosed: {
+                                // HACK: reload account Instantiator immediately by restting it - could be done better I guess
+                                // see also onVisibleChanged above
                                 userLineInstantiator.active = false;
                                 userLineInstantiator.active = true;
                             }
@@ -144,26 +171,26 @@ Window {
 
                             MenuItem {
                                 id: addAccountButton
-                                height: 50
+                                height: Style.addAccountButtonHeight
 
                                 RowLayout {
-                                    width: addAccountButton.width
-                                    height: addAccountButton.height
+                                    anchors.fill: parent
                                     spacing: 0
 
                                     Image {
-                                        Layout.leftMargin: 14
+                                        Layout.leftMargin: 12
                                         verticalAlignment: Qt.AlignCenter
                                         source: "qrc:///client/theme/black/add.svg"
-                                        sourceSize.width: openLocalFolderButton.icon.width
-                                        sourceSize.height: openLocalFolderButton.icon.height
+                                        sourceSize.width: Style.headerButtonIconSize
+                                        sourceSize.height: Style.headerButtonIconSize
                                     }
                                     Label {
                                         Layout.leftMargin: 14
                                         text: qsTr("Add account")
                                         color: "black"
-                                        font.pixelSize: 12
+                                        font.pixelSize: Style.topLinePixelSize
                                     }
+                                    // Filler on the right
                                     Item {
                                         Layout.fillWidth: true
                                         Layout.fillHeight: true
@@ -176,25 +203,25 @@ Window {
 
                             MenuItem {
                                 id: syncPauseButton
-                                font.pixelSize: 12
+                                font.pixelSize: Style.topLinePixelSize
                                 onClicked: systrayBackend.pauseResumeSync()
                             }
 
                             MenuItem {
                                 text: qsTr("Open settings")
-                                font.pixelSize: 12
+                                font.pixelSize: Style.topLinePixelSize
                                 onClicked: systrayBackend.openSettings()
                             }
 
                             MenuItem {
                                 text: qsTr("Help")
-                                font.pixelSize: 12
+                                font.pixelSize: Style.topLinePixelSize
                                 onClicked: systrayBackend.openHelp()
                             }
 
                             MenuItem {
                                 text: qsTr("Quit Nextcloud")
-                                font.pixelSize: 12
+                                font.pixelSize: Style.topLinePixelSize
                                 onClicked: systrayBackend.shutdown()
                             }
                         }
@@ -203,41 +230,42 @@ Window {
                     background:
                         Item {
                         id: leftHoverContainer
-                        height: currentAccountButton.height
-                        width: currentAccountButton.width
+
+                        height: Style.trayWindowHeaderHeight
+                        width:  Style.currentAccountButtonWidth
                         Rectangle {
-                            width: currentAccountButton.width / 2
-                            height: currentAccountButton.height / 2
+                            width: Style.currentAccountButtonWidth / 2
+                            height: Style.trayWindowHeaderHeight / 2
                             color: "transparent"
                             clip: true
                             Rectangle {
-                                width: currentAccountButton.width
-                                height: currentAccountButton.height
-                                radius: 10
+                                width: Style.currentAccountButtonWidth
+                                height: Style.trayWindowHeaderHeight
+                                radius: Style.trayWindowRadius
                                 color: "white"
                                 opacity: 0.2
                                 visible: accountBtnMouseArea.containsMouse
                             }
                         }
                         Rectangle {
-                            width: currentAccountButton.width / 2
-                            height: currentAccountButton.height / 2
+                            width: Style.currentAccountButtonWidth / 2
+                            height: Style.trayWindowHeaderHeight / 2
                             anchors.bottom: leftHoverContainer.bottom
                             color: "white"
                             opacity: 0.2
                             visible: accountBtnMouseArea.containsMouse
                         }
                         Rectangle {
-                            width: currentAccountButton.width / 2
-                            height: currentAccountButton.height / 2
+                            width: Style.currentAccountButtonWidth / 2
+                            height: Style.trayWindowHeaderHeight / 2
                             anchors.right: leftHoverContainer.right
                             color: "white"
                             opacity: 0.2
                             visible: accountBtnMouseArea.containsMouse
                         }
                         Rectangle {
-                            width: currentAccountButton.width / 2
-                            height: currentAccountButton.height / 2
+                            width: Style.currentAccountButtonWidth / 2
+                            height: Style.trayWindowHeaderHeight / 2
                             anchors.right: leftHoverContainer.right
                             anchors.bottom: leftHoverContainer.bottom
                             color: "white"
@@ -248,34 +276,38 @@ Window {
 
                     RowLayout {
                         id: accountControlRowLayout
-                        height: currentAccountButton.height
-                        width: currentAccountButton.width
+
+                        height: Style.trayWindowHeaderHeight
+                        width:  Style.currentAccountButtonWidth
                         spacing: 0
                         Image {
                             id: currentAccountAvatar
+
                             Layout.leftMargin: 8
                             verticalAlignment: Qt.AlignCenter
                             cache: false
                             source: "image://avatars/currentUser"
-                            Layout.preferredHeight: (trayWindowHeaderBackground.height -16)
-                            Layout.preferredWidth: (trayWindowHeaderBackground.height -16)
+                            Layout.preferredHeight: Style.accountAvatarSize
+                            Layout.preferredWidth: Style.accountAvatarSize
+
                             Rectangle {
                                 id: currentAccountStateIndicatorBackground
-                                width: currentAccountStateIndicator.sourceSize.width + 2
+                                width: Style.accountAvatarStateIndicatorSize + 2
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: "#0082c9"
+                                color: Style.ncBlue
                                 radius: width*0.5
                             }
+
                             Image {
                                 id: currentAccountStateIndicator
                                 source: userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
                                 cache: false
                                 x: currentAccountStateIndicatorBackground.x + 1
                                 y: currentAccountStateIndicatorBackground.y + 1
-                                sourceSize.width: 16
-                                sourceSize.height: 16
+                                sourceSize.width: Style.accountAvatarStateIndicatorSize
+                                sourceSize.height: Style.accountAvatarStateIndicatorSize
                             }
                         }
 
@@ -286,34 +318,35 @@ Window {
                             Layout.leftMargin: 6
                             Label {
                                 id: currentAccountUser
-                                width: 128
+                                width: Style.currentAccountLabelWidth
                                 text: userModelBackend.currentUserName()
                                 elide: Text.ElideRight
                                 color: "white"
-                                font.pixelSize: 12
+                                font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
                             }
                             Label {
                                 id: currentAccountServer
-                                width: 128
+                                width: Style.currentAccountLabelWidth
                                 text: userModelBackend.currentUserServer()
                                 elide: Text.ElideRight
                                 color: "white"
-                                font.pixelSize: 10
+                                font.pixelSize: Style.subLinePixelSize
                             }
                         }
 
                         Image {
                             Layout.alignment: Qt.AlignRight
                             verticalAlignment: Qt.AlignCenter
-                            Layout.margins: 8
+                            Layout.margins: Style.accountDropDownCaretMargin
                             source: "qrc:///client/theme/white/caret-down.svg"
-                            sourceSize.width: 20
-                            sourceSize.height: 20
+                            sourceSize.width: Style.accountDropDownCaretSize
+                            sourceSize.height: Style.accountDropDownCaretSize
                         }
                     }
                 }
 
+                // Filler between account dropdown and header app buttons
                 Item {
                     id: trayWindowHeaderSpacer
                     Layout.fillWidth: true
@@ -321,19 +354,23 @@ Window {
 
                 Button {
                     id: openLocalFolderButton
+
                     Layout.alignment: Qt.AlignRight
                     display: AbstractButton.IconOnly
-                    Layout.preferredWidth: (trayWindowHeaderBackground.height)
-                    Layout.preferredHeight: (trayWindowHeaderBackground.height)
+                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
+                    Layout.preferredHeight: Style.trayWindowHeaderHeight
                     flat: true
 
                     icon.source: "qrc:///client/theme/white/folder.svg"
+                    icon.width: Style.headerButtonIconSize
+                    icon.height: Style.headerButtonIconSize
                     icon.color: "transparent"
 
                     MouseArea {
                         id: folderBtnMouseArea
+
                         anchors.fill: parent
-                        hoverEnabled: true
+                        hoverEnabled: Style.hoverEffectsEnabled
                         onClicked:
                         {
                             userModelBackend.openCurrentAccountLocalFolder();
@@ -349,20 +386,24 @@ Window {
 
                 Button {
                     id: trayWindowTalkButton
+
                     Layout.alignment: Qt.AlignRight
                     display: AbstractButton.IconOnly
-                    Layout.preferredWidth: (trayWindowHeaderBackground.height)
-                    Layout.preferredHeight: (trayWindowHeaderBackground.height)
+                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
+                    Layout.preferredHeight: Style.trayWindowHeaderHeight
                     flat: true
                     visible: userModelBackend.currentServerHasTalk() ? true : false
 
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
+                    icon.width: Style.headerButtonIconSize
+                    icon.height: Style.headerButtonIconSize
                     icon.color: "transparent"
 
                     MouseArea {
                         id: talkBtnMouseArea
+
                         anchors.fill: parent
-                        hoverEnabled: true
+                        hoverEnabled: Style.hoverEffectsEnabled
                         onClicked:
                         {
                             userModelBackend.openCurrentAccountTalk();
@@ -378,19 +419,23 @@ Window {
 
                 Button {
                     id: trayWindowAppsButton
+
                     Layout.alignment: Qt.AlignRight
                     display: AbstractButton.IconOnly
-                    Layout.preferredWidth: (trayWindowHeaderBackground.height)
-                    Layout.preferredHeight: (trayWindowHeaderBackground.height)
+                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
+                    Layout.preferredHeight: Style.trayWindowHeaderHeight
                     flat: true
 
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
+                    icon.width: Style.headerButtonIconSize
+                    icon.height: Style.headerButtonIconSize
                     icon.color: "transparent"
 
                     MouseArea {
                         id: appsBtnMouseArea
+
                         anchors.fill: parent
-                        hoverEnabled: true
+                        hoverEnabled: Style.hoverEffectsEnabled
                         onClicked:
                         {
                             /*
@@ -414,11 +459,11 @@ Window {
                         Menu {
                             id: appsMenu
                             y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
-                            width: (trayWindowAppsButton.width * 3)
+                            width: (Style.headerButtonIconSize * 3)
                             closePolicy: "CloseOnPressOutside"
 
                             background: Rectangle {
-                                border.color: "#0082c9"
+                                border.color: Style.ncBlue
                                 radius: 2
                             }
 
@@ -429,7 +474,7 @@ Window {
                                 onObjectRemoved: appsMenu.removeItem(object)
                                 delegate: MenuItem {
                                     text: appName
-                                    font.pixelSize: 12
+                                    font.pixelSize: Style.topLinePixelSize
                                     icon.source: appIconUrl
                                     onTriggered: appsMenuModelBackend.openAppUrl(appUrl)
                                 }
@@ -440,26 +485,26 @@ Window {
                     background:
                         Item {
                         id: rightHoverContainer
-                        height: trayWindowAppsButton.height
-                        width: trayWindowAppsButton.width
+                        height: Style.trayWindowHeaderHeight
+                        width: Style.trayWindowHeaderHeight
                         Rectangle {
-                            width: trayWindowAppsButton.width / 2
-                            height: trayWindowAppsButton.height / 2
+                            width: Style.trayWindowHeaderHeight / 2
+                            height: Style.trayWindowHeaderHeight / 2
                             color: "white"
                             opacity: 0.2
                             visible: appsBtnMouseArea.containsMouse
                         }
                         Rectangle {
-                            width: trayWindowAppsButton.width / 2
-                            height: trayWindowAppsButton.height / 2
+                            width: Style.trayWindowHeaderHeight / 2
+                            height: Style.trayWindowHeaderHeight / 2
                             anchors.bottom: rightHoverContainer.bottom
                             color: "white"
                             opacity: 0.2
                             visible: appsBtnMouseArea.containsMouse
                         }
                         Rectangle {
-                            width: trayWindowAppsButton.width / 2
-                            height: trayWindowAppsButton.height / 2
+                            width: Style.trayWindowHeaderHeight / 2
+                            height: Style.trayWindowHeaderHeight / 2
                             anchors.bottom: rightHoverContainer.bottom
                             anchors.right: rightHoverContainer.right
                             color: "white"
@@ -469,15 +514,15 @@ Window {
                         Rectangle {
                             id: rightHoverContainerClipper
                             anchors.right: rightHoverContainer.right
-                            width: trayWindowAppsButton.width / 2
-                            height: trayWindowAppsButton.height / 2
+                            width: Style.trayWindowHeaderHeight / 2
+                            height: Style.trayWindowHeaderHeight / 2
                             color: "transparent"
                             clip: true
                             Rectangle {
-                                width: trayWindowAppsButton.width
-                                height: trayWindowAppsButton.height
+                                width: Style.trayWindowHeaderHeight
+                                height: Style.trayWindowHeaderHeight
                                 anchors.right: rightHoverContainerClipper.right
-                                radius: 10
+                                radius: Style.trayWindowRadius
                                 color: "white"
                                 opacity: 0.2
                                 visible: appsBtnMouseArea.containsMouse
@@ -490,9 +535,11 @@ Window {
 
         ListView {
             id: activityListView
+
             anchors.top: trayWindowHeaderBackground.bottom
-            width:  trayWindowBackground.width
-            height: trayWindowBackground.height - trayWindowHeaderBackground.height
+            anchors.horizontalCenter: trayWindowBackground.horizontalCenter
+            width:  Style.trayWindowWidth - Style.trayWindowBorderWidth
+            height: Style.trayWindowHeight - Style.trayWindowHeaderHeight
             clip: true
             ScrollBar.vertical: ScrollBar {
                 id: listViewScrollbar
@@ -502,12 +549,14 @@ Window {
 
             delegate: RowLayout {
                 id: activityItem
-                width: activityListView.width
-                height: trayWindowHeaderLayout.height
+
+                width: parent.width
+                height: Style.trayWindowHeaderHeight
                 spacing: 0
 
                 Image {
                     id: activityIcon
+
                     Layout.leftMargin: 8
                     Layout.rightMargin: 8
                     Layout.preferredWidth: activityButton1.icon.width
@@ -520,14 +569,15 @@ Window {
                 }
                 Column {
                     id: activityTextColumn
+
                     spacing: 4
                     Layout.alignment: Qt.AlignLeft
                     Text {
                         id: activityTextTitle
                         text: (type === "Activity" || type === "Notification") ? subject : message
-                        width: 240 + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
+                        width: Style.activityLabelBaseWidth + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
-                        font.pixelSize: 12
+                        font.pixelSize: Style.topLinePixelSize
                         color: activityTextTitleColor
                     }
 
@@ -535,18 +585,18 @@ Window {
                         id: activityTextInfo
                         text: (type === "Activity" || type === "File" || type === "Sync") ? displaypath : message
                         height: (text === "") ? 0 : activityTextTitle.height
-                        width: 240 + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
+                        width: Style.activityLabelBaseWidth + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
-                        font.pixelSize: 10
+                        font.pixelSize: Style.subLinePixelSize
                     }
 
                     Text {
                         id: activityTextDateTime
                         text: dateTime
                         height: (text === "") ? 0 : activityTextTitle.height
-                        width: 240 + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
+                        width: Style.activityLabelBaseWidth + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
-                        font.pixelSize: 10
+                        font.pixelSize: Style.subLinePixelSize
                         color: "#808080"
                     }
                 }
@@ -556,8 +606,9 @@ Window {
                 }
                 Button {
                     id: activityButton1
-                    Layout.preferredWidth: (path === "") ? 0 : activityItem.height
-                    Layout.preferredHeight: activityItem.height
+
+                    Layout.preferredWidth: (path === "") ? 0 : parent.height
+                    Layout.preferredHeight: parent.height
                     Layout.alignment: Qt.AlignRight
                     flat: true
                     hoverEnabled: false
@@ -572,8 +623,9 @@ Window {
                 }
                 Button {
                     id: activityButton2
-                    Layout.preferredWidth: (link === "") ? 0 : activityItem.height
-                    Layout.preferredHeight:  activityItem.height
+
+                    Layout.preferredWidth: (link === "") ? 0 : parent.height
+                    Layout.preferredHeight:  parent.height
                     Layout.alignment: Qt.AlignRight
                     flat: true
                     hoverEnabled: false

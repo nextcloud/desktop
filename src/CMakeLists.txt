@@ -49,6 +49,8 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/3rdparty
 )
 
+set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/theme CACHE STRING "" FORCE)
+
 add_subdirectory(csync)
 add_subdirectory(libsync)
 if (NOT BUILD_LIBRARIES_ONLY)
