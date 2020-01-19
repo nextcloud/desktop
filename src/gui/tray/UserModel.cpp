@@ -770,7 +770,7 @@ void UserModel::fetchCurrentActivityModel()
 
 AccountAppList UserModel::appList() const
 {
-    if (_users.count() >= 1) {
+    if (_users.count() > 0) {
         return _users[_currentUserId]->appList();
     } else {
         return AccountAppList();

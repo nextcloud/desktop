@@ -134,10 +134,6 @@ void GETFileJob::start()
         _bandwidthManager->registerDownloadJob(this);
     }
 
-    if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcGetJob) << " Network error: " << errorString();
-    }
-
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
 
     AbstractNetworkJob::start();
@@ -168,7 +164,6 @@ void GETFileJob::slotMetaDataChanged()
     // If the status code isn't 2xx, don't write the reply body to the file.
     // For any error: handle it when the job is finished, not here.
     if (httpStatus / 100 != 2) {
-        _device->close();
         return;
     }
     if (reply()->error() != QNetworkReply::NoError) {
@@ -295,15 +290,13 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        if (_device->isOpen() && _saveBodyToFile) {
-            qint64 w = _device->write(buffer.constData(), r);
-            if (w != r) {
-                _errorString = _device->errorString();
-                _errorStatus = SyncFileItem::NormalError;
-                qCWarning(lcGetJob) << "Error while writing to file" << w << r << _errorString;
-                reply()->abort();
-                return;
-            }
+        qint64 w = _device->write(buffer.constData(), r);
+        if (w != r) {
+            _errorString = _device->errorString();
+            _errorStatus = SyncFileItem::NormalError;
+            qCWarning(lcGetJob) << "Error while writing to file" << w << r << _errorString;
+            reply()->abort();
+            return;
         }
     }
 
