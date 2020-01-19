@@ -801,7 +801,7 @@ void JsonApiJob::start()
     auto query = _additionalParams;
     query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
-    sendRequest("GET", url, _request);
+    sendRequest(_usePOST ? "POST" : "GET", url, _request);
     AbstractNetworkJob::start();
 }
 

@@ -37,6 +37,7 @@ namespace OCC {
 class SyncFileStatus;
 class Folder;
 class SocketListener;
+class DirectEditor;
 
 /**
  * @brief The SocketApi class
@@ -122,6 +123,10 @@ private:
      * and ends with GET_MENU_ITEMS:END
      */
     Q_INVOKABLE void command_GET_MENU_ITEMS(const QString &argument, SocketListener *listener);
+
+    /// Direct Editing
+    Q_INVOKABLE void command_EDIT(const QString &localFile, SocketListener *listener);
+    DirectEditor* getDirectEditorForLocalFile(const QString &localFile);
 
     QString buildRegisterPathMessage(const QString &path);
 

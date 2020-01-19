@@ -20,8 +20,11 @@
 
 #include <QVariantMap>
 #include <QStringList>
+#include <QMimeDatabase>
 
 namespace OCC {
+
+class DirectEditor;
 
 /**
  * @brief The Capabilities class represents the capabilities of an ownCloud
@@ -127,9 +130,47 @@ public:
      */
     bool uploadConflictFiles() const;
 
+    // Direct Editing
+    void addDirectEditor(DirectEditor* directEditor);
+    DirectEditor* getDirectEditorForMimetype(const QMimeType &mimeType);
+    DirectEditor* getDirectEditorForOptionalMimetype(const QMimeType &mimeType);
+
 private:
     QVariantMap _capabilities;
+
+    QList<DirectEditor*> _directEditors;
 };
+
+/*-------------------------------------------------------------------------------------*/
+
+class OWNCLOUDSYNC_EXPORT DirectEditor : public QObject
+{
+    Q_OBJECT
+public:
+    DirectEditor(const QString &id, const QString &name, QObject* parent = 0);
+
+    void addMimetype(const QByteArray &mimeType);
+    void addOptionalMimetype(const QByteArray &mimeType);
+
+    bool hasMimetype(const QMimeType &mimeType);
+    bool hasOptionalMimetype(const QMimeType &mimeType);
+
+    QString id() const;
+    QString name() const;
+
+    QList<QByteArray> mimeTypes() const;
+    QList<QByteArray> optionalMimeTypes() const;
+
+private:
+    QString _id;
+    QString _name;
+
+    QList<QByteArray> _mimeTypes;
+    QList<QByteArray> _optionalMimeTypes;
+};
+
+/*-------------------------------------------------------------------------------------*/
+
 }
 
 #endif //CAPABILITIES_H

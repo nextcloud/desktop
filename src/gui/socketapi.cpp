@@ -455,7 +455,42 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)
 {
-    listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is Nextcloud").arg(Theme::instance()->appNameGUI()));
+    //listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is Nextcloud").arg(Theme::instance()->appNameGUI()));
+    listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + Theme::instance()->appNameGUI());
+}
+
+void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
+{
+    auto fileData = FileData::get(localFile);
+    if (!fileData.folder) {
+        qCWarning(lcSocketApi) << "Unknown path" << localFile;
+        return;
+    }
+
+    auto record = fileData.journalRecord();
+    if (!record.isValid())
+        return;
+
+    DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
+    if (!editor)
+        return;
+
+    JsonApiJob *job = new JsonApiJob(fileData.folder->accountState()->account(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing/open"), this);
+
+    QUrlQuery params;
+    params.addQueryItem("path", fileData.accountRelativePath);
+    params.addQueryItem("editorId", editor->id());
+    job->addQueryParams(params);
+    job->usePOST();
+
+    QObject::connect(job, &JsonApiJob::jsonReceived, [](const QJsonDocument &json){
+        auto data = json.object().value("ocs").toObject().value("data").toObject();
+        auto url = QUrl(data.value("url").toString());
+
+        if(!url.isEmpty())
+            Utility::openBrowser(url, nullptr);
+    });
+    job->start();
 }
 
 // don't pull the share manager into socketapi unittests
@@ -644,7 +679,7 @@ void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *lis
 {
     static std::array<std::pair<const char *, QString>, 5> strings { {
         { "SHARE_MENU_TITLE", tr("Share options") },
-        { "CONTEXT_MENU_TITLE", tr("Share via %1").arg(Theme::instance()->appNameGUI())},
+        { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
         { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email …") },
     } };
@@ -738,11 +773,39 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
     bool isOnTheServer = fileData.journalRecord().isValid();
     auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+    auto capabilities = fileData.folder->accountState()->account()->capabilities();
+
     if (fileData.folder && fileData.folder->accountState()->isConnected()) {
+        DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
+        if (editor) {
+            //listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit via ") + editor->name());
+            listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit"));
+        } else {
+            listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+        }
+
         sendSharingContextMenuOptions(fileData, listener);
-        listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
     }
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
+}
+
+DirectEditor* SocketApi::getDirectEditorForLocalFile(const QString &localFile)
+{
+    FileData fileData = FileData::get(localFile);
+    auto capabilities = fileData.folder->accountState()->account()->capabilities();
+
+    if (fileData.folder && fileData.folder->accountState()->isConnected()) {
+        QMimeDatabase db;
+        QMimeType type = db.mimeTypeForFile(localFile);
+
+        DirectEditor* editor = capabilities.getDirectEditorForMimetype(type);
+        if (!editor) {
+            editor = capabilities.getDirectEditorForOptionalMimetype(type);
+        }
+        return editor;
+    }
+
+    return nullptr;
 }
 
 QString SocketApi::buildRegisterPathMessage(const QString &path)
