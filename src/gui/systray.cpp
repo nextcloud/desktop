@@ -142,7 +142,29 @@ int Systray::calcTrayWindowX()
     int trayIconTopCenterX = (topRight - ((topRight - topLeft) * 0.5)).x();
     return trayIconTopCenterX - (400 * 0.5);
 #else
-    QScreen *trayScreen = QGuiApplication::primaryScreen();
+QScreen* trayScreen = nullptr;
+#if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
+    if (this->geometry().left() == 0 || this->geometry().top() == 0) {
+        trayScreen = QGuiApplication::screenAt(QCursor::pos());
+    } else {
+        trayScreen = QGuiApplication::screenAt(this->geometry().topLeft());
+    }
+#else
+    foreach (QScreen* screen, QGuiApplication::screens()) {
+        if (this->geometry().left() == 0 || this->geometry().top() == 0) {
+            if (screen->geometry().contains(QCursor::pos())) {
+                trayScreen = screen;
+            }
+        } else {
+            if (screen->geometry().contains(this->geometry().topLeft())) {
+                trayScreen = screen;
+            }
+        }
+    }
+    if (trayScreen == nullptr) {
+        trayScreen = QGuiApplication::primaryScreen();
+    }
+#endif
     int screenWidth = trayScreen->geometry().width();
     int screenHeight = trayScreen->geometry().height();
     int availableWidth = trayScreen->availableGeometry().width();
@@ -188,7 +210,29 @@ int Systray::calcTrayWindowY()
     // don't use availableGeometry() here, because this also excludes the dock
     return 22+6;
 #else
-    QScreen *trayScreen = QGuiApplication::primaryScreen();
+QScreen* trayScreen = nullptr;
+#if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
+    if (this->geometry().left() == 0 || this->geometry().top() == 0) {
+    trayScreen = QGuiApplication::screenAt(QCursor::pos());
+    } else {
+        trayScreen = QGuiApplication::screenAt(this->geometry().topLeft());
+    }
+#else
+    foreach (QScreen* screen, QGuiApplication::screens()) {
+        if (this->geometry().left() == 0 || this->geometry().top() == 0) {
+            if (screen->geometry().contains(QCursor::pos())) {
+                trayScreen = screen;
+            }
+        } else {
+            if (screen->geometry().contains(this->geometry().topLeft())) {
+                trayScreen = screen;
+            }
+        }
+    }
+    if (trayScreen == nullptr) {
+        trayScreen = QGuiApplication::primaryScreen();
+    }
+#endif
     int screenWidth = trayScreen->geometry().width();
     int screenHeight = trayScreen->geometry().height();
     int availableHeight = trayScreen->availableGeometry().height();
