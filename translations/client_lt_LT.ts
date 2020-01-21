@@ -1416,7 +1416,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/socketapi.cpp" line="576"/>
         <source>Sharing error</source>
-        <translation>Dalinimosi klaida</translation>
+        <translation>Bendrinimo klaida</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="577"/>
@@ -2742,7 +2742,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>I shared something with you</source>
-        <translation>Pasidalinau kai kuo su jumis</translation>
+        <translation>Aš pradėjau kai ką bendrinti su jumis</translation>
     </message>
 </context>
 <context>
@@ -2829,7 +2829,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>I shared something with you</source>
-        <translation>Pasidalinau kai kuo su jumis</translation>
+        <translation>Aš pradėjau kai ką bendrinti su jumis</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="681"/>
