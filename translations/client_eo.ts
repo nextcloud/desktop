@@ -2259,7 +2259,7 @@ Uzi ĝin ne konsilindas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="427"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <source>File '%1' cannot be downloaded because of a local file name clash!</source>
         <translation>Dosiero %1 ne elŝuteblis, ĉar estas konflikto kun loka dosiernomo!</translation>
     </message>
     <message>

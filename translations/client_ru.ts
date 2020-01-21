@@ -2252,7 +2252,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="427"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <source>File '%1' cannot be downloaded because of a local file name clash!</source>
         <translation>Файл «%1» не может быть загружен из-за локального конфликта имён.</translation>
     </message>
     <message>

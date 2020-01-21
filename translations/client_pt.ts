@@ -2247,7 +2247,7 @@ Não é aconselhada a sua utilização.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="427"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <source>File '%1' cannot be downloaded because of a local file name clash!</source>
         <translation>Não foi possível transferir o ficheiro %1 devido a um conflito com o nome de ficheiro local!</translation>
     </message>
     <message>

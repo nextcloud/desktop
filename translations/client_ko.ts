@@ -2261,7 +2261,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="427"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
+        <source>File '%1' cannot be downloaded because of a local file name clash!</source>
         <translation>로컬 파일 이름 충돌로 인해 %1 파일을 다운로드 할 수 없습니다!</translation>
     </message>
     <message>

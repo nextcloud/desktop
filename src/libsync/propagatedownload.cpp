@@ -424,7 +424,7 @@ void PropagateDownloadFile::startDownload()
 
     // do a klaas' case clash check.
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::NormalError, tr("File '%1' cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
 
