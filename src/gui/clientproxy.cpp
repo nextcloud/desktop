@@ -53,7 +53,7 @@ bool ClientProxy::isUsingSystemDefault()
         return cfg.proxyType() == QNetworkProxy::DefaultProxy;
     }
 
-    return false;
+    return true;
 }
 
 QString printQNetworkProxy(const QNetworkProxy &proxy)
