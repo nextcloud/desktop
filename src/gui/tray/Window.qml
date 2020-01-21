@@ -1,7 +1,7 @@
 import QtQml 2.1
 import QtQml.Models 2.1
 import QtQuick 2.9
-import QtQuick.Window 2.2
+import QtQuick.Window 2.3
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
@@ -58,8 +58,8 @@ Window {
             trayWindow.show();
             trayWindow.raise();
             trayWindow.requestActivate();
-            trayWindow.setX( systrayBackend.calcTrayWindowX());
-            trayWindow.setY( systrayBackend.calcTrayWindowY());
+            trayWindow.setX( Qt.application.screens[systrayBackend.screenIndex()].virtualX + systrayBackend.calcTrayWindowX());
+            trayWindow.setY( Qt.application.screens[systrayBackend.screenIndex()].virtualY + systrayBackend.calcTrayWindowY());
             systrayBackend.setOpened();
             userModelBackend.fetchCurrentActivityModel();
         }
