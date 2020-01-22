@@ -292,6 +292,7 @@ def build_client_docs(ctx):
     }
 
 def changelog(ctx, trigger = {}, depends_on = []):
+    repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
     result = {
         'kind': 'pipeline',
         'type': 'docker',
@@ -308,7 +309,7 @@ def changelog(ctx, trigger = {}, depends_on = []):
                     'actions': [
                         'clone',
                     ],
-                    'remote': 'https://github.com/%s' % (ctx.build.source_repo),
+                    'remote': 'https://github.com/%s' % (repo_slug),
                     'branch': ctx.build.source if ctx.build.event == 'pull_request' else 'master',
                     'path': '/drone/src',
                     'netrc_machine': 'github.com',
