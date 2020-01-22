@@ -5,8 +5,8 @@ set(LIBRARY_VERSION ${MIRALL_VERSION})
 set(LIBRARY_SOVERSION "0")
 
 # add definitions
-include(DefinePlatformDefaults)
-include(DefineOptions.cmake)
+option(MEM_NULL_TESTS "Enable NULL memory testing" OFF)
+
 
 include(ConfigureChecks.cmake)
 include(../common/common.cmake)
