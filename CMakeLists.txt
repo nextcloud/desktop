@@ -165,8 +165,6 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME "${APPLICATION_SHORTNAME}")
 endif()
 
-include(OwnCloudCPack.cmake)
-
 if( WIN32 )
     add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
     add_definitions( -DNOMINMAX )
