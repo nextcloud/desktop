@@ -1,6 +1,6 @@
 ChangeLog
 =========
-version 2.6.1 (2019-12-20)
+version 2.6.1 (2020-01-17)
 (last updated on de0d330c002436454f3fe4929bd707e5f0425949)
 
 Changes:
@@ -21,7 +21,7 @@ Bugfixes:
 * Shell Integration: Don't assume read-only folder when permissions are not known (#7330)
 * Sync: Temporary disable http2 support by default again (#7610)
 * Windows Installer: Remember install location on auto update (#7580)
- 
+
 version 2.6.0 (2019-11-11)
 (last update on 5131f50ff048d5213aa69edfbae349de2822498a)
 
@@ -562,7 +562,7 @@ version 2.2.2 (release 2016-06-21)
 version 2.2.1 (release 2016-06-06)
  * Fix out of memory error when too many uploads happen (#4611)
  * Fix display errors in progress display (#4803 #4856)
- * LockWatcher: Remember to upload files after they become unlocked (#4865) 
+ * LockWatcher: Remember to upload files after they become unlocked (#4865)
  * Fix overlay icons for files with umlauts (#4884)
  * Certs: Re-ask for different cert after rejection (#4898, #4911)
  * Progress: Don't count items without propagation jobs (#4856, #4910)
@@ -619,7 +619,7 @@ version 2.1 (release 2015-12-03)
  * GUI: Improved upload/download progress UI (#3403, #3569)
  * Allowed sharing with ownCloud internal users and groups from Desktop
  * Changed files starting in .* to be considered hidden on all platforms (#4023)
- * Reflect read-only permissions in filesystem (#3244)  
+ * Reflect read-only permissions in filesystem (#3244)
  * Blacklist: Clear on successful chunk upload (#3934)
  * Improved reconnecting after network change/disconnect (#4167 #3969 ...)
  * Improved performance in Windows file system discovery
@@ -693,7 +693,7 @@ version 2.0.2 (release 2015-10-21)
   * ShareDialog: Fix folder display (#3659)
   * AccountSettings: Restore from legacy only once (#3565)
   * SSL Certificate Error Dialog: show account name (#3729)
-  * Tray notification: Don't show a message about modified folder (#3613) 
+  * Tray notification: Don't show a message about modified folder (#3613)
   * PropagateLocalRemove:  remove entries from the DB even if there was an error.
   * Settings UI improvements (eg. #3713, #3721, #3619 and others)
   * Folder: Do not create the sync folder if it does not exist (#3692)
@@ -1398,4 +1398,6 @@ version 1.0.1 (release 2012-04-18), csync 0.50.5 required
   * [Platform] MacOSX porting efforts
   * [Platform] MacOSX Bundle creation added
   * [Platform] Enabled ranslations on Windows.
+
+
 
