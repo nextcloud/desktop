@@ -172,7 +172,6 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
                 ],
             },
         ],
-        
         "trigger": trigger,
         "depends_on": depends_on,
     }
@@ -284,10 +283,10 @@ def build_client_docs(ctx):
             })),
         ],
         "trigger": {
-            "event": [
-                "push",
-                "pull_request",
-                "tag",
+            "ref": [
+                "refs/heads/master",
+                "refs/tags/**",
+                "refs/pull/**",
             ],
         },
     }
