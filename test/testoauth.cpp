@@ -173,9 +173,10 @@ public:
         QCOMPARE(sender(), browserReply.data());
         QCOMPARE(state, TokenAsked);
         browserReply->deleteLater();
+        QCOMPARE(QNetworkReply::NoError, browserReply->error());
         QCOMPARE(browserReply->rawHeader("Location"), QByteArray("owncloud://success"));
         replyToBrowserOk = true;
-    };
+    }
 
     virtual QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req)
     {
@@ -195,6 +196,7 @@ public:
     }
 
     virtual QByteArray tokenReplyPayload() const {
+        // the dummy server provides the user admin
         QJsonDocument jsondata(QJsonObject{
                 { "access_token", "123" },
                 { "refresh_token" , "456" },
@@ -223,6 +225,37 @@ private slots:
     void testBasic()
     {
         OAuthTestCase test;
+        test.test();
+    }
+
+
+    void testWrongUser()
+    {
+        struct Test : OAuthTestCase {
+            QByteArray tokenReplyPayload() const override {
+                // the dummy server provides the user admin
+                QJsonDocument jsondata(QJsonObject{
+                    { "access_token", "123" },
+                    { "refresh_token" , "456" },
+                    { "message_url",  "owncloud://success"},
+                    { "user_id", "wrong_user" },
+                    { "token_type", "Bearer" }
+                });
+                return jsondata.toJson();
+            }
+
+            void browserReplyFinished() override {
+                QCOMPARE(sender(), browserReply.data());
+                QCOMPARE(state, TokenAsked);
+                browserReply->deleteLater();
+                QCOMPARE(QNetworkReply::AuthenticationRequiredError, browserReply->error());
+            }
+
+            bool done() const override{
+                return true;
+            }
+        };
+        Test test;
         test.test();
     }
 
@@ -372,6 +405,7 @@ private slots:
         test.test();
     }
 };
+
 
 QTEST_GUILESS_MAIN(TestOAuth)
 #include "testoauth.moc"
