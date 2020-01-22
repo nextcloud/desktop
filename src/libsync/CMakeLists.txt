@@ -97,16 +97,16 @@ set(creds_HEADERS
 IF (NOT APPLE)
     INSTALL(
         FILES ${owncloudsync_HEADERS}
-	DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/mirall
+        DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/mirall
     )
     INSTALL(
         FILES ${creds_HEADERS}
-	DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/creds
+        DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/creds
     )
 ENDIF(NOT APPLE)
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
-target_link_libraries(${synclib_NAME}
+target_link_libraries(${synclib_NAME} PUBLIC
     "${csync_NAME}"
     ${OS_SPECIFIC_LINK_LIBRARIES}
     Qt5::Core Qt5::Network
@@ -115,25 +115,24 @@ target_link_libraries(${synclib_NAME}
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt5 REQUIRED COMPONENTS Widgets)
-    target_link_libraries(${synclib_NAME} Qt5::Widgets ${QTKEYCHAIN_LIBRARY})
-    target_include_directories(${synclib_NAME} PRIVATE ${QTKEYCHAIN_INCLUDE_DIR})
+    target_link_libraries(${synclib_NAME} PUBLIC Qt5::Widgets qt5keychain)
 endif()
 
 if(Inotify_FOUND)
     target_include_directories(${synclib_NAME} PRIVATE ${Inotify_INCLUDE_DIRS})
-    target_link_libraries(${synclib_NAME} ${Inotify_LIBRARIES} )
+    target_link_libraries(${synclib_NAME} PUBLIC ${Inotify_LIBRARIES} )
 endif()
 
 GENERATE_EXPORT_HEADER( ${synclib_NAME}
-	BASE_NAME ${synclib_NAME}
-	EXPORT_MACRO_NAME OWNCLOUDSYNC_EXPORT
+        BASE_NAME ${synclib_NAME}
+        EXPORT_MACRO_NAME OWNCLOUDSYNC_EXPORT
         EXPORT_FILE_NAME owncloudlib.h
-	STATIC_DEFINE OWNCLOUD_BUILT_AS_STATIC
+        STATIC_DEFINE OWNCLOUD_BUILT_AS_STATIC
 )
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
-	VERSION ${MIRALL_VERSION}
-	SOVERSION ${MIRALL_SOVERSION}
+        VERSION ${MIRALL_VERSION}
+        SOVERSION ${MIRALL_SOVERSION}
 )
 install(TARGETS ${synclib_NAME} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
