@@ -35,6 +35,7 @@ owncloud_add_test(OwnSql "")
 owncloud_add_test(SyncJournalDB "")
 owncloud_add_test(SyncFileItem "")
 owncloud_add_test(ConcatUrl "")
+owncloud_add_test(Cookies "")
 owncloud_add_test(XmlParse "")
 owncloud_add_test(ChecksumValidator "")
 
