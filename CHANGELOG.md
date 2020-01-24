@@ -1,3 +1,26 @@
+Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
+=======================================
+The following sections list the changes in ownCloud Desktop Client unreleased relevant to
+ownCloud admins and users.
+
+
+
+Summary
+-------
+
+* Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
+
+Details
+-------
+
+* Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
+
+   A user might not want to provide .well-known/openid-configuration. The new changes enable us
+   to authenticate with OpenID Connect without it, by directly compiling the required urls into
+   the client.
+
+   https://github.com/owncloud/client/pull/7681
+
 ChangeLog
 =========
 version 2.6.1 (2020-01-17)
