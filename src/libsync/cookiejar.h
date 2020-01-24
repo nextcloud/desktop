@@ -39,8 +39,8 @@ public:
     using QNetworkCookieJar::setAllCookies;
     using QNetworkCookieJar::allCookies;
 
-    void save(const QString &fileName);
-    void restore(const QString &fileName);
+    bool save(const QString &fileName);
+    bool restore(const QString &fileName);
 
 signals:
     void newCookiesForUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url);

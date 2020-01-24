@@ -258,7 +258,10 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         auto *jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
         if (jar) {
             qCInfo(lcAccountManager) << "Saving cookies." << acc->cookieJarPath();
-            jar->save(acc->cookieJarPath());
+            if (!jar->save(acc->cookieJarPath()))
+            {
+                qCWarning(lcAccountManager) << "Failed to save cookies to" << acc->cookieJarPath();
+            }
         }
     }
 }
