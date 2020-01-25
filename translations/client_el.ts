@@ -497,7 +497,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>Για εμφάνιση περισσότερων δραστηριοτήτων παρακαλώ ανοίξτε την εφαρμογή Activity.</translation>
     </message>
 </context>
 <context>
@@ -646,7 +646,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>Η αναζήτηση αρχείων διακομιστή απάντησε με ελλιπή δεδομένα.</translation>
     </message>
 </context>
 <context>
@@ -661,7 +661,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="112"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="215"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Υπήρξε σφάλμα κατά την πρόσβαση στο &apos;αναγνωριστικό&apos;: &lt;br&gt;&lt;em&gt; %1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
@@ -1412,12 +1412,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="556"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Απαιτείται κωδικός πρόσβασης για το κοινόχρηστο</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Παρακαλώ εισάγετε κωδικό πρόσβασης για το κοινόχρηστο σύνδεσμο:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="576"/>
@@ -1787,7 +1787,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Υπήρξε σφάλμα κατά την πρόσβαση στο &apos;αναγνωριστικό&apos;: &lt;br&gt;&lt;em&gt; %1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
@@ -2612,12 +2612,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="311"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Απαιτείται κωδικός πρόσβασης για το κοινόχρηστο</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="312"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Παρακαλώ εισάγετε κωδικό πρόσβασης για το κοινόχρηστο σύνδεσμο:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
@@ -2872,7 +2872,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="782"/>
         <source>Edit</source>
-        <translation type="unfinished"/>
+        <translation>Επεξεργασία</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="784"/>
@@ -3186,7 +3186,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>Η εξερεύνηση απέτυχε.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
@@ -3385,27 +3385,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="319"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Επανάληψη όλων των μεταφορτώσεων</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="368"/>
         <source>You renamed</source>
-        <translation type="unfinished"/>
+        <translation>Μετονομάσατε</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="370"/>
         <source>You deleted</source>
-        <translation type="unfinished"/>
+        <translation>Διαγράψατε</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
         <source>You created</source>
-        <translation type="unfinished"/>
+        <translation>Δημιουργήσατε</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>You changed</source>
-        <translation type="unfinished"/>
+        <translation>Αλλάξατε</translation>
     </message>
 </context>
 <context>
@@ -3413,17 +3413,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="688"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Επιβεβαίωση Αφαίρεσης Λογαριασμού</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="689"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Θέλετε πραγματικά να αφαιρέσετε τη σύνδεση με το λογαριασμό &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="694"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Αφαίρεση σύνδεσης</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="695"/>
@@ -3817,17 +3817,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Η κεφαλίδα του αθροίσματος ελέγχου δεν είναι σωστά διαμορφωμένη.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Το checksum header περιέχει άγνωστο τύπο checksum &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο που λήφθηκε δεν επαληθεύεται από τον έλεγχο, θα συγχρονιστεί ξανά.</translation>
     </message>
 </context>
 <context>
@@ -3848,7 +3848,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="329"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Δημιουργήθηκε από την διασκευή Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; στο %3, %4 χρησιμοποιώντας Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -4004,7 +4004,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Παρουσιάστηκε σφάλμα κατά την εκκίνηση του φυλλομετρητή για τη μετάβαση στο URL %1. Ίσως δεν έχει ρυθμιστεί προεπιλεγμένος φυλλομετρητής;</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>

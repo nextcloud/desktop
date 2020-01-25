@@ -1236,12 +1236,12 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Vnesite ime nove mape, ki bo ustvarjena kot podrejena &apos;%1&apos;:</translation>
+        <translation>Ime mape, ki bo ustvarjena kot podrejena »%1«:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Mapa je uspešno ustvarjena na %1.</translation>
+        <translation>Mapa na %1 je uspešno ustvarjena.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
@@ -1392,7 +1392,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="124"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Ponovno zaženi &amp;&amp; posodobi</translation>
+        <translation>&amp;Ponovno zaženi in posodobi</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="56"/>
@@ -2227,7 +2227,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="140"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Neveljaven odziv JSON preverjanja naslova URL</translation>
+        <translation>Neveljaven odziv JSON ob preverjanju naslova URL</translation>
     </message>
 </context>
 <context>
@@ -3264,7 +3264,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="539"/>
         <source>Stat failed.</source>
-        <translation>Določanje statističnih podatkov je spodletelo.</translation>
+        <translation>Določanje stanja je spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="566"/>
@@ -3488,7 +3488,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="221"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>Na strežniku računua %1 teče starejša nepodprta različica %2. Z uporabo trenutno nameščenega odjemalca z nepodporo različico strežnika ni varno. Nadaljujete na lastno odgovornost.</translation>
+        <translation>Na strežniku računa %1 teče starejša nepodprta različica %2. Z uporabo trenutno nameščenega odjemalca z nepodprto različico strežnika ni varno. Nadaljujete na lastno odgovornost.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="260"/>
