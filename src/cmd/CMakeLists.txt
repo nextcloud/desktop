@@ -33,28 +33,15 @@ if(NOT BUILD_LIBRARIES_ONLY)
 endif()
 
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
-    install(TARGETS ${cmd_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
+    add_custom_command(TARGET ${cmd_NAME} POST_BUILD
+        COMMAND "cp"
+            "$<TARGET_FILE:${cmd_NAME}>"
+            "${BIN_OUTPUT_DIRECTORY}/${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS"
+        COMMENT "Copying nextcloudcmd..."
+    )
 elseif(NOT BUILD_LIBRARIES_ONLY)
     install(TARGETS ${cmd_NAME}
 	    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-endif()
-
-# FIXME: The following lines are dup in src/gui and src/cmd because it needs to be done after both are installed
-#FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary
-# currently it needs to be done because the code right above needs to be executed no matter
-# if building a bundle or not and the install_qt4_executable needs to be called afterwards
-if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
-    get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
-    get_filename_component(QT_BIN_DIR "${QT_QMAKE_EXECUTABLE}" DIRECTORY)
-    find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN_DIR}")
-
-    add_custom_command(TARGET ${cmd_NAME} POST_BUILD
-        COMMAND "${MACDEPLOYQT_EXECUTABLE}"
-            "$<TARGET_FILE_DIR:${cmd_NAME}>/../.."
-            -qmldir=${CMAKE_SOURCE_DIR}/src/gui
-            -always-overwrite
-        COMMENT "Running macdeployqt..."
-    )
 endif()
