@@ -190,7 +190,7 @@ void ShareLinkWidget::setupUiOptions()
     _noteLinkAction = _linkContextMenu->addAction(tr("Add note to recipient"));
     _noteLinkAction->setCheckable(true);
 
-    if (_linkShare->getNote().isSimpleText()) {
+    if (_linkShare->getNote().isSimpleText() && !_linkShare->getNote().isEmpty()) {
         _ui->textEdit_note->setText(_linkShare->getNote());
         _noteLinkAction->setChecked(true);
         showNoteOptions(true);
