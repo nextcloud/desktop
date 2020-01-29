@@ -125,8 +125,18 @@ QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
     return reply;
 }
 
+bool AbstractNetworkJob::retryAble() const
+{
+    return _retryAble;
+}
+
+void AbstractNetworkJob::setRetryAble(bool retryAble)
+{
+    _retryAble = retryAble;
+}
+
 QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
-    QNetworkRequest req, QIODevice *requestBody)
+QNetworkRequest req, QIODevice *requestBody)
 {
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = requestBody;
@@ -196,7 +206,7 @@ void AbstractNetworkJob::slotFinished()
 
     if (_reply->error() != QNetworkReply::NoError) {
 
-        if (_account->credentials()->retryIfNeeded(this))
+        if (retryAble() && _account->credentials()->retryIfNeeded(this))
             return;
 
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {

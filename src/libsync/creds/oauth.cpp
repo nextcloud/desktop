@@ -249,6 +249,7 @@ SimpleNetworkJob *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &
 
     auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+    job->setRetryAble(false);
     return job;
 }
 

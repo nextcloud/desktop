@@ -98,6 +98,10 @@ public:
      */
     static int httpTimeout;
 
+    /** whether or noth this job can be retried */
+    bool retryAble() const;
+    void setRetryAble(bool retryAble);
+
 public slots:
     void setTimeout(qint64 msec);
     void resetTimeout();
@@ -202,6 +206,8 @@ private:
     //
     // Reparented to the currently running QNetworkReply.
     QPointer<QIODevice> _requestBody;
+
+    bool _retryAble = true;
 };
 
 /**
