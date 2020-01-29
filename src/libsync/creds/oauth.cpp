@@ -117,7 +117,12 @@ void OAuth::startAuthentification()
                     if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
                         || !fieldsError.isEmpty()
                         || tokenType != "bearer") {
-                        QString errorReason = errorFromJson(json);
+                        // do we have error message suitable for users?
+                        QString errorReason = json[QStringLiteral("error_description")].toString();
+                        if (errorReason.isEmpty()) {
+                            // fall back to technical error
+                            errorReason = json[QStringLiteral("error")].toString();
+                        }
                         if (!errorReason.isEmpty()) {
                             errorReason = tr("Error returned from the server: <em>%1</em>")
                                               .arg(errorReason.toHtmlEscaped());
@@ -140,7 +145,7 @@ void OAuth::startAuthentification()
                         } else {
                             errorReason = tr("Unknown Error");
                         }
-                        qCWarning(lcOauth) << "Error when getting the accessToken" << jsonData << errorReason;
+                        qCWarning(lcOauth) << "Error when getting the accessToken" << errorReason << "received data:" << jsonData;
                         httpReplyAndClose(socket, "500 Internal Server Error",
                             tr("<h1>Login Error</h1><p>%1</p>").arg(errorReason).toUtf8().constData());
                         emit result(Error);
@@ -181,12 +186,13 @@ void OAuth::refreshAuthentification(const QString &refreshToken)
             QJsonParseError jsonParseError;
             // https://developer.okta.com/docs/reference/api/oidc/#response-properties-2
             const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-            const QString errorReason = errorFromJson(json);
-            if (!errorReason.isEmpty()) {
-                if (errorReason == QStringLiteral("invalid_grant")) {
+            const QString error = json.value(QLatin1String("error")).toString();
+            if (!error.isEmpty()) {
+                if (error == QLatin1String("invalid_grant") ||
+                    error == QLatin1String("invalid_request")) {
                     newRefreshToken.clear();
                 } else {
-                    qCWarning(lcOauth) << tr("Error while refreshing the token: %1").arg(errorReason);
+                    qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(error, json.value(QLatin1String("error_description")).toString());
                 }
             } else if (reply->error() != QNetworkReply::NoError) {
                 qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(reply->errorString(), QString::fromUtf8(jsonData));
@@ -272,17 +278,6 @@ QVariant OAuth::getRequiredField(const QJsonObject &json, const QString &s, QStr
         return QJsonValue();
     }
     return *out;
-}
-
-QString OAuth::errorFromJson(const QJsonObject &json)
-{
-    if (json.isEmpty()) {
-        return {};
-    }
-    QString errorFromJson = json[QStringLiteral("error_description")].toString();
-    if (errorFromJson.isEmpty())
-        errorFromJson = json[QStringLiteral("error")].toString();
-    return errorFromJson;
 }
 
 QUrl OAuth::authorisationLink() const
