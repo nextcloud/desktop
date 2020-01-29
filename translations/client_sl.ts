@@ -901,9 +901,9 @@ If this action was unintended you can restore the lost data now.</source>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation>Z usklajevanjem bi se datoteke povrnile na predhodni čas usklajevanja mape &apos;%1&apos;.
-To se lahko zgodi, če je na strežniku na primer obnovljena varnostna kopija.
-Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi različicami. Ali želite ohraniti trenutne krajevne datoteke kot preimenovane datoteke v usklajevalnem sporu?</translation>
+        <translation>Z usklajevanjem bi se datoteke povrnile na predhodni čas usklajevanja mape »%1«.
+To se zgodi, ko je na strežniku na primer obnovljena varnostna kopija.
+Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starejšimi različicami. Ali želite ohraniti trenutne krajevne datoteke kot datoteke preimenovane zaradi usklajevalnega spora?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1125"/>
@@ -1079,7 +1079,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="932"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje sprememb</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="967"/>
@@ -1292,7 +1292,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Ni prejete oznake s strežnika. Preveriti je treba podatke posredovalnega strežnika ali prehoda.</translation>
+        <translation>Ni prejete oznake E-Tag s strežnika. Preveriti je treba podatke posredovalnega strežnika ali prehoda.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="188"/>
@@ -3179,7 +3179,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>Korak odkrivanja je spodletel.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
