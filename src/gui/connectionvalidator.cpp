@@ -44,7 +44,7 @@ ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
-        _errors << tr("No ownCloud account configured");
+        _errors << tr("No Nextcloud account configured");
         reportResult(NotConfigured);
         return;
     }
