@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="436"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>Serwer odpowiedział &quot;% 1% 2&quot; na &quot;% 3% 4&quot;</translation>
+        <translation>Serwer odpowiedział &quot;%1 %2&quot; na &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -194,7 +194,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Aby chronić Twoją tożsamość kryptograficzną, szyfrujemy ją kluczem składającym się z 12 wyrazów. Hasło zachowaj w bezpiecznym miejscu. Będzie ono potrzebne do dodania innych urządzeń do Twojego konta (takich jak twój telefon komórkowy lub laptop).</translation>
+        <translation>Aby chronić Twoją tożsamość kryptograficzną, szyfrujemy ją kluczem składającym się z 12 wyrazów. Hasło zachowaj w bezpiecznym miejscu. Będzie ono potrzebne do dodania innych urządzeń do Twojego konta (takich jak telefon komórkowy lub laptop).</translation>
     </message>
 </context>
 <context>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="216"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>To konto obsługuje szyfrowanie typu end-to-end</translation>
+        <translation>To konto obsługuje szyfrowanie typu end to end</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="218"/>
@@ -350,7 +350,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="983"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Uzyskanie autoryzacji z przeglądarki. &lt;a href=&apos;%1&apos;&gt;Kliknij tutaj&lt;/a&gt;, aby ponownie otworzyć przeglądarkę.</translation>
+        <translation>Uzyskiwanie autoryzacji z przeglądarki. &lt;a href=&apos;%1&apos;&gt;Kliknij tutaj&lt;/a&gt;, aby ponownie otworzyć przeglądarkę.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="990"/>
@@ -385,7 +385,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1153"/>
         <source>Remove connection</source>
-        <translation>Usuwanie połączenia</translation>
+        <translation>Usuń połączenie</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="545"/>
@@ -396,12 +396,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="623"/>
         <source>Resume sync</source>
-        <translation>Przywróć synchronizację</translation>
+        <translation>Wznów synchronizację</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="623"/>
         <source>Pause sync</source>
-        <translation>Zatrzymaj synchronizację</translation>
+        <translation>Wstrzymaj synchronizację</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="698"/>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="920"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) z %2 w użyciu. Niektóre foldery, w tym zamontowane lub udostępnione foldery w sieci, mogą mieć różne limity.</translation>
+        <translation>%1 (%3%) z %2 w użyciu. Niektóre foldery, w tym zamontowane lub udostępnione foldery w sieci, mogą mieć różne ograniczenia.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="921"/>
@@ -426,7 +426,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="930"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>Obecnie nie ma dostępnych informacji o wykorzystaniu pamięci masowej.</translation>
+        <translation>Obecnie nie ma dostępnych informacji o wykorzystaniu pamięci.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="987"/>
@@ -436,7 +436,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="996"/>
         <source>No %1 connection configured.</source>
-        <translation>Połączenie %1 nie skonfigurowane.</translation>
+        <translation>Nie skonfigurowano połączenia %1.</translation>
     </message>
 </context>
 <context>
@@ -444,7 +444,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
         <source>Signed out</source>
-        <translation>Odłączony</translation>
+        <translation>Wylogowany</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="136"/>
@@ -484,7 +484,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="150"/>
         <source>Unknown account state</source>
-        <translation>Status konta nieznany</translation>
+        <translation>Nieznany status konta</translation>
     </message>
 </context>
 <context>
@@ -510,7 +510,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>Ten serwer prawdopodobnie wymaga certyfikatu SSL klienta</translation>
+        <translation>Ten serwer prawdopodobnie wymaga certyfikatu klienta SSL.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -543,17 +543,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="202"/>
         <source>Error accessing the configuration file</source>
-        <translation>Błąd przy dostępie do pliku konfiguracji</translation>
+        <translation>Błąd dostępu do pliku konfiguracyjnego</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="203"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>Wystąpił błąd podczas uzyskiwania dostępu do pliku konfiguracyjnego w % 1. Upewnij się, że użytkownik może uzyskać dostęp do pliku.</translation>
+        <translation>Wystąpił błąd podczas uzyskiwania dostępu do pliku konfiguracyjnego w %1. Upewnij się, że użytkownik może uzyskać dostęp do pliku.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="206"/>
         <source>Quit %1</source>
-        <translation>Wyjdź z %1</translation>
+        <translation>Zamknij %1</translation>
     </message>
 </context>
 <context>
@@ -566,7 +566,7 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation>Wprowadź użytkwownika i hasło dla &apos;%1&apos; w %2.</translation>
+        <translation>Wprowadź nazwę użytkownika i hasło dla &apos;%1&apos; w %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -584,7 +584,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1041"/>
         <source>Error writing metadata to the database</source>
-        <translation>Błąd podczas zapisu metadanych do bazy</translation>
+        <translation>Błąd zapisu metadanych do bazy danych</translation>
     </message>
 </context>
 <context>
@@ -592,21 +592,16 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Wprowadź hasło szyfrowania E2E:&lt;br&gt;&lt;br&gt;Użytkownik: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <translation>Wprowadź hasło szyfrowania end to end:&lt;br&gt;&lt;br&gt;Użytkownik: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1008"/>
         <source>Enter E2E passphrase</source>
-        <translation>Wprowadź hasło dla E2E</translation>
+        <translation>Wprowadź hasło dla end to end</translation>
     </message>
 </context>
 <context>
     <name>OCC::ConnectionValidator</name>
-    <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
-        <source>No ownCloud account configured</source>
-        <translation>Nie skonfigurowano konta ownCloud</translation>
-    </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>The configured server for this client is too old</source>
@@ -615,12 +610,17 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="288"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Proszę zaaktualizować serwer do najnowszej wersji i zrestartować klienta.</translation>
+        <translation>Zaktualizuj serwer do najnowszej wersji i zrestartuj klienta.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Błąd uwierzytelnienia: nazwa użytkownika lub hasło są nieprawidłowe.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
+        <source>No Nextcloud account configured</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
@@ -630,7 +630,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="193"/>
         <source>The provided credentials are not correct</source>
-        <translation>Podane dane logowania są nieprawidłowe</translation>
+        <translation>Podane poświadczenia są nieprawidłowe</translation>
     </message>
 </context>
 <context>
@@ -681,7 +681,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Connect to %1</source>
-        <translation>Podłącz do %1</translation>
+        <translation>Połącz z %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
@@ -732,7 +732,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="147"/>
         <source>%1 is not readable.</source>
-        <translation>%1 jest nie do odczytu.</translation>
+        <translation>%1 nie jest do odczytu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="375"/>
@@ -744,19 +744,19 @@
         <location filename="../src/gui/folder.cpp" line="382"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 został ściągnięty.</translation>
+        <translation>%1 został pobrany.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="389"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 został uaktualniony.</translation>
+        <translation>%1 został zaktualizowany.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="396"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation>%1 zmienił nazwę na %2.</translation>
+        <translation>Nazwa %1 została zmieniona na %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="403"/>
@@ -781,37 +781,37 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>Zmieniono nazwę %1 na %2 oraz %n innemu plikowi została zmieniona nazwa.</numerusform><numerusform>Zmieniono nazwę %1 na %2 oraz %n innym plikom została zmieniona nazwa.</numerusform><numerusform>%1 has been renamed to %2 and %n other file(s) have been renamed.</numerusform><numerusform>%1 has been renamed to %2 and %n other file(s) have been renamed.</numerusform></translation>
+        <translation><numerusform>Nazwa %1 została zmieniona na %2 i w %n innym pliku.</numerusform><numerusform>Nazwa %1 została zmieniona na %2 i w %n innych plikach.</numerusform><numerusform>Nazwa %1 została zmieniona na %2 i w %n innych plikach.</numerusform><numerusform>Nazwa %1 została zmieniona na %2 i w %n innych plikach.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>Przeniesiono %1 do %2 oraz przeniesiono %n inny plik.</numerusform><numerusform>Przeniesiono %1 do %2 oraz przeniesiono %n inne pliki.</numerusform><numerusform>Przeniesiono %1 do %2 oraz przeniesiono %n innych plików.</numerusform><numerusform>Przeniesiono %1 do %2 oraz przeniesiono %n innych plików.</numerusform></translation>
+        <translation><numerusform>%1 został przeniesiony do %2 i %n inny plik.</numerusform><numerusform>%1 został przeniesiony do %2 i %n inne pliki.</numerusform><numerusform>%1 został przeniesiony do %2 i %n innych plików.</numerusform><numerusform>%1 został przeniesiony do %2 i %n innych plików.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 plik ma błąd synchronizacji</numerusform><numerusform>%1 i %n innych plików mają konflikt synchronizacji.</numerusform><numerusform>%1 i %n innych plików mają konflikt synchronizacji.</numerusform><numerusform>%1 i %n innych plików mają konflikt synchronizacji.</numerusform></translation>
+        <translation><numerusform>%1 i %n inny plik ma konflikt synchronizacji.</numerusform><numerusform>%1 i %n inne pliki mają konflikt synchronizacji.</numerusform><numerusform>%1 i %n innych plików mają konflikt synchronizacji.</numerusform><numerusform>%1 i %n innych plików mają konflikt synchronizacji.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="410"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 ma konflikt synchronizacji. Sprawdź konfliktujący plik!</translation>
+        <translation>%1 ma konflikt synchronizacji. Sprawdź plik konfliktu!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>Plik %1 nie może zostać zsynchronizowany z powodu błędów. Sprawdź szczegóły w logu..</numerusform><numerusform>%1 i %n innych plików nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w logu..</numerusform><numerusform>%1 i %n innych plików nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w logu..</numerusform><numerusform>%1 i %n innych plików nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w logu..</numerusform></translation>
+        <translation><numerusform>%1 i %n inny plik nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w dzienniku.</numerusform><numerusform>%1 i %n inne pliki nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w dzienniku.</numerusform><numerusform>%1 i %n innych plików nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w dzienniku.</numerusform><numerusform>%1 i %n innych plików nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w dzienniku.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="417"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 nie może zostać zsynchronizowany z powodu błędu. Zobacz szczegóły w logu.</translation>
+        <translation>%1 nie może zostać zsynchronizowany z powodu błędu. Zobacz szczegóły w dzienniku.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 i %n inny plik jest obecnie zablokowany.</numerusform><numerusform>%1 i %n inne pliki są obecnie zablokowane.</numerusform><numerusform>%1 i %n innych plików są obecnie zablokowane.</numerusform><numerusform>%1 i %n inny plik(ów) jest obecnie zablokowany.</numerusform></translation>
+        <translation><numerusform>%1 i %n inny plik jest obecnie zablokowany.</numerusform><numerusform>%1 i %n inne pliki są obecnie zablokowane.</numerusform><numerusform>%1 i %n innych plików są obecnie zablokowane.</numerusform><numerusform>%1 i %n innych plików są obecnie zablokowane.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
@@ -821,31 +821,31 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
         <source>Sync Activity</source>
-        <translation>Aktywności synchronizacji</translation>
+        <translation>Synchronizuj aktywność</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="643"/>
         <source>Could not read system exclude file</source>
-        <translation>Nie można przeczytać pliku wyłączeń</translation>
+        <translation>Nie można odczytać systemowego pliku wykluczeń</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="972"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>Nowy folder większy niż %1MB został dodany: %2
+        <translation>Dodano nowy folder większy niż %1 MB: %2.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="975"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>Folder z pamięci zewnętrznej został dodany .
+        <translation>Dodano folder z pamięci zewnętrznej.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="976"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Przejdź do ustawień żeby go zaznaczyć i pobrać.</translation>
+        <translation>Przejdź do ustawień, aby go wybrać do pobrania.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1031"/>
@@ -855,7 +855,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1034"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Plik %1 został utworzony, ale wcześniej został wykluczony z synchronizacji. Dane w nim zawarte nie zostaną zsynchronizowane.</translation>
+        <translation>Plik %1 został utworzony, ale wcześniej został wykluczony z synchronizacji. Nie zostanie on zsynchronizowany.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1045"/>
@@ -866,7 +866,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>Zmiany w zsynchronizowanych folderach nie mogły być śledzone w wiarygodny sposób.
 
-Oznacza to, że klient synchronizacji może nie przesłać lokalnych zmian natychmiastowo, a zamiast tego będzie skanował tylko lokalne zmiany i przesyła je sporadycznie (domyślnie co dwie godziny).
+Oznacza to, że klient synchronizacji może nie przesyłać natychmiast zmian lokalnych. Zamiast tego będzie skanował tylko zmiany lokalne i przesyłać je sporadycznie (domyślnie co dwie godziny).
 
 %1</translation>
     </message>
@@ -910,9 +910,9 @@ Jeśli ta akcja była niezamierzona, możesz teraz przywrócić utracone dane.</
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation>Ta synchronizacja spowoduje zresetowanie plików do wcześniejszego czasu w folderze synchronizacji &apos;%1&apos;.
-Przyczyną może być przywrócenie plików z kopii zapasowej na serwerze.
-Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pliki zostaną zastąpione starszym plikiem we wcześniejszym stanie. Czy chcesz zachować najnowsze pliki lokalne?</translation>
+        <translation>Ta synchronizacja spowoduje zresetowanie plików do wcześniejszego stanu w folderze synchronizacji &apos;%1&apos;.
+Przyczyną może być przywrócenie kopii zapasowej na serwerze.
+Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkich plików przez starszy plik we wcześniejszym stanie. Czy chcesz zachować najnowsze pliki lokalne jako pliki konfliktu?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1125"/>
@@ -927,7 +927,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
     <message>
         <location filename="../src/gui/folder.cpp" line="1129"/>
         <source>Keep Local Files as Conflict</source>
-        <translation>Zatrzymaj pliki lokalne i ustaw status konfliktu.</translation>
+        <translation>Zachowaj pliki lokalne jako pliki konfliktu</translation>
     </message>
 </context>
 <context>
@@ -935,27 +935,27 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
     <message>
         <location filename="../src/gui/folderman.cpp" line="295"/>
         <source>Could not reset folder state</source>
-        <translation>Nie udało się zresetować stanu folderu</translation>
+        <translation>Nie można zresetować stanu folderu</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="296"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Stary sync journal &apos;%1&apos; został znaleziony, lecz nie mógł być usunięty. Proszę się upewnić, że żaden program go obecnie nie używa.</translation>
+        <translation>Znaleziono stary dziennik synchronizacji &apos;%1&apos;, ale nie można go usunąć. Upewnij się, że żadna aplikacja go nie używa.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1044"/>
         <source> (backup)</source>
-        <translation>(kopia zapasowa)</translation>
+        <translation> (kopia zapasowa)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1049"/>
         <source> (backup %1)</source>
-        <translation>(kopia zapasowa %1)</translation>
+        <translation> (kopia zapasowa %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1294"/>
         <source>Undefined State.</source>
-        <translation>Niezdefiniowany stan</translation>
+        <translation>Niezdefiniowany stan.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1297"/>
@@ -965,12 +965,12 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
     <message>
         <location filename="../src/gui/folderman.cpp" line="1300"/>
         <source>Preparing for sync.</source>
-        <translation>Przygotowanie do synchronizacji</translation>
+        <translation>Przygotowanie do synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1303"/>
         <source>Sync is running.</source>
-        <translation>Synchronizacja w toku</translation>
+        <translation>Synchronizacja jest uruchomiona.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1308"/>
@@ -995,17 +995,17 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
     <message>
         <location filename="../src/gui/folderman.cpp" line="1322"/>
         <source>Sync is paused.</source>
-        <translation>Synchronizacja wstrzymana</translation>
+        <translation>Synchronizacja wstrzymana.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1328"/>
         <source>%1 (Sync is paused)</source>
-        <translation> %1 (Synchronizacja jest zatrzymana)</translation>
+        <translation>%1 (Synchronizacja wstrzymana)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1336"/>
         <source>No valid folder selected!</source>
-        <translation>Nie wybrano poprawnego folderu.</translation>
+        <translation>Nie wybrano prawidłowego folderu!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1346"/>
@@ -1015,22 +1015,22 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie Twoje pli
     <message>
         <location filename="../src/gui/folderman.cpp" line="1350"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Nie masz uprawnień, aby zapisywać w tym folderze!</translation>
+        <translation>Nie masz uprawnień do zapisu w wybranym folderze!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1406"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>Ten folder jest już wybrany do synchronizacji z serwerem. Wybierz inny lokalny folder!</translation>
+        <translation>Ten folder jest już wybrany do synchronizacji z serwerem. Wybierz inny folder lokalny!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1386"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Lokalny folder %1 już zawiera folder użyty na potrzeby synchronizacji. Proszę wybrać inny folder lokalny.</translation>
+        <translation>Folder lokalny %1 zawiera już folder używany w połączeniu do synchronizacji folderów. Wybierz inny!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1392"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Lokalny folder %1 już zawiera folder użyty na potrzeby synchronizacji. Proszę wybrać inny folder lokalny.</translation>
+        <translation>W folderze lokalnym %1 jest już zawarty folder używany w obsłudze do synchronizacji folderów. Wybierz inny!...</translation>
     </message>
 </context>
 <context>
@@ -2982,7 +2982,7 @@ Niezalecane jest jego użycie.</translation>
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation>o połączenie jest szyfrowane przy użyciu %1 bit %2.
+        <translation>to połączenie jest szyfrowane przy użyciu %1 bit %2.
 </translation>
     </message>
     <message>

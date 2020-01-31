@@ -603,11 +603,6 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
-        <source>No ownCloud account configured</source>
-        <translation>No se ha configurado ninguna cuenta de ownCloud</translation>
-    </message>
-    <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="287"/>
         <source>The configured server for this client is too old</source>
         <translation>La configuración del servidor para este cliente es demasiado antigua</translation>
@@ -621,6 +616,11 @@
         <location filename="../src/gui/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Error de autenticación: El usuario o la contraseña son incorrectos</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
+        <source>No Nextcloud account configured</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
