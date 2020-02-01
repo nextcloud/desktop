@@ -63,7 +63,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>User name</string>
+      <string>Username</string>
      </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>
