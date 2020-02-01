@@ -620,7 +620,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma conta Nextcloud configurada</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>

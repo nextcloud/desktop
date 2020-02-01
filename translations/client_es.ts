@@ -620,7 +620,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>La cuenta Nextcloud no está configurada</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
@@ -3423,7 +3423,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="689"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;¿De verdad quieres eliminar la vinculación con la cuenta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Esto &lt;b&gt;no eliminará&lt;/b&gt; ningún archivo.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;¿De verdad quieres eliminar la conexión con la cuenta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Esto &lt;b&gt;no eliminará&lt;/b&gt; ningún archivo.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="694"/>

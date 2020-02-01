@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create Folder</source>
-        <translation>Utwórz katalog</translation>
+        <translation>Utwórz folder</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
         <source>Folders</source>
-        <translation>Katalogi</translation>
+        <translation>Foldery</translation>
     </message>
 </context>
 <context>
@@ -620,7 +620,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Nie skonfigurowano konta Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
@@ -1073,12 +1073,12 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="186"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Wystąpił błąd podczas pobierania listy folderów z serwera.</translation>
+        <translation>Wystąpił błąd podczas pobierania listy katalogów z serwera.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="239"/>
         <source>Signed out</source>
-        <translation>Odłączony</translation>
+        <translation>Wylogowany</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
@@ -1134,7 +1134,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
         <source>Fetching folder list from server …</source>
-        <translation>Pobieranie listy folderów z serwera...</translation>
+        <translation>Pobieranie listy katalogów z serwera...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
@@ -1173,7 +1173,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
         <location filename="../src/gui/folderstatusmodel.cpp" line="1049"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 z %2, plik %3 z %4</translation>
+        <translation>Plik %3 z %4, %1 z %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
@@ -1201,7 +1201,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation>Ten problem zwykle występuje, gdy podgląd Inotify są nie działa poprawnie. Sprawdź FAQ w celu uzyskania szczegółowych informacji.</translation>
+        <translation>Ten problem zwykle występuje, gdy podgląd inotify nie działa poprawnie. Sprawdź FAQ w celu uzyskania szczegółowych informacji.</translation>
     </message>
 </context>
 <context>
@@ -1250,7 +1250,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Folder został utworzony pomyślnie na %1</translation>
+        <translation>Folder został utworzony pomyślnie w %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
@@ -1260,12 +1260,12 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="227"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Nie udało się utworzyć folderu na %1. Proszę sprawdzić ręcznie.</translation>
+        <translation>Nie udało się utworzyć folderu w %1. Sprawdź ręcznie.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="236"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Nie udało się wyświetlić folderu. Błąd: %1</translation>
+        <translation>Nie udało się wyświetlić listy folderów. Błąd: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="317"/>
@@ -1306,12 +1306,12 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="188"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Otrzymaliśmy inny E-Tag wznowienia. Spróbuje ponownie następnym razem.</translation>
+        <translation>Otrzymaliśmy inny E-Tag wznowienia. Ponowna próba następnym razem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
         <source>Server returned wrong content-range</source>
-        <translation>Serwer zwrócił błędną zakres zawartości</translation>
+        <translation>Serwer zwrócił błędny zakres zawartości</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="325"/>
@@ -1365,12 +1365,12 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Uruchamiaj podczas startu systemu</translation>
+        <translation>&amp;Uruchamiaj przy starcie systemu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Używaj monochromatycznych ikon</translation>
+        <translation>Użyj ikon &amp;monochromatycznych</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
@@ -1380,7 +1380,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Pokaż synchronizowany folder w oknie &amp;Exploratora</translation>
+        <translation>Pokaż foldery synchronizacji w oknie &amp;Exploratora</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
@@ -1401,7 +1401,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/generalsettings.ui" line="124"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Zrestartuj i Aktualizuj</translation>
+        <translation>&amp;Uruchom ponownie i aktualizuj</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="56"/>
@@ -1414,17 +1414,17 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/socketapi.cpp" line="556"/>
         <source>Password for share required</source>
-        <translation>Wymagane hasło do udostępnienia</translation>
+        <translation>Wymagane hasło dla udostępnienia</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>Please enter a password for your link share:</source>
-        <translation>Wprowadź hasło do udostępnionego linku:</translation>
+        <translation>Wprowadź hasło dla udostępnionego linku:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="576"/>
         <source>Sharing error</source>
-        <translation>Udostępnianie błędu</translation>
+        <translation>Błąd udostępniania</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="577"/>
@@ -1441,12 +1441,12 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Wprowadź %1 hasło:&lt;br&gt;&lt;br&gt;Użytkownik:%2&lt;br&gt;Konto:%3&lt;br&gt;</translation>
+        <translation>Wprowadź %1 hasło:&lt;br&gt;&lt;br&gt;Użytkownik: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>Odczytywanie keychain  zakończyło się błędem: &apos;%1&apos;</translation>
+        <translation>Odczytywanie kluczy zakończyło się błędem: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1456,7 +1456,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Kliknij&lt;/a&gt; aby poprosić o hasło do aplikacji z interfejsu internetowego.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Kliknij&lt;/a&gt;, aby poprosić o hasło do aplikacji z interfejsu internetowego.</translation>
     </message>
 </context>
 <context>
@@ -1636,7 +1636,7 @@ Logi będą zapisane w %1</translation>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="222"/>
         <source>Could not write to log file %1</source>
-        <translation>Błąd zapisu pliku logu %1</translation>
+        <translation>Błąd zapisu do pliku dziennika %1</translation>
     </message>
 </context>
 <context>
@@ -1677,7 +1677,7 @@ Logi będą zapisane w %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
         <source>Get update</source>
-        <translation>Uaktualnij</translation>
+        <translation>Pobierz aktualizację</translation>
     </message>
 </context>
 <context>
@@ -1690,7 +1690,7 @@ Logi będą zapisane w %1</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>bez proxy</translation>
+        <translation>Brak proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
@@ -2754,7 +2754,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>I shared something with you</source>
-        <translation>Udostępniłem/am ci coś</translation>
+        <translation>Coś Ci udostępniłem</translation>
     </message>
 </context>
 <context>
@@ -2841,7 +2841,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>I shared something with you</source>
-        <translation>Udostępniłem/am ci coś</translation>
+        <translation>Coś Ci udostępniłem</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="681"/>

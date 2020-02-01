@@ -2694,7 +2694,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
         <source>Unshare</source>
-        <translation>Nebesidalinti</translation>
+        <translation>Nustoti bendrinti</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
