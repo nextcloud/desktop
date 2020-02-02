@@ -290,7 +290,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
         <source>Folder creation failed</source>
-        <translation>Αποτυχία δημιουρργίας φακέλου</translation>
+        <translation>Αποτυχία δημιουργίας φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="751"/>
@@ -620,7 +620,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Δεν έχει ρυθμιστεί λογαριασμός Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
@@ -667,7 +667,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="218"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η ανάλυση του JSON από το διακομιστή: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>

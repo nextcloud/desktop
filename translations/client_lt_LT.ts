@@ -122,7 +122,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="52"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Atverti naršyklę iš naujo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -620,7 +620,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Nesukonfigūruota jokia Nextcloud paskyra</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
@@ -3021,7 +3021,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
-        <translation>su sertifikatu %1</translation>
+        <translation>su liudijimu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="175"/>

@@ -202,7 +202,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: ...</source>
-        <translation>Размер хранилища: ...</translation>
+        <translation>Размер хранилища:...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
@@ -620,7 +620,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись Nextcloud не настроена</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
@@ -1593,7 +1593,9 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>При включении этого параметра при ненастроенных остальных параметрах журналирования, файлы журналов будут записываться во временный каталог и удаляться через несколько часов. Состояние этого параметра сохраняется после перезапуска приложения.
+
+Путь сохранения файлов журналов: «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -2066,12 +2068,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation>Запрос авторизации с сервера перенаправлен на  &apos;%1&apos;. Ссылка не верна, сервер не настроен.</translation>
+        <translation>Запрос авторизации с сервера перенаправлен на «%1». Ссылка неверна, сервер неправильно настроен.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation>Обнаружен не верный ответ на авторизованный запрос WebDAV</translation>
+        <translation>Получен неверный ответ на авторизованный запрос WebDAV</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
@@ -2106,7 +2108,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
         <source>ok</source>
-        <translation>ок</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="462"/>
@@ -2625,7 +2627,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation>Путь Nextcloud:</translation>
+        <translation>Расположение Nextcloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
@@ -2870,7 +2872,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="782"/>
         <source>Edit</source>
-        <translation type="unfinished"/>
+        <translation>Редактировать</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="784"/>
@@ -2958,7 +2960,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;Заметка:&lt;/b&gt; Этот сертификат был одобрен вручную&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;Внимание:&lt;/b&gt; Этот сертификат был одобрен вручную&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
@@ -3383,27 +3385,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="319"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Повторить передачу файлов на сервер</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="368"/>
         <source>You renamed</source>
-        <translation type="unfinished"/>
+        <translation>Вы переименовали</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="370"/>
         <source>You deleted</source>
-        <translation type="unfinished"/>
+        <translation>Вы удалили</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
         <source>You created</source>
-        <translation type="unfinished"/>
+        <translation>Вы создали</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>You changed</source>
-        <translation type="unfinished"/>
+        <translation>Вы изменили</translation>
     </message>
 </context>
 <context>
@@ -3411,22 +3413,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="688"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Подтверждение удаления учётной записи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="689"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Действительно удалить подключение к учётной записи &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание:&lt;/b&gt; Это действие &lt;b&gt;не&lt;/b&gt;  приведёт к удалению файлов.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="694"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Удалить подключение</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="695"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -3792,17 +3794,17 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>один час</numerusform><numerusform>%n часа</numerusform><numerusform>%n часов</numerusform><numerusform>%n часов</numerusform></translation>
+        <translation><numerusform>один час</numerusform><numerusform>%n часа</numerusform><numerusform>%n часов</numerusform><numerusform>%n часа</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n минута</numerusform><numerusform>%n минуты</numerusform><numerusform>%n минут</numerusform><numerusform>%n минут</numerusform></translation>
+        <translation><numerusform>%n минута</numerusform><numerusform>%n минуты</numerusform><numerusform>%n минут</numerusform><numerusform>%n минуты</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n секунда</numerusform><numerusform>%n секунды</numerusform><numerusform>%n секунд</numerusform><numerusform>%n секунд</numerusform></translation>
+        <translation><numerusform>%n секунда</numerusform><numerusform>%n секунды</numerusform><numerusform>%n секунд</numerusform><numerusform>%n секунды</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>
@@ -3825,7 +3827,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation>Скаченный файл не соответствует контрольной сумме, операция будет возобновлена.</translation>
+        <translation>Скачанный файл не соответствует контрольной сумме, операция будет возобновлена.</translation>
     </message>
 </context>
 <context>
@@ -3854,17 +3856,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation>Скачано</translation>
+        <translation>Получено с сервера</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation>Загружено</translation>
+        <translation>Передано на сервер</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Серверная версия скачана, изменённый локальный файл скопирован в файл конфликта.</translation>
+        <translation>Версия файла с сервера скачана, а изменённый локальный файл скопирован в конфликтующую версию.</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
