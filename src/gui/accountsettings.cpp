@@ -546,7 +546,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
     if (!selected.isValid() || !folder)
         return;
 
-    OwncloudWizard::askExperimentalVirtualFilesFeature([folder, this](bool enable) {
+    OwncloudWizard::askExperimentalVirtualFilesFeature(this, [folder, this](bool enable) {
         if (!enable || !folder)
             return;
 

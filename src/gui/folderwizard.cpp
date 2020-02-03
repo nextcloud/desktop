@@ -538,7 +538,7 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
     // The click has already had an effect on the box, so if it's
     // checked it was newly activated.
     if (_virtualFilesCheckBox->isChecked()) {
-        OwncloudWizard::askExperimentalVirtualFilesFeature([this](bool enable) {
+        OwncloudWizard::askExperimentalVirtualFilesFeature(this, [this](bool enable) {
             if (!enable)
                 _virtualFilesCheckBox->setChecked(false);
         });

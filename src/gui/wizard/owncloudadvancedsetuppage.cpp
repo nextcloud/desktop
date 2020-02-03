@@ -362,14 +362,16 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 
 void OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked()
 {
-    OwncloudWizard::askExperimentalVirtualFilesFeature([this](bool enable) {
-        if (!enable)
-            return;
+    if (!_ui.rVirtualFileSync->isChecked()) {
+        OwncloudWizard::askExperimentalVirtualFilesFeature(this, [this](bool enable) {
+            if (!enable)
+                return;
 
-        _ui.lSelectiveSyncSizeLabel->setText(QString());
-        _selectiveSyncBlacklist.clear();
-        setRadioChecked(_ui.rVirtualFileSync);
-    });
+            _ui.lSelectiveSyncSizeLabel->setText(QString());
+            _selectiveSyncBlacklist.clear();
+            setRadioChecked(_ui.rVirtualFileSync);
+        });
+    }
 }
 
 void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
