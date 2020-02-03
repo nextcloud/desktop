@@ -69,7 +69,6 @@ Major/Minor release template. Enter here, when we have three estimated dates:
 * [ ] Check [crash reporter](https://handbook.owncloud.com/release_processes/client/desktop.html#crash-reporter) for bad crashes of this RC (same crash happening to many users) @guruz @hvonreth
 * [ ] Check the translations coming from transifex: All synchronized? TODO: (20181109jw: where? how?)
 * [ ] Review drone results: `make test` TODO: Mac, [Lin](https://drone.owncloud.services/client/build-linux), Win? 
-* [ ] Run the tx.pl scripts on the final code tag (20181109jw: really? What does that test?) @oggofart
 * [ ] Run smashbox (20180719 jw: FIXME: add details, how?) (ask @dschmidt, put link to smashbox results here)
 * [ ] Inform product management and marketing and #general channel in rocker chat that we are 1 day out
 
