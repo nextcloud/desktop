@@ -1376,7 +1376,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
         <source>S&amp;how crash reporter</source>
-        <translation>Poka탑i &amp;poro훾ilo sesutja</translation>
+        <translation>Poka탑i &amp;poro훾ilo o sesutu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>

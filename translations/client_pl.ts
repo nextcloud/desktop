@@ -2772,7 +2772,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="415"/>
         <source>Can reshare</source>
-        <translation>Pozwól na udostępnianie innym</translation>
+        <translation>Może udostępnić innym</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="425"/>
