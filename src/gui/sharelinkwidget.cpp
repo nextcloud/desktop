@@ -331,18 +331,14 @@ void ShareLinkWidget::slotShareSelectionChanged()
     // Public upload state (files can only be read-only, box is hidden for them)
     _ui->widget_editing->setEnabled(!_isFile);
     if (!selectionUnchanged) {
-        if (_isFile) {
-            _ui->radio_readOnly->setChecked(true);
-        } else {
-            if (share && share->getPublicUpload()) {
-                if (share->getShowFileListing()) {
-                    _ui->radio_readWrite->setChecked(true);
-                } else {
-                    _ui->radio_uploadOnly->setChecked(true);
-                }
+        if (share && share->getPublicUpload()) {
+            if (share->getShowFileListing()) {
+                _ui->radio_readWrite->setChecked(true);
             } else {
-                _ui->radio_readOnly->setChecked(true);
+                _ui->radio_uploadOnly->setChecked(true);
             }
+        } else {
+            _ui->radio_readOnly->setChecked(true);
         }
     }
 
