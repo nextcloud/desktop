@@ -2757,8 +2757,8 @@ Ekki er mælt með því að hún sé notuð.
     <name>OCC::ShareUserLine</name>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="57"/>
-        <source>User name</source>
-        <translation>Notandanafn</translation>
+        <source>Username</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="89"/>

@@ -2748,8 +2748,8 @@ Não é aconselhada a sua utilização.</translation>
     <name>OCC::ShareUserLine</name>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="57"/>
-        <source>User name</source>
-        <translation>Nome de utilizador</translation>
+        <source>Username</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="89"/>

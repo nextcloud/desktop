@@ -2766,8 +2766,8 @@ We adviseren deze site niet te gebruiken.</translation>
     <name>OCC::ShareUserLine</name>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="57"/>
-        <source>User name</source>
-        <translation>Gebruikersnaam</translation>
+        <source>Username</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="89"/>
