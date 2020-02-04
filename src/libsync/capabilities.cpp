@@ -49,27 +49,27 @@ bool Capabilities::sharePublicLinkSupportsUploadOnly() const
     return _fileSharingPublicCapabilities.value(QStringLiteral("supports_upload_only")).toBool();
 }
 
-static bool getEnforcePasswordCapability(const QVariantMap &capabilities, const QByteArray &name)
+static bool getEnforcePasswordCapability(const QVariantMap &fileSharingPublicCapabilities, const QByteArray &name)
 {
-    auto value = capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced_for"].toMap()[name];
+    auto value = fileSharingPublicCapabilities["password"].toMap()["enforced_for"].toMap()[name];
     if (!value.isValid())
-        return capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool();
+        return fileSharingPublicCapabilities["password"].toMap()["enforced"].toBool();
     return value.toBool();
 }
 
 bool Capabilities::sharePublicLinkEnforcePasswordForReadOnly() const
 {
-    return getEnforcePasswordCapability(_capabilities, QByteArrayLiteral("read_only"));
+    return getEnforcePasswordCapability(_fileSharingPublicCapabilities, QByteArrayLiteral("read_only"));
 }
 
 bool Capabilities::sharePublicLinkEnforcePasswordForReadWrite() const
 {
-    return getEnforcePasswordCapability(_capabilities, QByteArrayLiteral("read_write"));
+    return getEnforcePasswordCapability(_fileSharingPublicCapabilities, QByteArrayLiteral("read_write"));
 }
 
 bool Capabilities::sharePublicLinkEnforcePasswordForUploadOnly() const
 {
-    return getEnforcePasswordCapability(_capabilities, QByteArrayLiteral("upload_only"));
+    return getEnforcePasswordCapability(_fileSharingPublicCapabilities, QByteArrayLiteral("upload_only"));
 }
 
 bool Capabilities::sharePublicLinkDefaultExpire() const
