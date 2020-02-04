@@ -121,8 +121,6 @@ set(updater_SRCS
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
-    list(APPEND client_SRCS settingsdialogmac.cpp)
-    list(REMOVE_ITEM client_SRCS settingsdialog.cpp)
     list(APPEND client_SRCS socketapisocket_mac.mm)
     list(APPEND client_SRCS systray.mm)
 
@@ -157,14 +155,6 @@ set(3rdparty_SRC
     ../3rdparty/qtsingleapplication/qtsingleapplication.cpp
     ../3rdparty/qtsingleapplication/qtsinglecoreapplication.cpp
    )
-
-if (APPLE)
-    list(APPEND 3rdparty_SRC
-        ../3rdparty/qtmacgoodies/src/macpreferenceswindow.mm
-        ../3rdparty/qtmacgoodies/src/macstandardicon.mm
-        ../3rdparty/qtmacgoodies/src/macwindow.mm
-        )
-endif()
 
 if(NOT WIN32)
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
@@ -283,15 +273,6 @@ target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
     ${CMAKE_CURRENT_BINARY_DIR}
 )
-
-if (APPLE)
-    target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
-        ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
-    )
-    # We want to access Cocoa specific structures in the code above
-    # and need the platform plugin interface for that - which is private.
-    target_link_libraries(${APPLICATION_EXECUTABLE} Qt5::GuiPrivate) # not actually a library. Will pull in includes
-endif()
 
 ## handle DBUS for Fdo notifications
 if( UNIX AND NOT APPLE )

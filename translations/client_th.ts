@@ -187,9 +187,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="247"/>
-        <location filename="../src/gui/accountsettings.cpp" line="511"/>
-        <location filename="../src/gui/accountsettings.cpp" line="616"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
+        <location filename="../src/gui/accountsettings.cpp" line="507"/>
+        <location filename="../src/gui/accountsettings.cpp" line="614"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1053"/>
         <source>Cancel</source>
         <translation>ยกเลิก</translation>
     </message>
@@ -199,72 +199,87 @@
         <translation>เชื่อมต่อกับ &lt;server&gt; ด้วยผู้ใช้ &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="184"/>
+        <location filename="../src/gui/accountsettings.cpp" line="180"/>
         <source>No account configured.</source>
         <translation>ไม่มีการกำหนดค่าบัญชี</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="197"/>
+        <location filename="../src/gui/accountsettings.cpp" line="193"/>
         <source>Add new</source>
         <translation>เพิ่มใหม่</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="205"/>
+        <location filename="../src/gui/accountsettings.cpp" line="201"/>
         <source>Remove</source>
         <translation>ลบออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="209"/>
+        <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Account</source>
         <translation>บัญชี</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="321"/>
+        <location filename="../src/gui/accountsettings.cpp" line="307"/>
         <source>Choose what to sync</source>
         <translation>เลือกข้อมูลที่ต้องการประสาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="327"/>
+        <location filename="../src/gui/accountsettings.cpp" line="313"/>
         <source>Force sync now</source>
         <translation>บังคับประสานข้อมูลเดี๋ยวนี้</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="329"/>
+        <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>Restart sync</source>
         <translation>ประสานข้อมูลอีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="338"/>
+        <location filename="../src/gui/accountsettings.cpp" line="324"/>
         <source>Remove folder sync connection</source>
         <translation>ลบโฟลเดอร์ที่ประสานข้อมูลออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="446"/>
+        <location filename="../src/gui/accountsettings.cpp" line="353"/>
+        <source>Enable virtual file support %1...</source>
+        <translation>เปิดใช้งานการรองรับไฟล์เสมือน %1...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="353"/>
+        <source>(tech preview)</source>
+        <translation>(ตัวอย่างทางเทคนิค)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="353"/>
+        <source>(experimental)</source>
+        <translation>(ทดลอง)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="442"/>
         <source>Folder creation failed</source>
         <translation>สร้างโฟลเดอร์ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="447"/>
+        <location filename="../src/gui/accountsettings.cpp" line="443"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;ไม่สามารถสร้างโฟลเดอร์ในเครื่อง &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="503"/>
+        <location filename="../src/gui/accountsettings.cpp" line="499"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>ยืนยันการลบโฟลเดอร์ที่ประสานข้อมูลออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="510"/>
+        <location filename="../src/gui/accountsettings.cpp" line="506"/>
         <source>Remove Folder Sync Connection</source>
         <translation>ลบโฟลเดอร์ที่ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="607"/>
+        <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Disable virtual file support?</source>
         <translation>ปิดใช้งานการสนับสนุนไฟล์เสมือน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="606"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -277,173 +292,168 @@ This action will abort any currently running synchronization.</source>
 การดำเนินการนี้จะยกเลิกการประสานข้อมูลที่กำลังทำงานอยู่</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="615"/>
+        <location filename="../src/gui/accountsettings.cpp" line="613"/>
         <source>Disable support</source>
         <translation>ปิดใช้งานการสนับสนุน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="717"/>
+        <location filename="../src/gui/accountsettings.cpp" line="718"/>
         <source>Sync Running</source>
         <translation>กำลังประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="718"/>
+        <location filename="../src/gui/accountsettings.cpp" line="719"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>กำลังดำเนินการประสานข้อมูลอยู่ &lt;br/&gt;คุณต้องการสิ้นสุดการทำงาน?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="813"/>
+        <location filename="../src/gui/accountsettings.cpp" line="814"/>
         <source>%1 in use</source>
         <translation>%1 กำลังถูกใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="840"/>
+        <location filename="../src/gui/accountsettings.cpp" line="841"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 เช่น &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="848"/>
+        <location filename="../src/gui/accountsettings.cpp" line="849"/>
         <source>Connected to %1.</source>
         <translation>เชื่อมต่อกับ %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="850"/>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>เซิร์ฟเวอร์ %1 ไม่สามารถใช้ได้ชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="852"/>
+        <location filename="../src/gui/accountsettings.cpp" line="853"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>เซิร์ฟเวอร์ %1 กำลังอยู่ในโหมดการบำรุงรักษา</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="854"/>
+        <location filename="../src/gui/accountsettings.cpp" line="855"/>
         <source>Signed out from %1.</source>
         <translation>ลงชื่อออกจาก %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>กำลังได้รับอนุญาตจากเบราเซอร์ &lt;a href=&apos;%1&apos;&gt;คลิกที่นี่&lt;/a&gt; เพื่อเปิดเบราเซอร์อีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="867"/>
+        <location filename="../src/gui/accountsettings.cpp" line="868"/>
         <source>Connecting to %1...</source>
         <translation>กำลังเชื่อมต่อไปยัง %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="870"/>
+        <location filename="../src/gui/accountsettings.cpp" line="871"/>
         <source>No connection to %1 at %2.</source>
         <translation>ไม่มีการเชื่อมต่อไปยัง %1 ที่ %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="899"/>
+        <location filename="../src/gui/accountsettings.cpp" line="900"/>
         <source>Log in</source>
         <translation>เข้าสู่ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="995"/>
+        <location filename="../src/gui/accountsettings.cpp" line="996"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>บางโฟลเดอร์จะไม่ถูกประสานข้อมูลเพราะขนาดของมันใหญ่เกินไป:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="997"/>
+        <location filename="../src/gui/accountsettings.cpp" line="998"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>มีบางโฟลเดอร์จะไม่ถูกประสานข้อมูลเพราะเป็นพื้นที่จัดเก็บข้อมูลภายนอก</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="998"/>
+        <location filename="../src/gui/accountsettings.cpp" line="999"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>มีบางโฟลเดอร์จะไม่ถูกประสานข้อมูลเพราะเป็นพื้นที่จัดเก็บข้อมูลภายนอกหรือมีขนาดที่ใหญ่เกินไป</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
         <source>Confirm Account Removal</source>
         <translation>ยืนยันการลบบัญชี</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;คุณต้องการลบการเชื่อมต่อกับบัญชี&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะ &lt;b&gt;ไม่&lt;/b&gt; ลบไฟล์ใดๆ&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
         <source>Remove connection</source>
         <translation>ลบการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="317"/>
+        <location filename="../src/gui/accountsettings.cpp" line="303"/>
         <source>Open folder</source>
         <translation>เปิดโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="201"/>
-        <location filename="../src/gui/accountsettings.cpp" line="901"/>
+        <location filename="../src/gui/accountsettings.cpp" line="197"/>
+        <location filename="../src/gui/accountsettings.cpp" line="902"/>
         <source>Log out</source>
         <translation>ออกจากระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="262"/>
         <source>Open local folder</source>
         <translation>เปิดโฟลเดอร์ในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="284"/>
+        <location filename="../src/gui/accountsettings.cpp" line="270"/>
         <source>Open folder in browser</source>
         <translation>เปิดโฟลเดอร์ในเบราว์เซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="335"/>
+        <location filename="../src/gui/accountsettings.cpp" line="321"/>
         <source>Resume sync</source>
         <translation>ประสานข้อมูลอีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="335"/>
+        <location filename="../src/gui/accountsettings.cpp" line="321"/>
         <source>Pause sync</source>
         <translation>หยุดประสานข้อมูลชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="342"/>
+        <location filename="../src/gui/accountsettings.cpp" line="328"/>
         <source>Availability</source>
         <translation>ความพร้อมใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="359"/>
+        <location filename="../src/gui/accountsettings.cpp" line="345"/>
         <source>Disable virtual file support...</source>
         <translation>ปิดใช้งานการสนับสนุนไฟล์เสมือน...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="367"/>
-        <source>Enable virtual file support (experimental)...</source>
-        <translation>เปิดใช้งานการสนับสนุนไฟล์เสมือน (ทดลอง)...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="504"/>
+        <location filename="../src/gui/accountsettings.cpp" line="500"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;คุณต้องการหยุดการประสานข้อมูลโฟลเดอร์&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะ &lt;b&gt;ไม่&lt;/b&gt; ลบไฟล์ใดๆ&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="801"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>มีการใช้งาน %1 (%3%) จาก %2  บางโฟลเดอร์รวมทั้งเครือข่ายที่ติดตั้งหรือโฟลเดอร์ที่แชร์อาจมีข้อจำกัดที่แตกต่างกัน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="801"/>
+        <location filename="../src/gui/accountsettings.cpp" line="802"/>
         <source>%1 of %2 in use</source>
         <translation>มีการใช้งาน %1 จาก %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
+        <location filename="../src/gui/accountsettings.cpp" line="811"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>ขณะนี้ไม่มีพื้นที่จัดเก็บข้อมูลที่ใช้งานได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="847"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>เซิร์ฟไม่สนับสนุนเวอร์เวอร์ชัน %1 นี่เป็นความเสี่ยงของคุณเอง</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="877"/>
         <source>No %1 connection configured.</source>
         <translation>ไม่มีการเชื่อมต่อ %1 ที่ถูกกำหนดค่า</translation>
     </message>
@@ -507,6 +517,14 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/activityitemdelegate.cpp" line="142"/>
         <source>%1 on %2 (disconnected)</source>
         <translation>%1 บน %2 (ตัดการเชื่อมต่อ)</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ActivityListModel</name>
+    <message>
+        <location filename="../src/gui/activitylistmodel.cpp" line="74"/>
+        <source>%1 %2 on %3</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -585,33 +603,33 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="140"/>
-        <source>Action Required: Notifications</source>
-        <translation>จำเป็นต้องทำ: การแจ้งเตือน</translation>
+        <source>Notifications</source>
+        <translation>การแจ้งเตือน</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/activitywidget.cpp" line="351"/>
+        <source>%n notifications(s) for %1.</source>
+        <translation><numerusform>มี %n การแจ้งเตือนสำหรับ %1</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/activitywidget.cpp" line="357"/>
+        <source>%n notifications(s) for %1 and %2.</source>
+        <translation><numerusform>มี %n การแจ้งเตือนสำหรับ %1 และ %2</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="359"/>
+        <source>New notifications for %1, %2 and other accounts.</source>
+        <translation>มีการแจ้งเตือนใหม่สำหรับ %1, %2 และบัญชีอื่นๆ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="362"/>
+        <source>Open the activity view for details.</source>
+        <translation>เปิดมุมมองกิจกรรมเพื่อดูรายละเอียด</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="145"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br /&gt;บัญชี %1 ไม่มีกิจกรรมที่เปิดใช้งาน</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="349"/>
-        <source>You received %n new notification(s) from %2.</source>
-        <translation><numerusform>คุณได้รับ %n การแจ้งเตือนใหม่จาก %2</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="356"/>
-        <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation><numerusform>คุณได้รับ %n การแจ้งเตือนใหม่จาก %1 และ %2</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="358"/>
-        <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation>คุณได้รับการแจ้งเตือนใหม่จาก %1, %2 และผู้ใช้อื่นๆ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="362"/>
-        <source>%1 Notifications - Action Required</source>
-        <translation>%1 การแจ้งเตือน - จำเป็นต้องดำเนินการ</translation>
     </message>
 </context>
 <context>
@@ -660,42 +678,42 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="125"/>
+        <location filename="../src/gui/application.cpp" line="128"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>กำลังทำต่อหมายถึง &lt;b&gt;กำลังลบการตั้งค่าเหล่านี้&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="127"/>
+        <location filename="../src/gui/application.cpp" line="130"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>กำลังทำต่อหมายถึง &lt;b&gt;กำลังละเว้นการตั้งค่าเหล่านี้&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="133"/>
+        <location filename="../src/gui/application.cpp" line="136"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>การตั้งค่าบางอย่างได้ถูกกำหนดค่าในเวอร์ชันที่ใหม่กว่าของไคลเอ็นต์นี้และเปิดใช้คุณลักษณะที่ไม่สามารถใช้ได้ในเวอร์ชันนี้ &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;ไฟล์การตั้งค่าปัจจุบันได้ถูกสำรองข้อมูลไปที่ &lt;i&gt;%2&lt;/i&gt; แล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="140"/>
+        <location filename="../src/gui/application.cpp" line="143"/>
         <source>Quit</source>
         <translation>ออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="141"/>
+        <location filename="../src/gui/application.cpp" line="144"/>
         <source>Continue</source>
         <translation>ดำเนินการต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="290"/>
+        <location filename="../src/gui/application.cpp" line="297"/>
         <source>Error accessing the configuration file</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังเข้าถึงไฟล์กำหนดค่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="291"/>
+        <location filename="../src/gui/application.cpp" line="298"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังเข้าถึงไฟล์กำหนดค่า %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="294"/>
+        <location filename="../src/gui/application.cpp" line="301"/>
         <source>Quit ownCloud</source>
         <translation>ออกจาก ownCloud</translation>
     </message>
@@ -726,7 +744,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1040"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1130"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียน metadata ไปยังฐานข้อมูล</translation>
     </message>
@@ -767,10 +785,38 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="378"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="400"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="467"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="489"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>ข้อผิดพลาดเซิร์ฟเวอร์: การตอบกลับ PROPFIND ไม่ใช่รูปแบบ XML!</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::DiscoverySingleLocalDirectoryJob</name>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="237"/>
+        <source>Error while opening directory %1</source>
+        <translation>เกิดข้อผิดพลาดขณะเปิดไดเรกทอรี %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="239"/>
+        <source>Directory not accessible on client, permission denied</source>
+        <translation>การเข้าถึงถูกปฏิเสธไม่สามารถเข้าถึงไดเรกทอรีบนไคลเอนต์</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="243"/>
+        <source>Directory not found: %1</source>
+        <translation>ไม่พบไดเรกทอรี: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="274"/>
+        <source>Filename encoding is not valid</source>
+        <translation>การเข้ารหัสชื่อไฟล์ไม่ถูกต้อง</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discoveryphase.cpp" line="293"/>
+        <source>Error while reading directory %1</source>
+        <translation>เกิดข้อผิดพลาดขณะอ่านไดเรกทอรี %1</translation>
     </message>
 </context>
 <context>
@@ -870,41 +916,41 @@ This action will abort any currently running synchronization.</source>
         <translation>ความเคลื่อนไหวของการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="810"/>
+        <location filename="../src/gui/folder.cpp" line="806"/>
         <source>Could not read system exclude file</source>
         <translation>ไม่สามารถอ่าน ยกเว้นไฟล์ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1058"/>
+        <location filename="../src/gui/folder.cpp" line="1054"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>โฟลเดอร์ใหม่มีขนาดใหญ่กว่า %1 เมกะไบต์ ได้ถูกเพิ่ม: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1061"/>
+        <location filename="../src/gui/folder.cpp" line="1057"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>โฟลเดอร์ที่มีพื้นที่จัดเก็บข้อมูลภายนอกได้ถูกเพิ่ม
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1062"/>
+        <location filename="../src/gui/folder.cpp" line="1058"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>กรุณาไปในส่วนของการตั้งค่าเพื่อเลือก ถ้าคุณต้องการจะดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1122"/>
+        <location filename="../src/gui/folder.cpp" line="1118"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>โฟลเดอร์ %1 ได้ถูกสร้างขึ้นแล้วแต่ยังไม่ได้ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1125"/>
+        <location filename="../src/gui/folder.cpp" line="1121"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>ไฟล์ %1 ได้ถูกสร้างขึ้นแล้วแต่ยังไม่ได้ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1136"/>
+        <location filename="../src/gui/folder.cpp" line="1132"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -915,7 +961,7 @@ This means that the synchronization client might not upload local changes immedi
 หมายความว่าการประสานข้อมูลของไคลเอ็นต์อาจยังไม่ได้อัปโหลดการเปลี่ยนแปลงในระบบทันทีและจะสแกนเฉพาะการเปลี่ยนแปลงในเครื่องและอัปโหลดไฟล์เหล่านั้นเป็นครั้งคราว (ทุกสองชั่วโมงตามค่าเริ่มต้น)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -926,7 +972,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 หากคุณตัดสินใจลบไฟล์ก็จะทำให้ไม่มีใครสามารถใช้งานโฟลเดอร์นี้ได้เพราะคุณเป็นเจ้าของ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1216"/>
+        <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -936,17 +982,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 ถ้าเรื่องนี้เป็นอุบัติเหตุและคุณตัดสินใจเก็บไฟล์ของคุณ ไฟล์ของคุณก็จะถูกประสานข้อมูลใหม่อีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1220"/>
+        <location filename="../src/gui/folder.cpp" line="1216"/>
         <source>Remove All Files?</source>
         <translation>ลบไฟล์ทั้งหมด?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1223"/>
+        <location filename="../src/gui/folder.cpp" line="1219"/>
         <source>Remove all files</source>
         <translation>ลบไฟล์ทั้งหมด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1224"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>Keep files</source>
         <translation>เก็บไฟล์เอาไว้</translation>
     </message>
@@ -961,7 +1007,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="354"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>บนบันทึกการประสานข้อมูลเก่า &apos;%1&apos; แต่ไม่สามารถลบออกได้ กรุณาตรวจสอบให้แน่ใจว่าไม่มีแอพฯ หรือการทำงานใดๆที่ใช้มันอยู่</translation>
+        <translation>บนบันทึกการประสานข้อมูลเก่า &apos;%1&apos; แต่ไม่สามารถลบออกได้ กรุณาตรวจสอบให้แน่ใจว่าไม่มีแอปฯ หรือการทำงานใดๆที่ใช้มันอยู่</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1138"/>
@@ -1230,7 +1276,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="94"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="115"/>
         <source>The watcher did not receive a test notification.</source>
         <translation>ผู้มาเยือนไม่ได้รับการทดสอบแจ้งเตือน</translation>
     </message>
@@ -1246,12 +1292,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="571"/>
+        <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>Add Folder Sync Connection</source>
         <translation>เพิ่มโฟลเดอร์ที่ต้องการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="573"/>
+        <location filename="../src/gui/folderwizard.cpp" line="574"/>
         <source>Add Sync Connection</source>
         <translation>เพิ่มการประสานข้อมูลให้ตรงกัน</translation>
     </message>
@@ -1326,8 +1372,18 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="486"/>
-        <source>Use virtual files instead of downloading content immediately (experimental)</source>
-        <translation>ใช้ไฟล์เสมือนแทนการดาวน์โหลดเนื้อหาทันที (โหมดเบต้า)</translation>
+        <source>Use virtual files instead of downloading content immediately %1</source>
+        <translation>ใช้ไฟล์เสมือนแทนการดาวน์โหลดเนื้อหาแบบทันที</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="487"/>
+        <source>(tech preview)</source>
+        <translation>(ตัวอย่างทางเทคนิค)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="487"/>
+        <source>(experimental)</source>
+        <translation>(ทดลอง)</translation>
     </message>
 </context>
 <context>
@@ -1514,23 +1570,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     </message>
 </context>
 <context>
-    <name>OCC::GetOrCreatePublicLinkShare</name>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="561"/>
-        <source>Sharing error</source>
-        <translation>การแชร์เกิดข้อผิดพลาด</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/socketapi.cpp" line="562"/>
-        <source>Could not retrieve or create the public link share. Error:
-
-%1</source>
-        <translation>ไม่สามารถเรียกคืนหรือสร้างลิงก์แชร์สาธารณะ ข้อผิดพลาด:
-
-%1</translation>
-    </message>
-</context>
-<context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="107"/>
@@ -1550,7 +1589,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="167"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;คลิกที่นี่&lt;/a&gt; เพื่อขอรหัสผ่านแอพฯ จากเว็บอินเตอร์เฟส</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;คลิกที่นี่&lt;/a&gt; เพื่อขอรหัสผ่านแอปฯ จากเว็บอินเตอร์เฟส</translation>
     </message>
 </context>
 <context>
@@ -1597,35 +1636,35 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="42"/>
-        <source>Files or folders matching a pattern will not be synchronized.
+        <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>ไฟล์หรือโฟลเดอร์ที่เหมือนกันจะไม่ถูกประสานข้อมูล
+        <translation>ไฟล์หรือโฟลเดอร์ที่ตรงกับรูปแบบจะไม่ถูกประสานข้อมูล การเปลี่ยนแปลงจะมีผลเมื่อมีการประสานข้อมูลโฟลเดอร์ในครั้งถัดไป
 
-รายการที่ลบจะถูกอนุญาตให้ลบถ้าพวกเขาป้องกันไม่ให้ไดเรกทอรีถูกลบออก นี้จะเป็นประโยชน์สำหรับข้อมูล meta</translation>
+รายการที่อนุญาตให้ลบจะถูกลบถึงแม้ว่าจะมีการป้องกันการลบไดเรกทอรีออก สิ่งนี้มีประโยชน์มากสำหรับข้อมูลเมตา</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="124"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="125"/>
         <source>Could not open file</source>
         <translation>ไม่สามารถเปิดไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="125"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="126"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>ไม่สามารถเขียนเปลี่ยนเป็น &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="151"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="152"/>
         <source>Add Ignore Pattern</source>
         <translation>เพิ่มการละเว้นรูปแบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="152"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="153"/>
         <source>Add a new ignore pattern:</source>
         <translation>เพิ่มการละเว้นรูปแบบใหม่:</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="48"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="49"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation>รายการนี้ถูกระบุโดยระบบที่ &apos;%1&apos; และไม่สามารถแก้ไขได้ในมุมมองนี้</translation>
     </message>
@@ -1760,12 +1799,12 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="169"/>
+        <location filename="../src/libsync/logger.cpp" line="173"/>
         <source>Error</source>
         <translation>ข้อผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="170"/>
+        <location filename="../src/libsync/logger.cpp" line="174"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;ไฟล์ &apos;%1&apos;&lt;br/&gt;ไม่สามารถเปิดขึ้นมาเพื่อเขียนข้อมูลได้&lt;br/&gt;&lt;br/&gt;ผลลัพธ์ของไฟล์ log &lt;b&gt;ไม่สามารถ&lt;/b&gt; บันทึกข้อมูลได้!&lt;/nobr&gt;</translation>
     </message>
@@ -1773,53 +1812,53 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="377"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="391"/>
         <source>New Version Available</source>
         <translation>มีรุ่นใหม่ที่สามารถใช้งานได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="383"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="397"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 มีรุ่นใหม่ของไคลเอ็นต์แล้ว&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; สามารถดาวน์โหลดได้ รุ่นที่ติดตั้งคือ %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="396"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="446"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="410"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
         <source>Skip this version</source>
         <translation>ข้ามรุ่นนี้</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="397"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="411"/>
         <source>Skip this time</source>
         <translation>ข้ามเวลานี้</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="398"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <source>Get update</source>
         <translation>ได้รับการอัปเดต</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="441"/>
         <source>Update Failed</source>
         <translation>อัพเดทล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="433"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;มีไคลเอ็นต์เวอร์ชันใหม่พร้อมใช้งาน %1  แต่กระบวนการอัปเดตล้มเหลว&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt;ได้ถูกดาวน์โหลดแล้ว เวอร์ชันที่ติดตั้งคือ %3&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>Ask again later</source>
         <translation>ถามอีกครั้งในภายหลัง</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="448"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>Restart and update</source>
         <translation>รีสตาร์ทและอัปเดต</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Update manually</source>
         <translation>อัปเดตด้วยตนเอง</translation>
     </message>
@@ -1837,17 +1876,17 @@ Note that using any logging command line options will override the settings.</so
         <translation>ตั้งค่าพร็อกซี่</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="29"/>
+        <location filename="../src/gui/networksettings.ui" line="36"/>
         <source>No Proxy</source>
         <translation>ไม่มีพร็อกซี่</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="42"/>
+        <location filename="../src/gui/networksettings.ui" line="49"/>
         <source>Use system proxy</source>
         <translation>ใช้พร็อกซี่จากระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="52"/>
+        <location filename="../src/gui/networksettings.ui" line="59"/>
         <source>Specify proxy manually as</source>
         <translation>ระบุพร็อกซีด้วยตนเอง</translation>
     </message>
@@ -1867,42 +1906,47 @@ Note that using any logging command line options will override the settings.</so
         <translation>ต้องตรวจสอบพร็อกซีเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="190"/>
+        <location filename="../src/gui/networksettings.ui" line="176"/>
+        <source>Note: proxy settings have no effects for accounts on localhost</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/networksettings.ui" line="197"/>
         <source>Download Bandwidth</source>
         <translation>ดาวน์โหลดแบนด์วิดธ์</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="196"/>
-        <location filename="../src/gui/networksettings.ui" line="275"/>
+        <location filename="../src/gui/networksettings.ui" line="203"/>
+        <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to</source>
         <translation>จำกัดถึง</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="241"/>
-        <location filename="../src/gui/networksettings.ui" line="320"/>
+        <location filename="../src/gui/networksettings.ui" line="248"/>
+        <location filename="../src/gui/networksettings.ui" line="327"/>
         <source>KBytes/s</source>
         <translation>กิโลไบต์/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="203"/>
-        <location filename="../src/gui/networksettings.ui" line="292"/>
+        <location filename="../src/gui/networksettings.ui" line="210"/>
+        <location filename="../src/gui/networksettings.ui" line="299"/>
         <source>No limit</source>
         <translation>ไม่จำกัด</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="250"/>
-        <location filename="../src/gui/networksettings.ui" line="282"/>
+        <location filename="../src/gui/networksettings.ui" line="257"/>
+        <location filename="../src/gui/networksettings.ui" line="289"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
         <translation>จำกัดแบนด์วิดธ์ถึง 3/4 โดยประมาณ</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="269"/>
+        <location filename="../src/gui/networksettings.ui" line="276"/>
         <source>Upload Bandwidth</source>
         <translation>แบนด์วิดธ์ของการอัปโหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="253"/>
-        <location filename="../src/gui/networksettings.ui" line="285"/>
+        <location filename="../src/gui/networksettings.ui" line="260"/>
+        <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>Limit automatically</source>
         <translation>จำกัดโดยอัตโนมัติ</translation>
     </message>
@@ -1998,58 +2042,58 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::OCUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="107"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 Update Ready</source>
         <translation>มี %1 พร้อมอัปเดตใหม่</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>มีการอัปเดตใหม่สำหรับ %1 มันเกี่ยวกับการติดตั้ง การอัปเดตอาจจะถามสิทธิประโยชน์เพิ่มเติมในระหว่างกระบวนการ</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>ไม่สามารถดาวน์โหลดการอัปเดต กรุณาคลิก&lt;a href=&apos;%1&apos;&gt;ที่นี่&lt;/a&gt; เพื่อดาวน์โหลดการอัปเดตด้วยตนเอง</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Could not check for new updates.</source>
         <translation>ไม่สามารถตรวจสอบการอัปเดตใหม่</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait...</source>
         <translation>กำลังดาวน์โหลด %1 โปรดรอ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation>%1 พร้อมใช้งานแล้ว รีสตาร์ทแอพพลิเคชันเพื่อเริ่มการอัปเดต</translation>
+        <translation>%1 พร้อมใช้งานแล้ว รีสตาร์ทแอปพลิเคชันเพื่อเริ่มการอัปเดต</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
         <translation>ตรวจพบ %1 อัปเดต โปรดใช้เครื่องมืออัปเดตระบบเพื่อติดตั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Checking update server...</source>
         <translation>กำลังตรวจสอบการอัปเดตเซิร์ฟเวอร์...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>สถานะการอัปเดตที่ไม่รู้จัก: จะไม่มีการตรวจสอบการอัปเดตใหม่</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>ไม่พบการอัปเดต ตัวที่ติดตั้งเป็นเวอร์ชั่นล่าสุด</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="182"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
         <source>Update Check</source>
         <translation>ตรวจสอบการอัปเดต</translation>
     </message>
@@ -2072,28 +2116,43 @@ for additional privileges during the process.</source>
         <translation>เชื่อมต่อ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="173"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="82"/>
+        <source>Use &amp;virtual files instead of downloading content immediately %1</source>
+        <translation>ใช้ไฟล์ &amp;virtual แทนที่จะดาวน์โหลดเนื้อหาแบบทันที %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="83"/>
+        <source>(tech preview)</source>
+        <translation>(ตัวอย่างทางเทคนิค)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="83"/>
+        <source>(experimental)</source>
+        <translation>(ทดลอง)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="176"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 โฟลเดอร์ &apos;%2&apos; ถูกประสานข้อมูลไปยังโฟลเดอร์ในเครื่อง &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="176"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="179"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>ประสานข้อมูลโฟลเดอร์ &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="181"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="184"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;คำเตือน:&lt;/strong&gt; โฟลเดอร์ในเครื่องจะต้องไม่ว่างเปล่า เลือกความละเอียด!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="312"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="315"/>
         <source>Local Sync Folder</source>
         <translation>ประสานโฟลเดอร์ในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="348"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="381"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="351"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="384"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2197,12 +2256,12 @@ It is not advisable to use it.</source>
         <translation>และถัดไป &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="203"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="204"/>
         <source>Invalid URL</source>
         <translation>URL ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="315"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="316"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>ไม่สามารถโหลดใบรับรอง รหัสผ่านไม่ถูกต้อง?</translation>
     </message>
@@ -2215,144 +2274,139 @@ It is not advisable to use it.</source>
         <translation>&lt;font color=&quot;green&quot;&gt;เชื่อมต่อกับ %1: %2 รุ่น %3 (%4) เสร็จเรียบร้อยแล้ว&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="285"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>ล้มเหลวในการเชื่อมต่อไปยัง %1 ที่ %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="320"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="301"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>หมดเวลาขณะที่พยายามเชื่อมต่อไปยัง %1 ที่ %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="339"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="320"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>กำลังพยายามเชื่อมต่อไปที่ %1 ที่ %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>คำขอการรับรองความถูกต้องไปยังเซิร์ฟเวอร์ที่ถูกเปลี่ยนเส้นทางไปยัง</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="412"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>มีการตอบสนองที่ไม่ถูกต้องที่จะร้องขอการรับรองความถูกต้องของ WebDAV</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="384"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>การเข้าถึงถูกระงับโดยเซิร์ฟเวอร์ เพื่อตรวจสอบว่าคุณมีการเข้าถึงที่เหมาะสม &lt;a href=&quot;%1&quot;&gt;คลิกที่นี่&lt;/a&gt; เพื่อรเข้าถึงบริการกับเบราว์เซอร์ของคุณ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="281"/>
         <source>Invalid URL</source>
         <translation>URL ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="302"/>
-        <source>The server reported the following error:</source>
-        <translation>เซิร์ฟเวอร์รายงานข้อผิดพลาดต่อไปนี้:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>ประสานข้อมูลโฟลเดอร์ในเครื่อง %1 มีอยู่แล้ว กรุณาตั้งค่าเพื่อถ่ายข้อมูล &lt;br/&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="441"/>
         <source>Creating local sync folder %1...</source>
         <translation>สร้างประสานข้อมูลโฟลเดอร์ในเครื่อง %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="464"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
         <source>ok</source>
         <translation>ตกลง</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="447"/>
         <source>failed.</source>
         <translation>ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="468"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="449"/>
         <source>Could not create local folder %1</source>
         <translation>ไม่สามารถสร้างผสานข้อมูลโฟลเดอร์ในเครื่อง %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="494"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="475"/>
         <source>No remote folder specified!</source>
         <translation>ไม่มีโฟลเดอร์รีโมทที่ระบุ!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="500"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="481"/>
         <source>Error: %1</source>
         <translation>ข้อผิดพลาด: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="513"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="494"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>กำลังสร้างโฟลเดอร์ใหม่บน ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="529"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="510"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>โฟลเดอร์รีโมท %1 ถูกสร้างเรียบร้อยแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="531"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="512"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>โฟลเดอร์รีโมทมี %1 อยู่แล้ว กำลังเชื่อมต่อเพื่อถ่ายโอนข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="533"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="535"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="514"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="516"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>การสร้างโฟลเดอร์ดังกล่าวส่งผลให้เกิดรหัสข้อผิดพลาด HTTP error code %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="537"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="518"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>สร้างโฟลเดอร์ระยะไกลล้มเหลวเนื่องจากมีข้อมูลผิดพลาด!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="522"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;การสร้างโฟลเดอร์รีโมทล้มเหลว ซึ่งอาจมีสาเหตุมาจากการกรอกข้อมูลส่วนตัวเพื่อเข้าใช้งานไม่ถูกต้อง.&lt;/font&gt;&lt;br/&gt;กรุณาย้อนกลับไปแล้วตรวจสอบข้อมูลส่วนตัวของคุณอีกครั้ง.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="546"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="547"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="527"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="528"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>การสร้างโฟลเดอร์ระยะไกล %1 ล้มเหลวเนื่องข้อผิดพลาด &lt;tt&gt;%2&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="564"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>การเชื่อมต่อเผื่อประสานข้อมูลจาก %1 ไปที่ไดเร็กทอรี่ระยะไกล %2 ได้ถูกติดตั้งแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="569"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="550"/>
         <source>Successfully connected to %1!</source>
         <translation>เชื่อมต่อไปที่ %1! สำเร็จ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="576"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="557"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>การเชื่อมต่อกับ %1 ไม่สามารถดำเนินการได้ กรุณาตรวจสอบอีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="590"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="571"/>
         <source>Folder rename failed</source>
         <translation>เปลี่ยนชื่อโฟลเดอร์ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="591"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="572"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>ไม่สามารถลบและสำรองข้อมูลโฟลเดอร์เพราะโฟลเดอร์หรือไฟล์ในนั้นจะเปิดในโปรแกรมอื่นอยู่ กรุณาปิดโฟลเดอร์หรือไฟล์และกดลองใหม่อีกครั้งหรือยกเลิกการติดตั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="641"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="622"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;ประสานข้อมูลโฟลเดอร์ในเครื่อง %1 ได้ถูกสร้างขึ้นเรียบร้อยแล้ว!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -2366,27 +2420,38 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="243"/>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="261"/>
+        <source>Enable technical preview feature?</source>
+        <translation>เปิดใช้งานคุณลักษณะตัวอย่างทางเทคนิค?</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="244"/>
+        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead a virtual file will be created for each file that exists on the server. When a file is opened its contents will be downloaded automatically. Alternatively, files can be downloaded manually by using their context menu.
+
+The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.</source>
+        <translation>เมื่อเปิดใช้งานโหมด &quot;ไฟล์เสมือน&quot; จะไม่มีการดาวน์โหลดไฟล์ใดๆ ในช่วงแรกแต่จะสร้างไฟล์เสมือนสำหรับแต่ละไฟล์ที่มีอยู่บนเซิร์ฟเวอร์แทน เมื่อไฟล์ถูกเปิดในเครื่องเนื้อหาจะถูกดาวน์โหลดโดยอัตโนมัติ หรือสามารถดาวน์โหลดไฟล์ด้วยตนเองได้โดยใช้เมนูบริบท</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="252"/>
+        <source>Enable virtual files</source>
+        <translation>เปิดใช้งานไฟล์เสมือน</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="253"/>
+        <source>Continue to use selective sync</source>
+        <translation>ใช้การประสานข้อมูลที่เลือกต่อไป</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="258"/>
         <source>Enable experimental feature?</source>
         <translation>เปิดใช้งานโหมดเบต้า?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="244"/>
-        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead a placeholder file will be created for each file that exists on the server. When a file is opened its contents will be downloaded automatically. Alternatively files can be downloaded manually by using their context menu.
-
-The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
-
-Switching to this mode will abort any currently running synchronization.
-
-This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>เมื่อเปิดใช้งานโหมด &quot;ไฟล์เสมือน&quot; จะไม่มีการดาวน์โหลดไฟล์ใดๆ ในตอนแรก แต่จะมีการสร้างไฟล์ &quot;%1&quot; สำหรับแต่ละไฟล์ที่มีอยู่บนเซิร์ฟเวอร์ สามารถดาวน์โหลดเนื้อหาโดยใช้ไฟล์เหล่านี้หรือใช้เมนูบริบท
-
-โหมดไฟล์เสมือนคือหากลบไฟล์หรือโฟลเดอร์ในระบบออนไลน์ไฟล์หรือโฟลเดอร์ในเครื่องของเราก็จะหายไปด้วย
-
-การสลับไปที่โหมดนี้จะยกเลิกการซิงค์ที่กำลังทำงานอยู่ และตอนนี้ยังอยู่ในช่วงทดลองใช้หากพบเจอปัญหาโปรดรายงานปัญหาด้วย</translation>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="272"/>
+        <source>Enable experimental placeholder mode</source>
+        <translation>เปิดใช้งานโหมด placeholder แบบทดลอง</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="259"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2401,12 +2466,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 การสลับไปที่โหมดนี้จะยกเลิกการซิงค์ที่กำลังทำงานอยู่ และตอนนี้ยังอยู่ในช่วงทดลองใช้หากพบเจอปัญหาโปรดรายงานปัญหาด้วย</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="276"/>
-        <source>Enable experimental mode</source>
-        <translation>เปิดใช้งาน</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="273"/>
         <source>Stay safe</source>
         <translation>ไว้คราวหน้า</translation>
     </message>
@@ -2440,166 +2500,145 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="211"/>
+        <location filename="../src/libsync/discovery.cpp" line="233"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>ลิงก์สัญลักษณ์จะไม่ได้รับการสนับสนุนในการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="219"/>
+        <location filename="../src/libsync/discovery.cpp" line="241"/>
         <source>File is listed on the ignore list.</source>
         <translation>ไฟล์อยู่ในรายการที่ละเว้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="223"/>
+        <location filename="../src/libsync/discovery.cpp" line="245"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>ชื่อไฟล์ที่ลงท้ายด้วยระยะเวลา ยังไม่ได้รับการสนับสนุนบนระบบไฟล์นี้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="233"/>
+        <location filename="../src/libsync/discovery.cpp" line="255"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>ชื่อไฟล์ที่มีตัวอักษร &apos;%1&apos; ยังไม่ได้รับการสนับสนุนบนระบบไฟล์นี้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="237"/>
+        <location filename="../src/libsync/discovery.cpp" line="259"/>
         <source>File name contains at least one invalid character</source>
         <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="239"/>
+        <location filename="../src/libsync/discovery.cpp" line="261"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>ชื่อไฟล์นี้เป็นชื่อที่ถูกสงวนไว้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="244"/>
+        <location filename="../src/libsync/discovery.cpp" line="266"/>
         <source>Filename contains trailing spaces.</source>
         <translation>ชื่อไฟล์มีช่องว่างต่อท้าย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="247"/>
+        <location filename="../src/libsync/discovery.cpp" line="269"/>
         <source>Filename is too long.</source>
         <translation>ชื่อไฟล์ยาวเกินไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="250"/>
+        <location filename="../src/libsync/discovery.cpp" line="272"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>ไฟล์/โฟลเดอร์ ที่ซ่อนอยู่จะถูกละเว้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="253"/>
+        <location filename="../src/libsync/discovery.cpp" line="275"/>
         <source>Stat failed.</source>
         <translation>สถิติความล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="256"/>
+        <location filename="../src/libsync/discovery.cpp" line="278"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>เกิดปัญหาความขัดแย้ง: สำเนาที่อยู่ในเครื่องถูกเปลี่ยนชื่อและไม่ได้ถูกอัปโหลด เลยไม่ตรงกับข้อมูลที่เคยอัปโหลดไว้ในเซิฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="260"/>
+        <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>ชื่อไฟล์ไม่สามารถเข้ารหัสในระบบไฟล์ของคุณได้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="263"/>
+        <location filename="../src/libsync/discovery.cpp" line="285"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>ชื่อไฟล์นี้เป็นชื่อต้องห้าม</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="316"/>
+        <location filename="../src/libsync/discovery.cpp" line="338"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>ไฟล์มีส่วนขยายที่สงวนไว้สำหรับไฟล์เสมือน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="377"/>
+        <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>size</source>
         <translation>ขนาด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="379"/>
+        <location filename="../src/libsync/discovery.cpp" line="402"/>
         <source>permissions</source>
         <translation>สิทธิ์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="381"/>
+        <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>etag</source>
         <translation>etag</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="383"/>
+        <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>file id</source>
         <translation>รหัสไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="387"/>
+        <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>server reported no %1</source>
         <translation>เซิร์ฟเวอร์รายงานว่าไม่มี %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="687"/>
-        <location filename="../src/libsync/discovery.cpp" line="1180"/>
+        <location filename="../src/libsync/discovery.cpp" line="1242"/>
+        <source>Moved to invalid target, restoring</source>
+        <translation>ย้ายไปยังเป้าหมายที่ไม่ถูกต้อง กำลังดำเนินการกู้คืน</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/discovery.cpp" line="1255"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1106"/>
+        <location filename="../src/libsync/discovery.cpp" line="1167"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>ถูกละเว้นเพราะ &quot;ข้อมูลที่เลือกประสาน&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1139"/>
+        <location filename="../src/libsync/discovery.cpp" line="1200"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ไม่อนุญาตเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1144"/>
+        <location filename="../src/libsync/discovery.cpp" line="1205"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มไฟล์ในโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1158"/>
+        <location filename="../src/libsync/discovery.cpp" line="1219"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>ไม่อนุญาตให้อัปโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังกู้คืน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1294"/>
+        <location filename="../src/libsync/discovery.cpp" line="1364"/>
         <source>Error while reading the database</source>
         <translation>เกิดข้อผิดพลาดขณะอ่านฐานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1340"/>
+        <location filename="../src/libsync/discovery.cpp" line="1425"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>เซิร์ฟเวอร์ตอบกลับพร้อมข้อผิดพลาดขณะอ่านไดเรกทอรีแล้ว &apos;%1&apos; : %2</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1384"/>
-        <source>Error while opening directory %1</source>
-        <translation>เกิดข้อผิดพลาดขณะเปิดไดเรกทอรี %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1386"/>
-        <source>Directory not accessible on client, permission denied</source>
-        <translation>การเข้าถึงถูกปฏิเสธไม่สามารถเข้าถึงไดเรกทอรีบนไคลเอนต์</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1394"/>
-        <source>Directory not found: %1</source>
-        <translation>ไม่พบไดเรกทอรี: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1418"/>
-        <source>Filename encoding is not valid</source>
-        <translation>การเข้ารหัสชื่อไฟล์ไม่ถูกต้อง</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/discovery.cpp" line="1436"/>
-        <source>Error while reading directory %1</source>
-        <translation>เกิดข้อผิดพลาดขณะอ่านไดเรกทอรี %1</translation>
     </message>
 </context>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="991"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="996"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียน metadata ไปยังฐานข้อมูล</translation>
     </message>
@@ -2607,53 +2646,53 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="442"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="452"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>ไฟล์ %1 ไม่สามารถดาวน์โหลดได้เพราะชื่อไฟล์ในเครื่องเหมือนกัน!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="491"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="503"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>การดาวน์โหลดจะช่วยลดพืนที่จัดเก็บภายในเครื่องที่ต่ำกว่าขีดจำกัด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="495"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="507"/>
         <source>Free space on disk is less than %1</source>
         <translation>พื้นที่ว่างในดิสก์น้อยกว่า %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="629"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
         <source>Download slot finished, but there was no reply!</source>
         <translation>สร้างช่องดาวน์โหลดสำเร็จแต่ไม่มีการตอบกลับ!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="682"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
         <source>File was deleted from server</source>
         <translation>ไฟล์ถูกลบออกจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="753"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="765"/>
         <source>The file could not be downloaded completely.</source>
         <translation>ดาวน์โหลดไฟล์ไม่สำเร็จ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="760"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="772"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>ไฟล์ที่ดาวน์โหลดว่างเปล่าแม้ว่าเซิร์ฟเวอร์ประกาศว่าควรจะเป็น %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="952"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>ไฟล์ %1 ไม่สามารถบันทึกได้เพราะชื่อไฟล์ในเครื่องเหมือนกัน!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="363"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="985"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="997"/>
         <source>File has changed since discovery</source>
         <translation>ไฟล์มีการเปลี่ยนแปลงตั้งแต่ถูกพบ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1039"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1063"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียน metadata ไปยังฐานข้อมูล</translation>
     </message>
@@ -2718,7 +2757,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="261"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดขณะตั้งค่าสถานะพิน</translation>
     </message>
 </context>
 <context>
@@ -2737,7 +2776,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>รหัส HTTP ผิดพลาด โดยเซิร์ฟเวอร์คาดว่าจะได้รับรหัส 201 แต่กลับได้รับ &quot;%1 %2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="152"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียน metadata ไปยังฐานข้อมูล</translation>
     </message>
@@ -2763,7 +2802,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="233"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดขณะตั้งค่าสถานะพิน</translation>
     </message>
 </context>
 <context>
@@ -2909,17 +2948,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ขนาด</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="217"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="211"/>
         <source>Local sync protocol</source>
         <translation>โปรโตคอลการประสานข้อมูลในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="219"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="213"/>
         <source>Copy</source>
         <translation>คัดลอก</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="220"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="214"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>คัดลอกรายชื่อกิจกรรมไปยังคลิปบอร์ด</translation>
     </message>
@@ -3015,51 +3054,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ตั้งค่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="92"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="114"/>
         <source>Activity</source>
         <translation>กิจกรรม</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="101"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="123"/>
         <source>General</source>
         <translation>ทั่วไป</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="108"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="130"/>
         <source>Network</source>
         <translation>เครือข่าย</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="219"/>
-        <source>Account</source>
-        <translation>บัญชี</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::SettingsDialogMac</name>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="94"/>
-        <source>%1</source>
-        <translation>%1</translation>
+        <location filename="../src/gui/settingsdialog.cpp" line="140"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="143"/>
+        <source>Quit %1</source>
+        <translation>ออก %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="98"/>
-        <source>Activity</source>
-        <translation>กิจกรรม</translation>
+        <location filename="../src/gui/settingsdialog.cpp" line="144"/>
+        <source>Are you sure you want to quit %1?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="112"/>
-        <source>General</source>
-        <translation>ทั่วไป</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="117"/>
-        <source>Network</source>
-        <translation>เครือข่าย</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="160"/>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="228"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="257"/>
         <source>Account</source>
         <translation>บัญชี</translation>
     </message>
@@ -3145,6 +3166,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>รับไฟล์จากบุคคลอื่นโดยไม่ต้องเปิดเผยเนื้อหาของโฟลเดอร์</translation>
     </message>
     <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="237"/>
+        <source>Download / View / Edit</source>
+        <translation>ดาวน์โหลด / ดู / แก้ไข</translation>
+    </message>
+    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="297"/>
         <source>Name:</source>
         <translation>ชื่อ: </translation>
@@ -3190,11 +3216,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ดาวน์โหลดหรือดู</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="237"/>
-        <source>Download / View / Upload</source>
-        <translation>ดาวน์โหลด ดู หรืออัปโหลด</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="250"/>
         <source>Recipients can view, download, edit, delete and upload contents.</source>
         <translation>ผู้รับสามารถดู ดาวน์โหลด แก้ไข ลบและอัปโหลดเนื้อหาได้</translation>
@@ -3206,7 +3227,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="119"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="342"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="343"/>
         <source>P&amp;assword protect</source>
         <translation>ป้องกันด้วยรหัสผ่าน</translation>
     </message>
@@ -3226,75 +3247,75 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>สร้างแชร์ลิงก์สาธารณะ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="583"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="582"/>
         <source>Delete</source>
         <translation>ลบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Open link in browser</source>
         <translation>เปิดลิงก์ในเบราว์เซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Copy link to clipboard</source>
         <translation>คัดลอกลิงก์ไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Copy link to clipboard (direct download)</source>
         <translation>คัดลอกลิงก์ทางอีเมล (ดาวน์โหลดโดยตรง)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
         <source>Send link by email</source>
         <translation>ส่งลิงก์ทางอีเมล</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>Send link by email (direct download)</source>
         <translation>ส่งลิงก์ทางอีเมล (ดาวน์โหลดโดยตรง)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="286"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="287"/>
         <source>Create new...</source>
         <translation>สร้างใหม่...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="562"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="561"/>
         <source>I shared %1 with you</source>
         <translation>ฉันได้แชร์ %1 กับคุณ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="576"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="575"/>
         <source>Confirm Link Share Deletion</source>
         <translation>ยืนยันการลบลิงก์ที่แชร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="577"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="576"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;คุณต้องการลบลิงก์ที่แชร์แบบสาธารณะ&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;หมายเหตุ: ไม่สามารถยกเลิกการดำเนินการนี้ได้&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="584"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="583"/>
         <source>Cancel</source>
         <translation>ยกเลิก</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="600"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="599"/>
         <source>Public link</source>
         <translation>ลิงก์สาธารณะ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="270"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="271"/>
         <source>Delete link share</source>
         <translation>ลบลิงก์ที่แชร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="350"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="530"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="351"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
         <source>Please Set Password</source>
         <translation>กรุณาตั้งรหัสผ่าน</translation>
     </message>
@@ -3403,7 +3424,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="487"/>
+        <location filename="../src/gui/socketapi.cpp" line="486"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>แชร์กับ %1</translation>
@@ -3419,32 +3440,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>แชร์เมนูบริบท %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="707"/>
+        <location filename="../src/gui/socketapi.cpp" line="716"/>
         <source>Confirm deletion</source>
         <translation>ยืนยันการลบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="709"/>
+        <location filename="../src/gui/socketapi.cpp" line="718"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation>คุณต้องการลบไดเรกทอรี &lt;i&gt;%1&lt;/i&gt; และเนื้อหาทั้งหมดอย่างถาวร?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="710"/>
+        <location filename="../src/gui/socketapi.cpp" line="719"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation>คุณต้องการลบไฟล์ &lt;i&gt;%1&lt;/i&gt; แบบถาวร?</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="749"/>
+        <location filename="../src/gui/socketapi.cpp" line="758"/>
         <source>Select new location...</source>
         <translation>เลือกตำแหน่งใหม่...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="759"/>
+        <location filename="../src/gui/socketapi.cpp" line="768"/>
         <source>Error</source>
         <translation>ข้อผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="760"/>
+        <location filename="../src/gui/socketapi.cpp" line="769"/>
         <source>Moving file failed:
 
 %1</source>
@@ -3453,85 +3474,85 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="767"/>
+        <location filename="../src/gui/socketapi.cpp" line="776"/>
         <source>I shared something with you</source>
         <translation>ฉันแชร์บางอย่างกับคุณ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="780"/>
-        <location filename="../src/gui/socketapi.cpp" line="811"/>
+        <location filename="../src/gui/socketapi.cpp" line="789"/>
+        <location filename="../src/gui/socketapi.cpp" line="820"/>
         <source>Share...</source>
         <translation>แชร์...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="782"/>
-        <location filename="../src/gui/socketapi.cpp" line="827"/>
+        <location filename="../src/gui/socketapi.cpp" line="791"/>
+        <location filename="../src/gui/socketapi.cpp" line="836"/>
         <source>Copy private link to clipboard</source>
         <translation>คัดลอกลิงก์ส่วนตัวไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="783"/>
+        <location filename="../src/gui/socketapi.cpp" line="792"/>
         <source>Send private link by email...</source>
         <translation>ส่งลิงก์ส่วนตัวทางอีเมล...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="818"/>
         <source>Resharing this file is not allowed</source>
         <translation>การแชร์ไฟล์นี้ต่อไม่ได้รับอนุญาต</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="818"/>
         <source>Resharing this folder is not allowed</source>
         <translation>ไม่อนุญาตให้แชร์โฟลเดอร์นี้ต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="821"/>
-        <location filename="../src/gui/socketapi.cpp" line="823"/>
+        <location filename="../src/gui/socketapi.cpp" line="830"/>
+        <location filename="../src/gui/socketapi.cpp" line="832"/>
         <source>Copy public link to clipboard</source>
         <translation>คัดลอกลิงก์สาธารณะไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="914"/>
+        <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Open in browser</source>
         <translation>เปิดในเบราว์เซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="922"/>
+        <location filename="../src/gui/socketapi.cpp" line="931"/>
         <source>Show file versions in browser</source>
         <translation>แสดงเวอร์ชันของไฟล์ในเบราว์เซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="945"/>
+        <location filename="../src/gui/socketapi.cpp" line="954"/>
         <source>Rename...</source>
         <translation>เปลี่ยนชื่อ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="948"/>
+        <location filename="../src/gui/socketapi.cpp" line="957"/>
         <source>Rename and upload...</source>
         <translation>ปลี่ยนชื่อและอัปโหลด...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="953"/>
+        <location filename="../src/gui/socketapi.cpp" line="962"/>
         <source>Move and rename...</source>
         <translation>ย้ายและเปลี่ยนชื่อ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="956"/>
+        <location filename="../src/gui/socketapi.cpp" line="965"/>
         <source>Move, rename and upload...</source>
         <translation>ย้าย เปลี่ยนชื่อและอัปโหลด...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="959"/>
+        <location filename="../src/gui/socketapi.cpp" line="968"/>
         <source>Delete local changes</source>
         <translation>ลบการเปลี่ยนแปลงในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="964"/>
+        <location filename="../src/gui/socketapi.cpp" line="973"/>
         <source>Move and upload...</source>
         <translation>ย้ายและอัปโหลด...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="965"/>
+        <location filename="../src/gui/socketapi.cpp" line="974"/>
         <source>Delete</source>
         <translation>ลบ</translation>
     </message>
@@ -3747,58 +3768,58 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 (ข้ามไปเนื่องจากข้อผิดพลาดก่อนหน้านี้ กำลังลองอีกครั้งใน %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="454"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="482"/>
+        <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>ไม่สามารถเปิดหรือสร้างฐานข้อมูลการประสานข้อมูลในเครื่อง ตรวจสอบว่าคุณมีสิทธิ์การเขียนในโฟลเดอร์ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1027"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>พื้นที่จัดเก็บเหลือน้อย: การดาวน์โหลดจะช่วยลดพื้นที่ว่างด้านล่าง %1 ที่ถูกข้ามไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1025"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1034"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>มีพื้นที่ว่างไม่เพียงพอบนเซิร์ฟเวอร์สำหรับการอัปโหลดบางรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="372"/>
+        <location filename="../src/libsync/syncengine.cpp" line="373"/>
         <source>Unresolved conflict.</source>
         <translation>ข้อขัดแย้งที่ยังไม่ได้แก้ไข</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="350"/>
+        <location filename="../src/libsync/syncengine.cpp" line="351"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>ไม่สามารถอัปเดตข้อมูล metadata ของไฟล์เสมือน: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="498"/>
+        <location filename="../src/libsync/syncengine.cpp" line="503"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>กำลังใช้ไฟล์เสมือนที่มีคำต่อท้าย แต่ไม่ได้ตั้งคำต่อท้าย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="510"/>
+        <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="541"/>
+        <location filename="../src/libsync/syncengine.cpp" line="546"/>
         <source>Unable to read from the sync journal.</source>
         <translation>ไม่สามารถอ่านจากบันทึกการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="625"/>
+        <location filename="../src/libsync/syncengine.cpp" line="630"/>
         <source>Cannot open the sync journal</source>
         <translation>ไม่สามารถเปิดการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1001"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1010"/>
         <source>Aborted</source>
         <translation>ยกเลิกแล้ว</translation>
     </message>
@@ -3840,17 +3861,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="319"/>
+        <location filename="../src/common/checksums.cpp" line="338"/>
         <source>The checksum header is malformed.</source>
         <translation>การตรวจสอบส่วนหัวผิดรูปแบบ</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="346"/>
+        <location filename="../src/common/checksums.cpp" line="365"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>จากการตรวจสอบส่วนหัวมีประเภทที่ไม่รู้จัก &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="350"/>
+        <location filename="../src/common/checksums.cpp" line="369"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>ไฟล์ที่ดาวน์โหลดมาไม่ตรงกับการตรวจสอบที่กลับคืนมา</translation>
     </message>
@@ -3894,243 +3915,243 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Please sign in</source>
         <translation>กรุณาเข้าสู่ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Folder %1: %2</source>
         <translation>โฟลเดอร์ %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="341"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="332"/>
         <source>There are no sync folders configured.</source>
         <translation>ไม่มีการกำหนดค่าการประสานข้อมูลโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="350"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="341"/>
         <source>Open in browser</source>
         <translation>เปิดในเบราว์เซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="717"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="814"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="390"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="708"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="805"/>
         <source>Log in...</source>
         <translation>เข้าสู่ระบบ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="403"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="709"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="816"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="394"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="700"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="807"/>
         <source>Log out</source>
         <translation>ออกจากระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="495"/>
         <source>Recent Changes</source>
         <translation>การเปลี่ยนแปลงล่าสุด</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="377"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="368"/>
         <source>Managed Folders:</source>
         <translation>โฟลเดอร์ที่มีการจัดการแล้ว:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="380"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="371"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>เปิดโฟลเดอร์ &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="343"/>
         <source>Open %1 in browser</source>
         <translation>เปิด %1 ในเบราว์เซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="209"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="200"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>เซิร์ฟเวอร์ในบัญชี %1 ไม่รองรับการทำงานกับ %2 ซึ่งอาจเป็นอันตราย ดำเนินการตามความเสี่ยงของคุณเอง</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="797"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="788"/>
         <source>Unknown status</source>
         <translation>สถานะที่ไม่รู้จัก</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="799"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Settings...</source>
         <translation>ตั้งค่า...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="801"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="792"/>
         <source>Details...</source>
         <translation>รายละเอียด...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="807"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="798"/>
         <source>Help</source>
         <translation>ช่วยเหลือ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="811"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="802"/>
         <source>Quit %1</source>
         <translation>ออก %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="249"/>
         <source>Disconnected from %1</source>
         <translation>ถูกตัดการเชื่อมต่อจาก %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="208"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
         <source>Unsupported Server Version</source>
         <translation>ไม่สนับสนุนรุ่นของ Server</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="248"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="239"/>
         <source>Disconnected</source>
         <translation>ยกเลิกการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="250"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="241"/>
         <source>Disconnected from some accounts</source>
         <translation>ยกเลิกการเชื่อมต่อจากบางบัญชี</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="261"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="252"/>
         <source>Disconnected from accounts:</source>
         <translation>ยกเลิกการเชื่อมต่อจากบัญชี:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="263"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="254"/>
         <source>Account %1: %2</source>
         <translation>บัญชี %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="278"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="269"/>
         <source>Signed out</source>
         <translation>ออกจากระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <source>Account synchronization is disabled</source>
         <translation>บัญชีประสานข้อมูลถูกปิดใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="336"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="327"/>
         <source>Synchronization is paused</source>
         <translation>หยุดการประสานข้อมูลแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
         <source>Unresolved conflicts</source>
         <translation>มีข้อขัดแย้งที่ยังไม่ได้รับการแก้ไข</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="338"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
         <source>Error during synchronization</source>
         <translation>เกิดข้อผิดพลาดขณะทำการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="333"/>
         <source>No sync folders configured</source>
         <translation>ไม่ได้กำหนดค่าโฟลเดอร์ที่จะประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="388"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="379"/>
         <source>Unpause all folders</source>
         <translation>ทำโฟลเดอร์ทั้งหมดต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="384"/>
         <source>Pause all folders</source>
         <translation>หยุดโฟลเดอร์ทั้งหมดชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="688"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="679"/>
         <source>Unpause all synchronization</source>
         <translation>ประสานข้อมูลทั้งหมดต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="690"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="681"/>
         <source>Unpause synchronization</source>
         <translation>ประสานข้อมูลต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="698"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="689"/>
         <source>Pause all synchronization</source>
         <translation>หยุดการประสานข้อมูลทั้งหมดชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="700"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="691"/>
         <source>Pause synchronization</source>
         <translation>หยุดการประสานข้อมูลชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="707"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="698"/>
         <source>Log out of all accounts</source>
         <translation>ออกจากระบบของบัญชีทั้งหมด</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="715"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="706"/>
         <source>Log in to all accounts...</source>
         <translation>เข้าสู่ระบบของบัญชีทั้งหมด...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="800"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
         <source>New account...</source>
         <translation>สร้างบัญชีใหม่...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="809"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1175"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="800"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1155"/>
         <source>About %1</source>
         <translation>เกี่ยวกับ %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="842"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
         <source>No items synced recently</source>
         <translation>ไม่มีรายการที่ถูกประสานข้อมูลเมื่อเร็วๆ นี้</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="864"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="855"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>กำลังตรวจหาการเปลี่ยนแปลงในรีโมต &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="867"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="858"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>กำลังตรวจหาการเปลี่ยนแปลงในเครื่อง &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="882"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="873"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>กำลังประสานข้อมูล %1 จาก %2 (เหลือ %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="887"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="878"/>
         <source>Syncing %1 of %2</source>
         <translation>กำลังประสานข้อมูล %1 จากทั้งหมด %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="896"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="887"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>กำลังประสานข้อมูล %1 (เหลือ %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="899"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="890"/>
         <source>Syncing %1</source>
         <translation>กำลังประสานข้อมูล %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="908"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="333"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="324"/>
         <source>Up to date</source>
         <translation>ถึงวันที่</translation>
     </message>
@@ -4219,11 +4240,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
         <translation>ประสานข้อมูลทุกอย่างจากเซิร์ฟเวอร์ (แนะนำ)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
-        <source>Use virtual files instead of downloading content immediately (e&amp;xperimental)</source>
-        <translation>ใช้ไฟล์เสมือนแทนการดาวน์โหลดเนื้อหาทันที (โหมดเบต้า)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="460"/>
@@ -4437,7 +4453,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 จำเป็นต้องทำงานบนถาดระบบ ถ้าคุณใช้ XFCE โปรดปฏิบัติตาม &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;คำแนะนำเหล่านี้&lt;/a&gt; อย่างไรก็ตาม กรุณาติดตั้งแอพฯถาดระบบเช่น &apos;trayer&apos; และลองอีกครั้ง</translation>
+        <translation>%1 จำเป็นต้องทำงานบนถาดระบบ ถ้าคุณใช้ XFCE โปรดปฏิบัติตาม &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;คำแนะนำเหล่านี้&lt;/a&gt; อย่างไรก็ตาม กรุณาติดตั้งแอปฯถาดระบบเช่น &apos;trayer&apos; และลองอีกครั้ง</translation>
     </message>
 </context>
 <context>
@@ -4478,7 +4494,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Deleted</source>
-        <translation>ลบแล้ว</translation>
+        <translation>ลบเมื่อ</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
@@ -4625,29 +4641,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
-        <source>Currently always available locally</source>
-        <translation>ปัจจุบันมีให้บริการในพื้นที่เสมอ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
-        <source>Currently available locally</source>
-        <translation>ปัจจุบันในพื้นที่สามารถใช้งานได้</translation>
+        <source>Always available locally</source>
+        <translation>พร้อมใช้งานแบบในเครื่องเสมอ</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
-        <source>Currently some available online only</source>
-        <translation>ขณะนี้บางส่วนมีออนไลน์เท่านั้น</translation>
+        <source>Some available online only</source>
+        <translation>พร้อมใช้งานแบบออนไลน์แค่บางอย่างเท่านั้น</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="82"/>
         <location filename="../src/gui/guiutility.cpp" line="84"/>
-        <source>Currently available online only</source>
-        <translation>ขณะนี้ให้บริการออนไลน์เท่านั้น</translation>
+        <source>Available online only</source>
+        <translation>พร้อมใช้งานแบบออนไลน์เท่านั้น</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <source>Currently available locally</source>
+        <translation>ปัจจุบันสามารถใช้งานแบบในเครื่องได้</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="91"/>
         <source>Make always available locally</source>
-        <translation>ทำให้ใช้ได้ในท้องถิ่นเสมอ</translation>
+        <translation>ทำให้ใช้งานแบบในเครื่องเสมอ</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="96"/>

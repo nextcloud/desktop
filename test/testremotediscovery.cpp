@@ -12,16 +12,6 @@
 
 using namespace OCC;
 
-SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
-{
-    for (const QList<QVariant> &args : spy) {
-        auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
-            return item;
-    }
-    return SyncFileItemPtr(new SyncFileItem);
-}
-
 struct FakeBrokenXmlPropfindReply : FakePropfindReply {
     FakeBrokenXmlPropfindReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op,
                                const QNetworkRequest &request, QObject *parent)
@@ -119,7 +109,7 @@ private slots:
         // So the test that test timeout finishes fast
         QScopedValueRollback<int> setHttpTimeout(AbstractNetworkJob::httpTimeout, errorKind == Timeout ? 1 : 10000);
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         QSignalSpy errorSpy(&fakeFolder.syncEngine(), &SyncEngine::syncError);
         QCOMPARE(fakeFolder.syncOnce(), syncSucceeds);
 
@@ -130,13 +120,13 @@ private slots:
             QCOMPARE(errorSpy.size(), 1);
             QCOMPARE(errorSpy[0][0].toString(), QString(fatalErrorPrefix + expectedErrorString));
         } else {
-            QCOMPARE(findItem(completeSpy, "B")->_instruction, CSYNC_INSTRUCTION_IGNORE);
-            QVERIFY(findItem(completeSpy, "B")->_errorString.contains(expectedErrorString));
+            QCOMPARE(completeSpy.findItem("B")->_instruction, CSYNC_INSTRUCTION_IGNORE);
+            QVERIFY(completeSpy.findItem("B")->_errorString.contains(expectedErrorString));
 
             // The other folder should have been sync'ed as the sync just ignored the faulty dir
             QCOMPARE(fakeFolder.currentRemoteState().children["A"], fakeFolder.currentLocalState().children["A"]);
             QCOMPARE(fakeFolder.currentRemoteState().children["C"], fakeFolder.currentLocalState().children["C"]);
-            QCOMPARE(findItem(completeSpy, "A/z1")->_instruction, CSYNC_INSTRUCTION_NEW);
+            QCOMPARE(completeSpy.findItem("A/z1")->_instruction, CSYNC_INSTRUCTION_NEW);
         }
 
         //
@@ -168,17 +158,17 @@ private slots:
             return nullptr;
         });
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
         QVERIFY(!fakeFolder.syncOnce());
 
-        QCOMPARE(findItem(completeSpy, "good")->_instruction, CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(findItem(completeSpy, "noetag")->_instruction, CSYNC_INSTRUCTION_ERROR);
-        QCOMPARE(findItem(completeSpy, "nofileid")->_instruction, CSYNC_INSTRUCTION_ERROR);
-        QCOMPARE(findItem(completeSpy, "nopermissions")->_instruction, CSYNC_INSTRUCTION_NEW);
-        QCOMPARE(findItem(completeSpy, "nopermissions/A")->_instruction, CSYNC_INSTRUCTION_ERROR);
-        QVERIFY(findItem(completeSpy, "noetag")->_errorString.contains("etag"));
-        QVERIFY(findItem(completeSpy, "nofileid")->_errorString.contains("file id"));
-        QVERIFY(findItem(completeSpy, "nopermissions/A")->_errorString.contains("permissions"));
+        QCOMPARE(completeSpy.findItem("good")->_instruction, CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(completeSpy.findItem("noetag")->_instruction, CSYNC_INSTRUCTION_ERROR);
+        QCOMPARE(completeSpy.findItem("nofileid")->_instruction, CSYNC_INSTRUCTION_ERROR);
+        QCOMPARE(completeSpy.findItem("nopermissions")->_instruction, CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(completeSpy.findItem("nopermissions/A")->_instruction, CSYNC_INSTRUCTION_ERROR);
+        QVERIFY(completeSpy.findItem("noetag")->_errorString.contains("etag"));
+        QVERIFY(completeSpy.findItem("nofileid")->_errorString.contains("file id"));
+        QVERIFY(completeSpy.findItem("nopermissions/A")->_errorString.contains("permissions"));
     }
 };
 

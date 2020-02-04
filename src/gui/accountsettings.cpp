@@ -54,10 +54,6 @@
 
 #include "account.h"
 
-#ifdef Q_OS_MAC
-#include "settingsdialogmac.h"
-#endif
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountSettings, "gui.account.settings", QtInfoMsg)
@@ -228,16 +224,6 @@ void AccountSettings::slotOpenAccountWizard()
     if (qgetenv("QT_QPA_PLATFORMTHEME") == "appmenu-qt5" || QSystemTrayIcon::isSystemTrayAvailable()) {
         topLevelWidget()->close();
     }
-#ifdef Q_OS_MAC
-    qCDebug(lcAccountSettings) << parent() << topLevelWidget();
-    SettingsDialogMac *sd = qobject_cast<SettingsDialogMac *>(topLevelWidget());
-
-    if (sd) {
-        sd->showActivityPage();
-    } else {
-        qFatal("nope");
-    }
-#endif
     OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
 }
 
@@ -364,7 +350,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         && !folder->supportsVirtualFiles()
         && bestAvailableVfsMode() != Vfs::Off
         && !folder->isVfsOnOffSwitchPending()) {
-        ac = menu->addAction(tr("Enable virtual file support (experimental)..."));
+        ac = menu->addAction(tr("Enable virtual file support %1...").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? tr("(tech preview)") : tr("(experimental)")));
         connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableVfsCurrentFolder);
     }
 
@@ -376,6 +362,16 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 {
     if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
         // "Add Folder Sync Connection"
+        QTreeView *tv = ui->_folderList;
+        auto pos = tv->mapFromGlobal(QCursor::pos());
+        QStyleOptionViewItem opt;
+        opt.initFrom(tv);
+        auto btnRect = tv->visualRect(indx);
+        auto btnSize = tv->itemDelegate(indx)->sizeHint(opt, indx);
+        auto actual = QStyle::visualRect(opt.direction, btnRect, QRect(btnRect.topLeft(), btnSize));
+        if (!actual.contains(pos))
+            return;
+
         if (indx.flags() & Qt::ItemIsEnabled) {
             slotAddFolder();
         } else {
@@ -636,6 +632,9 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             // Wipe pin states and selective sync db
             folder->setRootPinState(PinState::AlwaysLocal);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
+
+            // Prevent issues with missing local files
+            folder->slotNextSyncFullLocalDiscovery();
 
             FolderMan::instance()->scheduleFolder(folder);
 

@@ -279,9 +279,8 @@ void SyncEngine::conflictRecordMaintenance()
     //
     // This happens when the conflicts table is new or when conflict files
     // are downlaoded but the server doesn't send conflict headers.
-    for (const auto &path : _seenFiles) {
-        if (!Utility::isConflictFile(path))
-            continue;
+    for (const auto &path : _seenConflictFiles) {
+        ASSERT(Utility::isConflictFile(path));
 
         auto bapath = path.toUtf8();
         if (!conflictRecordPaths.contains(bapath)) {
@@ -304,11 +303,8 @@ void SyncEngine::conflictRecordMaintenance()
 
 void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
-    _seenFiles.insert(item->_file);
-    if (!item->_renameTarget.isEmpty()) {
-        // Yes, this records both the rename renameTarget and the original so we keep both in case of a rename
-        _seenFiles.insert(item->_renameTarget);
-    }
+    if (Utility::isConflictFile(item->_file))
+        _seenConflictFiles.insert(item->_file);
     if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
         // For directories, metadata-only updates will be done after all their files are propagated.
 
@@ -342,12 +338,17 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 rec._checksumHeader = prev._checksumHeader;
             rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
 
+            // Ensure it's a placeholder file on disk
+            if (item->_type == ItemTypeFile) {
+                _syncOptions._vfs->convertToPlaceholder(filePath, *item);
+            }
+
             // Update on-disk virtual file metadata
-            if (item->_type == ItemTypeVirtualFile && _syncOptions._vfs) {
-                QString error;
-                if (!_syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId, &error)) {
+            if (item->_type == ItemTypeVirtualFile) {
+                auto r = _syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId);
+                if (!r) {
                     item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                    item->_errorString = tr("Could not update virtual file metadata: %1").arg(error);
+                    item->_errorString = tr("Could not update virtual file metadata: %1").arg(r.error());
                     return;
                 }
             }
@@ -374,7 +375,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             item->_status = SyncFileItem::Conflict;
         }
         return;
-    } else if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+    } else if (item->_instruction == CSYNC_INSTRUCTION_REMOVE && !item->_isSelectiveSync) {
         _hasRemoveFile = true;
     } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
         _hasNoneFiles = true; // If a file (or every file) has been renamed, it means not al files where deleted
@@ -391,7 +392,11 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     // if the item is on blacklist, the instruction was set to ERROR
     checkErrorBlacklisting(*item);
     _needsUpdate = true;
-    _syncItems.append(item);
+
+    // Insert sorted
+    auto it = std::lower_bound( _syncItems.begin(), _syncItems.end(), item ); // the _syncItems is sorted
+    _syncItems.insert( it, item );
+
     slotNewItem(item);
 
     if (item->isDirectory()) {
@@ -426,7 +431,7 @@ void SyncEngine::startSync()
 
     _hasNoneFiles = false;
     _hasRemoveFile = false;
-    _seenFiles.clear();
+    _seenConflictFiles.clear();
 
     _progressInfo->reset();
 
@@ -663,13 +668,20 @@ void SyncEngine::slotDiscoveryFinished()
         restoreOldFiles(_syncItems);
     }
 
-    // Sort items per destination
-    std::sort(_syncItems.begin(), _syncItems.end());
+    if (_discoveryPhase->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
+        _anotherSyncNeeded = ImmediateFollowUp;
+    }
+
+    Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
+
+    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QLatin1String("Reconcile (aboutToPropagate)")) << "ms";
 
     _localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
     emit aboutToPropagate(_syncItems);
+
+    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate OK) #################################################### "<< _stopWatch.addLapTime(QLatin1String("Reconcile (aboutToPropagate OK)")) << "ms";
 
     // it's important to do this before ProgressInfo::start(), to announce start of new sync
     _progressInfo->_status = ProgressInfo::Propagation;
@@ -754,10 +766,6 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item)
 {
     _progressInfo->setProgressComplete(*item);
 
-    if (item->_status == SyncFileItem::FatalError) {
-        syncError(item->_errorString);
-    }
-
     emit transmissionProgress(*_progressInfo);
     emit itemCompleted(item);
 }
@@ -801,7 +809,7 @@ void SyncEngine::finalize(bool success)
 
     // Delete the propagator only after emitting the signal.
     _propagator.clear();
-    _seenFiles.clear();
+    _seenConflictFiles.clear();
     _uniqueErrors.clear();
     _localDiscoveryPaths.clear();
     _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;

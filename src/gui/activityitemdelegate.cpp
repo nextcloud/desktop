@@ -104,7 +104,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int textTopOffset = qRound((iconHeight - fm.height()) / 2.0);
     // time rect
     QRect timeBox;
-    int timeBoxWidth = fm.boundingRect(QLatin1String("4 hour(s) ago on longlongdomain.org")).width(); // FIXME.
+    int timeBoxWidth = fm.boundingRect(QLatin1String("4 hour(s) ago on longlongdomain.org (username)")).width(); // FIXME.
     timeBox.setTop(actionIconRect.top() + textTopOffset);
     timeBox.setLeft(option.rect.right() - timeBoxWidth - margin);
     timeBox.setWidth(timeBoxWidth);

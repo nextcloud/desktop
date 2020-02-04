@@ -142,8 +142,8 @@ void OwncloudSetupPage::slotUrlEditFinished()
     if (QUrl(url).isRelative() && !url.isEmpty()) {
         // no scheme defined, set one
         url.prepend("https://");
+        _ui.leUrl->setFullText(url);
     }
-    _ui.leUrl->setFullText(url);
 }
 
 bool OwncloudSetupPage::isComplete() const
@@ -197,6 +197,7 @@ QString OwncloudSetupPage::url() const
 bool OwncloudSetupPage::validatePage()
 {
     if (!_authTypeKnown) {
+        slotUrlEditFinished();
         QString u = url();
         QUrl qurl(u);
         if (!qurl.isValid() || qurl.host().isEmpty()) {

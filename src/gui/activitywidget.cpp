@@ -137,7 +137,7 @@ void ActivityWidget::showLabels()
     _ui->_headerLabel->setTextFormat(Qt::RichText);
     _ui->_headerLabel->setText(t);
 
-    _ui->_notifyLabel->setText(tr("Action Required: Notifications"));
+    _ui->_notifyLabel->setText(tr("Notifications"));
 
     t.clear();
     QSetIterator<QString> i(_accountsWithoutActivities);
@@ -270,7 +270,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
                 this, &ActivityWidget::slotRequestCleanupAndBlacklist);
 
             _notificationsLayout->addWidget(widget);
-// _ui->_notifyScroll->setMinimumHeight( widget->height());
+            // _ui->_notifyScroll->setMinimumHeight( widget->height());
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
             _widgetForNotifId[activity.ident()] = widget;
             newNotificationShown = true;
@@ -339,28 +339,28 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 
     checkActivityTabVisibility();
 
-    int newGuiLogCount = accNotified.count();
+    const int newGuiLogCount = accNotified.count();
 
     if (newGuiLogCount > 0) {
         // restart the gui log timer now that we show a notification
         _guiLogTimer.start();
 
         // Assemble a tray notification
-        QString msg = tr("You received %n new notification(s) from %2.", "", accNotified[accNotified.keys().at(0)]).arg(accNotified.keys().at(0));
-
-        if (newGuiLogCount >= 2) {
-            QString acc1 = accNotified.keys().at(0);
-            QString acc2 = accNotified.keys().at(1);
+        QString msg;
+        if (newGuiLogCount == 1) {
+            msg = tr("%n notifications(s) for %1.", "", accNotified.begin().value()).arg(accNotified.begin().key());
+        } else if (newGuiLogCount >= 2) {
+            const auto acc1 = accNotified.begin();
+            const auto acc2 = acc1 + 1;
             if (newGuiLogCount == 2) {
-                int notiCount = accNotified[acc1] + accNotified[acc2];
-                msg = tr("You received %n new notification(s) from %1 and %2.", "", notiCount).arg(acc1, acc2);
+                const int notiCount = acc1.value() + acc2.value();
+                msg = tr("%n notifications(s) for %1 and %2.", "", notiCount).arg(acc1.key(), acc2.key());
             } else {
-                msg = tr("You received new notifications from %1, %2 and other accounts.").arg(acc1, acc2);
+                msg = tr("New notifications for %1, %2 and other accounts.").arg(acc1.key(), acc2.key());
             }
         }
-
-        const QString log = tr("%1 Notifications - Action Required").arg(Theme::instance()->appNameGUI());
-        emit guiLog(log, msg);
+        const QString log = tr("Open the activity view for details.");
+        emit guiLog(msg, log);
     }
 
     if (newNotificationShown) {

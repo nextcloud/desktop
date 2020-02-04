@@ -196,15 +196,9 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     header << tr("Action");
     header << tr("Size");
 
-    int timestampColumnExtra = 0;
-#ifdef Q_OS_WIN
-    timestampColumnExtra = 20; // font metrics are broken on Windows, see #4721
-#endif
-
     _ui->_treeWidget->setHeaderLabels(header);
     int timestampColumnWidth =
-        _ui->_treeWidget->fontMetrics().width(ProtocolItem::timeString(QDateTime::currentDateTime()))
-        + timestampColumnExtra;
+        _ui->_treeWidget->fontMetrics().boundingRect(ProtocolItem::timeString(QDateTime::currentDateTime())).width();
     _ui->_treeWidget->setColumnWidth(0, timestampColumnWidth);
     _ui->_treeWidget->setColumnWidth(1, 180);
     _ui->_treeWidget->setColumnCount(5);

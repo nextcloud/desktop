@@ -147,12 +147,13 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         _expiryRequired = true;
     }
 
-    // File can't have public upload set; we also hide it if the capability isn't there
-    _ui->widget_editing->setVisible(
-        !_isFile && _account->capabilities().sharePublicLinkAllowUpload());
-    _ui->radio_uploadOnly->setVisible(
-        _account->capabilities().sharePublicLinkSupportsUploadOnly());
-
+    // Hide permissions that are unavailable for files or disabled by capability.
+    bool rwVisible = !_isFile && _account->capabilities().sharePublicLinkAllowUpload();
+    bool uploadOnlyVisible = rwVisible && _account->capabilities().sharePublicLinkSupportsUploadOnly();
+    _ui->radio_readWrite->setVisible(rwVisible);
+    _ui->label_readWrite->setVisible(rwVisible);
+    _ui->radio_uploadOnly->setVisible(uploadOnlyVisible);
+    _ui->label_uploadOnly->setVisible(uploadOnlyVisible);
 
     // Prepare sharing menu
 

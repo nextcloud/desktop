@@ -24,6 +24,7 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QLinkedList>
+#include <QRunnable>
 #include <deque>
 #include "syncoptions.h"
 #include "syncfileitem.h"
@@ -75,6 +76,33 @@ struct LocalInfo
     bool isVirtualFile = false;
     bool isSymLink = false;
     bool isValid() const { return !name.isNull(); }
+};
+
+/**
+ * @brief Run list on a local directory and process the results for Discovery
+ *
+ * @ingroup libsync
+ */
+class DiscoverySingleLocalDirectoryJob : public QObject, public QRunnable
+{
+    Q_OBJECT
+public:
+    explicit DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent = 0);
+
+    void run() Q_DECL_OVERRIDE;
+signals:
+    void finished(QVector<LocalInfo> result);
+    void finishedFatalError(QString errorString);
+    void finishedNonFatalError(QString errorString);
+
+    void itemDiscovered(SyncFileItemPtr item);
+    void childIgnored(bool b);
+private slots:
+private:
+    QString _localPath;
+    AccountPtr _account;
+    OCC::Vfs* _vfs;
+public:
 };
 
 
@@ -156,12 +184,22 @@ class DiscoveryPhase : public QObject
     QMap<QString, QString> _renamedItemsRemote;
     QMap<QString, QString> _renamedItemsLocal;
 
+    // set of paths that should not be removed even though they are removed locally:
+    // there was a move to an invalid destination and now the source should be restored
+    //
+    // This applies recursively to subdirectories.
+    // All entries should have a trailing slash (even files), so lookup with
+    // lowerBound() is reliable.
+    //
+    // The value of this map doesn't matter.
+    QMap<QString, bool> _forbiddenDeletes;
+
     /** Returns whether the db-path has been renamed locally or on the remote.
      *
      * Useful for avoiding processing of items that have already been claimed in
      * a rename (would otherwise be discovered as deletions).
      */
-    bool isRenamed(const QString &p) { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
+    bool isRenamed(const QString &p) const { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
 
     int _currentlyActiveJobs = 0;
 
@@ -218,6 +256,7 @@ public:
 
     // output
     QByteArray _dataFingerprint;
+    bool _anotherSyncNeeded = false;
 
 signals:
     void fatalError(const QString &errorString);

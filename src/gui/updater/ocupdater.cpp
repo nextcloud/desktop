@@ -31,6 +31,7 @@ namespace OCC {
 
 static const char updateAvailableC[] = "Updater/updateAvailable";
 static const char updateTargetVersionC[] = "Updater/updateTargetVersion";
+static const char updateTargetVersionStringC[] = "Updater/updateTargetVersionString";
 static const char seenVersionC[] = "Updater/seenVersion";
 static const char autoUpdateAttemptedC[] = "Updater/autoUpdateAttempted";
 
@@ -146,7 +147,7 @@ QString OCUpdater::statusString() const
     case Downloading:
         return tr("Downloading %1. Please wait...").arg(updateVersion);
     case DownloadComplete:
-        return tr("%1 available. Restart application to start the update.").arg(Theme::instance()->appNameGUI(), updateVersion);
+        return tr("%1 available. Restart application to start the update.").arg(updateVersion);
     case DownloadFailed:
         return tr("Could not download update. Please click <a href='%1'>here</a> to download the update manually.").arg(_updateInfo.web());
     case DownloadTimedOut:
@@ -294,6 +295,7 @@ void NSISUpdater::wipeUpdateData()
         QFile::remove(updateFileName);
     settings.remove(updateAvailableC);
     settings.remove(updateTargetVersionC);
+    settings.remove(updateTargetVersionStringC);
     settings.remove(autoUpdateAttemptedC);
 }
 
@@ -322,6 +324,7 @@ void NSISUpdater::slotDownloadFinished()
     setDownloadState(DownloadComplete);
     qCInfo(lcUpdater) << "Downloaded" << url.toString() << "to" << _targetFile;
     settings.setValue(updateTargetVersionC, updateInfo().version());
+    settings.setValue(updateTargetVersionStringC, updateInfo().versionString());
     settings.setValue(updateAvailableC, _targetFile);
 }
 
@@ -330,11 +333,22 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     qint64 infoVersion = Helper::stringVersionToInt(info.version());
-    qint64 seenVersion = Helper::stringVersionToInt(settings.value(seenVersionC).toString());
+    auto seenString = settings.value(seenVersionC).toString();
+    qint64 seenVersion = Helper::stringVersionToInt(seenString);
     qint64 currVersion = Helper::currentVersionToInt();
-    if (info.version().isEmpty()
-        || infoVersion <= currVersion
-        || infoVersion <= seenVersion) {
+    qCInfo(lcUpdater) << "Version info arrived:"
+            << "Your version:" << currVersion
+            << "Skipped version:" << seenVersion << seenString
+            << "Available version:" << infoVersion << info.version()
+            << "Available version string:" << info.versionString()
+            << "Web url:" << info.web()
+            << "Download url:" << info.downloadUrl();
+    if (info.version().isEmpty())
+    {
+        qCInfo(lcUpdater) << "No version information available at the moment";
+        setDownloadState(UpToDate);
+    } else if (infoVersion <= currVersion
+               || infoVersion <= seenVersion) {
         qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
@@ -409,7 +423,7 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     msgBox->open();
 }
 
-void NSISUpdater::showUpdateErrorDialog()
+void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 {
     QDialog *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
@@ -433,7 +447,7 @@ void NSISUpdater::showUpdateErrorDialog()
     QString txt = tr("<p>A new version of the %1 Client is available but the updating process failed.</p>"
                      "<p><b>%2</b> has been downloaded. The installed version is %3.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
-                          Utility::escape(updateInfo().versionString()), Utility::escape(clientVersion()));
+                          Utility::escape(targetVersion), Utility::escape(clientVersion()));
 
     lbl->setText(txt);
     lbl->setTextFormat(Qt::RichText);
@@ -463,8 +477,6 @@ void NSISUpdater::showUpdateErrorDialog()
         qApp->quit();
     });
     connect(getupdate, &QAbstractButton::clicked, this, [this]() {
-        wipeUpdateData();
-        slotSetSeenVersion();
         slotOpenUpdateUrl();
     });
 
@@ -480,18 +492,24 @@ bool NSISUpdater::handleStartup()
     QString updateFileName = settings.value(updateAvailableC).toString();
     // has the previous run downloaded an update?
     if (!updateFileName.isEmpty() && QFile(updateFileName).exists()) {
+        qCInfo(lcUpdater) << "An updater file is available";
         // did it try to execute the update?
         if (settings.value(autoUpdateAttemptedC, false).toBool()) {
             if (updateSucceeded()) {
                 // success: clean up
+                qCInfo(lcUpdater) << "The requested update attempt has succeeded"
+                        << Helper::currentVersionToInt();
                 wipeUpdateData();
                 return false;
             } else {
                 // auto update failed. Ask user what to do
-                showUpdateErrorDialog();
+                qCInfo(lcUpdater) << "The requested update attempt has failed"
+                        << settings.value(updateTargetVersionC).toString();
+                showUpdateErrorDialog(settings.value(updateTargetVersionStringC).toString());
                 return false;
             }
         } else {
+            qCInfo(lcUpdater) << "Triggering an update";
             return performUpdate();
         }
     }

@@ -47,6 +47,7 @@ int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(client);
 
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 #ifdef Q_OS_WIN
 // If the font size ratio is set on Windows, we need to
 // enable the auto pixelRatio in Qt since we don't

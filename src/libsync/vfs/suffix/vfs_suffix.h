@@ -38,12 +38,13 @@ public:
     bool socketApiPinStateActionsShown() const override { return true; }
     bool isHydrating() const override;
 
-    bool updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId, QString *error) override;
+    Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
 
-    void createPlaceholder(const SyncFileItem &item) override;
-    void dehydratePlaceholder(const SyncFileItem &item) override;
+    Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
+    Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) override;
     void convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &) override;
 
+    bool needsMetadataUpdate(const SyncFileItem &) override { return false; }
     bool isDehydratedPlaceholder(const QString &filePath) override;
     bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) override;
 
@@ -57,7 +58,7 @@ public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}
 
 protected:
-    void startImpl(const VfsSetupParams &) override {}
+    void startImpl(const VfsSetupParams &params) override;
 };
 
 class SuffixVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsSuffix>

@@ -158,7 +158,7 @@ private slots:
 private:
     void wipeUpdateData();
     void showNoUrlDialog(const UpdateInfo &info);
-    void showUpdateErrorDialog();
+    void showUpdateErrorDialog(const QString &targetVersion);
     void versionInfoArrived(const UpdateInfo &info) Q_DECL_OVERRIDE;
     QScopedPointer<QTemporaryFile> _file;
     QString _targetFile;

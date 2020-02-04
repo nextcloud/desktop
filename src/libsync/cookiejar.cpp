@@ -21,6 +21,7 @@
 #include <QLoggingCategory>
 #include <QNetworkCookie>
 #include <QDataStream>
+#include <QDir>
 
 namespace OCC {
 
@@ -97,27 +98,45 @@ void CookieJar::clearSessionCookies()
     setAllCookies(removeExpired(allCookies()));
 }
 
-void CookieJar::save(const QString &fileName)
+bool CookieJar::save(const QString &fileName)
 {
-    QFile file;
-    file.setFileName(fileName);
+    const QFileInfo info(fileName);
+    if (!info.dir().exists())
+    {
+        info.dir().mkpath(".");
+    }
+
     qCDebug(lcCookieJar) << fileName;
-    file.open(QIODevice::WriteOnly);
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        return false;
+    }
     QDataStream stream(&file);
     stream << removeExpired(allCookies());
     file.close();
+    return true;
 }
 
-void CookieJar::restore(const QString &fileName)
+bool CookieJar::restore(const QString &fileName)
 {
-    QFile file;
-    file.setFileName(fileName);
-    file.open(QIODevice::ReadOnly);
+    const QFileInfo info(fileName);
+    if (!info.exists())
+    {
+        return false;
+    }
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        return false;
+    }
     QDataStream stream(&file);
     QList<QNetworkCookie> list;
     stream >> list;
     setAllCookies(removeExpired(list));
     file.close();
+    return true;
 }
 
 QList<QNetworkCookie> CookieJar::removeExpired(const QList<QNetworkCookie> &cookies)

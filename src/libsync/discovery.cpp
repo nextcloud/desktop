@@ -18,9 +18,11 @@
 #include <QDebug>
 #include <algorithm>
 #include <set>
-#include <QDirIterator>
 #include <QTextCodec>
 #include "vio/csync_vio_local.h"
+#include <QFileInfo>
+#include <QFile>
+#include <QThreadPool>
 #include "common/checksums.h"
 #include "csync_exclude.h"
 #include "csync_util.h"
@@ -34,9 +36,8 @@ void ProcessDirectoryJob::start()
 {
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
 
-    DiscoverySingleDirectoryJob *serverJob = nullptr;
     if (_queryServer == NormalQuery) {
-        serverJob = startAsyncServerQuery();
+        _serverJob = startAsyncServerQuery();
     } else {
         _serverQueryDone = true;
     }
@@ -50,14 +51,14 @@ void ProcessDirectoryJob::start()
     }
 
     if (_queryLocal == NormalQuery) {
-        if (!runLocalQuery() && serverJob)
-            serverJob->abort();
+        startAsyncLocalQuery();
+    } else {
+        _localQueryDone = true;
     }
-    _localQueryDone = true;
 
-    // Process is being called when both local and server entries are fetched.
-    if (_serverQueryDone)
+    if (_localQueryDone && _serverQueryDone) {
         process();
+    }
 }
 
 void ProcessDirectoryJob::process()
@@ -66,12 +67,14 @@ void ProcessDirectoryJob::process()
 
     QString localDir;
 
-    //
     // Build lookup tables for local, remote and db entries.
-    // For suffix-virtual files, the key will always be the base file name
+    // For suffix-virtual files, the key will normally be the base file name
     // without the suffix.
-    //
+    // However, if foo and foo.owncloud exists locally, there'll be "foo"
+    // with local, db, server entries and "foo.owncloud" with only a local
+    // entry.
     struct Entries {
+        QString nameOverride;
         SyncJournalFileRecord dbEntry;
         RemoteInfo serverEntry;
         LocalInfo localEntry;
@@ -97,17 +100,36 @@ void ProcessDirectoryJob::process()
     }
 
     for (auto &e : _localNormalQueryEntries) {
-        // Normally for vfs-suffix files the local entries need the suffix removed.
-        // However, don't do it if "foo.owncloud" exists on the server or in the db
-        // (as a non-virtual file): we don't want to create two entries.
-        auto name = e.name;
-        if (e.isVirtualFile && isVfsWithSuffix() && entries.find(name) == entries.end()) {
-            chopVirtualFileSuffix(name);
-            // If there is both a virtual file and a real file, we must keep the real file
-            if (entries[name].localEntry.isValid())
+        entries[e.name].localEntry = e;
+    }
+    if (isVfsWithSuffix()) {
+        // For vfs-suffix the local data for suffixed files should usually be associated
+        // with the non-suffixed name. Unless both names exist locally or there's
+        // other data about the suffixed file.
+        // This is done in a second path in order to not depend on the order of
+        // _localNormalQueryEntries.
+        for (auto &e : _localNormalQueryEntries) {
+            if (!e.isVirtualFile)
                 continue;
+            auto &suffixedEntry = entries[e.name];
+            bool hasOtherData = suffixedEntry.serverEntry.isValid() || suffixedEntry.dbEntry.isValid();
+
+            auto nonvirtualName = e.name;
+            chopVirtualFileSuffix(nonvirtualName);
+            auto &nonvirtualEntry = entries[nonvirtualName];
+            // If the non-suffixed entry has no data, move it
+            if (!nonvirtualEntry.localEntry.isValid()) {
+                std::swap(nonvirtualEntry.localEntry, suffixedEntry.localEntry);
+                if (!hasOtherData)
+                    entries.erase(e.name);
+            } else if (!hasOtherData) {
+                // Normally a lone local suffixed file would be processed under the
+                // unsuffixed name. In this special case it's under the suffixed name.
+                // To avoid lots of special casing, make sure PathTuple::addName()
+                // will be called with the unsuffixed name anyway.
+                suffixedEntry.nameOverride = nonvirtualName;
+            }
         }
-        entries[name].localEntry = std::move(e);
     }
     _localNormalQueryEntries.clear();
 
@@ -118,23 +140,23 @@ void ProcessDirectoryJob::process()
         const auto &e = f.second;
 
         PathTuple path;
-        path = _currentFolder.addName(f.first);
+        path = _currentFolder.addName(e.nameOverride.isEmpty() ? f.first : e.nameOverride);
 
         if (isVfsWithSuffix()) {
-            // If the file is virtual in the db, adjust path._original
-            if (e.dbEntry.isVirtualFile()) {
-                ASSERT(hasVirtualFileSuffix(e.dbEntry._path));
-                addVirtualFileSuffix(path._original);
-            } else if (e.localEntry.isVirtualFile && !e.dbEntry.isValid()) {
-                // We don't have a db entry - but it should be at this path
-                addVirtualFileSuffix(path._original);
-            }
+            // Without suffix vfs the paths would be good. But since the dbEntry and localEntry
+            // can have different names from f.first when suffix vfs is on, make sure the
+            // corresponding _original and _local paths are right.
 
-            // If the file is virtual locally, adjust path._local
-            if (e.localEntry.isVirtualFile) {
-                ASSERT(hasVirtualFileSuffix(e.localEntry.name));
-                addVirtualFileSuffix(path._local);
-            } else if (e.dbEntry.isVirtualFile() && _queryLocal == ParentNotChanged) {
+            if (e.dbEntry.isValid()) {
+                path._original = e.dbEntry._path;
+            } else if (e.localEntry.isVirtualFile) {
+                // We don't have a db entry - but it should be at this path
+                path._original = PathTuple::pathAppend(_currentFolder._original,  e.localEntry.name);
+            }
+            if (e.localEntry.isValid()) {
+                path._local = PathTuple::pathAppend(_currentFolder._local, e.localEntry.name);
+            } else if (e.dbEntry.isVirtualFile()) {
+                // We don't have a local entry - but it should be at this path
                 addVirtualFileSuffix(path._local);
             }
         }
@@ -331,6 +353,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // remote will be rediscovered. This is just a fallback for a similar check
     // in processFileAnalyzeRemoteInfo().
     if (_queryServer == ParentNotChanged
+        && dbEntry.isValid()
         && (dbEntry._type == ItemTypeVirtualFileDownload
             || localEntry.type == ItemTypeVirtualFileDownload)
         && (localEntry.isValid() || _queryLocal == ParentNotChanged)) {
@@ -644,7 +667,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // conflict we don't need to recurse into it. (local c1.owncloud, c1/ ; remote: c1)
         if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT && !item->isDirectory())
             recurse = false;
-        if (_queryLocal != NormalQuery && _queryServer != NormalQuery && !item->_isRestoration)
+        if (_queryLocal != NormalQuery && _queryServer != NormalQuery)
             recurse = false;
 
         auto recurseQueryLocal = _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist;
@@ -679,13 +702,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_type = ItemTypeVirtualFile;
         } else if (!serverModified) {
             // Removed locally: also remove on the server.
-            if (_dirItem && _dirItem->_isRestoration && _dirItem->_instruction == CSYNC_INSTRUCTION_NEW) {
-                // Also restore everything
-                item->_instruction = CSYNC_INSTRUCTION_NEW;
-                item->_direction = SyncFileItem::Down;
-                item->_isRestoration = true;
-                item->_errorString = tr("Not allowed to remove, restoring");
-            } else if (!dbEntry._serverHasIgnoredFiles) {
+            if (!dbEntry._serverHasIgnoredFiles) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Up;
             }
@@ -712,8 +729,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 if (dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) {
                     qCInfo(lcDisco) << "Base file was renamed to virtual file:" << item->_file;
                     item->_direction = SyncFileItem::Down;
-                    item->_instruction = CSYNC_INSTRUCTION_NEW;
-                    item->_type = ItemTypeVirtualFile;
+                    item->_instruction = CSYNC_INSTRUCTION_SYNC;
+                    item->_type = ItemTypeVirtualFileDehydration;
+                    addVirtualFileSuffix(item->_file);
+                    item->_renameTarget = item->_file;
                 } else {
                     qCInfo(lcDisco) << "Virtual file with non-virtual db entry, ignoring:" << item->_file;
                     item->_instruction = CSYNC_INSTRUCTION_IGNORE;
@@ -728,9 +747,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_direction = SyncFileItem::Down;
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
                 item->_type = ItemTypeVirtualFileDehydration;
-            } else if (!serverModified && dbEntry._inode != localEntry.inode) {
+            } else if (!serverModified
+                && (dbEntry._inode != localEntry.inode
+                    || _discoveryData->_syncOptions._vfs->needsMetadataUpdate(*item))) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-                item->_direction = SyncFileItem::Down; // Does not matter
+                item->_direction = SyncFileItem::Down;
             }
         } else if (!typeChange && isVfsWithSuffix()
             && dbEntry.isVirtualFile() && !localEntry.isVirtualFile
@@ -861,17 +882,18 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         }
 
         // The old file must have been deleted.
-        if (QFile::exists(_discoveryData->_localDir + base._path)
+        if (QFile::exists(_discoveryData->_localDir + originalPath)
             // Exception: If the rename changes case only (like "foo" -> "Foo") the
             // old filename might still point to the same file.
             && !(Utility::fsCasePreserving()
-                 && originalPath.compare(path._local, Qt::CaseInsensitive) == 0)) {
+                 && originalPath.compare(path._local, Qt::CaseInsensitive) == 0
+                 && originalPath != path._local)) {
             qCInfo(lcDisco) << "Not a move, base file still exists at" << originalPath;
             return false;
         }
 
         // Verify the checksum where possible
-        if (!base._checksumHeader.isEmpty() && item->_type == ItemTypeFile) {
+        if (!base._checksumHeader.isEmpty() && item->_type == ItemTypeFile && base._type == ItemTypeFile) {
             if (computeLocalChecksum(base._checksumHeader, _discoveryData->_localDir + path._original, item)) {
                 qCInfo(lcDisco) << "checking checksum of potential rename " << path._original << item->_checksumHeader << base._checksumHeader;
                 if (item->_checksumHeader != base._checksumHeader) {
@@ -886,77 +908,108 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             return false;
         }
 
-        // Check local permission if we are allowed to put move the file here
-        // Technically we should use the one from the server, but we'll assume it is the same
-        if (!checkMovePermissions(base._remotePerm, originalPath, item->isDirectory())) {
-            qCInfo(lcDisco) << "Not a move, no permission to rename base file";
-            return false;
-        }
-
         return true;
     };
 
-    // Finally make it a NEW or a RENAME
+    // If it's not a move it's just a local-NEW
     if (!moveCheck()) {
        postProcessLocalNew();
-    } else {
-        auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
+       finalize();
+       return;
+    }
 
-        auto processRename = [item, originalPath, base, this](PathTuple &path) {
-            auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
-            _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
-            item->_renameTarget = path._target;
-            path._server = adjustedOriginalPath;
-            item->_file = path._server;
-            path._original = originalPath;
-            item->_originalFile = path._original;
-            item->_modtime = base._modtime;
-            item->_inode = base._inode;
-            item->_instruction = CSYNC_INSTRUCTION_RENAME;
-            item->_direction = SyncFileItem::Up;
-            item->_fileId = base._fileId;
-            item->_remotePerm = base._remotePerm;
-            item->_etag = base._etag;
-            item->_type = base._type;
+    // Check local permission if we are allowed to put move the file here
+    // Technically we should use the permissions from the server, but we'll assume it is the same
+    auto movePerms = checkMovePermissions(base._remotePerm, originalPath, item->isDirectory());
+    if (!movePerms.sourceOk || !movePerms.destinationOk) {
+        qCInfo(lcDisco) << "Move without permission to rename base file, "
+                        << "source:" << movePerms.sourceOk
+                        << ", target:" << movePerms.destinationOk
+                        << ", targetNew:" << movePerms.destinationNewOk;
 
-            // Discard any download/dehydrate tags on the base file.
-            // They could be preserved and honored in a follow-up sync,
-            // but it complicates handling a lot and will happen rarely.
-            if (item->_type == ItemTypeVirtualFileDownload)
-                item->_type = ItemTypeVirtualFile;
-            if (item->_type == ItemTypeVirtualFileDehydration)
-                item->_type = ItemTypeFile;
+        // If we can create the destination, do that.
+        // Permission errors on the destination will be handled by checkPermissions later.
+        postProcessLocalNew();
+        finalize();
 
-            qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
-        };
-        if (wasDeletedOnClient.first) {
-            recurseQueryServer = wasDeletedOnClient.second == base._etag ? ParentNotChanged : NormalQuery;
-            processRename(path);
-        } else {
-            // We must query the server to know if the etag has not changed
-            _pendingAsyncJobs++;
-            QString serverOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
-            if (base.isVirtualFile() && isVfsWithSuffix())
-                chopVirtualFileSuffix(serverOriginalPath);
-            auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
-                if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
-                    qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
-                    // Can't be a rename, leave it as a new.
-                    postProcessLocalNew();
-                } else {
-                    // In case the deleted item was discovered in parallel
-                    _discoveryData->findAndCancelDeletedJob(originalPath);
-                    processRename(path);
-                    recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
-                }
-                processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
-                _pendingAsyncJobs--;
-                QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
-            });
-            job->start();
+        // If the destination upload will work, we're fine with the source deletion.
+        // If the source deletion can't work, checkPermissions will error.
+        if (movePerms.destinationNewOk)
             return;
+
+        // Here we know the new location can't be uploaded: must prevent the source delete.
+        // Two cases: either the source item was already processed or not.
+        auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
+        if (wasDeletedOnClient.first) {
+            // More complicated. The REMOVE is canceled. Restore will happen next sync.
+            qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
+            _discoveryData->_statedb->deleteFileRecord(originalPath, true);
+            _discoveryData->_statedb->schedulePathForRemoteDiscovery(originalPath);
+            _discoveryData->_anotherSyncNeeded = true;
+        } else {
+            // Signal to future checkPermissions() to forbid the REMOVE and set to restore instead
+            qCInfo(lcDisco) << "Preventing future remove on source" << originalPath;
+            _discoveryData->_forbiddenDeletes[originalPath + '/'] = true;
         }
+        return;
+    }
+
+    auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
+
+    auto processRename = [item, originalPath, base, this](PathTuple &path) {
+        auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
+        _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
+        item->_renameTarget = path._target;
+        path._server = adjustedOriginalPath;
+        item->_file = path._server;
+        path._original = originalPath;
+        item->_originalFile = path._original;
+        item->_modtime = base._modtime;
+        item->_inode = base._inode;
+        item->_instruction = CSYNC_INSTRUCTION_RENAME;
+        item->_direction = SyncFileItem::Up;
+        item->_fileId = base._fileId;
+        item->_remotePerm = base._remotePerm;
+        item->_etag = base._etag;
+        item->_type = base._type;
+
+        // Discard any download/dehydrate tags on the base file.
+        // They could be preserved and honored in a follow-up sync,
+        // but it complicates handling a lot and will happen rarely.
+        if (item->_type == ItemTypeVirtualFileDownload)
+            item->_type = ItemTypeVirtualFile;
+        if (item->_type == ItemTypeVirtualFileDehydration)
+            item->_type = ItemTypeFile;
+
+        qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
+    };
+    if (wasDeletedOnClient.first) {
+        recurseQueryServer = wasDeletedOnClient.second == base._etag ? ParentNotChanged : NormalQuery;
+        processRename(path);
+    } else {
+        // We must query the server to know if the etag has not changed
+        _pendingAsyncJobs++;
+        QString serverOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
+        if (base.isVirtualFile() && isVfsWithSuffix())
+            chopVirtualFileSuffix(serverOriginalPath);
+        auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
+        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
+            if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
+                qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
+                // Can't be a rename, leave it as a new.
+                postProcessLocalNew();
+            } else {
+                // In case the deleted item was discovered in parallel
+                _discoveryData->findAndCancelDeletedJob(originalPath);
+                processRename(path);
+                recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
+            }
+            processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
+            _pendingAsyncJobs--;
+            QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
+        });
+        job->start();
+        return;
     }
 
     finalize();
@@ -1048,8 +1101,10 @@ void ProcessDirectoryJob::processFileFinalize(
         }
         if (item->_type == ItemTypeVirtualFileDehydration
             && item->_instruction == CSYNC_INSTRUCTION_SYNC) {
-            item->_renameTarget = item->_file;
-            addVirtualFileSuffix(item->_renameTarget);
+            if (item->_renameTarget.isEmpty()) {
+                item->_renameTarget = item->_file;
+                addVirtualFileSuffix(item->_renameTarget);
+            }
         }
     }
 
@@ -1066,11 +1121,16 @@ void ProcessDirectoryJob::processFileFinalize(
 
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-    if (!checkPermissions(item))
+    bool removed = item->_instruction == CSYNC_INSTRUCTION_REMOVE;
+    if (checkPermissions(item)) {
+        if (item->_isRestoration && item->isDirectory())
+            recurse = true;
+    } else {
         recurse = false;
+    }
     if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer, this);
-        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+        if (removed) {
             job->setParent(_discoveryData);
             _discoveryData->_queuedDeletedDirectories[path._original] = job;
         } else {
@@ -1078,7 +1138,7 @@ void ProcessDirectoryJob::processFileFinalize(
             _queuedJobs.push_back(job);
         }
     } else {
-        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE
+        if (removed
             // For the purpose of rename deletion, restored deleted placeholder is as if it was deleted
             || (item->_type == ItemTypeVirtualFile && item->_instruction == CSYNC_INSTRUCTION_NEW)) {
             _discoveryData->_deletedItem[path._original] = item;
@@ -1097,6 +1157,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     item->_file = path._target;
     item->_originalFile = path._original;
     item->_inode = localEntry.inode;
+    item->_isSelectiveSync = true;
     if (dbEntry.isValid() && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry.isDirectory()))) {
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
         item->_direction = SyncFileItem::Down;
@@ -1167,6 +1228,20 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
         break;
     }
     case CSYNC_INSTRUCTION_REMOVE: {
+        QString fileSlash = item->_file + '/';
+        auto forbiddenIt = _discoveryData->_forbiddenDeletes.upperBound(fileSlash);
+        if (forbiddenIt != _discoveryData->_forbiddenDeletes.begin())
+            forbiddenIt -= 1;
+        if (forbiddenIt != _discoveryData->_forbiddenDeletes.end()
+            && fileSlash.startsWith(forbiddenIt.key())) {
+
+            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file;
+            item->_instruction = CSYNC_INSTRUCTION_NEW;
+            item->_direction = SyncFileItem::Down;
+            item->_isRestoration = true;
+            item->_errorString = tr("Moved to invalid target, restoring");
+            return true; // restore sub items
+        }
         const auto perms = item->_remotePerm;
         if (perms.isNull()) {
             // No permissions set
@@ -1189,8 +1264,9 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
 }
 
 
-bool ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath,
+auto ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath,
                                                bool isDirectory)
+    -> MovePermissionResult
 {
     auto destPerms = !_rootPermissions.isNull() ? _rootPermissions
                                                 : _dirItem ? _dirItem->_remotePerm : _rootPermissions;
@@ -1200,12 +1276,15 @@ bool ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const 
         && srcPath.lastIndexOf('/') == _currentFolder._original.size();
     // Check if we are allowed to move to the destination.
     bool destinationOK = true;
-    if (isRename || destPerms.isNull()) {
-        // no need to check for the destination dir permission
-        destinationOK = true;
+    bool destinationNewOK = true;
+    if (destPerms.isNull()) {
     } else if (isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
-        destinationOK = false;
+        destinationNewOK = false;
     } else if (!isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddFile)) {
+        destinationNewOK = false;
+    }
+    if (!isRename && !destinationNewOK) {
+        // no need to check for the destination dir permission for renames
         destinationOK = false;
     }
 
@@ -1217,16 +1296,7 @@ bool ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const 
         // We are not allowed to move or rename this file
         sourceOK = false;
     }
-    if (!sourceOK || !destinationOK) {
-        qCInfo(lcDisco) << "Not a move because permission does not allow it." << sourceOK << destinationOK;
-        if (!sourceOK) {
-            // This is the behavior that we had in the client <= 2.5.
-            // but that might not be needed anymore
-            _discoveryData->_statedb->avoidRenamesOnNextSync(srcPath);
-        }
-        return false;
-    }
-    return true;
+    return MovePermissionResult{sourceOK, destinationOK, destinationNewOK};
 }
 
 void ProcessDirectoryJob::subJobFinished()
@@ -1336,34 +1406,24 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             if (_localQueryDone)
                 this->process();
         } else {
-            auto fatalError = [&] {
-                emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
-                    .arg(_currentFolder._server, results.error().message));
-            };
-            auto ignoreOrFatal = [&] {
-                if (_dirItem) {
-                    _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                    _dirItem->_errorString = results.error().message;
-                    emit this->finished();
-                } else {
-                    // Fatal for the root job since it has no SyncFileItem
-                    fatalError();
-                }
-            };
-
             auto code = results.error().code;
             qCWarning(lcDisco) << "Server error in directory" << _currentFolder._server << code;
-            if (code == 403 || code == 404 || code == 500 || code == 503) {
+            if (_dirItem && code >= 403) {
+                // In case of an HTTP error, we ignore that directory
                 // 403 Forbidden can be sent by the server if the file firewall is active.
                 // A file or directory should be ignored and sync must continue. See #3490
                 // The server usually replies with the custom "503 Storage not available"
                 // if some path is temporarily unavailable. But in some cases a standard 503
                 // is returned too. Thus we can't distinguish the two and will treat any
                 // 503 as request to ignore the folder. See #3113 #2884.
-                // Similarly, the server might also return 404 or 500 in case of bugs. #7199
-                ignoreOrFatal();
+                // Similarly, the server might also return 404 or 50x in case of bugs. #7199 #7586
+                _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                _dirItem->_errorString = results.error().message;
+                emit this->finished();
             } else {
-                fatalError();
+                // Fatal for the root job since it has no SyncFileItem, or for the network errors
+                emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
+                    .arg(_currentFolder._server, results.error().message));
             }
         }
     });
@@ -1373,71 +1433,58 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
     return serverJob;
 }
 
-bool ProcessDirectoryJob::runLocalQuery()
+void ProcessDirectoryJob::startAsyncLocalQuery()
 {
     QString localPath = _discoveryData->_localDir + _currentFolder._local;
-    if (localPath.endsWith('/')) // Happens if _currentFolder._local.isEmpty()
-        localPath.chop(1);
-    auto dh = csync_vio_local_opendir(localPath);
-    if (!dh) {
-        qCInfo(lcDisco) << "Error while opening directory" << (localPath) << errno;
-        QString errorString = tr("Error while opening directory %1").arg(localPath);
-        if (errno == EACCES) {
-            errorString = tr("Directory not accessible on client, permission denied");
-            if (_dirItem) {
-                _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                _dirItem->_errorString = errorString;
-                emit finished();
-                return false;
-            }
-        } else if (errno == ENOENT) {
-            errorString = tr("Directory not found: %1").arg(localPath);
-        } else if (errno == ENOTDIR) {
-            // Not a directory..
-            // Just consider it is empty
-            return true;
+    auto localJob = new DiscoverySingleLocalDirectoryJob(_discoveryData->_account, localPath, _discoveryData->_syncOptions._vfs.data());
+
+    _discoveryData->_currentlyActiveJobs++;
+    _pendingAsyncJobs++;
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::itemDiscovered, _discoveryData, &DiscoveryPhase::itemDiscovered);
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::childIgnored, this, [this](bool b) {
+        _childIgnored = b;
+    });
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedFatalError, this, [this](const QString &msg) {
+        _discoveryData->_currentlyActiveJobs--;
+        _pendingAsyncJobs--;
+        if (_serverJob)
+            _serverJob->abort();
+
+        emit _discoveryData->fatalError(msg);
+    });
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedNonFatalError, this, [this](const QString &msg) {
+        _discoveryData->_currentlyActiveJobs--;
+        _pendingAsyncJobs--;
+
+        if (_dirItem) {
+            _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            _dirItem->_errorString = msg;
+            emit this->finished();
+        } else {
+            // Fatal for the root job since it has no SyncFileItem
+            emit _discoveryData->fatalError(msg);
         }
-        emit _discoveryData->fatalError(errorString);
-        return false;
-    }
-    errno = 0;
-    while (auto dirent = csync_vio_local_readdir(dh, _discoveryData->_syncOptions._vfs.data())) {
-        if (dirent->type == ItemTypeSkip)
-            continue;
-        LocalInfo i;
-        static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-        ASSERT(codec);
-        QTextCodec::ConverterState state;
-        i.name = codec->toUnicode(dirent->path, dirent->path.size(), &state);
-        if (state.invalidChars > 0 || state.remainingChars > 0) {
-            _childIgnored = true;
-            auto item = SyncFileItemPtr::create();
-            item->_file = _currentFolder._target + i.name;
-            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            item->_status = SyncFileItem::NormalError;
-            item->_errorString = tr("Filename encoding is not valid");
-            emit _discoveryData->itemDiscovered(item);
-            continue;
-        }
-        i.modtime = dirent->modtime;
-        i.size = dirent->size;
-        i.inode = dirent->inode;
-        i.isDirectory = dirent->type == ItemTypeDirectory;
-        i.isHidden = dirent->is_hidden;
-        i.isSymLink = dirent->type == ItemTypeSoftLink;
-        i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
-        i.type = dirent->type;
-        _localNormalQueryEntries.push_back(i);
-    }
-    csync_vio_local_closedir(dh);
-    if (errno != 0) {
-        // Note: Windows vio converts any error into EACCES
-        qCWarning(lcDisco) << "readdir failed for file in " << _currentFolder._local << " - errno: " << errno;
-        emit _discoveryData->fatalError(tr("Error while reading directory %1").arg(localPath));
-        return false;
-    }
-    return true;
+    });
+
+    connect(localJob, &DiscoverySingleLocalDirectoryJob::finished, this, [this](const auto &results) {
+        _discoveryData->_currentlyActiveJobs--;
+        _pendingAsyncJobs--;
+
+        _localNormalQueryEntries = results;
+        _localQueryDone = true;
+
+        if (_serverQueryDone)
+            this->process();
+    });
+
+    QThreadPool *pool = QThreadPool::globalInstance();
+    pool->start(localJob); // QThreadPool takes ownership
 }
+
 
 bool ProcessDirectoryJob::isVfsWithSuffix() const
 {

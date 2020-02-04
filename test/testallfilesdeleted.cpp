@@ -295,6 +295,32 @@ private slots:
         QCOMPARE(aboutToRemoveAllFilesCalled, 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testSelectiveSyncNoPopup() {
+        // Unselecting all folder should not cause the popup to be shown
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        int aboutToRemoveAllFilesCalled = 0;
+        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
+            [&](SyncFileItem::Direction , bool *) {
+                aboutToRemoveAllFilesCalled++;
+                QFAIL("should not be called");
+            });
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+            QStringList() << "A/" << "B/" << "C/" << "S/");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), FileInfo{}); // all files should be one localy
+        QCOMPARE(fakeFolder.currentRemoteState(), FileInfo::A12_B12_C12_S12()); // Server not changed
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0); // But we did not show the popup
+    }
+
+
 };
 
 QTEST_GUILESS_MAIN(TestAllFilesDeleted)

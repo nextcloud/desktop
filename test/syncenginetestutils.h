@@ -608,6 +608,8 @@ public:
         QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isEmpty());
         fileInfo = remoteRootFileInfo.find(fileName);
+        if (!fileInfo)
+            qWarning() << "Could not find file" << fileName << "on the remote";
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
 
@@ -768,7 +770,7 @@ public:
         Q_ASSERT(sourceFolder);
         Q_ASSERT(sourceFolder->isDir);
         int count = 0;
-        int size = 0;
+        qlonglong size = 0;
         qlonglong prev = 0;
         char payload = '\0';
 
@@ -796,7 +798,7 @@ public:
 
         // For zsync, get the size from the header, and allow no-chunk uploads (shrinking files)
         if (zsync) {
-            size = request.rawHeader("OC-Total-File-Length").toInt();
+            size = request.rawHeader("OC-Total-File-Length").toLongLong();
             if (count == 0) {
                 if (auto info = remoteRootFileInfo.find(fileName))
                     payload = info->contentChar;
@@ -1202,7 +1204,7 @@ public:
         // A new folder will update the local file state database on first sync.
         // To have a state matching what users will encounter, we have to a sync
         // using an identical local/remote file tree first.
-        syncOnce();
+        ENFORCE(syncOnce());
     }
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs, bool enableShell = false)
@@ -1395,6 +1397,21 @@ inline const FileInfo *findConflict(FileInfo &dir, const QString &filename)
     return nullptr;
 }
 
+struct ItemCompletedSpy : QSignalSpy {
+    explicit ItemCompletedSpy(FakeFolder &folder)
+        : QSignalSpy(&folder.syncEngine(), &OCC::SyncEngine::itemCompleted)
+    {}
+
+    OCC::SyncFileItemPtr findItem(const QString &path) const
+    {
+        for (const QList<QVariant> &args : *this) {
+            auto item = args[0].value<OCC::SyncFileItemPtr>();
+            if (item->destination() == path)
+                return item;
+        }
+        return OCC::SyncFileItemPtr::create();
+    }
+};
 
 // QTest::toString overloads
 namespace OCC {
@@ -1406,20 +1423,26 @@ namespace OCC {
 inline void addFiles(QStringList &dest, const FileInfo &fi)
 {
     if (fi.isDir) {
-        dest += QString("%1 - dir").arg(fi.name);
+        dest += QString("%1 - dir").arg(fi.path());
         foreach (const FileInfo &fi, fi.children)
             addFiles(dest, fi);
     } else {
-        dest += QString("%1 - %2 %3-bytes").arg(fi.name).arg(fi.size).arg(fi.contentChar);
+        dest += QString("%1 - %2 %3-bytes").arg(fi.path()).arg(fi.size).arg(fi.contentChar);
     }
 }
 
-inline char *toString(const FileInfo &fi)
+inline QString toStringNoElide(const FileInfo &fi)
 {
     QStringList files;
     foreach (const FileInfo &fi, fi.children)
         addFiles(files, fi);
-    return QTest::toString(QString("FileInfo with %1 files(%2)").arg(files.size()).arg(files.join(", ")));
+    files.sort();
+    return QString("FileInfo with %1 files(\n\t%2\n)").arg(files.size()).arg(files.join("\n\t"));
+}
+
+inline char *toString(const FileInfo &fi)
+{
+    return QTest::toString(toStringNoElide(fi));
 }
 
 inline void addFilesDbData(QStringList &dest, const FileInfo &fi)

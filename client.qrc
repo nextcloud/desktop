@@ -23,5 +23,7 @@
         <file>resources/more.svg</file>
         <file>resources/delete.png</file>
         <file>resources/bell.png</file>
+        <file alias="resources/quit.png">resources/font-awesome/power-off.png</file>
+        <file alias="resources/quit@2x.png">resources/font-awesome/power-off@2x.png</file>
     </qresource>
 </RCC>

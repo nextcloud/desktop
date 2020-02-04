@@ -82,7 +82,7 @@ namespace FileSystem {
     /**
      * @brief Like !fileChanged() but with verbose logging if the file *did* change.
      */
-    bool verifyFileUnchanged(const QString &fileName,
+    bool OWNCLOUDSYNC_EXPORT verifyFileUnchanged(const QString &fileName,
         qint64 previousSize,
         time_t previousMtime);
 

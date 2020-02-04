@@ -192,7 +192,7 @@ public:
             return false;
         }
         const char *instruction_str = csync_instruction_str(_item->_instruction);
-        qCInfo(lcPropagator) << "Starting" << instruction_str << "propagation of" << _item->_file << "by" << this;
+        qCInfo(lcPropagator) << "Starting" << instruction_str << "propagation of" << _item->destination() << "by" << this;
 
         _state = Running;
         QMetaObject::invokeMethod(this, "start"); // We could be in a different thread (neon jobs)
@@ -292,7 +292,7 @@ public:
 
     PropagatorCompositeJob _subJobs;
 
-    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem));
+    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item);
 
     void appendJob(PropagatorJob *job)
     {
@@ -333,10 +333,35 @@ public:
 private slots:
 
     void slotFirstJobFinished(SyncFileItem::Status status);
-    void slotSubJobsFinished(SyncFileItem::Status status);
+    virtual void slotSubJobsFinished(SyncFileItem::Status status);
 
 };
 
+/**
+ * @brief Propagate the root directory, and all its sub entries.
+ * @ingroup libsync
+ *
+ * Primary difference to PropagateDirectory is that it keeps track of directory
+ * deletions that must happen at the very end.
+ */
+class OWNCLOUDSYNC_EXPORT PropagateRootDirectory : public PropagateDirectory
+{
+    Q_OBJECT
+public:
+    PropagatorCompositeJob _dirDeletionJobs;
+
+    explicit PropagateRootDirectory(OwncloudPropagator *propagator);
+
+    bool scheduleSelfOrChild() override;
+    JobParallelism parallelism() override;
+    void abort(PropagatorJob::AbortType abortType) override;
+
+    qint64 committedDiskSpace() const override;
+
+private slots:
+    void slotSubJobsFinished(SyncFileItem::Status status) override;
+    void slotDirDeletionJobsFinished(SyncFileItem::Status status);
+};
 
 /**
  * @brief Dummy job that just mark it as completed and ignored
@@ -569,8 +594,9 @@ signals:
 
 private:
     AccountPtr _account;
-    QScopedPointer<PropagateDirectory> _rootJob;
+    QScopedPointer<PropagateRootDirectory> _rootJob;
     SyncOptions _syncOptions;
+    bool _jobScheduled = false;
 };
 
 

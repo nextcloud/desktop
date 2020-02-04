@@ -238,8 +238,8 @@ private:
     QScopedPointer<DiscoveryPhase> _discoveryPhase;
     QSharedPointer<OwncloudPropagator> _propagator;
 
-    // List of all files we seen
-    QSet<QString> _seenFiles;
+    // List of all files with conflicts
+    QSet<QString> _seenConflictFiles;
 
     QScopedPointer<ProgressInfo> _progressInfo;
 

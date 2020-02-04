@@ -9,40 +9,7 @@ Icon=@APPLICATION_EXECUTABLE@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-GNOME-Autostart-Delay=3
 MimeType=application/vnd.@APPLICATION_EXECUTABLE@;
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
+Actions=Settings;Quit
 
 # Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -238,3 +205,14 @@ Comment[lb]=@APPLICATION_NAME@ Desktop Synchronisatioun Client
 GenericName[lb]=Dossier Dync
 Name[lb]=@APPLICATION_NAME@ Desktop Sync Client
 Icon[lb]=@APPLICATION_EXECUTABLE@
+
+
+[Desktop Action Settings]
+Exec=@APPLICATION_EXECUTABLE@ --showsettings
+Name=Show @APPLICATION_NAME@ settings
+Icon=@APPLICATION_EXECUTABLE@
+
+[Desktop Action Quit]
+Exec=@APPLICATION_EXECUTABLE@ --quit
+Name=Quit @APPLICATION_NAME@
+Icon=@APPLICATION_EXECUTABLE@

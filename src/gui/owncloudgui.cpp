@@ -20,12 +20,7 @@
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
 #include "sharedialog.h"
-#if defined(Q_OS_MAC)
-#include "settingsdialogmac.h"
-#include "macwindow.h" // qtmacgoodies
-#else
 #include "settingsdialog.h"
-#endif
 #include "logger.h"
 #include "logbrowser.h"
 #include "account.h"
@@ -40,6 +35,7 @@
 #include <QMessageBox>
 #include <QDialog>
 #include <QHBoxLayout>
+#include <QScreen>
 
 #if defined(Q_OS_X11)
 #include <QX11Info>
@@ -56,11 +52,7 @@ const char propertyAccountC[] = "oc_account";
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
     , _tray(nullptr)
-#if defined(Q_OS_MAC)
-    , _settingsDialog(new SettingsDialogMac(this))
-#else
     , _settingsDialog(new SettingsDialog(this))
-#endif
     , _logBrowser(nullptr)
     , _recentActionsMenu(nullptr)
     , _app(parent)
@@ -1014,11 +1006,7 @@ void ownCloudGui::slotShowSettings()
 {
     if (_settingsDialog.isNull()) {
         _settingsDialog =
-#if defined(Q_OS_MAC)
-            new SettingsDialogMac(this);
-#else
             new SettingsDialog(this);
-#endif
         _settingsDialog->setAttribute(Qt::WA_DeleteOnClose, true);
         _settingsDialog->show();
     }
@@ -1079,10 +1067,6 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
         raiseWidget->raise();
         raiseWidget->activateWindow();
 
-#if defined(Q_OS_MAC)
-        // viel hilft viel ;-)
-        MacWindow::bringToFront(raiseWidget);
-#endif
 #if defined(Q_OS_X11)
         WId wid = widget->winId();
         NETWM::init();
@@ -1135,10 +1119,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     //
     // The correct value will be found with a propfind from ShareDialog.
     // (we want to show the dialog directly, not wait for the propfind first)
-    SharePermissions maxSharingPermissions =
-        SharePermissionRead
-        | SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete
-        | SharePermissionShare;
+    SharePermissions maxSharingPermissions = static_cast<SharePermissions>(accountState->account()->capabilities().defaultPermissions());
     if (!resharingAllowed) {
         maxSharingPermissions = SharePermission(0);
     }
@@ -1172,8 +1153,7 @@ void ownCloudGui::slotRemoveDestroyedShareDialogs()
 
 void ownCloudGui::slotAbout()
 {
-    QString title = tr("About %1").arg(Theme::instance()->appNameGUI());
-    QString about = Theme::instance()->about();
+    const QString title = tr("About %1").arg(Theme::instance()->appNameGUI());
     QMessageBox *msgBox = new QMessageBox(this->_settingsDialog);
 #ifdef Q_OS_MAC
     // From Qt doc: "On macOS, the window title is ignored (as required by the macOS Guidelines)."
@@ -1184,14 +1164,9 @@ void ownCloudGui::slotAbout()
     msgBox->setAttribute(Qt::WA_DeleteOnClose, true);
     msgBox->setTextFormat(Qt::RichText);
     msgBox->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    msgBox->setInformativeText("<qt>"+about+"</qt>");
+    msgBox->setInformativeText(QStringLiteral("<qt>%1</qt>").arg(Theme::instance()->about()));
     msgBox->setStandardButtons(QMessageBox::Ok);
-    QIcon appIcon = Theme::instance()->applicationIcon();
-    // Assume icon is always small enough to fit an about dialog?
-    qDebug() << appIcon.availableSizes().last();
-    QPixmap iconPixmap = appIcon.pixmap(appIcon.availableSizes().last());
-    iconPixmap.setDevicePixelRatio(2);
-    msgBox->setIconPixmap(iconPixmap);
+    msgBox->setIconPixmap(Theme::instance()->applicationIcon().pixmap(qApp->primaryScreen()->availableSize().width() / 4));
     msgBox->show();
 }
 

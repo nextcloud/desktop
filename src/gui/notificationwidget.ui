@@ -94,11 +94,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QDialogButtonBox" name="_buttonBox">
-         <property name="standardButtons">
-          <set>QDialogButtonBox::Ok</set>
-         </property>
-        </widget>
+        <widget class="QDialogButtonBox" name="_buttonBox"/>
        </item>
       </layout>
      </item>

@@ -111,13 +111,17 @@ private:
         QString _target; // Path that will be the result after the sync (and will be in the DB)
         QString _server; // Path on the server (before the sync)
         QString _local; // Path locally (before the sync)
+        static QString pathAppend(const QString &base, const QString &name)
+        {
+            return base.isEmpty() ? name : base + QLatin1Char('/') + name;
+        }
         PathTuple addName(const QString &name) const
         {
             PathTuple result;
-            result._original = _original.isEmpty() ? name : _original + QLatin1Char('/') + name;
+            result._original = pathAppend(_original, name);
             auto buildString = [&](const QString &other) {
                 // Optimize by trying to keep all string implicitly shared if they are the same (common case)
-                return other == _original ? result._original : other.isEmpty() ? name : other + QLatin1Char('/') + name;
+                return other == _original ? result._original : pathAppend(other, name);
             };
             result._target = buildString(_target);
             result._server = buildString(_server);
@@ -167,11 +171,21 @@ private:
      */
     bool checkPermissions(const SyncFileItemPtr &item);
 
+    struct MovePermissionResult
+    {
+        // whether moving/renaming the source is ok
+        bool sourceOk;
+        // whether the destination accepts (always true for renames)
+        bool destinationOk;
+        // whether creating a new file/dir in the destination is ok
+        bool destinationNewOk;
+    };
+
     /**
      * Check if the move is of a specified file within this directory is allowed.
      * Return true if it is allowed, false otherwise
      */
-    bool checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath, bool isDirectory);
+    MovePermissionResult checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath, bool isDirectory);
 
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
@@ -192,11 +206,12 @@ private:
      */
     DiscoverySingleDirectoryJob *startAsyncServerQuery();
 
-    /** Discover the local directory now
+    /** Discover the local directory
       *
       * Fills _localNormalQueryEntries.
       */
-    bool runLocalQuery();
+    void startAsyncLocalQuery();
+
 
     /** Sets _pinState, the directory's pin state
      *
@@ -231,6 +246,7 @@ private:
 
     RemotePermissions _rootPermissions;
     QPointer<DiscoverySingleDirectoryJob> _serverJob;
+
 
     /** Number of currently running async jobs.
      *

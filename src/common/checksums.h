@@ -94,23 +94,21 @@ public:
     QByteArray checksumType() const;
 
     /**
-     * Computes the checksum for given device.
-     *
-     * done() is emitted when the calculation finishes.
-     *
-     * Does not take ownership of the device.
-     * Does not call open() on the device.
-     */
-    void start(QIODevice *device);
-
-    /**
      * Computes the checksum for the given file path.
      *
      * done() is emitted when the calculation finishes.
-     *
-     * Convenience wrapper for start(QIODevice*) above.
      */
     void start(const QString &filePath);
+
+    /**
+     * Computes the checksum for the given device.
+     *
+     * done() is emitted when the calculation finishes.
+     *
+     * The device ownership transfers into the thread that
+     * will compute the checksum. It must not have a parent.
+     */
+    void start(std::unique_ptr<QIODevice> device);
 
     /**
      * Computes the checksum synchronously.
@@ -129,10 +127,9 @@ private slots:
     void slotCalculationDone();
 
 private:
-    QByteArray _checksumType;
+    void startImpl(std::unique_ptr<QIODevice> device);
 
-    // The convenience wrapper may open a file and must close it too
-    std::unique_ptr<QFile> _file;
+    QByteArray _checksumType;
 
     // watcher for the checksum calculation thread
     QFutureWatcher<QByteArray> _watcher;
@@ -149,23 +146,23 @@ public:
     explicit ValidateChecksumHeader(QObject *parent = 0);
 
     /**
-     * Check a device's actual checksum against the provided checksumHeader
+     * Check a file's actual checksum against the provided checksumHeader
      *
      * If no checksum is there, or if a correct checksum is there, the signal validated()
      * will be emitted. In case of any kind of error, the signal validationFailed() will
      * be emitted.
-     *
-     * Does not take ownership of the device.
-     * Does not call open() on the device.
-     */
-    void start(QIODevice *device, const QByteArray &checksumHeader);
-
-    /**
-     * Same as above but opening a file by path.
-     *
-     * Convenience function for start(QIODevice*) above
      */
     void start(const QString &filePath, const QByteArray &checksumHeader);
+
+    /**
+     * Check a device's actual checksum against the provided checksumHeader
+     *
+     * Like the other start() but works on an device.
+     *
+     * The device ownership transfers into the thread that
+     * will compute the checksum. It must not have a parent.
+     */
+    void start(std::unique_ptr<QIODevice> device, const QByteArray &checksumHeader);
 
 signals:
     void validated(const QByteArray &checksumType, const QByteArray &checksum);

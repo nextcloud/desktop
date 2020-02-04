@@ -136,21 +136,21 @@ bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
 
     auto basemeta = loader.metaData();
     if (basemeta.isEmpty() || !basemeta.contains("IID")) {
-        qCDebug(lcPlugin) << "Plugin doesn't exist" << pluginPath;
+        qCDebug(lcPlugin) << "Plugin doesn't exist" << loader.fileName();
         return false;
     }
     if (basemeta["IID"].toString() != "org.owncloud.PluginFactory") {
-        qCWarning(lcPlugin) << "Plugin has wrong IID" << pluginPath << basemeta["IID"];
+        qCWarning(lcPlugin) << "Plugin has wrong IID" << loader.fileName() << basemeta["IID"];
         return false;
     }
 
     auto metadata = basemeta["MetaData"].toObject();
     if (metadata["type"].toString() != "vfs") {
-        qCWarning(lcPlugin) << "Plugin has wrong type" << pluginPath << metadata["type"];
+        qCWarning(lcPlugin) << "Plugin has wrong type" << loader.fileName() << metadata["type"];
         return false;
     }
     if (metadata["version"].toString() != MIRALL_VERSION_STRING) {
-        qCWarning(lcPlugin) << "Plugin has wrong version" << pluginPath << metadata["version"];
+        qCWarning(lcPlugin) << "Plugin has wrong version" << loader.fileName() << metadata["version"];
         return false;
     }
 

@@ -365,7 +365,11 @@ void PropagateDownloadFile::start()
         }
 
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
-        vfs->dehydratePlaceholder(*_item);
+        auto r = vfs->dehydratePlaceholder(*_item);
+        if (!r) {
+            done(SyncFileItem::NormalError, r.error());
+            return;
+        }
         propagator()->_journal->deleteFileRecord(_item->_originalFile);
         updateMetadata(false);
         return;
@@ -376,7 +380,11 @@ void PropagateDownloadFile::start()
     }
     if (_item->_type == ItemTypeVirtualFile) {
         qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
-        vfs->createPlaceholder(*_item);
+        auto r = vfs->createPlaceholder(*_item);
+        if (!r) {
+            done(SyncFileItem::NormalError, r.error());
+            return;
+        }
         updateMetadata(false);
         return;
     }
@@ -405,6 +413,7 @@ void PropagateDownloadFile::start()
         computeChecksum->setChecksumType(parseChecksumHeaderType(_item->_checksumHeader));
         connect(computeChecksum, &ComputeChecksum::done,
             this, &PropagateDownloadFile::conflictChecksumComputed);
+        propagator()->_activeJobList.append(this);
         computeChecksum->start(propagator()->getFilePath(_item->_file));
         return;
     }
@@ -414,6 +423,7 @@ void PropagateDownloadFile::start()
 
 void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
 {
+    propagator()->_activeJobList.removeOne(this);
     if (makeChecksumHeader(checksumType, checksum) == _item->_checksumHeader) {
         // No download necessary, just update fs and journal metadata
         qCDebug(lcPropagateDownload) << _item->_file << "remote and local checksum match";
@@ -461,24 +471,26 @@ void PropagateDownloadFile::startDownload()
     if (tmpFileName.isEmpty()) {
         tmpFileName = createDownloadTmpFileName(_item->_file);
     }
-
     _tmpFile.setFileName(propagator()->getFilePath(tmpFileName));
-    if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
-        done(SyncFileItem::NormalError, _tmpFile.errorString());
+
+    _resumeStart = _tmpFile.size();
+    if (_resumeStart > 0 && _resumeStart == _item->_size) {
+        qCInfo(lcPropagateDownload) << "File is already complete, no need to download";
+        downloadFinished();
         return;
     }
 
-    FileSystem::setFileHidden(_tmpFile.fileName(), true);
-
-    _resumeStart = _tmpFile.size();
-    if (_resumeStart > 0) {
-        if (_resumeStart == _item->_size) {
-            qCInfo(lcPropagateDownload) << "File is already complete, no need to download";
-            _tmpFile.close();
-            downloadFinished();
-            return;
-        }
+    // Can't open(Append) read-only files, make sure to make
+    // file writable if it exists.
+    if (_tmpFile.exists())
+        FileSystem::setFileReadOnly(_tmpFile.fileName(), false);
+    if (!_tmpFile.open(QIODevice::Append | QIODevice::Unbuffered)) {
+        qCWarning(lcPropagateDownload) << "could not open temporary file" << _tmpFile.fileName();
+        done(SyncFileItem::NormalError, _tmpFile.errorString());
+        return;
     }
+    // Hide temporary after creation
+    FileSystem::setFileHidden(_tmpFile.fileName(), true);
 
     // If there's not enough space to fully download this file, stop.
     const auto diskSpaceResult = propagator()->diskSpaceCheck();
@@ -1015,11 +1027,11 @@ void PropagateDownloadFile::downloadFinished()
     if (_conflictRecord.isValid())
         propagator()->_journal->setConflictRecord(_conflictRecord);
 
-    if (_item->_type == ItemTypeVirtualFileDownload) {
+    auto vfs = propagator()->syncOptions()._vfs;
+    if (vfs && vfs->mode() == Vfs::WithSuffix) {
         // If the virtual file used to have a different name and db
-        // entry, wipe both now.
-        auto vfs = propagator()->syncOptions()._vfs;
-        if (vfs && vfs->mode() == Vfs::WithSuffix) {
+        // entry, remove it transfer its old pin state.
+        if (_item->_type == ItemTypeVirtualFileDownload) {
             QString virtualFile = _item->_file + vfs->fileSuffix();
             auto fn = propagator()->getFilePath(virtualFile);
             qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
@@ -1027,12 +1039,17 @@ void PropagateDownloadFile::downloadFinished()
             propagator()->_journal->deleteFileRecord(virtualFile);
 
             // Move the pin state to the new location
-            auto pin = propagator()->_journal->internalPinStates().rawForPath(_item->_file.toUtf8());
+            auto pin = propagator()->_journal->internalPinStates().rawForPath(virtualFile.toUtf8());
             if (pin && *pin != PinState::Inherited) {
-                vfs->setPinState(virtualFile, *pin);
-                vfs->setPinState(_item->_file, PinState::Inherited);
+                vfs->setPinState(_item->_file, *pin);
+                vfs->setPinState(virtualFile, PinState::Inherited);
             }
         }
+
+        // Ensure the pin state isn't contradictory
+        auto pin = vfs->pinState(_item->_file);
+        if (pin && *pin == PinState::OnlineOnly)
+            vfs->setPinState(_item->_file, PinState::Unspecified);
     }
 
     updateMetadata(isConflict);

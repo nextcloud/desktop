@@ -68,8 +68,11 @@ namespace {
     static const char optionsC[] =
         "Options:\n"
         "  -h --help            : show this help screen.\n"
+        "  -s --showsettings    : show the settings dialog while starting.\n"
+        "  -q --quit            : quit the running instance\n"
         "  --logwindow          : open a window to show log output.\n"
         "  --logfile <filename> : write log output to file <filename>.\n"
+        "  --logfile -          : write log output to stdout.\n"
         "  --logdir <name>      : write each sync log output in a new file\n"
         "                         in folder <name>.\n"
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
@@ -186,7 +189,6 @@ Application::Application(int &argc, char **argv)
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
-    setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     if (!ConfigFile().exists()) {
         // Migrate from version <= 2.4
@@ -234,6 +236,11 @@ Application::Application(int &argc, char **argv)
     if (_helpOnly || _versionOnly)
         return;
 
+    if (_quitInstance) {
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return;
+    }
+
     if (isRunning())
         return;
 
@@ -261,7 +268,9 @@ Application::Application(int &argc, char **argv)
         if (QDir::isRelativePath(extraPluginPath))
             extraPluginPath = QDir(QApplication::applicationDirPath()).filePath(extraPluginPath);
         qCInfo(lcApplication) << "Adding extra plugin search path:" << extraPluginPath;
-        addLibraryPath(extraPluginPath);
+        QStringList pluginPath = libraryPaths();
+        pluginPath.prepend(extraPluginPath);
+        setLibraryPaths(pluginPath);
     }
 #endif
 
@@ -309,6 +318,9 @@ Application::Application(int &argc, char **argv)
     _gui = new ownCloudGui(this);
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+    }
+    if (_showSettings) {
+        _gui->slotShowSettings();
     }
 
     FolderMan::instance()->setupFolders();
@@ -514,11 +526,19 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         const int lengthOfMsgPrefix = 17;
         QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
         _showLogWindow = false;
+        _showSettings = false;
         parseOptions(options);
         setupLogging();
         if (_showLogWindow) {
             _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
         }
+        if (_showSettings) {
+            _gui->slotShowSettings();
+        }
+        if (_quitInstance) {
+            qApp->quit();
+        }
+
     } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
@@ -543,6 +563,10 @@ void Application::parseOptions(const QStringList &options)
         if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
             setHelp();
             break;
+        } else if (option == QLatin1String("--showsettings") || option == QLatin1String("-s")) {
+            _showSettings = true;
+        } else if (option == QLatin1String("--quit") || option == QLatin1String("-q")) {
+            _quitInstance = true;
         } else if (option == QLatin1String("--logwindow") || option == QLatin1String("-l")) {
             _showLogWindow = true;
         } else if (option == QLatin1String("--logfile")) {

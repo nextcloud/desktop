@@ -41,25 +41,47 @@
 #include <QWidgetAction>
 #include <QPainter>
 #include <QPainterPath>
+#include <QMessageBox>
 
 namespace {
-const char TOOLBAR_CSS[] =
-    "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-    "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
-    "QToolBar QToolBarExtension { padding:0; } "
-    "QToolBar QToolButton:checked { background: %3; color: %4; }";
+const QString TOOLBAR_CSS()
+{
+    return QStringLiteral("QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
+                          "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
+                          "QToolBar QToolBarExtension { padding:0; } "
+                          "QToolBar QToolButton:checked { background: %3; color: %4; }");
+}
 
-static const float buttonSizeRatio = 1.618; // golden ratio
+const float buttonSizeRatio = 1.618f; // golden ratio
+
+
+/** display name with two lines that is displayed in the settings
+ * If width is bigger than 0, the string will be ellided so it does not exceed that width
+ */
+QString shortDisplayNameForSettings(OCC::Account *account, int width)
+{
+    QString user = account->davDisplayName();
+    if (user.isEmpty()) {
+        user = account->credentials()->user();
+    }
+    QString host = account->url().host();
+    int port = account->url().port();
+    if (port > 0 && port != 80 && port != 443) {
+        host.append(QLatin1Char(':'));
+        host.append(QString::number(port));
+    }
+    if (width > 0) {
+        QFont f;
+        QFontMetrics fm(f);
+        host = fm.elidedText(host, Qt::ElideMiddle, width);
+        user = fm.elidedText(user, Qt::ElideRight, width);
+    }
+    return QStringLiteral("%1\n%2").arg(user, host);
+}
 }
 
 
 namespace OCC {
-
-#include "settingsdialogcommon.cpp"
-
-//
-// Whenever you change something here check both settingsdialog.cpp and settingsdialogmac.cpp !
-//
 
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     : QDialog(parent)
@@ -110,6 +132,22 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(networkAction);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
+
+    QWidget *spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    _toolBar->addWidget(spacer);
+
+    QAction *quitAction = createColorAwareAction(QLatin1String(":/client/resources/quit.png"), tr("Quit %1").arg(qApp->applicationName()));
+    quitAction->setCheckable(false);
+    connect(quitAction, &QAction::triggered, this, [this] {
+        const auto reply = QMessageBox::question(this, tr("Quit %1").arg(qApp->applicationName()),
+            tr("Are you sure you want to quit %1?").arg(qApp->applicationName()),
+            QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::Yes) {
+            qApp->quit();
+        }
+    });
+    _toolBar->addAction(quitAction);
 
     _actionGroupWidgets.insert(_activityAction, _activitySettings);
     _actionGroupWidgets.insert(generalAction, generalSettings);
@@ -227,7 +265,7 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
-        accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(),  height * buttonSizeRatio));
+        accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), height * buttonSizeRatio));
     }
     _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
@@ -273,7 +311,7 @@ void SettingsDialog::slotAccountDisplayNameChanged()
             QString displayName = account->displayName();
             action->setText(displayName);
             auto height = _toolBar->sizeHint().height();
-            action->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(account, height * buttonSizeRatio));
+            action->setIconText(shortDisplayNameForSettings(account, height * buttonSizeRatio));
         }
     }
 }
@@ -315,10 +353,10 @@ void SettingsDialog::accountRemoved(AccountState *s)
 void SettingsDialog::customizeStyle()
 {
     QString highlightColor(palette().highlight().color().name());
-    QString altBase(palette().alternateBase().color().name());
+    QString highlightTextColor(palette().highlightedText().color().name());
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
-    _toolBar->setStyleSheet(QString::fromLatin1(TOOLBAR_CSS).arg(background, dark, highlightColor, altBase));
+    _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
 
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
         QIcon icon = createColorAwareIcon(a->property("iconPath").toString());
