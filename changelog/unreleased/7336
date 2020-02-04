@@ -1,0 +1,6 @@
+Bugfix: Expand file tree also when no folders are synced
+
+We have fixed the behaviour of the folder Widget,
+when a account was added and none of its folders was selected to be synced, the tree was not expanded. 
+
+https://github.com/owncloud/client/issues/7336
