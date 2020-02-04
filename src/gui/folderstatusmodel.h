@@ -54,6 +54,7 @@ public:
     QModelIndex parent(const QModelIndex &child) const override;
     bool canFetchMore(const QModelIndex &parent) const override;
     void fetchMore(const QModelIndex &parent) override;
+    void resetAndFetch(const QModelIndex &parent);
     bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
 
     struct SubFolderInfo
