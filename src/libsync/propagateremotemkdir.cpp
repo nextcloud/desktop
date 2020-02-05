@@ -69,7 +69,7 @@ PropagatorJob::JobParallelism PropagateRemoteMkdir::parallelism()
 
 void PropagateRemoteMkdir::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     qCDebug(lcPropagateRemoteMkdir) << _item->_file;
@@ -91,7 +91,7 @@ void PropagateRemoteMkdir::start()
 
 void PropagateRemoteMkdir::slotStartMkcolJob()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     qCDebug(lcPropagateRemoteMkdir) << _item->_file;
@@ -108,7 +108,7 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
     Q_UNUSED(path)
     Q_UNUSED(size)
 
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     qDebug() << filename;

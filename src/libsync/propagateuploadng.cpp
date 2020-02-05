@@ -275,7 +275,7 @@ void PropagateUploadFileNG::slotMkColFinished(QNetworkReply::NetworkError)
 
 void PropagateUploadFileNG::startNextChunk()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     qint64 fileSize = _fileToUpload._size;

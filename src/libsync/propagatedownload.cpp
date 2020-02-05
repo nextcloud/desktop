@@ -361,7 +361,7 @@ QString GETFileJob::errorString() const
 
 void PropagateDownloadFile::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
     _isEncrypted = false;
 
@@ -503,7 +503,7 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
 
 void PropagateDownloadFile::startDownload()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     // do a klaas' case clash check.

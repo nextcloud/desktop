@@ -92,7 +92,7 @@ void PropagateLocalRemove::start()
 {
     _moveToTrash = propagator()->syncOptions()._moveFilesToTrash;
 
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     QString filename = propagator()->_localDir + _item->_file;
@@ -132,7 +132,7 @@ void PropagateLocalRemove::start()
 
 void PropagateLocalMkdir::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     const auto rootPath = [=]() {
@@ -244,7 +244,7 @@ void PropagateLocalMkdir::startDemanglingName(const QString &parentPath)
 
 void PropagateLocalRename::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     QString existingFile = propagator()->getFilePath(propagator()->adjustRenamedPath(_item->_file));

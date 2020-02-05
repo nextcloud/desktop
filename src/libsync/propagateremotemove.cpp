@@ -75,7 +75,7 @@ bool MoveJob::finished()
 
 void PropagateRemoteMove::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     QString origin = propagator()->adjustRenamedPath(_item->_file);

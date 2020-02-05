@@ -81,7 +81,7 @@ PropagatorJob::JobParallelism PropagateRemoteDelete::parallelism()
 
 void PropagateRemoteDelete::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     if (!_item->_encryptedFileName.isEmpty()) {

@@ -293,7 +293,7 @@ void PropagateUploadFileCommon::setupUnencryptedFile()
 }
 
 void PropagateUploadFileCommon::startUploadFile() {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
+    if (propagator()->_abortRequested) {
         return;
     }
 
@@ -335,7 +335,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
 {
     qDebug() << "Trying to compute the checksum of the file";
     qDebug() << "Still trying to understand if this is the local file or the uploaded one";
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
+    if (propagator()->_abortRequested) {
         return;
     }
 
