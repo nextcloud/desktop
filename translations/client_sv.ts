@@ -2762,7 +2762,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="57"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Användarnamn</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="89"/>
