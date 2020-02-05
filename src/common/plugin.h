@@ -26,7 +26,7 @@ namespace OCC {
 class OCSYNC_EXPORT PluginFactory
 {
 public:
-    ~PluginFactory();
+    virtual ~PluginFactory();
     virtual QObject* create(QObject* parent) = 0;
 };
 
