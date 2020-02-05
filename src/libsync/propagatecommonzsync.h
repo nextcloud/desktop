@@ -74,7 +74,7 @@ public:
         , _tmpFilePath(tmpFilePath)
         , _type(type){};
 
-    void run();
+    void run() override;
 
 signals:
     void finishedSignal(void *zs);
@@ -97,7 +97,7 @@ public:
     explicit ZsyncGenerateRunnable(const QString &file)
         : _file(file){};
 
-    void run();
+    void run() override;
 
 signals:
     void finishedSignal(const QString &generatedFileName);

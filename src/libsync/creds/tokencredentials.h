@@ -39,16 +39,16 @@ public:
     TokenCredentials();
     TokenCredentials(const QString &user, const QString &password, const QString &token);
 
-    QString authType() const Q_DECL_OVERRIDE;
-    QNetworkAccessManager *createQNAM() const Q_DECL_OVERRIDE;
-    bool ready() const Q_DECL_OVERRIDE;
-    void askFromUser() Q_DECL_OVERRIDE;
-    void fetchFromKeychain() Q_DECL_OVERRIDE;
-    bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
-    void persist() Q_DECL_OVERRIDE;
-    QString user() const Q_DECL_OVERRIDE;
-    void invalidateToken() Q_DECL_OVERRIDE;
-    void forgetSensitiveData() Q_DECL_OVERRIDE;
+    QString authType() const override;
+    QNetworkAccessManager *createQNAM() const override;
+    bool ready() const override;
+    void askFromUser() override;
+    void fetchFromKeychain() override;
+    bool stillValid(QNetworkReply *reply) override;
+    void persist() override;
+    QString user() const override;
+    void invalidateToken() override;
+    void forgetSensitiveData() override;
 
     QString password() const;
 private Q_SLOTS:

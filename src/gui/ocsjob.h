@@ -104,7 +104,7 @@ protected slots:
     /**
      * Start the OCS request
      */
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 signals:
 
@@ -125,7 +125,7 @@ signals:
     void ocsError(int statusCode, const QString &message);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    bool finished() override;
 
 private:
     QByteArray _verb;

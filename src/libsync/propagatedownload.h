@@ -41,7 +41,7 @@ public:
     {
     }
 
-    ~GETJob()
+    ~GETJob() override
     {
         if (_bandwidthManager) {
             _bandwidthManager->unregisterDownloadJob(this);
@@ -62,7 +62,7 @@ public:
     void setChoked(bool c);
     void setBandwidthLimited(bool b);
     void giveBandwidthQuota(qint64 q);
-    void onTimedOut();
+    void onTimedOut() override;
 
 signals:
     void finishedSignal();
@@ -158,10 +158,10 @@ public:
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
         qint64 resumeStart, QObject *parent = 0);
 
-    qint64 currentDownloadPosition() Q_DECL_OVERRIDE;
+    qint64 currentDownloadPosition() override;
 
-    void start() Q_DECL_OVERRIDE;
-    bool finished() Q_DECL_OVERRIDE
+    void start() override;
+    bool finished() override
     {
         if (_saveBodyToFile && reply()->bytesAvailable()) {
             return false;
@@ -176,7 +176,7 @@ public:
 
     void newReplyHook(QNetworkReply *reply) override;
 
-    qint64 resumeStart() Q_DECL_OVERRIDE
+    qint64 resumeStart() override
     {
         return _resumeStart;
     }
@@ -257,11 +257,11 @@ public:
         , _deleteExisting(false)
     {
     }
-    void start() Q_DECL_OVERRIDE;
-    qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
+    void start() override;
+    qint64 committedDiskSpace() const override;
 
     // We think it might finish quickly because it is a small file.
-    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
+    bool isLikelyFinishedQuickly() override { return _item->_size < propagator()->smallFileSize(); }
 
     /**
      * Whether an existing folder with the same name may be deleted before
@@ -293,7 +293,7 @@ private slots:
     /// Called when it's time to update the db metadata
     void updateMetadata(bool isConflict);
 
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) override;
     void slotDownloadProgress(qint64, qint64);
     void slotChecksumFail(const QString &errMsg);
 

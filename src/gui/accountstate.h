@@ -78,7 +78,7 @@ public:
 
     /// Use the account as parent
     explicit AccountState(AccountPtr account);
-    ~AccountState();
+    ~AccountState() override;
 
     /** Creates an account state from settings and an Account object.
      *

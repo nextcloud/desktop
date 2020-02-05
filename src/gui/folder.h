@@ -123,7 +123,7 @@ public:
      */
     Folder(const FolderDefinition &definition, AccountState *accountState, std::unique_ptr<Vfs> vfs, QObject *parent = 0L);
 
-    ~Folder();
+    ~Folder() override;
 
     typedef QMap<QString, Folder *> Map;
     typedef QMapIterator<QString, Folder *> MapIterator;

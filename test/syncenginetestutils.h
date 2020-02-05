@@ -1113,7 +1113,7 @@ public:
 
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
-                                         QIODevice *outgoingData = 0) {
+                                         QIODevice *outgoingData = 0) override {
         if (_override) {
             if (auto reply = _override(op, request, outgoingData))
                 return reply;
@@ -1154,16 +1154,16 @@ class FakeCredentials : public OCC::AbstractCredentials
     QNetworkAccessManager *_qnam;
 public:
     FakeCredentials(QNetworkAccessManager *qnam) : _qnam{qnam} { }
-    virtual QString authType() const { return "test"; }
-    virtual QString user() const { return "admin"; }
-    virtual QNetworkAccessManager *createQNAM() const { return _qnam; }
-    virtual bool ready() const { return true; }
-    virtual void fetchFromKeychain() { }
-    virtual void askFromUser() { }
-    virtual bool stillValid(QNetworkReply *) { return true; }
-    virtual void persist() { }
-    virtual void invalidateToken() { }
-    virtual void forgetSensitiveData() { }
+    QString authType() const override { return "test"; }
+    QString user() const override { return "admin"; }
+    QNetworkAccessManager *createQNAM() const override { return _qnam; }
+    bool ready() const override { return true; }
+    void fetchFromKeychain() override { }
+    void askFromUser() override { }
+    bool stillValid(QNetworkReply *) override { return true; }
+    void persist() override { }
+    void invalidateToken() override { }
+    void forgetSensitiveData() override { }
 };
 
 class FakeFolder

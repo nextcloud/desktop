@@ -292,7 +292,7 @@ private slots:
     {
         // Test that we can send random garbage to the litening socket and it does not prevent the connection
         struct Test : OAuthTestCase {
-            virtual QNetworkReply *createBrowserReply(const QNetworkRequest &request) override {
+            QNetworkReply *createBrowserReply(const QNetworkRequest &request) override {
                 QTimer::singleShot(0, this, [this, request] {
                     auto port = request.url().port();
                     state = CustomState;

@@ -47,7 +47,7 @@ public:
     /* returns a singleton instance. */
     static Theme *instance();
 
-    ~Theme();
+    ~Theme() override;
 
     /**
      * @brief appNameGUI - Human readable application name.

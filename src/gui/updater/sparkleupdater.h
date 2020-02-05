@@ -26,14 +26,14 @@ class SparkleUpdater : public Updater
     Q_OBJECT
 public:
     SparkleUpdater(const QUrl &appCastUrl);
-    ~SparkleUpdater();
+    ~SparkleUpdater() override;
 
     void setUpdateUrl(const QUrl &url);
 
     // unused in this updater
-    void checkForUpdate() Q_DECL_OVERRIDE;
-    void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
-    bool handleStartup() Q_DECL_OVERRIDE { return false; }
+    void checkForUpdate() override;
+    void backgroundCheckForUpdate() override;
+    bool handleStartup() override { return false; }
 
     QString statusString();
 

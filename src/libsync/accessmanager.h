@@ -37,7 +37,7 @@ public:
     void setRawCookie(const QByteArray &rawCookie, const QUrl &url);
 
 protected:
-    QNetworkReply *createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData = 0) Q_DECL_OVERRIDE;
+    QNetworkReply *createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData = 0) override;
 };
 
 } // namespace OCC

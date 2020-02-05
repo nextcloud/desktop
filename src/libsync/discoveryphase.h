@@ -89,7 +89,7 @@ class DiscoverySingleLocalDirectoryJob : public QObject, public QRunnable
 public:
     explicit DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent = 0);
 
-    void run() Q_DECL_OVERRIDE;
+    void run() override;
 signals:
     void finished(QVector<LocalInfo> result);
     void finishedFatalError(QString errorString);

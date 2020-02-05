@@ -36,7 +36,7 @@ class OwncloudConnectionMethodDialog : public QDialog
 
 public:
     explicit OwncloudConnectionMethodDialog(QWidget *parent = 0);
-    ~OwncloudConnectionMethodDialog();
+    ~OwncloudConnectionMethodDialog() override;
     enum {
         Closed = 0,
         No_TLS,

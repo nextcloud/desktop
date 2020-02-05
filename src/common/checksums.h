@@ -84,7 +84,7 @@ class OCSYNC_EXPORT ComputeChecksum : public QObject
     Q_OBJECT
 public:
     explicit ComputeChecksum(QObject *parent = 0);
-    ~ComputeChecksum();
+    ~ComputeChecksum() override;
 
     /**
      * Sets the checksum type to be used. The default is empty.

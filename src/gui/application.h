@@ -57,7 +57,7 @@ class Application : public SharedTools::QtSingleApplication
     Q_OBJECT
 public:
     explicit Application(int &argc, char **argv);
-    ~Application();
+    ~Application() override;
 
     bool giveHelp();
     void showHelp();
@@ -87,7 +87,7 @@ protected:
     void parseOptions(const QStringList &);
     void setupTranslations();
     void setupLogging();
-    bool event(QEvent *event);
+    bool event(QEvent *event) override;
 
 signals:
     void folderRemoved();

@@ -49,7 +49,7 @@ class ProxyAuthHandler : public QObject
 public:
     static ProxyAuthHandler *instance();
 
-    virtual ~ProxyAuthHandler();
+    ~ProxyAuthHandler() override;
 
 public slots:
     /// Intended for QNetworkAccessManager::proxyAuthenticationRequired()

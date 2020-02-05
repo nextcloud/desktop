@@ -54,8 +54,8 @@ class AccountSettings : public QWidget
 
 public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = 0);
-    ~AccountSettings();
-    QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
+    ~AccountSettings() override;
+    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
 
 
 signals:
@@ -97,7 +97,7 @@ protected slots:
 private:
     void showConnectionLabel(const QString &message,
         QStringList errors = QStringList());
-    bool event(QEvent *) Q_DECL_OVERRIDE;
+    bool event(QEvent *) override;
     void createAccountToolbox();
 
     /// Returns the alias of the selected folder, empty string if none

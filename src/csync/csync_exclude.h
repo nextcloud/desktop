@@ -70,7 +70,7 @@ public:
     typedef std::tuple<int, int, int> Version;
 
     ExcludedFiles();
-    ~ExcludedFiles();
+    ~ExcludedFiles() override;
 
     /**
      * Adds a new path to a file containing exclude patterns.

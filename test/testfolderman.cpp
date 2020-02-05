@@ -24,7 +24,7 @@ public:
         : HttpCredentials(user, password)
     {}
 
-    void askFromUser() Q_DECL_OVERRIDE {
+    void askFromUser() override {
 
     }
 };

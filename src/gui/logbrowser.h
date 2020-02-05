@@ -38,7 +38,7 @@ class LogBrowser : public QDialog
     Q_OBJECT
 public:
     explicit LogBrowser(QWidget *parent = 0);
-    ~LogBrowser();
+    ~LogBrowser() override;
 
     /** Sets Logger settings depending on ConfigFile values.
      *

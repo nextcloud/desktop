@@ -54,7 +54,7 @@ public:
         const QString &localPath,
         SharePermissions maxSharingPermissions,
         QWidget *parent = 0);
-    ~ShareLinkWidget();
+    ~ShareLinkWidget() override;
     void getShares();
 
 private slots:

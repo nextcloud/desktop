@@ -47,10 +47,10 @@ public:
         const QByteArray &numericFileId,
         ShareDialogStartPage startPage,
         QWidget *parent = 0);
-    ~ShareDialog();
+    ~ShareDialog() override;
 
 private slots:
-    void done(int r);
+    void done(int r) override;
     void slotPropfindReceived(const QVariantMap &result);
     void slotPropfindError();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);

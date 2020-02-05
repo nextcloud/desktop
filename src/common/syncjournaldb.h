@@ -45,7 +45,7 @@ class OCSYNC_EXPORT SyncJournalDb : public QObject
     Q_OBJECT
 public:
     explicit SyncJournalDb(const QString &dbFilePath, QObject *parent = 0);
-    virtual ~SyncJournalDb();
+    ~SyncJournalDb() override;
 
     /// Create a journal path for a specific configuration
     static QString makeDbName(const QString &localPath,

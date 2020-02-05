@@ -34,8 +34,8 @@ public:
     explicit MoveJob(AccountPtr account, const QUrl &url, const QString &destination,
         QMap<QByteArray, QByteArray> _extraHeaders, QObject *parent = 0);
 
-    void start() Q_DECL_OVERRIDE;
-    bool finished() Q_DECL_OVERRIDE;
+    void start() override;
+    bool finished() override;
 
 signals:
     void finishedSignal();
@@ -55,9 +55,9 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
-    void start() Q_DECL_OVERRIDE;
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
-    JobParallelism parallelism() Q_DECL_OVERRIDE { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
+    void start() override;
+    void abort(PropagatorJob::AbortType abortType) override;
+    JobParallelism parallelism() override { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
 
     /**
      * Rename the directory in the selective sync list

@@ -28,7 +28,7 @@ class AccountManager : public QObject
     Q_OBJECT
 public:
     static AccountManager *instance();
-    ~AccountManager() {}
+    ~AccountManager() override {}
 
     /**
      * Saves the accounts to a given settings file

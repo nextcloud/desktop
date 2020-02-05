@@ -44,8 +44,8 @@ class IssuesWidget : public QWidget
     Q_OBJECT
 public:
     explicit IssuesWidget(QWidget *parent = 0);
-    ~IssuesWidget();
-    QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
+    ~IssuesWidget() override;
+    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
 
     void storeSyncIssues(QTextStream &ts);
     void showFolderErrors(const QString &folderAlias);
@@ -57,8 +57,8 @@ public slots:
     void slotOpenFile(QTreeWidgetItem *item, int);
 
 protected:
-    void showEvent(QShowEvent *);
-    void hideEvent(QHideEvent *);
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *) override;
 
 signals:
     void copyToClipboard();

@@ -296,7 +296,7 @@ class OWNCLOUDSYNC_EXPORT ProgressDispatcher : public QObject
     friend class Folder; // only allow Folder class to access the setting slots.
 public:
     static ProgressDispatcher *instance();
-    ~ProgressDispatcher();
+    ~ProgressDispatcher() override;
 
 signals:
     /**

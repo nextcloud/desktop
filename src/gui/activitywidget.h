@@ -59,8 +59,8 @@ class ActivityWidget : public QWidget
     Q_OBJECT
 public:
     explicit ActivityWidget(QWidget *parent = 0);
-    ~ActivityWidget();
-    QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
+    ~ActivityWidget() override;
+    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
     void storeActivityList(QTextStream &ts);
 
     /**
@@ -131,8 +131,8 @@ class ActivitySettings : public QWidget
     Q_OBJECT
 public:
     explicit ActivitySettings(QWidget *parent = 0);
-    ~ActivitySettings();
-    QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
+    ~ActivitySettings() override;
+    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
 
 public slots:
     void slotRefresh(AccountState *ptr);
@@ -153,7 +153,7 @@ signals:
     void guiLog(const QString &, const QString &);
 
 private:
-    bool event(QEvent *e) Q_DECL_OVERRIDE;
+    bool event(QEvent *e) override;
 
     QTabWidget *_tab;
     int _activityTabId;

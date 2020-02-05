@@ -145,7 +145,7 @@ public:
     {
     }
 
-    void askFromUser() Q_DECL_OVERRIDE
+    void askFromUser() override
     {
         _password = ::queryPassword(user());
         _ready = true;
@@ -158,7 +158,7 @@ public:
         _sslTrusted = isTrusted;
     }
 
-    bool sslIsTrusted() Q_DECL_OVERRIDE
+    bool sslIsTrusted() override
     {
         return _sslTrusted;
     }

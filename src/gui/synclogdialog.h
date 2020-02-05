@@ -38,7 +38,7 @@ class SyncLogDialog : public QDialog
 
 public:
     explicit SyncLogDialog(QWidget *parent = 0, ProtocolWidget *protoWidget = 0);
-    ~SyncLogDialog();
+    ~SyncLogDialog() override;
 
 private slots:
 

@@ -52,7 +52,7 @@ public:
     /**
      * @brief Start the OCS request
      */
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     /**
      * @brief setWidget stores the associated widget to be able to use
@@ -78,7 +78,7 @@ signals:
     void jobFinished(QString reply, int replyCode);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    bool finished() override;
 
 private:
     QByteArray _verb;

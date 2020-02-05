@@ -37,7 +37,7 @@ class FolderWatcherPrivate : public QObject
 public:
     FolderWatcherPrivate() {}
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
-    ~FolderWatcherPrivate();
+    ~FolderWatcherPrivate() override;
 
     int testWatchCount() const { return _pathToWatch.size(); }
 

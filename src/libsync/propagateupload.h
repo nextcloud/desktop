@@ -37,18 +37,18 @@ class UploadDevice : public QIODevice
     Q_OBJECT
 public:
     UploadDevice(const QString &fileName, qint64 start, qint64 size, BandwidthManager *bwm);
-    ~UploadDevice();
+    ~UploadDevice() override;
 
     bool open(QIODevice::OpenMode mode) override;
     void close() override;
 
-    qint64 writeData(const char *, qint64) Q_DECL_OVERRIDE;
-    qint64 readData(char *data, qint64 maxlen) Q_DECL_OVERRIDE;
-    bool atEnd() const Q_DECL_OVERRIDE;
-    qint64 size() const Q_DECL_OVERRIDE;
-    qint64 bytesAvailable() const Q_DECL_OVERRIDE;
-    bool isSequential() const Q_DECL_OVERRIDE;
-    bool seek(qint64 pos) Q_DECL_OVERRIDE;
+    qint64 writeData(const char *, qint64) override;
+    qint64 readData(char *data, qint64 maxlen) override;
+    bool atEnd() const override;
+    qint64 size() const override;
+    qint64 bytesAvailable() const override;
+    bool isSequential() const override;
+    bool seek(qint64 pos) override;
 
     void setBandwidthLimited(bool);
     bool isBandwidthLimited() { return _bandwidthLimited; }
@@ -115,13 +115,13 @@ public:
     {
         _device->setParent(this);
     }
-    ~PUTFileJob();
+    ~PUTFileJob() override;
 
     int _chunk;
 
-    virtual void start() Q_DECL_OVERRIDE;
+    void start() override;
 
-    virtual bool finished() Q_DECL_OVERRIDE;
+    bool finished() override;
 
     QIODevice *device()
     {
@@ -169,8 +169,8 @@ public:
     {
     }
 
-    void start() Q_DECL_OVERRIDE;
-    bool finished() Q_DECL_OVERRIDE;
+    void start() override;
+    bool finished() override;
 
 signals:
     void finishedSignal();
@@ -231,9 +231,9 @@ public:
      */
     void setDeleteExisting(bool enabled);
 
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
-    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
+    bool isLikelyFinishedQuickly() override { return _item->_size < propagator()->smallFileSize(); }
 
 private slots:
     void slotComputeContentChecksum();
@@ -331,9 +331,9 @@ public:
     {
     }
 
-    void doStartUpload() Q_DECL_OVERRIDE;
+    void doStartUpload() override;
 public slots:
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) override;
 private slots:
     void startNextChunk();
     void slotPutFinished();
@@ -414,7 +414,7 @@ public:
     {
     }
 
-    void doStartUpload() Q_DECL_OVERRIDE;
+    void doStartUpload() override;
 
 private:
     void doStartUploadNext();
@@ -422,7 +422,7 @@ private:
     void startNextChunk();
     void doFinalMove();
 public slots:
-    void abort(AbortType abortType) Q_DECL_OVERRIDE;
+    void abort(AbortType abortType) override;
 private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();
