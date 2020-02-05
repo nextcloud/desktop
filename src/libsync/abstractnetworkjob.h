@@ -98,9 +98,9 @@ public:
      */
     static int httpTimeout;
 
-    /** whether or noth this job can be retried */
-    bool retryAble() const;
-    void setRetryAble(bool retryAble);
+    /** whether or noth this job should be restarted after authentication */
+    bool  isAuthenticationJob() const;
+    void  setAuthenticationJob(bool b);
 
 public slots:
     void setTimeout(qint64 msec);
@@ -207,7 +207,7 @@ private:
     // Reparented to the currently running QNetworkReply.
     QPointer<QIODevice> _requestBody;
 
-    bool _retryAble = true;
+    bool _isAuthenticationJob = false;
 };
 
 /**
