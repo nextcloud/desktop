@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QHash>
 #include <QScopedPointer>
 #include <QSet>
@@ -116,7 +116,7 @@ protected:
 
 private:
     QScopedPointer<FolderWatcherPrivate> _d;
-    QTime _timer;
+    QElapsedTimer _timer;
     QSet<QString> _lastPaths;
     Folder *_folder;
     bool _isReliable = true;
