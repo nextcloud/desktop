@@ -350,7 +350,7 @@ void AccountState::slotCredentialsAsked(AbstractCredentials *credentials)
         // When new credentials become available we always want to restart the
         // connection validation, even if it's currently running.
         _connectionValidator->deleteLater();
-        _connectionValidator = 0;
+        _connectionValidator = nullptr;
     }
 
     checkConnectivity();

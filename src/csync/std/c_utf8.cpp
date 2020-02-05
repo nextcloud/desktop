@@ -42,7 +42,7 @@
 /* Convert a locale String to UTF8 */
 QByteArray c_utf8_from_locale(const mbchar_t *wstr)
 {
-  if (wstr == NULL) {
+  if (wstr == nullptr) {
     return QByteArray();
   }
 
@@ -86,8 +86,8 @@ extern "C" {
 /* Convert a an UTF8 string to locale */
 mbchar_t* c_utf8_string_to_locale(const char *str)
 {
-    if (str == NULL ) {
-        return NULL;
+    if (str == nullptr ) {
+        return nullptr;
     }
 #ifdef _WIN32
     mbchar_t *dst = NULL;
@@ -110,8 +110,8 @@ mbchar_t* c_utf8_string_to_locale(const char *str)
 
  mbchar_t* c_utf8_path_to_locale(const char *str)
  {
-     if( str == NULL ) {
-         return NULL;
+     if( str == nullptr ) {
+         return nullptr;
      } else {
  #ifdef _WIN32
          QByteArray unc_str = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(str, strlen(str)));

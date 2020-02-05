@@ -377,13 +377,13 @@ QByteArray CSyncChecksumHook::hook(const QByteArray &path, const QByteArray &oth
 {
     QByteArray type = parseChecksumHeaderType(QByteArray(otherChecksumHeader));
     if (type.isEmpty())
-        return NULL;
+        return nullptr;
 
     qCInfo(lcChecksums) << "Computing" << type << "checksum of" << path << "in the csync hook";
     QByteArray checksum = ComputeChecksum::computeNowOnFile(QString::fromUtf8(path), type);
     if (checksum.isNull()) {
         qCWarning(lcChecksums) << "Failed to compute checksum" << type << "for" << path;
-        return NULL;
+        return nullptr;
     }
 
     return makeChecksumHeader(type, checksum);

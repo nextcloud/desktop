@@ -152,7 +152,7 @@ public:
         Page_SelectiveSync
     };
 
-    explicit FolderWizard(AccountPtr account, QWidget *parent = 0);
+    explicit FolderWizard(AccountPtr account, QWidget *parent = nullptr);
     ~FolderWizard() override;
 
     bool eventFilter(QObject *watched, QEvent *event) override;

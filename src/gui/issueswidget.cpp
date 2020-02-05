@@ -389,7 +389,7 @@ void IssuesWidget::slotUpdateFolderFilters()
     if (!account) {
         _ui->filterFolder->setCurrentIndex(0);
     }
-    _ui->filterFolder->setEnabled(account != 0);
+    _ui->filterFolder->setEnabled(account != nullptr);
 
     for (int i = _ui->filterFolder->count() - 1; i >= 1; --i) {
         _ui->filterFolder->removeItem(i);
@@ -505,7 +505,7 @@ void IssuesWidget::addError(const QString &folderAlias, const QString &message,
 
 void IssuesWidget::addErrorWidget(QTreeWidgetItem *item, const QString &message, ErrorCategory category)
 {
-    QWidget *widget = 0;
+    QWidget *widget = nullptr;
     if (category == ErrorCategory::InsufficientRemoteStorage) {
         widget = new QWidget;
         auto layout = new QHBoxLayout;

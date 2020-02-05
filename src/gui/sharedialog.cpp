@@ -49,9 +49,9 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _maxSharingPermissions(maxSharingPermissions)
     , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
     , _startPage(startPage)
-    , _linkWidget(NULL)
-    , _userGroupWidget(NULL)
-    , _progressIndicator(NULL)
+    , _linkWidget(nullptr)
+    , _userGroupWidget(nullptr)
+    , _progressIndicator(nullptr)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -244,11 +244,11 @@ void ShareDialog::slotAccountStateChanged(int state)
     bool enabled = (state == AccountState::State::Connected);
     qCDebug(lcSharing) << "Account connected?" << enabled;
 
-    if (_userGroupWidget != NULL) {
+    if (_userGroupWidget != nullptr) {
         _userGroupWidget->setEnabled(enabled);
     }
 
-    if (_linkWidget != NULL) {
+    if (_linkWidget != nullptr) {
         _linkWidget->setEnabled(enabled);
     }
 }

@@ -24,7 +24,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcNotifications)
 
 NotificationConfirmJob::NotificationConfirmJob(AccountPtr account)
     : AbstractNetworkJob(account, "")
-    , _widget(0)
+    , _widget(nullptr)
 {
     setIgnoreCredentialFailure(true);
 }

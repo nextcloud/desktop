@@ -44,7 +44,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcSql, "sync.database.sql", QtInfoMsg)
 
 SqlDatabase::SqlDatabase()
-    : _db(0)
+    : _db(nullptr)
     , _errId(0)
 {
 }
@@ -57,7 +57,7 @@ SqlDatabase::~SqlDatabase()
 
 bool SqlDatabase::isOpen()
 {
-    return _db != 0;
+    return _db != nullptr;
 }
 
 bool SqlDatabase::openHelper(const QString &filename, int sqliteFlags)
@@ -68,7 +68,7 @@ bool SqlDatabase::openHelper(const QString &filename, int sqliteFlags)
 
     sqliteFlags |= SQLITE_OPEN_NOMUTEX;
 
-    SQLITE_DO(sqlite3_open_v2(filename.toUtf8().constData(), &_db, sqliteFlags, 0));
+    SQLITE_DO(sqlite3_open_v2(filename.toUtf8().constData(), &_db, sqliteFlags, nullptr));
 
     if (_errId != SQLITE_OK) {
         qCWarning(lcSql) << "Error:" << _error << "for" << filename;
@@ -196,7 +196,7 @@ void SqlDatabase::close()
         SQLITE_DO(sqlite3_close(_db));
         if (_errId != SQLITE_OK)
             qCWarning(lcSql) << "Closing database failed" << _error;
-        _db = 0;
+        _db = nullptr;
     }
 }
 
@@ -205,7 +205,7 @@ bool SqlDatabase::transaction()
     if (!_db) {
         return false;
     }
-    SQLITE_DO(sqlite3_exec(_db, "BEGIN", 0, 0, 0));
+    SQLITE_DO(sqlite3_exec(_db, "BEGIN", nullptr, nullptr, nullptr));
     return _errId == SQLITE_OK;
 }
 
@@ -214,7 +214,7 @@ bool SqlDatabase::commit()
     if (!_db) {
         return false;
     }
-    SQLITE_DO(sqlite3_exec(_db, "COMMIT", 0, 0, 0));
+    SQLITE_DO(sqlite3_exec(_db, "COMMIT", nullptr, nullptr, nullptr));
     return _errId == SQLITE_OK;
 }
 
@@ -255,7 +255,7 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
         int n = 0;
         int rc;
         do {
-            rc = sqlite3_prepare_v2(_db, _sql.constData(), -1, &_stmt, 0);
+            rc = sqlite3_prepare_v2(_db, _sql.constData(), -1, &_stmt, nullptr);
             if ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)) {
                 n++;
                 OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
@@ -483,7 +483,7 @@ void SqlQuery::finish()
     if (!_stmt)
         return;
     SQLITE_DO(sqlite3_finalize(_stmt));
-    _stmt = 0;
+    _stmt = nullptr;
     if (_sqldb) {
         _sqldb->_queries.remove(this);
     }

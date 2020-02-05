@@ -58,7 +58,7 @@ static const _instr_code_struct _instr[] =
   { "INSTRUCTION_ERROR", CSYNC_INSTRUCTION_ERROR },
   { "INSTRUCTION_TYPE_CHANGE", CSYNC_INSTRUCTION_TYPE_CHANGE },
   { "INSTRUCTION_UPDATE_METADATA", CSYNC_INSTRUCTION_UPDATE_METADATA },
-  { NULL, CSYNC_INSTRUCTION_ERROR }
+  { nullptr, CSYNC_INSTRUCTION_ERROR }
 };
 
 struct csync_memstat_s {
@@ -75,7 +75,7 @@ const char *csync_instruction_str(enum csync_instructions_e instr)
 {
   int idx = 0;
 
-  while (_instr[idx].instr_str != NULL) {
+  while (_instr[idx].instr_str != nullptr) {
     if (_instr[idx].instr_code == instr) {
       return _instr[idx].instr_str;
     }
@@ -93,7 +93,7 @@ void csync_memstat_check(void) {
 
   /* get process memory stats */
   fp = fopen("/proc/self/statm","r");
-  if (fp == NULL) {
+  if (fp == nullptr) {
     return;
   }
   s = fscanf(fp, "%d%d%d%d%d%d%d", &m.size, &m.resident, &m.shared, &m.trs,

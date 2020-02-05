@@ -270,7 +270,7 @@ public:
             }
             return file;
         }
-        return 0;
+        return nullptr;
     }
 
     FileInfo *createDir(const QString &relativePath) {
@@ -1113,7 +1113,7 @@ public:
 
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
-                                         QIODevice *outgoingData = 0) override {
+                                         QIODevice *outgoingData = nullptr) override {
         if (_override) {
             if (auto reply = _override(op, request, outgoingData))
                 return reply;
@@ -1214,7 +1214,7 @@ public:
         auto opts = _syncEngine->syncOptions();
 
         opts._vfs->stop();
-        QObject::disconnect(_syncEngine.get(), 0, opts._vfs.data(), 0);
+        QObject::disconnect(_syncEngine.get(), nullptr, opts._vfs.data(), nullptr);
 
         opts._vfs = vfs;
         _syncEngine->setSyncOptions(opts);

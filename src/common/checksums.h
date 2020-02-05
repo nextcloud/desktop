@@ -83,7 +83,7 @@ class OCSYNC_EXPORT ComputeChecksum : public QObject
 {
     Q_OBJECT
 public:
-    explicit ComputeChecksum(QObject *parent = 0);
+    explicit ComputeChecksum(QObject *parent = nullptr);
     ~ComputeChecksum() override;
 
     /**
@@ -143,7 +143,7 @@ class OCSYNC_EXPORT ValidateChecksumHeader : public QObject
 {
     Q_OBJECT
 public:
-    explicit ValidateChecksumHeader(QObject *parent = 0);
+    explicit ValidateChecksumHeader(QObject *parent = nullptr);
 
     /**
      * Check a file's actual checksum against the provided checksumHeader

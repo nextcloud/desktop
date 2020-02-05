@@ -31,7 +31,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUpdater, "gui.updater", QtInfoMsg)
 
-Updater *Updater::_instance = 0;
+Updater *Updater::_instance = nullptr;
 
 Updater *Updater::instance()
 {
@@ -125,7 +125,7 @@ Updater *Updater::create()
     qCDebug(lcUpdater) << url;
     if (url.isEmpty()) {
         qCWarning(lcUpdater) << "Not a valid updater URL, will not do update check";
-        return 0;
+        return nullptr;
     }
 
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)

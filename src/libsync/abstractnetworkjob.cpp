@@ -51,7 +51,7 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
     , _followRedirects(true)
     , _account(account)
     , _ignoreCredentialFailure(false)
-    , _reply(0)
+    , _reply(nullptr)
     , _path(path)
 {
     // Since we hold a QSharedPointer to the account, this makes no sense. (issue #6893)
@@ -334,7 +334,7 @@ QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
 
 AbstractNetworkJob::~AbstractNetworkJob()
 {
-    setReply(0);
+    setReply(nullptr);
 }
 
 void AbstractNetworkJob::start()

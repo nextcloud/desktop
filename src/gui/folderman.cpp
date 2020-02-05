@@ -43,11 +43,11 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolderMan, "gui.folder.manager", QtInfoMsg)
 
-FolderMan *FolderMan::_instance = 0;
+FolderMan *FolderMan::_instance = nullptr;
 
 FolderMan::FolderMan(QObject *parent)
     : QObject(parent)
-    , _currentSyncFolder(0)
+    , _currentSyncFolder(nullptr)
     , _syncEnabled(true)
     , _lockWatcher(new LockWatcher)
     , _navigationPaneHelper(this)
@@ -90,7 +90,7 @@ FolderMan *FolderMan::instance()
 FolderMan::~FolderMan()
 {
     qDeleteAll(_folderMap);
-    _instance = 0;
+    _instance = nullptr;
 }
 
 OCC::Folder::Map FolderMan::map() const
@@ -142,8 +142,8 @@ int FolderMan::unloadAndDeleteAllFolders()
     }
     ASSERT(_folderMap.isEmpty());
 
-    _lastSyncFolder = 0;
-    _currentSyncFolder = 0;
+    _lastSyncFolder = nullptr;
+    _currentSyncFolder = nullptr;
     _scheduledFolders.clear();
     emit folderListChanged(_folderMap);
     emit scheduleQueueChanged();
@@ -350,7 +350,7 @@ bool FolderMan::ensureJournalGone(const QString &journalDbFile)
     // remove the old journal file
     while (QFile::exists(journalDbFile) && !QFile::remove(journalDbFile)) {
         qCWarning(lcFolderMan) << "Could not remove old db file at" << journalDbFile;
-        int ret = QMessageBox::warning(0, tr("Could not reset folder state"),
+        int ret = QMessageBox::warning(nullptr, tr("Could not reset folder state"),
             tr("An old sync journal '%1' was found, "
                "but could not be removed. Please make sure "
                "that no application is currently using it.")
@@ -425,7 +425,7 @@ QString FolderMan::unescapeAlias(const QString &alias)
 // WARNING: Do not remove this code, it is used for predefined/automated deployments (2016)
 Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountState *accountState)
 {
-    Folder *folder = 0;
+    Folder *folder = nullptr;
 
     qCInfo(lcFolderMan) << "  ` -> setting up:" << file;
     QString escapedAlias(file);
@@ -466,7 +466,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
 
     if (backend.isEmpty() || backend != QLatin1String("owncloud")) {
         qCWarning(lcFolderMan) << "obsolete configuration of type" << backend;
-        return 0;
+        return nullptr;
     }
 
     // cut off the leading slash, oCUrl always has a trailing.
@@ -476,7 +476,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
 
     if (!accountState) {
         qCCritical(lcFolderMan) << "can't create folder without an account";
-        return 0;
+        return nullptr;
     }
 
     FolderDefinition folderDefinition;
@@ -537,7 +537,7 @@ Folder *FolderMan::folder(const QString &alias)
             return _folderMap[alias];
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void FolderMan::scheduleAllFolders()
@@ -702,7 +702,7 @@ void FolderMan::setSyncEnabled(bool enabled)
     }
     _syncEnabled = enabled;
     // force a redraw in case the network connect status changed
-    emit(folderSyncStateChange(0));
+    emit(folderSyncStateChange(nullptr));
 }
 
 void FolderMan::startScheduledSyncSoon()
@@ -770,7 +770,7 @@ void FolderMan::slotStartScheduledFolderSync()
     }
 
     // Find the first folder in the queue that can be synced.
-    Folder *folder = 0;
+    Folder *folder = nullptr;
     while (!_scheduledFolders.isEmpty()) {
         Folder *g = _scheduledFolders.dequeue();
         if (g->canSync()) {
@@ -957,7 +957,7 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
 
     if (f == _currentSyncFolder) {
         _lastSyncFolder = _currentSyncFolder;
-        _currentSyncFolder = 0;
+        _currentSyncFolder = nullptr;
     }
     if (!isAnySyncRunning())
         startScheduledSyncSoon();
@@ -970,13 +970,13 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     definition.journalPath = definition.defaultJournalPath(accountState->account());
 
     if (!ensureJournalGone(definition.absoluteJournalPath())) {
-        return 0;
+        return nullptr;
     }
 
     auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
     if (!vfs) {
         qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
-        return 0;
+        return nullptr;
     }
 
     auto folder = addFolderInternal(definition, accountState, std::move(vfs));
@@ -1058,7 +1058,7 @@ Folder *FolderMan::folderForPath(const QString &path, QString *relativePath)
 
     if (relativePath)
         relativePath->clear();
-    return 0;
+    return nullptr;
 }
 
 QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const AccountPtr acc)
@@ -1071,7 +1071,7 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
         serverPath.prepend('/');
 
     foreach (Folder *folder, this->map().values()) {
-        if (acc != 0 && folder->accountState()->account() != acc) {
+        if (acc != nullptr && folder->accountState()->account() != acc) {
             continue;
         }
         if (!serverPath.startsWith(folder->remotePath()))

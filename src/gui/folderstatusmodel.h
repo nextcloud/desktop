@@ -39,7 +39,7 @@ class FolderStatusModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    FolderStatusModel(QObject *parent = 0);
+    FolderStatusModel(QObject *parent = nullptr);
     ~FolderStatusModel() override;
     void setAccountState(const AccountState *accountState);
 
@@ -57,7 +57,7 @@ public:
     struct SubFolderInfo
     {
         SubFolderInfo()
-            : _folder(0)
+            : _folder(nullptr)
             , _size(0)
             , _isExternal(false)
             , _fetched(false)

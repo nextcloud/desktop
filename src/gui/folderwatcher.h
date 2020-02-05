@@ -51,7 +51,7 @@ class FolderWatcher : public QObject
     Q_OBJECT
 public:
     // Construct, connect signals, call init()
-    explicit FolderWatcher(Folder *folder = 0L);
+    explicit FolderWatcher(Folder *folder = nullptr);
     ~FolderWatcher() override;
 
     /**

@@ -36,7 +36,7 @@ protected:
     QPointer<BandwidthManager> _bandwidthManager = nullptr;
 
 public:
-    GETJob(AccountPtr account, const QString &path, QObject *parent = 0)
+    GETJob(AccountPtr account, const QString &path, QObject *parent = nullptr)
         : AbstractNetworkJob(account, path, parent)
     {
     }
@@ -104,7 +104,7 @@ public:
     // DOES NOT take ownership of the device.
     GETFileZsyncJob(OwncloudPropagator *propagator, SyncFileItemPtr &item, const QString &path, QFile *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        const QByteArray &zsyncData, QObject *parent = 0);
+        const QByteArray &zsyncData, QObject *parent = nullptr);
 
     qint64 currentDownloadPosition() override;
 
@@ -152,11 +152,11 @@ public:
     // DOES NOT take ownership of the device.
     explicit GETFileJob(AccountPtr account, const QString &path, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        qint64 resumeStart, QObject *parent = 0);
+        qint64 resumeStart, QObject *parent = nullptr);
     // For directDownloadUrl:
     explicit GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        qint64 resumeStart, QObject *parent = 0);
+        qint64 resumeStart, QObject *parent = nullptr);
 
     qint64 currentDownloadPosition() override;
 

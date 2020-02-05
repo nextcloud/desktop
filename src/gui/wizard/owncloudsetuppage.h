@@ -40,7 +40,7 @@ class OwncloudSetupPage : public QWizardPage
 {
     Q_OBJECT
 public:
-    OwncloudSetupPage(QWidget *parent = 0);
+    OwncloudSetupPage(QWidget *parent = nullptr);
     ~OwncloudSetupPage() override;
 
     bool isComplete() const override;

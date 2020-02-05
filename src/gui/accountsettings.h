@@ -53,7 +53,7 @@ class AccountSettings : public QWidget
     Q_PROPERTY(AccountState* accountState MEMBER _accountState)
 
 public:
-    explicit AccountSettings(AccountState *accountState, QWidget *parent = 0);
+    explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
     QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
 

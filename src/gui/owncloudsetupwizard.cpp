@@ -62,7 +62,7 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
     _ocWizard->deleteLater();
 }
 
-static QPointer<OwncloudSetupWizard> wiz = 0;
+static QPointer<OwncloudSetupWizard> wiz = nullptr;
 
 void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
 {
@@ -563,7 +563,7 @@ bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder)
         renameOk = FolderMan::instance()->startFromScratch(localFolder);
         if (!renameOk) {
             QMessageBox::StandardButton but;
-            but = QMessageBox::question(0, tr("Folder rename failed"),
+            but = QMessageBox::question(nullptr, tr("Folder rename failed"),
                 tr("Can't remove and back up the folder because the folder or a file in it is open in another program."
                    " Please close the folder or file and hit retry or cancel the setup."),
                 QMessageBox::Retry | QMessageBox::Abort, QMessageBox::Retry);

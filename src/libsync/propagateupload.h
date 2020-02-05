@@ -97,7 +97,7 @@ private:
 
 public:
     explicit PUTFileJob(AccountPtr account, const QString &path, std::unique_ptr<QIODevice> device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = 0)
+        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr)
         : AbstractNetworkJob(account, path, parent)
         , _device(device.release())
         , _headers(headers)
@@ -106,7 +106,7 @@ public:
         _device->setParent(this);
     }
     explicit PUTFileJob(AccountPtr account, const QUrl &url, std::unique_ptr<QIODevice> device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = 0)
+        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr)
         : AbstractNetworkJob(account, QString(), parent)
         , _device(device.release())
         , _headers(headers)

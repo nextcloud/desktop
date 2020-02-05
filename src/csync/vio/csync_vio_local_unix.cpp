@@ -74,12 +74,12 @@ int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
 
 std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *handle, OCC::Vfs *vfs) {
 
-  struct _tdirent *dirent = NULL;
+  struct _tdirent *dirent = nullptr;
   std::unique_ptr<csync_file_stat_t> file_stat;
 
   do {
       dirent = _treaddir(handle->dh);
-      if (dirent == NULL)
+      if (dirent == nullptr)
           return {};
   } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
 

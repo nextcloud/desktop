@@ -27,7 +27,7 @@ class ServerNotificationHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit ServerNotificationHandler(QObject *parent = 0);
+    explicit ServerNotificationHandler(QObject *parent = nullptr);
 
 signals:
     void newNotificationList(ActivityList);

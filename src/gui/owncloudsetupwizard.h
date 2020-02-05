@@ -42,7 +42,7 @@ class OwncloudSetupWizard : public QObject
     Q_OBJECT
 public:
     /** Run the wizard */
-    static void runWizard(QObject *obj, const char *amember, QWidget *parent = 0);
+    static void runWizard(QObject *obj, const char *amember, QWidget *parent = nullptr);
     static bool bringWizardToFrontIfVisible();
 signals:
     // overall dialog close signal.
@@ -69,7 +69,7 @@ private slots:
     void slotAssistantFinished(int);
 
 private:
-    explicit OwncloudSetupWizard(QObject *parent = 0);
+    explicit OwncloudSetupWizard(QObject *parent = nullptr);
     ~OwncloudSetupWizard() override;
     void startWizard();
     void testOwnCloudConnect();

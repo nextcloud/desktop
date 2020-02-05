@@ -258,7 +258,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
             continue;
         }
 
-        NotificationWidget *widget = 0;
+        NotificationWidget *widget = nullptr;
 
         if (_widgetForNotifId.contains(activity.ident())) {
             widget = _widgetForNotifId[activity.ident()];

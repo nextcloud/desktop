@@ -50,7 +50,7 @@ public:
         LogParagraph
     };
 
-    OwncloudWizard(QWidget *parent = 0);
+    OwncloudWizard(QWidget *parent = nullptr);
 
     void setAccount(AccountPtr account);
     AccountPtr account() const;

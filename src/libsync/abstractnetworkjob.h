@@ -40,7 +40,7 @@ class OWNCLOUDSYNC_EXPORT AbstractNetworkJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
     ~AbstractNetworkJob() override;
 
     virtual void start();
@@ -89,7 +89,7 @@ public:
      *
      * Warning: Needs to call reply()->readAll().
      */
-    QString errorStringParsingBody(QByteArray *body = 0);
+    QString errorStringParsingBody(QByteArray *body = nullptr);
 
     /** Make a new request */
     void retry();
@@ -130,14 +130,14 @@ protected:
      */
     QNetworkReply *sendRequest(const QByteArray &verb, const QUrl &url,
         QNetworkRequest req = QNetworkRequest(),
-        QIODevice *requestBody = 0);
+        QIODevice *requestBody = nullptr);
 
     // sendRequest does not take a relative path instead of an url,
     // but the old API allowed that. We have this undefined overload
     // to help catch usage errors
     QNetworkReply *sendRequest(const QByteArray &verb, const QString &relativePath,
         QNetworkRequest req = QNetworkRequest(),
-        QIODevice *requestBody = 0);
+        QIODevice *requestBody = nullptr);
 
     /** Makes this job drive a pre-made QNetworkReply
      *

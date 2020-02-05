@@ -41,13 +41,13 @@ Q_LOGGING_CATEGORY(lcWizard, "gui.wizard", QtInfoMsg)
 
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent)
-    , _account(0)
+    , _account(nullptr)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _browserCredsPage(new OwncloudOAuthCredsPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage)
     , _resultPage(new OwncloudWizardResultPage)
-    , _credentialsPage(0)
+    , _credentialsPage(nullptr)
     , _setupLog()
 {
     setObjectName("owncloudWizard");
@@ -232,7 +232,7 @@ AbstractCredentials *OwncloudWizard::getCredentials() const
         return _credentialsPage->getCredentials();
     }
 
-    return 0;
+    return nullptr;
 }
 
 void OwncloudWizard::askExperimentalVirtualFilesFeature(const std::function<void(bool enable)> &callback)

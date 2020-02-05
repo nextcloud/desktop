@@ -152,7 +152,7 @@ void Logger::setLogFile(const QString &name)
 {
     QMutexLocker locker(&_mutex);
     if (_logstream) {
-        _logstream.reset(0);
+        _logstream.reset(nullptr);
         _logFile.close();
     }
 

@@ -162,7 +162,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
     for (i = 0; i + sizeof(inotify_event) < ulen; i += sizeof(inotify_event) + (event ? event->len : 0)) {
         // cast an inotify_event
         event = (struct inotify_event *)&buffer[i];
-        if (event == NULL) {
+        if (event == nullptr) {
             qCDebug(lcFolderWatcher) << "NULL event";
             continue;
         }

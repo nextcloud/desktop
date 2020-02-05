@@ -88,7 +88,7 @@ struct CmdOptions
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.
 // So we have to use a global variable
-CmdOptions *opts = 0;
+CmdOptions *opts = nullptr;
 
 class EchoDisabler
 {

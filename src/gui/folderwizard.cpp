@@ -246,7 +246,7 @@ static QTreeWidgetItem *findFirstChild(QTreeWidgetItem *parent, const QString &t
             return child;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
@@ -363,7 +363,7 @@ void FolderWizardRemotePath::slotFolderEntryEdited(const QString &text)
         return;
     }
 
-    _ui.folderTreeWidget->setCurrentItem(0);
+    _ui.folderTreeWidget->setCurrentItem(nullptr);
     _lscolTimer.start(); // avoid sending a request on each keystroke
 }
 
@@ -376,7 +376,7 @@ void FolderWizardRemotePath::slotLsColFolderEntry()
     LsColJob *job = runLsColJob(path);
     // No error handling, no updating, we do this manually
     // because of extra logic in the typed-path case.
-    disconnect(job, 0, this, 0);
+    disconnect(job, nullptr, this, nullptr);
     connect(job, &LsColJob::finishedWithError,
         this, &FolderWizardRemotePath::slotTypedPathError);
     connect(job, &LsColJob::directoryListingSubfolders,
@@ -556,7 +556,7 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
 FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     : QWizard(parent)
     , _folderWizardSourcePage(new FolderWizardLocalPath(account))
-    , _folderWizardTargetPage(0)
+    , _folderWizardTargetPage(nullptr)
     , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

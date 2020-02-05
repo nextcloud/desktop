@@ -174,7 +174,7 @@ void ZsyncGenerateRunnable::run()
     zsynctf.close();
 
     /* Ensure that metadata file is not buffered, since we are using handles directly */
-    setvbuf(meta.get(), NULL, _IONBF, 0);
+    setvbuf(meta.get(), nullptr, _IONBF, 0);
 
     qCDebug(lcZsyncGenerate) << "Starting generation of:" << _file;
 
@@ -220,10 +220,10 @@ void ZsyncGenerateRunnable::run()
     if (zsyncfile_write(
             meta.get(), tf.get(),
             rsum_len, checksum_len,
-            0, 0, 0, // recompress
-            0, 0, // fname, mtime
-            0, 0, // urls
-            0, 0, // Uurls
+            0, nullptr, nullptr, // recompress
+            nullptr, 0, // fname, mtime
+            nullptr, 0, // urls
+            nullptr, 0, // Uurls
             state.get())
         != 0) {
         QString error = QString(tr("Failed to write zsync metadata file:")) + _file;

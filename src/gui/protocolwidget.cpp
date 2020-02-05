@@ -59,7 +59,7 @@ ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &it
 {
     auto f = FolderMan::instance()->folder(folder);
     if (!f) {
-        return 0;
+        return nullptr;
     }
 
     QStringList columns;

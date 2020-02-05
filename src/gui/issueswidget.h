@@ -43,7 +43,7 @@ class IssuesWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit IssuesWidget(QWidget *parent = 0);
+    explicit IssuesWidget(QWidget *parent = nullptr);
     ~IssuesWidget() override;
     QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
 

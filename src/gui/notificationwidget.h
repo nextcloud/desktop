@@ -31,7 +31,7 @@ class NotificationWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NotificationWidget(QWidget *parent = 0);
+    explicit NotificationWidget(QWidget *parent = nullptr);
 
     bool readyToClose();
     Activity activity() const;

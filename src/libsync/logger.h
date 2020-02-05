@@ -93,7 +93,7 @@ public slots:
     void enterNextLogFile();
 
 private:
-    Logger(QObject *parent = 0);
+    Logger(QObject *parent = nullptr);
     ~Logger() override;
     QList<Log> _logs;
     bool _showTime;

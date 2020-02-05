@@ -58,7 +58,7 @@ public:
         const QString &localPath,
         SharePermissions maxSharingPermissions,
         const QString &privateLinkUrl,
-        QWidget *parent = 0);
+        QWidget *parent = nullptr);
     ~ShareUserGroupWidget() override;
 
 public slots:
@@ -113,7 +113,7 @@ public:
     explicit ShareUserLine(QSharedPointer<Share> Share,
         SharePermissions maxSharingPermissions,
         bool isFile,
-        QWidget *parent = 0);
+        QWidget *parent = nullptr);
     ~ShareUserLine() override;
 
     QSharedPointer<Share> share() const;
