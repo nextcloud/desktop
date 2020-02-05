@@ -18,7 +18,6 @@
 
 #include <QDir>
 #include <QStringList>
-#include <QThread>
 #include <QtGlobal>
 #include <qmetaobject.h>
 
@@ -105,7 +104,6 @@ void Logger::log(Log log)
         msg = log.timeStamp.toString(QLatin1String("MM-dd hh:mm:ss:zzz")) + QLatin1Char(' ');
     }
 
-    msg += QString().sprintf("%p ", (void *)QThread::currentThread());
     msg += log.message;
     // _logs.append(log);
     // std::cout << qPrintable(log.message) << std::endl;
