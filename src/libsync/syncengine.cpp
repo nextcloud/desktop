@@ -754,11 +754,8 @@ void SyncEngine::setNetworkLimits(int upload, int download)
     _propagator->_uploadLimit = upload;
     _propagator->_downloadLimit = download;
 
-    int propDownloadLimit = _propagator->_downloadLimit.load();
-    int propUploadLimit = _propagator->_uploadLimit.load();
-
-    if (propDownloadLimit != 0 || propUploadLimit != 0) {
-        qCInfo(lcEngine) << "Network Limits (down/up) " << propDownloadLimit << propUploadLimit;
+    if (upload != 0 || download != 0) {
+        qCInfo(lcEngine) << "Network Limits (down/up) " << upload << download;
     }
 }
 

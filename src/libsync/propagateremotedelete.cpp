@@ -61,7 +61,7 @@ bool DeleteJob::finished()
 
 void PropagateRemoteDelete::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     qCDebug(lcPropagateRemoteDelete) << _item->_file;

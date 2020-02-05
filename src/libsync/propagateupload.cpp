@@ -187,7 +187,7 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 
 void PropagateUploadFileCommon::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
+    if (propagator()->_abortRequested) {
         return;
     }
 
@@ -225,7 +225,7 @@ void PropagateUploadFileCommon::start()
 
 void PropagateUploadFileCommon::slotComputeContentChecksum()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
+    if (propagator()->_abortRequested) {
         return;
     }
 

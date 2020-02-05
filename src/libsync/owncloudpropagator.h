@@ -422,11 +422,11 @@ public:
     const SyncOptions &syncOptions() const;
     void setSyncOptions(const SyncOptions &syncOptions);
 
-    QAtomicInt _downloadLimit;
-    QAtomicInt _uploadLimit;
+    int _downloadLimit = 0;
+    int _uploadLimit = 0;
     BandwidthManager _bandwidthManager;
 
-    QAtomicInt _abortRequested; // boolean set by the main thread to abort.
+    bool _abortRequested = false;
 
     /** The list of currently active jobs.
         This list contains the jobs that are currently using ressources and is used purely to
@@ -495,8 +495,7 @@ public:
 
     void abort()
     {
-        bool alreadyAborting = _abortRequested.fetchAndStoreOrdered(true);
-        if (alreadyAborting)
+        if (_abortRequested)
             return;
         if (_rootJob) {
             // Connect to abortFinished  which signals that abort has been asynchronously finished

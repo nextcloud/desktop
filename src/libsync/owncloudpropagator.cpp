@@ -81,8 +81,8 @@ OwncloudPropagator::~OwncloudPropagator()
 
 int OwncloudPropagator::maximumActiveTransferJob()
 {
-    if (_downloadLimit.fetchAndAddAcquire(0) != 0
-        || _uploadLimit.fetchAndAddAcquire(0) != 0
+    if (_downloadLimit != 0
+        || _uploadLimit != 0
         || !_syncOptions._parallelNetworkJobs) {
         // disable parallelism when there is a network limit.
         return 1;
@@ -239,8 +239,8 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         }
     }
 
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0) && (_item->_status == SyncFileItem::NormalError
-                                                                   || _item->_status == SyncFileItem::FatalError)) {
+    if (propagator()->_abortRequested && (_item->_status == SyncFileItem::NormalError
+                                          || _item->_status == SyncFileItem::FatalError)) {
         // an abort request is ongoing. Change the status to Soft-Error
         _item->_status = SyncFileItem::SoftError;
     }

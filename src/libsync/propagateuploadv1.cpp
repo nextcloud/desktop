@@ -73,7 +73,7 @@ void PropagateUploadFileV1::doStartUpload()
 
 void PropagateUploadFileV1::startNextChunk()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     if (!_jobs.isEmpty() && _currentChunk + _startChunk >= _chunkCount - 1) {

@@ -528,7 +528,7 @@ void PropagateUploadFileNG::doFinalMove()
 
 void PropagateUploadFileNG::startNextChunk()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     ENFORCE(_bytesToUpload >= _sent, "Sent data exceeds file size");

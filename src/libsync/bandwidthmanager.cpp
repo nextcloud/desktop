@@ -53,8 +53,8 @@ BandwidthManager::BandwidthManager(OwncloudPropagator *p)
     , _relativeLimitCurrentMeasuredJob(nullptr)
     , _currentDownloadLimit(0)
 {
-    _currentUploadLimit = _propagator->_uploadLimit.fetchAndAddAcquire(0);
-    _currentDownloadLimit = _propagator->_downloadLimit.fetchAndAddAcquire(0);
+    _currentUploadLimit = _propagator->_uploadLimit;
+    _currentDownloadLimit = _propagator->_downloadLimit;
 
     QObject::connect(&_switchingTimer, &QTimer::timeout, this, &BandwidthManager::switchingTimerExpired);
     _switchingTimer.setInterval(10 * 1000);
@@ -337,7 +337,7 @@ void BandwidthManager::relativeDownloadDelayTimerExpired()
 
 void BandwidthManager::switchingTimerExpired()
 {
-    qint64 newUploadLimit = _propagator->_uploadLimit.fetchAndAddAcquire(0);
+    qint64 newUploadLimit = _propagator->_uploadLimit;
     if (newUploadLimit != _currentUploadLimit) {
         qCInfo(lcBandwidthManager) << "Upload Bandwidth limit changed" << _currentUploadLimit << newUploadLimit;
         _currentUploadLimit = newUploadLimit;
@@ -354,7 +354,7 @@ void BandwidthManager::switchingTimerExpired()
             }
         }
     }
-    qint64 newDownloadLimit = _propagator->_downloadLimit.fetchAndAddAcquire(0);
+    qint64 newDownloadLimit = _propagator->_downloadLimit;
     if (newDownloadLimit != _currentDownloadLimit) {
         qCInfo(lcBandwidthManager) << "Download Bandwidth limit changed" << _currentDownloadLimit << newDownloadLimit;
         _currentDownloadLimit = newDownloadLimit;

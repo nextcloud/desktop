@@ -346,7 +346,7 @@ QString GETJob::errorString() const
 
 void PropagateDownloadFile::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
@@ -444,7 +444,7 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
 
 void PropagateDownloadFile::startDownload()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     // do a klaas' case clash check.
