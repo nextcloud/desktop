@@ -108,30 +108,19 @@ void OAuth::startAuthentification()
                     QJsonParseError jsonParseError;
                     const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
                     QString fieldsError;
-                    const auto getRequiredField = [&json, &fieldsError](const QString &s) {
-                        const auto out = json.constFind(s);
-                        if (out == json.constEnd()) {
-                            fieldsError.append(tr("\tError: Missing field %1\n").arg(s));
-                            return QJsonValue();
-                        }
-                        return *out;
-                    };
-                    const QString accessToken = getRequiredField(QStringLiteral("access_token")).toString();
-                    const QString refreshToken = getRequiredField(QStringLiteral("refresh_token")).toString();
-                    const QString tokenType = getRequiredField(QStringLiteral("token_type")).toString().toLower();
+                    const QString accessToken = getRequiredField(json, QStringLiteral("access_token"), &fieldsError).toString();
+                    const QString refreshToken = getRequiredField(json, QStringLiteral("refresh_token"), &fieldsError).toString();
+                    const QString tokenType = getRequiredField(json, QStringLiteral("token_type"), &fieldsError).toString().toLower();
                     const QString user = json[QStringLiteral("user_id")].toString();
                     const QUrl messageUrl = json[QStringLiteral("message_url")].toString();
 
                     if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
                         || !fieldsError.isEmpty()
                         || tokenType != "bearer") {
-                        QString errorReason;
-                        QString errorFromJson = json["error_description"].toString();
-                        if (errorFromJson.isEmpty())
-                            errorFromJson = json["error"].toString();
-                        if (!errorFromJson.isEmpty()) {
+                        QString errorReason = errorFromJson(json);
+                        if (!errorReason.isEmpty()) {
                             errorReason = tr("Error returned from the server: <em>%1</em>")
-                                              .arg(errorFromJson.toHtmlEscaped());
+                                              .arg(errorReason.toHtmlEscaped());
                         } else if (reply->error() != QNetworkReply::NoError) {
                             errorReason = tr("There was an error accessing the 'token' endpoint: <br><em>%1</em>")
                                               .arg(reply->errorString().toHtmlEscaped());
@@ -182,25 +171,39 @@ void OAuth::startAuthentification()
 
 void OAuth::refreshAuthentification(const QString &refreshToken)
 {
-    QObject::connect(this, &OAuth::fetchWellKnownFinished, this, [this, &refreshToken]() {
+    connect(this, &OAuth::fetchWellKnownFinished, this, [this, refreshToken] {
         auto job = postTokenRequest({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
             { QStringLiteral("refresh_token"), refreshToken } });
-        QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-            auto jsonData = reply->readAll();
+        connect(job, &SimpleNetworkJob::finishedSignal, this, [this, refreshToken](QNetworkReply *reply) {
+            const auto jsonData = reply->readAll();
+            QString accessToken;
+            QString newRefreshToken = refreshToken;
             QJsonParseError jsonParseError;
+            // https://developer.okta.com/docs/reference/api/oidc/#response-properties-2
             const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-            const QString accessToken = json["access_token"].toString();
-            if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
-                // Invalid or empty JSON: Network error maybe?
-                qCWarning(lcOauth) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
-            } else if (accessToken.isEmpty()) {
-                // If the json was valid, but the reply did not contain an access token, the token
-                // is considered expired. (Usually the HTTP reply code is 400)
-                qCDebug(lcOauth) << "Expired refresh token. Logging out";
-                Q_EMIT refreshFinished(QString(), QString());
+            const QString errorReason = errorFromJson(json);
+            if (!errorReason.isEmpty()) {
+                if (errorReason == QStringLiteral("invalid_grant")) {
+                    newRefreshToken.clear();
+                } else {
+                    qCWarning(lcOauth) << tr("Error while refreshing the token: %1").arg(errorReason);
+                }
+            } else if (reply->error() != QNetworkReply::NoError) {
+                qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(reply->errorString(), QString::fromUtf8(jsonData));
             } else {
-                Q_EMIT refreshFinished(accessToken, json["refresh_token"].toString());
+                if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
+                    // Invalid or empty JSON: Network error maybe?
+                    qCWarning(lcOauth) << tr("Error while refreshing the token: %1 : %2").arg(jsonParseError.errorString(), QString::fromUtf8(jsonData));
+                } else {
+                    QString error;
+                    accessToken = getRequiredField(json, QStringLiteral("access_token"), &error).toString();
+                    newRefreshToken = getRequiredField(json, QStringLiteral("refresh_token"), &error).toString();
+                    if (!error.isEmpty()) {
+                        qCWarning(lcOauth) << tr("The reply from the server did not contain all expected fields\n:%1").arg(error);
+                    }
+                }
             }
+            Q_EMIT refreshFinished(accessToken, newRefreshToken);
         });
     });
     fetchWellKnown();
@@ -261,12 +264,33 @@ QByteArray OAuth::generateRandomString(size_t size) const
     return QByteArray(reinterpret_cast<char *>(buffer.data()), static_cast<int>(size * sizeof(quint32))).toBase64(QByteArray::Base64UrlEncoding);
 }
 
+QVariant OAuth::getRequiredField(const QJsonObject &json, const QString &s, QString *error)
+{
+    const auto out = json.constFind(s);
+    if (out == json.constEnd()) {
+        error->append(tr("\tError: Missing field %1\n").arg(s));
+        return QJsonValue();
+    }
+    return *out;
+}
+
+QString OAuth::errorFromJson(const QJsonObject &json)
+{
+    if (json.isEmpty()) {
+        return {};
+    }
+    QString errorFromJson = json[QStringLiteral("error_description")].toString();
+    if (errorFromJson.isEmpty())
+        errorFromJson = json[QStringLiteral("error")].toString();
+    return errorFromJson;
+}
+
 QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
     QUrlQuery query;
     QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
-        .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
+                                    .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     query.setQueryItems({
         { QLatin1String("response_type"), QLatin1String("code") },
         { QLatin1String("client_id"), Theme::instance()->oauthClientId() },

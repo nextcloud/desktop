@@ -420,7 +420,7 @@ public:
 signals:
     void finishedSignal(QNetworkReply *reply);
 private slots:
-    bool finished() Q_DECL_OVERRIDE;
+    bool finished() override;
 };
 
 /**

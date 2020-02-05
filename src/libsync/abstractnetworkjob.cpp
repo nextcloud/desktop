@@ -136,7 +136,7 @@ void AbstractNetworkJob::setAuthenticationJob(bool b)
 }
 
 QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
-QNetworkRequest req, QIODevice *requestBody)
+    QNetworkRequest req, QIODevice *requestBody)
 {
     auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = requestBody;

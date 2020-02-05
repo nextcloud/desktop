@@ -95,6 +95,10 @@ private:
 
     QByteArray generateRandomString(size_t size) const;
 
+    QVariant getRequiredField(const QJsonObject &json, const QString &s, QString *error);
+
+    QString errorFromJson(const QJsonObject &json);
+
     Account* _account;
     QTcpServer _server;
     bool _wellKnownFinished = false;
