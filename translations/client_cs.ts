@@ -1338,7 +1338,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Zobrazovat &amp;upozornění serveru</translation>
+        <translation>Zobrazit &amp;upozornění ze serveru</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1405,7 +1405,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="56"/>
         <source>Server notifications that require attention.</source>
-        <translation>Oznámení serveru která vyžadují pozornost.</translation>
+        <translation>Upozornění ze serveru, která vyžadují pozornost.</translation>
     </message>
 </context>
 <context>

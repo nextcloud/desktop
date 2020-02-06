@@ -202,7 +202,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: ...</source>
-        <translation>Speicherplatz: ...</translation>
+        <translation>Speicherplatz: …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
