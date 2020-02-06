@@ -167,6 +167,7 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
         (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
         result = true;
         oldEtag = (*it)->_etag;
+        _deletedItem.erase(it);
     }
     if (auto *otherJob = _queuedDeletedDirectories.take(originalPath)) {
         oldEtag = otherJob->_dirItem->_etag;
