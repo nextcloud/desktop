@@ -1,0 +1,4 @@
+Bugfix: Fixed a potential crash while discovering moves
+
+
+https://github.com/owncloud/client/issues/7722
