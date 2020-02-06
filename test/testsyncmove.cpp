@@ -833,7 +833,6 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("C/b1"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/b2"));
         QVERIFY(fakeFolder.currentRemoteState().find("C/b2"));
-        qDebug() << counter.nMOVE << counter.nDELETE << counter.nGET << counter.nPUT;
         QCOMPARE(counter.nMOVE, 0); // Unfortunately, we can't really make a move in this case
         QCOMPARE(counter.nGET, 2);
         QCOMPARE(counter.nPUT, 2);
