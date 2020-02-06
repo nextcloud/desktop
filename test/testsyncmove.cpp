@@ -287,40 +287,46 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        int nGET = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) {
-            if (op == QNetworkAccessManager::GetOperation)
-                ++nGET;
-            return nullptr;
-        });
+        OperationCounter counter;
+        fakeFolder.setServerOverride(counter.functor());
 
         // Try a remote file move
         remote.rename("A/a1", "A/W/a1m");
         remote.rename(prefix + "/A/a1", prefix + "/A/W/a1m");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(nGET, 0);
+        QCOMPARE(counter.nGET, 0);
 
         // And a remote directory move
         remote.rename("A/W", "A/Q/W");
         remote.rename(prefix + "/A/W", prefix + "/A/Q/W");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(nGET, 0);
+        QCOMPARE(counter.nGET, 0);
 
         // Partial file removal (in practice, A/a2 may be moved to O/a2, but we don't care)
         remote.rename(prefix + "/A/a2", prefix + "/a2");
         remote.remove("A/a2");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(nGET, 0);
+        QCOMPARE(counter.nGET, 0);
 
         // Local change plus remote move at the same time
         fakeFolder.localModifier().appendByte(prefix + "/a2");
         remote.rename(prefix + "/a2", prefix + "/a3");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(nGET, 1);
+        QCOMPARE(counter.nGET, 1);
+        counter.reset();
+
+        // remove localy, and remote move at the same time
+        fakeFolder.localModifier().remove("A/Q/W/a1m");
+        remote.rename("A/Q/W/a1m", "A/Q/W/a1p");
+        remote.rename(prefix + "/A/Q/W/a1m", prefix + "/A/Q/W/a1p");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(counter.nGET, 1);
+        counter.reset();
     }
 
     void testMovePropagation()
@@ -805,6 +811,35 @@ private slots:
         QCOMPARE(counter.nGET, 0);
         QCOMPARE(counter.nPUT, 0);
         QCOMPARE(counter.nMOVE, 2);
+    }
+
+    void moveFileToDifferentFolderOnBothSides()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        OperationCounter counter;
+        fakeFolder.setServerOverride(counter.functor());
+
+        // Test that moving a file within to different folder on both side does the right thing.
+
+        fakeFolder.remoteModifier().rename("B/b1", "A/b1");
+        fakeFolder.localModifier().rename("B/b1", "C/b1");
+
+        fakeFolder.localModifier().rename("B/b2", "A/b2");
+        fakeFolder.remoteModifier().rename("B/b2", "C/b2");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QVERIFY(fakeFolder.currentRemoteState().find("A/b1"));
+        QVERIFY(fakeFolder.currentRemoteState().find("C/b1"));
+        QVERIFY(fakeFolder.currentRemoteState().find("A/b2"));
+        QVERIFY(fakeFolder.currentRemoteState().find("C/b2"));
+        qDebug() << counter.nMOVE << counter.nDELETE << counter.nGET << counter.nPUT;
+        QCOMPARE(counter.nMOVE, 0); // Unfortunately, we can't really make a move in this case
+        QCOMPARE(counter.nGET, 2);
+        QCOMPARE(counter.nPUT, 2);
+        QCOMPARE(counter.nDELETE, 0);
+        counter.reset();
+
     }
 
     // Test that deletes don't run before renames
