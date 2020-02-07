@@ -292,7 +292,7 @@ QUrl OAuth::authorisationLink() const
         { QLatin1String("redirect_uri"), QLatin1String("http://localhost:") + QString::number(_server.serverPort()) },
         { QLatin1String("code_challenge"), QString::fromLatin1(code_challenge) },
         { QLatin1String("code_challenge_method"), QLatin1String("S256") },
-        { QLatin1String("scope"), QLatin1String("openid offline_access") },
+        { QLatin1String("scope"), QStringLiteral("openid offline_access email") },
         { QLatin1String("prompt"), QLatin1String("consent") },
         { QStringLiteral("state"), _state },
     });
