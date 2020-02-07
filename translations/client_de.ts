@@ -139,8 +139,8 @@
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
-        <source>&amp;Choose...</source>
-        <translation>Aus&amp;wählen…</translation>
+        <source>&amp;Choose …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -200,11 +200,6 @@
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="204"/>
-        <source>Storage space: ...</source>
-        <translation>Speicherplatz: …</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Nicht markierte Ordner werden von Ihrem lokalen Dateisystem &lt;b&gt;entfernt&lt;/b&gt; und werden auch nicht mehr auf diesem Rechner synchronisiert</translation>
@@ -228,6 +223,11 @@
         <location filename="../src/gui/accountsettings.ui" line="139"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="204"/>
+        <source>Storage space: …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -519,8 +519,8 @@
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
-        <source>Browse...</source>
-        <translation>Durchsuchen …</translation>
+        <source>Browse …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -2027,15 +2027,14 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
-        <source>This url is NOT secure as it is not encrypted.
+        <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Diese URL ist NICHT sicher, da sie nicht verschlüsselt ist.
-Es ist nicht ratsam, sie zu benutzen.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
-        <source>This url is secure. You can use it.</source>
-        <translation>Diese URL ist sicher. Sie können sie benutzen.</translation>
+        <source>This URL is secure. You can use it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
@@ -2663,83 +2662,78 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
         <translation>Ablaufdatum:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="470"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="159"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
         <source>Allow Editing</source>
         <translation>Bearbeitung erlauben</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Read only</source>
         <translation>Schreibgeschützt</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>Allow Upload &amp;&amp; Editing</source>
         <translation>Hochladen und Bearbeiten erlauben</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
         <source>File Drop (Upload Only)</source>
         <translation>Dateien ablegen (nur Hochladen)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
         <translation>Notiz an Empfänger hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
         <source>Password Protect</source>
         <translation>Passwortschutz</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="216"/>
         <source>Expiration Date</source>
         <translation>Ablaufdatum</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="235"/>
         <source>Unshare</source>
         <translation>Freigabe aufheben</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="240"/>
         <source>Add another link</source>
         <translation>Weiteren Link hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="463"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Löschen des öffentlichen Links bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Möchten Sie wirklich den öffentlichen Link &lt;i&gt;%1 &lt;/i&gt;löschen?&lt;p&gt;Hinweis: Dies kann nicht rückgängig gemacht werden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="472"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="489"/>
         <source>Public link</source>
         <translation>Öffentlicher Link</translation>
     </message>
 </context>
 <context>
     <name>OCC::ShareUserGroupWidget</name>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
-        <source>Share with users or groups ...</source>
-        <translation>Mit Benutzern oder Gruppen teilen …</translation>
-    </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
@@ -2754,6 +2748,11 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>I shared something with you</source>
         <translation>Ich habe etwas mit Ihnen geteilt</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
+        <source>Share with users or groups …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

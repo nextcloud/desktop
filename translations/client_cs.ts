@@ -139,8 +139,8 @@
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
-        <source>&amp;Choose...</source>
-        <translation>&amp;Zvolit…</translation>
+        <source>&amp;Choose …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -200,11 +200,6 @@
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="204"/>
-        <source>Storage space: ...</source>
-        <translation>Prostor úložiště: …</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Neoznačené složky budou &lt;b&gt;odstraněny&lt;/b&gt; z místního souborového systému a nebudou už synchronizovány na tento počítač</translation>
@@ -228,6 +223,11 @@
         <location filename="../src/gui/accountsettings.ui" line="139"/>
         <source>Apply</source>
         <translation>Použít</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="204"/>
+        <source>Storage space: …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -519,8 +519,8 @@
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
-        <source>Browse...</source>
-        <translation>Procházet…</translation>
+        <source>Browse …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -2027,15 +2027,14 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
-        <source>This url is NOT secure as it is not encrypted.
+        <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Tato adresa NENÍ bezpečná, protože není šifrovaná.
-Nedoporučuje se jí používat.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
-        <source>This url is secure. You can use it.</source>
-        <translation>URL je bezpečná. Můžete ji použít.</translation>
+        <source>This URL is secure. You can use it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
@@ -2663,83 +2662,78 @@ Nedoporučuje se jí používat.</translation>
         <translation>Platnost končí:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="470"/>
         <source>Delete</source>
         <translation>Smazat</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="159"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
         <source>Allow Editing</source>
         <translation>Umožnit upravování</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Read only</source>
         <translation>Pouze pro čtení</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>Allow Upload &amp;&amp; Editing</source>
         <translation>Umožnit nahrávání a upravování</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
         <source>File Drop (Upload Only)</source>
         <translation>Přetažení souboru (pouze nahrání)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
         <translation>Přidat poznámku pro příjemce</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
         <source>Password Protect</source>
         <translation>Chránit heslem</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="216"/>
         <source>Expiration Date</source>
         <translation>Datum skončení platnosti</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="235"/>
         <source>Unshare</source>
         <translation>Přestat sdílet</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="240"/>
         <source>Add another link</source>
         <translation>Přidat další odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="463"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Potvrďte smazání odkazu sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Opravdu chcete smazat odkaz na veřejné sdílení &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Pozn.: tuto akci nelze vzít zpět.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="472"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
         <source>Cancel</source>
         <translation>Storno</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="489"/>
         <source>Public link</source>
         <translation>Veřejný odkaz</translation>
     </message>
 </context>
 <context>
     <name>OCC::ShareUserGroupWidget</name>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
-        <source>Share with users or groups ...</source>
-        <translation>Sdílet s uživateli nebo skupinami…</translation>
-    </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
@@ -2754,6 +2748,11 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>I shared something with you</source>
         <translation>Něco jsem vám nasdílel(a)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
+        <source>Share with users or groups …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

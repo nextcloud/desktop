@@ -139,8 +139,8 @@
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
-        <source>&amp;Choose...</source>
-        <translation>&amp;Wybierz…</translation>
+        <source>&amp;Choose …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -200,11 +200,6 @@
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="204"/>
-        <source>Storage space: ...</source>
-        <translation>Przestrzeń: …</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Niezaznaczone foldery zostaną &lt;b&gt;usunięte&lt;/b&gt; z lokalnego systemu plików i nie będą już więcej synchronizowane na tym komputerze.</translation>
@@ -228,6 +223,11 @@
         <location filename="../src/gui/accountsettings.ui" line="139"/>
         <source>Apply</source>
         <translation>Zastosuj</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="204"/>
+        <source>Storage space: …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -519,8 +519,8 @@
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
-        <source>Browse...</source>
-        <translation>Przeglądaj…</translation>
+        <source>Browse …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -2028,15 +2028,14 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
-        <source>This url is NOT secure as it is not encrypted.
+        <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Ten adres URL NIE jest bezpieczny, ponieważ jest nieszyfrowany.
-Nie zaleca się korzystania z niego.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
-        <source>This url is secure. You can use it.</source>
-        <translation>Ten adres URL jest bezpieczny. Można go użyć.</translation>
+        <source>This URL is secure. You can use it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
@@ -2664,83 +2663,78 @@ Nie zaleca się korzystania z niego.</translation>
         <translation>Wygasa:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="470"/>
         <source>Delete</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="159"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
         <source>Allow Editing</source>
         <translation>Zezwalaj na edycję</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Read only</source>
         <translation>Tylko do odczytu</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>Allow Upload &amp;&amp; Editing</source>
         <translation>Zezwalaj na wysyłanie i edycję</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
         <source>File Drop (Upload Only)</source>
         <translation>Upuszczanie pliku (tylko wysyłanie)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
         <translation>Dodaj notatkę dla odbiorcy</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
         <source>Password Protect</source>
         <translation>Ochrona hasłem</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="216"/>
         <source>Expiration Date</source>
         <translation>Data wygaśnięcia</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="235"/>
         <source>Unshare</source>
         <translation>Zatrzymaj udostępnianie</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="240"/>
         <source>Add another link</source>
         <translation>Dodaj kolejny link</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="463"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Potwierdź usunięcie linku udostępniania</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Czy na pewno chcesz usunąć udostępniony link publiczny &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Uwaga: Tej czynności nie można cofnąć.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="472"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="489"/>
         <source>Public link</source>
         <translation>Link publiczny</translation>
     </message>
 </context>
 <context>
     <name>OCC::ShareUserGroupWidget</name>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
-        <source>Share with users or groups ...</source>
-        <translation>Udostępnij użytkownikom lub grupom...</translation>
-    </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
@@ -2755,6 +2749,11 @@ Nie zaleca się korzystania z niego.</translation>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>I shared something with you</source>
         <translation>Coś Ci udostępniłem</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
+        <source>Share with users or groups …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

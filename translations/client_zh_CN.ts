@@ -139,8 +139,8 @@
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
-        <source>&amp;Choose...</source>
-        <translation>选择(&amp;C)...</translation>
+        <source>&amp;Choose …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -200,11 +200,6 @@
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="204"/>
-        <source>Storage space: ...</source>
-        <translation>存储空间：...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>未选中的文件夹将从您的本地文件系统中&lt;b&gt;移除&lt;/b&gt;，并且不再与该计算机同步</translation>
@@ -228,6 +223,11 @@
         <location filename="../src/gui/accountsettings.ui" line="139"/>
         <source>Apply</source>
         <translation>应用</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="204"/>
+        <source>Storage space: …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -519,8 +519,8 @@
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
-        <source>Browse...</source>
-        <translation>浏览...</translation>
+        <source>Browse …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -2027,14 +2027,14 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
-        <source>This url is NOT secure as it is not encrypted.
+        <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>这个地址没有使用加密，不够安全，不建议使用。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
-        <source>This url is secure. You can use it.</source>
-        <translation>此地址是安全的。您可以使用它。</translation>
+        <source>This URL is secure. You can use it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
@@ -2662,83 +2662,78 @@ It is not advisable to use it.</source>
         <translation>过期：</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="470"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="159"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
         <source>Allow Editing</source>
         <translation>允许编辑</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Read only</source>
         <translation>只读</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>Allow Upload &amp;&amp; Editing</source>
         <translation>允许上传和编辑</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
         <source>File Drop (Upload Only)</source>
         <translation>文件拖拽（仅上传）</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
         <translation>添加备注到收件人</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
         <source>Password Protect</source>
         <translation>密码保护</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="216"/>
         <source>Expiration Date</source>
         <translation>有效期</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="235"/>
         <source>Unshare</source>
         <translation>取消共享</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="240"/>
         <source>Add another link</source>
         <translation>添加其他链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="463"/>
         <source>Confirm Link Share Deletion</source>
         <translation>确认删除共享链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您真的想删除公开共享链接 &lt;i&gt;%1&lt;/i&gt;？注意：此操作无法撤销。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="472"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="489"/>
         <source>Public link</source>
         <translation>公开链接</translation>
     </message>
 </context>
 <context>
     <name>OCC::ShareUserGroupWidget</name>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
-        <source>Share with users or groups ...</source>
-        <translation>共享给其他用户或组 ...</translation>
-    </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
@@ -2753,6 +2748,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>I shared something with you</source>
         <translation>我向您共享了一些东西</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
+        <source>Share with users or groups …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

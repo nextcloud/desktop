@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation>Настройки</translation>
+        <translation>Параметры</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Чтобы продолжить, перейдите в ваш браузер.</translation>
+        <translation>Перейдите в браузер чтобы продолжить.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
@@ -139,8 +139,8 @@
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
-        <source>&amp;Choose...</source>
-        <translation>&amp;Выбрать...</translation>
+        <source>&amp;Choose …</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -200,11 +200,6 @@
 <context>
     <name>OCC::AccountSettings</name>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="204"/>
-        <source>Storage space: ...</source>
-        <translation>Размер хранилища:...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Неотмеченные папки будут &lt;b&gt;удалены&lt;/b&gt; из локальной файловой системы и больше не будут синхронизироваться на этом компьютере</translation>
@@ -228,6 +223,11 @@
         <location filename="../src/gui/accountsettings.ui" line="139"/>
         <source>Apply</source>
         <translation>Применить</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="204"/>
+        <source>Storage space: …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -391,7 +391,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="545"/>
         <location filename="../src/gui/accountsettings.cpp" line="602"/>
         <source>Open folder</source>
-        <translation>Открыть папку</translation>
+        <translation>Открыть папку…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="623"/>
@@ -497,7 +497,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>Вся история доступна в приложении «События».</translation>
     </message>
 </context>
 <context>
@@ -519,8 +519,8 @@
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
-        <source>Browse...</source>
-        <translation>Выбрать...</translation>
+        <source>Browse …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -885,7 +885,9 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>Из синхронизируемой папки «%1», расположенной на этом компьютере, были удалены все файлы.
+Если не восстановить эти данные, то они будут также удалены с сервера и станут недоступны на других синхронизируемых устройствах.
+Если удаление было выполнено случайно, сейчас возможно восстановить удалённые файлы.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1099"/>
@@ -1033,7 +1035,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="48"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Добавить папку для синхронизации</translation>
+        <translation>Добавить папку для синхронизации…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
@@ -2022,15 +2024,14 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
-        <source>This url is NOT secure as it is not encrypted.
+        <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Эта ссылка НЕ безопасна, так как не зашифрована.
-Мы не рекомендуем её использовать.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
-        <source>This url is secure. You can use it.</source>
-        <translation>Данная ссылка безопасна. Вы можете её использовать.</translation>
+        <source>This URL is secure. You can use it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
@@ -2658,83 +2659,78 @@ It is not advisable to use it.</source>
         <translation>Истекает:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="470"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="159"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
         <source>Allow Editing</source>
         <translation>Разрешить редактирование</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Read only</source>
         <translation>Только для чтения</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>Allow Upload &amp;&amp; Editing</source>
         <translation>Разрешить приём и редактирование</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
         <source>File Drop (Upload Only)</source>
         <translation>Хранилище (только приём файлов)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
         <translation>Добавить примечание для получателя</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
         <source>Password Protect</source>
         <translation>Защитить паролем</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="216"/>
         <source>Expiration Date</source>
         <translation>Срок действия</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="235"/>
         <source>Unshare</source>
         <translation>Закрыть доступ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="240"/>
         <source>Add another link</source>
         <translation>Добавить другую ссылку</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="463"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Подтверждение закрытия доступа по ссылке</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Действительно закрыть доступ по ссылке «&lt;i&gt;%1&lt;/i&gt;»?&lt;/p&gt;&lt;p&gt;Внимание: это действие будет невозможно отменить.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="472"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="489"/>
         <source>Public link</source>
         <translation>Общедоступная ссылка</translation>
     </message>
 </context>
 <context>
     <name>OCC::ShareUserGroupWidget</name>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
-        <source>Share with users or groups ...</source>
-        <translation>Введите имя пользователя или группы…</translation>
-    </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
@@ -2750,13 +2746,18 @@ It is not advisable to use it.</source>
         <source>I shared something with you</source>
         <translation>Я поделился с тобой</translation>
     </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
+        <source>Share with users or groups …</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::ShareUserLine</name>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="57"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="89"/>
@@ -3907,7 +3908,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="66"/>
         <source>downloading</source>
-        <translation>скачивание</translation>
+        <translation>Получение с сервера</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>
