@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Izbor ...</translation>
     </message>
 </context>
 <context>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Prostor shrambe: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -406,7 +406,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="698"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ni mogoče ustvariti krajevne mape &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="752"/>
@@ -431,7 +431,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="987"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Poteka vzpostavljanje povezave s strežnikom %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="996"/>
@@ -520,7 +520,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation type="unfinished"/>
+        <translation>Prebrskaj ...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -597,7 +597,7 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1008"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Vpis gesla E2E</translation>
     </message>
 </context>
 <context>
@@ -620,7 +620,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Ni nastavljenega računa Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
@@ -655,7 +655,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="212"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>S strežnika je prejet odziv o napaki: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="112"/>
@@ -699,7 +699,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="143"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Poteka čakanje na overitev …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
@@ -709,12 +709,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Poteka začenjanje overitve…</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Povezava je kopirana v odložišče</translation>
     </message>
 </context>
 <context>
@@ -811,12 +811,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Datoteka %1 in še %n druga datoteka je trenutno zaklenjena.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta trenutno zaklenjeni.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so trenutno zaklenjene.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je trenutno  zaklenjenih.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka %1 je trenutno zaklenjena.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -1120,7 +1120,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Poteka preverjanje za spremembe v »%1«</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
@@ -1179,12 +1179,12 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Poteka čakanje na %n drugo mapo …</numerusform><numerusform>Poteka čakanje na %n drugi mapi …</numerusform><numerusform>Poteka čakanje na %n druge mape …</numerusform><numerusform>Poteka čakanje na %n drugih map …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Poteka priprava na usklajevanje ...</translation>
     </message>
 </context>
 <context>
@@ -1397,7 +1397,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="56"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Prejeto je obvestilo strežnika, ki zahteva pozornost.</translation>
     </message>
 </context>
 <context>
@@ -1405,7 +1405,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/socketapi.cpp" line="556"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Zahtevano je geslo za souporabo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
@@ -1510,7 +1510,9 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke in mape, ki so skladne z masko, ne bodo usklajevane.
+
+Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če preprečujejo brisanje mape. Možnost je uporabna pri odstranjevanju metapodatkov.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -1548,7 +1550,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
         <source>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;/p&gt;Avtorske pravice 2017–2020 Nextcloud GmbH&lt;br /&gt;Avtorske pravice 2012–2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>

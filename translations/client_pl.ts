@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Wybierz…</translation>
     </message>
 </context>
 <context>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Przestrzeń magazynowa…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -520,7 +520,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation type="unfinished"/>
+        <translation>Przeglądaj…</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -2030,12 +2030,13 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Ten adres URL NIE jest bezpieczny, ponieważ jest nieszyfrowany.
+Nie zaleca się korzystania z niego.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
         <source>This URL is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Ten adres URL jest bezpieczny. Można go użyć.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
@@ -2753,7 +2754,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
-        <translation type="unfinished"/>
+        <translation>Udostępnij użytkownikom lub grupom…</translation>
     </message>
 </context>
 <context>

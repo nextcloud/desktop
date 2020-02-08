@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Επιλογή…</translation>
     </message>
 </context>
 <context>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Χώρος αποθήκευσης: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -520,7 +520,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation type="unfinished"/>
+        <translation>Περιήγηση...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -1199,7 +1199,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτό το πρόβλημα συμβαίνει συνήθως όταν εξαντληθούν οι χρόνοι inotify. Ελέγξτε τις Συχνές Ερωτήσεις για λεπτομέρειες.</translation>
     </message>
 </context>
 <context>
@@ -1378,7 +1378,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση φακέλων συγχρονισμού στο &amp;Παράθυρο Περιήγησης του Explorer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
@@ -1429,7 +1429,9 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η ανάκτηση ή η δημιουργία του κοινόχρηστου στοιχείου σύνδεσης. Λάθος:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1583,7 +1585,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Αποτύπωση μηνυμάτων εντοπισμού σφαλμάτων</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -1595,7 +1597,9 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Όταν αυτή η επιλογή είναι ενεργοποιημένη και δεν έχει ρυθμιστεί καμία άλλη καταγραφή, τα αρχεία καταγραφής θα εγγραφούν σε ένα προσωρινό φάκελο και θα λήξουν μετά από λίγες ώρες. Αυτή η ρύθμιση διατηρείται σε όλες τις επανεκκινήσεις πελατών.
+
+Τα αρχεία καταγραφής θα γραφτούν στο %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -1792,7 +1796,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η ανάλυση του JSON από το διακομιστή: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
@@ -1807,7 +1811,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Λάθος χρήστης&lt;/h1&gt;&lt;p&gt;Συνδεθήκατε ως χρήστης&lt;em&gt;%1&lt;/em&gt;,αλλά πρέπει να συνδεθείτε ως &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Παρακαλώ αποσυνδεθείτε για %3 σε άλλη καρτέλα, και &lt;a href=&apos;%4&apos;&gt;κλίκ εδώ&lt;/a&gt; και σύνδεση ώς χρήστης %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2024,12 +2028,13 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτή η ιστοσελίδα ΔΕΝ είναι ασφαλής καθώς δεν είναι κρυπτογραφημένη.
+Δεν προτείνεται να τη χρησιμοποιήσετε.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
         <source>This URL is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτή η URL είναι ασφαλής. Μπορείτε να τη χρησιμοποιήσετε. </translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
@@ -2421,7 +2426,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
         <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Η μεταφόρτωση του %1 υπερβαίνει το όριο του φακέλου</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
@@ -2747,7 +2752,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιρασμός με χρήστες ή ομάδες ...</translation>
     </message>
 </context>
 <context>
@@ -2755,7 +2760,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="57"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Όνομα χρήστη</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="89"/>
@@ -2829,7 +2834,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="529"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιρασμός καταλόγου μενού</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
@@ -3180,7 +3185,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η φόρτωση ή η δημιουργία του αρχείου καταγραφής. Βεβαιωθείτε ότι έχετε δικαιώματα ανάγνωσης και εγγραφής στον τοπικό φάκελο συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
