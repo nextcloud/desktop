@@ -284,23 +284,23 @@ QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
     QUrlQuery query;
-    QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
-                                    .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
+    const QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
+                                          .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     query.setQueryItems({
-        { QLatin1String("response_type"), QLatin1String("code") },
-        { QLatin1String("client_id"), Theme::instance()->oauthClientId() },
-        { QLatin1String("redirect_uri"), QLatin1String("http://localhost:") + QString::number(_server.serverPort()) },
-        { QLatin1String("code_challenge"), QString::fromLatin1(code_challenge) },
-        { QLatin1String("code_challenge_method"), QLatin1String("S256") },
-        { QLatin1String("scope"), QStringLiteral("openid offline_access email") },
-        { QLatin1String("prompt"), QLatin1String("consent") },
+        { QStringLiteral("response_type"), QStringLiteral("code") },
+        { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
+        { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(QString::number(_server.serverPort())) },
+        { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
+        { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
+        { QStringLiteral("scope"), QStringLiteral("openid offline_access email") },
+        { QStringLiteral("prompt"), QStringLiteral("consent") },
         { QStringLiteral("state"), _state },
     });
     if (!_account->davUser().isNull())
-        query.addQueryItem("user", _account->davUser());
+        query.addQueryItem(QStringLiteral("user"), _account->davUser());
     const QUrl url = _authEndpoint.isValid()
         ? Utility::concatUrlPath(_authEndpoint, {}, query)
-        : Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/authorize"), query);
+        : Utility::concatUrlPath(_account->url(), QStringLiteral("/index.php/apps/oauth2/authorize"), query);
     return url;
 }
 
