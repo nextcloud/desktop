@@ -210,9 +210,14 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
                 } else {
                     QString error;
                     accessToken = getRequiredField(json, QStringLiteral("access_token"), &error).toString();
-                    newRefreshToken = getRequiredField(json, QStringLiteral("refresh_token"), &error).toString();
                     if (!error.isEmpty()) {
                         qCWarning(lcOauth) << tr("The reply from the server did not contain all expected fields\n:%1\nReceived data: %2").arg(error, QString::fromUtf8(jsonData));
+                    }
+
+                    const auto refresh_token = json.find(QStringLiteral("refresh_token"));
+                    if (refresh_token != json.constEnd() )
+                    {
+                        newRefreshToken = refresh_token.value().toString();
                     }
                 }
             }
