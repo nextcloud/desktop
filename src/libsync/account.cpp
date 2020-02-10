@@ -390,11 +390,14 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
         if (!guard)
             return;
 
-        QSslSocket::addDefaultCaCertificates(approvedCerts);
-        addApprovedCerts(approvedCerts);
-        emit wantsAccountSaved(this);
-        // all ssl certs are known and accepted. We can ignore the problems right away.
-        qCInfo(lcAccount) << out << "Certs are known and trusted! This is not an actual error.";
+        if (!approvedCerts.isEmpty()) {
+            QSslSocket::addDefaultCaCertificates(approvedCerts);
+            addApprovedCerts(approvedCerts);
+            emit wantsAccountSaved(this);
+
+            // all ssl certs are known and accepted. We can ignore the problems right away.
+            qCInfo(lcAccount) << out << "Certs are known and trusted! This is not an actual error.";
+        }
 
         // Warning: Do *not* use ignoreSslErrors() (without args) here:
         // it permanently ignores all SSL errors for this host, even
