@@ -58,8 +58,8 @@ public:
 
     OAuth(Account *account, QObject *parent);
     ~OAuth();
-    void startAuthentification();
-    void refreshAuthentification(const QString &refreshToken);
+    void startAuthentication();
+    void refreshAuthentication(const QString &refreshToken);
     void openBrowser();
     QUrl authorisationLink() const;
     /**

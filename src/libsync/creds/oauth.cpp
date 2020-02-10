@@ -60,7 +60,7 @@ const char *moreHeaders = nullptr)
     socket->setParent(nullptr);
 }
 
-void OAuth::startAuthentification()
+void OAuth::startAuthentication()
 {
     // Listen on the socket to get a port which will be used in the redirect_uri
     if (!_server.listen(QHostAddress::LocalHost)) {
@@ -174,7 +174,7 @@ void OAuth::startAuthentification()
     });
 }
 
-void OAuth::refreshAuthentification(const QString &refreshToken)
+void OAuth::refreshAuthentication(const QString &refreshToken)
 {
     connect(this, &OAuth::fetchWellKnownFinished, this, [this, refreshToken] {
         auto job = postTokenRequest({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },

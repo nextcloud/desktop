@@ -431,7 +431,7 @@ bool HttpCredentials::refreshAccessToken()
         _retryQueue.clear();
         emit fetched();
     });
-    oauth->refreshAuthentification(_refreshToken);
+    oauth->refreshAuthentication(_refreshToken);
     _isRenewingOAuthToken = true;
     return true;
 }

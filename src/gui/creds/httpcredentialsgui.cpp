@@ -52,7 +52,7 @@ void HttpCredentialsGui::askFromUserAsync()
                 this, &HttpCredentialsGui::asyncAuthResult);
             connect(_asyncAuth.data(), &OAuth::destroyed,
                 this, &HttpCredentialsGui::authorisationLinkChanged);
-            _asyncAuth->startAuthentification();
+            _asyncAuth->startAuthentication();
             emit authorisationLinkChanged();
         } else if (type == DetermineAuthTypeJob::Basic) {
             showDialog();
