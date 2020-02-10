@@ -25,6 +25,14 @@
 #include "creds/httpcredentials.h"
 #include <QRandomGenerator>
 
+namespace {
+// TODO: make theming parameter
+QString SCOPE()
+{
+    return QStringLiteral("openid offline_access email");
+}
+}
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
@@ -101,7 +109,6 @@ void OAuth::startAuthentication()
                     { QStringLiteral("code"), args.queryItemValue(QStringLiteral("code")) },
                     { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(_server.serverPort()) },
                     { QStringLiteral("code_verifier"), _pkceCodeVerifier },
-                    { QStringLiteral("scope"), args.queryItemValue(QStringLiteral("scope")) },
                     });
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
                     const auto jsonData = reply->readAll();
@@ -251,8 +258,10 @@ SimpleNetworkJob *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &
 
     auto requestBody = new QBuffer;
     QUrlQuery arguments;
-    arguments.setQueryItems(QList<QPair<QString, QString>>{ { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
-                                        { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() } } << queryItems);
+    arguments.setQueryItems(QList<QPair<QString, QString>> { { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
+                                { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() },
+                                { QStringLiteral("scope"), SCOPE() } }
+        << queryItems);
 
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
 
@@ -292,7 +301,7 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(QString::number(_server.serverPort())) },
         { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
         { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
-        { QStringLiteral("scope"), QStringLiteral("openid offline_access email") },
+        { QStringLiteral("scope"), SCOPE() },
         { QStringLiteral("prompt"), QStringLiteral("consent") },
         { QStringLiteral("state"), _state },
     });
