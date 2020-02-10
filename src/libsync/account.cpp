@@ -299,6 +299,7 @@ QSslConfiguration Account::getOrCreateSslConfig()
 void Account::setApprovedCerts(const QList<QSslCertificate> certs)
 {
     _approvedCerts = certs;
+    QSslSocket::addDefaultCaCertificates(certs);
 }
 
 void Account::addApprovedCerts(const QList<QSslCertificate> certs)
