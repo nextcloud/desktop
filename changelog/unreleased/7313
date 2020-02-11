@@ -1,0 +1,3 @@
+Bugfix: In the sharing dialog, allow editing public link expiration date when it is enforced
+
+https://github.com/owncloud/client/issues/7313

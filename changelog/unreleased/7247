@@ -1,0 +1,3 @@
+Bugfix: In the sharing dialog, "password required" capabilities lead to incorrect behavior
+
+https://github.com/owncloud/client/issues/7247
