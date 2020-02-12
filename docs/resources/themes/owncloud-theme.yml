@@ -5,7 +5,7 @@ font:
       normal: notoserif-regular.ttf
       bold: notoserif-bold.ttf
       italic: notoserif-italic.ttf
-      bold_italic: notoserif-bold_italic.ttf
+      bold_italic: notoserif-bolditalic.ttf
     # M+ 1mn supports ASCII and the circled numbers used for conums
     M+ 1mn:
       normal: mplus1mn-regular-ascii-conums.ttf
@@ -49,7 +49,7 @@ base:
   font_size: 10.5
   line_height_length: 11
   line_height: $base_line_height_length / $base_font_size
-  #line_height: 1 
+  #line_height: 1
   font_size_large: round($base_font_size * 1.25)
   font_size_small: round($base_font_size * 0.85)
   font_size_min: $base_font_size * 0.75
