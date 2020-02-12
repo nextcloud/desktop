@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="216"/>
         <source>This account supports end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Račun podpira celovito šifriranje E2E</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="218"/>
@@ -597,7 +597,7 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1008"/>
         <source>Enter E2E passphrase</source>
-        <translation>Vpis gesla E2E</translation>
+        <translation>Vpis gesla za celovito šifriranje E2E</translation>
     </message>
 </context>
 <context>

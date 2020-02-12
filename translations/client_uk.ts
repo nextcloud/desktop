@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
@@ -107,27 +107,27 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Авторизація у бравзері</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Будь ласка, перейдіть до вашого бравзера для подальших дій.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Помилка під час встановлення з&apos;єднання. Спробуйте ще раз.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="52"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Повторно запустити бравзер</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Скопіювати посилання</translation>
     </message>
 </context>
 <context>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation type="unfinished"/>
+        <translation>та вибрати ...</translation>
     </message>
 </context>
 <context>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="353"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Словникове шифрування end-to-end</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Обсяг сховища: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -249,12 +249,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="216"/>
         <source>This account supports end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Цей обліковий запис підтримує шифрування end-to-end</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="218"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Увімкнути шифрування</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="561"/>
@@ -265,7 +265,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="569"/>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Редагувати список ігнорованих файлів</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="609"/>
@@ -285,7 +285,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="626"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити синхронізацію для цієї теки</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
@@ -295,12 +295,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="751"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Підтвердити скасування синхронізації для цієї теки</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="758"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити синхронізацію для цієї теки</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="843"/>
@@ -325,7 +325,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="966"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Версія серверу %1 застаріла та більше не підтримується! Продовжуйте на ваш власний ризик.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="968"/>
@@ -340,12 +340,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="972"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер %1 перебуває у режимі обслуговування.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="974"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>Вийшли з облікового запису %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="983"/>
@@ -355,7 +355,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="990"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Відсутнє з&apos;єднання між %2 та %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1109"/>
@@ -385,7 +385,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1153"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити з&apos;єднання</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="545"/>
@@ -479,7 +479,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="148"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Запит на повноваження доступу</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="150"/>
@@ -515,7 +515,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Сертифікат та ключ (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -543,7 +543,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="202"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Помилка доступу до файлу конфігурації</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="203"/>
@@ -584,7 +584,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1041"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка із записом метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -620,7 +620,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Обілковий запис Nextcloud не налаштовано</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
