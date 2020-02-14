@@ -1,5 +1,6 @@
 /*
  * Copyright (C) by Daniel Molkentin <danimo@owncloud.com>
+ * Copyright (C) by Michael Schuster <michael@nextcloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +13,8 @@
  * for more details.
  */
 
-#ifndef QUOTAINFO_H
-#define QUOTAINFO_H
+#ifndef USERINFO_H
+#define USERINFO_H
 
 #include <QObject>
 #include <QPointer>
@@ -23,31 +24,51 @@
 
 namespace OCC {
 class AccountState;
-class PropfindJob;
+class JsonApiJob;
 
 /**
- * @brief handles getting the quota to display in the UI
+ * @brief handles getting the user info and quota to display in the UI
  *
  * It is typically owned by the AccountSetting page.
  *
- * The quota is requested if these 3 conditions are met:
+ * The user info and quota is requested if these 3 conditions are met:
  *  - This object is active via setActive() (typically if the settings page is visible.)
  *  - The account is connected.
  *  - Every 30 seconds (defaultIntervalT) or 5 seconds in case of failure (failIntervalT)
  *
- * We only request the quota when the UI is visible otherwise this might slow down the server with
+ * We only request the info when the UI is visible otherwise this might slow down the server with
  * too many requests. But we still need to do it every 30 seconds otherwise user complains that the
  * quota is not updated fast enough when changed on the server.
  *
- * If the quota job is not finished within 30 seconds, it is cancelled and another one is started
+ * If the fetch job is not finished within 30 seconds, it is cancelled and another one is started
+ *
+ * Constructor notes:
+ *  - allowDisconnectedAccountState: set to true if you want to ignore AccountState's isConnected() state,
+ *    this is used by ConnectionValidator (prior having a valid AccountState).
+ *  - fetchAvatarImage: set to false if you don't want to fetch the avatar image
  *
  * @ingroup gui
- */
-class QuotaInfo : public QObject
+ *
+ * Here follows the state machine
+
+ \code{.unparsed}
+ *---> slotFetchInfo
+         JsonApiJob (ocs/v1.php/cloud/user)
+         |
+         +-> slotUpdateLastInfo
+               AvatarJob (if _fetchAvatarImage is true)
+               |
+               +-> slotAvatarImage -->
+   +-----------------------------------+
+   |
+   +-> Client Side Encryption Checks --+ --reportResult()
+     \endcode
+  */
+class UserInfo : public QObject
 {
     Q_OBJECT
 public:
-    explicit QuotaInfo(OCC::AccountState *accountState, QObject *parent = nullptr);
+    explicit UserInfo(OCC::AccountState *accountState, bool allowDisconnectedAccountState, bool fetchAvatarImage, QObject *parent = nullptr);
 
     qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
@@ -60,32 +81,34 @@ public:
     void setActive(bool active);
 
 public Q_SLOTS:
-    void slotCheckQuota();
+    void slotFetchInfo();
 
 private Q_SLOTS:
-    void slotUpdateLastQuota(const QVariantMap &);
+    void slotUpdateLastInfo(const QJsonDocument &json);
     void slotAccountStateChanged();
     void slotRequestFailed();
+    void slotAvatarImage(const QImage &img);
 
 Q_SIGNALS:
     void quotaUpdated(qint64 total, qint64 used);
+    void fetchedLastInfo(UserInfo *userInfo);
 
 private:
-    bool canGetQuota() const;
-
-    /// Returns the folder that quota shall be retrieved for
-    QString quotaBaseFolder() const;
+    bool canGetInfo() const;
 
     QPointer<AccountState> _accountState;
+    bool _allowDisconnectedAccountState;
+    bool _fetchAvatarImage;
+
     qint64 _lastQuotaTotalBytes;
     qint64 _lastQuotaUsedBytes;
     QTimer _jobRestartTimer;
-    QDateTime _lastQuotaRecieved; // the time at which the quota was received last
+    QDateTime _lastInfoReceived; // the time at which the user info and quota was received last
     bool _active; // if we should check at regular interval (when the UI is visible)
-    QPointer<PropfindJob> _job; // the currently running job
+    QPointer<JsonApiJob> _job; // the currently running job
 };
 
 
 } // namespace OCC
 
-#endif //QUOTAINFO_H
+#endif //USERINFO_H
