@@ -22,7 +22,7 @@
 #include <QTimer>
 
 #include "folder.h"
-#include "quotainfo.h"
+#include "userinfo.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 #include "folderstatusmodel.h"
@@ -139,7 +139,7 @@ private:
     QUrl _OCUrl;
     bool _wasDisabledBefore;
     AccountState *_accountState;
-    QuotaInfo _quotaInfo;
+    UserInfo _userInfo;
     QAction *_toggleSignInOutAction;
     QAction *_addAccountAction;
 

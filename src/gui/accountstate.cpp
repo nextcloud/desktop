@@ -236,7 +236,7 @@ void AccountState::checkConnectivity()
         return;
     }
 
-    ConnectionValidator *conValidator = new ConnectionValidator(account());
+    ConnectionValidator *conValidator = new ConnectionValidator(AccountStatePtr(this));
     _connectionValidator = conValidator;
     connect(conValidator, &ConnectionValidator::connectionResult,
         this, &AccountState::slotConnectionValidatorResult);
