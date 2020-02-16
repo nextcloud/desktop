@@ -112,12 +112,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Skiptu yfir í vafrann þinn til að halda áfram.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Villa kom upp við tengingu. Endilega reyndu aftur.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="52"/>
@@ -661,7 +661,7 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
         <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="212"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Villumelding kom frá þjóninum: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="112"/>
@@ -687,12 +687,12 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Tengjast við %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation type="unfinished"/>
+        <translation>Skráðu þig inn í vafranum þínum (Login Flow v2)</translation>
     </message>
 </context>
 <context>
@@ -2771,7 +2771,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="425"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Hætta deilingu</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="434"/>
@@ -3324,7 +3324,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/syncengine.cpp" line="1441"/>
         <location filename="../src/libsync/syncengine.cpp" line="1460"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Fjarlæging ekki leyfð, endurheimt</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1474"/>
