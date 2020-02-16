@@ -208,7 +208,7 @@
         <string/>
        </property>
        <property name="text">
-        <string>Storage space: ...</string>
+        <string>Storage space: …</string>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
