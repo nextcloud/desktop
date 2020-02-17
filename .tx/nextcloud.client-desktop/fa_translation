@@ -198,7 +198,4 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[cs_CZ]=@APPLICATION_ICON_NAME@
-Name[cs_CZ]=@APPLICATION_NAME@ synchronizační klient pro desktop
-Comment[cs_CZ]=@APPLICATION_NAME@ synchronizační klient pro desktop
-GenericName[cs_CZ]=Synchronizace složek
+Comment[fa]=@ APPLICATION_NAME @ مشتری هماهنگ سازی دسکتاپ

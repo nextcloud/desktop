@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[cs_CZ]=@APPLICATION_ICON_NAME@
-Name[cs_CZ]=@APPLICATION_NAME@ synchronizační klient pro desktop
-Comment[cs_CZ]=@APPLICATION_NAME@ synchronizační klient pro desktop
-GenericName[cs_CZ]=Synchronizace složek
+Icon[es_AR]=@APPLICATION_ICON_NAME@
+Name[es_AR]=@APPLICATION_NAME@ cliente de sincronización de escritorio
+Comment[es_AR]=@APPLICATION_NAME@ cliente de sincronización de escritorio
+GenericName[es_AR]=Sincronización de carpetas
