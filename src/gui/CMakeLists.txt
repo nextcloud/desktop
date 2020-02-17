@@ -90,7 +90,7 @@ set(client_SRCS
     syncrunfilelog.cpp
     systray.cpp
     thumbnailjob.cpp
-    quotainfo.cpp
+    userinfo.cpp
     accountstate.cpp
     addcertificatedialog.cpp
     authenticationdialog.cpp

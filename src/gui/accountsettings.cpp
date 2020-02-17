@@ -26,7 +26,7 @@
 #include "configfile.h"
 #include "account.h"
 #include "accountstate.h"
-#include "quotainfo.h"
+#include "userinfo.h"
 #include "accountmanager.h"
 #include "owncloudsetupwizard.h"
 #include "creds/abstractcredentials.h"
@@ -112,7 +112,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _ui(new Ui::AccountSettings)
     , _wasDisabledBefore(false)
     , _accountState(accountState)
-    , _quotaInfo(accountState)
+    , _userInfo(accountState, false, true)
     , _menuShown(false)
 {
     _ui->setupUi(this);
@@ -192,7 +192,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(_accountState, &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
     slotAccountStateChanged();
 
-    connect(&_quotaInfo, &QuotaInfo::quotaUpdated,
+    connect(&_userInfo, &UserInfo::quotaUpdated,
         this, &AccountSettings::slotUpdateQuota);
 
     // Connect E2E stuff
@@ -1238,7 +1238,7 @@ void AccountSettings::slotDeleteAccount()
 bool AccountSettings::event(QEvent *e)
 {
     if (e->type() == QEvent::Hide || e->type() == QEvent::Show) {
-        _quotaInfo.setActive(isVisible());
+        _userInfo.setActive(isVisible());
     }
     if (e->type() == QEvent::Show) {
         // Expand the folder automatically only if there's only one, see #4283
