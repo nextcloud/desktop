@@ -781,12 +781,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n druga datoteka je bila preimenovana.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n drugi datoteki sta bili preimenovani.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n druge datoteke so bile preimenovane.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n drugih datotek je bilo preimenovanih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 je bila preimenovana v %2, preimenovana je bila še %n druga datoteka.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2, preimenovana je bila še %n druga datoteka.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2, preimenovane so bile še %n druge datoteke.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2, preimenovanih je bilo še %n drugih datotek.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n druga datoteka je bila premaknjena.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n drugi datoteki sta bili premaknjeni.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n druge datoteke so bile premaknjene.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n drugih datotek je bilo premaknjenih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 je bila premaknjena v %2, premaknjena je bila še %n druga datoteka.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2, premaknjeni sta bili še %n drugi datoteki.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2, premaknjene so bile še %n druge datoteke.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2, premaknjenih je bilo še %n drugih datotek.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
@@ -845,7 +845,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="976"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Med nastavitvami jo lahko izberete in označite za prejem.</translation>
+        <translation>Med nastavitvami jo je mogoče izbrati in označiti za prejem.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1031"/>
@@ -1271,7 +1271,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="449"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Datoteke se že usklajujejo na ravni mape &lt;i&gt;%1&lt;/i&gt;, ki je nadrejena mapi &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Mapa &lt;i&gt;%1&lt;/i&gt; se že usklajuje, ker je nadrejena &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1437,7 +1437,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>Branje iz ključa je spodletelo z napako: &apos;%1&apos;</translation>
+        <translation>Branje iz ključa je spodletelo z napako: »%1«</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1827,7 +1827,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Ni mogoče prejeti posodobitve. Kliknite &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; za ročni prejem in namestitev.</translation>
+        <translation>Posodobitve ni mogoče prejeti. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; za ročni prejem in namestitev.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -2052,7 +2052,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>Povezava z %1 pri %2 je spodletela:&lt;br/&gt;%3</translation>
+        <translation>Povezava s strežnikom %1 pri %2 je spodletela:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
@@ -2072,7 +2072,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Strežnik ne dovoli dostopa. Če želite preveriti, ali imate ustrezen dostop,  &lt;a href=&quot;%1&quot;&gt;kliknite tu&lt;/a&gt; za dostop do te storitve z brskalnikom.</translation>
+        <translation>Strežnik ne dovoli dostopa. Če želite preveriti, ali imate ustrezna dovoljenja,  &lt;a href=&quot;%1&quot;&gt;kliknite&lt;/a&gt; za dostop do te storitve z brskalnikom.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
@@ -2092,7 +2092,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Krajevna mapa %1 že obstaja. Nastavljena bo za usklajevanje.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Krajevna usklajevana mapa %1 že obstaja. Nastavljena bo za usklajevanje.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
@@ -3860,7 +3860,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Strežniška različica je prejeta, kopirana v datoteko sporov pa je bila tudi spremenjena krajevna datoteka</translation>
+        <translation>Strežniška različica je prejeta, v datoteko sporov pa je bila kopirana tudi spremenjena krajevna datoteka</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
