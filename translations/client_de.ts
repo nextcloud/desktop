@@ -3510,12 +3510,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="262"/>
         <source>Disconnected from some accounts</source>
-        <translation>Verbindungen zu einigen Konnten getrennt</translation>
+        <translation>Verbindungen zu einigen Konten getrennt</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <source>Disconnected from accounts:</source>
-        <translation>Verbindungen zu Konnten getrennt:</translation>
+        <translation>Verbindungen zu Konten getrennt:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="275"/>
