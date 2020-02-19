@@ -1,0 +1,6 @@
+Bugfix: Add Folder Sync Connection sometimes does not warn
+
+Warn when adding a folder sync connection of a remote folder
+for which a subdir is already synchronized
+
+https://github.com/owncloud/client/issues/7741
