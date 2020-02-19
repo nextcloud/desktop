@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
-        <translation>Settings</translation>
+        <translation>Nastavenia</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation>Presuúvanie do koša nie je na tejto platforme k dispozícii</translation>
+        <translation>Presúvanie do koša nie je v tejto platforme k dispozícii</translation>
     </message>
 </context>
 <context>
@@ -117,7 +117,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>Pri pripájaní sa vyskytla chyba. Prosím skúste znova.</translation>
+        <translation>Pri pripájaní sa vyskytla chyba. Prosím skúste to znova.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="52"/>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Vybrať…</translation>
     </message>
 </context>
 <context>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="282"/>
         <source>Connection timed out</source>
-        <translation>Pripojenie expirovalo</translation>
+        <translation>Prekročený časový limit spojenia</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="284"/>
@@ -189,12 +189,12 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="353"/>
         <source>End to end encryption mnemonic</source>
-        <translation>End-to-end kódovanie mnemotechnické</translation>
+        <translation>Mnemonické šifrovanie medzi koncovými bodmi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Aby sme chránili vašu kryptografickú identitu, zašifrujeme ju pomocou mnemotechnického pomeru 12 slov slovníka. Poznačte si ich a uschovajte ich. Budú potrebné na pridanie ďalších zariadení do vášho účtu (napríklad mobilného telefónu alebo notebooku).</translation>
+        <translation>Pre ochranu vašej kryptografickej identity, šifrujeme ju pomocou 12 mnemotechnických slov slovníka. Poznačte si ich a uschovajte ich. Budú potrebné na pridanie ďalších zariadení do vášho účtu (napríklad mobilného telefónu alebo notebooku).</translation>
     </message>
 </context>
 <context>
@@ -212,12 +212,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="84"/>
         <source>Synchronize none</source>
-        <translation>Synchronizovať žiadny</translation>
+        <translation>Nič nesynchronizovať</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="91"/>
         <source>Apply manual changes</source>
-        <translation>Aplikovať manuálne zmeny</translation>
+        <translation>Uplatniť ručne vykonané zmeny</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="139"/>
@@ -227,7 +227,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Priestor úložiska: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -497,7 +497,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>Pre viac aktivít otvorte aplikáciu Aktivity.</translation>
     </message>
 </context>
 <context>
@@ -520,7 +520,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation type="unfinished"/>
+        <translation>Prechádzať ...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -620,7 +620,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="50"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Nie je nastavený žiadny Nextcloud účet</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -646,7 +646,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation>V odpovedi zo servera na objavovanie súboru chýbajú dáta.</translation>
+        <translation>V odpovedi servra na objavovanie súboru chýbajú údaje.</translation>
     </message>
 </context>
 <context>
@@ -661,7 +661,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="112"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="215"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Chyba pri prístupe k &apos;tokenu&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Pri prístupe ku koncovému bodu „token“ došlo k chybe: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
@@ -686,7 +686,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation>Prihlásenie sa v prehliadači (Login Flow v2)</translation>
+        <translation>Prihlásenie v prehliadači (Login Flow v2)</translation>
     </message>
 </context>
 <context>
@@ -2030,12 +2030,12 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Táto adresa NIE JE bezpečná, pretože nie je šifrovaná. Neodporúča sa ju používať.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
         <source>This URL is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Táto adresa je bezpečná. Môžete ju použiť.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
@@ -2753,7 +2753,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľať s používateľmi alebo skupinami ...</translation>
     </message>
 </context>
 <context>
@@ -2761,7 +2761,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="57"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Užívateľské meno</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="89"/>
@@ -3423,7 +3423,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="689"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Naozaj chcete odstrániť pripojenie k účtu &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Týmto sa &lt;b&gt;neodstránia&lt;/b&gt; žiadne súbory.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="694"/>
