@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="139"/>
         <source>Apply</source>
-        <translation>Aplikovať</translation>
+        <translation>Použiť</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="204"/>
@@ -239,12 +239,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="174"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>Spojené z &lt;server&gt; ako &lt;user&gt;</translation>
+        <translation>Pripojené k &lt;server&gt; ako &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="187"/>
         <source>No account configured.</source>
-        <translation>Žiadny účet nie je nastavený.</translation>
+        <translation>Nie je nastavený žiadny učet.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="216"/>
@@ -270,7 +270,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="609"/>
         <source>Choose what to sync</source>
-        <translation>Vybrať čo synchronizovať</translation>
+        <translation>Vyberte, čo sa má synchronizovať</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="615"/>
@@ -285,7 +285,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="626"/>
         <source>Remove folder sync connection</source>
-        <translation>Odstrániť prepojenie priečinka</translation>
+        <translation>Odstrániť prepojenie synchronizácie priečinka</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
@@ -295,17 +295,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="751"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Potvrdiť odstránenie prepojenia priečinka</translation>
+        <translation>Potvrdiť odstránenie prepojenia synchronizácie priečinka</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="758"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Odstrániť prepojenie priečinka</translation>
+        <translation>Odstrániť prepojenie synchronizácie priečinka</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="843"/>
         <source>Sync Running</source>
-        <translation>Prebiehajúca synchronizácia</translation>
+        <translation>Prebieha synchronizácia</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="844"/>
@@ -345,7 +345,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="974"/>
         <source>Signed out from %1.</source>
-        <translation>Odhlásený z %1.</translation>
+        <translation>Odhlásené z %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="983"/>
@@ -385,7 +385,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1153"/>
         <source>Remove connection</source>
-        <translation>Vymazať pripojenie</translation>
+        <translation>Odstrániť prepojenie</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="545"/>
@@ -396,7 +396,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="623"/>
         <source>Resume sync</source>
-        <translation>Obnoviť synchronizáciu</translation>
+        <translation>Pokračovať v synchronizácii</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="623"/>
@@ -426,7 +426,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="930"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>Teraz nie sú k dispozícii žiadne informácie o využití úložiska.</translation>
+        <translation>Momentálne nie sú k dispozícii žiadne informácie o využití ukladacieho priestoru.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="987"/>
@@ -444,12 +444,12 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
         <source>Signed out</source>
-        <translation>Odhlásený</translation>
+        <translation>Odhlásené</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="136"/>
         <source>Disconnected</source>
-        <translation>Odpojený</translation>
+        <translation>Odpojené</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
@@ -3581,7 +3581,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="345"/>
         <source>Up to date</source>
-        <translation>Až do dnešného dňa</translation>
+        <translation>Aktuálne</translation>
     </message>
 </context>
 <context>
