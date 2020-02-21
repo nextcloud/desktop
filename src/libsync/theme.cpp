@@ -288,52 +288,65 @@ bool Theme::wizardHideFolderSizeLimitCheckbox() const
     return false;
 }
 
-QString Theme::gitSHA1() const
+QString Theme::gitSHA1(VersionFormat format) const
 {
-    QString devString;
 #ifdef GIT_SHA1
-    const QString githubPrefix(QStringLiteral(
-        "https://github.com/owncloud/client/commit/"));
-    const QString gitSha1(QStringLiteral(GIT_SHA1));
-    devString = QCoreApplication::translate("ownCloudTheme::about()",
-        "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
-        " on %3, %4 using Qt %5, %6</small></p>")
-                    .arg(githubPrefix + gitSha1,
-                         gitSha1.left(6),
-                         QStringLiteral(__DATE__),
-                         QStringLiteral(__TIME__),
-                         QString::fromUtf8(qVersion()),
-                         QSslSocket::sslLibraryVersionString());
+    const auto gitSha = QStringLiteral(GIT_SHA1);
+    const auto gitShahSort = gitSha.left(6);
+    const auto gitUrl = QStringLiteral("https://github.com/owncloud/client/commit/%1").arg(gitSha);
+    switch (format) {
+    case Theme::VersionFormat::Plain:
+        return gitShahSort;
+    case Theme::VersionFormat::Url:
+        return gitUrl;
+    case Theme::VersionFormat::RichText:
+        return QStringLiteral("<a href=\"%1\">%3</a>").arg(gitUrl, gitShahSort);
+    }
 #endif
-    return devString;
+    return QString();
 }
+
+QString Theme::aboutVersions(Theme::VersionFormat format) const
+{
+#ifdef GIT_SHA1
+    const QString _version = QStringLiteral("%1 %2").arg(version(), gitSHA1(format));
+#else
+    const QString _version = version();
+#endif
+    const QString br = format == Theme::VersionFormat::RichText ? QStringLiteral("<br>") : QStringLiteral("\n");
+    const QString qtVersion = QString::fromUtf8(qVersion());
+    const QString qtVersionString = (QLatin1String(QT_VERSION_STR) == qtVersion ? qtVersion : tr("ownCloudTheme::qtVer", "%1 (Built against Qt %1)").arg(qtVersion, QStringLiteral(QT_VERSION_STR)));
+    return QCoreApplication::translate("ownCloudTheme::aboutVersions()",
+        "%1 %2 %3 %4%8"
+        "Libraries Qt %5, %6%8"
+        "Using virtual files plugin: %7")
+        .arg(appName(), _version, QStringLiteral(__DATE__), QStringLiteral(__TIME__), qtVersionString, QSslSocket::sslLibraryVersionString(), Vfs::modeToString(bestAvailableVfsMode()), br);
+}
+
 
 QString Theme::about() const
 {
     QString vendor = QStringLiteral(APPLICATION_VENDOR);
     // Ideally, the vendor should be "ownCloud GmbH", but it cannot be changed without
     // changing the location of the settings and other registery keys.
-    if (vendor == QLatin1String("ownCloud")) vendor = QStringLiteral("ownCloud GmbH");
-
-    QString devString;
-    devString = tr("<p>Version %2. For more information visit <a href=\"%3\">https://%4</a></p>"
-                       "<p>For known issues and help, please visit: <a href=\"https://central.owncloud.org/c/desktop-client\">https://central.owncloud.org</a></p>"
-                       "<p><small>By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, "
-                       " Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Hannah von Reth, and others.</small></p>")
-                    .arg(Utility::escape(QStringLiteral(MIRALL_VERSION_STRING)),
-                        Utility::escape(QStringLiteral("https://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))),
-                        Utility::escape(QStringLiteral(MIRALL_STRINGIFY(APPLICATION_DOMAIN))));
-    devString += tr("<p>Copyright ownCloud GmbH</p>");
-    devString += tr("<p>Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.<br/>"
-                    "%2 and the %2 logo are registered trademarks of %1 in the "
-                    "United States, other countries, or both.</p>")
-               .arg(Utility::escape(vendor), Utility::escape(QStringLiteral(APPLICATION_NAME)));
-
-    devString += gitSHA1();
-    devString += QStringLiteral("<p><small>Using virtual files plugin: %1</small></p>")
-        .arg(Vfs::modeToString(bestAvailableVfsMode()));
-
-    return devString;
+    if (vendor == QLatin1String("ownCloud")) {
+        vendor = QStringLiteral("ownCloud GmbH");
+    }
+    return tr("<p>Version %1. For more information visit <a href=\"%2\">https://%3</a></p>"
+              "<p>For known issues and help, please visit: <a href=\"https://central.owncloud.org/c/desktop-client\">https://central.owncloud.org</a></p>"
+              "<p><small>By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, "
+              " Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.</small></p>"
+              "<p>Copyright ownCloud GmbH</p>"
+              "<p>Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.<br/>"
+              "%5 and the %5 logo are registered trademarks of %4 in the "
+              "United States, other countries, or both.</p>"
+              "<p><small>%6</small></p>")
+            .arg(Utility::escape(version()),
+                 Utility::escape(QStringLiteral("https://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))),
+                 Utility::escape(QStringLiteral(MIRALL_STRINGIFY(APPLICATION_DOMAIN))),
+                 Utility::escape(vendor),
+                 Utility::escape(appNameGUI()),
+                 aboutVersions(Theme::VersionFormat::RichText));
 }
 
 bool Theme::aboutShowCopyright() const
@@ -519,17 +532,7 @@ QString Theme::openIdConnectScopes() const
 
 QString Theme::versionSwitchOutput() const
 {
-    QString helpText;
-    QTextStream stream(&helpText);
-    stream << appName()
-           << QLatin1String(" version ")
-           << version() << endl;
-#ifdef GIT_SHA1
-    stream << "Git revision " << GIT_SHA1 << endl;
-#endif
-    stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << endl;
-    stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
-    return helpText;
+    return aboutVersions(Theme::VersionFormat::Url);
 }
 
 bool Theme::showVirtualFilesOption() const

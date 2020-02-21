@@ -115,12 +115,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         }
 #endif
     }
-
-    _ui->versionLabel->setText(QStringLiteral("<a href='%1'>%1</a>").arg(MIRALL_VERSION_STRING));
-    QObject::connect(_ui->versionLabel, &QLabel::linkActivated, this, &GeneralSettings::showAbout);
+    connect(_ui->about_pushButton, &QPushButton::clicked, this, &GeneralSettings::showAbout);
 
     if (!Theme::instance()->aboutShowCopyright()) {
-        _ui->copyrightLabelDotBefore->hide();
         _ui->copyrightLabel->hide();
     }
 }

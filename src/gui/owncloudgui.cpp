@@ -27,6 +27,7 @@
 #include "accountstate.h"
 #include "openfilemanager.h"
 #include "accountmanager.h"
+#include "aboutdialog.h"
 #include "common/syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
 
@@ -1136,21 +1137,8 @@ void ownCloudGui::slotRemoveDestroyedShareDialogs()
 
 void ownCloudGui::slotAbout()
 {
-    const QString title = tr("About %1").arg(Theme::instance()->appNameGUI());
-    QMessageBox *msgBox = new QMessageBox(this->_settingsDialog);
-#ifdef Q_OS_MAC
-    // From Qt doc: "On macOS, the window title is ignored (as required by the macOS Guidelines)."
-    msgBox->setText(title);
-#else
-    msgBox->setWindowTitle(title);
-#endif
-    msgBox->setAttribute(Qt::WA_DeleteOnClose, true);
-    msgBox->setTextFormat(Qt::RichText);
-    msgBox->setTextInteractionFlags(Qt::TextBrowserInteraction);
-    msgBox->setInformativeText(QStringLiteral("<qt>%1</qt>").arg(Theme::instance()->about()));
-    msgBox->setStandardButtons(QMessageBox::Ok);
-    msgBox->setIconPixmap(Theme::instance()->applicationIcon().pixmap(qApp->primaryScreen()->availableSize().width() / 4));
-    msgBox->show();
+    auto about = new AboutDialog(_settingsDialog);
+    about->open();
 }
 
 

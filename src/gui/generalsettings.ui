@@ -25,7 +25,7 @@
         <x>0</x>
         <y>0</y>
         <width>771</width>
-        <height>640</height>
+        <height>637</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -324,23 +324,10 @@
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
-         <string notr="true">Version 3.1.3 (build 37)</string>
+         <string notr="true"/>
         </property>
         <property name="textInteractionFlags">
          <set>Qt::LinksAccessibleByMouse</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="copyrightLabelDotBefore">
-        <property name="cursor">
-         <cursorShape>ArrowCursor</cursorShape>
-        </property>
-        <property name="text">
-         <string>•</string>
-        </property>
-        <property name="textInteractionFlags">
-         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
         </property>
        </widget>
       </item>
@@ -354,6 +341,13 @@
         </property>
         <property name="textInteractionFlags">
          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="about_pushButton">
+        <property name="text">
+         <string>About</string>
         </property>
        </widget>
       </item>
