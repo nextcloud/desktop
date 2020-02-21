@@ -64,6 +64,7 @@ static const char optionalServerNotificationsC[] = "optionalServerNotifications"
 static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
+static const char updateSegmentC[] = "updateSegment";
 static const char geometryC[] = "geometry";
 static const char timeoutC[] = "timeout";
 static const char chunkSizeC[] = "chunkSize";
@@ -574,6 +575,21 @@ void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connection)
 
     settings.setValue(QLatin1String(skipUpdateCheckC), QVariant(skip));
     settings.sync();
+}
+
+int ConfigFile::updateSegment() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    int segment = settings.value(QLatin1String(updateSegmentC), -1).toInt();
+
+    // Invalid? (Unset at the very first launch)
+    if(segment < 0 || segment > 99) {
+        // Save valid segment value, normally has to be done only once.
+        segment = qrand() % 99;
+        settings.setValue(QLatin1String(updateSegmentC), segment);
+    }
+
+    return segment;
 }
 
 int ConfigFile::maxLogLines() const
