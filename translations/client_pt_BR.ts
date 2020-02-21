@@ -3731,7 +3731,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../app/desktop/src/gui/owncloudgui.cpp" line="514"/>
         <source>Recent Changes</source>
-        <translation>Alterações recentes</translation>
+        <translation>Alterações Recentes</translation>
     </message>
     <message>
         <location filename="../app/desktop/src/gui/owncloudgui.cpp" line="692"/>
@@ -3746,7 +3746,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../app/desktop/src/gui/owncloudgui.cpp" line="702"/>
         <source>Pause all synchronization</source>
-        <translation>Pausa todas as sincronizações</translation>
+        <translation>Pausar todas as sincronizações</translation>
     </message>
     <message>
         <location filename="../app/desktop/src/gui/owncloudgui.cpp" line="704"/>
@@ -3797,17 +3797,17 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../app/desktop/src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
-        <translation>Não há itens sincronizados recentemente</translation>
+        <translation>Não há itens recentemente sincronizados</translation>
     </message>
     <message>
         <location filename="../app/desktop/src/gui/owncloudgui.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Checando por alterações no remoto &apos;%1&apos;</translation>
+        <translation>Checando por alterações no &apos;%1&apos; remoto</translation>
     </message>
     <message>
         <location filename="../app/desktop/src/gui/owncloudgui.cpp" line="922"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Checando por alterações no local &apos;%1&apos;</translation>
+        <translation>Checando por alterações no &apos;%1&apos; local</translation>
     </message>
 </context>
 <context>
@@ -4281,7 +4281,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../app/desktop/src/gui/activitywidget.cpp" line="192"/>
         <source>Synced</source>
-        <translation>sincronizado</translation>
+        <translation>Sincronizado</translation>
     </message>
     <message>
         <location filename="../app/desktop/src/gui/activitywidget.cpp" line="231"/>
