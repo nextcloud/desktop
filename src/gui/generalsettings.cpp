@@ -110,6 +110,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         _ui->updateChannel->hide();
 #endif
     }
+    if (!theme->enableExperimentalFeatures()) {
+        _ui->experimentalGroupBox->hide();
+    }
 
     _ui->versionLabel->setText(QStringLiteral("<a href='%1'>%1</a>").arg(MIRALL_VERSION_STRING));
     QObject::connect(_ui->versionLabel, &QLabel::linkActivated, this, &GeneralSettings::showAbout);
