@@ -567,6 +567,11 @@ QString Theme::versionSwitchOutput() const
 
 bool Theme::showVirtualFilesOption() const
 {
+    return enableExperimentalFeatures();
+}
+
+bool Theme::enableExperimentalFeatures() const
+{
     return ConfigFile().showExperimentalOptions();
 }
 
