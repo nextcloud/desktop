@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="139"/>
         <source>Apply</source>
-        <translation>Anwenden</translation>
+        <translation>Übernehmen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="174"/>
@@ -347,7 +347,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="796"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Möchten Sie den Ordner &lt;i&gt;%1&lt;/i&gt; wirklich nicht mehr synchronisieren?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt; Dies wird &lt;b&gt;keine&lt;/b&gt; Dateien löschen.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Möchten Sie den Ordner &lt;i&gt;%1&lt;/i&gt; nicht mehr synchronisieren?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt; Dies wird &lt;b&gt;keine&lt;/b&gt; Dateien löschen.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="802"/>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="888"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Die Synchronisierung läuft gerade.&lt;br/&gt;Wollen Sie sie beenden?</translation>
+        <translation>Die Synchronisierung läuft gerade.&lt;br/&gt;Wollen Sie diese beenden?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="964"/>
@@ -442,22 +442,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1162"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Einige Verzeichnisse konnten nicht synchronisiert werden, da sie zu groß sind:</translation>
+        <translation>Einige Ordner konnten nicht synchronisiert werden, da sie zu groß sind:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1164"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie externe Speicher sind:</translation>
+        <translation>Es gibt Ordner, die nicht synchronisiert werden konnten, da sie externe Speicher sind:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1165"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Es gibt Verzeichnisse, die nicht synchronisiert werden konnten, da sie zu groß oder externe Speicher sind:</translation>
+        <translation>Es gibt Ordner, die nicht synchronisiert werden konnten, da sie zu groß oder externe Speicher sind:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1211"/>
         <source>Confirm Account Removal</source>
-        <translation>Konto wirklich entfernen?</translation>
+        <translation>Kontenentfernung bestätigen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1212"/>
@@ -528,7 +528,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>Um mehr Aktivitäten anzusehen bitte die Actifity-App öffnen</translation>
+        <translation>Um weitere Aktivitäten anzusehen bitte die Activity-App öffnen.</translation>
     </message>
 </context>
 <context>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>SSL-Client-Zertifikatsauthentifizierung</translation>
+        <translation>SSL-Client-Zertifikat-Authentifizierung</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -677,7 +677,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation>Bei der Server-Dateierkennungsantwort fehlen Daten.</translation>
+        <translation>In der Antwort der Server-Dateierkennung fehlen Daten.</translation>
     </message>
 </context>
 <context>
@@ -753,7 +753,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="141"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Lokales Verzeichnis %1 existiert nicht.</translation>
+        <translation>Lokaler Ordner %1 existiert nicht.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="144"/>
@@ -863,14 +863,14 @@
         <location filename="../src/gui/folder.cpp" line="970"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>Ein neues Verzeichnis größer als %1 MB wurde hinzugefügt: %2.
+        <translation>Ein neuer Ordner größer als %1 MB wurde hinzugefügt: %2.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="973"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>Ein Verzeichnis von einem externen Speicher wurde hinzugefügt.
+        <translation>Ein Ordner von einem externen Speicher wurde hinzugefügt.
 </translation>
     </message>
     <message>
@@ -958,7 +958,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folder.cpp" line="1127"/>
         <source>Keep Local Files as Conflict</source>
-        <translation>Lokale Konfliktdateien behalten</translation>
+        <translation>Lokale Dateien als Konflikt behalten</translation>
     </message>
 </context>
 <context>
@@ -991,7 +991,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderman.cpp" line="1276"/>
         <source>Waiting to start syncing.</source>
-        <translation>Wartet auf Beginn der Synchronisierung</translation>
+        <translation>Wartet auf Beginn der Synchronisierung.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1279"/>
@@ -1016,12 +1016,12 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderman.cpp" line="1295"/>
         <source>Setup Error.</source>
-        <translation>Installationsfehler.</translation>
+        <translation>Einrichtungsfehler.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1298"/>
         <source>User Abort.</source>
-        <translation>Benutzer-Abbruch</translation>
+        <translation>Benutzerabbruch.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1301"/>
@@ -1036,7 +1036,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderman.cpp" line="1315"/>
         <source>No valid folder selected!</source>
-        <translation>Kein gültige Ordner gewählt!</translation>
+        <translation>Kein gültiger Ordner gewählt!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1325"/>
@@ -1061,7 +1061,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderman.cpp" line="1385"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>Es existiert bereits eine Synchronisierung vom Server zu diesem lokalen Ordner. Bitte wählen Sie ein anderes lokales Verzeichnis!</translation>
+        <translation>Es existiert bereits eine Synchronisierung vom Server zu diesem lokalen Ordner. Bitte wählen Sie einen anderen lokalen Ordner!</translation>
     </message>
 </context>
 <context>
@@ -1092,7 +1092,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="146"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Wähle diese Schaltfläche, um einen zu synchronisierenden Ordner hinzuzufügen.</translation>
+        <translation>Wählen Sie diese Schaltfläche, um einen zu synchronisierenden Ordner hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="155"/>
@@ -1124,12 +1124,12 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Suche nach Änderungen in &apos;%1&apos;</translation>
+        <translation>Nach Änderungen in entfernten &apos;%1&apos; suchen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Nach Änderungen suchen in &apos;%1&apos;</translation>
+        <translation>Nach Änderungen in lokalem &apos;%1&apos; suchen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="932"/>
@@ -1219,12 +1219,12 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Warte auf %n anderen Ordner</numerusform><numerusform>Warte auf %n andere Ordner</numerusform></translation>
+        <translation><numerusform>Warte auf %n anderen Ordner …</numerusform><numerusform>Warte auf %n andere Ordner …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation>Synchronisation wird vorbereitet …</translation>
+        <translation>Synchronisierung wird vorbereitet …</translation>
     </message>
 </context>
 <context>
@@ -1245,7 +1245,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="552"/>
         <source>Add Sync Connection</source>
-        <translation>Ordner-Synchronisierung hinzufügen</translation>
+        <translation>Synchronisierung hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -1253,12 +1253,12 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Zur Auswahl eines lokalen Verzeichnisses für die Synchronisierung klicken.</translation>
+        <translation>Hier klicken um einen lokalen Ordner zum Synchronisieren auszuwählen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
-        <translation>Pfad zum lokalen Verzeichnis eingeben</translation>
+        <translation>Pfad zum lokalen Ordner eingeben</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="135"/>
@@ -1281,7 +1281,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Order erfolgreich auf %1 erstellt.</translation>
+        <translation>Ordner auf %1 erstellt.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
@@ -1311,7 +1311,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="449"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Sie synchronisieren bereits &lt;i&gt;%1&lt;/i&gt;, das ein übergeordneten Ordner von &lt;i&gt;%2&lt;/i&gt; ist.</translation>
+        <translation>Sie synchronisieren bereits &lt;i&gt;%1&lt;/i&gt;, der ein übergeordneter Ordner von &lt;i&gt;%2&lt;/i&gt; ist.</translation>
     </message>
 </context>
 <context>
@@ -1376,12 +1376,12 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>&amp;Monochrome Icons verwenden</translation>
+        <translation>&amp;Monochrome Symbole verwenden</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Starten beim Systemstart</translation>
+        <translation>Beim &amp;Systemstart starten</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -1391,7 +1391,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
         <source>Updates</source>
-        <translation>Updates</translation>
+        <translation>Aktualisierungen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="124"/>
@@ -1603,7 +1603,7 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn diese das Lösch
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="58"/>
         <source>Log Output</source>
-        <translation>Log-Ausgabe</translation>
+        <translation>Protokoll-Ausgabe</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -1657,7 +1657,7 @@ Protokolle werden in % 1 geschrieben</translation>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="212"/>
         <source>Save log file</source>
-        <translation>Logdatei speichern</translation>
+        <translation>Protokolldatei speichern</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="222"/>
@@ -1667,7 +1667,7 @@ Protokolle werden in % 1 geschrieben</translation>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="222"/>
         <source>Could not write to log file %1</source>
-        <translation>Konnte nicht in die Protokoll-Datei %1 schreiben</translation>
+        <translation>Konnte nicht in die Protokolldatei %1 schreiben</translation>
     </message>
 </context>
 <context>
@@ -1688,7 +1688,7 @@ Protokolle werden in % 1 geschrieben</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="332"/>
         <source>New Version Available</source>
-        <translation>Eine neue Version ist verfügbar.</translation>
+        <translation>Eine neue Version ist verfügbar</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
@@ -1708,7 +1708,7 @@ Protokolle werden in % 1 geschrieben</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
         <source>Get update</source>
-        <translation>Update durchführen</translation>
+        <translation>Aktualisierung durchführen</translation>
     </message>
 </context>
 <context>
@@ -1726,7 +1726,7 @@ Protokolle werden in % 1 geschrieben</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>System-Proxy benutzen</translation>
+        <translation>System-Proxy verwenden</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
@@ -1852,13 +1852,13 @@ Protokolle werden in % 1 geschrieben</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="103"/>
         <source>New %1 Update Ready</source>
-        <translation>Neues %1 Update verfügbar</translation>
+        <translation>Neue %1 Aktualisierung verfügbar</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Ein neues Update für %1 wird installiert. Während des Updatevorgangs werden Sie eventuell gefragt, zusätzliche Berechtigungen zu gewähren.</translation>
+        <translation>Eine neue Aktualisierung für %1 wird installiert. Während des Aktualisierungsvorgangs werden Sie eventuell gefragt, zusätzliche Berechtigungen zu gewähren.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -1883,7 +1883,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Neue %1 Version %2 verfügbar. Bitte &lt;a href=&apos;%3&apos;&gt;hier&lt;/a&gt; klicken um das Update herunterzuladen.</translation>
+        <translation>Neue %1 Version %2 verfügbar. Bitte &lt;a href=&apos;%3&apos;&gt;hier&lt;/a&gt; klicken um die Aktualisierung herunterzuladen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -1893,7 +1893,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>Updatestatus unbekannt: Auf neue Updates wurde nicht geprüft.</translation>
+        <translation>Aktualisierungsstatus unbekannt: Auf neue Aktualisierungen wurde nicht geprüft.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
@@ -1916,7 +1916,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="52"/>
         <source>Setup local folder options</source>
-        <translation>Einstellungen der Optionen für lokale Verzeichnisse </translation>
+        <translation>Optionen für lokale Ordner einstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
@@ -1957,7 +1957,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="389"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation>Nicht genug freier Platz im lokalen Verzeichnis vorhanden!</translation>
+        <translation>Nicht genug freier Platz im lokalen Ordner vorhanden!</translation>
     </message>
 </context>
 <context>
@@ -2139,7 +2139,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>Lokaler Synchronisations-Ordner %1 wird erstellt ...</translation>
+        <translation>Lokaler Ordner %1 für die Synchronisation wird erstellt …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
@@ -2154,12 +2154,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="464"/>
         <source>Could not create local folder %1</source>
-        <translation>Der lokale Ordner %1 konnte nicht angelegt werden</translation>
+        <translation>Der lokale Ordner %1 konnte nicht erstellt werden</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
         <source>No remote folder specified!</source>
-        <translation>Keinen entfernten Ordner angegeben!</translation>
+        <translation>Kein entfernter Ordner angegeben!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="530"/>
@@ -2169,12 +2169,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation>erstelle Ordner auf Nextcloud: %1</translation>
+        <translation>Erstelle Ordner auf Nextcloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="559"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Remoteordner %1 erfolgreich erstellt.</translation>
+        <translation>Entfernter Ordner %1 erfolgreich erstellt.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="561"/>
@@ -2185,23 +2185,23 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="563"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="565"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Das Erstellen des Verzeichnisses erzeugte den HTTP-Fehler-Code %1</translation>
+        <translation>Das Erstellen des Ordners erzeugte den HTTP-Fehler-Code %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="567"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Die Remote-Ordner-Erstellung ist fehlgeschlagen, weil die angegebenen Zugangsdaten falsch sind. Bitte gehen Sie zurück und überprüfen Sie die Zugangsdaten.</translation>
+        <translation>Die Erstellung des entfernten Ordners ist fehlgeschlagen, weil die angegebenen Zugangsdaten falsch sind. &lt;br/&gt;Bitte gehen Sie zurück und überprüfen Sie die Zugangsdaten.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="571"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Die Remote-Ordner-Erstellung ist fehlgeschlagen, vermutlich sind die angegebenen Zugangsdaten falsch.&lt;/font&gt;&lt;br/&gt;Bitte gehen Sie zurück und überprüfen Sie Ihre Zugangsdaten.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Die Erstellung des entfernten Ordners ist fehlgeschlagen, vermutlich sind die angegebenen Zugangsdaten falsch.&lt;/font&gt;&lt;br/&gt;Bitte gehen Sie zurück und überprüfen Sie Ihre Zugangsdaten.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="576"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="577"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Remote-Ordner %1 konnte mit folgendem Fehler nicht erstellt werden: &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Entfernter Ordner %1 konnte mit folgendem Fehler nicht erstellt werden: &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="594"/>
@@ -3157,7 +3157,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="122"/>
         <source>Success.</source>
-        <translation>Erfolgreich</translation>
+        <translation>Erfolgreich.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
@@ -3282,7 +3282,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="516"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Datei wird ignoriert, weil sie unsichtbar ist.</translation>
+        <translation>Datei/Ordner wird ignoriert, weil sie unsichtbar ist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="519"/>
@@ -3462,7 +3462,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="370"/>
         <source>You deleted</source>
-        <translation>Sie haben geöscht</translation>
+        <translation>Sie haben gelöscht</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
@@ -3582,7 +3582,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="298"/>
         <source>Account synchronization is disabled</source>
-        <translation>Account-Synchronisierung ist deaktiviert</translation>
+        <translation>Konto-Synchronisierung ist deaktiviert</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="299"/>
