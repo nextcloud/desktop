@@ -2707,7 +2707,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
         <source>Expiration date:</source>
-        <translation>Data di scadenza</translation>
+        <translation>Data di scadenza:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
@@ -3629,7 +3629,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="368"/>
         <source>Open %1 in browser</source>
-        <translation>Apri %1 nel browser...</translation>
+        <translation>Apri %1 nel browser</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
@@ -4244,7 +4244,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="231"/>
         <source>Retry all uploads</source>
-        <translation>Riprova tutti icaricamenti</translation>
+        <translation>Riprova tutti i caricamenti</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="346"/>
