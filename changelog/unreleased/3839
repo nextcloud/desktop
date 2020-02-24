@@ -1,0 +1,7 @@
+Change: Don't hardcode a plugin location
+
+We no longer hardcode a plugin location only available on the build system.
+If a setup uses a non default plugin location, please consider setting
+the environment variable QT_PLUGIN_PATH.
+
+https://github.com/owncloud/enterprise/issues/3839

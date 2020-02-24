@@ -89,13 +89,6 @@ set(DATADIR "share")
 endif(WIN32)
 set(SHAREDIR ${DATADIR})
 
-if (NOT APPLE)
-    set(PLUGINDIR "${CMAKE_INSTALL_FULL_LIBDIR}/${APPLICATION_SHORTNAME}/plugins" CACHE STRING "Extra path to look for Qt plugins like for VFS. May be relative to binary.")
-else()
-    # Inside the .app bundle
-    set(PLUGINDIR "../PlugIns" CACHE STRING "Extra path to look for Qt plugins like for VFS. May be relative to binary.")
-endif()
-
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms
 option(TOKEN_AUTH_ONLY "TOKEN_AUTH_ONLY" OFF)
