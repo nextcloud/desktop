@@ -57,7 +57,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="labelPWDCertificate">
        <property name="text">
-        <string>Certificate password :</string>
+        <string>Certificate password:</string>
        </property>
       </widget>
      </item>
