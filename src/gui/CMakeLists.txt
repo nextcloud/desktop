@@ -111,23 +111,16 @@ set(client_SRCS
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
-    creds/flow2auth.cpp
-    creds/webflowcredentials.cpp
-    creds/webflowcredentialsdialog.cpp
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     wizard/owncloudconnectionmethoddialog.cpp
     wizard/owncloudhttpcredspage.cpp
     wizard/owncloudoauthcredspage.cpp
-    wizard/flow2authcredspage.cpp
-    wizard/flow2authwidget.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudwizardresultpage.cpp
-    wizard/webviewpage.cpp
-    wizard/webview.cpp
     wizard/slideshow.cpp
 )
 
@@ -145,6 +138,18 @@ IF(BUILD_UPDATER)
         updater/ocupdater.cpp
         updater/updateinfo.cpp
         updater/updater.cpp
+    )
+endif()
+
+IF(NOT NO_WEBENGINE)
+    list(APPEND client_SRCS
+        creds/flow2auth.cpp
+        creds/webflowcredentials.cpp
+        creds/webflowcredentialsdialog.cpp
+        wizard/flow2authcredspage.cpp
+        wizard/flow2authwidget.cpp
+        wizard/webviewpage.cpp
+        wizard/webview.cpp
     )
 endif()
 
@@ -314,8 +319,11 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
-target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml Qt5::Qml Qt5::Quick Qt5::QuickControls2 Qt5::WebEngineWidgets)
+target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml Qt5::Qml Qt5::Quick Qt5::QuickControls2)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
+IF(NOT NO_WEBENGINE)
+    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::WebEngineWidgets )
+endif()
 IF(BUILD_UPDATER)
     target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
 endif()

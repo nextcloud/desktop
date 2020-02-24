@@ -139,7 +139,11 @@ void OwncloudSetupPage::slotLogin()
 void OwncloudSetupPage::slotGotoProviderList()
 {
     _ocWizard->setRegistration(true);
+#ifndef NO_WEBENGINE
     _ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::WebViewFlow);
+#else
+    _ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::Basic);
+#endif
     _authTypeKnown = true;
     _checking = false;
     emit completeChanged();

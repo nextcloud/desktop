@@ -966,12 +966,20 @@ void DetermineAuthTypeJob::checkAllDone()
 
     // WebViewFlow > OAuth > Shib > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(12, 0, 0)) {
+#ifndef NO_WEBENGINE
         result = WebViewFlow;
+#else
+        result = Basic;
+#endif
     }
 
     // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
     if (_account->serverVersionInt() >= Account::makeServerVersion(16, 0, 0)) {
+#ifndef NO_WEBENGINE
         result = LoginFlowV2;
+#else
+        result = Basic;
+#endif
     }
 
     // If we determined that we need the webview flow (GS for example) then we switch to that

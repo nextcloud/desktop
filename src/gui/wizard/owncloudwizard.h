@@ -39,8 +39,10 @@ class OwncloudAdvancedSetupPage;
 class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
+#ifndef NO_WEBENGINE
 class WebViewPage;
 class Flow2AuthCredsPage;
+#endif
 
 /**
  * @brief The OwncloudWizard class
@@ -114,11 +116,15 @@ private:
 #ifndef NO_SHIBBOLETH
     OwncloudShibbolethCredsPage *_shibbolethCredsPage;
 #endif
+#ifndef NO_WEBENGINE
     Flow2AuthCredsPage *_flow2CredsPage;
+#endif
     OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage;
     AbstractCredentialsWizardPage *_credentialsPage = nullptr;
+#ifndef NO_WEBENGINE
     WebViewPage *_webViewPage;
+#endif
 
     QStringList _setupLog;
 

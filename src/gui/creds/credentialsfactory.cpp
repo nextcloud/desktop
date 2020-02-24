@@ -21,7 +21,9 @@
 #ifndef NO_SHIBBOLETH
 #include "creds/shibbolethcredentials.h"
 #endif
+#ifndef NO_WEBENGINE
 #include "creds/webflowcredentials.h"
+#endif
 
 namespace OCC {
 
@@ -40,8 +42,10 @@ namespace CredentialsFactory {
         } else if (type == "shibboleth") {
             return new ShibbolethCredentials;
 #endif
+#ifndef NO_WEBENGINE
         } else if (type == "webflow") {
             return new WebFlowCredentials;
+#endif
         } else {
             qCWarning(lcGuiCredentials, "Unknown credentials type: %s", qPrintable(type));
             return new DummyCredentials;

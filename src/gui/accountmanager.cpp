@@ -253,6 +253,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         acc->setUrl(urlConfig.toUrl());
     }
 
+#ifndef NO_WEBENGINE
     // Migrate to webflow
     if (authType == QLatin1String("http")) {
         authType = "webflow";
@@ -266,6 +267,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
             settings.remove(key);
         }
     }
+#endif
 
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 

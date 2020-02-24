@@ -4,7 +4,11 @@ endif()
 
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
 
-find_package(Qt5 5.12 COMPONENTS Core Network Xml Concurrent WebEngineWidgets WebEngine REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Core Network Xml Concurrent REQUIRED)
+
+if(NOT NO_WEBENGINE)
+    find_package(Qt5 5.12 COMPONENTS WebEngineWidgets WebEngine REQUIRED)
+endif()
 
 if(NOT TOKEN_AUTH_ONLY)
     find_package(Qt5Keychain REQUIRED)
