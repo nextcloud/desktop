@@ -158,7 +158,7 @@ class DiscoveryPhase : public QObject
 
     friend class ProcessDirectoryJob;
 
-    ProcessDirectoryJob *_currentRootJob = nullptr;
+    QPointer<ProcessDirectoryJob> _currentRootJob;
 
     /** Maps the db-path of a deleted item to its SyncFileItem.
      *
