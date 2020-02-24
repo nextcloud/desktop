@@ -404,7 +404,7 @@ void OwncloudSetupWizard::slotAuthError()
 
         // Something else went wrong, maybe the response was 200 but with invalid data.
     } else {
-        errorMsg = tr("There was an invalid response to an authenticated webdav request");
+        errorMsg = tr("There was an invalid response to an authenticated WebDAV request");
     }
 
     // bring wizard to top
