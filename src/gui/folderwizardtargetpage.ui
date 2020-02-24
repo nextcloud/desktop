@@ -140,7 +140,7 @@
       <item row="1" column="1">
        <widget class="QPushButton" name="addFolderButton">
         <property name="text">
-         <string>Create Folder</string>
+         <string>Create folder</string>
         </property>
        </widget>
       </item>
