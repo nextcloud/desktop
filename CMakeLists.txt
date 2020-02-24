@@ -176,6 +176,13 @@ if(NO_SHIBBOLETH)
    add_definitions(-DNO_SHIBBOLETH=1)
 endif()
 
+# Disable webengine-based components
+option(NO_WEBENGINE "Build without webflow / flow2 support so QtWebEngine isn't required" OFF)
+if(NO_WEBENGINE)
+   message("Compiling without webengine")
+   add_definitions(-DNO_WEBENGINE=1)
+endif()
+
 if(APPLE)
   set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
 endif()

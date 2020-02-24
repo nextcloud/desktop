@@ -4,9 +4,13 @@ endif()
 
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
 
-find_package(Qt5 5.6 COMPONENTS Core Network Xml Concurrent WebEngineWidgets WebEngine REQUIRED)
+find_package(Qt5 5.6 COMPONENTS Core Network Xml Concurrent REQUIRED)
 if (Qt5Core_VERSION VERSION_LESS 5.9.0)
 message(STATUS "For HTTP/2 support, compile with Qt 5.9 or higher.")
+endif()
+
+if(NOT NO_WEBENGINE)
+    find_package(Qt5 5.6 COMPONENTS WebEngineWidgets WebEngine REQUIRED)
 endif()
 
 if(NOT TOKEN_AUTH_ONLY)
