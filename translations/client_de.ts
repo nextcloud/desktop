@@ -217,7 +217,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="91"/>
         <source>Apply manual changes</source>
-        <translation>Manuelle Änderungen übernehmen</translation>
+        <translation>Manuelle Änderungen anwenden</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="139"/>
         <source>Apply</source>
-        <translation>Übernehmen</translation>
+        <translation>Anwenden</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="174"/>
@@ -417,7 +417,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1027"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Berechtigung vom Browser einholen. &lt;a href=&apos;%1&apos;&gt; KlickenSie hier &lt;/a&gt;, um den Browser erneut zu öffnen.</translation>
+        <translation>Berechtigung vom Browser einholen. &lt;a href=&apos;%1&apos;&gt; Klicken Sie hier &lt;/a&gt;, um den Browser erneut zu öffnen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1031"/>
@@ -556,7 +556,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password :</source>
-        <translation>Zertifikatskennwort:</translation>
+        <translation>Zertifikatspasswort:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -735,7 +735,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
         <source>Polling for authorization</source>
-        <translation>Autorisierung anfordern</translation>
+        <translation>Abruf der Autorisierung</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
@@ -842,7 +842,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 und %n andere Datei(en) sind aktuell gesperrt.</numerusform><numerusform>%1 und %n andere Datei(en) sind aktuell gesperrt.</numerusform></translation>
+        <translation><numerusform>%1 und %n andere Datei sind aktuell gesperrt.</numerusform><numerusform>%1 und %n andere Dateien sind aktuell gesperrt.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
@@ -876,7 +876,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="974"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Bitte wechseln Sie zu den Einstellungen, falls Sie das Verzeichnis herunterladen möchten.</translation>
+        <translation>Bitte wechseln Sie zu den Einstellungen, falls Sie den Ordner herunterladen möchten.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1029"/>
@@ -907,8 +907,8 @@ Dies bedeutet, dass der Synchronisierungs-Client lokale Änderungen möglicherwe
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Alle Dateien im Synchronisationsordner &apos;%1&apos; wurden auf dem Server gelöscht.
-Diese Löschung wird in Ihren lokalen Synchronisationsordner übernommen. Dadurch sind die Dateien nicht mehr verfügbar, falls Sie keine Möglichkeit zur Wiederherstellung haben.
+        <translation>Alle Dateien im Synchronisierungsordner &apos;%1&apos; wurden auf dem Server gelöscht.
+Diese Löschung wird in Ihren lokalen Synchronisierungsordner übernommen. Dadurch sind die Dateien nicht mehr verfügbar, falls Sie keine Möglichkeit zur Wiederherstellung haben.
 Wenn Sie sich dazu entscheiden, diese Dateien zu behalten, werden diese wieder zum Server synchronisiert. Dies geschieht jedoch nur, soweit Sie die Rechte hierzu haben.
 Wenn Sie sich zum Löschen der Dateien entscheiden, sind diese nicht mehr verfügbar, außer Sie sind der Eigentümer.</translation>
     </message>
@@ -917,9 +917,9 @@ Wenn Sie sich zum Löschen der Dateien entscheiden, sind diese nicht mehr verfü
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation>Alle Dateien wurden aus Ihrem lokalen Synchronisationsverzeichnis &apos;%1&apos; gelöscht.
+        <translation>Alle Dateien wurden aus Ihrem lokalen Synchronisierungsordner &apos;%1&apos; gelöscht.
 Diese Dateien werden auch vom Server gelöscht werden und sind dann auch auf Ihren anderen Geräten verfügbar, sofern sie nicht wiederhergestellt werden.
-Wenn die Aktion unbeabsichtigt war, können Sie die gelöschten Danten nun wiederherstellen.</translation>
+Wenn die Aktion unbeabsichtigt war, können Sie die gelöschten Daten wiederherstellen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1097"/>
@@ -971,7 +971,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Ein altes Synchronisierungs-Journal &apos;%1&apos; wurde gefunden, konnte jedoch nicht entfernt werden. Bitte stellen Sie sicher, dass keine Anwendung es verwendet.</translation>
+        <translation>Ein altes Synchronisierungsprotokoll &apos;%1&apos; wurde gefunden, konnte jedoch nicht entfernt werden. Bitte stellen Sie sicher, dass keine Anwendung es verwendet.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1023"/>
@@ -1472,12 +1472,12 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Bitte Kennwort für %1 eingeben:&lt;br&gt;&lt;br&gt;Benutzer: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <translation>Bitte Passwort für %1 eingeben:&lt;br&gt;&lt;br&gt;Benutzer: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>Schlüsselbund fehlgeschlagen mit Fehler: &apos;%1&apos;</translation>
+        <translation>Lesen vom Schlüsselbund fehlgeschlagen mit Fehler: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1487,7 +1487,7 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Hier klicken&lt;/a&gt;, um vom Web-Interface ein App-Kennwort zu erhalten.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Hier klicken&lt;/a&gt;, um von der Web-Oberfläche ein App-Passwort zu erhalten.</translation>
     </message>
 </context>
 <context>
@@ -1746,7 +1746,7 @@ Protokolle werden in % 1 geschrieben</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation>Proxyserver erfordert eine Authentifizierung</translation>
+        <translation>Proxy-Server erfordert eine Authentifizierung</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -2099,7 +2099,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation>Die Verbindung zu %1 auf %2:&lt;br/&gt;%3 konnte nicht hergestellt werden</translation>
+        <translation>Die Verbindung zu %1 auf %2 konnte nicht hergestellt werden: &lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
@@ -2129,7 +2129,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation>Es gab eine ungültige Reaktion auf eine WebDav-Authentifizeriungs-Anfrage</translation>
+        <translation>Es gab eine ungültige Antwort auf eine WebDAV-Authentifizeriungs-Anfrage</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
@@ -2139,12 +2139,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>Lokaler Ordner %1 für die Synchronisation wird erstellt …</translation>
+        <translation>Lokaler Ordner %1 für die Synchronisierung wird erstellt …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
         <source>ok</source>
-        <translation>ok</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="462"/>
@@ -2296,7 +2296,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation>Das Herunterladen würde den lokalen freien Speicherplatz unter das Limit reduzieren</translation>
+        <translation>Das Herunterladen würde den lokalen freien Speicherplatz unter die Grenze reduzieren</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="481"/>
@@ -2311,7 +2311,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="654"/>
         <source>The file could not be downloaded completely.</source>
-        <translation>Die Datei konnte nicht vollständig herunter geladen werden.</translation>
+        <translation>Die Datei konnte nicht vollständig heruntergeladen werden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="661"/>
@@ -2458,12 +2458,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="348"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>Lokale Datei hat sich während der Synchronisation geändert. Die Synchronisation wird wiederaufgenommen.</translation>
+        <translation>Lokale Datei hat sich während der Synchronisierung geändert. Die Synchronisierung wird wiederaufgenommen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="363"/>
         <source>Local file changed during sync.</source>
-        <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
+        <translation>Eine lokale Datei wurde während der Synchronisierung geändert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="685"/>
@@ -2476,12 +2476,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="404"/>
         <source>The local file was removed during sync.</source>
-        <translation>Die lokale Datei wurde während der Synchronisation gelöscht.</translation>
+        <translation>Die lokale Datei wurde während der Synchronisierung gelöscht.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="415"/>
         <source>Local file changed during sync.</source>
-        <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
+        <translation>Eine lokale Datei wurde während der Synchronisierung geändert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="449"/>
@@ -2509,12 +2509,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="240"/>
         <source>The local file was removed during sync.</source>
-        <translation>Die lokale Datei wurde während der Synchronisation gelöscht.</translation>
+        <translation>Die lokale Datei wurde während der Synchronisierung gelöscht.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="251"/>
         <source>Local file changed during sync.</source>
-        <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
+        <translation>Eine lokale Datei wurde während der Synchronisierung geändert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
@@ -2542,12 +2542,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>Der Proxyserver benötigt Benutzername und Kennwort</translation>
+        <translation>Der Proxy-Server benötigt Benutzername und Passwort</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation>Kennwort:</translation>
+        <translation>Passwort:</translation>
     </message>
 </context>
 <context>
@@ -2643,7 +2643,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation>Nextcloud Pfad:</translation>
+        <translation>Nextcloud-Pfad:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
@@ -2850,12 +2850,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
         <source>Login Error</source>
-        <translation>Log-in-Fehler</translation>
+        <translation>Anmeldefehler</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
         <source>You must sign in as user %1</source>
-        <translation>Sie müssen sich als %1 einloggen</translation>
+        <translation>Sie müssen sich als Benutzer %1 anmelden</translation>
     </message>
 </context>
 <context>
@@ -2863,7 +2863,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
         <source>%1 - Authenticate</source>
-        <translation>%1 - Authentifikation</translation>
+        <translation>%1 - Authentifizierung</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
@@ -2918,7 +2918,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="649"/>
         <source>Send private link by email …</source>
-        <translation>Privaten Link als E-Mail verschicken ...</translation>
+        <translation>Privaten Link als E-Mail verschicken …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="674"/>
@@ -3139,7 +3139,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Effective Date: %1</source>
-        <translation>Aktuelles Datum: %1</translation>
+        <translation>Datum des Inkrafttretens: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
@@ -3167,7 +3167,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation>Erkennungsschritt fehlgeschlagen.</translation>
+        <translation>Entdeckungsschritt fehlgeschlagen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="132"/>
@@ -3177,7 +3177,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="135"/>
         <source>A HTTP transmission error happened.</source>
-        <translation>Es hat sich ein HTTP-Übertragungsfehler ereignet.</translation>
+        <translation>Es ist ein HTTP-Übertragungsfehler aufgetreten.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
@@ -3262,7 +3262,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="502"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation>Dateinamen, die Zeichen &apos;%1&apos; enthalten, werden von diesem Dateisystem nicht unterstützt.</translation>
+        <translation>Dateinamen, welche das Zeichen &apos;%1&apos; enthalten, werden von diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="505"/>
@@ -3317,7 +3317,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="731"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation>Ungültige Zeichenm bitte benennen Sie &quot;%1&quot; um</translation>
+        <translation>Ungültige Zeichen, bitte benennen Sie &quot;%1&quot; um</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="801"/>
@@ -3343,7 +3343,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="968"/>
         <source>Cannot open the sync journal</source>
-        <translation>Synchronisierungsbericht kann nicht geöffnet werden</translation>
+        <translation>Synchronisierungsprotokoll kann nicht geöffnet werden</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1034"/>
@@ -3374,13 +3374,13 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1382"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Das Hochladen dieser Datei ist nicht erlaubt, da die Datei auf dem Server schreibgeschützt ist, Wiederherstellung</translation>
+        <translation>Das Hochladen dieser Datei ist nicht erlaubt, da die Datei auf dem Server schreibgeschützt ist. Wiederherstellung.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1398"/>
         <location filename="../src/libsync/syncengine.cpp" line="1417"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>Löschen nicht erlaubt, Wiederherstellung</translation>
+        <translation>Löschen nicht erlaubt, Wiederherstellung.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1431"/>
@@ -3390,12 +3390,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1485"/>
         <source>Move not allowed, item restored</source>
-        <translation>Verschieben nicht erlaubt, Element wiederhergestellt</translation>
+        <translation>Verschieben nicht erlaubt, Element wiederhergestellt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1496"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation>Verschieben nicht erlaubt, da %1 schreibgeschützt ist</translation>
+        <translation>Verschieben nicht erlaubt, da %1 schreibgeschützt ist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1496"/>
@@ -3410,7 +3410,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1690"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation>Der freie Speicherplatz wird knapp: Downloads, die den freien Speicher unter %1 senken, wurden ausgelassen.</translation>
+        <translation>Der freie Speicherplatz wird knapp: Downloads, die den freien Speicher unter %1 reduzieren, wurden ausgelassen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1697"/>
@@ -3423,7 +3423,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>Synchronisierungs-Log</translation>
+        <translation>Synchronisierungsprotokoll</translation>
     </message>
 </context>
 <context>
@@ -3516,7 +3516,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="169"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation>Sie wurden von %1 als Benutzer %2 abgemeldet. Bitte melden Sie sich erneut an</translation>
+        <translation>Sie wurden von %1 als Benutzer %2 abgemeldet. Bitte melden Sie sich erneut an.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
@@ -3813,12 +3813,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Option gesetzt ist, werden bestehende Inhalte im lokalen Ordner gelöscht, um eine saubere Synchronisierung nur der Serverdaten zu ermöglichen.&lt;/p&gt;&lt;p&gt;Wählen Sie diese Option nicht, wenn die lokale Inhalte auf den Server übertragen werden sollen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Option gesetzt ist, werden bestehende Inhalte im lokalen Ordner gelöscht, um eine saubere Synchronisierung nur der Serverdaten zu ermöglichen.&lt;/p&gt;&lt;p&gt;Wählen Sie diese Option nicht, wenn die lokalen Inhalte auf den Server übertragen werden sollen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>Saubere Syn&amp;chronisierung beginnen (entfernt lokalen Ordner!)</translation>
+        <translation>Saubere Syn&amp;chronisierung beginnen (Löscht lokalen Ordner!)</translation>
     </message>
 </context>
 <context>
@@ -3918,7 +3918,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="480"/>
         <source>Less than a minute ago</source>
-        <translation>vor weniger als einer Minute</translation>
+        <translation>Vor weniger als einer Minute</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="484"/>
@@ -3933,7 +3933,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="490"/>
         <source>Some time ago</source>
-        <translation>vor einiger Zeit</translation>
+        <translation>Vor einiger Zeit</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="153"/>
@@ -4023,7 +4023,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
-        <translation>Die Taskleiste ist nicht verfügbar.</translation>
+        <translation>Benachrichtigungsfeld (Taskleiste) ist nicht verfügbar.</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="40"/>
@@ -4126,7 +4126,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation>aktualisiere lokale Metadaten</translation>
+        <translation>Aktualisiere lokale Metadaten</translation>
     </message>
 </context>
 <context>
@@ -4202,7 +4202,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Fehler beim Öffnen der E-Mail-Anwendung zum Erstellen einer neuen Nachricht. Vielleicht ist keine Standard-E-Mail Anwendung konfiguriert?</translation>
+        <translation>Fehler beim Öffnen der E-Mail-Anwendung zum Erstellen einer neuen Nachricht. Vielleicht ist keine Standard-E-Mail Anwendung eingerichtet?</translation>
     </message>
 </context>
 <context>

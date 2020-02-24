@@ -2706,7 +2706,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
         <source>Expiration date:</source>
-        <translation>Fecha de caducidad</translation>
+        <translation>Fecha de caducidad:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
