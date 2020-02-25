@@ -74,7 +74,7 @@ public:
      * being experimental. Calles the callback with true if enabling was
      * chosen.
      */
-    static void askExperimentalVirtualFilesFeature(const std::function<void(bool enable)> &callback);
+    static void askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback);
 
     // FIXME: Can those be local variables?
     // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage

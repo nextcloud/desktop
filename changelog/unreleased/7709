@@ -1,0 +1,7 @@
+Bugfix: Fixed crash in the setup wizard
+
+Fixe crash if setup wizard is closed while the virtual file system  dialog is open
+
+
+https://github.com/owncloud/client/issues/7709
+https://github.com/owncloud/client/issues/7711
