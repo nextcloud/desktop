@@ -152,8 +152,8 @@
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
-        <source>Create Folder</source>
-        <translation>Vytvořit složku</translation>
+        <source>Create folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -555,8 +555,8 @@
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
-        <source>Certificate password :</source>
-        <translation>Heslo k certifikátu:</translation>
+        <source>Certificate password:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -1738,11 +1738,6 @@ Záznamy událostí budou zapisovány do %1</translation>
         <translation>Hostitel</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="100"/>
-        <source>:</source>
-        <translation>:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
         <translation>Proxy server vyžaduje přihlášení</translation>
@@ -2128,8 +2123,8 @@ Nedoporučuje se jí používat.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
-        <source>There was an invalid response to an authenticated webdav request</source>
-        <translation>Byla obdržena nesprávná odpověď na ověřený webdav požadavek</translation>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>

@@ -152,8 +152,8 @@
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
-        <source>Create Folder</source>
-        <translation>Crea una carpeta</translation>
+        <source>Create folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -555,8 +555,8 @@
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
-        <source>Certificate password :</source>
-        <translation>Contrasenya del certificat:</translation>
+        <source>Certificate password:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -1741,11 +1741,6 @@ Els registres s’escriuran a %1</translation>
         <translation>Equip remot</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="100"/>
-        <source>:</source>
-        <translation>:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
         <translation>El servidor Proxy requereix autenticació</translation>
@@ -2130,8 +2125,8 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
-        <source>There was an invalid response to an authenticated webdav request</source>
-        <translation>Hi ha hagut una resposta no vàlida a una sol·licitud webdav autenticada</translation>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>

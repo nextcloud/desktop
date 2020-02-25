@@ -152,8 +152,8 @@
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
-        <source>Create Folder</source>
-        <translation>폴더 만들기</translation>
+        <source>Create folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -555,8 +555,8 @@
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
-        <source>Certificate password :</source>
-        <translation>인증서 암호 :</translation>
+        <source>Certificate password:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -1739,11 +1739,6 @@ Logs will be written to %1</source>
         <translation>호스트</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="100"/>
-        <source>:</source>
-        <translation>:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
         <translation>프록시 서버는 인증이 필요합니다.</translation>
@@ -2129,8 +2124,8 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
-        <source>There was an invalid response to an authenticated webdav request</source>
-        <translation>인증된 webdav 요청에 대한 응답이 잘못되었습니다.</translation>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>

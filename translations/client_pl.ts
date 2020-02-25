@@ -152,8 +152,8 @@
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
-        <source>Create Folder</source>
-        <translation>Utwórz folder</translation>
+        <source>Create folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -555,8 +555,8 @@
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
-        <source>Certificate password :</source>
-        <translation>Hasło certyfikatu:</translation>
+        <source>Certificate password:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -1739,11 +1739,6 @@ Dzienniki zostaną zapisane w %1</translation>
         <translation>Host</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="100"/>
-        <source>:</source>
-        <translation>:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
         <translation>Serwer proxy wymaga uwierzytelnienia</translation>
@@ -2129,8 +2124,8 @@ Nie zaleca się korzystania z niego.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
-        <source>There was an invalid response to an authenticated webdav request</source>
-        <translation>Wystąpiła nieprawidłowa odpowiedź na żądanie uwierzytelnienia WebDav</translation>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
