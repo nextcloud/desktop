@@ -1,0 +1,6 @@
+Bugfix: Fixed bug saving the cookies
+
+Saving the cookies on Windows might fail if the containing folder does not exist
+
+
+https://github.com/owncloud/client/issues/7700

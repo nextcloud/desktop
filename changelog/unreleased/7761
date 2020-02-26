@@ -1,0 +1,6 @@
+Bugfix: Fix a potential crash on Windows VFS 
+
+We've fixed a potential crash where marking a file as
+"Always keep on this device" caused the client to crash.
+
+https://github.com/owncloud/client/issues/7761

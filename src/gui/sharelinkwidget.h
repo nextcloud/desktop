@@ -127,7 +127,6 @@ private:
     ShareManager *_manager;
 
     bool _isFile;
-    bool _passwordRequired;
     bool _expiryRequired;
     bool _namesSupported;
 

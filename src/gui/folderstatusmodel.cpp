@@ -589,6 +589,13 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     QTimer::singleShot(1000, this, &FolderStatusModel::slotShowFetchProgress);
 }
 
+void FolderStatusModel::resetAndFetch(const QModelIndex &parent)
+{
+    auto info = infoForIndex(parent);
+    info->resetSubs(this, parent);
+    fetchMore(parent);
+}
+
 void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QString, QString> &map)
 {
     auto it = map.find("permissions");
@@ -721,11 +728,6 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     for (auto it = undecidedIndexes.begin(); it != undecidedIndexes.end(); ++it) {
         suggestExpand(index(*it, 0, idx));
     }
-
-/* We need lambda function for the following code.
-     * It's just a small feature that will be missing if the comiler is too old */
-#if !(defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG)) || (__GNUC__ * 100 + __GNUC_MINOR__ >= 405)
-
     /* Try to remove the the undecided lists the items that are not on the server. */
     auto it = std::remove_if(selectiveSyncUndecidedList.begin(), selectiveSyncUndecidedList.end(),
         [&](const QString &s) { return selectiveSyncUndecidedSet.count(s); });
@@ -735,7 +737,6 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
             SyncJournalDb::SelectiveSyncUndecidedList, selectiveSyncUndecidedList);
         emit dirtyChanged();
     }
-#endif
 }
 
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
@@ -1096,10 +1097,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     if (f->syncResult().folderStructureWasChanged()
         && (state == SyncResult::Success || state == SyncResult::Problem)) {
         // There is a new or a removed folder. reset all data
-        auto &info = _folders[folderIndex];
-        auto idx = index(folderIndex);
-        info.resetSubs(this, idx);
-        fetchMore(idx);
+        resetAndFetch(index(folderIndex));
     }
 }
 
@@ -1206,7 +1204,7 @@ void FolderStatusModel::slotNewBigFolder()
         return;
     }
 
-    _folders[folderIndex].resetSubs(this, index(folderIndex));
+    resetAndFetch(index(folderIndex));
 
     emit suggestExpand(index(folderIndex));
     emit dirtyChanged();

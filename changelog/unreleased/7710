@@ -1,0 +1,7 @@
+Bugfix: Fixed bug in the Virtual File warning dialog
+
+Don't show virtual file system warning again when the radio button is triggered a second time.
+Declining the dialog had no effect as the radio button was already checked
+
+https://github.com/owncloud/client/issues/7710
+https://github.com/owncloud/client/issues/7712

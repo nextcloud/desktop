@@ -445,6 +445,8 @@ bool FolderWizardRemotePath::isComplete() const
             warnStrings.append(tr("This folder is already being synced."));
         } else if (dir.startsWith(curDir)) {
             warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
+        } else if (curDir.startsWith(dir)) {
+            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a subfolder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
         }
     }
 
@@ -538,7 +540,7 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
     // The click has already had an effect on the box, so if it's
     // checked it was newly activated.
     if (_virtualFilesCheckBox->isChecked()) {
-        OwncloudWizard::askExperimentalVirtualFilesFeature([this](bool enable) {
+        OwncloudWizard::askExperimentalVirtualFilesFeature(this, [this](bool enable) {
             if (!enable)
                 _virtualFilesCheckBox->setChecked(false);
         });

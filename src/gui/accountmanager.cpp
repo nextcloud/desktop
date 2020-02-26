@@ -252,7 +252,10 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         CookieJar *jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
         if (jar) {
             qCInfo(lcAccountManager) << "Saving cookies." << acc->cookieJarPath();
-            jar->save(acc->cookieJarPath());
+            if (!jar->save(acc->cookieJarPath()))
+            {
+                qCWarning(lcAccountManager) << "Failed to save cookies to" << acc->cookieJarPath();
+            }
         }
     }
 }
@@ -294,7 +297,9 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String("General"));
-    acc->setApprovedCerts(QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray()));
+    const auto certs = QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray());
+    qCInfo(lcAccountManager) << "Restored: " << certs.count() << " unknown certs.";
+    acc->setApprovedCerts(certs);
     settings.endGroup();
 
     return acc;

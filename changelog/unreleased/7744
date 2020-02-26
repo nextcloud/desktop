@@ -1,0 +1,6 @@
+Bugfix: Resize the buttons in the settings view dynamically
+
+Since Qt 5.12 the button text gets elided automatically
+if the button text would exceed the button width.
+
+https://github.com/owncloud/client/issues/7744

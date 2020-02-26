@@ -52,13 +52,12 @@ const QString TOOLBAR_CSS()
                           "QToolBar QToolButton:checked { background: %3; color: %4; }");
 }
 
-const float buttonSizeRatio = 1.618f; // golden ratio
+const float BUTTONSIZERATIO = 1.618f; // golden ratio
 
 
 /** display name with two lines that is displayed in the settings
- * If width is bigger than 0, the string will be ellided so it does not exceed that width
  */
-QString shortDisplayNameForSettings(OCC::Account *account, int width)
+QString shortDisplayNameForSettings(OCC::Account *account)
 {
     QString user = account->davDisplayName();
     if (user.isEmpty()) {
@@ -69,12 +68,6 @@ QString shortDisplayNameForSettings(OCC::Account *account, int width)
     if (port > 0 && port != 80 && port != 443) {
         host.append(QLatin1Char(':'));
         host.append(QString::number(port));
-    }
-    if (width > 0) {
-        QFont f;
-        QFontMetrics fm(f);
-        host = fm.elidedText(host, Qt::ElideMiddle, width);
-        user = fm.elidedText(user, Qt::ElideRight, width);
     }
     return QStringLiteral("%1\n%2").arg(user, host);
 }
@@ -132,7 +125,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _ui->stack->addWidget(networkSettings);
 
     QWidget *spacer = new QWidget();
-    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _toolBar->addWidget(spacer);
 
     QAction *quitAction = createColorAwareAction(QLatin1String(":/client/resources/quit.png"), tr("Quit %1").arg(qApp->applicationName()));
@@ -251,8 +244,6 @@ void SettingsDialog::showIssuesList(const QString &folderAlias)
 
 void SettingsDialog::accountAdded(AccountState *s)
 {
-    auto height = _toolBar->sizeHint().height();
-
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
     QAction *accountAction;
@@ -268,7 +259,7 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
-        accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), height * buttonSizeRatio));
+        accountAction->setIconText(shortDisplayNameForSettings(s->account().data()));
     }
     _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
@@ -317,8 +308,7 @@ void SettingsDialog::slotAccountDisplayNameChanged()
         if (action) {
             QString displayName = account->displayName();
             action->setText(displayName);
-            auto height = _toolBar->sizeHint().height();
-            action->setIconText(shortDisplayNameForSettings(account, height * buttonSizeRatio));
+            action->setIconText(shortDisplayNameForSettings(account));
         }
     }
 }
@@ -407,16 +397,16 @@ public:
             return nullptr;
         }
 
-        QToolButton *btn = new QToolButton(parent);
+        QToolButton *btn = new QToolButton(toolbar);
         QString objectName = QLatin1String("settingsdialog_toolbutton_");
         objectName += text();
         btn->setObjectName(objectName);
 
         btn->setDefaultAction(this);
         btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-        //         btn->setMinimumWidth(qMax<int>(parent->sizeHint().height() * buttonSizeRatio,
-        //                                        btn->sizeHint().width()));
+        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+        // icon size is fixed, we can't use the toolbars actual size hint as it might not be defined yet
+        btn->setMinimumWidth(toolbar->iconSize().height() * BUTTONSIZERATIO);
         return btn;
     }
 };
