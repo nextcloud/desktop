@@ -357,14 +357,20 @@ public:
      */
     virtual QString versionSwitchOutput() const;
 
-
     /**
      * @brief Whether to show the option to create folders using "virtual files".
+     *
+     * By default, this is the same as enableExperimentalFreatures()
+     */
+    virtual bool showVirtualFilesOption() const;
+
+    /**
+     * @brief Whether to show options considered as experimental.
      *
      * By default, the options are not shown unless experimental options are
      * manually enabled in the configuration file.
      */
-    virtual bool showVirtualFilesOption() const;
+    virtual bool enableExperimentalFeatures() const;
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
