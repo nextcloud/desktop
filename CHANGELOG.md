@@ -3,7 +3,7 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-
+[unreleased]: https://github.com/owncloud/client/compare/v2.6.2...master
 
 Summary
 -------
@@ -108,6 +108,25 @@ Details
    the client.
 
    https://github.com/owncloud/client/pull/7681
+
+Changelog for ownCloud Desktop Client [2.6.2] (2020-02-21)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.6.2 relevant to
+ownCloud admins and users.
+
+[2.6.2]: https://github.com/owncloud/client/compare/v2.6.1...v2.6.2
+
+Summary
+-------
+
+* Change - Add branding option to disable experimental features: [#7755](https://github.com/owncloud/client/issues/7755)
+
+Details
+-------
+
+* Change - Add branding option to disable experimental features: [#7755](https://github.com/owncloud/client/issues/7755)
+
+   https://github.com/owncloud/client/issues/7755
 
 ChangeLog
 =========
