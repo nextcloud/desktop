@@ -44,6 +44,8 @@ artifacts:
 
 environment:
     matrix:
+    - TARGET: macos-64-clang
+      APPVEYOR_BUILD_WORKER_IMAGE: macOS
     - TARGET: windows-msvc2017_32-cl
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - TARGET: windows-msvc2017_64-cl
