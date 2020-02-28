@@ -1104,7 +1104,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="186"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Грешка у учитавању листе фолдера са сервера.</translation>
+        <translation>Грешка при учитавању листе фасцикли са сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
@@ -2273,7 +2273,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="973"/>
         <source>Error writing metadata to the database</source>
-        <translation>Грешка приликом упису мета података у базу података</translation>
+        <translation>Грешка при упису мета података у базу</translation>
     </message>
 </context>
 <context>
@@ -2326,7 +2326,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="941"/>
         <source>Error writing metadata to the database</source>
-        <translation>Грешка приликом упису мета података у базу података</translation>
+        <translation>Грешка при упису мета података у базу</translation>
     </message>
 </context>
 <context>
@@ -2362,7 +2362,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="203"/>
         <source>Error writing metadata to the database</source>
-        <translation>Грешка приликом упису мета података у базу података</translation>
+        <translation>Грешка при упису мета података у базу</translation>
     </message>
 </context>
 <context>
@@ -2394,7 +2394,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>Error writing metadata to the database</source>
-        <translation>Грешка приликом упису мета података у базу података</translation>
+        <translation>Грешка при упису мета података у базу</translation>
     </message>
 </context>
 <context>
@@ -2415,7 +2415,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
         <source>Error writing metadata to the database</source>
-        <translation>Грешка приликом упису мета података у базу података</translation>
+        <translation>Грешка при упису мета података у базу</translation>
     </message>
 </context>
 <context>
@@ -2429,7 +2429,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
         <source>Error writing metadata to the database</source>
-        <translation>Грешка приликом упису мета података у базу података</translation>
+        <translation>Грешка при упису мета података у базу</translation>
     </message>
 </context>
 <context>
@@ -3182,7 +3182,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>File or directory not found:</source>
-        <translation>Датотека или директоријум нису пронађени:</translation>
+        <translation>Фајл или директоријум нису нађени:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
@@ -3227,7 +3227,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Error while reading folder.</source>
-        <translation>Грешка приликом учитавања фасцикле</translation>
+        <translation>Грешка при читању фасцикле.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="173"/>
