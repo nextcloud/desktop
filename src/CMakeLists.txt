@@ -1,7 +1,3 @@
-# TODO: OSX and LIB_ONLY seem to require this to go to binary dir only
-if(NOT TOKEN_AUTH_ONLY)
-endif()
-
 find_package(Qt5 5.12 COMPONENTS Core Network Xml Concurrent REQUIRED)
 get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
 message(STATUS "Using Qt ${Qt5Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
