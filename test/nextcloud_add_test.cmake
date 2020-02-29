@@ -1,4 +1,4 @@
-find_package(Qt5 COMPONENTS Core Test Xml Network REQUIRED)
+find_package(Qt5 COMPONENTS Core Test Xml Network Qml Quick REQUIRED)
 
 macro(nextcloud_add_test test_class additional_cpp)
     set(CMAKE_AUTOMOC TRUE)
@@ -11,7 +11,7 @@ macro(nextcloud_add_test test_class additional_cpp)
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
         updater
         ${APPLICATION_EXECUTABLE}sync
-        Qt5::Core Qt5::Test Qt5::Xml Qt5::Network
+        Qt5::Core Qt5::Test Qt5::Xml Qt5::Network Qt5::Qml Qt5::Quick
     )
 
     add_definitions(-DOWNCLOUD_TEST)
