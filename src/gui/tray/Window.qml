@@ -563,7 +563,7 @@ Window {
                     hoverEnabled: false
                     visible: (path === "") ? false : true
                     display: AbstractButton.IconOnly
-                    icon.source: "qrc:///client/resources/files.svg"
+                    icon.source: "qrc:///client/theme/files.svg"
                     icon.color: "transparent"
 
                     onClicked: {
@@ -579,7 +579,7 @@ Window {
                     hoverEnabled: false
                     visible: (link === "") ? false : true
                     display: AbstractButton.IconOnly
-                    icon.source: "qrc:///client/resources/public.svg"
+                    icon.source: "qrc:///client/theme/public.svg"
                     icon.color: "transparent"
 
                     onClicked: {

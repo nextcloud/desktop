@@ -231,15 +231,15 @@ void ShareLinkWidget::setupUiOptions()
     }
 
     // Adds action to unshare widget (check box)
-    _unshareLinkAction = _linkContextMenu->addAction(QIcon(":/client/resources/delete.png"),
+    _unshareLinkAction = _linkContextMenu->addAction(QIcon(":/client/theme/delete.svg"),
         tr("Unshare"));
 
     _linkContextMenu->addSeparator();
 
-    _addAnotherLinkAction = _linkContextMenu->addAction(QIcon(":/client/resources/add.png"),
+    _addAnotherLinkAction = _linkContextMenu->addAction(QIcon(":/client/theme/add.svg"),
         tr("Add another link"));
 
-    _ui->enableShareLink->setIcon(QIcon(":/client/resources/copy.svg"));
+    _ui->enableShareLink->setIcon(QIcon(":/client/theme/copy.svg"));
     disconnect(_ui->enableShareLink, &QPushButton::clicked, this, &ShareLinkWidget::slotCreateShareLink);
     connect(_ui->enableShareLink, &QPushButton::clicked, this, &ShareLinkWidget::slotCopyLinkShare);
 
@@ -559,19 +559,19 @@ void ShareLinkWidget::slotStyleChanged()
 
 void ShareLinkWidget::customizeStyle()
 {
-    _unshareLinkAction->setIcon(Theme::createColorAwareIcon(":/client/resources/delete.png"));
+    _unshareLinkAction->setIcon(Theme::createColorAwareIcon(":/client/theme/delete.svg"));
 
-    _addAnotherLinkAction->setIcon(Theme::createColorAwareIcon(":/client/resources/add.png"));
+    _addAnotherLinkAction->setIcon(Theme::createColorAwareIcon(":/client/theme/add.svg"));
 
-    _ui->enableShareLink->setIcon(Theme::createColorAwareIcon(":/client/resources/copy.svg"));
+    _ui->enableShareLink->setIcon(Theme::createColorAwareIcon(":/client/theme/copy.svg"));
     
-    _ui->shareLinkIconLabel->setPixmap(Theme::createColorAwarePixmap(":/client/resources/public.svg"));
+    _ui->shareLinkIconLabel->setPixmap(Theme::createColorAwarePixmap(":/client/theme/public.svg"));
     
-    _ui->shareLinkToolButton->setIcon(Theme::createColorAwareIcon(":/client/resources/more.svg"));
+    _ui->shareLinkToolButton->setIcon(Theme::createColorAwareIcon(":/client/theme/more.svg"));
     
-    _ui->confirmNote->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
-    _ui->confirmPassword->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
-    _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
+    _ui->confirmNote->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
+    _ui->confirmPassword->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
+    _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
 
     _ui->progressIndicator->setColor(QGuiApplication::palette().color(QPalette::Text));
 }
