@@ -87,7 +87,7 @@ To prevent automatic updates and disallow manual overrides:
 
 1. Edit this Registry key:
 
-    ``HKEY_LOCAL_MACHINE\Software\Policies\Nextcloud\Nextcloud``
+    ``HKEY_LOCAL_MACHINE\Software\Policies\Nextcloud GmbH\Nextcloud``
 
 2. Add the key ``skipUpdateCheck`` (of type DWORD).
 

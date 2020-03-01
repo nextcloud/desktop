@@ -22,6 +22,8 @@
 
 #include "connectionvalidator.h"
 #include "account.h"
+#include "accountstate.h"
+#include "userinfo.h"
 #include "networkjobs.h"
 #include "clientproxy.h"
 #include <creds/abstractcredentials.h>
@@ -34,9 +36,10 @@ Q_LOGGING_CATEGORY(lcConnectionValidator, "nextcloud.sync.connectionvalidator", 
 // This makes sure we get tried often enough without "ConnectionValidator already running"
 static qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5 * 1000);
 
-ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
+ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, QObject *parent)
     : QObject(parent)
-    , _account(account)
+    , _accountState(accountState)
+    , _account(accountState->account())
     , _isCheckingServerAndAuth(false)
 {
 }
@@ -44,7 +47,7 @@ ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
-        _errors << tr("No ownCloud account configured");
+        _errors << tr("No Nextcloud account configured");
         reportResult(NotConfigured);
         return;
     }
@@ -270,10 +273,9 @@ void ConnectionValidator::ocsConfigReceived(const QJsonDocument &json, AccountPt
 
 void ConnectionValidator::fetchUser()
 {
-    JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/user"), this);
-    job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotUserFetched);
-    job->start();
+    UserInfo *userInfo = new UserInfo(_accountState.data(), true, true, this);
+    QObject::connect(userInfo, &UserInfo::fetchedLastInfo, this, &ConnectionValidator::slotUserFetched);
+    userInfo->setActive(true);
 }
 
 bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
@@ -305,34 +307,22 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     return true;
 }
 
-void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
+void ConnectionValidator::slotUserFetched(UserInfo *userInfo)
 {
-    QString user = json.object().value("ocs").toObject().value("data").toObject().value("id").toString();
-    if (!user.isEmpty()) {
-        _account->setDavUser(user);
+    if(userInfo) {
+        userInfo->setActive(false);
+        userInfo->deleteLater();
     }
-    QString displayName = json.object().value("ocs").toObject().value("data").toObject().value("display-name").toString();
-    if (!displayName.isEmpty()) {
-        _account->setDavDisplayName(displayName);
-    }
+
 #ifndef TOKEN_AUTH_ONLY
-    AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);
-    job->setTimeout(20 * 1000);
-    QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
-    job->start();
+    connect(_account->e2e(), &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
+    _account->e2e()->initialize();
 #else
     reportResult(Connected);
 #endif
 }
 
 #ifndef TOKEN_AUTH_ONLY
-void ConnectionValidator::slotAvatarImage(const QImage &img)
-{
-    _account->setAvatar(img);
-    connect(_account->e2e(), &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
-    _account->e2e()->initialize();
-}
-
 void ConnectionValidator::reportConnected() {
     reportResult(Connected);
 }

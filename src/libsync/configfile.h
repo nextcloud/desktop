@@ -149,6 +149,11 @@ public:
     bool skipUpdateCheck(const QString &connection = QString()) const;
     void setSkipUpdateCheck(bool, const QString &);
 
+    /** Query-parameter 'updatesegment' for the update check, value between 0 and 99.
+        Used to throttle down desktop release rollout in order to keep the update servers alive at peak times.
+        See: https://github.com/nextcloud/client_updater_server/pull/36 */
+    int updateSegment() const;
+
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 

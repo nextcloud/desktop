@@ -1,6 +1,4 @@
 usr/bin
 usr/share/applications
-usr/share/cloud-providers/
-usr/share/dbus-1/services/
 usr/share/icons
 debian/101-sync-inotify.conf etc/sysctl.d

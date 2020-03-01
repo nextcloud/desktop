@@ -67,23 +67,20 @@ namespace OCC {
     +---------------------------------+
     |
   fetchUser
-        PropfindJob
-        |
-        +-> slotUserFetched
-              AvatarJob
-              |
-              +-> slotAvatarImage -->
+        Utilizes the UserInfo class to fetch the user and avatar image
   +-----------------------------------+
   |
   +-> Client Side Encryption Checks --+ --reportResult()
     \endcode
  */
 
+class UserInfo;
+
 class ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionValidator(AccountPtr account, QObject *parent = nullptr);
+    explicit ConnectionValidator(AccountStatePtr accountState, QObject *parent = nullptr);
 
     enum Status {
         Undefined,
@@ -125,13 +122,12 @@ protected slots:
     void slotAuthSuccess();
 
     void slotCapabilitiesRecieved(const QJsonDocument &);
-    void slotUserFetched(const QJsonDocument &);
-#ifndef TOKEN_AUTH_ONLY
-    void slotAvatarImage(const QImage &img);
-#endif
+    void slotUserFetched(UserInfo *userInfo);
 
 private:
+#ifndef TOKEN_AUTH_ONLY
     void reportConnected();
+#endif
     void reportResult(Status status);
     void checkServerCapabilities();
     void fetchUser();
@@ -144,6 +140,7 @@ private:
     bool setAndCheckServerVersion(const QString &version);
 
     QStringList _errors;
+    AccountStatePtr _accountState;
     AccountPtr _account;
     bool _isCheckingServerAndAuth;
 };

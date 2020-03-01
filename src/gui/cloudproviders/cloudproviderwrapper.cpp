@@ -33,13 +33,13 @@ using namespace OCC;
 
 GSimpleActionGroup *actionGroup = nullptr;
 
-CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, CloudProvidersProviderExporter* cloudprovider) : QObject(parent)
+CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int folderId, CloudProvidersProviderExporter* cloudprovider) : QObject(parent)
   , _folder(folder)
 {
     GMenuModel *model;
     GActionGroup *action_group;
     _recentlyChanged = new QList<QPair<QString, QString>>();
-    QString accountName = QString("Account%1Folder%2").arg(folder->alias(), folder->accountState()->account()->id());
+    QString accountName = QString("Folder/%1").arg(folderId);
 
     _cloudProvider = CLOUD_PROVIDERS_PROVIDER_EXPORTER(cloudprovider);
     _cloudProviderAccount = cloud_providers_account_exporter_new(_cloudProvider, accountName.toUtf8().data());

@@ -25,6 +25,7 @@
 #include "version.h"
 
 #include "config.h"
+#include "configfile.h"
 
 namespace OCC {
 
@@ -74,6 +75,11 @@ QUrlQuery Updater::getQueryParams()
         // FIXME: Provide a checkbox in UI to enable regular versions to switch
         // to beta channel
     }
+
+    // updateSegment (see configfile.h)
+    ConfigFile cfg;
+    auto updateSegment = cfg.updateSegment();
+    query.addQueryItem(QLatin1String("updatesegment"), QString::number(updateSegment));
 
     return query;
 }
