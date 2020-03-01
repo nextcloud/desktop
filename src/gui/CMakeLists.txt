@@ -14,6 +14,8 @@ else()
     set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 endif()
 
+#set (QML_IMPORT_PATH "${CMAKE_SOURCE_DIR}/src/gui/tray" CACHE STRING "Extra qml module import paths" FORCE)
+
 set(client_UI_SRCS
     accountsettings.ui
     folderwizardsourcepage.ui
