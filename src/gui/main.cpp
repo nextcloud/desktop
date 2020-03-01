@@ -46,7 +46,7 @@ void warnSystray()
 
 int main(int argc, char **argv)
 {
-    Q_INIT_RESOURCE(client);
+    Q_INIT_RESOURCE(resources);
 
     // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
 

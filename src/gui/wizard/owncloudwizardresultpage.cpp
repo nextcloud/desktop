@@ -38,7 +38,8 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     setSubTitle(QLatin1String(" "));
 
     _ui.pbOpenLocal->setText(tr("Open Local Folder"));
-    _ui.pbOpenLocal->setIcon(QIcon(QLatin1String(":/client/resources/folder-sync.png")));
+    // TODO: File doesn't exist anymore - unneccessary or replacement needed?
+    _ui.pbOpenLocal->setIcon(QIcon(QLatin1String(":/client/theme/folder-sync.png")));
     _ui.pbOpenLocal->setIconSize(QSize(48, 48));
     _ui.pbOpenLocal->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     connect(_ui.pbOpenLocal, &QAbstractButton::clicked, this, &OwncloudWizardResultPage::slotOpenLocal);

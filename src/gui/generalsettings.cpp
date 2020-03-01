@@ -100,6 +100,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         if (QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows10)
     #endif
             _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
+#else
+    // Hide on non-Windows
+    _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
 #endif
 
     /* Set the left contents margin of the layout to zero to make the checkboxes

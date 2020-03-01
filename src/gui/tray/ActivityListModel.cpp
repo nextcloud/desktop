@@ -137,11 +137,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             } else {
                 // File sync successful
                 if (a._fileAction == "file_created") {
-                    return "qrc:///client/resources/add-color.svg";
+                    return "qrc:///client/theme/colored/add.svg";
                 } else if (a._fileAction == "file_deleted") {
-                    return "qrc:///client/resources/delete-color.svg";
+                    return "qrc:///client/theme/colored/delete.svg";
                 } else {
-                    return "qrc:///client/resources/change.svg";
+                    return "qrc:///client/theme/change.svg";
                 }
             }
         } else {

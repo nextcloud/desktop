@@ -54,7 +54,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>User name</string>
+      <string>Username</string>
      </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>
@@ -93,8 +93,8 @@
    <item>
     <widget class="QToolButton" name="permissionToolButton">
      <property name="icon">
-      <iconset resource="../../client.qrc">
-       <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
+      <iconset resource="../../theme.qrc">
+       <normaloff>:/client/theme/more.svg</normaloff>:/client/theme/more.svg</iconset>
      </property>
      <property name="autoRaise">
       <bool>true</bool>
@@ -111,7 +111,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../client.qrc"/>
+  <include location="../../theme.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -102,8 +102,8 @@ target_link_libraries(${synclib_NAME}
 )
 
 if (NOT TOKEN_AUTH_ONLY)
-    find_package(Qt5 REQUIRED COMPONENTS Widgets)
-    target_link_libraries(${synclib_NAME} Qt5::Widgets ${QTKEYCHAIN_LIBRARY})
+    find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
+    target_link_libraries(${synclib_NAME} Qt5::Widgets Qt5::Svg ${QTKEYCHAIN_LIBRARY})
     target_include_directories(${synclib_NAME} PRIVATE ${QTKEYCHAIN_INCLUDE_DIR})
 endif()
 

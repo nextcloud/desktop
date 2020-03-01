@@ -24,6 +24,7 @@
 #include <QApplication>
 #endif
 #include <QSslSocket>
+#include <QSvgRenderer>
 
 #include "nextcloudtheme.h"
 
@@ -141,28 +142,23 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
         }
 
         QList<int> sizes;
-        sizes << 16 << 22 << 32 << 48 << 64 << 128 << 256 << 512 << 1024;
+        sizes << 16 << 32 << 64 << 128 << 256;
         foreach (int size, sizes) {
-            QString pixmapName = QString::fromLatin1(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
-            if (QFile::exists(pixmapName)) {
-                QPixmap px(pixmapName);
-                // HACK, get rid of it by supporting FDO icon themes, this is really just emulating ubuntu-mono
-                if (qgetenv("DESKTOP_SESSION") == "ubuntu") {
-                    QBitmap mask = px.createMaskFromColor(Qt::white, Qt::MaskOutColor);
-                    QPainter p(&px);
-                    p.setPen(QColor("#dfdbd2"));
-                    p.drawPixmap(px.rect(), mask, mask.rect());
-                }
-                cached.addPixmap(px);
+            QString svgName = QString::fromLatin1(":/client/theme/%1/%2.svg").arg(flavor).arg(name);
+            QSvgRenderer renderer(svgName);
+            QImage img(size, size, QImage::Format_ARGB32);
+            img.fill(Qt::GlobalColor::transparent);
+            QPainter imgPainter(&img);
+            renderer.render(&imgPainter);
+            auto px = QPixmap::fromImage(img);
+            // HACK, get rid of it by supporting FDO icon themes, this is really just emulating ubuntu-mono
+            if (qgetenv("DESKTOP_SESSION") == "ubuntu") {
+                QBitmap mask = px.createMaskFromColor(Qt::white, Qt::MaskOutColor);
+                QPainter p(&px);
+                p.setPen(QColor("#dfdbd2"));
+                p.drawPixmap(px.rect(), mask, mask.rect());
             }
-        }
-        if (cached.isNull()) {
-            foreach (int size, sizes) {
-                QString pixmapName = QString::fromLatin1(":/client/resources/%1-%2.png").arg(name).arg(size);
-                if (QFile::exists(pixmapName)) {
-                    cached.addFile(pixmapName);
-                }
-            }
+            cached.addPixmap(px);
         }
     }
 
@@ -592,8 +588,17 @@ void Theme::replaceLinkColorString(QString &linkString, const QColor &newColor)
 
 QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette)
 {
-    QImage img(name);
-    QImage inverted(img);
+    QSvgRenderer renderer(name);
+    QImage img(64, 64, QImage::Format_ARGB32);
+    img.fill(Qt::GlobalColor::transparent);
+    QPainter imgPainter(&img);
+    QImage inverted(64, 64, QImage::Format_ARGB32);
+    inverted.fill(Qt::GlobalColor::transparent);
+    QPainter invPainter(&inverted);
+
+    renderer.render(&imgPainter);
+    renderer.render(&invPainter);
+
     inverted.invertPixels(QImage::InvertRgb);
 
     QIcon icon;

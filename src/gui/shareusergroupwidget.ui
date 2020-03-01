@@ -56,15 +56,15 @@
         </sizepolicy>
        </property>
        <property name="placeholderText">
-        <string>Share with users or groups ...</string>
+        <string>Share with users or groups …</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QToolButton" name="confirmShare">
        <property name="icon">
-        <iconset resource="../../client.qrc">
-         <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
+        <iconset resource="../../theme.qrc">
+         <normaloff>:/client/theme/confirm.svg</normaloff>:/client/theme/confirm.svg</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -133,7 +133,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../../client.qrc"/>
+  <include location="../../theme.qrc"/>
  </resources>
  <connections/>
 </ui>

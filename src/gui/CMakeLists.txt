@@ -1,12 +1,11 @@
 project(gui)
-find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
+find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Qml Quick)
 set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(CMAKE_AUTORCC TRUE)
 add_subdirectory(updater)
 
-#TODO Move resources files
-set(MIRALL_RC_SRC ../../client.qrc)
+set(MIRALL_RC_SRC ../../resources.qrc)
 if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
     list(APPEND MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
     set(theme_dir ${OEM_THEME_DIR}/theme)
@@ -89,7 +88,7 @@ set(client_SRCS
     syncrunfilelog.cpp
     systray.cpp
     thumbnailjob.cpp
-    quotainfo.cpp
+    userinfo.cpp
     accountstate.cpp
     addcertificatedialog.cpp
     authenticationdialog.cpp
@@ -310,7 +309,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
-target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml)
+target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml Qt5::Qml Qt5::Quick)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )

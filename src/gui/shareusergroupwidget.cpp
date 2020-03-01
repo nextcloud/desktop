@@ -266,7 +266,7 @@ void ShareUserGroupWidget::slotPrivateLinkShare()
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     // this icon is not handled by slotStyleChanged() -> customizeStyle but we can live with that
-    menu->addAction(Theme::createColorAwareIcon(":/client/resources/copy.svg"),
+    menu->addAction(Theme::createColorAwareIcon(":/client/theme/copy.svg"),
                     tr("Copy link"),
         this, SLOT(slotPrivateLinkCopy()));
 
@@ -379,7 +379,7 @@ void ShareUserGroupWidget::slotStyleChanged()
 
 void ShareUserGroupWidget::customizeStyle()
 {
-    _ui->confirmShare->setIcon(Theme::createColorAwareIcon(":/client/resources/confirm.svg"));
+    _ui->confirmShare->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
 
     _pi_sharee.setColor(QGuiApplication::palette().color(QPalette::Text));
 
@@ -421,7 +421,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     menu->addSeparator();
 
       // Adds action to delete share widget
-      QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),QIcon(QLatin1String(":/client/resources/delete.png")));
+      QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),QIcon(QLatin1String(":/client/theme/delete.svg")));
       _deleteShareButton= new QAction(deleteicon,tr("Unshare"), this);
 
     menu->addAction(_deleteShareButton);
@@ -453,10 +453,6 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     _ui->permissionToolButton->setMenu(menu);
     _ui->permissionToolButton->setPopupMode(QToolButton::InstantPopup);
 
-    // icon now set in: customizeStyle
-    /*QIcon icon(QLatin1String(":/client/resources/more.svg"));
-    _ui->permissionToolButton->setIcon(icon);*/
-
     // Set the permissions checkboxes
     displayPermissions();
 
@@ -473,9 +469,6 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
 
     connect(share.data(), &Share::permissionsSet, this, &ShareUserLine::slotPermissionsSet);
     connect(share.data(), &Share::shareDeleted, this, &ShareUserLine::slotShareDeleted);
-
-    // _ui->deleteShareButton->setIcon(QIcon::fromTheme(QLatin1String("user-trash"),
-    //                                                  QIcon(QLatin1String(":/client/resources/delete.png"))));
 
     if (!share->account()->capabilities().shareResharing()) {
         _permissionReshare->setVisible(false);
@@ -686,9 +679,9 @@ void ShareUserLine::slotStyleChanged()
 
 void ShareUserLine::customizeStyle()
 {
-    _ui->permissionToolButton->setIcon(Theme::createColorAwareIcon(":/client/resources/more.svg"));
+    _ui->permissionToolButton->setIcon(Theme::createColorAwareIcon(":/client/theme/more.svg"));
 
-    QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),Theme::createColorAwareIcon(QLatin1String(":/client/resources/delete.png")));
+    QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),Theme::createColorAwareIcon(QLatin1String(":/client/theme/delete.svg")));
     _deleteShareButton->setIcon(deleteicon);
 }
 

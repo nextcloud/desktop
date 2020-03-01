@@ -36,6 +36,7 @@ public slots:
 
 private:
     QMap<QString, CloudProviderWrapper*> *_map;
+    unsigned int _folder_index;
 };
 
 #endif // CLOUDPROVIDERMANAGER_H

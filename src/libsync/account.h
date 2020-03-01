@@ -52,7 +52,6 @@ namespace OCC {
 class AbstractCredentials;
 class Account;
 typedef QSharedPointer<Account> AccountPtr;
-class QuotaInfo;
 class AccessManager;
 class SimpleNetworkJob;
 
@@ -311,7 +310,6 @@ private:
     Capabilities _capabilities;
     QString _serverVersion;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
-    QuotaInfo *_quotaInfo;
     QSharedPointer<QNetworkAccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;
