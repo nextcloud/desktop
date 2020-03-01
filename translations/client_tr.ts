@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create folder</source>
-        <translation>Klasör oluştur</translation>
+        <translation>Klasör ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -2123,7 +2123,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Kimliği doğrulanmış bir webdav isteğine geçersiz bir yanıt verildi</translation>
+        <translation>Kimliği doğrulanmış bir WebDAV isteğine geçersiz bir yanıt verildi</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
@@ -2695,7 +2695,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
         <source>&amp;Share link</source>
-        <translation>&amp;Dosyayı paylaş</translation>
+        <translation>&amp;Bağlantıyı paylaş</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
@@ -3748,7 +3748,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
-        <translation>Yakın zamanda eşitlenen bir öge yok</translation>
+        <translation>Yakın zamanda eşitlenmiş bir öge yok</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="919"/>
