@@ -57,6 +57,7 @@ public:
     Q_INVOKABLE bool syncIsPaused();
     Q_INVOKABLE void setOpened();
     Q_INVOKABLE void setClosed();
+    Q_INVOKABLE int screenIndex();
 
 signals:
     void currentUserChanged();

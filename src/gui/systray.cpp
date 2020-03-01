@@ -18,6 +18,7 @@
 #include "config.h"
 #include "tray/UserModel.h"
 
+#include <QCursor>
 #include <QDesktopServices>
 #include <QGuiApplication>
 #include <QQmlComponent>
@@ -95,6 +96,17 @@ bool Systray::isOpen()
     return _isOpen;
 }
 
+Q_INVOKABLE int Systray::screenIndex()
+{
+    auto qPos = QCursor::pos();
+    for (int i = 0; i < QGuiApplication::screens().count(); i++) {
+        if (QGuiApplication::screens().at(i)->geometry().contains(qPos)) {
+            return i;
+        }
+    }
+    return 0;
+}
+
 Q_INVOKABLE void Systray::setOpened()
 {
     _isOpen = true;
@@ -142,17 +154,32 @@ int Systray::calcTrayWindowX()
     int trayIconTopCenterX = (topRight - ((topRight - topLeft) * 0.5)).x();
     return trayIconTopCenterX - (400 * 0.5);
 #else
-    QScreen *trayScreen = QGuiApplication::primaryScreen();
+    QScreen* trayScreen = nullptr;
+    if (QGuiApplication::screens().count() > 1) {
+        trayScreen = QGuiApplication::screens().at(screenIndex());
+    } else {
+        trayScreen = QGuiApplication::primaryScreen();
+    }
+
     int screenWidth = trayScreen->geometry().width();
     int screenHeight = trayScreen->geometry().height();
     int availableWidth = trayScreen->availableGeometry().width();
     int availableHeight = trayScreen->availableGeometry().height();
-    QPoint topRightDpiAware = this->geometry().topRight() / trayScreen->devicePixelRatio();
-    QPoint topLeftDpiAware = this->geometry().topLeft() / trayScreen->devicePixelRatio();
 
-    // get coordinates from top center point of tray icon
+    QPoint topRightDpiAware = QPoint();
+    QPoint topLeftDpiAware = QPoint();
+    if (this->geometry().left() == 0 || this->geometry().top() == 0) {
+        // tray geometry is invalid - QT bug on some linux desktop environments
+        // Use mouse position instead. Cringy, but should work for now
+        topRightDpiAware = QCursor::pos() / trayScreen->devicePixelRatio();
+        topLeftDpiAware = QCursor::pos() / trayScreen->devicePixelRatio();
+    } else {
+        topRightDpiAware = this->geometry().topRight() / trayScreen->devicePixelRatio();
+        topLeftDpiAware = this->geometry().topLeft() / trayScreen->devicePixelRatio();
+    }
+
+    // get x coordinate from top center point of tray icon
     int trayIconTopCenterX = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).x();
-    int trayIconTopCenterY = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).y();
 
     if (availableHeight < screenHeight) {
         // taskbar is on top or bottom
@@ -179,15 +206,28 @@ int Systray::calcTrayWindowY()
     // don't use availableGeometry() here, because this also excludes the dock
     return 22+6;
 #else
-    QScreen *trayScreen = QGuiApplication::primaryScreen();
-    int screenWidth = trayScreen->geometry().width();
+    QScreen* trayScreen = nullptr;
+    if (QGuiApplication::screens().count() > 1) {
+        trayScreen = QGuiApplication::screens().at(screenIndex());
+    } else {
+        trayScreen = QGuiApplication::primaryScreen();
+    }
+
     int screenHeight = trayScreen->geometry().height();
     int availableHeight = trayScreen->availableGeometry().height();
-    QPoint topRightDpiAware = this->geometry().topRight() / trayScreen->devicePixelRatio();
-    QPoint topLeftDpiAware = this->geometry().topLeft() / trayScreen->devicePixelRatio();
 
-    // get coordinates from top center point of tray icon
-    int trayIconTopCenterX = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).x();
+    QPoint topRightDpiAware = QPoint();
+    QPoint topLeftDpiAware = QPoint();
+    if (this->geometry().left() == 0 || this->geometry().top() == 0) {
+        // tray geometry is invalid - QT bug on some linux desktop environments
+        // Use mouse position instead. Cringy, but should work for now
+        topRightDpiAware = QCursor::pos() / trayScreen->devicePixelRatio();
+        topLeftDpiAware = QCursor::pos() / trayScreen->devicePixelRatio();
+    } else {
+        topRightDpiAware = this->geometry().topRight() / trayScreen->devicePixelRatio();
+        topLeftDpiAware = this->geometry().topLeft() / trayScreen->devicePixelRatio();
+    }
+    // get y coordinate from top center point of tray icon
     int trayIconTopCenterY = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).y();
 
     if (availableHeight < screenHeight) {
