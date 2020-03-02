@@ -171,6 +171,7 @@ QUrl OAuth::authorisationLink() const
     if (!_expectedUser.isNull())
         query.addQueryItem("user", _expectedUser);
     QUrl url = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/authorize"), query);
+    url.setQuery(url.query(QUrl::FullyEncoded).replace('+', QLatin1String("%2B"))); // Issue #7762
     return url;
 }
 
