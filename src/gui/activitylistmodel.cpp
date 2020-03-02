@@ -139,7 +139,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActivityItemDelegate::AccountRole:
         return a._accName;
     case ActivityItemDelegate::PointInTimeRole:
-        return QString("%1 (%2)").arg(a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate), Utility::timeAgoInWords(a._dateTime.toLocalTime()));
+        return Utility::timeAgoInWords(a._dateTime.toLocalTime());
+    case Qt::ToolTipRole:
+        return a._dateTime.toLocalTime().toString(Qt::DefaultLocaleShortDate);
     case ActivityItemDelegate::AccountConnectedRole:
         return (ast && ast->isConnected());
     default:
