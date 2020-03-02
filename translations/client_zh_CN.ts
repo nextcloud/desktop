@@ -521,7 +521,7 @@
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/activitylistmodel.cpp" line="239"/>
+        <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>来自忽略列表的文件和符号链接不会被同步。这包含：</translation>
     </message>
