@@ -118,7 +118,10 @@ private:
     bool _helpOnly;
     bool _versionOnly;
 
+
+#ifdef Q_OS_LINUX
     QElapsedTimer _startedAt;
+#endif
 
     // options from command line:
     bool _showLogWindow;
