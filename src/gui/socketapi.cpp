@@ -52,6 +52,7 @@
 #include <QInputDialog>
 
 #include <QClipboard>
+#include <QDesktopServices>
 
 #include <QStandardPaths>
 
@@ -291,6 +292,12 @@ void SocketApi::slotReadSocket()
         int indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
 
         QString argument = line.remove(0, command.length() + 1);
+        if (indexOfMethod == -1) {
+            // Fallback: Try upper-case command
+            functionWithArguments = "command_" + command.toUpper() + "(QString,SocketListener*)";
+            indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
+        }
+
         if (indexOfMethod != -1) {
             staticMetaObject.method(indexOfMethod).invoke(this, Q_ARG(QString, argument), Q_ARG(SocketListener *, listener));
         } else {
@@ -585,6 +592,24 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
     auto job = new GetOrCreatePublicLinkShare(account, fileData.accountRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
     job->run();
 }
+
+// Windows Shell / Explorer pinning fallbacks, see issue: https://github.com/nextcloud/desktop/issues/1599
+#ifdef Q_OS_WIN
+void SocketApi::command_COPYASPATH(const QString &localFile, SocketListener *)
+{
+    QApplication::clipboard()->setText(localFile);
+}
+
+void SocketApi::command_OPENNEWWINDOW(const QString &localFile, SocketListener *)
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile(localFile));
+}
+
+void SocketApi::command_OPEN(const QString &localFile, SocketListener *socketListener)
+{
+    command_OPENNEWWINDOW(localFile, socketListener);
+}
+#endif
 
 // Fetches the private link url asynchronously and then calls the target slot
 void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
