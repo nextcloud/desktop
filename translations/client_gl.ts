@@ -1443,22 +1443,22 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="521"/>
+        <location filename="../src/gui/socketapi.cpp" line="528"/>
         <source>Password for share required</source>
         <translation>Requírese un contrasinal para compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="522"/>
+        <location filename="../src/gui/socketapi.cpp" line="529"/>
         <source>Please enter a password for your link share:</source>
         <translation>Introduza un contrasinal para a súa ligazón de compartición:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="541"/>
+        <location filename="../src/gui/socketapi.cpp" line="548"/>
         <source>Sharing error</source>
         <translation>Produciuse un erro ao compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="542"/>
+        <location filename="../src/gui/socketapi.cpp" line="549"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -2880,65 +2880,65 @@ Recomendámoslle que non o use.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="458"/>
+        <location filename="../src/gui/socketapi.cpp" line="465"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
         <translation>Compartir con %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="494"/>
+        <location filename="../src/gui/socketapi.cpp" line="501"/>
         <source>Context menu share</source>
         <translation>Compartir o menú contextual</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="633"/>
+        <location filename="../src/gui/socketapi.cpp" line="658"/>
         <source>I shared something with you</source>
         <translation>Compartín algo con vostede</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="646"/>
-        <location filename="../src/gui/socketapi.cpp" line="676"/>
+        <location filename="../src/gui/socketapi.cpp" line="671"/>
+        <location filename="../src/gui/socketapi.cpp" line="701"/>
         <source>Share options</source>
         <translation>Opcións da compartición</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="647"/>
+        <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Share via %1</source>
         <translation>Compartido mediante %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="648"/>
+        <location filename="../src/gui/socketapi.cpp" line="673"/>
         <source>Copy private link to clipboard</source>
         <translation>Copiar a ligazón privada no portapapeis</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="649"/>
+        <location filename="../src/gui/socketapi.cpp" line="674"/>
         <source>Send private link by email …</source>
         <translation>Enviar a ligazón privada por correo…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="674"/>
+        <location filename="../src/gui/socketapi.cpp" line="699"/>
         <source>Resharing this file is not allowed</source>
         <translation>Non está permitido volver compartir este ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="687"/>
-        <location filename="../src/gui/socketapi.cpp" line="689"/>
+        <location filename="../src/gui/socketapi.cpp" line="712"/>
+        <location filename="../src/gui/socketapi.cpp" line="714"/>
         <source>Copy public link</source>
         <translation>Copiar a ligazón pública</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="693"/>
+        <location filename="../src/gui/socketapi.cpp" line="718"/>
         <source>Copy internal link</source>
         <translation>Copiar a ligazón interna</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="782"/>
+        <location filename="../src/gui/socketapi.cpp" line="807"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="743"/>
+        <location filename="../src/gui/socketapi.cpp" line="768"/>
         <source>Open in browser</source>
         <translation>Abrir no navegador</translation>
     </message>
@@ -3515,7 +3515,7 @@ Recomendámoslle que non o use.</translation>
         <translation>Foi desconectado de %1 como o usuario %2. Volva acceder de novo</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="193"/>
         <source>Please login with the user: %1</source>
         <translation>Acceda co usuario: %1</translation>
     </message>

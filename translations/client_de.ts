@@ -1443,22 +1443,22 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="521"/>
+        <location filename="../src/gui/socketapi.cpp" line="528"/>
         <source>Password for share required</source>
         <translation>Passwort für die Freigabe erforderlich</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="522"/>
+        <location filename="../src/gui/socketapi.cpp" line="529"/>
         <source>Please enter a password for your link share:</source>
         <translation>Bitte Passwort für die Link-Freigabe eingeben:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="541"/>
+        <location filename="../src/gui/socketapi.cpp" line="548"/>
         <source>Sharing error</source>
         <translation>Fehler beim Teilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="542"/>
+        <location filename="../src/gui/socketapi.cpp" line="549"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -2879,65 +2879,65 @@ Es wird davon abgeraten sie zu verwenden.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="458"/>
+        <location filename="../src/gui/socketapi.cpp" line="465"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
         <translation>Teile mit %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="494"/>
+        <location filename="../src/gui/socketapi.cpp" line="501"/>
         <source>Context menu share</source>
         <translation>Kontextmenü Freigabe</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="633"/>
+        <location filename="../src/gui/socketapi.cpp" line="658"/>
         <source>I shared something with you</source>
         <translation>Ich habe etwas mit Ihnen geteilt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="646"/>
-        <location filename="../src/gui/socketapi.cpp" line="676"/>
+        <location filename="../src/gui/socketapi.cpp" line="671"/>
+        <location filename="../src/gui/socketapi.cpp" line="701"/>
         <source>Share options</source>
         <translation>Freigabeoptionen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="647"/>
+        <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Share via %1</source>
         <translation>Teilen mittels %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="648"/>
+        <location filename="../src/gui/socketapi.cpp" line="673"/>
         <source>Copy private link to clipboard</source>
         <translation>Privater Link in die Zwischenablage kopiert</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="649"/>
+        <location filename="../src/gui/socketapi.cpp" line="674"/>
         <source>Send private link by email …</source>
         <translation>Privaten Link als E-Mail verschicken …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="674"/>
+        <location filename="../src/gui/socketapi.cpp" line="699"/>
         <source>Resharing this file is not allowed</source>
         <translation>Weiterteilen dieser Datei ist nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="687"/>
-        <location filename="../src/gui/socketapi.cpp" line="689"/>
+        <location filename="../src/gui/socketapi.cpp" line="712"/>
+        <location filename="../src/gui/socketapi.cpp" line="714"/>
         <source>Copy public link</source>
         <translation>Öffentlichen Link kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="693"/>
+        <location filename="../src/gui/socketapi.cpp" line="718"/>
         <source>Copy internal link</source>
         <translation>Kopiere internen Link</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="782"/>
+        <location filename="../src/gui/socketapi.cpp" line="807"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="743"/>
+        <location filename="../src/gui/socketapi.cpp" line="768"/>
         <source>Open in browser</source>
         <translation>Im Browser öffnen</translation>
     </message>
@@ -3514,7 +3514,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <translation>Sie wurden von %1 als Benutzer %2 abgemeldet. Bitte melden Sie sich erneut an.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="193"/>
         <source>Please login with the user: %1</source>
         <translation>Mit folgendem Benutzer anmelden: %1</translation>
     </message>
@@ -3547,7 +3547,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="266"/>
         <source>Disconnected from some accounts</source>
-        <translation>Verbindungen zu einigen Konnten getrennt</translation>
+        <translation>Verbindungen zu einigen Konten getrennt</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
@@ -3557,7 +3557,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Disconnected from accounts:</source>
-        <translation>Verbindungen zu Konnten getrennt:</translation>
+        <translation>Verbindungen zu Konten getrennt:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="279"/>
