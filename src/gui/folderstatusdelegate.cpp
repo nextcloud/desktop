@@ -18,8 +18,9 @@
 #include "folderstatusmodel.h"
 #include "folderman.h"
 #include "accountstate.h"
-#include <theme.h>
-#include <account.h>
+#include "theme.h"
+#include "account.h"
+#include "guiutility.h"
 
 #include <QFileIconProvider>
 #include <QPainter>
@@ -38,7 +39,7 @@ namespace OCC {
 FolderStatusDelegate::FolderStatusDelegate()
     : QStyledItemDelegate()
 {
-    m_moreIcon = QIcon(QLatin1String(":/client/resources/more.svg"));
+    m_moreIcon = Utility::createColorAwareIcon(QLatin1String(":/client/resources/more.svg"));
 }
 
 QString FolderStatusDelegate::addFolderText()
