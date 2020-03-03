@@ -165,23 +165,6 @@ Q_ENUM_NS(ItemType)
 
 using namespace CSyncEnums;
 using CSYNC_STATUS = CSyncEnums::csync_status_codes_e;
-
-#ifndef likely
-#define likely(x) (x)
-#endif
-#ifndef unlikely
-#define unlikely(x) (x)
-#endif
-
-#define CSYNC_STATUS_IS_OK(x) (likely((x) == CSYNC_STATUS_OK))
-#define CSYNC_STATUS_IS_ERR(x) (unlikely((x) >= CSYNC_STATUS_ERROR))
-#define CSYNC_STATUS_IS_EQUAL(x, y) ((x) == (y))
-
-#define FILE_ID_BUF_SIZE 36
-
-// currently specified at https://github.com/owncloud/core/issues/8322 are 9 to 10
-#define REMOTE_PERM_BUF_SIZE 15
-
 typedef struct csync_file_stat_s csync_file_stat_t;
 
 struct OCSYNC_EXPORT csync_file_stat_s {
