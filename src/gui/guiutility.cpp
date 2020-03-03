@@ -21,6 +21,8 @@
 #include <QMessageBox>
 #include <QUrlQuery>
 
+#include "theme.h"
+
 #include "common/asserts.h"
 
 using namespace OCC;
@@ -94,4 +96,18 @@ QString Utility::vfsPinActionText()
 QString Utility::vfsFreeSpaceActionText()
 {
     return QCoreApplication::translate("utility", "Free up local space");
+}
+
+QPixmap Utility::createColorAwareIcon(const QString &name, const QPalette &palette)
+{
+    const QColor bg(palette.base().color());
+    QImage img(Theme::hidpiFileName(name));
+    if (img.isGrayscale()) {
+        // account for different sensitivity of the human eye to certain colors
+        double treshold = 1.0 - (0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue()) / 255.0;
+        if (treshold > 0.5) {
+            img.invertPixels(QImage::InvertRgb);
+        }
+    }
+    return QPixmap::fromImage(img);
 }

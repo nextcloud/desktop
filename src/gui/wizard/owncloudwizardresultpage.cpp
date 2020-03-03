@@ -17,6 +17,7 @@
 #include <QDir>
 #include <QUrl>
 
+#include "guiutility.h"
 #include "wizard/owncloudwizardresultpage.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "theme.h"
@@ -38,7 +39,7 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     setSubTitle(QLatin1String(" "));
 
     _ui.pbOpenLocal->setText(tr("Open Local Folder"));
-    _ui.pbOpenLocal->setIcon(QIcon(QLatin1String(":/client/resources/folder-sync.png")));
+    _ui.pbOpenLocal->setIcon(Utility::createColorAwareIcon(QLatin1String(":/client/resources/folder-sync.png")));
     _ui.pbOpenLocal->setIconSize(QSize(48, 48));
     _ui.pbOpenLocal->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     connect(_ui.pbOpenLocal, &QAbstractButton::clicked, this, &OwncloudWizardResultPage::slotOpenLocal);

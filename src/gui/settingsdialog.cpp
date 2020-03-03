@@ -18,6 +18,7 @@
 #include "folderman.h"
 #include "theme.h"
 #include "generalsettings.h"
+#include "guiutility.h"
 #include "networksettings.h"
 #include "accountsettings.h"
 #include "configfile.h"
@@ -349,26 +350,13 @@ void SettingsDialog::customizeStyle()
     _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
 
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
-        QIcon icon = createColorAwareIcon(a->property("iconPath").toString());
+        QIcon icon = Utility::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
         QToolButton *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
         if (btn) {
             btn->setIcon(icon);
         }
     }
-}
-
-QIcon SettingsDialog::createColorAwareIcon(const QString &name)
-{
-    QColor bg(palette().base().color());
-    QImage img(name);
-    // account for different sensitivity of the human eye to certain colors
-    double treshold = 1.0 - (0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue()) / 255.0;
-    if (treshold > 0.5) {
-        img.invertPixels(QImage::InvertRgb);
-    }
-
-    return QIcon(QPixmap::fromImage(img));
 }
 
 class ToolButtonAction : public QWidgetAction
@@ -413,7 +401,7 @@ QAction *SettingsDialog::createActionWithIcon(const QIcon &icon, const QString &
 QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const QString &text)
 {
     // all buttons must have the same size in order to keep a good layout
-    QIcon coloredIcon = createColorAwareIcon(iconPath);
+    QIcon coloredIcon = Utility::createColorAwareIcon(iconPath, palette());
     return createActionWithIcon(coloredIcon, text, iconPath);
 }
 

@@ -31,6 +31,7 @@
 #include <folderman.h>
 #include "creds/abstractcredentials.h"
 #include "networkjobs.h"
+#include "guiutility.h"
 
 namespace OCC {
 
@@ -68,7 +69,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _ui.lServerIcon->setText(QString());
     _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
     _ui.lLocalIcon->setText(QString());
-    _ui.lLocalIcon->setPixmap(QPixmap(Theme::hidpiFileName(":/client/resources/folder-sync.png")));
+    _ui.lLocalIcon->setPixmap(Utility::createColorAwareIcon(":/client/resources/folder-sync.png"));
 
     if (theme->wizardHideExternalStorageConfirmationCheckbox()) {
         _ui.confCheckBoxExternal->hide();

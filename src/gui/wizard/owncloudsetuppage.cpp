@@ -26,6 +26,7 @@
 
 #include "QProgressIndicator.h"
 
+#include "guiutility.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudconnectionmethoddialog.h"
@@ -127,11 +128,11 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
     }
 
     if (!url.startsWith(QLatin1String("https://"))) {
-        _ui.urlLabel->setPixmap(QPixmap(Theme::hidpiFileName(":/client/resources/lock-http.png")));
+        _ui.urlLabel->setPixmap(Utility::createColorAwareIcon(":/client/resources/lock-http.png"));
         _ui.urlLabel->setToolTip(tr("This url is NOT secure as it is not encrypted.\n"
                                     "It is not advisable to use it."));
     } else {
-        _ui.urlLabel->setPixmap(QPixmap(Theme::hidpiFileName(":/client/resources/lock-https.png")));
+        _ui.urlLabel->setPixmap(Utility::createColorAwareIcon(":/client/resources/lock-https.png"));
         _ui.urlLabel->setToolTip(tr("This url is secure. You can use it."));
     }
 }
