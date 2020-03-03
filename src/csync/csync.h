@@ -59,7 +59,10 @@ class SyncJournalFileRecord;
 #define BITFIELD(size) :size
 #endif
 
-enum CSYNC_STATUS {
+namespace CSyncEnums {
+OCSYNC_EXPORT Q_NAMESPACE
+
+enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 
   CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
@@ -94,17 +97,7 @@ enum CSYNC_STATUS {
     CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE,
     CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE
 };
-
-#ifndef likely
-# define likely(x) (x)
-#endif
-#ifndef unlikely
-# define unlikely(x) (x)
-#endif
-
-#define CSYNC_STATUS_IS_OK(x) (likely((x) == CSYNC_STATUS_OK))
-#define CSYNC_STATUS_IS_ERR(x) (unlikely((x) >= CSYNC_STATUS_ERROR))
-#define CSYNC_STATUS_IS_EQUAL(x, y) ((x) == (y))
+Q_ENUM_NS(csync_status_codes_e)
 
 /**
   * Instruction enum. In the file traversal structure, it describes
@@ -128,6 +121,8 @@ enum csync_instructions_e {
   CSYNC_INSTRUCTION_UPDATE_METADATA = 0x00000400,  /* If the etag has been updated and need to be writen to the db,
                                                       but without any propagation (UPDATE|RECONCILE) */
 };
+
+Q_ENUM_NS(csync_instructions_e)
 
 // This enum is used with BITFIELD(3) and BITFIELD(4) in several places.
 // Also, this value is stored in the database, so beware of value changes.
@@ -165,7 +160,22 @@ enum ItemType {
      */
     ItemTypeVirtualFileDehydration = 6,
 };
+Q_ENUM_NS(ItemType)
+}
 
+using namespace CSyncEnums;
+using CSYNC_STATUS = CSyncEnums::csync_status_codes_e;
+
+#ifndef likely
+#define likely(x) (x)
+#endif
+#ifndef unlikely
+#define unlikely(x) (x)
+#endif
+
+#define CSYNC_STATUS_IS_OK(x) (likely((x) == CSYNC_STATUS_OK))
+#define CSYNC_STATUS_IS_ERR(x) (unlikely((x) >= CSYNC_STATUS_ERROR))
+#define CSYNC_STATUS_IS_EQUAL(x, y) ((x) == (y))
 
 #define FILE_ID_BUF_SIZE 36
 
