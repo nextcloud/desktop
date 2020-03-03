@@ -1,6 +1,7 @@
 = Using the Synchronization Client
 :toc: right
 :toclevels: 1
+:oauth2-app-url: https://marketplace.owncloud.com/apps/oauth2
 
 == Introduction
 
@@ -88,6 +89,12 @@ You may configure multiple ownCloud accounts in your desktop sync client.
 Simply click the *Account* > *Add New* button on any account tab to add a new account, and then follow the account creation wizard.
 The new account will appear as a new tab in the settings dialog, where you can adjust its settings at any time.
 Use *Account* > *Remove* to delete accounts.
+
+[NOTE]
+====
+ownCloud server must have {oauth2-app-url}[the OAuth2 app] installed, configured, and enabled to use Two-Factor Authentication.
+Please contact your ownCloud administrator for more details.
+====
 
 == File Manager Overlay Icons
 
