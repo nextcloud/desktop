@@ -406,6 +406,8 @@ Folder *User::getFolder()
             return folder;
         }
     }
+
+    return nullptr;
 }
 
 ActivityListModel *User::getActivityModel()

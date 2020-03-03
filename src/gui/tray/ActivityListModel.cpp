@@ -298,7 +298,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
 
 void ActivityListModel::slotIconDownloaded(QByteArray iconData)
 {
-    for (size_t i = 0; i < _activityLists.count(); i++) {
+    for (auto i = 0; i < _activityLists.count(); i++) {
         if (_activityLists[i]._id == sender()->property("activityId").toLongLong()) {
             _activityLists[i]._iconData = iconData;
         }
