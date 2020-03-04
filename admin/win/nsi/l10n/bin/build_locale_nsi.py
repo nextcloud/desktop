@@ -9,6 +9,11 @@ import os
 import polib
 from optparse import OptionParser
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
 parser = OptionParser()
 parser.add_option("-o", "--output", dest="output",
                   help="Directory for localized output", default="../Shared/installer/nightly_localized.nsi")
@@ -126,7 +131,7 @@ for root,dirs,files in os.walk(options.podir):
             if filename in localeToName:
                 language = localeToName[filename]
                 translationCache[language] = collections.OrderedDict()
-                
+
                 po = polib.pofile(os.path.join(root,file))
                 for entry in po.translated_entries():
                     # Loop through all our labels and add translation (each translation may have multiple labels)
@@ -165,14 +170,14 @@ for language,translations in translationCache.iteritems():
     for label,value in translations.iteritems():
         NSINewLines.append( tostr('StrCpy $%s "%s"\n' % (label,value)) )
         if language.upper() == options.lang.upper():
-	    NSIDeclarations.append( tostr('Var %s\n' % label) )
+            NSIDeclarations.append( tostr('Var %s\n' % label) )
 
         count += 1
     NSIWorkingFile = open('%s/%s.nsh' % (options.output, language),"w")
     NSIWorkingFile.writelines(NSINewLines)
     NSIWorkingFile.close()
     print ( "%i translations merged for language '%s'"%(count,language) )
-    
+
 # Finally, let's write languages.nsh and declarations.nsh
 NSIWorkingFile = open('%s/languages.nsh' % options.output,"w")
 NSIWorkingFile.writelines(NSILanguages)
@@ -181,5 +186,5 @@ NSIWorkingFile.close()
 NSIWorkingFile = open('%s/declarations.nsh' % options.output,"w")
 NSIWorkingFile.writelines(NSIDeclarations)
 NSIWorkingFile.close()
-    
+
 print ( "NSI Localization Operation Complete" )
