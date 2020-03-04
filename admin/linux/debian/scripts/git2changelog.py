@@ -1,11 +1,17 @@
 #!//usr/bin/env python2.7
 
+from __future__ import print_function
 import subprocess
 import re
 import sys
 import datetime
 import os
 import ConfigParser
+
+try:
+    long
+except NameError:
+    long = int
 
 distribution="yakkety"
 
@@ -123,12 +129,12 @@ def genChangeLogEntries(f, entries, distribution):
             version = upstreamVersion
         else:
             version = upstreamVersion + "~" + distribution + "1"
-        print >> f, "nextcloud-client (%s) %s; urgency=medium" % (version, distribution)
-        print >> f
-        print >> f, "  * " + subject
-        print >> f
-        print >> f, " -- %s <%s>  %s" % (name, email, date)
-        print >> f
+        print("nextcloud-client (%s) %s; urgency=medium" % (version, distribution), file=f)
+        print(file=f)
+        print("  * " + subject, file=f)
+        print(file=f)
+        print(" -- %s <%s>  %s" % (name, email, date), file=f)
+        print(file=f)
     return (latestBaseVersion, latestKind)
 
 if __name__ == "__main__":
@@ -141,4 +147,4 @@ if __name__ == "__main__":
 
     with open(sys.argv[1], "wt") as f:
         (baseVersion, kind) = genChangeLogEntries(f, entries, distribution)
-        print baseVersion, kind
+        print(baseVersion, kind)

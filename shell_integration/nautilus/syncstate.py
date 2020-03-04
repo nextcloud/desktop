@@ -296,6 +296,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         state = entry['state']
         state_ok = state.startswith('OK')
         state_sync = state.startswith('SYNC')
+        isDir = os.path.isdir(filename + os.sep)
         if state_ok:
             shareable = True
         elif state_sync and isDir:
