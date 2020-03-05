@@ -38,6 +38,7 @@ public:
 
     // For owncloud-brandings *do* show the virtual files option.
     bool showVirtualFilesOption() const override { return true; }
+    bool enableExperimentalFeatures() const override { return true; };
 
 private:
 };
