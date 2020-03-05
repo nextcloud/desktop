@@ -248,7 +248,7 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
                "\n\n"
                "The virtual files mode is mutually exclusive with selective sync. "
                "Currently unselected folders will be translated to online-only folders "
-               "and your selective sync settings will be reset."));
+               "and your selective sync settings will be reset."), QMessageBox::NoButton, receiver);
         msgBox->addButton(tr("Enable virtual files"), QMessageBox::AcceptRole);
         msgBox->addButton(tr("Continue to use selective sync"), QMessageBox::RejectRole);
     } else {
@@ -268,11 +268,10 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
                "\n\n"
                "This is a new, experimental mode. If you decide to use it, please report any "
                "issues that come up.")
-                .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX));
+                .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX), QMessageBox::NoButton, receiver);
         msgBox->addButton(tr("Enable experimental placeholder mode"), QMessageBox::AcceptRole);
         msgBox->addButton(tr("Stay safe"), QMessageBox::RejectRole);
     }
-    msgBox->setParent(receiver);
     connect(msgBox, &QMessageBox::finished, receiver, [callback, msgBox](int result) {
         callback(result == QMessageBox::AcceptRole);
         msgBox->deleteLater();
