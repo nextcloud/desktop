@@ -707,17 +707,17 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="299"/>
+        <location filename="../src/gui/application.cpp" line="301"/>
         <source>Error accessing the configuration file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="300"/>
+        <location filename="../src/gui/application.cpp" line="302"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="303"/>
+        <location filename="../src/gui/application.cpp" line="305"/>
         <source>Quit ownCloud</source>
         <translation type="unfinished"></translation>
     </message>
