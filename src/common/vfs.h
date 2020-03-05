@@ -96,6 +96,7 @@ public:
         WithSuffix,
         WindowsCfApi,
     };
+    Q_ENUM(Mode)
     static QString modeToString(Mode mode);
     static Optional<Mode> modeFromString(const QString &str);
 
