@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with ownCloud.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import os
 import re
 import subprocess
@@ -74,7 +75,7 @@ class CouldNotFindFrameworkError(Error):
   pass
 
 if len(sys.argv) < 3:
-  print 'Usage: %s <bundle.app> <path-to-qmake>' % sys.argv[0]
+  print('Usage: %s <bundle.app> <path-to-qmake>' % sys.argv[0])
   exit()
 
 def is_exe(fpath):
@@ -96,13 +97,13 @@ plugins_dir = os.path.join(bundle_dir, 'Contents', 'PlugIns')
 binaries = [i for i in glob(os.path.join(bundle_dir, 'Contents', 'MacOS', "*")) if is_exe(i)];
 
 qt_version = QueryQMake('QT_VERSION')
-print "Using Qt", qt_version
+print("Using Qt", qt_version)
 
 fixed_libraries = []
 fixed_frameworks = []
 
 def WriteQtConf():
-  print "Writing qt.conf..."
+  print("Writing qt.conf...")
   with open(os.path.join(resources_dir, 'qt.conf'), 'w') as f:
     f.write("[Paths]\nPlugins = PlugIns\n");
     f.close()
@@ -206,7 +207,7 @@ def FixLibrary(path):
     fixed_libraries.append(path)
   abs_path = FindLibrary(path)
   if abs_path == "":
-    print "Could not resolve %s, not fixing!" % path
+    print("Could not resolve %s, not fixing!" % path)
     return
   broken_libs = GetBrokenLibraries(abs_path)
   FixAllLibraries(broken_libs)
@@ -256,7 +257,7 @@ def CopyPlugin(path, subdir):
 
 def CopyFramework(source_dylib):
   parts = source_dylib.split(os.sep)
-  print "CopyFramework:", source_dylib
+  print("CopyFramework:", source_dylib)
   for i, part in enumerate(parts):
     matchObj = re.match(r'(\w+\.framework)', part)
     if matchObj:
@@ -354,9 +355,9 @@ else:
   commands.append(args)
 
 if len(sys.argv) <= 2:
-  print 'Will run %d commands:' % len(commands)
+  print('Will run %d commands:' % len(commands))
   for command in commands:
-    print ' '.join(command)
+    print(' '.join(command))
 
 for command in commands:
   p = subprocess.Popen(command)
