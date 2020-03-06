@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Odaberite...</translation>
     </message>
 </context>
 <context>
@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="211"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Prostor za pohranu:...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
@@ -528,7 +528,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>Više aktivnosti možete pronaći u aplikaciji Activity.</translation>
     </message>
 </context>
 <context>
@@ -551,7 +551,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation type="unfinished"/>
+        <translation>Pretraži...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -636,7 +636,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="50"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Nema konfiguriranih Nexcloudovih računa</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
@@ -2056,12 +2056,13 @@ dodatne ovlasti tijekom postupka.</translation>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="181"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj URL NIJE siguran jer nije šifriran.
+Nije preporučljivo koristiti ga.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
         <source>This URL is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Ovaj je URL siguran. Možete ga koristiti.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -2784,7 +2785,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
-        <translation type="unfinished"/>
+        <translation>Dijelite s korisnicima ili grupama...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="267"/>
@@ -2807,7 +2808,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="66"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Korisničko ime</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="82"/>
@@ -2934,7 +2935,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="807"/>
         <source>Edit</source>
-        <translation type="unfinished"/>
+        <translation>Uredi</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
@@ -3447,27 +3448,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="319"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Ponovno pokreni sve otpreme</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="368"/>
         <source>You renamed</source>
-        <translation type="unfinished"/>
+        <translation>Preimenovali ste</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="370"/>
         <source>You deleted</source>
-        <translation type="unfinished"/>
+        <translation>Izbrisali ste</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
         <source>You created</source>
-        <translation type="unfinished"/>
+        <translation>Stvorili ste</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>You changed</source>
-        <translation type="unfinished"/>
+        <translation>Promijenili ste</translation>
     </message>
 </context>
 <context>
@@ -3475,22 +3476,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="690"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Potvrdi brisanje računa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="691"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Želite li zaista ukloniti vezu s računom &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Napomena:&lt;/b&gt; time &lt;b&gt;nećete&lt;/b&gt; izbrisati datoteke.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="696"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Ukloni vezu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="697"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Odustani</translation>
     </message>
 </context>
 <context>

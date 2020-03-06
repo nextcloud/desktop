@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create folder</source>
-        <translation type="unfinished"/>
+        <translation>Crear carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -422,7 +422,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1031"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Connectant amb %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1034"/>
@@ -556,7 +556,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation type="unfinished"/>
+        <translation>Contrasenya del certificat:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -636,7 +636,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="50"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha configurat cap compte de Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
@@ -730,7 +730,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="143"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Esperant autorització</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
@@ -740,12 +740,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Iniciant l&apos;autorització</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Enllaç copiat al porta-retalls.</translation>
     </message>
 </context>
 <context>
@@ -1111,7 +1111,7 @@ Continuar la sincronització com a normal farà que tots els vostres fitxers sig
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Obtenint la llista de carpetes del servidor …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
@@ -1216,7 +1216,7 @@ Continuar la sincronització com a normal farà que tots els vostres fitxers sig
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>Esperant …</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
@@ -1226,7 +1226,7 @@ Continuar la sincronització com a normal farà que tots els vostres fitxers sig
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Preparant per sincronitzar …</translation>
     </message>
 </context>
 <context>
@@ -1861,7 +1861,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Descarregant la versió %1. Espera un moment …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1919,7 +1919,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>Cannectant …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2063,7 +2063,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
         <source>This URL is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Aquest URL és segur. Podeu fer-lo servir.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -2136,7 +2136,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Creant la carpeta de sincronització local %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
@@ -2560,7 +2560,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Carregant …</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2809,7 +2809,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="66"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nom d&apos;usuari</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="82"/>
@@ -2905,7 +2905,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Share via %1</source>
-        <translation type="unfinished"/>
+        <translation>Compartir mitjançant %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="673"/>
@@ -2915,7 +2915,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="674"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Enviar l&apos;enllaç privat per correu electrònic …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="699"/>
@@ -2936,7 +2936,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="807"/>
         <source>Edit</source>
-        <translation type="unfinished"/>
+        <translation>Editar</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
@@ -3477,7 +3477,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="690"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar l&apos;eliminació del compte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="691"/>
@@ -3487,12 +3487,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="696"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar la connexió</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="697"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel·lar</translation>
     </message>
 </context>
 <context>
@@ -3526,7 +3526,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentialsdialog.cpp" line="34"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar sessió</translation>
     </message>
 </context>
 <context>
@@ -3650,12 +3650,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
-        <translation type="unfinished"/>
+        <translation>Iniciant la sessió …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="937"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronitzant %1 de %2 (%3 restants)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -3720,17 +3720,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Configuracions …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Nou compte …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar més activitat ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
@@ -4171,7 +4171,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està cancel·lant...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
