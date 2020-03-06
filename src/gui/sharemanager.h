@@ -44,7 +44,8 @@ public:
         TypeUser = Sharee::User,
         TypeGroup = Sharee::Group,
         TypeLink = 3,
-        TypeRemote = Sharee::Federated
+        TypeRemote = Sharee::Federated,
+        TypeCircle = Sharee::Circle
     };
 
     typedef SharePermissions Permissions;

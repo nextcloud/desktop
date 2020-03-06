@@ -40,6 +40,8 @@ QString Sharee::format() const
         formatted += QLatin1String(" (group)");
     } else if (_type == Type::Federated) {
         formatted += QLatin1String(" (remote)");
+    } else if (_type == Type::Circle) {
+        formatted += QLatin1String(" (circle)");
     }
 
     return formatted;
@@ -92,13 +94,20 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
         foreach (auto user, users) {
             newSharees.append(parseSharee(user.toObject()));
         }
+
         auto groups = exact.value("groups").toArray();
         foreach (auto group, groups) {
             newSharees.append(parseSharee(group.toObject()));
         }
+
         auto remotes = exact.value("remotes").toArray();
         foreach (auto remote, remotes) {
             newSharees.append(parseSharee(remote.toObject()));
+        }
+
+        auto circles = exact.value("circles").toArray();
+        foreach (auto circle, circles) {
+            newSharees.append(parseSharee(circle.toObject()));
         }
     }
 
@@ -118,6 +127,12 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
         auto remotes = data.value("remotes").toArray();
         foreach (auto remote, remotes) {
             newSharees.append(parseSharee(remote.toObject()));
+        }
+    }
+    {
+        auto circles = data.value("circles").toArray();
+        foreach (auto circle, circles) {
+            newSharees.append(parseSharee(circle.toObject()));
         }
     }
 
