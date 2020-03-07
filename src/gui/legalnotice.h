@@ -37,7 +37,12 @@ public:
     explicit LegalNotice(QDialog *parent = nullptr);
     ~LegalNotice();
 
+protected:
+    void changeEvent(QEvent *) override;
+
 private:
+    void customizeStyle();
+
     Ui::LegalNotice *_ui;
 };
 
