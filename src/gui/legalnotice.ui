@@ -11,15 +11,14 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">Dialog</string>
+   <string>Legal notice</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="header">
      <property name="font">
       <font>
-       <family>Arabic Newspaper</family>
-       <pointsize>11</pointsize>
+       <pointsize>13</pointsize>
       </font>
      </property>
      <property name="text">
