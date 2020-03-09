@@ -63,6 +63,7 @@ static const char crashReporterC[] = "crashReporter";
 static const char optionalServerNotificationsC[] = "optionalServerNotifications";
 static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
+static const char autoUpdateCheckC[] = "autoUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
 static const char updateSegmentC[] = "updateSegment";
 static const char geometryC[] = "geometry";
@@ -574,6 +575,32 @@ void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connection)
     settings.beginGroup(con);
 
     settings.setValue(QLatin1String(skipUpdateCheckC), QVariant(skip));
+    settings.sync();
+}
+
+bool ConfigFile::autoUpdateCheck(const QString &connection) const
+{
+    QString con(connection);
+    if (connection.isEmpty())
+        con = defaultConnection();
+
+    QVariant fallback = getValue(QLatin1String(autoUpdateCheckC), con, true);
+    fallback = getValue(QLatin1String(autoUpdateCheckC), QString(), fallback);
+
+    QVariant value = getPolicySetting(QLatin1String(autoUpdateCheckC), fallback);
+    return value.toBool();
+}
+
+void ConfigFile::setAutoUpdateCheck(bool autoCheck, const QString &connection)
+{
+    QString con(connection);
+    if (connection.isEmpty())
+        con = defaultConnection();
+
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup(con);
+
+    settings.setValue(QLatin1String(autoUpdateCheckC), QVariant(autoCheck));
     settings.sync();
 }
 
