@@ -43,6 +43,7 @@ Q_SIGNALS:
 };
 
 class WebEnginePage : public QWebEnginePage {
+    Q_OBJECT
 public:
     WebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
     QWebEnginePage * createWindow(QWebEnginePage::WebWindowType type) override;
@@ -58,6 +59,7 @@ private:
 // We need a separate class here, since we cannot simply return the same WebEnginePage object
 // this leads to a strage segfault somewhere deep inside of the QWebEngine code
 class ExternalWebEnginePage : public QWebEnginePage {
+    Q_OBJECT
 public:
     ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
     bool acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame) override;
