@@ -146,8 +146,13 @@ public:
     // how often the check about new versions runs
     std::chrono::milliseconds updateCheckInterval(const QString &connection = QString()) const;
 
+    // skipUpdateCheck completely disables the updater and hides its UI
     bool skipUpdateCheck(const QString &connection = QString()) const;
     void setSkipUpdateCheck(bool, const QString &);
+
+    // autoUpdateCheck allows the user to make the choice in the UI
+    bool autoUpdateCheck(const QString &connection = QString()) const;
+    void setAutoUpdateCheck(bool, const QString &);
 
     /** Query-parameter 'updatesegment' for the update check, value between 0 and 99.
         Used to throttle down desktop release rollout in order to keep the update servers alive at peak times.

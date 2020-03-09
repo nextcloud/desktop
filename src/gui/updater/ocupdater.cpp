@@ -68,8 +68,8 @@ void UpdaterScheduler::slotTimerFired()
         qCInfo(lcUpdater) << "Setting new update check interval " << checkInterval;
     }
 
-    // consider the skipUpdateCheck flag in the config.
-    if (cfg.skipUpdateCheck()) {
+    // consider the skipUpdateCheck and !autoUpdateCheck flags in the config.
+    if (cfg.skipUpdateCheck() || !cfg.autoUpdateCheck()) {
         qCInfo(lcUpdater) << "Skipping update check because of config file";
         return;
     }

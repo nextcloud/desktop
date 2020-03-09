@@ -47,10 +47,12 @@ private slots:
     void slotToggleLaunchOnStartup(bool);
     void slotToggleOptionalServerNotifications(bool);
     void slotShowInExplorerNavigationPane(bool);
-    void slotUpdateInfo();
     void slotIgnoreFilesEditor();
     void loadMiscSettings();
     void slotShowLegalNotice();
+    void slotUpdateInfo();
+    void slotUpdateCheckNow();
+    void slotToggleAutoUpdateCheck();
 
 private:
     void customizeStyle();
