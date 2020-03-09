@@ -26,7 +26,9 @@
 #include "common/utility.h"
 #include "cocoainitializer.h"
 
+#if defined(BUILD_UPDATER)
 #include "updater/updater.h"
+#endif
 
 #include <QTimer>
 #include <QMessageBox>
@@ -103,6 +105,8 @@ int main(int argc, char **argv)
         }
     }
 #endif
+
+#if defined(BUILD_UPDATER)
     // if handleStartup returns true, main()
     // needs to terminate here, e.g. because
     // the updater is triggered
@@ -110,6 +114,7 @@ int main(int argc, char **argv)
     if (updater && updater->handleStartup()) {
         return 1;
     }
+#endif
 
     // if the application is already running, notify it.
     if (app.isRunning()) {
