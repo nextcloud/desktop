@@ -2745,7 +2745,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="406"/>
         <source>Confirm Link Share Deletion</source>
-        <translation>Potrdi brisanje povezave za deljenje</translation>
+        <translation>Potrdi brisanje povezave do mesta souporabe</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="407"/>
