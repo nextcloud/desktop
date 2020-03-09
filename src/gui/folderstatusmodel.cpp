@@ -619,6 +619,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     if (!parentInfo) {
         return;
     }
+    if (!parentInfo->_folder->supportsSelectiveSync()) {
+        return;
+    }
     ASSERT(parentInfo->_fetchingJob == job);
     ASSERT(parentInfo->_subs.isEmpty());
 
