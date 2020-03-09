@@ -23,6 +23,9 @@ option( WITH_CRASHREPORTER "Build crashreporter" OFF )
 #set( CRASHREPORTER_SUBMIT_URL "https://crash-reports.owncloud.com/submit" CACHE STRING "URL for crash reporter" )
 #set( CRASHREPORTER_ICON ":/owncloud-icon.png" )
 
+## Updater options
+option( BUILD_UPDATER "Build updater" OFF )
+
 option( WITH_PROVIDERS "Build with providers list" ON )
 
 

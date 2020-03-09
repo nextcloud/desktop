@@ -23,8 +23,11 @@
 #include "accountmanager.h"
 #include "synclogdialog.h"
 
+#if defined(BUILD_UPDATER)
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
+#endif
+
 #include "ignorelisteditor.h"
 #include "common/utility.h"
 
@@ -150,6 +153,7 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 }
 
+#if defined(BUILD_UPDATER)
 void GeneralSettings::slotUpdateInfo()
 {
     // Note: the sparkle-updater is not an OCUpdater
@@ -202,6 +206,7 @@ void GeneralSettings::slotToggleAutoUpdateCheck()
     bool isChecked = _ui->autoCheckForUpdatesCheckBox->isChecked();
     cfgFile.setAutoUpdateCheck(isChecked, QString());
 }
+#endif // defined(BUILD_UPDATER)
 
 void GeneralSettings::saveMiscSettings()
 {
@@ -269,8 +274,12 @@ void GeneralSettings::customizeStyle()
     Theme::replaceLinkColorStringBackgroundAware(about);
     _ui->aboutLabel->setText(about);
 
+#if defined(BUILD_UPDATER)
     // updater info
     slotUpdateInfo();
+#else
+    _ui->updatesGroupBox->setVisible(false);
+#endif
 }
 
 } // namespace OCC

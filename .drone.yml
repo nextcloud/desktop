@@ -22,7 +22,7 @@ steps:
       source /opt/qt57/bin/qt57-env.sh &&
       mkdir build &&
       cd build &&
-      cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1  ../ &&
+      cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
       make &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&
@@ -59,7 +59,7 @@ steps:
       source /opt/qt58/bin/qt58-env.sh &&
       mkdir build &&
       cd build &&
-      cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1  ../ &&
+      cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON  ../ &&
       make &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&
@@ -96,7 +96,7 @@ steps:
       source /opt/qt59/bin/qt59-env.sh &&
       mkdir build &&
       cd build &&
-      cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1  ../ &&
+      cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON  ../ &&
       make &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&
@@ -137,7 +137,7 @@ steps:
       source /opt/qt510/bin/qt510-env.sh &&
       mkdir build &&
       cd build &&
-      cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+      cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
       make &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&
@@ -178,7 +178,7 @@ steps:
       source /opt/qt511/bin/qt511-env.sh &&
       mkdir build &&
       cd build &&
-      cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+      cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
       make &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&
@@ -219,7 +219,7 @@ steps:
       source /opt/qt511/bin/qt511-env.sh &&
       mkdir build &&
       cd build &&
-      cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+      cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
       make &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&
@@ -268,7 +268,7 @@ steps:
       export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
       mkdir build &&
       cd build &&
-      cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+      cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
       make &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&
@@ -317,7 +317,7 @@ steps:
       export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
       mkdir build &&
       cd build &&
-      cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+      cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
       make &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&

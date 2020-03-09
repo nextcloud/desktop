@@ -34,7 +34,11 @@
 #include "sharedialog.h"
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
+
+#if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
+#endif
+
 #include "owncloudsetupwizard.h"
 #include "version.h"
 
@@ -246,12 +250,14 @@ Application::Application(int &argc, char **argv)
     connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
         this, &Application::slotSystemOnlineConfigurationChanged);
 
+#if defined(BUILD_UPDATER)
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
     connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
         _gui.data(), &ownCloudGui::slotShowTrayMessage);
     connect(updaterScheduler, &UpdaterScheduler::requestRestart,
         _folderManager.data(), &FolderMan::slotScheduleAppRestart);
+#endif
 
     // Cleanup at Quit.
     connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);

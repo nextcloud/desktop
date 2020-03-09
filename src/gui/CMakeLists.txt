@@ -3,7 +3,10 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets)
 set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(CMAKE_AUTORCC TRUE)
-add_subdirectory(updater)
+
+IF(BUILD_UPDATER)
+    add_subdirectory(updater)
+endif()
 
 #TODO Move resources files
 set(MIRALL_RC_SRC ../../client.qrc)
@@ -138,18 +141,20 @@ IF(NOT NO_SHIBBOLETH)
     )
 endif()
 
-set(updater_SRCS
-    updater/ocupdater.cpp
-    updater/updateinfo.cpp
-    updater/updater.cpp
-)
+IF(BUILD_UPDATER)
+    set(updater_SRCS
+        updater/ocupdater.cpp
+        updater/updateinfo.cpp
+        updater/updater.cpp
+    )
+endif()
 
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS socketapisocket_mac.mm)
     list(APPEND client_SRCS systray.mm)
 
-    if(SPARKLE_FOUND)
+    if(SPARKLE_FOUND AND BUILD_UPDATER)
        # Define this, we need to check in updater.cpp
        add_definitions( -DHAVE_SPARKLE )
        list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
@@ -297,9 +302,11 @@ else()
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
 endif()
 
-add_library(updater STATIC ${updater_SRCS})
-target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml Qt5::WebEngineWidgets)
-target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+IF(BUILD_UPDATER)
+    add_library(updater STATIC ${updater_SRCS})
+    target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml)
+    target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
@@ -308,9 +315,11 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
-target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::Xml)
+target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::Xml Qt5::WebEngineWidgets)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
-target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
+IF(BUILD_UPDATER)
+    target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
+endif()
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
 IF( LIBCLOUDPROVIDERS_FOUND )
     string(TOLOWER "${APPLICATION_VENDOR}" DBUS_VENDOR)
@@ -333,6 +342,7 @@ target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
     ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 ## handle DBUS for Fdo notifications

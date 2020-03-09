@@ -35,6 +35,7 @@ mkdir build-client
 cd build-client
 cmake -D CMAKE_INSTALL_PREFIX=/usr \
     -D NO_SHIBBOLETH=1 \
+    -D BUILD_UPDATER=ON \
     -D QTKEYCHAIN_LIBRARY=/app/usr/lib/x86_64-linux-gnu/libqt5keychain.so \
     -D QTKEYCHAIN_INCLUDE_DIR=/app/usr/include/qt5keychain/ \
     -DMIRALL_VERSION_SUFFIX=PR-$DRONE_PULL_REQUEST \
