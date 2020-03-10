@@ -15,7 +15,10 @@ include_directories(${CMAKE_SOURCE_DIR}/src
 include(nextcloud_add_test.cmake)
 
 nextcloud_add_test(NextcloudPropagator "")
-nextcloud_add_test(Updater "")
+
+IF(BUILD_UPDATER)
+    nextcloud_add_test(Updater "")
+endif()
 
 SET(FolderWatcher_SRC ../src/gui/folderwatcher.cpp)
 
