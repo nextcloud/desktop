@@ -206,6 +206,11 @@ public:
     virtual QString about() const;
 
     /**
+     * Legal notice dialog version detail contents
+     */
+    virtual QString aboutDetails() const;
+
+    /**
      * Define if the systray icons should be using mono design
      */
     void setSystrayUseMonoIcons(bool mono);

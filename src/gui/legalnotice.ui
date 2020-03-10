@@ -6,20 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>291</width>
-    <height>260</height>
+    <width>591</width>
+    <height>360</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">Dialog</string>
+   <string>Legal notice</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="header">
      <property name="font">
       <font>
-       <family>Arabic Newspaper</family>
-       <pointsize>11</pointsize>
+       <pointsize>13</pointsize>
       </font>
      </property>
      <property name="text">
