@@ -68,8 +68,8 @@ void UpdaterScheduler::slotTimerFired()
         qCInfo(lcUpdater) << "Setting new update check interval " << checkInterval;
     }
 
-    // consider the skipUpdateCheck flag in the config.
-    if (cfg.skipUpdateCheck()) {
+    // consider the skipUpdateCheck and !autoUpdateCheck flags in the config.
+    if (cfg.skipUpdateCheck() || !cfg.autoUpdateCheck()) {
         qCInfo(lcUpdater) << "Skipping update check because of config file";
         return;
     }
@@ -223,6 +223,7 @@ void OCUpdater::slotVersionInfoArrived()
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
         qCWarning(lcUpdater) << "Failed to reach version check url: " << reply->errorString();
+        setDownloadState(DownloadTimedOut);
         return;
     }
 
@@ -234,6 +235,7 @@ void OCUpdater::slotVersionInfoArrived()
         versionInfoArrived(_updateInfo);
     } else {
         qCWarning(lcUpdater) << "Could not parse update information.";
+        setDownloadState(DownloadTimedOut);
     }
 }
 

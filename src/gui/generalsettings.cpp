@@ -23,8 +23,11 @@
 #include "accountmanager.h"
 #include "synclogdialog.h"
 
+#if defined(BUILD_UPDATER)
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
+#endif
+
 #include "ignorelisteditor.h"
 #include "common/utility.h"
 
@@ -150,6 +153,7 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 }
 
+#if defined(BUILD_UPDATER)
 void GeneralSettings::slotUpdateInfo()
 {
     // Note: the sparkle-updater is not an OCUpdater
@@ -162,17 +166,47 @@ void GeneralSettings::slotUpdateInfo()
         connect(updater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, updater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
+        connect(_ui->updateButton, &QAbstractButton::clicked, this, &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
+        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleAutoUpdateCheck);
 
         QString status = updater->statusString();
         Theme::replaceLinkColorStringBackgroundAware(status);
         _ui->updateStateLabel->setText(status);
 
         _ui->restartButton->setVisible(updater->downloadState() == OCUpdater::DownloadComplete);
+
+        _ui->updateButton->setEnabled(updater->downloadState() != OCUpdater::CheckingServer &&
+                                      updater->downloadState() != OCUpdater::Downloading &&
+                                      updater->downloadState() != OCUpdater::DownloadComplete);
+
+        _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
     } else {
         // can't have those infos from sparkle currently
         _ui->updatesGroupBox->setVisible(false);
     }
 }
+
+void GeneralSettings::slotUpdateCheckNow()
+{
+    OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance());
+    if (ConfigFile().skipUpdateCheck()) {
+        updater = nullptr; // don't show update info if updates are disabled
+    }
+
+    if (updater) {
+        _ui->updateButton->setEnabled(false);
+
+        updater->checkForUpdate();
+    }
+}
+
+void GeneralSettings::slotToggleAutoUpdateCheck()
+{
+    ConfigFile cfgFile;
+    bool isChecked = _ui->autoCheckForUpdatesCheckBox->isChecked();
+    cfgFile.setAutoUpdateCheck(isChecked, QString());
+}
+#endif // defined(BUILD_UPDATER)
 
 void GeneralSettings::saveMiscSettings()
 {
@@ -240,8 +274,12 @@ void GeneralSettings::customizeStyle()
     Theme::replaceLinkColorStringBackgroundAware(about);
     _ui->aboutLabel->setText(about);
 
+#if defined(BUILD_UPDATER)
     // updater info
     slotUpdateInfo();
+#else
+    _ui->updatesGroupBox->setVisible(false);
+#endif
 }
 
 } // namespace OCC
