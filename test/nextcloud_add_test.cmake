@@ -9,10 +9,15 @@ macro(nextcloud_add_test test_class additional_cpp)
     set_target_properties(${OWNCLOUD_TEST_CLASS}Test PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
-        updater
         ${APPLICATION_EXECUTABLE}sync
         Qt5::Core Qt5::Test Qt5::Xml Qt5::Network
     )
+
+    IF(BUILD_UPDATER)
+        target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
+            updater
+        )
+    endif()
 
     add_definitions(-DOWNCLOUD_TEST)
     add_definitions(-DOWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")
@@ -28,10 +33,15 @@ macro(nextcloud_add_benchmark test_class additional_cpp)
     set_target_properties(${OWNCLOUD_TEST_CLASS}Bench PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench
-        updater
         ${APPLICATION_EXECUTABLE}sync
         Qt5::Core Qt5::Test Qt5::Xml Qt5::Network
     )
+
+    IF(BUILD_UPDATER)
+        target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench
+            updater
+        )
+    endif()
 
     add_definitions(-DOWNCLOUD_TEST)
     add_definitions(-DOWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")
