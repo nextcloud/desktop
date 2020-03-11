@@ -1183,102 +1183,102 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="899"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="902"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="903"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="910"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="913"/>
         <source>Reconciling changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="945"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="948"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="948"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="951"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="972"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing &apos;foo.txt&apos;, &apos;bar.txt&apos;&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="974"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
         <source>, </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="978"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="980"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
         <source>↓ %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="990"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>↑ %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="991"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="996"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1017"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1025"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1028"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1032"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
         <source>file %1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1078"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1081"/>
         <source>Waiting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1080"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1083"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1286,7 +1286,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1086"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1089"/>
         <source>Preparing to sync...</source>
         <translation type="unfinished"></translation>
     </message>
