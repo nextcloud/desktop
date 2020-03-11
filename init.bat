@@ -90,7 +90,7 @@ rem 			"nextcloud/desktop"
 Rem ******************************************************************************************
 
 echo "* git clone nextcloud/desktop."
-start "git clone nextcloud/desktop" /D "%PROJECT_PATH%/" /B /wait git clone git://github.com/nextcloud/desktop.git
+start "git clone nextcloud/desktop" /D "%PROJECT_PATH%/" /B /wait git clone https://github.com/nextcloud/desktop.git
 if %ERRORLEVEL% neq 0 goto onError
 
 echo "* Create nextcloud/desktop build directory (recursive)."
