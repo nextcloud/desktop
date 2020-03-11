@@ -5,6 +5,7 @@
 !define APPLICATION_VENDOR "$%APPLICATION_VENDOR%"
 !define APPLICATION_EXECUTABLE "nextcloud.exe"
 !define APPLICATION_CMD_EXECUTABLE "nextcloudcmd.exe"
+!define APPLICATION_CONFIG_FILE "nextcloud.cfg"
 !define APPLICATION_DOMAIN "nextcloud.com"
 !define APPLICATION_LICENSE ""
 !define WIN_SETUP_BITMAP_PATH "$%PROJECT_PATH%\desktop\admin\win\nsi"
@@ -560,7 +561,7 @@ Section -post
 
    ;Respect user choices for the client's first launch.
    Var /GLOBAL configFileName
-   StrCpy $configFileName "$APPDATA\${APPLICATION_NAME}\${APPLICATION_SHORTNAME}.cfg"
+   StrCpy $configFileName "$APPDATA\${APPLICATION_NAME}\${APPLICATION_CONFIG_FILE}"
 
    !ifdef OPTION_SECTION_SC_SHELL_EXT
       Var /GLOBAL showInExplorerNavigationPane
