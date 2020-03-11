@@ -433,7 +433,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
       !finalize '"${CURRENT_PATH}\sign.bat" "%1"'
    !endif
    !if ${UPLOAD_BUILD} != 0
-      !finalize '"${CURRENT_PATH}\upload.bat" %1'  ; note: %1 quotes intenionally removed!
+      !finalize '"${CURRENT_PATH}\upload.bat" %1'  ; note: %1 quotes intentionally removed!
    !endif
 SectionEnd
 !endif ;IS_INNER_SIGN_UNINSTALLER
@@ -556,6 +556,28 @@ Section -post
    WriteRegStr ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "HelpLink" "https://${APPLICATION_DOMAIN}/"
    WriteRegDWORD ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "NoModify" "1"
    WriteRegDWORD ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "NoRepair" "1"
+
+
+   ;Respect user choices for the client's first launch.
+   Var /GLOBAL configFileName
+   StrCpy $configFileName "$APPDATA\${APPLICATION_NAME}\${APPLICATION_SHORTNAME}.cfg"
+
+   !ifdef OPTION_SECTION_SC_SHELL_EXT
+      Var /GLOBAL showInExplorerNavigationPane
+
+      ${If} ${SectionIsSelected} ${SEC_SHELL_EXT}
+         StrCpy $showInExplorerNavigationPane "true"
+      ${Else}
+         StrCpy $showInExplorerNavigationPane "false"
+      ${EndIf}
+
+      CreateDirectory "$APPDATA\${APPLICATION_NAME}"
+
+      SetShellVarContext all
+      DeleteINIStr "$configFileName" "General" "showInExplorerNavigationPane"
+      WriteIniStr "$configFileName" "General" "showInExplorerNavigationPane" "$showInExplorerNavigationPane"
+      SetShellVarContext current
+   !endif
 
 
    SetDetailsPrint textonly
