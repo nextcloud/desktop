@@ -433,7 +433,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
       !finalize '"${CURRENT_PATH}\sign.bat" "%1"'
    !endif
    !if ${UPLOAD_BUILD} != 0
-      !finalize '"${CURRENT_PATH}\upload.bat" %1'  ; note: %1 quotes intenionally removed!
+      !finalize '"${CURRENT_PATH}\upload.bat" %1'  ; note: %1 quotes intentionally removed!
    !endif
 SectionEnd
 !endif ;IS_INNER_SIGN_UNINSTALLER
