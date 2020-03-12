@@ -12,8 +12,6 @@
 * details.
 */
 
-#include "stdafx.h"
-
 #include "OCClientInterface.h"
 
 #include "CommunicationSocket.h"

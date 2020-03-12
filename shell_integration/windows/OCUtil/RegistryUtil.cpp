@@ -12,9 +12,9 @@
  * details.
  */
 
-#include "stdafx.h"
-
 #include "RegistryUtil.h"
+
+#include <windows.h>
 
 using namespace std;
 

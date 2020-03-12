@@ -3,7 +3,6 @@ add_library(OCOverlays MODULE
     OCOverlay.cpp
     OCOverlayFactory.cpp
     OCOverlayRegistrationHandler.cpp
-    stdafx.cpp
     OCOverlay.rc
     OCOverlays.def
 )

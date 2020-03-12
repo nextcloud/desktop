@@ -11,11 +11,9 @@
 * details.
 */
 
-#ifndef STRINGUTIL_H
-#define STRINGUTIL_H
-
 #pragma once
 
+#include <windows.h>
 #include <string>
 #include <cassert>
 
@@ -86,5 +84,3 @@ public:
         return true;
     }
 };
-
-#endif // STRINGUTIL_H

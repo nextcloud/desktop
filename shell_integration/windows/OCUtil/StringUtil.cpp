@@ -11,8 +11,6 @@
 * details.
 */
 
-#include "stdafx.h"
-
 #include <locale>
 #include <string>
 #include <codecvt>
