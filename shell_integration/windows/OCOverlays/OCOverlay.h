@@ -12,10 +12,9 @@
  * details.
  */
 
-#ifndef OCOVERLAY_H
-#define OCOVERLAY_H
-
 #pragma once
+
+#include <shlobj.h>
 
 class OCOverlay : public IShellIconOverlayIdentifier
 
@@ -38,4 +37,3 @@ private:
     int _state;
 };
 
-#endif

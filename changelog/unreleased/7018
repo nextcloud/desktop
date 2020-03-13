@@ -1,0 +1,5 @@
+Bugfix: Client sometimes does not show up when started by a user
+
+We fixed a bug where a client somtimes does not show up when a user request a start.
+
+https://github.com/owncloud/client/issues/7018

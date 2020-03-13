@@ -16,6 +16,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "theme.h"
+#include "guiutility.h"
 
 #include <QMenu>
 #include <QUrl>
@@ -169,11 +170,11 @@ void SslButton::updateAccountState(AccountState *accountState)
 
     AccountPtr account = _accountState->account();
     if (account->url().scheme() == QLatin1String("https")) {
-        setIcon(QIcon(QLatin1String(":/client/resources/lock-https.png")));
+        setIcon(Utility::createColorAwareIcon(QLatin1String(":/client/resources/lock-https.png")));
         QSslCipher cipher = account->_sessionCipher;
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
     } else {
-        setIcon(QIcon(QLatin1String(":/client/resources/lock-http.png")));
+        setIcon(Utility::createColorAwareIcon(QLatin1String(":/client/resources/lock-http.png")));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
     }
 }

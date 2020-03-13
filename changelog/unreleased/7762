@@ -1,0 +1,7 @@
+Bugfix: Fixed OAuth2 login of user with `+`
+
+Make sure that the `+` in the user name is properly encoded in the URL
+opened by the browser when doing an OAuth2 authentication.
+
+https://github.com/owncloud/client/issues/7762
+

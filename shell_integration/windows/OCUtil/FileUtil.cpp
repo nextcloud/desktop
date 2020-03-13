@@ -12,8 +12,6 @@
  * details.
  */
 
-#include "stdafx.h"
-
 #include "FileUtil.h"
 #include "RegistryUtil.h"
 #include "UtilConstants.h"

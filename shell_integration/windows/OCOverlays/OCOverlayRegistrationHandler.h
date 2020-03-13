@@ -12,10 +12,9 @@
  * details.
  */
 
-#ifndef OCOVERLAYREGISTRATIONHANDLER_H
-#define OCOVERLAYREGISTRATIONHANDLER_H
-
 #pragma once
+
+#include <windows.h>
 
 class __declspec(dllexport) OCOverlayRegistrationHandler 
 {
@@ -25,5 +24,3 @@ class __declspec(dllexport) OCOverlayRegistrationHandler
         static HRESULT RemoveRegistryEntries(PCWSTR friendlyName);
         static HRESULT UnregisterCOMObject(const CLSID& clsid);
 };
-
-#endif

@@ -16,6 +16,7 @@
 #include "QProgressIndicator.h"
 #include "common/utility.h"
 #include "common/asserts.h"
+#include "guiutility.h"
 
 #include <QPushButton>
 
@@ -56,9 +57,9 @@ void NotificationWidget::setActivity(const Activity &activity)
 
     _ui._messageLabel->setText(activity._message);
 
-    _ui._notifIcon->setPixmap(QPixmap(":/client/resources/bell.png"));
-    _ui._notifIcon->setMinimumWidth(64);
-    _ui._notifIcon->setMinimumHeight(64);
+    const auto icon = Utility::createColorAwareIcon(":/client/resources/bell.png").scaled(64, 64, Qt::KeepAspectRatio);
+    _ui._notifIcon->setPixmap(icon);
+    _ui._notifIcon->setFixedSize(icon.size());
     _ui._notifIcon->show();
 
     QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity._dateTime));

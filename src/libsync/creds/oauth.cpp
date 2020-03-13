@@ -311,7 +311,7 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("state"), _state },
     });
     if (!_account->davUser().isNull())
-        query.addQueryItem(QStringLiteral("user"), _account->davUser());
+        query.addQueryItem(QStringLiteral("user"), _account->davUser().replace(QLatin1Char('+'), QStringLiteral("%2B"))); // Issue #7762
     const QUrl url = _authEndpoint.isValid()
         ? Utility::concatUrlPath(_authEndpoint, {}, query)
         : Utility::concatUrlPath(_account->url(), QStringLiteral("/index.php/apps/oauth2/authorize"), query);
