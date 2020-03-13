@@ -1396,12 +1396,12 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation>&amp;Comprueba Actualizaciones automáticamente</translation>
+        <translation>&amp;Comprobar actualizaciones automáticamente</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>&amp;Check for Update now</source>
-        <translation>&amp;Comprueba ahora las Actualizaciones</translation>
+        <translation>&amp;Comprobar ahora las actualizaciones</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
@@ -2707,7 +2707,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
         <source>&amp;Share link</source>
-        <translation>Compartir enlace</translation>
+        <translation>&amp;Compartir enlace</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
