@@ -1,0 +1,8 @@
+We switched to gbp right now. For new releases please use 
+
+gbp import-orig --pristine-tar --uscan
+
+Cheers
+
+Alf Gaida
+<agaida@siduction.org>
