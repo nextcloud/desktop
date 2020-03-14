@@ -1,0 +1,47 @@
+#!/usr/bin/make -f
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/default.mk
+
+%:
+	dh $@ --with python3 --with sphinxdoc
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DUNIT_TESTING=ON \
+		-DEXTERNAL_VERSION=$(DEB_VERSION) \
+		-DPLUGIN_INSTALL_DIR=/usr/lib/$(DEB_HOST_GNU_TYPE)/qt5/plugins
+
+override_dh_auto_test-arch:
+ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
+	mkdir -p obj-$(DEB_HOST_GNU_TYPE)/config
+	- LC_ALL=C.UTF-8 XDG_CONFIG_HOME=$(CURDIR)/obj-$(DEB_HOST_GNU_TYPE)/config xvfb-run -a \
+	       -s "-screen 0 1024x768x24 +extension RANDR +extension RENDER +extension GLX" \
+	       -- dh_auto_test --no-parallel
+	rm -r obj-$(DEB_HOST_GNU_TYPE)/config
+else
+	@echo "** tests disabled"
+endif
+
+override_dh_auto_test-indep:
+
+override_dh_auto_build-indep:
+	dh_auto_build -- -C shell_integration/nautilus
+	dh_auto_build -- doc-html
+	dh_auto_build # unfortunatelly we don't get icons and translations otherwise.
+
+override_dh_auto_build-arch:
+	dh_auto_build -- doc-man
+	dh_auto_build --
+
+override_dh_missing:
+	$(RM) debian/tmp/usr/share/doc/client/nextcloud-client/html/unthemed/.buildinfo
+	dh_missing --fail-missing
+
+override_dh_python3-arch:
+
+override_dh_python3:
+	dh_python3 -i -p nautilus-owncloud usr/share/nautilus-python/extensions
+	dh_python3 -i -p nemo-owncloud usr/share/nemo-python/extensions
+	dh_python3 -i -p caja-owncloud usr/share/caja-python/extensions
