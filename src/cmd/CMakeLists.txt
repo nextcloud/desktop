@@ -16,7 +16,7 @@ if(NOT BUILD_LIBRARIES_ONLY)
     target_include_directories(${cmd_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
 
     if(APPLE)
-      install(TARGETS ${cmd_NAME} RUNTIME DESTINATION "$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>")
+      install(TARGETS ${cmd_NAME} RUNTIME DESTINATION "${KDE_INSTALL_BUNDLEDIR}/${APPLICATION_EXECUTABLE}.app/Contents/MacOS/")
     else()
       install(TARGETS ${cmd_NAME} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
     endif()
