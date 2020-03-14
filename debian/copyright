@@ -1,0 +1,343 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: nextcloud-desktop
+Source: https://github.com/nextcloud/desktop
+
+Files: *
+Copyright: 2006, Alexander Neundorf <neundorf@kde.org>
+           2006, Andreas Schneider <asn@cryptomilk.org>
+           1997, Bob Jenkins <bob_jenkins@burtleburtle.net>
+           Camila Ayres <camila@nextcloud.com>
+           Caplio G4 User
+           2015, Christian Kamm <kamm@incasoftware.de>
+           Christian Kamm <mail@ckamm.de>
+           Cédric Bellegarde <gnumdk@gmail.com>
+           Daniel Heule <daniel.heule@gmail.com>
+           2014-2016, Daniel Molkentin <danimo@owncloud.com>
+           Denis Dzyubenko
+           Dominik Schmidt <dev@dominik-schmidt.de>
+           Duncan Mac-Vicar P <duncan@kde.org>
+           1989-1991, Free Software Foundation, Inc
+           2018, J-P Nurmi <jpnurmi@gmail.com>
+           2015, Jeroen Hoek
+           Jocelyn Turcotte <jturcotte@woboq.com>
+           Julius Härtl <jus@bitgrid.net>
+           Klaas Freitag <freitag@kde.org>
+           2015, Klaas Freitag <freitag@owncloud.com>
+           Krzesimir Nowak <krzesimir@endocode.com>
+           Markus Goetz <guruz@owncloud.com>
+           Michael Schuster <michael@nextcloud.com>
+           2015, Olivier Goffart <ogoffart@owncloud.com>
+           2014-2016, Olivier Goffart <ogoffart@woboq.com>
+           Roeland Jago Douma <roeland@owncloud.com>
+           2011-2014, Twitter, Inc
+           2005-2014, jQuery Foundation, Inc.
+           2015, nocteau
+           2012-2015, ownCloud, inc.; Nuernberg, Germany., 2016 Nextcloud GmbH
+License: GPL-2+
+
+Files: debian/*
+Copyright: Sandro Knauß <hefee@debian.org>
+License: GPL-2+
+
+Files: shell_integration/windows/*
+       src/common/checksums.cpp
+       src/common/checksums.h
+       src/common/filesystembase.cpp
+       src/common/filesystembase.h
+       src/common/ownsql.cpp
+       src/common/ownsql.h
+       src/common/remotepermissions.cpp
+       src/common/remotepermissions.h
+       src/common/syncjournaldb.cpp
+       src/common/syncjournaldb.h
+       src/common/syncjournalfilerecord.cpp
+       src/common/syncjournalfilerecord.h
+       src/common/utility.cpp
+       src/common/utility.h
+       src/common/utility_mac.cpp
+       src/common/utility_unix.cpp
+       src/common/utility_win.cpp
+       test/scripts/txpl/ownCloud/*
+       test/scripts/txpl/t1.pl
+       test/scripts/txpl/t2.pl
+       test/scripts/txpl/t3.pl
+       test/scripts/txpl/t4.pl
+       test/scripts/txpl/t5.pl
+       test/scripts/txpl/t6.pl
+       test/scripts/txpl/t7.pl
+       test/scripts/txpl/t8.pl
+       test/scripts/txpl/t9.pl
+       test/scripts/txpl/t_recall.pl
+       version.h.in
+Copyright: 2015, Daniel Molkentin <danimo@owncloud.com>
+           2013, Klaas Freitag <freitag@owncloud.com>
+           2000-2013, Liferay, Inc
+           Olivier Goffart <ogoffart@owncloud.com>
+           Olivier Goffart <ogoffart@woboq.com>
+License: LGPL-2.1+
+
+Files: src/csync/*
+Copyright: 2008-2013, Andreas Schneider <asn@cryptomilk.org>
+           2012-2013, Dominik Schmidt <dev@dominik-schmidt.de>
+           1991-1999, Free Software Foundation, Inc
+           2012-2013, Klaas Freitag <freitag@owncloud.com>
+           2012, Olivier Goffart <ogoffart@woboq.com>
+License: LGPL-2.1+
+
+Files: test/*
+Copyright: public-domain
+License: public-domain
+
+Files: cmake/modules/*
+Copyright: 2014, Alex Merry <alex.merry@kde.org>
+           2006-2010, Alexander Neundorf <neundorf@kde.org>
+           2006, Allen Winter <winter@kde.org>
+           2006-2013, Andreas Schneider <asn@cryptomilk.org>
+           2007-2010, Andreas Schneider <asn@cynapses.org>
+           2007, Daniel Gollub <dgollub@suse.de>
+           2000-2011, Kitware, Inc., Insight Software Consortium
+           2006-2007, Laurent Montel <montel@kde.org>
+           2007, Matthias Kretz <kretz@kde.org>
+           2013, Mihai Moldovan <io...@ionic.de>
+           2011, Mike McQuaid <m...@mikemcquaid.com>
+           2006, Oswald Buddenhagen <ossi@kde.org>
+           2014, Ralf Habacker <ralf.habacker@freenet.de>
+           2009, Sebastian Trueg <trueg@kde.org>
+License: BSD-3-clause
+
+Files: test/csync/*
+Copyright: 2008-2013, Andreas Schneider <asn@cryptomilk.org>
+           1991-1999, Free Software Foundation, Inc
+           2013-2015, Klaas Freitag <freitag@owncloud.com>
+License: LGPL-2.1+
+
+Files: admin/qt/patches/qtbase/0003-QSslSocket-evaluate-CAs-in-all-keychain-categories.patch
+       shell_integration/windows/OCContextMenu/OCClientInterface.h
+       shell_integration/windows/OCUtil/RemotePathChecker.cpp
+       shell_integration/windows/OCUtil/RemotePathChecker.h
+       shell_integration/windows/OCUtil/StringUtil.cpp
+       shell_integration/windows/OCUtil/StringUtil.h
+       src/3rdparty/qtlockedfile/*
+       src/3rdparty/qtsingleapplication/*
+Copyright: 2014, Digia Plc and/or its subsidiary(-ies)
+           2015, The Qt Company Ltd
+           2014-2015, ownCloud GmbH
+           2015, ownCloud Inc
+License: LGPL-2.1
+
+Files: src/3rdparty/QProgressIndicator/*
+Copyright: 2011, Morgan Leborgne
+License: Expat
+
+Files: doc/*
+Copyright: 2013, The ownCloud developers
+License: CC-BY-3.0
+
+Files: doc/_shared_assets/themes/bootstrap/static/bootstrap-responsive.css
+       doc/_shared_assets/themes/bootstrap/static/bootstrap.css
+       doc/_shared_assets/themes/nextcloud_release/static/bootstrap-responsive.css
+       doc/_shared_assets/themes/nextcloud_release/static/bootstrap.css
+Copyright: 2012, Twitter, Inc
+License: Apache-2
+
+Files: src/csync/std/asprintf.c
+       src/csync/std/asprintf.h
+Copyright: 2014, Little Star Media, Inc
+           2014, joseph werle <joseph.werle@gmail.com>
+License: Expat
+
+Files: cmake/modules/GetGitRevisionDescription.cmake
+       cmake/modules/GetGitRevisionDescription.cmake.in
+Copyright: 2009-2010, Iowa State University
+License: BSL-1
+
+Files: src/3rdparty/kmessagewidget/*
+Copyright: 2011, Aurélien Gâteau <agateau@kde.org>
+           2014, Dominik Haumann <dhaumann@kde.org>
+License: LGPL-2.1
+
+Files: src/3rdparty/qtokenizer/qtokenizer.h
+Copyright: 2014, Daniel Molkentin <daniel@molkentin.de>
+License: GPL-3 or LGPL-2.1
+
+Files: src/csync/csync_version.h.in
+Copyright: 2006-2012, Andreas Schneider <asn@cryptomilk.org>
+License: GPL-2+
+
+License: Apache-2
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ .
+     http://www.apache.org/licenses/LICENSE-2.0
+ .
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ .
+ On Debian systems a full copy of the LGPL 2.1 can be found at
+ /usr/share/common-licenses/Apache-2.0
+
+License: BSD-3-clause
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ .
+ 1. Redistributions of source code must retain the copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+    derived from this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: BSL-1
+ Permission is hereby granted, free of charge, to any person or organization
+ obtaining a copy of the software and accompanying documentation covered by
+ this license (the "Software") to use, reproduce, display, distribute,
+ execute, and transmit the Software, and to prepare derivative works of the
+ Software, and to permit third-parties to whom the Software is furnished to
+ do so, all subject to the following:
+ .
+ The copyright notices in the Software and this entire statement, including
+ the above license grant, this restriction and the following disclaimer,
+ must be included in all copies of the Software, in whole or in part, and
+ all derivative works of the Software, unless such copies or derivative
+ works are solely in the form of machine-executable object code generated by
+ a source language processor.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
+ SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
+ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
+ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ DEALINGS IN THE SOFTWARE.
+
+License: CC-BY-3.0
+ Creative Commons Legal Code
+ .
+ Attribution 3.0 Unported
+ .
+ CREATIVE COMMONS CORPORATION IS NOT A LAW FIRM AND DOES NOT PROVIDE
+ LEGAL SERVICES. DISTRIBUTION OF THIS LICENSE DOES NOT CREATE AN
+ ATTORNEY-CLIENT RELATIONSHIP. CREATIVE COMMONS PROVIDES THIS
+ INFORMATION ON AN "AS-IS" BASIS. CREATIVE COMMONS MAKES NO WARRANTIES
+ REGARDING THE INFORMATION PROVIDED, AND DISCLAIMS LIABILITY FOR
+ DAMAGES RESULTING FROM ITS USE.
+ .
+ License
+ .
+ THE WORK (AS DEFINED BELOW) IS PROVIDED UNDER THE TERMS OF THIS CREATIVE
+ COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED BY
+ COPYRIGHT AND/OR OTHER APPLICABLE LAW. ANY USE OF THE WORK OTHER THAN AS
+ AUTHORIZED UNDER THIS LICENSE OR COPYRIGHT LAW IS PROHIBITED.
+ .
+ BY EXERCISING ANY RIGHTS TO THE WORK PROVIDED HERE, YOU ACCEPT AND AGREE
+ TO BE BOUND BY THE TERMS OF THIS LICENSE. TO THE EXTENT THIS LICENSE MAY
+ BE CONSIDERED TO BE A CONTRACT, THE LICENSOR GRANTS YOU THE RIGHTS
+ CONTAINED HERE IN CONSIDERATION OF YOUR ACCEPTANCE OF SUCH TERMS AND
+ CONDITIONS.
+
+License: Expat
+ The MIT License (MIT)
+ .
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+License: GPL-2+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software Foundation,
+ Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ .
+ On Debian systems a full copy of the GPL 2 can be found at
+ /usr/share/common-licenses/GPL-2
+
+License: GPL-3
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License version 3
+ as published by the Free Software Foundation.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software Foundation,
+ Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ .
+ On Debian systems a full copy of the GPL 3 can be found at
+ /usr/share/common-licenses/GPL-3
+
+License: LGPL-2.1
+ This file may be used under the terms of the GNU Lesser General Public
+ License version 2.1 as published by the Free Software Foundation and
+ appearing in the file LICENSE.LGPL included in the packaging of this file.
+ Please review the following information to ensure the GNU Lesser General
+ Public License version 2.1 requirements will be met:
+ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+ .
+ On Debian systems a full copy of the LGPL 2.1 can be found at
+ /usr/share/common-licenses/LGPL-2.1
+
+License: LGPL-2.1+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ .
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+ .
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ .
+ On Debian systems a full copy of the LGPL 2.1 can be found at
+ /usr/share/common-licenses/LGPL-2.1
+
+License: public-domain
+ This software is in the public domain, furnished "as is", without technical
+ support, and with no warranty, express or implied, as to its usefulness for
+ any purpose.
