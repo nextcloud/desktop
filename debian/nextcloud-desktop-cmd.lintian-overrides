@@ -1,0 +1,2 @@
+# nextcloud-cmd using a private library
+nextcloud-desktop-cmd: binary-or-shlib-defines-rpath usr/bin/nextcloudcmd /usr/lib/*/nextcloud
