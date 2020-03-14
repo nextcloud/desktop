@@ -1,0 +1,11 @@
+Document: nextcloud-desktop
+Title: Debian nextcloud-desktop Manual
+Author: Nextcloud developers
+Abstract: This manual describes what nextcloud-desktop is
+ and how it can be used to manage online manuals
+ on Debian systems.
+Section: Network/File Transfer
+
+Format: HTML
+Index: /usr/share/doc/nextcloud-desktop/html/index.html
+Files: /usr/share/doc/nextcloud-desktop/html/*.html
