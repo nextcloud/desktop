@@ -8,6 +8,8 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Client sometimes does not show up when started by a user: [#7018](https://github.com/owncloud/client/issues/7018)
+* Bugfix - Fix serveral wrong colored icons in dark mode: [#7043](https://github.com/owncloud/client/issues/7043)
 * Bugfix - Fixed bug in public link with password required: [#7247](https://github.com/owncloud/client/issues/7247)
 * Bugfix - Fixed editing public link expiration date: [#7313](https://github.com/owncloud/client/issues/7313)
 * Bugfix - Expand file tree also when no folders are synced: [#7336](https://github.com/owncloud/client/issues/7336)
@@ -19,11 +21,24 @@ Summary
 * Bugfix - Resize the buttons in the settings view dynamically: [#7744](https://github.com/owncloud/client/issues/7744)
 * Bugfix - Fixed a potential crash on cancelation of discovery jobs: [#7760](https://github.com/owncloud/client/pull/7760)
 * Bugfix - Fix a potential crash on Windows VFS: [#7761](https://github.com/owncloud/client/issues/7761)
+* Bugfix - Fixed OAuth2 login of user with `+`: [#7762](https://github.com/owncloud/client/issues/7762)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
 Details
 -------
+
+* Bugfix - Client sometimes does not show up when started by a user: [#7018](https://github.com/owncloud/client/issues/7018)
+
+   We fixed a bug where a client somtimes does not show up when a user request a start.
+
+   https://github.com/owncloud/client/issues/7018
+
+* Bugfix - Fix serveral wrong colored icons in dark mode: [#7043](https://github.com/owncloud/client/issues/7043)
+
+   We fixed multiple issues where monocrome icons where not converted to match the current theme.
+
+   https://github.com/owncloud/client/issues/7043
 
 * Bugfix - Fixed bug in public link with password required: [#7247](https://github.com/owncloud/client/issues/7247)
 
@@ -93,6 +108,13 @@ Details
    client to crash.
 
    https://github.com/owncloud/client/issues/7761
+
+* Bugfix - Fixed OAuth2 login of user with `+`: [#7762](https://github.com/owncloud/client/issues/7762)
+
+   Make sure that the `+` in the user name is properly encoded in the URL opened by the browser when
+   doing an OAuth2 authentication.
+
+   https://github.com/owncloud/client/issues/7762
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
