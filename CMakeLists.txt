@@ -21,13 +21,6 @@ include(KDECompilerSettings NO_POLICY_SCOPE)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-if (APPLE OR WIN32)
-    set(USE_OUR_OWN_SQLITE3 TRUE)
-else()
-    find_package(SQLite3 3.9.0 REQUIRED)
-endif()
-
-
 if(UNIT_TESTING)
     message(DEPRECATION "Setting UNIT_TESTING is deprecated please use BUILD_TESTING")
     set(BUILD_TESTING TRUE)
@@ -151,7 +144,13 @@ if(BUILD_CLIENT)
     find_package(Sphinx)
     find_package(PdfLatex)
 
-   find_package(ZLIB REQUIRED)
+    find_package(ZLIB REQUIRED)
+
+    if (APPLE OR WIN32)
+        set(USE_OUR_OWN_SQLITE3 TRUE)
+    else()
+        find_package(SQLite3 3.9.0 REQUIRED)
+    endif()
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)
