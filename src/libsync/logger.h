@@ -47,6 +47,7 @@ public:
 
     void log(Log log);
     void doLog(const QString &log);
+    void close();
 
     static void mirallLog(const QString &message);
 

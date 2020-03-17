@@ -47,12 +47,15 @@ static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, cons
         std::cerr << qPrintable(qFormatLogMessage(type, ctx, message)) << std::endl;
     }
 
+    if(type == QtFatalMsg) {
+        if (!logger->isNoop()) {
+            logger->close();
+        }
 #if defined(Q_OS_WIN)
     // Make application terminate in a way that can be caught by the crash reporter
-    if(type == QtFatalMsg) {
         Utility::crash();
-    }
 #endif
+    }
 }
 
 
@@ -136,6 +139,17 @@ void Logger::doLog(const QString &msg)
         }
     }
     emit logWindowLog(msg);
+}
+
+void Logger::close()
+{
+    QMutexLocker lock(&_mutex);
+    if (_logstream)
+    {
+        _logstream->flush();
+        _logFile.close();
+        _logstream.reset();
+    }
 }
 
 void Logger::mirallLog(const QString &message)
