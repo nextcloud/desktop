@@ -382,8 +382,10 @@ void SocketApi::slotReadSocket()
             }
         } else {
             if (indexOfMethod != -1) {
+                // to ensure that listener is still valid we need to call it with Qt::DirectConnection
+                ASSERT(thread() == QThread::currentThread())
                 staticMetaObject.method(indexOfMethod)
-                    .invoke(this, Qt::QueuedConnection, Q_ARG(QString, argument),
+                    .invoke(this, Qt::DirectConnection, Q_ARG(QString, argument),
                             Q_ARG(SocketListener *, listener));
             } else {
                 qCWarning(lcSocketApi) << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
