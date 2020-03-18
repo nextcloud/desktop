@@ -185,26 +185,26 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
     auto pluginPath = pluginFileName("vfs", name);
 
     if (!isVfsPluginAvailable(mode)) {
-        qCWarning(lcPlugin) << "Could not load plugin: not existant or bad metadata" << pluginPath;
+        qCCritical(lcPlugin) << "Could not load plugin: not existant or bad metadata" << pluginPath;
         return nullptr;
     }
 
     QPluginLoader loader(pluginPath);
     auto plugin = loader.instance();
     if (!plugin) {
-        qCWarning(lcPlugin) << "Could not load plugin" << pluginPath << loader.errorString();
+        qCCritical(lcPlugin) << "Could not load plugin" << pluginPath << loader.errorString();
         return nullptr;
     }
 
     auto factory = qobject_cast<PluginFactory *>(plugin);
     if (!factory) {
-        qCWarning(lcPlugin) << "Plugin" << pluginPath << "does not implement PluginFactory";
+        qCCritical(lcPlugin) << "Plugin" << loader.fileName() << "does not implement PluginFactory";
         return nullptr;
     }
 
     auto vfs = std::unique_ptr<Vfs>(qobject_cast<Vfs *>(factory->create(nullptr)));
     if (!vfs) {
-        qCWarning(lcPlugin) << "Plugin" << pluginPath << "does not create a Vfs instance";
+        qCCritical(lcPlugin) << "Plugin" << loader.fileName() << "does not create a Vfs instance";
         return nullptr;
     }
 
