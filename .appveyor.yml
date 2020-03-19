@@ -36,7 +36,9 @@ test_script:
 
 after_test:
 - ps: |
-    craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --options [Packager]PackageType=NullsoftInstallerPackager --package owncloud-client
+    if ($env:TARGET -eq "windows-msvc2017_64-cl") {
+      craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --options [Packager]PackageType=NullsoftInstallerPackager --package owncloud-client
+    }
 
 artifacts:
   - path: binaries\*
