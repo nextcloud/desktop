@@ -21,8 +21,6 @@
 
 #include "ui_notificationwidget.h"
 
-#define NOTIFICATION_WIDGET_CLOSE_AFTER_MILLISECS 4800
-
 class QProgressIndicator;
 
 namespace OCC {
@@ -44,10 +42,9 @@ public slots:
     void setActivity(const Activity &activity);
     void slotNotificationRequestFinished(int statusCode);
 
-private slots:
-    void slotButtonClicked();
-
 private:
+    void slotButtonClicked(QPushButton *buttonWidget, const ActivityLink &triggeredLink);
+
     Ui_NotificationWidget _ui;
     Activity _myActivity;
     QList<QPushButton *> _buttons;

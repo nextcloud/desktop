@@ -49,9 +49,12 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>677</width>
-        <height>70</height>
+        <width>667</width>
+        <height>69</height>
        </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>

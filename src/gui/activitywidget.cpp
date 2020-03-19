@@ -657,10 +657,7 @@ void ActivitySettings::slotRegularNotificationCheck()
 bool ActivitySettings::event(QEvent *e)
 {
     if (e->type() == QEvent::Show) {
-        AccountManager *am = AccountManager::instance();
-        foreach (AccountStatePtr a, am->accounts()) {
-            slotRefresh(a.data());
-        }
+        slotRegularNotificationCheck();
     }
     return QWidget::event(e);
 }
