@@ -47,7 +47,7 @@ public:
     virtual ~Systray() {};
 
     void create();
-    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
+    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
     void setToolTip(const QString &tip);
     bool isOpen();
 
