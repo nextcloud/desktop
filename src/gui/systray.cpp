@@ -121,8 +121,9 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
 {
 #ifdef USE_FDO_NOTIFICATIONS
     if (QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
+        const QVariantMap hints = {{QStringLiteral("desktop-entry"), QStringLiteral("com.nextcloud.desktopclient.nextcloud")}};
         QList<QVariant> args = QList<QVariant>() << APPLICATION_NAME << quint32(0) << APPLICATION_ICON_NAME
-                                                 << title << message << QStringList() << QVariantMap() << qint32(-1);
+                                                 << title << message << QStringList() << hints << qint32(-1);
         QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, "Notify");
         method.setArguments(args);
         QDBusConnection::sessionBus().asyncCall(method);
