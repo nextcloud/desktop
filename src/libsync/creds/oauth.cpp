@@ -29,7 +29,7 @@ namespace {
 // TODO: make theming parameter
 QString SCOPE()
 {
-    return QStringLiteral("openid offline_access email");
+    return QStringLiteral("openid offline_access email profile");
 }
 }
 
