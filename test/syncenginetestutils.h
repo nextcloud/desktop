@@ -281,6 +281,10 @@ public:
             && children == other.children;
     }
 
+    bool operator!=(const FileInfo &other) const {
+        return !operator==(other);
+    }
+
     QString path() const {
         return (parentPath.isEmpty() ? QString() : (parentPath + '/')) + name;
     }
