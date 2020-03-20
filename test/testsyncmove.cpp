@@ -880,7 +880,8 @@ private slots:
             }
             return s;
         };
-        const QByteArray testPath = "folder/folderA/file.txt";
+        const QString src = "folder/folderA/file.txt";
+        const QString dest = "folder/folderB/file.txt";
         FakeFolder fakeFolder{ FileInfo{ QString(), { FileInfo{ QStringLiteral("folder"), { FileInfo{ QStringLiteral("folderA"), { { QStringLiteral("file.txt"), 400 } } }, QStringLiteral("folderB") } } } } };
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -896,8 +897,13 @@ private slots:
             fakeFolder.syncOnce();
         }
 
-        fakeFolder.serverErrorPaths().append(testPath, 403);
-        fakeFolder.localModifier().rename(getName(testPath), getName("folder/folderB/file.txt"));
+
+        fakeFolder.serverErrorPaths().append(src, 403);
+        fakeFolder.localModifier().rename(getName(src), getName(dest));
+        QVERIFY(!fakeFolder.currentLocalState().find(getName(src)));
+        QVERIFY(fakeFolder.currentLocalState().find(getName(dest)));
+        QVERIFY(fakeFolder.currentRemoteState().find(src));
+        QVERIFY(!fakeFolder.currentRemoteState().find(dest));
 
         // sync1 file gets detected as error, instruction is still NEW_FILE
         fakeFolder.syncOnce();
@@ -910,8 +916,16 @@ private slots:
             fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::AlwaysLocal);
             fakeFolder.syncOnce();
         }
-        // the sync must have failed as we have a file in the error state
-        QVERIFY(fakeFolder.currentLocalState() != fakeFolder.currentRemoteState());
+
+        QVERIFY(!fakeFolder.currentLocalState().find(src));
+        QVERIFY(fakeFolder.currentLocalState().find(getName(dest)));
+        if (vfsMode == Vfs::WithSuffix)
+        {
+            // the placeholder was not restored as it is still in error state
+            QVERIFY(!fakeFolder.currentLocalState().find(dest));
+        }
+        QVERIFY(fakeFolder.currentRemoteState().find(src));
+        QVERIFY(!fakeFolder.currentRemoteState().find(dest));
     }
 
 };
