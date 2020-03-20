@@ -857,6 +857,63 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testMovedWithError_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+
+        QTest::newRow("Vfs::Off") << Vfs::Off;
+        QTest::newRow("Vfs::WithSuffix") << Vfs::WithSuffix;
+#ifdef Q_OS_WIN32
+        QTest::newRow("Vfs::WindowsCfApi") << Vfs::WindowsCfApi;
+#endif
+    }
+
+    void testMovedWithError()
+    {
+        QFETCH(Vfs::Mode, vfsMode);
+        const auto getName = [vfsMode] (const QString &s)
+        {
+            if (vfsMode == Vfs::WithSuffix)
+            {
+                return QStringLiteral("%1" APPLICATION_DOTVIRTUALFILE_SUFFIX).arg(s);
+            }
+            return s;
+        };
+        const QByteArray testPath = "folder/folderA/file.txt";
+        FakeFolder fakeFolder{ FileInfo{ QString(), { FileInfo{ QStringLiteral("folder"), { FileInfo{ QStringLiteral("folderA"), { { QStringLiteral("file.txt"), 400 } } }, QStringLiteral("folderB") } } } } };
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        if (vfsMode != Vfs::Off)
+        {
+            auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::WithSuffix).release());
+            QVERIFY(vfs);
+            fakeFolder.switchToVfs(vfs);
+            fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::OnlineOnly);
+
+            // make files virtual
+            fakeFolder.syncOnce();
+        }
+
+        fakeFolder.serverErrorPaths().append(testPath, 403);
+        fakeFolder.localModifier().rename(getName(testPath), getName("folder/folderB/file.txt"));
+
+        // sync1 file gets detected as error, instruction is still NEW_FILE
+        fakeFolder.syncOnce();
+
+        // sync2 file is in error state, checkErrorBlacklisting sets instruction to IGNORED
+        fakeFolder.syncOnce();
+
+        if (vfsMode != Vfs::Off)
+        {
+            fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::AlwaysLocal);
+            fakeFolder.syncOnce();
+        }
+        // the sync must have failed as we have a file in the error state
+        QVERIFY(fakeFolder.currentLocalState() != fakeFolder.currentRemoteState());
+    }
+
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)
