@@ -48,6 +48,7 @@ endif()
 
 if (USE_OUR_OWN_SQLITE3)
     add_library(sqlite STATIC ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3/sqlite3.c)
+    set_target_properties(sqlite PROPERTIES AUTOMOC OFF)
     target_include_directories(sqlite PUBLIC ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3)
     add_library(SQLite::SQLite3 ALIAS sqlite)
     MESSAGE(STATUS "Using own sqlite3 from " ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3/)

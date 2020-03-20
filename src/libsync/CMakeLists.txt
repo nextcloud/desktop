@@ -63,7 +63,8 @@ add_library(zsync STATIC ../3rdparty/zsync/c/librcksum/hash.c
                         ../3rdparty/zsync/c/libzsync/zsyncfile.c
                         ../3rdparty/zsync/c/progress.c
 )
-set_target_properties(zsync PROPERTIES C_STANDARD 11)
+
+set_target_properties(zsync PROPERTIES C_STANDARD 11 AUTOMOC OFF)
 if (CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID MATCHES "Clang")
     target_compile_options(zsync PRIVATE -Wno-unused-parameter -Wno-unused-function)
 endif()

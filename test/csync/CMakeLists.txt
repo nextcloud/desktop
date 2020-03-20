@@ -9,7 +9,7 @@ include_directories(${CHECK_INCLUDE_DIRS})
 # create test library
 add_library(torture STATIC torture.c cmdline.c)
 target_link_libraries(torture ${CMOCKA_LIBRARIES})
-set_target_properties(torture PROPERTIES C_STANDARD 99)
+set_target_properties(torture PROPERTIES C_STANDARD 99 AUTOMOC OFF)
 
 set(TEST_TARGET_LIBRARIES torture Qt5::Core "${csync_NAME}")
 
