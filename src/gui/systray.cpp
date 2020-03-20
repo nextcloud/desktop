@@ -46,7 +46,7 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
     } else
 #endif
     {
-        QSystemTrayIcon::showMessage(title, message, icon, millisecondsTimeoutHint);
+        QSystemTrayIcon::showMessage(title, message, icon);
     }
 }
 
