@@ -28,7 +28,7 @@
 
 namespace OCC {
 
-void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)
+void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon)
 {
 #ifdef USE_FDO_NOTIFICATIONS
     if (QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
@@ -46,7 +46,7 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
     } else
 #endif
     {
-        QSystemTrayIcon::showMessage(title, message, icon, millisecondsTimeoutHint);
+        QSystemTrayIcon::showMessage(title, message, icon);
     }
 }
 
