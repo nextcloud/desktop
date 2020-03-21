@@ -46,6 +46,7 @@ Depends: libnextcloudsync0 (= ${binary:Version}),
          nextcloud-desktop-l10n,
          ${misc:Depends},
          ${shlibs:Depends}
+Replaces: nextcloud-client (<< ${binary:Version})
 Recommends: nextcloud-desktop-doc
 Description: Nextcloud folder synchronization tool
  The Nextcloud desktop app lets you always have your latest files wherever
@@ -103,6 +104,7 @@ Package: nextcloud-desktop-common
 Architecture: all
 Multi-Arch: foreign
 Depends: ${misc:Depends}
+Replaces: libnextcloudsync0 (<< ${binary:Version}), nextcloud-client (<< ${binary:Version})
 Description: Nextcloud folder synchronization - common data
  The Nextcloud desktop app lets you always have your latest files wherever
  you are. Just specify one or more folders on the local machine to and a server
@@ -116,6 +118,7 @@ Package: nextcloud-desktop-l10n
 Architecture: all
 Multi-Arch: foreign
 Depends: ${misc:Depends}
+Replaces: nextcloud-client-l10n (<< ${binary:Version})
 Section: localization
 Description: Nextcloud folder synchronization - localization
  The Nextcloud desktop app lets you always have your latest files wherever
@@ -134,6 +137,7 @@ Depends: libnextcloudsync0 (= ${binary:Version}),
          nextcloud-desktop-l10n,
          ${misc:Depends},
          ${shlibs:Depends}
+Replaces: nextcloud-client (<< ${binary:Version})
 Description: folder synchronization with an Nextcloud server - cmd client
  The Nextcloud desktop app lets you always have your latest files wherever
  you are. Just specify one or more folders on the local machine to and a server
