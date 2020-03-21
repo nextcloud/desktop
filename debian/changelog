@@ -1,4 +1,4 @@
-nextcloud-desktop (2.6.2-1) unstable; urgency=medium
+nextcloud-desktop (2.6.2-1) focal; urgency=medium
 
   * New upstream release.
   * Remove upstream applied patches.
@@ -10,13 +10,13 @@ nextcloud-desktop (2.6.2-1) unstable; urgency=medium
 
  -- Sandro Knauß <hefee@debian.org>  Sun, 12 Jan 2020 12:28:23 +0100
 
-nextcloud-desktop (2.6.1-3) experimental; urgency=medium
+nextcloud-desktop (2.6.1-3) focal; urgency=medium
 
   * Use python3-caja instead of python-caja (Closes: #945674).
 
  -- Sandro Knauß <hefee@debian.org>  Tue, 17 Dec 2019 22:28:22 +0100
 
-nextcloud-desktop (2.6.1-2) unstable; urgency=medium
+nextcloud-desktop (2.6.1-2) focal; urgency=medium
 
   [ Norbert Preining ]
   * Add upstream patch upstream_Fix_remote_wipe_keychain_storage.patch
@@ -26,7 +26,7 @@ nextcloud-desktop (2.6.1-2) unstable; urgency=medium
 
  -- Sandro Knauß <hefee@debian.org>  Sat, 07 Dec 2019 17:10:33 +0100
 
-nextcloud-desktop (2.6.1-1) unstable; urgency=medium
+nextcloud-desktop (2.6.1-1) focal; urgency=medium
 
   [ Sandro Knauß ]
   * Update depdends from python-natuilus -> python3-nautilus. (Closes: #942776)
@@ -41,7 +41,7 @@ nextcloud-desktop (2.6.1-1) unstable; urgency=medium
 
  -- Alf Gaida <agaida@siduction.org>  Sun, 17 Nov 2019 20:35:13 +0100
 
-nextcloud-desktop (2.6.0-1) unstable; urgency=medium
+nextcloud-desktop (2.6.0-1) focal; urgency=medium
 
   [ Alf Gaida ]
   * New upstream release
@@ -62,7 +62,7 @@ nextcloud-desktop (2.6.0-1) unstable; urgency=medium
 
  -- Alf Gaida <agaida@siduction.org>  Thu, 03 Oct 2019 15:12:56 +0200
 
-nextcloud-desktop (2.5.3-1) unstable; urgency=medium
+nextcloud-desktop (2.5.3-1) focal; urgency=medium
 
   [ Sandro Knauß ]
   * New upstream release.
@@ -77,14 +77,14 @@ nextcloud-desktop (2.5.3-1) unstable; urgency=medium
 
  -- Sandro Knauß <hefee@debian.org>  Thu, 29 Aug 2019 20:15:33 +0200
 
-nextcloud-desktop (2.5.1-3) unstable; urgency=medium
+nextcloud-desktop (2.5.1-3) focal; urgency=medium
 
   * Fix "Subfolders of moved folders not synced" (Closes: #929079)
     Added 0005-Fixed-Issue-1000-Subfolders-of-moved-folders-not-syn.patch
 
  -- Sandro Knauß <hefee@debian.org>  Thu, 16 May 2019 16:14:50 +0200
 
-nextcloud-desktop (2.5.1-2) unstable; urgency=medium
+nextcloud-desktop (2.5.1-2) focal; urgency=medium
 
   [ Adrian Heine ]
   * Fix VCS urls
@@ -94,7 +94,7 @@ nextcloud-desktop (2.5.1-2) unstable; urgency=medium
 
  -- Sandro Knauß <hefee@debian.org>  Tue, 12 Feb 2019 23:54:02 +0100
 
-nextcloud-desktop (2.5.1-1) unstable; urgency=medium
+nextcloud-desktop (2.5.1-1) focal; urgency=medium
 
   * Initial release (Closes: #847613)
 
