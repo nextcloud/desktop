@@ -2491,7 +2491,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="470"/>
         <source>Missing ETag from server</source>
-        <translation>Na strežniku manjka ETag datoteke</translation>
+        <translation>Na strežniku manjka datoteka ETag</translation>
     </message>
 </context>
 <context>
@@ -3640,7 +3640,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation>Odpri mapo &apos;%1&apos;</translation>
+        <translation>Odpri mapo »%1«</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="404"/>
