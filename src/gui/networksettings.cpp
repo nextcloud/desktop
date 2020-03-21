@@ -182,7 +182,8 @@ void NetworkSettings::saveProxySettings()
     // start the sync.
     FolderMan::instance()->setDirtyProxy();
 
-    for (auto account : AccountManager::instance()->accounts()) {
+    const auto accounts = AccountManager::instance()->accounts();
+    for (auto account : accounts) {
         account->freshConnectionAttempt();
     }
 }
