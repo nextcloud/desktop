@@ -77,7 +77,6 @@ list(APPEND FolderMan_SRC stubfolderman.cpp )
 nextcloud_add_test(FolderMan "${FolderMan_SRC}")
 
 SET(RemoteWipe_SRC ../src/gui/remotewipe.cpp)
-list(APPEND RemoteWipe_SRC ../src/gui/clientproxy.cpp )
 list(APPEND RemoteWipe_SRC ../src/gui/guiutility.cpp )
 list(APPEND RemoteWipe_SRC ../src/gui/userinfo.cpp )
 list(APPEND RemoteWipe_SRC ../src/gui/connectionvalidator.cpp )
