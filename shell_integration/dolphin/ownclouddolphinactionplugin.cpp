@@ -91,10 +91,8 @@ public:
             return {};
         }
 
-        auto menuaction = new QAction(parentWidget);
-        menuaction->setText(helper->contextMenuTitle());
-        menuaction->setMenu(menu);
-        return { menuaction };
+        menu->setTitle(helper->contextMenuTitle());
+        return { menu->menuAction() };
     }
 
 
