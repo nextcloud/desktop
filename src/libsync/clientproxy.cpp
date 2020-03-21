@@ -108,26 +108,6 @@ void ClientProxy::setupQtProxyFromConfig()
     }
 }
 
-const char *ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
-{
-    switch (type) {
-    case QNetworkProxy::NoProxy:
-        return "NoProxy";
-    case QNetworkProxy::DefaultProxy:
-        return "DefaultProxy";
-    case QNetworkProxy::Socks5Proxy:
-        return "Socks5Proxy";
-    case QNetworkProxy::HttpProxy:
-        return "HttpProxy";
-    case QNetworkProxy::HttpCachingProxy:
-        return "HttpCachingProxy";
-    case QNetworkProxy::FtpCachingProxy:
-        return "FtpCachingProxy";
-    default:
-        return "NoProxy";
-    }
-}
-
 void ClientProxy::lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot)
 {
     SystemProxyRunnable *runnable = new SystemProxyRunnable(url);
