@@ -21,9 +21,9 @@ Last-Update: 2019-11-17
 +# We don't want VERSION.cmake anymore
 +# include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 +set( MIRALL_VERSION_MAJOR 2 )
-+set( MIRALL_VERSION_MINOR 6 )
-+set( MIRALL_VERSION_PATCH 2 )
-+set( MIRALL_VERSION_YEAR  2019 )
++set( MIRALL_VERSION_MINOR 7 )
++set( MIRALL_VERSION_PATCH 0 )
++set( MIRALL_VERSION_YEAR  2020 )
 +set( MIRALL_SOVERSION 0 )
 +
 +# Composite defines
@@ -163,19 +163,6 @@ Last-Update: 2019-11-17
      if( MSVC )
      # Use automatic overload for suitable CRT safe-functions
      # See https://docs.microsoft.com/de-de/cpp/c-runtime-library/security-features-in-the-crt?view=vs-2019
-@@ -219,6 +291,12 @@ if (APPLE)
-     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
- endif()
- 
-+option(SANITIZE_ADDRESS "Enable address sanitizer in tests" OFF)
-+if (SANITIZE_ADDRESS)
-+    include(SanitizerFlags)
-+    enable_sanitizer()
-+endif ()
-+
- # Handle Translations, pick all client_* files from trans directory.
- file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
- set(TRANSLATIONS ${TRANS_FILES})
 @@ -255,3 +333,4 @@ elseif(BUILD_CLIENT)
      install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
      configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
@@ -255,9 +242,9 @@ Last-Update: 2019-11-17
 +++ /dev/null
 @@ -1,26 +0,0 @@
 -set( MIRALL_VERSION_MAJOR 2 )
--set( MIRALL_VERSION_MINOR 6 )
--set( MIRALL_VERSION_PATCH 2 )
--set( MIRALL_VERSION_YEAR  2019 )
+-set( MIRALL_VERSION_MINOR 7 )
+-set( MIRALL_VERSION_PATCH 0 )
+-set( MIRALL_VERSION_YEAR  2020 )
 -set( MIRALL_SOVERSION 0 )
 -
 -if ( NOT DEFINED MIRALL_VERSION_SUFFIX )
