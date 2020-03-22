@@ -3038,7 +3038,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation>Ta povezava je šifrirana z %1 bitnim %2.
+        <translation>Ta povezava je šifrirana z %1-bitnim %2.
 </translation>
     </message>
     <message>
@@ -4030,7 +4030,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="42"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 zahteva uporabo sistemske obvestilne vrstice. Pri uporabnikih namizja XFCE je treba upoštevati &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;posebne nastavitve&lt;/a&gt;. V kolikor to ni mogoče, je treba namestiti katerikoli sistem obveščanja, kot je na primer program &apos;trayer&apos;.</translation>
+        <translation>%1 zahteva uporabo sistemske obvestilne vrstice. Pri uporabnikih namizja XFCE je treba upoštevati &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;posebne nastavitve&lt;/a&gt;. V kolikor to ni mogoče, je treba namestiti katerikoli sistem obveščanja, kot je na primer program »trayer«.</translation>
     </message>
 </context>
 <context>
