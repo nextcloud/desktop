@@ -22,6 +22,7 @@
 #include "tray/UserModel.h"
 
 class QIcon;
+class QQmlApplicationEngine;
 
 namespace OCC {
 
@@ -78,9 +79,7 @@ private:
     Systray();
     bool _isOpen;
     bool _syncIsPaused;
-    QQmlEngine *_trayEngine;
-    QQmlComponent *_trayComponent;
-    QQmlContext *_trayContext;
+    QQmlApplicationEngine *_trayEngine;
 };
 
 } // namespace OCC
