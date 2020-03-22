@@ -86,9 +86,9 @@ public:
     void addUser(AccountStatePtr &user, const bool &isCurrent = false);
     int currentUserIndex();
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     QImage avatarById(const int &id);
 
@@ -154,9 +154,9 @@ public:
     static UserAppsModel *instance();
     virtual ~UserAppsModel() {};
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     enum UserAppsRoles {
         NameRole = Qt::UserRole + 1,
