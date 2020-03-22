@@ -1553,7 +1553,7 @@ Pokračovaním v synchronizácii spôsobí prepísanie všetkých vašich súbor
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation>Odstániť všetko</translation>
+        <translation>Odstrániť všetko</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
