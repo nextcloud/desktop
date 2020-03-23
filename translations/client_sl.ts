@@ -1078,7 +1078,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej≈
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="144"/>
         <source>You need to be connected to add a folder</source>
-        <translation>Za dodajanje mape mora biti vzpostavljea povezava</translation>
+        <translation>Za dodajanje mape mora biti vzpostavljena povezava</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="146"/>
