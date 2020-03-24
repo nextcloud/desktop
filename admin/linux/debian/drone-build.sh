@@ -3,6 +3,8 @@
 set -xe
 shopt -s extglob
 
+env
+
 PPA=ppa:nextcloud-devs/client
 PPA_ALPHA=ppa:nextcloud-devs/client-alpha
 PPA_BETA=ppa:nextcloud-devs/client-beta
@@ -10,7 +12,10 @@ PPA_BETA=ppa:nextcloud-devs/client-beta
 OBS_PROJECT=home:ivaradi
 OBS_PROJECT_ALPHA=home:ivaradi:alpha
 OBS_PROJECT_BETA=home:ivaradi:beta
-OBS_PACKAGE=nextcloud-client
+OBS_PACKAGE=nextcloud-desktop
+
+UBUNTU_DISTRIBUTIONS="xenial bionic eoan focal"
+DEBIAN_DISTRIBUTIONS="buster stretch"
 
 pull_request=${DRONE_PULL_REQUEST:=master}
 
@@ -33,7 +38,7 @@ fi
 set -x
 
 cd "${DRONE_WORKSPACE}"
-read basever kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog stable)
+read basever revdate kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog stable)
 
 cd "${DRONE_DIR}"
 
@@ -49,55 +54,40 @@ fi
 
 origsourceopt=""
 
-if ! wget http://ppa.launchpad.net/${repo}/ubuntu/pool/main/n/nextcloud-client/nextcloud-client_${basever}.orig.tar.bz2; then
-    cp -a ${DRONE_WORKSPACE} nextcloud-client_${basever}
-    tar cjf nextcloud-client_${basever}.orig.tar.bz2 --exclude .git nextcloud-client_${basever}
-    origsourceopt="-sa"
-fi
+cp -a ${DRONE_WORKSPACE} nextcloud-desktop_${basever}-${revdate}
+tar cjf nextcloud-desktop_${basever}-${revdate}.orig.tar.bz2 --exclude .git --exclude binary nextcloud-desktop_${basever}-${revdate}
 
-for distribution in xenial bionic disco eoan focal stable oldstable; do
-    rm -rf nextcloud-client_${basever}
-    cp -a ${DRONE_WORKSPACE} nextcloud-client_${basever}
+cd "${DRONE_WORKSPACE}"
+git config --global user.email "drone@noemail.invalid"
+git config --global user.name "Drone User"
 
-    cd nextcloud-client_${basever}
+for distribution in ${UBUNTU_DISTRIBUTIONS} ${DEBIAN_DISTRIBUTIONS}; do
+    git checkout -- .
+    git clean -xdf
 
-    cp -a admin/linux/debian/debian .
-    if test -d admin/linux/debian/debian.${distribution}; then
-        tar cf - -C admin/linux/debian/debian.${distribution} . | tar xf - -C debian
-    fi
+    git fetch origin debian/dist/${distribution}/${DRONE_TARGET_BRANCH}
+    git checkout origin/debian/dist/${distribution}/${DRONE_TARGET_BRANCH}
 
-    admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog ${distribution}
+    git merge ${DRONE_COMMIT}
+
+    admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog ${distribution} ${revdate}
     cp /tmp/tmpchangelog debian/changelog
-    if test -f admin/linux/debian/debian.${distribution}/changelog; then
-        cat admin/linux/debian/debian.${distribution}/changelog >> debian/changelog
-    else
-        cat admin/linux/debian/debian/changelog >> debian/changelog
-    fi
 
-    for p in debian/post-patches/*.patch; do
-        if test -f "${p}"; then
-            echo "Applying ${p}"
-            patch -p1 < "${p}"
-        fi
-    done
-
-    fullver=`head -1 debian/changelog | sed "s:nextcloud-client (\([^)]*\)).*:\1:"`
+    fullver=`head -1 debian/changelog | sed "s:nextcloud-desktop (\([^)]*\)).*:\1:"`
 
     EDITOR=true dpkg-source --commit . local-changes
 
     dpkg-source --build .
-    dpkg-genchanges -S ${origsourceopt} > "../nextcloud-client_${fullver}_source.changes"
+    dpkg-genchanges -S -sa > "../nextcloud-desktop_${fullver}_source.changes"
 
     if test -f ~/.has_ppa_keys; then
         debsign -k7D14AA7B -S
     fi
-
-    cd ..
 done
+cd ..
+ls -al
 
 if test "${pull_request}" = "master"; then
-    kind=`cat kind`
-
     if test "$kind" = "alpha"; then
         PPA=$PPA_ALPHA
         OBS_PROJECT=$OBS_PROJECT_ALPHA
@@ -107,24 +97,16 @@ if test "${pull_request}" = "master"; then
     fi
 
     if test -f ~/.has_ppa_keys; then
-        for changes in nextcloud-client_*~+([a-z])1_source.changes; do
-            case "${changes}" in
-                *oldstable1*)
-                    ;;
-                *)
-                    dput $PPA $changes > /dev/null
-                    ;;
-            esac
+        for distribution in ${UBUNTU_DISTRIBUTIONS}; do
+            changes=$(ls -1 nextcloud-desktop_*~${distribution}1_source.changes)
+            if test -f "${changes}"; then
+                dput $PPA "${changes}" > /dev/null
+            fi
         done
 
-        for distribution in stable oldstable; do
-            if test "${distribution}" = "oldstable"; then
-                pkgsuffix=".${distribution}"
-                pkgvertag="~${distribution}1"
-            else
-                pkgsuffix=""
-                pkgvertag=""
-            fi
+        for distribution in ${DEBIAN_DISTRIBUTIONS}; do
+            pkgsuffix=".${distribution}"
+            pkgvertag="~${distribution}1"
 
             package="${OBS_PACKAGE}${pkgsuffix}"
             OBS_SUBDIR="${OBS_PROJECT}/${package}"
@@ -136,10 +118,10 @@ if test "${pull_request}" = "master"; then
                 osc delete ${OBS_SUBDIR}/*
             fi
 
-            cp ../nextcloud-client*.orig.tar.* ${OBS_SUBDIR}/
-            cp ../nextcloud-client_*[0-9.][0-9]${pkgvertag}.dsc ${OBS_SUBDIR}/
-            cp ../nextcloud-client_*[0-9.][0-9]${pkgvertag}.debian.tar* ${OBS_SUBDIR}/
-            cp ../nextcloud-client_*[0-9.][0-9]${pkgvertag}_source.changes ${OBS_SUBDIR}/
+            cp ../nextcloud-desktop*.orig.tar.* ${OBS_SUBDIR}/
+            cp ../nextcloud-desktop_*[0-9.][0-9]${pkgvertag}.dsc ${OBS_SUBDIR}/
+            cp ../nextcloud-desktop_*[0-9.][0-9]${pkgvertag}.debian.tar* ${OBS_SUBDIR}/
+            cp ../nextcloud-desktop_*[0-9.][0-9]${pkgvertag}_source.changes ${OBS_SUBDIR}/
             osc add ${OBS_SUBDIR}/*
 
             cd ${OBS_SUBDIR}
