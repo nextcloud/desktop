@@ -83,7 +83,7 @@ def collectEntries(baseCommit, baseVersion, kind):
         revdate = datetime.datetime.utcfromtimestamp(long(revdate)).strftime("%Y%m%d.%H%M%S")
         revdate += "." + commit
 
-        kind = "beta"
+        kind = "alpha"
 
         if commit==newVersionCommit:
             result = processVersionTag(newVersionTag)
