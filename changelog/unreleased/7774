@@ -1,0 +1,5 @@
+Bugfix: On Windows the share dialog somtimes does not open as the top most window
+
+We now ensure that the our dialogs are correctly raised.
+
+https://github.com/owncloud/client/issues/7774
