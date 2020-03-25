@@ -1,4 +1,528 @@
-nextcloud-desktop (2.6.2-1) stable; urgency=medium
+nextcloud-desktop (2.7.0-alpha1) buster; urgency=medium
+
+  [ Dominique Fuchs ]
+  * Added basic UI [WIP] for new tray window
+
+  [ Camila San ]
+  * Add new qml tray icon.
+
+  [ Dominique Fuchs ]
+  * Added new vector graphics for tray window header icons
+  * Updated vecto icons and names, disabled init position (breaks on multiple monitors on windows), integrated new icons in qml
+  * Finished (static) header design and hover effects
+  * Initial ListView design/modeling for activity list
+  * Smoother deletions: Added animation for removeDisplaced including sequential opacity change and displacement animation
+  * Minor preps for c++ ActivityListModel impl. in QML
+  * WIP: Extending systray class, transitioning towas independent ActivityModel inclusion
+  * Restructures and refactorings: New systray class, handling of current user selection, integration of user information in tray window header
+  * Clean up test variable
+  * Avatar, full user name and server address now reflected in QML gui, provided by C++ backend
+  * WIP: Building User/MenuModel backend for tray menu
+  * More stuff regarding tray/UserModel.cpp
+  * WIP: working UserModel.cpp and account menu
+  * Minor fixes and enhancements
+  * connected UserModel login/logout signals, minor fixes
+  * Minor preps for c++ ActivityListModel impl. in QML
+  * Connected AccountWizard with new account action in tray menu, minor fixes
+  * Working on account switching
+  * Account swtich logic and UI updates
+  * Finished account switch back- and frontend in tray menuwindow
+  * Added frontend invokation to open local folder
+  * Fixed inconsistent module import versions (based on Qt 5.9)
+  * Replaced .engine() by pointer access b/c of backward compatibility
+  * Removal of init.qml plus minor fixes
+  * Remove init.qml from CMakeLists and resource file
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ XNG ]
+  * apply http2 qt resend patch from owncloud
+  * apply http2 qt resend patch from owncloud
+  * apply http2 qt resend patch from owncloud
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Added popup show/hide logic
+  * Backend code separation & structure cleanup
+  * Implemented platform agnostic tray window positioning logic
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Fall back to primary screen on QT version < 5.10 instead of icon position detection
+  * Added folder search for User instance, added open folder button connection
+  * Added ActivityModel in new tray backend, implemented as delegate in UI
+  * Gigantic ton of changes and deletions: ActivityListModel, tray GUI, Account logic.
+  * Fix git not recognizing case sensitive changes
+  * Fixed client.qrc
+  * Has function for ActivityModel, typos
+  * More typo fix
+  * Fix server adress retreival in tray window buttons
+  * First real activity connection
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Tray account menu wording/positioning
+  * Fix macOS popup y position, neglecting unneccesary calculations
+  * Fix wrong macro clause
+  * Fix blurry caret svg due to https://bugreports.qt.io/browse/QTBUG-44863
+  * Quit/settings button in tray menu, disable context menu, font size fixes
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Focus and popup improvements for macOS
+  * Code cleanup regarding context menu. Pause/resume logic implemented. Halfway through remodeling account menu.
+  * Preps for UserLine submenu
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ JanDragon ]
+  * Updated year in legalnotice.cpp
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Roeland Jago Douma ]
+  * Ask for password on password protected link shares
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * UserLine drafting, bugfixes, restuctures
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * More UserLine, avatar fixes
+  * Tray creation timing, account menu reinstantiating on visible change
+  * Implemented account removal
+  * Detect newly added user and rebuild account menu automatically
+  * Fix crash on startup when no users configured
+  * Added confirmation dialog for account removal
+  * Fix comment
+  * Systray now a singleton with instance(), show tray on finished wizard
+  * Fix local folder URL
+  * Streamlined 'Add account' button with account entries
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Generalized connection check, now working for every user in account menu
+  * Connection status indicators as avatar overlay
+  * call resetRejectedCertificates on fresh login
+  * emit signal for current user GUI refresh on login/logout
+  * More fixes to login/logout logic
+  * Model/View improvements, also fixes crash on account removal
+  * Bunch of fixes and optimizations for activityList
+  * Removed old account toolbox
+  * Show activitylist on initial tray opening when logged in
+  * Temperarily disabling animations due to lags - FIXME
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Fix local folder not opening on windows, add extra slash
+  * Add populate transition
+  * Show ListView delegate only when model is populated (prevent dummy delegate)
+
+  [ Michael Schuster ]
+  * Fix Explorer integration on Windows and the crash on other systems
+
+  [ JanDragon ]
+  * Welcome to 2020
+
+  [ Dominique Fuchs ]
+  * Icon selection, svg path transfers, scrollbar
+  * Minor improvements
+  * Integrated local sync activities in activitymodel
+  * Integrated local error messages in activitymodel
+  * Added progressInfo / cleanup to acitivtymodel
+  * Activity refresh in background
+  * Made tray window positioning HighDPI aware
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Make qml UI strings translatable
+  * Fix missing trayScreen init in non-OSX clause
+  * Font and icon size improvements, svg transfer to new folder
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Resized add account icon, adapted layout for new size
+
+  [ Michael Schuster ]
+  * Fetch server Apps in AccountState (moved from ownCloudGui)
+  * Remove setTalkCapability() from AccountState and filter for Talk upon App list building
+  * Add App list menu to Tray UI
+
+  [ Corentin Noël ]
+  * Install libcloudproviders files by default on debian
+
+  [ Michael Schuster ]
+  * Remove debug output
+  * App menu: Filter out Talk because we have a dedicated button for it
+
+  [ Dominique Fuchs ]
+  * Layout adjustments & also show remote path in activitylist
+  * Allow text to expand further if one or both buttons aren't visible
+  * Preserve a 2px distance from tray border (streamlining with acount menu)
+  * Add visual separation between accountStateIndicator and avatar
+
+  [ ritsute ]
+  * Handle broken shared file error gracefully
+
+  [ Brandon ]
+  * Correct wrong variable
+  * Correct wrong variable
+
+  [ Roeland Jago Douma ]
+  * Windows 7 is out of support
+
+  [ Michael Schuster ]
+  * Fix font sizes for "Log out" and "Remove account" and the Apps menu
+  * Double the width of the Apps menu (x starts at the Talk button)
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * 1px border #0082c9 around tray window
+  * append the correct folderwatcher (platform specific)
+  * Fix failing of several tests by including ocsjob source (after its inclusion in accountstate in a previous commit)
+  * Add check if applist rowCount() already empty to prevent assert exception
+  * Upgrade of NC server API usage + corresponding activity queries and properties including icon ref
+  * Retreive and svg data from icon property url for activity entries
+  * Minor layout adjustments
+  * Streamlining local sync notification/activity icons with server ones. Added fileAction logic for local sync activities
+  * Disabled animations until population glitches are fixed
+  * Minor property hierarchy fix
+  * Fixed bug regarding additional but empty delegate at end of activitylist
+
+  [ Michael Schuster ]
+  * Add initial support for Apps menu icon display (show remote SVGs)
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Refresh immediately on showWindow, regardless of the timer
+  * Refresh visibility of ListView based on presence of items on showWindow
+  * Set sourceSize to prevent blurry rerendering of svg source in activityIcon
+  * Removed visibility workaround
+  * Adapted currentId logic for activity fetching to new API (should fix endless fetch bug)
+  * Inclusion of possible 'notification' type descriptions in activity
+  * Fix hover property wrongly placed in button, not MouseArea
+
+  [ Michael Schuster ]
+  * Add Activity date and time
+  * Notifications bug fix: Don't init ETag response header with *
+  * AccountState: Add helper to find navigation App
+  * Limit fetching Activities to 100 or max. 30 days old
+  * Add grey hint Activity entry if limit is reached
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Code maintenance - correct some syntax, fix some warnings.
+
+  [ Michael Schuster ]
+  * More code maintenance
+  * JsonApiJob: Add method usePOST to allow anonymous POST requests
+  * Add support for the directEditing capability
+  * Share context menu: Use directEditing capability in SocketApi
+  * Linux AppImage build script: Use QtKeyChain master
+  * Linux AppImage build script: Add QML dir for new 2.7 Tray menu
+  * Bump version year to 2020
+
+  [ Dominique Fuchs ]
+  * Cleanup/Removal/Adaption/Update to resource files and crresponding code, esp. regarding svg usage
+  * Re-add unintentionaly deleted files
+  * add missing resource include for add.svg
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Testing fix for qmldir import with linuxdeployqt AppImage by correcting source path
+
+  [ István Váradi ]
+  * Qt 5.5 compatibility ifdef
+
+  [ Dominique Fuchs ]
+  * Fix crash on start without any accounts
+
+  [ Michael Schuster ]
+  * Tray menu: Only show time ago (view too noisy)
+
+  [ Dominique Fuchs ]
+  * Introduced Style module
+  * Module styling also for UserLine.qml
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Fix wrong window position on some linux DEs - worked around invalid geometry() returned by QT
+
+  [ Julius Härtl ]
+  * Use system proxy by default if no config file is present
+
+  [ Dominique Fuchs ]
+  * Fix also screen selection for different Qt versions and for buggy linux DEs
+  * Rewrite of screen selection logic, plus synamic screen selection Window.qml
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Roeland Jago Douma ]
+  * Do not save notes on text change
+  * Am empty note is not a valid note
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Andre-Schuiki ]
+  * Update autoupdate.rst
+
+  [ rakekniven ]
+  * Changed product name to Nextcloud
+
+  [ Corentin Noël ]
+  * Make sure that the libcloudprovider integration is using a valid D-Bus path
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ István Váradi ]
+  * Do not install files related to cloud providers under Buster
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Corentin Noël ]
+  * Start the client in background if activated by D-Bus
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Dominique Fuchs ]
+  * Fix wrong encoding when specifying extra header with if-match path
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ rakekniven ]
+  * l10n: Changed spelling of "user name" to "username"
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ rakekniven ]
+  * l10n: Triple dot to ellipsis
+  * Triple dot to ellipsis
+  * l10n: Triple dot to ellipsis
+  * l10n: Triple dot to ellipsis
+  * l10n: Changed grammar
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Michael Schuster ]
+  * Add UserInfo class and fetch quota via API instead of PropfindJob
+  * Code cleanup
+  * Fix Tests linkage (missed UserInfo.cpp in CMakeLists.txt)
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Michael Schuster ]
+  * Updater: Add query-parameter 'updatesegment' to the update check
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Max Rees ]
+  * Fix cmake inclusion of Qml and Quick
+
+  [ rakekniven ]
+  * l10n: Change case of one word
+  * l10n: Removed blank before colon
+  * l10n: Removed colon from translation
+  * l10n: Change spelling of "webdav"
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Michael Schuster ]
+  * Fix Explorer integration re-save (fixes issue #1807)
+  * Fix Explorer integration: Hide option on non-Windows
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Michael Schuster ]
+  * owncloudsetuppage.cpp: also rename client/theme/lock-http(s) PNGs to SVG
+  * owncloudsetuppage.cpp: adapt to string change from master: url -> URL
+  * further resource cleanup: remove theme/settings@2x.png
+
+  [ XNG ]
+  * Disable http2 for now due to Qt bug
+
+  [ Michael Schuster ]
+  * Fix build with older Qt: Disable http2 for now due to Qt bug, add env var (upstream)
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Bruno Perel ]
+  * Fix git merge hiccup
+
+  [ Michael Schuster ]
+  * Fix MSVC warnings: Missing return value, cast type
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Michael Schuster ]
+  * WebFlowCredentials: Make username comparison case-insensitive (fix #1741)
+  * Fix Explorer pinning: Add fallbacks for Shell commands (fixes #1599)
+
+  [ Christian Kamm ]
+  * Windows: Fix context menu handling only own verbs #7004
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ István Váradi ]
+  * Added build for Focal
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Roeland Jago Douma ]
+  * Allow sharing to circles
+
+  [ cclauss ]
+  * Use print() function in both Python 2 and Python 3
+
+  [ István Váradi ]
+  * Added Focal-specific files
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Michael Schuster ]
+  * Add missing --version parameter to help screen
+  * Version parameter: Show Qt platform plugin, OS and CPU arch
+  * Settings dialog About section: Show minimal version info
+  * Settings dialog: Move detailed version info from About section to Legal notice dialog
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+
+  [ Michael Schuster ]
+  * Fix Legal notice dialog: Correct title and header font
+  * Updater UI: Implement auto-update option and update button
+  * Fix OCUpdater: Also change status on network error or invalid XML
+  * Updater: Add CMake option BUILD_UPDATER to make the updater optional
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ Michael Schuster ]
+  * Updater: Fix Tests build (failed with BUILD_UPDATER=NO)
+  * WebView: Add missing Q_OBJECT macros
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ István Váradi ]
+  * Provide specific install file for Debian oldstable
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ István Váradi ]
+  * Copied the debian control directory from salsa
+  * The upstream branch is master
+  * Transitional packages for the old PPA package names
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+  [ István Váradi ]
+  * Modifications needed for all distributions
+
+  [ Nextcloud bot ]
+  * [tx-robot] updated from transifex
+  * [tx-robot] updated from transifex
+
+ -- István Váradi <ivaradi@varadiistvan.hu>  Wed, 25 Mar 2020 18:23:46 +0000
+
+nextcloud-desktop (2.6.2-1) buster; urgency=medium
 
   * New upstream release.
   * Remove upstream applied patches.
@@ -10,13 +534,13 @@ nextcloud-desktop (2.6.2-1) stable; urgency=medium
 
  -- Sandro Knauß <hefee@debian.org>  Sun, 12 Jan 2020 12:28:23 +0100
 
-nextcloud-desktop (2.6.1-3) stable; urgency=medium
+nextcloud-desktop (2.6.1-3) buster; urgency=medium
 
   * Use python3-caja instead of python-caja (Closes: #945674).
 
  -- Sandro Knauß <hefee@debian.org>  Tue, 17 Dec 2019 22:28:22 +0100
 
-nextcloud-desktop (2.6.1-2) stable; urgency=medium
+nextcloud-desktop (2.6.1-2) buster; urgency=medium
 
   [ Norbert Preining ]
   * Add upstream patch upstream_Fix_remote_wipe_keychain_storage.patch
@@ -26,7 +550,7 @@ nextcloud-desktop (2.6.1-2) stable; urgency=medium
 
  -- Sandro Knauß <hefee@debian.org>  Sat, 07 Dec 2019 17:10:33 +0100
 
-nextcloud-desktop (2.6.1-1) stable; urgency=medium
+nextcloud-desktop (2.6.1-1) buster; urgency=medium
 
   [ Sandro Knauß ]
   * Update depdends from python-natuilus -> python3-nautilus. (Closes: #942776)
@@ -41,7 +565,7 @@ nextcloud-desktop (2.6.1-1) stable; urgency=medium
 
  -- Alf Gaida <agaida@siduction.org>  Sun, 17 Nov 2019 20:35:13 +0100
 
-nextcloud-desktop (2.6.0-1) stable; urgency=medium
+nextcloud-desktop (2.6.0-1) buster; urgency=medium
 
   [ Alf Gaida ]
   * New upstream release
@@ -62,7 +586,7 @@ nextcloud-desktop (2.6.0-1) stable; urgency=medium
 
  -- Alf Gaida <agaida@siduction.org>  Thu, 03 Oct 2019 15:12:56 +0200
 
-nextcloud-desktop (2.5.3-1) stable; urgency=medium
+nextcloud-desktop (2.5.3-1) buster; urgency=medium
 
   [ Sandro Knauß ]
   * New upstream release.
@@ -77,14 +601,14 @@ nextcloud-desktop (2.5.3-1) stable; urgency=medium
 
  -- Sandro Knauß <hefee@debian.org>  Thu, 29 Aug 2019 20:15:33 +0200
 
-nextcloud-desktop (2.5.1-3) stable; urgency=medium
+nextcloud-desktop (2.5.1-3) buster; urgency=medium
 
   * Fix "Subfolders of moved folders not synced" (Closes: #929079)
     Added 0005-Fixed-Issue-1000-Subfolders-of-moved-folders-not-syn.patch
 
  -- Sandro Knauß <hefee@debian.org>  Thu, 16 May 2019 16:14:50 +0200
 
-nextcloud-desktop (2.5.1-2) stable; urgency=medium
+nextcloud-desktop (2.5.1-2) buster; urgency=medium
 
   [ Adrian Heine ]
   * Fix VCS urls
@@ -94,7 +618,7 @@ nextcloud-desktop (2.5.1-2) stable; urgency=medium
 
  -- Sandro Knauß <hefee@debian.org>  Tue, 12 Feb 2019 23:54:02 +0100
 
-nextcloud-desktop (2.5.1-1) stable; urgency=medium
+nextcloud-desktop (2.5.1-1) buster; urgency=medium
 
   * Initial release (Closes: #847613)
 
