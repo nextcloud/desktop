@@ -71,7 +71,8 @@ for distribution in ${UBUNTU_DISTRIBUTIONS} ${DEBIAN_DISTRIBUTIONS}; do
     git merge ${DRONE_COMMIT}
 
     admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog ${distribution} ${revdate}
-    cp /tmp/tmpchangelog debian/changelog
+    cat /tmp/tmpchangelog debian/changelog > debian/changelog.new
+    mv debian/changelog.new debian/changelog
 
     fullver=`head -1 debian/changelog | sed "s:nextcloud-desktop (\([^)]*\)).*:\1:"`
 

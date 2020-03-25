@@ -48,22 +48,17 @@ def getCommitVersion(commit):
     except:
         return None
 
-def collectEntries(baseCommit, baseVersion, kind, finalRevDate):
-    scriptdir = os.path.dirname(__file__)
-    configPath = os.path.join(scriptdir, "git2changelog.cfg")
+def collectEntries(baseCommit, baseVersion, kind, finalRevDate, config):
 
     newVersionCommit = None
     newVersionTag = None
     newVersionOrigTag = None
 
-    if os.path.exists(configPath):
-        config = ConfigParser.SafeConfigParser()
-        config.read(configPath)
-        if config.has_section("versionhack"):
-            if config.has_option("versionhack", "commit") and \
-               config.has_option("versionhack", "tag"):
-                newVersionCommit = config.get("versionhack", "commit")
-                newVersionTag = config.get("versionhack", "tag")
+    if config is not None and config.has_section("versionhack"):
+        if config.has_option("versionhack", "commit") and \
+           config.has_option("versionhack", "tag"):
+            newVersionCommit = config.get("versionhack", "commit")
+            newVersionTag = config.get("versionhack", "tag")
 
     entries = []
 
@@ -153,13 +148,27 @@ def genChangeLogEntries(f, entries, distribution):
     return (latestBaseVersion, latestRevDate, latestKind)
 
 if __name__ == "__main__":
+    scriptdir = os.path.dirname(__file__)
+    configPath = os.path.join(scriptdir, "git2changelog.cfg")
+
+    baseCommit = "f9b1c724d6ab5431e0cd56b7cd834f2dd48cebb1"
+    baseVersion = "2.4.0"
+
+    config = None
+    if os.path.exists(configPath):
+        config = ConfigParser.SafeConfigParser()
+        config.read(configPath)
+
+        if config.has_section("base"):
+            if config.has_option("base", "commit") and \
+               config.has_option("base", "version"):
+                baseCommit = config.get("base", "commit")
+                baseVersion = config.get("base", "version")
 
     distribution = sys.argv[2]
     finalRevDate = sys.argv[3] if len(sys.argv)>3 else None
 
-    #entries = collectEntries("8aade24147b5313f8241a8b42331442b7f40eef9", "2.2.4", "release")
-    entries = collectEntries("f9b1c724d6ab5431e0cd56b7cd834f2dd48cebb1",
-                             "2.4.0", "beta", finalRevDate)
+    entries = collectEntries(baseCommit, baseVersion, "alpha", finalRevDate, config)
 
     with open(sys.argv[1], "wt") as f:
         (baseVersion, revdate, kind) = genChangeLogEntries(f, entries, distribution)
