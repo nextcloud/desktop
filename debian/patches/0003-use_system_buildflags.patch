@@ -1,0 +1,21 @@
+Description: Don't modify build flags within the package
+ For being able to have full control over the build process, we need
+ full control over the build flags set. That's why it is recommended to disable
+ any modification from these flags from package side.
+Author: Sandro Knauß <hefee@debian.org>
+Origin: debian
+Last-Update: 2015-10-24
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+Index: owncloud-client/src/csync/CMakeLists.txt
+===================================================================
+--- owncloud-client.orig/src/csync/CMakeLists.txt	2015-10-24 03:02:40.576620062 +0200
++++ owncloud-client/src/csync/CMakeLists.txt	2015-10-24 03:02:40.573286695 +0200
+@@ -9,7 +9,6 @@
+ # add definitions
+ include(DefineCMakeDefaults)
+ include(DefinePlatformDefaults)
+-include(DefineCompilerFlags)
+ include(DefineOptions.cmake)
+ 
+ include(DefineInstallationPaths)

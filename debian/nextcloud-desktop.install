@@ -1,0 +1,4 @@
+usr/bin/nextcloud
+usr/share/applications/com.nextcloud.desktopclient.nextcloud.desktop
+usr/share/dbus-1/services/com.nextcloudgmbh.Nextcloud.service
+usr/share/cloud-providers/com.nextcloudgmbh.Nextcloud.ini

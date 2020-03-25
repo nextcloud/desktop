@@ -1,0 +1,32 @@
+Description: Debianize installation folder for kde plugin
+ Inside debian we want that the kde plugins are directly found,
+ so we need to push them to known places.
+Author: Sandro Knauß <hefee@debian.org>
+Origin: Debian
+Forwarded: not-needed
+Last-Update: 2019-01-15
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/shell_integration/dolphin/CMakeLists.txt
++++ b/shell_integration/dolphin/CMakeLists.txt
+@@ -43,13 +43,14 @@ set(OWNCLOUDDOLPHINHELPER ${APPLICATION_
+ add_library(${OWNCLOUDDOLPHINHELPER} SHARED ownclouddolphinpluginhelper.cpp)
+ target_link_libraries(${OWNCLOUDDOLPHINHELPER} Qt5::Network)
+ generate_export_header(${OWNCLOUDDOLPHINHELPER} BASE_NAME ownclouddolphinpluginhelper)
+-install(TARGETS ${OWNCLOUDDOLPHINHELPER} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
++install(TARGETS ${OWNCLOUDDOLPHINHELPER} LIBRARY DESTINATION "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}")
+ 
+ #---OVERLAY PLUGIN---
+ set(OWNCLOUDDOLPHINOVERLAYPLUGIN ${APPLICATION_EXECUTABLE}dolphinoverlayplugin)
+ kcoreaddons_add_plugin(${OWNCLOUDDOLPHINOVERLAYPLUGIN} INSTALL_NAMESPACE "kf5/overlayicon"
+                        JSON ownclouddolphinoverlayplugin.json SOURCES ownclouddolphinoverlayplugin.cpp)
+ target_link_libraries(${OWNCLOUDDOLPHINOVERLAYPLUGIN} KF5::CoreAddons KF5::KIOCore KF5::KIOWidgets ${OWNCLOUDDOLPHINHELPER})
++set_target_properties(${OWNCLOUDDOLPHINOVERLAYPLUGIN} PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}")
+ 
+ #---ACTION PLUGIN---
+ set(OWNCLOUDDOLPHINACTIONPLUGIN ${APPLICATION_EXECUTABLE}dolphinactionplugin)
+@@ -58,3 +59,4 @@ target_link_libraries(${OWNCLOUDDOLPHINA
+ configure_file(ownclouddolphinactionplugin.desktop.in ${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop ESCAPE_QUOTES @ONLY)
+ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
+ install(TARGETS ${OWNCLOUDDOLPHINACTIONPLUGIN} DESTINATION ${KDE_INSTALL_PLUGINDIR})
++set_target_properties(${OWNCLOUDDOLPHINACTIONPLUGIN} PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}")

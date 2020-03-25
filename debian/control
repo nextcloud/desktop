@@ -1,0 +1,273 @@
+Source: nextcloud-desktop
+Section: net
+Priority: optional
+Maintainer: ownCloud for Debian maintainers <pkg-owncloud-maintainers@lists.alioth.debian.org>
+Uploaders: Sandro Knauß <hefee@debian.org>,
+           Alf Gaida <agaida@siduction.org>
+Build-Depends: appstream,
+               cmake (>= 3.2~),
+               debhelper-compat (= 12),
+               dh-python,
+               doxygen,
+               extra-cmake-modules (>= 1.2.0~),
+               libcloudproviders-dev,
+               libcmocka-dev,
+               libdbus-1-dev,
+               libinotify-dev [kfreebsd-any],
+               libkf5coreaddons-dev (>= 5.16.0~),
+               libkf5kio-dev (>= 5.16.0~),
+               libqt5svg5-dev,
+               libqt5webkit5-dev,
+               libsqlite3-dev (>= 3.8.0~),
+               libssl-dev (>= 1.1~),
+               pkg-config,
+               python3-all,
+               python3-sphinx,
+               qt5keychain-dev,
+               qtbase5-dev (>= 5.6~),
+               qttools5-dev,
+               qttools5-dev-tools,
+               qtwebengine5-dev (>= 5.6~),
+               texlive-latex-base,
+               zlib1g-dev,
+               xauth,
+               xvfb,
+Rules-Requires-Root: no
+Standards-Version: 4.4.1
+Homepage: https://nextcloud.com/install/#install-clients
+Vcs-Browser: https://salsa.debian.org/owncloud-team/nextcloud-desktop
+Vcs-Git: https://salsa.debian.org/owncloud-team/nextcloud-desktop.git
+
+Package: nextcloud-desktop
+Architecture: any
+Depends: libnextcloudsync0 (= ${binary:Version}),
+         libqt5sql5-sqlite,
+         nextcloud-desktop-common,
+         nextcloud-desktop-l10n,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: nextcloud-desktop-doc
+Description: Nextcloud folder synchronization tool
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ nextcloud-desktop provides the graphical client specialising in
+ synchronizing with cloud storage provided by Nextcloud.
+
+Package: nextcloud-desktop-doc
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${sphinxdoc:Depends}
+Section: doc
+Description: Nextcloud folder synchronization - documentation
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ This package provides the documentation.
+
+Package: libnextcloudsync0
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Section: libs
+Description: Nextcloud folder synchronization - libraries
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ This package provides the library for nextcloud-desktop.
+
+Package: libnextcloudsync-dev
+Architecture: any
+Multi-Arch: same
+Depends: libnextcloudsync0 (= ${binary:Version}), ${misc:Depends}
+Section: libdevel
+Description: Nextcloud folder synchronization - development files
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ This package contains the library development files.
+
+Package: nextcloud-desktop-common
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}
+Description: Nextcloud folder synchronization - common data
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ This package provides data that is shared between different packages.
+
+Package: nextcloud-desktop-l10n
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}
+Section: localization
+Description: Nextcloud folder synchronization - localization
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ This package provides the localization.
+
+Package: nextcloud-desktop-cmd
+Architecture: any
+Depends: libnextcloudsync0 (= ${binary:Version}),
+         libqt5sql5-sqlite,
+         nextcloud-desktop-common,
+         nextcloud-desktop-l10n,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: folder synchronization with an Nextcloud server - cmd client
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ This package provides the command line client specialising in
+ synchronizing with cloud storage provided by Nextcloud.
+
+Package: dolphin-nextcloud
+Architecture: any
+Multi-Arch: same
+Section: kde
+Depends: dolphin (>= 4:15.12.1),
+         libnextcloudsync0 (= ${binary:Version}),
+         nextcloud-desktop,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Enhances: dolphin
+Description: Nextcloud integration for Dolphin
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ Dolphin Nextcloud is an extension that integrates the Nextcloud web service
+ with your Plasma Desktop (KDE).
+
+Package: nautilus-nextcloud
+Architecture: all
+Section: gnome
+Depends: nautilus,
+         nextcloud-desktop (<< ${source:Version}.1~),
+         nextcloud-desktop (>= ${source:Version}),
+         nextcloud-desktop-common,
+         python3-nautilus,
+         ${misc:Depends},
+         ${python3:Depends}
+Suggests: nautilus-script-manager
+Enhances: nautilus
+Description: Nextcloud integration for Nautilus
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ Nautilus Nextcloud is an extension that integrates the Nextcloud web service
+ with your GNOME Desktop.
+
+Package: nemo-nextcloud
+Architecture: all
+Depends: nemo,
+         nemo-python,
+         nextcloud-desktop (<< ${source:Version}.1~),
+         nextcloud-desktop (>= ${source:Version}),
+         nextcloud-desktop-common,
+         ${misc:Depends},
+         ${python3:Depends}
+Enhances: nemo
+Description: Nextcloud integration for Nemo
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ Nemo Nextcloud is an extension that integrates the Nextcloud web service with
+ your Cinnamon Desktop.
+
+Package: caja-nextcloud
+Architecture: all
+Depends: caja,
+         nextcloud-desktop (<< ${source:Version}.1~),
+         nextcloud-desktop (>= ${source:Version}),
+         nextcloud-desktop-common,
+         python3-caja,
+         python3-gi,
+         ${misc:Depends},
+         ${python3:Depends}
+Enhances: caja
+Description: Nextcloud integration for Caja
+ The Nextcloud desktop app lets you always have your latest files wherever
+ you are. Just specify one or more folders on the local machine to and a server
+ to synchronize to. You can configure more computers to synchronize to the same
+ server and any change to the files on one computer will silently and reliably
+ flow across to every other.
+ .
+ Caja Nextcloud is an extension that integrates the Nextcloud web service with
+ your MATE Desktop.
+
+Package: nextcloud-client
+Section: oldlibs
+Priority: optional
+Architecture: any
+Depends: nextcloud-desktop (= ${binary:Version}), nextcloud-desktop-cmd (= ${binary:Version}),  nextcloud-desktop-doc (= ${source:Version}), ${misc:Depends}
+Description: Nextcloud folder synchronization tool (transitional package)
+ This is a transitional package for compatibility with the old Nextcloud
+ client PPA packages names. It can be safely deleted.
+
+Package: nextcloud-client-caja
+Section: oldlibs
+Priority: optional
+Architecture: all
+Depends: caja-nextcloud (= ${binary:Version}), ${misc:Depends}
+Description: Nextcloud integration for Caja (transitional package)
+ This is a transitional package for compatibility with the old Nextcloud
+ client PPA packages names. It can be safely deleted.
+
+Package: nextcloud-client-dolphin
+Section: oldlibs
+Priority: optional
+Architecture: any
+Depends: dolphin-nextcloud (= ${binary:Version}), ${misc:Depends}
+Description: Nextcloud integration for Dolphin (transitional package)
+ This is a transitional package for compatibility with the old Nextcloud
+ client PPA packages names. It can be safely deleted.
+
+Package: nextcloud-client-nautilus
+Section: oldlibs
+Priority: optional
+Architecture: all
+Depends: nautilus-nextcloud (= ${binary:Version}), ${misc:Depends}
+Description: Nextcloud integration for Nautilus (transitional package)
+ This is a transitional package for compatibility with the old Nextcloud
+ client PPA packages names. It can be safely deleted.
+
+Package: nextcloud-client-nemo
+Section: oldlibs
+Priority: optional
+Architecture: all
+Depends: nemo-nextcloud (= ${binary:Version}), ${misc:Depends}
+Description: Nextcloud integration for Nemo (transitional package)
+ This is a transitional package for compatibility with the old Nextcloud
+ client PPA packages names. It can be safely deleted.

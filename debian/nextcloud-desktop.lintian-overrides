@@ -1,0 +1,2 @@
+# nextcloud using a private library
+nextcloud-desktop: binary-or-shlib-defines-rpath usr/bin/nextcloud /usr/lib/*/nextcloud
