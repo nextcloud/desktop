@@ -865,7 +865,13 @@ private slots:
         QTest::newRow("Vfs::Off") << Vfs::Off;
         QTest::newRow("Vfs::WithSuffix") << Vfs::WithSuffix;
 #ifdef Q_OS_WIN32
-        QTest::newRow("Vfs::WindowsCfApi") << Vfs::WindowsCfApi;
+        if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+        {
+            QTest::newRow("Vfs::WindowsCfApi") << Vfs::WindowsCfApi;
+        } else {
+            QWARN("Skipping Vfs::WindowsCfApi");
+        }
+
 #endif
     }
 
@@ -888,7 +894,7 @@ private slots:
 
         if (vfsMode != Vfs::Off)
         {
-            auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::WithSuffix).release());
+            auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(vfsMode).release());
             QVERIFY(vfs);
             fakeFolder.switchToVfs(vfs);
             fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::OnlineOnly);
