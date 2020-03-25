@@ -465,6 +465,50 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void renameError() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.serverErrorPaths().append("A/a1");
+        fakeFolder.localModifier().rename("A/a1", "A/a1m");
+        fakeFolder.localModifier().rename("B/b1", "B/b1m");
+        StatusPushSpy statusSpy(fakeFolder.syncEngine());
+
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+
+        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
+        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusSync));
+
+        fakeFolder.execUntilFinished();
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusError));
+        QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
+        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        statusSpy.clear();
+
+        QVERIFY(!fakeFolder.syncOnce());
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        statusSpy.clear();
+        QVERIFY(!fakeFolder.syncOnce());
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusError));
+        QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
+        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusNone));
+        statusSpy.clear();
+    }
+
 };
 
 QTEST_GUILESS_MAIN(TestSyncFileStatusTracker)
