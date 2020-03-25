@@ -1,0 +1,6 @@
+Bugfix: Fix status icon after move errors
+￼
+The file status icon was not showing an error when a move operation failed
+
+https://github.com/owncloud/client/issues/7759
+
