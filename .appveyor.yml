@@ -37,23 +37,21 @@ test_script:
 - ps: |
    craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --test owncloud-client
 
-after_test:
-- ps: |
-    if ($IsWindows){
-        craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --options [Packager]PackageType=NullsoftInstallerPackager --package owncloud-client
-    } else {
-       # Disable packaging for now
-       # craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --package owncloud-client
-    }
+#after_test:
+#- ps: |
+    #if ($IsWindows){
+        #craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --options [Packager]PackageType=NullsoftInstallerPackager --package owncloud-client
+    #} else {
+       #Disable packaging for now
+       #craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --package owncloud-client
+    #}
 
-artifacts:
+    artifacts:
   - path: binaries/*
 
 
 environment:
     matrix:
-    - TARGET: macos-64-clang
-      APPVEYOR_BUILD_WORKER_IMAGE: macOS
     - TARGET: windows-msvc2017_32-cl
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - TARGET: windows-msvc2017_64-cl

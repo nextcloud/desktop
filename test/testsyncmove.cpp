@@ -857,6 +857,83 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testMovedWithError_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+
+        QTest::newRow("Vfs::Off") << Vfs::Off;
+        QTest::newRow("Vfs::WithSuffix") << Vfs::WithSuffix;
+#ifdef Q_OS_WIN32
+        if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+        {
+            QTest::newRow("Vfs::WindowsCfApi") << Vfs::WindowsCfApi;
+        } else {
+            QWARN("Skipping Vfs::WindowsCfApi");
+        }
+
+#endif
+    }
+
+    void testMovedWithError()
+    {
+        QFETCH(Vfs::Mode, vfsMode);
+        const auto getName = [vfsMode] (const QString &s)
+        {
+            if (vfsMode == Vfs::WithSuffix)
+            {
+                return QStringLiteral("%1" APPLICATION_DOTVIRTUALFILE_SUFFIX).arg(s);
+            }
+            return s;
+        };
+        const QString src = "folder/folderA/file.txt";
+        const QString dest = "folder/folderB/file.txt";
+        FakeFolder fakeFolder{ FileInfo{ QString(), { FileInfo{ QStringLiteral("folder"), { FileInfo{ QStringLiteral("folderA"), { { QStringLiteral("file.txt"), 400 } } }, QStringLiteral("folderB") } } } } };
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        if (vfsMode != Vfs::Off)
+        {
+            auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(vfsMode).release());
+            QVERIFY(vfs);
+            fakeFolder.switchToVfs(vfs);
+            fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::OnlineOnly);
+
+            // make files virtual
+            fakeFolder.syncOnce();
+        }
+
+
+        fakeFolder.serverErrorPaths().append(src, 403);
+        fakeFolder.localModifier().rename(getName(src), getName(dest));
+        QVERIFY(!fakeFolder.currentLocalState().find(getName(src)));
+        QVERIFY(fakeFolder.currentLocalState().find(getName(dest)));
+        QVERIFY(fakeFolder.currentRemoteState().find(src));
+        QVERIFY(!fakeFolder.currentRemoteState().find(dest));
+
+        // sync1 file gets detected as error, instruction is still NEW_FILE
+        fakeFolder.syncOnce();
+
+        // sync2 file is in error state, checkErrorBlacklisting sets instruction to IGNORED
+        fakeFolder.syncOnce();
+
+        if (vfsMode != Vfs::Off)
+        {
+            fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::AlwaysLocal);
+            fakeFolder.syncOnce();
+        }
+
+        QVERIFY(!fakeFolder.currentLocalState().find(src));
+        QVERIFY(fakeFolder.currentLocalState().find(getName(dest)));
+        if (vfsMode == Vfs::WithSuffix)
+        {
+            // the placeholder was not restored as it is still in error state
+            QVERIFY(!fakeFolder.currentLocalState().find(dest));
+        }
+        QVERIFY(fakeFolder.currentRemoteState().find(src));
+        QVERIFY(!fakeFolder.currentRemoteState().find(dest));
+    }
+
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)

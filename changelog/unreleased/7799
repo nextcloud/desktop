@@ -1,0 +1,5 @@
+Bugfix: Client sometimes crashes when a placeholder file was moved
+
+We fixed an issue where moving a plcaeholder file would lead to a crash.
+
+https://github.com/owncloud/client/issues/7799

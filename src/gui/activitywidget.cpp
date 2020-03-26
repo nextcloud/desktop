@@ -73,6 +73,8 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     // Create a widget container for the notifications. The ui file defines
     // a scroll area that get a widget with a layout as children
     QWidget *w = new QWidget;
+    // workaround for Qt not updating the background on theme changes
+    w->setAttribute(Qt::WA_OpaquePaintEvent, true);
     _notificationsLayout = new QVBoxLayout;
     w->setLayout(_notificationsLayout);
     _notificationsLayout->setAlignment(Qt::AlignTop);
@@ -657,10 +659,7 @@ void ActivitySettings::slotRegularNotificationCheck()
 bool ActivitySettings::event(QEvent *e)
 {
     if (e->type() == QEvent::Show) {
-        AccountManager *am = AccountManager::instance();
-        foreach (AccountStatePtr a, am->accounts()) {
-            slotRefresh(a.data());
-        }
+        slotRegularNotificationCheck();
     }
     return QWidget::event(e);
 }

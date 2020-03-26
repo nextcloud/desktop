@@ -217,17 +217,19 @@ void ActivityListModel::slotRefreshActivity(AccountState *ast)
 void ActivityListModel::slotRemoveAccount(AccountState *ast)
 {
     if (_activityLists.contains(ast)) {
-        int i = 0;
         const QString accountToRemove = ast->account()->displayName();
 
         QMutableListIterator<Activity> it(_finalList);
 
+        int i = 0;
         while (it.hasNext()) {
             Activity activity = it.next();
             if (activity._accName == accountToRemove) {
-                beginRemoveRows(QModelIndex(), i, i + 1);
+                beginRemoveRows(QModelIndex(), i, i);
                 it.remove();
                 endRemoveRows();
+            } else {
+                ++i;
             }
         }
         _activityLists.remove(ast);

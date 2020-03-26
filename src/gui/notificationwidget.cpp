@@ -74,13 +74,19 @@ void NotificationWidget::setActivity(const Activity &activity)
         // in case there is no action defined, do a close button.
         QPushButton *b = _ui._buttonBox->addButton(QDialogButtonBox::Close);
         b->setDefault(true);
-        connect(b, &QAbstractButton::clicked, this, &NotificationWidget::slotButtonClicked);
-        _buttons.append(b);
+        connect(b, &QAbstractButton::clicked, this, [this]{
+            QString doneText = tr("Closing in a few seconds...");
+            _ui._timeLabel->setText(doneText);
+            emit requestCleanupAndBlacklist(_myActivity);
+            return;
+        });
     } else {
         foreach (auto link, activity._links) {
             QPushButton *b = _ui._buttonBox->addButton(link._label, QDialogButtonBox::AcceptRole);
             b->setDefault(link._isPrimary);
-            connect(b, &QAbstractButton::clicked, this, &NotificationWidget::slotButtonClicked);
+            connect(b, &QAbstractButton::clicked, this, [&]{
+                slotButtonClicked(b, link);
+            });
             _buttons.append(b);
         }
     }
@@ -91,46 +97,19 @@ Activity NotificationWidget::activity() const
     return _myActivity;
 }
 
-void NotificationWidget::slotButtonClicked()
+void NotificationWidget::slotButtonClicked(QPushButton *buttonWidget, const ActivityLink &triggeredLink)
 {
-    QObject *buttonWidget = QObject::sender();
-    int index = -1;
-    if (buttonWidget) {
-        // find the button that was clicked, it has to be in the list
-        // of buttons that were added to the button box before.
-        for (int i = 0; i < _buttons.count(); i++) {
-            if (_buttons.at(i) == buttonWidget) {
-                index = i;
-            }
-            _buttons.at(i)->setEnabled(false);
-        }
-
-        // if the button was found, the link must be called
-        if (index > -1 && _myActivity._links.count() == 0) {
-            // no links, that means it was the close button
-            // empty link. Just close and remove the widget.
-            QString doneText = tr("Closing in a few seconds...");
-            _ui._timeLabel->setText(doneText);
-            emit requestCleanupAndBlacklist(_myActivity);
-            return;
-        }
-
-        if (index > -1 && index < _myActivity._links.count()) {
-            ActivityLink triggeredLink = _myActivity._links.at(index);
-            _actionLabel = triggeredLink._label;
-
-            if (!triggeredLink._link.isEmpty()) {
-                qCInfo(lcNotifications) << "Notification Link: " << triggeredLink._verb << triggeredLink._link;
-                _progressIndi->startAnimation();
-                emit sendNotificationRequest(_accountName, triggeredLink._link, triggeredLink._verb);
-            }
-        }
+    buttonWidget->setEnabled(false);
+    _actionLabel = triggeredLink._label;
+    if (!triggeredLink._link.isEmpty()) {
+        qCInfo(lcNotifications) << "Notification Link: " << triggeredLink._verb << triggeredLink._link;
+        _progressIndi->startAnimation();
+        emit sendNotificationRequest(_accountName, triggeredLink._link, triggeredLink._verb);
     }
 }
 
 void NotificationWidget::slotNotificationRequestFinished(int statusCode)
 {
-    int i = 0;
     QString doneText;
     QLocale locale;
 
@@ -139,8 +118,8 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
     // the ocs API returns stat code 100 or 200 inside the xml if it succeeded.
     if (statusCode != OCS_SUCCESS_STATUS_CODE && statusCode != OCS_SUCCESS_STATUS_CODE_V2) {
         qCWarning(lcNotifications) << "Notification Request to Server failed, leave button visible.";
-        for (i = 0; i < _buttons.count(); i++) {
-            _buttons.at(i)->setEnabled(true);
+        for (auto button : _buttons) {
+            button->setEnabled(true);
         }
         //: The second parameter is a time, such as 'failed at 09:58pm'
         doneText = tr("%1 request failed at %2").arg(_actionLabel, timeStr);

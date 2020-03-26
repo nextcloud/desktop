@@ -112,17 +112,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="56"/>
+        <location filename="../src/gui/notificationwidget.ui" line="58"/>
         <source>Lorem ipsum dolor sit amet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="69"/>
+        <location filename="../src/gui/notificationwidget.ui" line="71"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="89"/>
+        <location filename="../src/gui/notificationwidget.ui" line="91"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -528,44 +528,44 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="515"/>
-        <location filename="../src/gui/activitywidget.cpp" line="563"/>
+        <location filename="../src/gui/activitywidget.cpp" line="517"/>
+        <location filename="../src/gui/activitywidget.cpp" line="565"/>
         <source>Server Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="522"/>
+        <location filename="../src/gui/activitywidget.cpp" line="524"/>
         <source>Sync Protocol</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="571"/>
+        <location filename="../src/gui/activitywidget.cpp" line="573"/>
         <source>Not Synced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="574"/>
+        <location filename="../src/gui/activitywidget.cpp" line="576"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="606"/>
+        <location filename="../src/gui/activitywidget.cpp" line="608"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="610"/>
+        <location filename="../src/gui/activitywidget.cpp" line="612"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="613"/>
+        <location filename="../src/gui/activitywidget.cpp" line="615"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="618"/>
+        <location filename="../src/gui/activitywidget.cpp" line="620"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -579,33 +579,33 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="26"/>
-        <location filename="../src/gui/activitywidget.ui" line="68"/>
-        <location filename="../src/gui/activitywidget.ui" line="94"/>
+        <location filename="../src/gui/activitywidget.ui" line="71"/>
+        <location filename="../src/gui/activitywidget.ui" line="97"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="136"/>
+        <location filename="../src/gui/activitywidget.cpp" line="138"/>
         <source>Server Activities</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="92"/>
+        <location filename="../src/gui/activitywidget.cpp" line="94"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="93"/>
+        <location filename="../src/gui/activitywidget.cpp" line="95"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="140"/>
+        <location filename="../src/gui/activitywidget.cpp" line="142"/>
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="351"/>
+        <location filename="../src/gui/activitywidget.cpp" line="353"/>
         <source>%n notifications(s) for %1.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -613,7 +613,7 @@ This action will abort any currently running synchronization.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="357"/>
+        <location filename="../src/gui/activitywidget.cpp" line="359"/>
         <source>%n notifications(s) for %1 and %2.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -621,17 +621,17 @@ This action will abort any currently running synchronization.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="359"/>
+        <location filename="../src/gui/activitywidget.cpp" line="361"/>
         <source>New notifications for %1, %2 and other accounts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="362"/>
+        <location filename="../src/gui/activitywidget.cpp" line="364"/>
         <source>Open the activity view for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="145"/>
+        <location filename="../src/gui/activitywidget.cpp" line="147"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -789,8 +789,8 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="468"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="490"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="478"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="500"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -798,27 +798,27 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="238"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="248"/>
         <source>Error while opening directory %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="240"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="250"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="244"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="254"/>
         <source>Directory not found: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="275"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="285"/>
         <source>Filename encoding is not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="294"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="304"/>
         <source>Error while reading directory %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1815,12 +1815,12 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="173"/>
+        <location filename="../src/libsync/logger.cpp" line="188"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="174"/>
+        <location filename="../src/libsync/logger.cpp" line="189"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2000,18 +2000,18 @@ Note that using any logging command line options will override the settings.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.cpp" line="112"/>
+        <location filename="../src/gui/notificationwidget.cpp" line="78"/>
         <source>Closing in a few seconds...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.cpp" line="146"/>
+        <location filename="../src/gui/notificationwidget.cpp" line="125"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as &apos;failed at 09:58pm&apos;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.cpp" line="152"/>
+        <location filename="../src/gui/notificationwidget.cpp" line="131"/>
         <source>&apos;%1&apos; selected at %2</source>
         <extracomment>The second parameter is a time, such as &apos;selected at 09:58pm&apos;</extracomment>
         <translation type="unfinished"></translation>
@@ -4115,7 +4115,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="801"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1156"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1172"/>
         <source>About %1</source>
         <translation type="unfinished"></translation>
     </message>

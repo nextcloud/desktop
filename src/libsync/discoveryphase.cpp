@@ -159,14 +159,24 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
     QByteArray oldEtag;
     auto it = _deletedItem.find(originalPath);
     if (it != _deletedItem.end()) {
-        ENFORCE((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE
+        const csync_instructions_e instruction = (*it)->_instruction;
+        if (instruction == CSYNC_INSTRUCTION_IGNORE && (*it)->_type == ItemTypeVirtualFile) {
             // re-creation of virtual files count as a delete
-             || ((*it)->_type == ItemTypeVirtualFile && (*it)->_instruction == CSYNC_INSTRUCTION_NEW)
-             || ((*it)->_isRestoration && (*it)->_instruction == CSYNC_INSTRUCTION_NEW)
-               );
-        (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
-        result = true;
-        oldEtag = (*it)->_etag;
+            // a file might be in an error state and thus gets marked as CSYNC_INSTRUCTION_IGNORE
+            // after it was initially marked as CSYNC_INSTRUCTION_REMOVE
+            // return true, to not trigger any additional actions on that file that could elad to dataloss
+            result = true;
+            oldEtag = (*it)->_etag;
+        } else {
+            ENFORCE(instruction == CSYNC_INSTRUCTION_REMOVE
+                // re-creation of virtual files count as a delete
+                || ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
+                || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW)
+                );
+            (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+            result = true;
+            oldEtag = (*it)->_etag;
+        }
         _deletedItem.erase(it);
     }
     if (auto *otherJob = _queuedDeletedDirectories.take(originalPath)) {

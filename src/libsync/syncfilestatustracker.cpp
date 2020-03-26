@@ -229,10 +229,10 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
         _dirtyPaths.remove(item->destination());
 
         if (hasErrorStatus(*item)) {
-            _syncProblems[item->_file] = SyncFileStatus::StatusError;
+            _syncProblems[item->destination()] = SyncFileStatus::StatusError;
             invalidateParentPaths(item->destination());
         } else if (hasExcludedStatus(*item)) {
-            _syncProblems[item->_file] = SyncFileStatus::StatusExcluded;
+            _syncProblems[item->destination()] = SyncFileStatus::StatusExcluded;
         }
 
         SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
@@ -273,12 +273,12 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
     qCDebug(lcStatusTracker) << "Item completed" << item->destination() << item->_status << item->_instruction;
 
     if (hasErrorStatus(*item)) {
-        _syncProblems[item->_file] = SyncFileStatus::StatusError;
+        _syncProblems[item->destination()] = SyncFileStatus::StatusError;
         invalidateParentPaths(item->destination());
     } else if (hasExcludedStatus(*item)) {
-        _syncProblems[item->_file] = SyncFileStatus::StatusExcluded;
+        _syncProblems[item->destination()] = SyncFileStatus::StatusExcluded;
     } else {
-        _syncProblems.erase(item->_file);
+        _syncProblems.erase(item->destination());
     }
 
     SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
