@@ -19,9 +19,12 @@ Summary
 * Bugfix - Fixed a potential crash while discovering moves: [#7722](https://github.com/owncloud/client/issues/7722)
 * Bugfix - Add Folder Sync Connection sometimes does not warn: [#7741](https://github.com/owncloud/client/issues/7741)
 * Bugfix - Resize the buttons in the settings view dynamically: [#7744](https://github.com/owncloud/client/issues/7744)
+* Bugfix - Fix status icon after move errors: [#7759](https://github.com/owncloud/client/issues/7759)
 * Bugfix - Fixed a potential crash on cancelation of discovery jobs: [#7760](https://github.com/owncloud/client/pull/7760)
 * Bugfix - Fix a potential crash on Windows VFS: [#7761](https://github.com/owncloud/client/issues/7761)
 * Bugfix - Fixed OAuth2 login of user with `+`: [#7762](https://github.com/owncloud/client/issues/7762)
+* Bugfix - On Windows the share dialog somtimes does not open as the top most window: [#7774](https://github.com/owncloud/client/issues/7774)
+* Bugfix - Client sometimes crashes when a placeholder file was moved: [#7799](https://github.com/owncloud/client/issues/7799)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
@@ -98,6 +101,12 @@ Details
 
    https://github.com/owncloud/client/issues/7744
 
+* Bugfix - Fix status icon after move errors: [#7759](https://github.com/owncloud/client/issues/7759)
+
+   ï¿½¿¼ The file status icon was not showing an error when a move operation failed
+
+   https://github.com/owncloud/client/issues/7759
+
 * Bugfix - Fixed a potential crash on cancelation of discovery jobs: [#7760](https://github.com/owncloud/client/pull/7760)
 
    https://github.com/owncloud/client/pull/7760
@@ -115,6 +124,18 @@ Details
    doing an OAuth2 authentication.
 
    https://github.com/owncloud/client/issues/7762
+
+* Bugfix - On Windows the share dialog somtimes does not open as the top most window: [#7774](https://github.com/owncloud/client/issues/7774)
+
+   We now ensure that the our dialogs are correctly raised.
+
+   https://github.com/owncloud/client/issues/7774
+
+* Bugfix - Client sometimes crashes when a placeholder file was moved: [#7799](https://github.com/owncloud/client/issues/7799)
+
+   We fixed an issue where moving a plcaeholder file would lead to a crash.
+
+   https://github.com/owncloud/client/issues/7799
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
