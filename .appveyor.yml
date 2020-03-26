@@ -46,7 +46,7 @@ test_script:
        #craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --package owncloud-client
     #}
 
-    artifacts:
+artifacts:
   - path: binaries/*
 
 
