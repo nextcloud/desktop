@@ -19,6 +19,7 @@ The environment variables are:
 | 10000000 (or 10 MB)
 | Specifies the initial chunk size of uploaded files in bytes.
 The client will dynamically adjust this size within the maximum and minimum bounds (see below).
+To disable chunking completely, set `OWNCLOUD_CHUNK_SIZE=0` .
 
 | `OWNCLOUD_MAX_CHUNK_SIZE`
 | 100000000 (or 100 MB)
