@@ -623,12 +623,12 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Ange dina end to end krypteringsord:&lt;br&gt;&lt;br&gt;Användare: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <translation>Vänligen ange ditt lösenord för end-to-end-kryptering:&lt;br&gt;&lt;br&gt;Användare: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1008"/>
         <source>Enter E2E passphrase</source>
-        <translation>Ange E2E krypteringsord</translation>
+        <translation>Ange lösenord för E2E</translation>
     </message>
 </context>
 <context>
@@ -1104,7 +1104,7 @@ Om du fortsätter synkroniseringen kommer alla dina filer återställas med en �
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="186"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Ett fel uppstod när mapplistan försökte laddas från servern.</translation>
+        <translation>Ett fel uppstod när mapplistan försökte läsas in från servern.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
@@ -1704,7 +1704,7 @@ Loggar kommer att skrivas till %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="340"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;En ny version av %1 klienten är tillgänglig.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; är tillgänglig för nedladdning. Den installerade versionen är %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;En ny version av %1 klienten är tillgänglig.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; är tillgänglig för hämtning. Den installerade versionen är %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
@@ -1757,7 +1757,7 @@ Loggar kommer att skrivas till %1</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Bandbredd för nedladdning</translation>
+        <translation>Bandbredd för hämtning</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
@@ -1890,7 +1890,7 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Ny %1 version %2 är tillgänglig. Klicka &lt;a href=&apos;%3&apos;&gt;här&lt;/a&gt; för att ladda ner uppdateringen.</translation>
+        <translation>Ny %1 version %2 är tillgänglig. Vänligen klicka &lt;a href=&apos;%3&apos;&gt;här&lt;/a&gt; för att hämta uppdateringen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -2088,7 +2088,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="413"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>Kunde inte ladda certifikatet. Felaktigt lösenord?</translation>
+        <translation>Kunde inte läsa in certifikatet. Felaktigt lösenord?</translation>
     </message>
 </context>
 <context>
@@ -2293,7 +2293,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="357"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation>Fil %1 kan inte laddas ner eftersom krypteringsinformation fattas.</translation>
+        <translation>Fil %1 kan inte hämtas eftersom krypteringsinformation fattas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="427"/>
@@ -2303,7 +2303,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation>Nedladdningen skulle reducera det fria diskutrymmet under gränsen</translation>
+        <translation>Hämtningen skulle reducera det fria diskutrymmet under gränsen</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="481"/>
@@ -2570,7 +2570,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation>Laddar ...</translation>
+        <translation>Läser in ...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2596,7 +2596,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="279"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation>Ett fel uppstod när listan för submappar laddades.</translation>
+        <translation>Ett fel uppstod när listan för submappar lästes in.</translation>
     </message>
 </context>
 <context>
@@ -3169,7 +3169,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation>Misslyckades med att ladda eller skapa journalfilen. Säkerställ att du har rättigheter att läsa och skriva i den lokala synkmappen.</translation>
+        <translation>Misslyckades med att läsa in eller skapa journalfilen. Säkerställ att du har rättigheter att läsa och skriva i den lokala synkmappen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
@@ -3417,7 +3417,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1690"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation>Diskutrymmet är lågt: Nedladdningar som reduceringar det fria utrymmet under %1 skippades.</translation>
+        <translation>Diskutrymmet är lågt: Hämtningar som skulle reducera det fria utrymmet under %1 hoppas över.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1697"/>
