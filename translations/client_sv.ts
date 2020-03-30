@@ -2046,7 +2046,7 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation>Håll dina data säker och under din kontroll</translation>
+        <translation>Håll dina data säkra och under din kontroll</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
@@ -3822,7 +3822,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation>&amp;Behåll lokal data</translation>
+        <translation>&amp;Behåll lokala data</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
@@ -4140,7 +4140,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation>uppdaterar lokal metadata</translation>
+        <translation>uppdaterar lokala metadata</translation>
     </message>
 </context>
 <context>
