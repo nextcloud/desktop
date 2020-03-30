@@ -5,6 +5,10 @@
 	<key>PACKAGES</key>
 	<array>
 		<dict>
+			<key>MUST-CLOSE-APPLICATION-ITEMS</key>
+			<array/>
+			<key>MUST-CLOSE-APPLICATIONS</key>
+			<false/>
 			<key>PACKAGE_FILES</key>
 			<dict>
 				<key>DEFAULT_INSTALL_LOCATION</key>
@@ -251,7 +255,7 @@
 									<key>PATH_TYPE</key>
 									<integer>0</integer>
 									<key>PERMISSIONS</key>
-									<integer>493</integer>
+									<integer>1005</integer>
 									<key>TYPE</key>
 									<integer>1</integer>
 									<key>UID</key>
@@ -344,6 +348,38 @@
 									<integer>0</integer>
 									<key>PATH</key>
 									<string>Widgets</string>
+									<key>PATH_TYPE</key>
+									<integer>0</integer>
+									<key>PERMISSIONS</key>
+									<integer>493</integer>
+									<key>TYPE</key>
+									<integer>1</integer>
+									<key>UID</key>
+									<integer>0</integer>
+								</dict>
+								<dict>
+									<key>CHILDREN</key>
+									<array/>
+									<key>GID</key>
+									<integer>0</integer>
+									<key>PATH</key>
+									<string>Automator</string>
+									<key>PATH_TYPE</key>
+									<integer>0</integer>
+									<key>PERMISSIONS</key>
+									<integer>493</integer>
+									<key>TYPE</key>
+									<integer>1</integer>
+									<key>UID</key>
+									<integer>0</integer>
+								</dict>
+								<dict>
+									<key>CHILDREN</key>
+									<array/>
+									<key>GID</key>
+									<integer>0</integer>
+									<key>PATH</key>
+									<string>Extensions</string>
 									<key>PATH_TYPE</key>
 									<integer>0</integer>
 									<key>PERMISSIONS</key>
@@ -466,43 +502,65 @@
 				</dict>
 				<key>PAYLOAD_TYPE</key>
 				<integer>0</integer>
+				<key>PRESERVE_EXTENDED_ATTRIBUTES</key>
+				<false/>
+				<key>SHOW_INVISIBLE</key>
+				<false/>
+				<key>SPLIT_FORKS</key>
+				<true/>
+				<key>TREAT_MISSING_FILES_AS_WARNING</key>
+				<false/>
 				<key>VERSION</key>
-				<integer>2</integer>
+				<integer>5</integer>
 			</dict>
 			<key>PACKAGE_SCRIPTS</key>
 			<dict>
-                 <key>POSTINSTALL_PATH</key>
-                 <dict>
-                         <key>PATH</key>
-                         <string>@CMAKE_CURRENT_BINARY_DIR@/post_install.sh</string>
-                         <key>PATH_TYPE</key>
-                         <integer>0</integer>
-                 </dict>
-                 <key>PREINSTALL_PATH</key>
-                 <dict>
-                         <key>PATH</key>
-                         <string>@CMAKE_CURRENT_BINARY_DIR@/pre_install.sh</string>
-                         <key>PATH_TYPE</key>
-                         <integer>0</integer>
-                 </dict>
-                 <key>RESOURCES</key>
-                 <array/>
-         </dict>
+				<key>POSTINSTALL_PATH</key>
+				<dict>
+					<key>PATH</key>
+					<string>@CMAKE_CURRENT_BINARY_DIR@/post_install.sh</string>
+					<key>PATH_TYPE</key>
+					<integer>0</integer>
+				</dict>
+				<key>PREINSTALL_PATH</key>
+				<dict>
+					<key>PATH</key>
+					<string>@CMAKE_CURRENT_BINARY_DIR@/pre_install.sh</string>
+					<key>PATH_TYPE</key>
+					<integer>0</integer>
+				</dict>
+				<key>RESOURCES</key>
+				<array/>
+			</dict>
 			<key>PACKAGE_SETTINGS</key>
 			<dict>
 				<key>AUTHENTICATION</key>
 				<integer>1</integer>
 				<key>CONCLUSION_ACTION</key>
 				<integer>0</integer>
+				<key>FOLLOW_SYMBOLIC_LINKS</key>
+				<false/>
 				<key>IDENTIFIER</key>
 				<string>@APPLICATION_REV_DOMAIN_INSTALLER@</string>
+				<key>LOCATION</key>
+				<integer>0</integer>
 				<key>NAME</key>
 				<string>@APPLICATION_NAME_XML_ESCAPED@</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
+				<key>PAYLOAD_SIZE</key>
+				<integer>-1</integer>
+				<key>REFERENCE_PATH</key>
+				<string></string>
+				<key>RELOCATABLE</key>
+				<false/>
+				<key>USE_HFS+_COMPRESSION</key>
+				<false/>
 				<key>VERSION</key>
 				<string>@MIRALL_VERSION_FULL@</string>
 			</dict>
+			<key>TYPE</key>
+			<integer>0</integer>
 			<key>UUID</key>
 			<string>7D7219B7-1897-48C3-8533-842BDEC46F71</string>
 		</dict>
@@ -532,6 +590,45 @@
 			<dict>
 				<key>ALIGNMENT</key>
 				<integer>6</integer>
+				<key>APPAREANCES</key>
+				<dict>
+					<key>DARK_AQUA</key>
+					<dict>
+						<key>ALIGNMENT</key>
+						<integer>6</integer>
+						<key>BACKGROUND_PATH</key>
+						<dict>
+							<key>PATH</key>
+							<string>@MAC_INSTALLER_BACKGROUND_FILE@</string>
+							<key>PATH_TYPE</key>
+							<integer>0</integer>
+						</dict>
+						<key>CUSTOM</key>
+						<true/>
+						<key>LAYOUT_DIRECTION</key>
+						<integer>0</integer>
+						<key>SCALING</key>
+						<integer>0</integer>
+					</dict>
+					<key>LIGHT_AQUA</key>
+					<dict>
+						<key>ALIGNMENT</key>
+						<integer>6</integer>
+						<key>BACKGROUND_PATH</key>
+						<dict>
+							<key>PATH</key>
+							<string>@MAC_INSTALLER_BACKGROUND_FILE@</string>
+							<key>PATH_TYPE</key>
+							<integer>0</integer>
+						</dict>
+						<key>CUSTOM</key>
+						<true/>
+						<key>LAYOUT_DIRECTION</key>
+						<integer>0</integer>
+						<key>SCALING</key>
+						<integer>0</integer>
+					</dict>
+				</dict>
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
@@ -540,9 +637,13 @@
 					<integer>0</integer>
 				</dict>
 				<key>CUSTOM</key>
-				<integer>@MAC_INSTALLER_DO_CUSTOM_BACKGROUND@</integer>
+				<@MAC_INSTALLER_DO_CUSTOM_BACKGROUND@/>
+				<key>LAYOUT_DIRECTION</key>
+				<integer>0</integer>
 				<key>SCALING</key>
 				<integer>0</integer>
+				<key>SHARED_SETTINGS_FOR_ALL_APPAREANCES</key>
+				<true/>
 			</dict>
 			<key>INSTALLATION TYPE</key>
 			<dict>
@@ -578,10 +679,8 @@
 						<dict/>
 					</dict>
 				</dict>
-				<key>INSTALLATION TYPE</key>
-                                <integer>1</integer>
-                                <key>MODE</key>
-                                <integer>1</integer>
+				<key>MODE</key>
+				<integer>1</integer>
 			</dict>
 			<key>INSTALLATION_STEPS</key>
 			<array>
@@ -649,8 +748,6 @@
 			</dict>
 			<key>LICENSE</key>
 			<dict>
-				<key>KEYWORDS</key>
-				<dict/>
 				<key>LOCALIZATIONS</key>
 				<array/>
 				<key>MODE</key>
@@ -683,10 +780,6 @@
 		<dict>
 			<key>LIST</key>
 			<array/>
-			<key>POSTINSTALL_PATH</key>
-			<dict/>
-			<key>PREINSTALL_PATH</key>
-			<dict/>
 			<key>RESOURCES</key>
 			<array/>
 			<key>ROOT_VOLUME_ONLY</key>
@@ -694,14 +787,15 @@
 		</dict>
 		<key>PROJECT_SETTINGS</key>
 		<dict>
-			<key>ADVANCED_OPTIONS</key>
-			<dict/>
+            <key>ADVANCED_OPTIONS</key>
+			<dict>
+			</dict>
 			<key>BUILD_FORMAT</key>
 			<integer>0</integer>
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>
-                                <string>@CMAKE_INSTALL_PREFIX@/.</string>
+				<string>@CMAKE_INSTALL_PREFIX@/.</string>
 				<key>PATH_TYPE</key>
 				<integer>3</integer>
 			</dict>
@@ -875,8 +969,12 @@
 			</array>
 			<key>NAME</key>
 			<string>@APPLICATION_NAME_XML_ESCAPED@ Installer</string>
+			<key>PAYLOAD_ONLY</key>
+			<false/>
 			<key>REFERENCE_FOLDER_PATH</key>
-			<string>@CMAKE_INSTALL_DIR@</string>
+			<string></string>
+			<key>TREAT_MISSING_PRESENTATION_DOCUMENTS_AS_WARNING</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>TYPE</key>
