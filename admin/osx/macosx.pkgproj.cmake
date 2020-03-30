@@ -789,6 +789,8 @@
 		<dict>
             <key>ADVANCED_OPTIONS</key>
 			<dict>
+				<key>installer-script.domains:enable_localSystem</key>
+				<integer>1</integer>
 			</dict>
 			<key>BUILD_FORMAT</key>
 			<integer>0</integer>
