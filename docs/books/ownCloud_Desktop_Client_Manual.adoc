@@ -10,3 +10,18 @@ The ownCloud Team <docs@owncloud.com>
 :icon-set: octicon
 
 include::modules/ROOT/pages/index.adoc[leveloffset=+1]
+include::modules/ROOT/pages/installing.adoc[leveloffset=+1]
+include::modules/ROOT/pages/navigating.adoc[leveloffset=+1]
+include::modules/ROOT/pages/removing.adoc[leveloffset=+1]
+include::modules/ROOT/pages/conflicts.adoc[leveloffset=+1]
+include::modules/ROOT/pages/advanced_usage/environment_variables.adoc[leveloffset=+1]
+include::modules/ROOT/pages/advanced_usage/options.adoc[leveloffset=+1]
+include::modules/ROOT/pages/advanced_usage/configuration_file.adoc[leveloffset=+1]
+include::modules/ROOT/pages/advanced_usage/low_disk_space.adoc[leveloffset=+1]
+include::modules/ROOT/pages/advanced_usage/command_line_client.adoc[leveloffset=+1]
+include::modules/ROOT/pages/automatic_updater.adoc[leveloffset=+1]
+include::modules/ROOT/pages/faq.adoc[leveloffset=+1]
+include::modules/ROOT/pages/glossary.adoc[leveloffset=+1]
+include::modules/ROOT/pages/building.adoc[leveloffset=+1]
+include::modules/ROOT/pages/architecture.adoc[leveloffset=+1]
+include::modules/ROOT/pages/troubleshooting.adoc[leveloffset=+1]
