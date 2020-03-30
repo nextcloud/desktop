@@ -81,10 +81,10 @@ void NotificationWidget::setActivity(const Activity &activity)
             return;
         });
     } else {
-        foreach (auto link, activity._links) {
+        for (const auto &link : activity._links) {
             QPushButton *b = _ui._buttonBox->addButton(link._label, QDialogButtonBox::AcceptRole);
             b->setDefault(link._isPrimary);
-            connect(b, &QAbstractButton::clicked, this, [&]{
+            connect(b, &QAbstractButton::clicked, this, [this, b, &link]{
                 slotButtonClicked(b, link);
             });
             _buttons.append(b);
