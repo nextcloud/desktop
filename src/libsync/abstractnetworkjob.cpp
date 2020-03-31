@@ -205,8 +205,10 @@ void AbstractNetworkJob::slotFinished()
     }
 
     if (_reply->error() != QNetworkReply::NoError) {
-        if (!isAuthenticationJob() && _account->credentials()->retryIfNeeded(this))
+        if (!isAuthenticationJob() && _account->credentials()->retryIfNeeded(this)) {
+            qCDebug(lcNetworkJob) << "Queuing: " << _reply->url() << " for retry";
             return;
+        }
 
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
             qCWarning(lcNetworkJob) << _reply->error() << errorString()
