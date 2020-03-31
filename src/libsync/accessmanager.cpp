@@ -49,18 +49,6 @@ AccessManager::AccessManager(QObject *parent)
     setCookieJar(new CookieJar);
 }
 
-void AccessManager::setRawCookie(const QByteArray &rawCookie, const QUrl &url)
-{
-    QNetworkCookie cookie(rawCookie.left(rawCookie.indexOf('=')),
-        rawCookie.mid(rawCookie.indexOf('=') + 1));
-    qCDebug(lcAccessManager) << cookie.name() << cookie.value();
-    QList<QNetworkCookie> cookieList;
-    cookieList.append(cookie);
-
-    QNetworkCookieJar *jar = cookieJar();
-    jar->setCookiesFromUrl(cookieList, url);
-}
-
 static QByteArray generateRequestId()
 {
     // Use a UUID with the starting and ending curly brace removed.
@@ -71,12 +59,6 @@ static QByteArray generateRequestId()
 QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     QNetworkRequest newRequest(request);
-
-    if (newRequest.hasRawHeader("cookie")) {
-        // This will set the cookie into the QNetworkCookieJar which will then override the cookie header
-        setRawCookie(request.rawHeader("cookie"), request.url());
-    }
-
     newRequest.setRawHeader(QByteArray("User-Agent"), Utility::userAgentString());
 
     // Some firewalls reject requests that have a "User-Agent" but no "Accept" header
