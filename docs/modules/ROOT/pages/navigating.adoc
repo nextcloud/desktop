@@ -92,7 +92,7 @@ Use *Account* > *Remove* to delete accounts.
 
 [NOTE]
 ====
-ownCloud server must have {oauth2-app-url}[the OAuth2 app] installed, configured, and enabled to use Two-Factor Authentication.
+To use *Two-Factor Authentication* (2FA), ownCloud server must have {oauth2-app-url}[the OAuth2 app] installed, configured, and enabled.
 Please contact your ownCloud administrator for more details.
 ====
 
