@@ -1,6 +1,6 @@
-Bugfix: Fix serveral wrong colored icons in dark mode
+Bugfix: Fix several wrong colored icons in dark mode
 
-We fixed multiple issues where monocrome icons where not converted to match the
+We fixed multiple issues where monochrome icons where not converted to match the
 current theme.
 
 https://github.com/owncloud/client/issues/7043
