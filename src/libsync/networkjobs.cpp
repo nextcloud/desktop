@@ -874,8 +874,6 @@ void DetermineAuthTypeJob::start()
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     // Don't reuse previous auth credentials
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
-    // Don't send cookies, we can't determine the auth type if we're logged in
-    req.setAttribute(QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual);
 
     auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
     propfind->setTimeout(30 * 1000);
