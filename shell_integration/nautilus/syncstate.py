@@ -17,6 +17,9 @@
 
 import sys
 python3 = sys.version_info[0] >= 3
+if not python3:
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 
 import os
 import urllib
@@ -28,8 +31,6 @@ import time
 
 from gi.repository import GObject, Nautilus
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 # Please do not touch the following line.
 # The reason is that we use a script to adopt this file for branding
