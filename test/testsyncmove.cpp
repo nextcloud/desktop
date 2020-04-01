@@ -889,6 +889,9 @@ private slots:
         const QString src = "folder/folderA/file.txt";
         const QString dest = "folder/folderB/file.txt";
         FakeFolder fakeFolder{ FileInfo{ QString(), { FileInfo{ QStringLiteral("folder"), { FileInfo{ QStringLiteral("folderA"), { { QStringLiteral("file.txt"), 400 } } }, QStringLiteral("folderB") } } } } };
+        auto syncOpts = fakeFolder.syncEngine().syncOptions();
+        syncOpts._parallelNetworkJobs = 0;
+        fakeFolder.syncEngine().setSyncOptions(syncOpts);
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
