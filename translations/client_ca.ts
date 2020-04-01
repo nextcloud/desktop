@@ -584,7 +584,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="202"/>
         <source>Quit %1</source>
-        <translation>Surt %1</translation>
+        <translation>Surt del %1</translation>
     </message>
 </context>
 <context>
@@ -3758,7 +3758,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Quit %1</source>
-        <translation>Surt %1</translation>
+        <translation>Surt del %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
