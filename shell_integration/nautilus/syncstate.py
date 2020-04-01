@@ -28,6 +28,9 @@ import time
 
 from gi.repository import GObject, Nautilus
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 # Please do not touch the following line.
 # The reason is that we use a script to adopt this file for branding
 # by replacing this line with the branding app name. If the following
