@@ -1,0 +1,5 @@
+Change: Restart the client after an update
+
+We now start the client after an update, if the client was running before the update.
+
+https://github.com/owncloud/enterprise/issues/3922

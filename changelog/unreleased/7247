@@ -1,5 +1,5 @@
 Bugfix: Fixed bug in public link with password required
 
-In the sharing dialog, "password required" capabilities lead to incorrect behavior
+In the sharing dialog, "password required" capabilities lead to incorrect behaviour
 
 https://github.com/owncloud/client/issues/7247

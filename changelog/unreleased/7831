@@ -1,0 +1,6 @@
+Bugfix: Don't override cookies with old values
+
+We fixed a bug where a client somteimes overrode the content of the cookie jar
+with outdated or corrupted values
+
+https://github.com/owncloud/client/pull/7831
