@@ -1663,7 +1663,7 @@ Loggar kommer att skrivas till %1</translation>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Spara loggfilen till en fil på disk för felsökning.</translation>
+        <translation>Spara loggfilen som en fil på disken för felsökning.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="212"/>
