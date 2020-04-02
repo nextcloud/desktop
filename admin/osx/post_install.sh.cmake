@@ -1,4 +1,8 @@
 #!/bin/bash
+#exec   > ~/owncloud-install-post.log
+#exec  2>&1
+#BASH_XTRACEFD=1
+#set -x
 
 LOGGED_IN_USER_ID=$(id -u "${USER}")
 

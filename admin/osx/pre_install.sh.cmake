@@ -1,6 +1,12 @@
 #!/bin/bash
+#exec   > ~/owncloud-install-pre.log
+# exec  2>&1
+# BASH_XTRACEFD=1
+# set -x
 
-OC_INSTANCE=$(ps aux | grep "/Applications/@APPLICATION_EXECUTABLE@.app/Contents/MacOS/@APPLICATION_EXECUTABLE@")
+# don't grep in one line, to avaoid grepping the grep process...
+PROCESSES=$(ps aux)
+OC_INSTANCE=$(echo "${PROCESSES}" | grep "/Applications/@APPLICATION_EXECUTABLE@.app/Contents/MacOS/@APPLICATION_EXECUTABLE@")
 
 if [[ "${OC_INSTANCE}" != "" ]]; then
    kill $(echo ${OC_INSTANCE} | awk '{print $2}')
