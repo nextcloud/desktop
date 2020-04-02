@@ -1,8 +1,10 @@
 #!/bin/bash
-#exec   > ~/owncloud-install-post.log
-#exec  2>&1
-#BASH_XTRACEFD=1
-#set -x
+
+## log stdout stderr and set -x to a file
+# exec > ~/@APPLICATION_EXECUTABLE@-post-install.log
+# exec 2>&1
+# BASH_XTRACEFD=1
+# set -x
 
 LOGGED_IN_USER_ID=$(id -u "${USER}")
 
@@ -13,7 +15,7 @@ if [[ -x "$(command -v pluginkit)" ]]; then
     # Since El Capitan we need to sleep #4650
     sleep 10s
     # enable it
-    pluginkit -e use -i @APPLICATION_REV_DOMAIN@.FinderSyncExt
+    pluginkit -e use -i "@APPLICATION_REV_DOMAIN@.FinderSyncExt"
 fi
 
 if [[ -f "${INSTALLER_TEMP}/OC_RESTART_NEEDED" ]]; then
