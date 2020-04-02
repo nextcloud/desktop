@@ -9,7 +9,7 @@ Summary
 -------
 
 * Bugfix - Client sometimes does not show up when started by a user: [#7018](https://github.com/owncloud/client/issues/7018)
-* Bugfix - Fix serveral wrong colored icons in dark mode: [#7043](https://github.com/owncloud/client/issues/7043)
+* Bugfix - Fix several wrong colored icons in dark mode: [#7043](https://github.com/owncloud/client/issues/7043)
 * Bugfix - Fixed bug in public link with password required: [#7247](https://github.com/owncloud/client/issues/7247)
 * Bugfix - Fixed editing public link expiration date: [#7313](https://github.com/owncloud/client/issues/7313)
 * Bugfix - Expand file tree also when no folders are synced: [#7336](https://github.com/owncloud/client/issues/7336)
@@ -23,9 +23,11 @@ Summary
 * Bugfix - Fixed a potential crash on cancelation of discovery jobs: [#7760](https://github.com/owncloud/client/pull/7760)
 * Bugfix - Fix a potential crash on Windows VFS: [#7761](https://github.com/owncloud/client/issues/7761)
 * Bugfix - Fixed OAuth2 login of user with `+`: [#7762](https://github.com/owncloud/client/issues/7762)
-* Bugfix - On Windows the share dialog somtimes does not open as the top most window: [#7774](https://github.com/owncloud/client/issues/7774)
+* Bugfix - On Windows the share dialog does not open as the top most window: [#7774](https://github.com/owncloud/client/issues/7774)
 * Bugfix - Client sometimes crashes when a placeholder file was moved: [#7799](https://github.com/owncloud/client/issues/7799)
+* Bugfix - Don't override cookies with old values: [#7831](https://github.com/owncloud/client/pull/7831)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
+* Change - Restart the client after an update: [#3922](https://github.com/owncloud/enterprise/issues/3922)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
 Details
@@ -33,19 +35,20 @@ Details
 
 * Bugfix - Client sometimes does not show up when started by a user: [#7018](https://github.com/owncloud/client/issues/7018)
 
-   We fixed a bug where a client somtimes does not show up when a user request a start.
+   We fixed a bug where a client sometimes does not show up when a user request a start.
 
    https://github.com/owncloud/client/issues/7018
 
-* Bugfix - Fix serveral wrong colored icons in dark mode: [#7043](https://github.com/owncloud/client/issues/7043)
+* Bugfix - Fix several wrong colored icons in dark mode: [#7043](https://github.com/owncloud/client/issues/7043)
 
-   We fixed multiple issues where monocrome icons where not converted to match the current theme.
+   We fixed multiple issues where monochrome icons where not converted to match the current
+   theme.
 
    https://github.com/owncloud/client/issues/7043
 
 * Bugfix - Fixed bug in public link with password required: [#7247](https://github.com/owncloud/client/issues/7247)
 
-   In the sharing dialog, "password required" capabilities lead to incorrect behavior
+   In the sharing dialog, "password required" capabilities lead to incorrect behaviour
 
    https://github.com/owncloud/client/issues/7247
 
@@ -125,7 +128,7 @@ Details
 
    https://github.com/owncloud/client/issues/7762
 
-* Bugfix - On Windows the share dialog somtimes does not open as the top most window: [#7774](https://github.com/owncloud/client/issues/7774)
+* Bugfix - On Windows the share dialog does not open as the top most window: [#7774](https://github.com/owncloud/client/issues/7774)
 
    We now ensure that the our dialogs are correctly raised.
 
@@ -133,9 +136,16 @@ Details
 
 * Bugfix - Client sometimes crashes when a placeholder file was moved: [#7799](https://github.com/owncloud/client/issues/7799)
 
-   We fixed an issue where moving a plcaeholder file would lead to a crash.
+   We fixed an issue where moving a placeholder file would lead to a crash.
 
    https://github.com/owncloud/client/issues/7799
+
+* Bugfix - Don't override cookies with old values: [#7831](https://github.com/owncloud/client/pull/7831)
+
+   We fixed a bug where a client somteimes overrode the content of the cookie jar with outdated or
+   corrupted values
+
+   https://github.com/owncloud/client/pull/7831
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
@@ -143,6 +153,12 @@ Details
    default plugin location, please consider setting the environment variable QT_PLUGIN_PATH.
 
    https://github.com/owncloud/enterprise/issues/3839
+
+* Change - Restart the client after an update: [#3922](https://github.com/owncloud/enterprise/issues/3922)
+
+   We now start the client after an update, if the client was running before the update.
+
+   https://github.com/owncloud/enterprise/issues/3922
 
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
