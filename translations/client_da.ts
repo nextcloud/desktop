@@ -528,7 +528,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>For flere aktiviteter åbn Activity app&apos;n.</translation>
     </message>
 </context>
 <context>
