@@ -2915,7 +2915,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="712"/>
         <location filename="../src/gui/socketapi.cpp" line="714"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Kopeeri avalik link</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="718"/>
