@@ -1399,7 +1399,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>&amp;Check for Update now</source>
-        <translation>&amp;Güncelleme kontrol et</translation>
+        <translation>&amp;Güncellemeri denetle</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
