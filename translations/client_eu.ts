@@ -528,7 +528,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>Ekintza gehiagorako ireki Ekintzak aplikazioa.</translation>
+        <translation>Jarduera gehiagorako ireki Jarduerak aplikazioa.</translation>
     </message>
 </context>
 <context>
@@ -1977,7 +1977,7 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zehaztutako zerbitzari helbide segurura konektatzeak huts egin du. Nola jarraitu nahi duzu?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -1997,7 +1997,7 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;em&gt;%1&lt;/em&gt; zerbitzari helbide segurura konektatzeak huts egin du. Nola jarraitu nahi duzu?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -2131,7 +2131,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Sarrera zerbitzariarengatik ukatuta. Sarerra egokia duzula egiaztatzeko, egin &lt;a href=&quot;%1&quot;&gt;klik hemen&lt;/a&gt; zerbitzura zure arakatzailearekin sartzeko.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
@@ -2498,12 +2498,12 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategiaren IDa falta da zerbitzarian</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="470"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>ETag-a falta da zerbitzarian</translation>
     </message>
 </context>
 <context>
@@ -2511,7 +2511,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="213"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Galdeketa URLa falta da</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="240"/>
@@ -2526,7 +2526,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>Zerbitzariak ez du adierazi azken zatia jaso denik. Ez zegoen e-etiketarik (e-tag)</translation>
     </message>
 </context>
 <context>
@@ -2575,7 +2575,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Desautatu ez sinkronizatzea nahi duzun urruneko karpetak.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -2596,7 +2596,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="279"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Errore bat gertatu da azpikarpeten zerrenda kargatzerakoan.</translation>
     </message>
 </context>
 <context>
@@ -2604,7 +2604,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="153"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Baztertu</translation>
     </message>
 </context>
 <context>
@@ -2675,12 +2675,12 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="277"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategia ezin da partekatu partekatze baimenik gabe partekatu delako.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="312"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Partekatzearen pasahitza beharrezkoa</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="313"/>
@@ -2899,7 +2899,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="501"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Testuinguruaren partekatze menua</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="658"/>
@@ -2969,7 +2969,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="92"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Gaiaren ordezko izenak:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
@@ -2994,7 +2994,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="97"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Serie-zenbakia:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="100"/>
@@ -3034,12 +3034,12 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt; ziurtagiri hau eskuz onartu da&lt;/p&gt; </translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (autosinatuta)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="139"/>
@@ -3050,13 +3050,15 @@ Ez da gomendagarria erabiltzea.</translation>
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Konexioa enkriptatuta dago %1 biteko %2 erabiliz.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Konexioa EZ da segurua ez dagoelako enkriptatuta.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
@@ -3066,7 +3068,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago laguntzarik SSL saioen txartel/identifikatzaileentzat</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
@@ -3089,12 +3091,12 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Ziurtagiri ez-fidagarria</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da segurtasunarekin &lt;i&gt;%1&lt;/i&gt;(e)ra konektatu:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
@@ -3167,17 +3169,17 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Huts egin du egunkari fitxategia kargatu edo sortzeak. Ziurtatu irakurri eta idazteko baimenak dauzkazula karpeta sinkronizatu lokalean.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>Aurkitzeko pausuak huts egin du.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="132"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>Sare konexioaren denbora-muga gainditu da.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="135"/>
@@ -3222,7 +3224,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Gainean jarritako karpeta ez dago erabilgarri zerbitzarian aldi baterako</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
@@ -3247,7 +3249,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="244"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (saltatua zena aurreko errore batengatik, berriro saiatzen hemen: %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="485"/>
@@ -3292,12 +3294,12 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="519"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Karpeten hierarkia sakonegia da</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="522"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-izen hori ezin da kodetu fitxategi-sistema honetan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="531"/>
@@ -3307,17 +3309,17 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="535"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Gatazka: zerbitzari bertsioa deskargatu da, kopia lokala berrizendatua eta ez igoa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="539"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Hasierak huts egin du.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="566"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategiaren kodeketa baliogabea da</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="731"/>
@@ -3328,22 +3330,22 @@ Ez da gomendagarria erabiltzea.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="801"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>%1 bakarrik dago eskuragarri, gutxienez %2 behar da hasteko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="836"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da ireki edo sortu datu-base lokal sinkronizatua. Ziurtatu idazteko baimena daukazula karpeta sinkronizatu lokalean. </translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="864"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da zerrenda beltza irakurri datu-base lokaletik</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="905"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da sinkronizazio-egunkaria irakurri.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="968"/>
@@ -3359,22 +3361,22 @@ Ez da gomendagarria erabiltzea.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="1276"/>
         <location filename="../src/libsync/syncengine.cpp" line="1316"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Ez ikusi egin zaio, &quot;aukeratu zer sinkronizatu&quot; zerrenda beltzagatik.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1335"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan azpikarpetak gehitzeko</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1350"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation type="unfinished"/>
+        <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan karpeta nagusiak gehitzeko</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Ez da onartu, ez daukazulako baimenik karpeta horretan fitxategiak gehitzeko</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1382"/>
@@ -3390,7 +3392,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1431"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi lokalak eta partekatze karpeta kendu dira.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1485"/>
@@ -3415,7 +3417,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1690"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Toki gutxi dago diskoan: toki librea %1 azpitik gutxituko zuten deskargak saltatu egin dira.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1697"/>
@@ -3456,7 +3458,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="374"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Argitalpen hau %1(e)k eman du&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3464,7 +3466,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="319"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Saiatu dena berriro kargatzen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="368"/>
@@ -3502,7 +3504,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="696"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Kendu konexioa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="697"/>
@@ -3515,12 +3517,12 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="210"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Ziurtagiri baliogabea detektatu da</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="211"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; ostalariak ziurtagiri baliogabea eman du. Jarraitu?</translation>
     </message>
 </context>
 <context>
@@ -3528,7 +3530,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="169"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>%1 saiotik atera zara %2 gisa. Sar zaitez berriro</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="193"/>
@@ -3549,12 +3551,12 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="224"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Ez da zerbitzariaren bertsioa onartzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="225"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>%1 kontuko zerbitzariak %2 bertsio zahar eta onartzen ez den bat darabil. Onartzen ez diren zerbitzari bertsioekin bezero hau erabiltzea probatu gabe dago eta potentzialki arriskutsua da. Jarraitzen baduzu, zure kontu.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="264"/>
@@ -3564,7 +3566,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="266"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Kontu batzuetatik deskonektatuta</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
@@ -3655,7 +3657,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="404"/>
         <source>Resume all folders</source>
-        <translation type="unfinished"/>
+        <translation>Berrekin karpeta guztiak</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="409"/>
@@ -3670,7 +3672,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="937"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>%2tik %1 sinkronizatzen (%3 gelditzen dira)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -3745,7 +3747,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
-        <translation type="unfinished"/>
+        <translation>Ikusi jarduera gehiago ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
@@ -3771,12 +3773,12 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Begiratzen ea aldaketarik dagoen urruneko  &apos;%1&apos;-(e)an</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Begiratzen ea aldaketarik dagoen tokiko  &apos;%1&apos;-(e)an</translation>
     </message>
 </context>
 <context>
@@ -3851,7 +3853,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Mesedez aldatu zure arakatzailera aurrera egiteko.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -3879,7 +3881,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Erregistratu hornitzaile batekin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -4017,17 +4019,17 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Kontroleko baturaren goiburua gaizki osatu da.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kontroleko baturaren goiburuak &apos;%1&apos; motako kontroleko batura ezezagun bat dauka</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Deskargatu den fitxategia ez dator bat  kontroleko baturarekin, berrekin egingo da.</translation>
     </message>
 </context>
 <context>
@@ -4066,7 +4068,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Zerbitzari bertsioa deskargatu da, kopiaturikoak fitxategi lokala fitxategi gatazkatsu bihurtu du</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -4186,7 +4188,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Bertan behera uzten ...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
