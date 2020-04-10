@@ -69,6 +69,7 @@ CloudProviderWrapper::~CloudProviderWrapper()
     g_object_unref(_cloudProviderAccount);
     g_object_unref(_mainMenu);
     g_object_unref(actionGroup);
+    g_object_unref(_recentMenu);
 }
 
 CloudProvidersAccountExporter* CloudProviderWrapper::accountExporter()
@@ -258,7 +259,6 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
     g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
     g_clear_object (&section);
 
-    g_clear_object (&_recentMenu);
     return G_MENU_MODEL(_mainMenu);
 }
 
