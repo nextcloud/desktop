@@ -337,7 +337,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="742"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kunne ikke oprette lokal mappe &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="795"/>
@@ -417,7 +417,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1027"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Indhenter bemyndigelse fra browseren. &lt;a href=&apos;%1&apos;&gt;Klik her&lt;/a&gt; for at genåbne browseren.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1031"/>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="199"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>Der opstod en fejl, kunne ikke tilgå konfigurations filen %1. Sørg for at filen kan tilgås af din bruger.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="202"/>
@@ -623,7 +623,7 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Venligst indtast din end-to-end krypterings kode:&lt;br&gt;&lt;br&gt;Bruger: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1008"/>
@@ -641,7 +641,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation type="unfinished"/>
+        <translation>Godkendelses fejl: Brugernavn eller kode er forkert.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -656,12 +656,12 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="284"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Den konfigurerede server til denne klient er for gammel.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="285"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Venligst opdater til den nyeste server og genstart klienten.</translation>
     </message>
 </context>
 <context>
@@ -686,7 +686,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="212"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fejl meddelelse fra serveren: &lt;em&gt;%1&lt;/em&gt; </translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="112"/>
@@ -698,13 +698,13 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="218"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke analysere den modtaget JSON fra serveren: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="221"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Svaret fra serveren indeholder ikke alle forventede informationer.</translation>
     </message>
 </context>
 <context>
@@ -712,7 +712,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Forbind til %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
@@ -725,12 +725,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="80"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke åbne browseren, venligst kopier linket og åben i en browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="143"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Venter på godkendelse</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
@@ -740,12 +740,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Påbegynder godkendelse</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
         <source>Link copied to clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Link kopieret til udklipsholder</translation>
     </message>
 </context>
 <context>
@@ -753,12 +753,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="141"/>
         <source>Local folder %1 does not exist.</source>
-        <translation type="unfinished"/>
+        <translation>Lokal mappe %1 findes ikke.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="144"/>
         <source>%1 should be a folder but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 burde være en mappe men er det ikke.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="147"/>
@@ -768,7 +768,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="373"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 og %n andre filer er blevet fjernet.</numerusform><numerusform>%1 og %n andre filer er blevet fjernet.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="375"/>
@@ -779,7 +779,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 og %n anden fil er blevet hentet.</numerusform><numerusform>%1 og %n andre filer er blevet hentet.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
@@ -790,7 +790,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 og %n anden fil er blevet opdateret.</numerusform><numerusform>%1 og %n andre filer er blevet opdateret.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="389"/>
@@ -801,7 +801,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 er blevet omdømt til %2 og %n anden fil er blevet omdømt.</numerusform><numerusform>%1 er blevet omdømt til %2 og %n andre filer er blevet omdømt.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="396"/>
@@ -812,7 +812,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 er blevet flyttet til %2 og %n anden fil er blevet flyttet.</numerusform><numerusform>%1 er blevet flyttet til %2 og %n andre filer er blevet flyttet.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="403"/>
@@ -822,12 +822,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 og %n anden fil har synkroniserings konflikter.</numerusform><numerusform>%1 og %n andre filer har synkroniserings konflikter.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="410"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 har synkroniserings konflikt. Venligst check den konflikterende fil!.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
@@ -1808,7 +1808,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fejl meddelelse fra serveren: &lt;em&gt;%1&lt;/em&gt; </translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -1818,12 +1818,12 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke analysere den modtaget JSON fra serveren: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Svaret fra serveren indeholder ikke alle forventede informationer.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>

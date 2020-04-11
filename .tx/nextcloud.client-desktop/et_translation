@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[de_DE]=@APPLICATION_ICON_NAME@
-Name[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-Comment[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-GenericName[de_DE]=Synchronisierungsordner
+Icon[et_EE]=@APPLICATION_ICON_NAME@
+Name[et_EE]=@APPLICATION_NAME@ töölaua sünkimise klient
+Comment[et_EE]=@APPLICATION_NAME@ töölaua sünkroniseerimise klient
+GenericName[et_EE]=Kausta Sünkroonimine
