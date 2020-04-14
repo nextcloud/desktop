@@ -35,7 +35,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation>Nylig endrede filer</translation>
+        <translation>Ingen nylig endrede filer</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create folder</source>
-        <translation type="unfinished"/>
+        <translation>Opprett mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="211"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Lagringsplass: …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
@@ -556,7 +556,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation type="unfinished"/>
+        <translation>Passord for sertifikatet:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -636,7 +636,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="50"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Ingen Nextcloud-konto konfigurert</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
@@ -1204,7 +1204,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>Venter …</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
@@ -1214,7 +1214,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Forbereder synkronisering …</translation>
     </message>
 </context>
 <context>
@@ -1914,7 +1914,7 @@ kan be om flere rettigheter under behandlingen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>Koble til …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
@@ -2555,7 +2555,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Laster...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2804,7 +2804,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="66"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Brukernavn</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="82"/>
@@ -2931,7 +2931,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="807"/>
         <source>Edit</source>
-        <translation type="unfinished"/>
+        <translation>Rediger</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
@@ -3063,7 +3063,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>Tilkoblingen er ikke sikker</translation>
     </message>
 </context>
 <context>
@@ -3451,27 +3451,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="319"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Prøv alle opplastinger igjen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="368"/>
         <source>You renamed</source>
-        <translation type="unfinished"/>
+        <translation>Du endret navn</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="370"/>
         <source>You deleted</source>
-        <translation type="unfinished"/>
+        <translation>Du slettet</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
         <source>You created</source>
-        <translation type="unfinished"/>
+        <translation>Du opprettet</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>You changed</source>
-        <translation type="unfinished"/>
+        <translation>Du endret</translation>
     </message>
 </context>
 <context>
@@ -3479,7 +3479,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="690"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Bekreft fjerning av konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="691"/>
@@ -3489,12 +3489,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="696"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Fjern tilkobling</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="697"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Avbryt</translation>
     </message>
 </context>
 <context>
@@ -3502,7 +3502,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="210"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Ugyldig sertifikat oppdaget</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="211"/>
@@ -3528,7 +3528,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentialsdialog.cpp" line="34"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logg inn</translation>
     </message>
 </context>
 <context>
@@ -3597,7 +3597,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="347"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Uløst konflikter</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="349"/>
@@ -3607,7 +3607,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="354"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Feil under synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="357"/>
@@ -3642,7 +3642,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="404"/>
         <source>Resume all folders</source>
-        <translation type="unfinished"/>
+        <translation>Gjenoppta alle mapper</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="409"/>
@@ -3652,7 +3652,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
-        <translation type="unfinished"/>
+        <translation>Logg inn …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="937"/>
@@ -3692,12 +3692,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="692"/>
         <source>Resume all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Gjennoppta all synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="694"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Gjenoppta synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="702"/>
@@ -3722,12 +3722,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Innstillinger …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Ny konto …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
@@ -3853,7 +3853,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopier lenke</translation>
     </message>
 </context>
 <context>
@@ -4173,7 +4173,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Avbryter …</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
