@@ -84,3 +84,13 @@ Exclude List
 installed along with ``nextcloudcmd`` and thus be available in a system location,
 be placed next to the binary as ``sync-exclude.lst`` or be explicitly specified
 with the ``--exclude`` switch.
+
+Example
+~~~~~~~~~~~~
+
+- Synchronize a local directory to the specified directory of the nextcloud server
+
+::
+
+    $ nextcloudcmd /home/user/<my_sync_folder> \
+    https://<username>:<secret>@<server_address>/remote.php/webdav/<Directory_that_has_been_created>
