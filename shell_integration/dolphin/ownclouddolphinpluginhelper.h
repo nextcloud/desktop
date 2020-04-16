@@ -41,6 +41,10 @@ public:
     {
         return _strings.value("SHARE_MENU_TITLE", "Share …");
     }
+    QString contextMenuIconName() const
+    {
+        return _strings.value("CONTEXT_MENU_ICON", "Nextcloud");
+    }
 
     QString copyPrivateLinkTitle() const { return _strings["COPY_PRIVATE_LINK_MENU_TITLE"]; }
     QString emailPrivateLinkTitle() const { return _strings["EMAIL_PRIVATE_LINK_MENU_TITLE"]; }

@@ -93,6 +93,7 @@ public:
 
         auto menuaction = new QAction(parentWidget);
         menuaction->setText(helper->contextMenuTitle());
+        menuaction->setIcon(QIcon::fromTheme(helper->contextMenuIconName()));
         menuaction->setMenu(menu);
         return { menuaction };
     }
