@@ -91,8 +91,11 @@ owncloud_add_test(OAuth "syncenginetestutils.h;../src/gui/creds/oauth.cpp")
 
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 
-find_package(CMocka)
-if (CMOCKA_FOUND)
-    include(AddCMockaTest)
-    add_subdirectory(csync)
-endif (CMOCKA_FOUND)
+if (NOT WIN32)
+    # the tests still need porting
+    find_package(CMocka)
+    if (CMOCKA_FOUND)
+        include(AddCMockaTest)
+        add_subdirectory(csync)
+    endif (CMOCKA_FOUND)
+endif()
