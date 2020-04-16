@@ -2905,7 +2905,7 @@ Ekki er mælt með því að hún sé notuð.
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="671"/>
-        <location filename="../src/gui/socketapi.cpp" line="701"/>
+        <location filename="../src/gui/socketapi.cpp" line="702"/>
         <source>Share options</source>
         <translation>Valkostir sameigna</translation>
     </message>
@@ -2925,28 +2925,28 @@ Ekki er mælt með því að hún sé notuð.
         <translation>Senda einkatengil með tölvupósti …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="699"/>
+        <location filename="../src/gui/socketapi.cpp" line="700"/>
         <source>Resharing this file is not allowed</source>
         <translation>Endurdeiling þessarar skráar er ekki leyfð</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="712"/>
-        <location filename="../src/gui/socketapi.cpp" line="714"/>
+        <location filename="../src/gui/socketapi.cpp" line="713"/>
+        <location filename="../src/gui/socketapi.cpp" line="715"/>
         <source>Copy public link</source>
         <translation>Afrita opinberan tengil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="718"/>
+        <location filename="../src/gui/socketapi.cpp" line="719"/>
         <source>Copy internal link</source>
         <translation>Afrita innri tengil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi.cpp" line="808"/>
         <source>Edit</source>
         <translation>Breyta</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="768"/>
+        <location filename="../src/gui/socketapi.cpp" line="769"/>
         <source>Open in browser</source>
         <translation>Opna í vafra</translation>
     </message>
@@ -3433,7 +3433,7 @@ Ekki er mælt með því að hún sé notuð.
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="54"/>
+        <location filename="../src/gui/systray.cpp" line="55"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
