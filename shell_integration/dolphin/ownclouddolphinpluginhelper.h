@@ -23,6 +23,7 @@
 #include <QLocalSocket>
 #include <QRegularExpression>
 #include "ownclouddolphinpluginhelper_export.h"
+#include "config.h"
 
 class OWNCLOUDDOLPHINPLUGINHELPER_EXPORT OwncloudDolphinPluginHelper : public QObject {
     Q_OBJECT
