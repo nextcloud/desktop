@@ -22,7 +22,6 @@
 #include <QStandardPaths>
 #include <QFile>
 #include "ownclouddolphinpluginhelper.h"
-#include "config.h"
 
 OwncloudDolphinPluginHelper* OwncloudDolphinPluginHelper::instance()
 {
