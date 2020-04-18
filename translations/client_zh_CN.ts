@@ -2914,7 +2914,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Share via %1</source>
-        <translation>通过 ％1 共享</translation>
+        <translation>通过 %1 共享</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="673"/>
