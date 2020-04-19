@@ -326,6 +326,11 @@ void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &sync
     _journal->deleteStaleErrorBlacklistEntries(blacklist_file_paths);
 }
 
+#if (QT_VERSION < 0x050600)
+template <typename T>
+constexpr typename std::add_const<T>::type &qAsConst(T &t) noexcept { return t; }
+#endif
+
 void SyncEngine::conflictRecordMaintenance()
 {
     // Remove stale conflict entries from the database
