@@ -21,12 +21,16 @@ include(KDECompilerSettings NO_POLICY_SCOPE)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+find_package(Qt5 REQUIRED COMPONENTS Core)
+
 if(UNIT_TESTING)
     message(DEPRECATION "Setting UNIT_TESTING is deprecated please use BUILD_TESTING")
     set(BUILD_TESTING TRUE)
 endif()
 include(CTest)
 
+
+include(OCConfigPluginDir)
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 
 set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
