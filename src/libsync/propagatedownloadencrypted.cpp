@@ -89,8 +89,8 @@ void PropagateDownloadEncrypted::checkFolderId(const QStringList &list)
 
 void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocument &json)
 {
-  qCDebug(lcPropagateDownloadEncrypted) << "Metadata Received reading" <<
-                                           csync_instruction_str(_item->_instruction) << _item->_file << _item->_encryptedFileName;
+  qCDebug(lcPropagateDownloadEncrypted) << "Metadata Received reading"
+                                        << _item->_instruction << _item->_file << _item->_encryptedFileName;
   const QString filename = _info.fileName();
   auto meta = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
   const QVector<EncryptedFile> files = meta->files();
