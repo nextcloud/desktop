@@ -165,5 +165,3 @@ bool csync_is_collision_safe_hash(const QByteArray &checksum_header)
     return checksum_header.startsWith("SHA")
         || checksum_header.startsWith("MD5:");
 }
-
-#include "moc_csync.cpp"
