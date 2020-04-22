@@ -17,7 +17,12 @@
 
 #include "ocsynclib.h"
 
+#include <QObject>
+
 namespace OCC {
+
+namespace PinStateEnums {
+OCSYNC_EXPORT Q_NAMESPACE
 
 /** Determines whether items should be available locally permanently or not
  *
@@ -72,6 +77,7 @@ enum class PinState {
      */
     Unspecified = 3,
 };
+Q_ENUM_NS(PinState);
 
 /** A user-facing version of PinState.
  *
@@ -119,6 +125,9 @@ enum class VfsItemAvailability {
      */
     OnlineOnly = 4,
 };
+Q_ENUM_NS(VfsItemAvailability)
+}
+using namespace PinStateEnums;
 
 }
 
