@@ -103,7 +103,7 @@ Q_ENUM_NS(csync_status_codes_e)
   * Instruction enum. In the file traversal structure, it describes
   * the csync state of a file.
   */
-enum csync_instructions_e {
+enum SyncInstructions {
     CSYNC_INSTRUCTION_NONE            = 0,       /* Nothing to do (UPDATE|RECONCILE) */
     CSYNC_INSTRUCTION_EVAL            = 1 << 0,  /* There was changed compared to the DB (UPDATE) */
     CSYNC_INSTRUCTION_REMOVE          = 1 << 1,  /* The file need to be removed (RECONCILE) */
@@ -122,7 +122,7 @@ enum csync_instructions_e {
                                                     but without any propagation (UPDATE|RECONCILE) */
 };
 
-Q_ENUM_NS(csync_instructions_e)
+Q_ENUM_NS(SyncInstructions)
 
 // This enum is used with BITFIELD(3) and BITFIELD(4) in several places.
 // Also, this value is stored in the database, so beware of value changes.
@@ -194,7 +194,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
 
   CSYNC_STATUS error_status;
 
-  enum csync_instructions_e instruction; /* u32 */
+  SyncInstructions instruction; /* u32 */
 
   csync_file_stat_s()
     : modtime(0)

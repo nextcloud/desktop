@@ -50,13 +50,13 @@ SyncFileItemPtr findDiscoveryItem(const SyncFileItemVector &spy, const QString &
     return SyncFileItemPtr(new SyncFileItem);
 }
 
-bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const csync_instructions_e instr)
+bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = spy.findItem(path);
     return item->_instruction == instr;
 }
 
-bool discoveryInstruction(const SyncFileItemVector &spy, const QString &path, const csync_instructions_e instr)
+bool discoveryInstruction(const SyncFileItemVector &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = findDiscoveryItem(spy, path);
     return item->_instruction == instr;

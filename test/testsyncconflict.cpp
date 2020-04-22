@@ -11,7 +11,7 @@
 
 using namespace OCC;
 
-bool itemSuccessful(const ItemCompletedSpy &spy, const QString &path, const csync_instructions_e instr)
+bool itemSuccessful(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = spy.findItem(path);
     return item->_status == SyncFileItem::Success && item->_instruction == instr;

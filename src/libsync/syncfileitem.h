@@ -252,7 +252,7 @@ public:
     // usually this value is 1, but for removes on dirs, it might be much higher.
 
     // Variables used by the propagator
-    csync_instructions_e _instruction;
+    SyncInstructions _instruction;
     time_t _modtime;
     QByteArray _etag;
     qint64 _size;

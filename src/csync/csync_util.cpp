@@ -40,7 +40,7 @@ Q_LOGGING_CATEGORY(lcCSyncUtils, "sync.csync.utils", QtInfoMsg)
 
 typedef struct {
   const char *instr_str;
-  enum csync_instructions_e instr_code;
+  SyncInstructions instr_code;
 } _instr_code_struct;
 
 struct csync_memstat_s {

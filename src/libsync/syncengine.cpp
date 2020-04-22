@@ -192,7 +192,7 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
     return true;
 }
 
-static bool isFileTransferInstruction(csync_instructions_e instruction)
+static bool isFileTransferInstruction(SyncInstructions instruction)
 {
     return instruction == CSYNC_INSTRUCTION_CONFLICT
         || instruction == CSYNC_INSTRUCTION_NEW

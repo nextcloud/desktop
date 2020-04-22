@@ -15,7 +15,7 @@ using namespace OCC;
 
 #define DVSUFFIX APPLICATION_DOTVIRTUALFILE_SUFFIX
 
-bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const csync_instructions_e instr)
+bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = spy.findItem(path);
     return item->_instruction == instr;

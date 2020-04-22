@@ -41,7 +41,7 @@ QString SyncRunFileLog::directionToStr(SyncFileItem::Direction dir)
     return re;
 }
 
-QString SyncRunFileLog::instructionToStr(csync_instructions_e inst)
+QString SyncRunFileLog::instructionToStr(SyncInstructions inst)
 {
     QString re;
 
