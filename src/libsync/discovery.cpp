@@ -1121,7 +1121,7 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_direction = _dirItem->_direction;
     }
 
-    qCInfo(lcDisco) << "Discovered" << item->_file << csync_instruction_str(item->_instruction) << item->_direction << item->_type;
+    qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->_type;
 
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;

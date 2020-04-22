@@ -43,24 +43,6 @@ typedef struct {
   enum csync_instructions_e instr_code;
 } _instr_code_struct;
 
-static const _instr_code_struct _instr[] =
-{
-  { "INSTRUCTION_NONE", CSYNC_INSTRUCTION_NONE },
-  { "INSTRUCTION_EVAL", CSYNC_INSTRUCTION_EVAL },
-  { "INSTRUCTION_REMOVE", CSYNC_INSTRUCTION_REMOVE },
-  { "INSTRUCTION_RENAME", CSYNC_INSTRUCTION_RENAME },
-  { "INSTRUCTION_EVAL_RENAME", CSYNC_INSTRUCTION_EVAL_RENAME },
-  { "INSTRUCTION_NEW", CSYNC_INSTRUCTION_NEW },
-  { "INSTRUCTION_CONFLICT", CSYNC_INSTRUCTION_CONFLICT },
-  { "INSTRUCTION_IGNORE", CSYNC_INSTRUCTION_IGNORE },
-  { "INSTRUCTION_SYNC", CSYNC_INSTRUCTION_SYNC },
-  { "INSTRUCTION_STAT_ERR", CSYNC_INSTRUCTION_STAT_ERROR },
-  { "INSTRUCTION_ERROR", CSYNC_INSTRUCTION_ERROR },
-  { "INSTRUCTION_TYPE_CHANGE", CSYNC_INSTRUCTION_TYPE_CHANGE },
-  { "INSTRUCTION_UPDATE_METADATA", CSYNC_INSTRUCTION_UPDATE_METADATA },
-  { nullptr, CSYNC_INSTRUCTION_ERROR }
-};
-
 struct csync_memstat_s {
   int size;
   int resident;
@@ -70,21 +52,6 @@ struct csync_memstat_s {
   int lrs;
   int dt;
 };
-
-const char *csync_instruction_str(enum csync_instructions_e instr)
-{
-  int idx = 0;
-
-  while (_instr[idx].instr_str != nullptr) {
-    if (_instr[idx].instr_code == instr) {
-      return _instr[idx].instr_str;
-    }
-    idx++;
-  }
-
-  return "ERROR!";
-}
-
 
 void csync_memstat_check(void) {
   int s = 0;
