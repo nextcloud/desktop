@@ -1464,7 +1464,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation>Nepavyko gauti ar sukurti viešos dalinimosi nuorodos. Klaida: 
+        <translation>Nepavyko gauti ar sukurti viešinio per viešąją nuorodą. Klaida:
 
 %1</translation>
     </message>
