@@ -37,12 +37,6 @@
 
 Q_LOGGING_CATEGORY(lcCSyncUtils, "nextcloud.sync.csync.utils", QtInfoMsg)
 
-
-struct _instr_code_struct {
-  const char *instr_str;
-  SyncInstructions instr_code;
-};
-
 struct csync_memstat_s {
   int size;
   int resident;
