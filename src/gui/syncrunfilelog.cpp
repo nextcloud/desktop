@@ -30,17 +30,6 @@ QString SyncRunFileLog::dateTimeStr(const QDateTime &dt)
     return dt.toString(Qt::ISODate);
 }
 
-QString SyncRunFileLog::directionToStr(SyncFileItem::Direction dir)
-{
-    QString re("N");
-    if (dir == SyncFileItem::Up) {
-        re = QLatin1String("Up");
-    } else if (dir == SyncFileItem::Down) {
-        re = QLatin1String("Down");
-    }
-    return re;
-}
-
 void SyncRunFileLog::start(const QString &folderPath)
 {
     const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
@@ -103,7 +92,7 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
         _out << item._file << QLatin1String(" -> ") << item._renameTarget << L;
     }
     _out << item._instruction << L;
-    _out << directionToStr(item._direction) << L;
+    _out << item._direction << L;
     _out << QString::number(item._modtime) << L;
     _out << item._etag << L;
     _out << QString::number(item._size) << L;
