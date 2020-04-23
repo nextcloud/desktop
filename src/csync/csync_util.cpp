@@ -37,12 +37,6 @@
 
 Q_LOGGING_CATEGORY(lcCSyncUtils, "sync.csync.utils", QtInfoMsg)
 
-
-typedef struct {
-  const char *instr_str;
-  SyncInstructions instr_code;
-} _instr_code_struct;
-
 struct csync_memstat_s {
   int size;
   int resident;
