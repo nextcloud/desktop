@@ -41,56 +41,6 @@ QString SyncRunFileLog::directionToStr(SyncFileItem::Direction dir)
     return re;
 }
 
-QString SyncRunFileLog::instructionToStr(SyncInstructions inst)
-{
-    QString re;
-
-    switch (inst) {
-    case CSYNC_INSTRUCTION_NONE:
-        re = "INST_NONE";
-        break;
-    case CSYNC_INSTRUCTION_EVAL:
-        re = "INST_EVAL";
-        break;
-    case CSYNC_INSTRUCTION_REMOVE:
-        re = "INST_REMOVE";
-        break;
-    case CSYNC_INSTRUCTION_RENAME:
-        re = "INST_RENAME";
-        break;
-    case CSYNC_INSTRUCTION_EVAL_RENAME:
-        re = "INST_EVAL_RENAME";
-        break;
-    case CSYNC_INSTRUCTION_NEW:
-        re = "INST_NEW";
-        break;
-    case CSYNC_INSTRUCTION_CONFLICT:
-        re = "INST_CONFLICT";
-        break;
-    case CSYNC_INSTRUCTION_IGNORE:
-        re = "INST_IGNORE";
-        break;
-    case CSYNC_INSTRUCTION_SYNC:
-        re = "INST_SYNC";
-        break;
-    case CSYNC_INSTRUCTION_STAT_ERROR:
-        re = "INST_STAT_ERR";
-        break;
-    case CSYNC_INSTRUCTION_ERROR:
-        re = "INST_ERROR";
-        break;
-    case CSYNC_INSTRUCTION_TYPE_CHANGE:
-        re = "INST_TYPE_CHANGE";
-        break;
-    case CSYNC_INSTRUCTION_UPDATE_METADATA:
-        re = "INST_METADATA";
-        break;
-    }
-
-    return re;
-}
-
-
 void SyncRunFileLog::start(const QString &folderPath)
 {
     const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
@@ -152,7 +102,7 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     } else {
         _out << item._file << QLatin1String(" -> ") << item._renameTarget << L;
     }
-    _out << instructionToStr(item._instruction) << L;
+    _out << item._instruction << L;
     _out << directionToStr(item._direction) << L;
     _out << QString::number(item._modtime) << L;
     _out << item._etag << L;
