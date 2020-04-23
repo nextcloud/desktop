@@ -43,7 +43,6 @@ public:
 protected:
 private:
     QString dateTimeStr(const QDateTime &dt);
-    QString directionToStr(SyncFileItem::Direction dir);
 
     QScopedPointer<QFile> _file;
     QTextStream _out;
