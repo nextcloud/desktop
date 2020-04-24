@@ -199,6 +199,6 @@ X-GNOME-Autostart-Delay=3
 
 # Translations
 Icon[bg_BG]=@APPLICATION_ICON_NAME@
-Name[bg_BG]=@APPLICATION_NAME@ клиент за синхронизиране на десктоп
-Comment[bg_BG]=@APPLICATION_NAME@ клиент за синхронизиране на десктоп
+Name[bg_BG]=@APPLICATION_NAME@ десктоп клиент за синхронизиране
+Comment[bg_BG]=@APPLICATION_NAME@ десктоп клиент за синхронизиране 
 GenericName[bg_BG]=Синхронизиране на папка
