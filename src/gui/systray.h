@@ -33,6 +33,13 @@ namespace Ui {
     class Systray;
 }
 
+enum TaskBarPosition {
+    Bottom = 0,
+    Left,
+    Top,
+    Right
+};
+
 /**
  * @brief The Systray class
  * @ingroup gui
@@ -51,12 +58,13 @@ public:
     bool isOpen();
 
     Q_INVOKABLE void pauseResumeSync();
-    Q_INVOKABLE int calcTrayWindowX();
-    Q_INVOKABLE int calcTrayWindowY();
     Q_INVOKABLE bool syncIsPaused();
     Q_INVOKABLE void setOpened();
     Q_INVOKABLE void setClosed();
     Q_INVOKABLE int screenIndex();
+    Q_INVOKABLE QPoint calcTrayIconCenter();
+    Q_INVOKABLE int taskbarOrientation();
+    Q_INVOKABLE QRect taskbarRect();
 
 signals:
     void currentUserChanged();

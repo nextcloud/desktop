@@ -10,6 +10,125 @@ import QtGraphicalEffects 1.0
 import Style 1.0
 
 Window {
+
+    function setTrayWindowPosition()
+    {
+        var trayIconCenter = systrayBackend.calcTrayIconCenter();
+        console.debug("Calculated tray icon center:",trayIconCenter);
+        var currentScreen = systrayBackend.screenIndex();
+        console.debug("Tray menu about to show on screen",currentScreen,".");
+        trayWindow.screen = Qt.application.screens[currentScreen];
+        trayWindow.show();
+        trayWindow.raise();
+        trayWindow.requestActivate();
+        var trayWindowX;
+        var trayWindowY;
+        var taskbarHeight;
+        var taskbarWidth;
+        var tbOrientation;
+        if (Qt.platform.os === "linux") {
+            var distBottom = Screen.height - (trayIconCenter.y - Screen.virtualY);
+            var distRight = Screen.width - (trayIconCenter.x - Screen.virtualX);
+            var distLeft = trayIconCenter.x - Screen.virtualX;
+            var distTop = trayIconCenter.y - Screen.virtualY;
+            if (distBottom < distRight && distBottom < distTop && distBottom < distLeft) {
+                tbOrientation = 0;
+            } else if (distLeft < distTop && distLeft < distRight && distLeft < distBottom) {
+                tbOrientation = 1;
+            } else if (distTop < distRight && distTop < distBottom && distTop < distLeft) {
+                tbOrientation = 2;
+            } else {
+                tbOrientation = 3;
+            }
+        } else {
+            tbOrientation = systrayBackend.taskbarOrientation();
+        }
+        if (Qt.platform.os === "osx") {
+            taskbarHeight = 22;
+            taskbarWidth = Screen.width;
+        } else if (Qt.platform.os === "linux") {
+            taskbarHeight = (tbOrientation === 0 || tbOrientation === 2) ? 32 : Screen.height;
+            taskbarWidth = (tbOrientation === 0 || tbOrientation === 2) ? Screen.width : 32;
+        } else {
+            taskbarHeight = systrayBackend.taskbarRect().height;
+            taskbarWidth = systrayBackend.taskbarRect().width;
+        }
+
+        switch(tbOrientation) {
+            // Platform separation here: Windows and macOS draw coordinates have to be given in screen-coordinates
+            // KDE and most xorg based DEs expect them as virtual coordinates
+            case 0:
+                console.debug("Taskbar is on the bottom.");
+                trayWindowX = trayIconCenter.x - trayWindow.width / 2;
+                trayWindowY = (Qt.platform.os !== "linux") ? (Screen.height - taskbarHeight - trayWindow.height - 4)
+                                                           : (Screen.height + Screen.virtualY - taskbarHeight - trayWindow.height - 4);
+                break;
+            case 1:
+                console.debug("Taskbar is on the left.");
+                trayWindowX = (Qt.platform.os !== "linux") ? (taskbarWidth + 4)
+                                                           : (Screen.virtualX + taskbarWidth + 4);
+                trayWindowY = trayIconCenter.y;
+                break;
+            case 2:
+                console.debug("Taskbar is on the top.");
+                trayWindowX = trayIconCenter.x - trayWindow.width / 2;
+                trayWindowY = Screen.virtualY + taskbarHeight + 4;
+                break;
+            case 3:
+                console.debug("Taskbar is on the right.");
+                trayWindowX = (Qt.platform.os !== "linux") ? (Screen.width - taskbarWidth - trayWindow.width - 4)
+                                                           : (Screen.width + Screen.virtualX - taskbarWidth - trayWindow.width - 4);
+                trayWindowY = trayIconCenter.y;
+                break;
+        }
+
+        console.debug("Screen.height:",Screen.height);
+        console.debug("Screen.desktopAvailableHeight:",Screen.desktopAvailableHeight);
+        console.debug("Screen.virtualY:",Screen.virtualY);
+        console.debug("Screen.width:",Screen.width);
+        console.debug("Screen.desktopAvailableWidth:",Screen.desktopAvailableWidth);
+        console.debug("Screen.virtualX:",Screen.virtualX);
+        console.debug("Taskbar height:",taskbarHeight);
+        console.debug("Taskbar width:",taskbarWidth);
+
+        if (Screen.width <= trayWindowX + trayWindow.width) {
+            console.debug("Out-of-screen condition on the right detected. Adjusting window position.");
+            if (Qt.platform.os !== "linux") {
+                trayWindowX = Screen.width - trayWindow.width - 4;
+            } else {
+                trayWindowX = Screen.width + Screen.virtualX - trayWindow.width - 4 - (tbOrientation === 3 ? taskbarWidth : 0);
+            }
+        }
+        if (trayWindowX <= Screen.x && Qt.platform.os !== "linux") {
+            console.debug("Out-of-screen condition on the left detected. Adjusting window position.");
+            trayWindowX = Screen.x + 4;
+        }
+        if (trayWindowX <= Screen.virtualX && Qt.platform.os === "linux") {
+           console.debug("Out-of-screen condition on the left detected. Adjusting window position.");
+           trayWindowX = Screen.virtualX + 4 + (tbOrientation === 1 ? taskbarWidth : 0)
+        }
+        if (trayWindowY <= Screen.y && Qt.platform.os !== "linux") {
+            console.debug("Out-of-screen condition on the top detected. Adjusting window position.");
+            trayWindowY = Screen.y + 4;
+        }
+        if (trayWindowY <= Screen.virtualY && Qt.platform.os === "linux") {
+            console.debug("Out-of-screen condition on the top detected. Adjusting window position.");
+            trayWindowY = Screen.virtualY + 4 + (tbOrientation === 2 ? taskbarHeight : 0);
+        }
+        if (Screen.height <= trayWindowY - Screen.virtualY + trayWindow.height) {
+            console.debug("Out-of-screen condition on the bottom detected. Adjusting window position.");
+            if (Qt.platform.os !== "linux") {
+                trayWindowY = Screen.height - trayWindow.height - 4;
+            } else {
+                trayWindowY = Screen.height + Screen.virtualY - trayWindow.height - 4;
+            }
+
+        }
+        console.debug("Tray window position: x =",trayWindowX," y =",trayWindowY);
+        trayWindow.setX(trayWindowX);
+        trayWindow.setY(trayWindowY);
+    }
+
     id:         trayWindow
 
     width:      Style.trayWindowWidth
@@ -62,11 +181,7 @@ Window {
         target: systrayBackend
         onShowWindow: {
             accountMenu.close();
-            trayWindow.show();
-            trayWindow.raise();
-            trayWindow.requestActivate();
-            trayWindow.setX( Qt.application.screens[systrayBackend.screenIndex()].virtualX + systrayBackend.calcTrayWindowX());
-            trayWindow.setY( Qt.application.screens[systrayBackend.screenIndex()].virtualY + systrayBackend.calcTrayWindowY());
+            setTrayWindowPosition();
             systrayBackend.setOpened();
             userModelBackend.fetchCurrentActivityModel();
         }

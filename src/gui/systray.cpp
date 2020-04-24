@@ -16,6 +16,7 @@
 #include "systray.h"
 #include "theme.h"
 #include "config.h"
+#include "common/utility.h"
 #include "tray/UserModel.h"
 
 #include <QCursor>
@@ -60,6 +61,7 @@ Systray::Systray()
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Systray::showWindow);
+
 }
 
 void Systray::create()
@@ -69,6 +71,7 @@ void Systray::create()
     }
     _trayEngine->load(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
     hideWindow();
+    emit activated(QSystemTrayIcon::ActivationReason::Unknown);
 }
 
 void Systray::slotNewUserSelected()
@@ -83,17 +86,6 @@ void Systray::slotNewUserSelected()
 bool Systray::isOpen()
 {
     return _isOpen;
-}
-
-Q_INVOKABLE int Systray::screenIndex()
-{
-    auto qPos = QCursor::pos();
-    for (int i = 0; i < QGuiApplication::screens().count(); i++) {
-        if (QGuiApplication::screens().at(i)->geometry().contains(qPos)) {
-            return i;
-        }
-    }
-    return 0;
 }
 
 Q_INVOKABLE void Systray::setOpened()
@@ -133,109 +125,6 @@ void Systray::setToolTip(const QString &tip)
     QSystemTrayIcon::setToolTip(tr("%1: %2").arg(Theme::instance()->appNameGUI(), tip));
 }
 
-int Systray::calcTrayWindowX()
-{
-#ifdef Q_OS_OSX
-    // macOS handles DPI awareness differently
-    // and menu bar is always at the top, icons starting from the right
-
-    QPoint topLeft = this->geometry().topLeft();
-    QPoint topRight = this->geometry().topRight();
-    int trayIconTopCenterX = (topRight - ((topRight - topLeft) * 0.5)).x();
-    return trayIconTopCenterX - (400 * 0.5);
-#else
-    QScreen* trayScreen = nullptr;
-    if (QGuiApplication::screens().count() > 1) {
-        trayScreen = QGuiApplication::screens().at(screenIndex());
-    } else {
-        trayScreen = QGuiApplication::primaryScreen();
-    }
-
-    int screenWidth = trayScreen->geometry().width();
-    int screenHeight = trayScreen->geometry().height();
-    int availableWidth = trayScreen->availableGeometry().width();
-    int availableHeight = trayScreen->availableGeometry().height();
-
-    QPoint topRightDpiAware = QPoint();
-    QPoint topLeftDpiAware = QPoint();
-    if (this->geometry().left() == 0 || this->geometry().top() == 0) {
-        // tray geometry is invalid - QT bug on some linux desktop environments
-        // Use mouse position instead. Cringy, but should work for now
-        topRightDpiAware = QCursor::pos() / trayScreen->devicePixelRatio();
-        topLeftDpiAware = QCursor::pos() / trayScreen->devicePixelRatio();
-    } else {
-        topRightDpiAware = this->geometry().topRight() / trayScreen->devicePixelRatio();
-        topLeftDpiAware = this->geometry().topLeft() / trayScreen->devicePixelRatio();
-    }
-
-    // get x coordinate from top center point of tray icon
-    int trayIconTopCenterX = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).x();
-
-    if (availableHeight < screenHeight) {
-        // taskbar is on top or bottom
-        if (trayIconTopCenterX + (400 * 0.5) > availableWidth) {
-            return availableWidth - 400 - 12;
-        } else {
-            return trayIconTopCenterX - (400 * 0.5);
-        }
-    } else {
-        if (trayScreen->availableGeometry().x() > trayScreen->geometry().x()) {
-            // on the left
-            return (screenWidth - availableWidth) + 6;
-        } else {
-            // on the right
-            return screenWidth - 400 - (screenWidth - availableWidth) - 6;
-        }
-    }
-#endif
-}
-int Systray::calcTrayWindowY()
-{
-#ifdef Q_OS_OSX
-    // macOS menu bar is always 22 (effective) pixels
-    // don't use availableGeometry() here, because this also excludes the dock
-    return 22+6;
-#else
-    QScreen* trayScreen = nullptr;
-    if (QGuiApplication::screens().count() > 1) {
-        trayScreen = QGuiApplication::screens().at(screenIndex());
-    } else {
-        trayScreen = QGuiApplication::primaryScreen();
-    }
-
-    int screenHeight = trayScreen->geometry().height();
-    int availableHeight = trayScreen->availableGeometry().height();
-
-    QPoint topRightDpiAware = QPoint();
-    QPoint topLeftDpiAware = QPoint();
-    if (this->geometry().left() == 0 || this->geometry().top() == 0) {
-        // tray geometry is invalid - QT bug on some linux desktop environments
-        // Use mouse position instead. Cringy, but should work for now
-        topRightDpiAware = QCursor::pos() / trayScreen->devicePixelRatio();
-        topLeftDpiAware = QCursor::pos() / trayScreen->devicePixelRatio();
-    } else {
-        topRightDpiAware = this->geometry().topRight() / trayScreen->devicePixelRatio();
-        topLeftDpiAware = this->geometry().topLeft() / trayScreen->devicePixelRatio();
-    }
-    // get y coordinate from top center point of tray icon
-    int trayIconTopCenterY = (topRightDpiAware - ((topRightDpiAware - topLeftDpiAware) * 0.5)).y();
-
-    if (availableHeight < screenHeight) {
-        // taskbar is on top or bottom
-        if (trayScreen->availableGeometry().y() > trayScreen->geometry().y()) {
-            // on top
-            return (screenHeight - availableHeight) + 6;
-        } else {
-            // on bottom
-            return screenHeight - 510 - (screenHeight - availableHeight) - 6;
-        }
-    } else {
-        // on the left or right
-        return (trayIconTopCenterY - 510 + 12);
-    }
-#endif
-}
-
 bool Systray::syncIsPaused()
 {
     return _syncIsPaused;
@@ -250,6 +139,73 @@ void Systray::pauseResumeSync()
         _syncIsPaused = true;
         emit pauseSync();
     }
+}
+
+/********************************************************************************************/
+/* Helper functions for cross-platform tray icon position and taskbar orientation detection */
+/********************************************************************************************/
+
+/// Return the current screen index based on cursor position
+int Systray::screenIndex()
+{
+    auto qPos = QCursor::pos();
+    for (int i = 0; i < QGuiApplication::screens().count(); i++) {
+        if (QGuiApplication::screens().at(i)->geometry().contains(qPos)) {
+            return i;
+        }
+    }
+    return 0;
+}
+
+int Systray::taskbarOrientation()
+{
+// macOS: Always on top
+#if defined(Q_OS_MACOS)
+    return TaskBarPosition::Top;
+// Windows: Check registry for actual taskbar orientation
+#elif defined(Q_OS_WIN)
+    auto taskbarPosition = Utility::registryGetKeyValue(HKEY_CURRENT_USER,
+        "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StuckRects3",
+        "Settings");
+    switch (taskbarPosition.toInt()) {
+    // Mapping windows binary value (0 = left, 1 = top, 2 = right, 3 = bottom) to qml logic (0 = bottom, 1 = left...)
+    case 0:
+        return TaskBarPosition::Left;
+    case 1:
+        return TaskBarPosition::Top;
+    case 2:
+        return TaskBarPosition::Right;
+    case 3:
+        return TaskBarPosition::Bottom;
+    default:
+        return TaskBarPosition::Bottom;
+    }
+// Else (generally linux DEs): fallback to cursor position nearest edge logic
+#else
+    return 0;
+#endif
+}
+
+QRect Systray::taskbarRect()
+{
+#if defined(Q_OS_WIN)
+    return Utility::getTaskbarDimensions();
+#else
+    return QRect(0, 0, 0, 32);
+#endif
+}
+
+QPoint Systray::calcTrayIconCenter()
+{
+// QSystemTrayIcon::geometry() is broken for ages on most Linux DEs (invalid geometry returned)
+// thus we can use this only for Windows and macOS
+#if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
+    auto trayIconCenter = geometry().center();
+    return trayIconCenter;
+#else
+// On Linux, fall back to mouse position (assuming tray icon is activated by mouse click)
+    return QCursor::pos();
+#endif
 }
 
 } // namespace OCC
