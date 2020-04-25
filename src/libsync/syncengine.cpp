@@ -326,12 +326,17 @@ void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &sync
     _journal->deleteStaleErrorBlacklistEntries(blacklist_file_paths);
 }
 
+#if (QT_VERSION < 0x050600)
+template <typename T>
+constexpr typename std::add_const<T>::type &qAsConst(T &t) noexcept { return t; }
+#endif
+
 void SyncEngine::conflictRecordMaintenance()
 {
     // Remove stale conflict entries from the database
     // by checking which files still exist and removing the
     // missing ones.
-    auto conflictRecordPaths = _journal->conflictRecordPaths();
+    const auto conflictRecordPaths = _journal->conflictRecordPaths();
     for (const auto &path : conflictRecordPaths) {
         auto fsPath = _propagator->getFilePath(QString::fromUtf8(path));
         if (!QFileInfo(fsPath).exists()) {
@@ -344,7 +349,7 @@ void SyncEngine::conflictRecordMaintenance()
     //
     // This happens when the conflicts table is new or when conflict files
     // are downlaoded but the server doesn't send conflict headers.
-    for (const auto &path : _seenFiles) {
+    for (const auto &path : qAsConst(_seenFiles)) {
         if (!Utility::isConflictFile(path))
             continue;
 

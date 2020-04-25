@@ -23,6 +23,7 @@
 #include <QLocalSocket>
 #include <QRegularExpression>
 #include "ownclouddolphinpluginhelper_export.h"
+#include "config.h"
 
 class OWNCLOUDDOLPHINPLUGINHELPER_EXPORT OwncloudDolphinPluginHelper : public QObject {
     Q_OBJECT
@@ -35,11 +36,15 @@ public:
 
     QString contextMenuTitle() const
     {
-        return _strings.value("CONTEXT_MENU_TITLE", "Nextcloud");
+        return _strings.value("CONTEXT_MENU_TITLE", APPLICATION_NAME);
     }
     QString shareActionTitle() const
     {
         return _strings.value("SHARE_MENU_TITLE", "Share …");
+    }
+    QString contextMenuIconName() const
+    {
+        return _strings.value("CONTEXT_MENU_ICON", APPLICATION_ICON_NAME);
     }
 
     QString copyPrivateLinkTitle() const { return _strings["COPY_PRIVATE_LINK_MENU_TITLE"]; }

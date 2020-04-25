@@ -346,7 +346,8 @@ bool ExcludedFiles::reloadExcludeFiles()
     _fullRegexDir.clear();
 
     bool success = true;
-    for (const auto& basePath : _excludeFiles.keys()) {
+    const auto keys = _excludeFiles.keys();
+    for (const auto& basePath : keys) {
         for (const auto& file : _excludeFiles.value(basePath)) {
             success = loadExcludeFile(basePath, file);
         }
@@ -667,7 +668,8 @@ void ExcludedFiles::prepare()
     _fullRegexFile.clear();
     _fullRegexDir.clear();
 
-    for (auto const & basePath : _allExcludes.keys())
+    const auto keys = _allExcludes.keys();
+    for (auto const & basePath : keys)
         prepare(basePath);
 }
 

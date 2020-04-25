@@ -90,8 +90,9 @@ public:
             delete menu;
             return {};
         }
-
+        
         menu->setTitle(helper->contextMenuTitle());
+        menu->setIcon(QIcon::fromTheme(helper->contextMenuIconName()));
         return { menu->menuAction() };
     }
 

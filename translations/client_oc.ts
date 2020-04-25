@@ -9,22 +9,22 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Verificacion de las modificacions dins « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion %1 sus %2  (%3 restants)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion %1 sus %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion %1 (%2 restants)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
@@ -88,18 +88,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Creacion impossibla de dossier dins l’escobilhièr</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Desplaçament impossible de « %1 » dins « %2 »</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Lo desplaçament a l’escobilhièr es pas implementat sus aquesta plataforma</translation>
     </message>
 </context>
 <context>
@@ -107,17 +107,17 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Autentificacion navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Mercés de passar sus vòstre navegador per contunhar.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Error de connexion. Tornatz ensajar mai tard.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="52"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation type="unfinished"/>
+        <translation>Causissètz un dossièr de vòstre ordenador a sincronizar.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>Causissètz un dossier distant coma destinacion</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="282"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Relambi d’espèra passat</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="284"/>
@@ -217,7 +217,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="91"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar las modificacions manualas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="211"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Espaci d’emmagazinatge : …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="242"/>
         <source>This account supports end-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Aqueste compte es compatible amb lo chiframent del cap a la fin</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="244"/>
@@ -302,7 +302,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="653"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Causissètz qué sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="659"/>
@@ -337,7 +337,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="742"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Creacion impossibla del dossièr local &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="795"/>
@@ -357,7 +357,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="887"/>
         <source>Sync Running</source>
-        <translation type="unfinished"/>
+        <translation>Execucion de la sincro.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="888"/>
@@ -372,7 +372,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="965"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 sus %2 en utilizacion</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="974"/>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>La version %1 del servidor es vièlha e pas mai compatibla ! Contunhatz sota vòstra responsabilitat.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1012"/>
@@ -402,17 +402,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1014"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Lo servidor %1 es temporàriament indisponible.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1016"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Lo servidor %1 es actualament en mòde mantenença.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1018"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>Desconnexion de %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1027"/>
@@ -536,12 +536,12 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>Autentificacion client via SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>Aqueste servidor demanda benlèu un certificat client SSL.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -566,7 +566,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>Fichièr del certificat (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -574,7 +574,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="198"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Error d’accès al fichièr de configuracion</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="199"/>
@@ -774,7 +774,7 @@
         <location filename="../src/gui/folder.cpp" line="375"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 es estat suprimit.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
@@ -785,7 +785,7 @@
         <location filename="../src/gui/folder.cpp" line="382"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 es estat telecargat.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
@@ -796,7 +796,7 @@
         <location filename="../src/gui/folder.cpp" line="389"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 es estat actualizat.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
@@ -807,7 +807,7 @@
         <location filename="../src/gui/folder.cpp" line="396"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 es estat renomenat en %2.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
@@ -817,7 +817,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="403"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 es estat desplaçat a %2.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
@@ -847,7 +847,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 es actualament verrolhat.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -983,12 +983,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1279"/>
         <source>Preparing for sync.</source>
-        <translation type="unfinished"/>
+        <translation>Preparacion per sincronizar.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1282"/>
         <source>Sync is running.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion en cors.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1287"/>
@@ -1008,7 +1008,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1298"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>L’utilizaire a abandonat.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1301"/>
@@ -1139,7 +1139,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="996"/>
@@ -1363,7 +1363,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Utilizar las icònas &amp;monocròmas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -1383,12 +1383,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>Verificar &amp;automaticament las mesas a jorn</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>&amp;Check for Update now</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Verificar las mesas a jorn ara</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
@@ -1452,7 +1452,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="548"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Error de partatge</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="549"/>
@@ -1607,7 +1607,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Cercar</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
@@ -1756,7 +1756,7 @@ Logs will be written to %1</source>
         <location filename="../src/gui/networksettings.ui" line="241"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>Ko/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="250"/>
@@ -2003,7 +2003,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Connexion a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
@@ -2016,7 +2016,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="54"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Connexion a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="55"/>
@@ -2649,7 +2649,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1 en partatge</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="277"/>
@@ -2841,7 +2841,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Devètz èsser connectat coma %1</translation>
     </message>
 </context>
 <context>
@@ -2887,7 +2887,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="671"/>
-        <location filename="../src/gui/socketapi.cpp" line="701"/>
+        <location filename="../src/gui/socketapi.cpp" line="702"/>
         <source>Share options</source>
         <translation>Opcions de partatge</translation>
     </message>
@@ -2907,28 +2907,28 @@ It is not advisable to use it.</source>
         <translation>Enviar un ligam privat per mail …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="699"/>
+        <location filename="../src/gui/socketapi.cpp" line="700"/>
         <source>Resharing this file is not allowed</source>
         <translation>Tornar partejar aqueste</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="712"/>
-        <location filename="../src/gui/socketapi.cpp" line="714"/>
+        <location filename="../src/gui/socketapi.cpp" line="713"/>
+        <location filename="../src/gui/socketapi.cpp" line="715"/>
         <source>Copy public link</source>
         <translation>Copiar lo ligam public</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="718"/>
+        <location filename="../src/gui/socketapi.cpp" line="719"/>
         <source>Copy internal link</source>
         <translation>Copiar lo ligam intèrn</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi.cpp" line="808"/>
         <source>Edit</source>
         <translation>Modificar</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="768"/>
+        <location filename="../src/gui/socketapi.cpp" line="769"/>
         <source>Open in browser</source>
         <translation>Dobrir dins lo navegador</translation>
     </message>
@@ -3208,7 +3208,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Accès defendut</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
@@ -3415,7 +3415,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="54"/>
+        <location filename="../src/gui/systray.cpp" line="55"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -3661,17 +3661,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="942"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion %1 sus %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="951"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion %1 (%2 restants)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="972"/>
@@ -3681,7 +3681,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>Modificacions recentas</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="692"/>

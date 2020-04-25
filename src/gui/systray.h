@@ -22,6 +22,7 @@
 #include "tray/UserModel.h"
 
 class QIcon;
+class QQmlApplicationEngine;
 
 namespace OCC {
 
@@ -47,7 +48,7 @@ public:
     virtual ~Systray() {};
 
     void create();
-    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information, int millisecondsTimeoutHint = 10000);
+    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
     void setToolTip(const QString &tip);
     bool isOpen();
 
@@ -78,9 +79,7 @@ private:
     Systray();
     bool _isOpen;
     bool _syncIsPaused;
-    QQmlEngine *_trayEngine;
-    QQmlComponent *_trayComponent;
-    QQmlContext *_trayContext;
+    QQmlApplicationEngine *_trayEngine;
 };
 
 } // namespace OCC
