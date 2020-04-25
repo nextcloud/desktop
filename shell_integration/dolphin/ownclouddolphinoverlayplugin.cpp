@@ -83,14 +83,16 @@ private:
     void slotCommandRecieved(const QByteArray &line) {
 
         QList<QByteArray> tokens = line.split(':');
-        if (tokens.count() != 3)
+        if (tokens.count() < 3)
             return;
         if (tokens[0] != "STATUS" && tokens[0] != "BROADCAST")
             return;
         if (tokens[2].isEmpty())
             return;
 
-        const QByteArray name = tokens[2];
+        // We can't use tokens[2] because the filename might contain ':'
+        int secondColon = line.indexOf(":", line.indexOf(":") + 1);
+        const QByteArray name = line.mid(secondColon + 1);
         QByteArray &status = m_status[name]; // reference to the item in the hash
         if (status == tokens[1])
             return;
