@@ -1,5 +1,11 @@
 project(gui)
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Qml Quick)
+if (Qt5Widgets_VERSION VERSION_LESS 5.9.0 
+    OR Qt5Svg_VERSION VERSION_LESS 5.9.0 
+    OR Qt5Qml_VERSION VERSION_LESS 5.9.0 
+    OR Qt5Quick_VERSION VERSION_LESS 5.9.0)
+    message(FATAL_ERROR "Starting with Nextcloud client version 2.7 GUI building requires Qt >= 5.9.")
+endif()
 set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(CMAKE_AUTORCC TRUE)
