@@ -50,6 +50,7 @@ public:
     MessageRole,
     DisplayPathRole,
     PathRole,
+    AbsolutePathRole,
     LinkRole,
     PointInTimeRole,
     AccountConnectedRole,
