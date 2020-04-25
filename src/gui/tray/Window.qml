@@ -554,22 +554,41 @@ Window {
                 height: Style.trayWindowHeaderHeight
                 spacing: 0
 
+                MouseArea {
+                    enabled: (path !== "") ? true : false
+                    anchors.left: activityItem.left
+                    anchors.right: ((shareButton.visible) ? shareButton.left : activityItem.right)
+                    height: parent.height
+                    anchors.margins: 2
+                    hoverEnabled: true
+                    onClicked: Qt.openUrlExternally(path)
+                    ToolTip.visible: hovered
+                    ToolTip.delay: 1000
+                    ToolTip.text: qsTr("Open sync item locally")
+                    Rectangle {
+                        anchors.fill: parent
+                        color: (parent.containsMouse ? Style.lightHover : "transparent")
+                    }
+                }
+
                 Image {
                     id: activityIcon
-
-                    Layout.leftMargin: 8
-                    Layout.rightMargin: 8
-                    Layout.preferredWidth: activityButton1.icon.width
-                    Layout.preferredHeight: activityButton1.icon.height
+                    anchors.left: activityItem.left
+                    anchors.leftMargin: 8
+                    anchors.rightMargin: 8
+                    Layout.preferredWidth: shareButton.icon.width
+                    Layout.preferredHeight: shareButton.icon.height
                     verticalAlignment: Qt.AlignCenter
                     cache: true
                     source: icon
                     sourceSize.height: 64
                     sourceSize.width: 64
                 }
+
                 Column {
                     id: activityTextColumn
-
+                    anchors.left: activityIcon.right
+                    anchors.leftMargin: 8
                     spacing: 4
                     Layout.alignment: Qt.AlignLeft
                     Text {
@@ -583,7 +602,7 @@ Window {
 
                     Text {
                         id: activityTextInfo
-                        text: (type === "Activity" || type === "File" || type === "Sync") ? displaypath : message
+                        text: (type === "Activity" || type === "Sync") ? displaypath : ((type === "File") ? subject : message)
                         height: (text === "") ? 0 : activityTextTitle.height
                         width: Style.activityLabelBaseWidth + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
@@ -600,43 +619,26 @@ Window {
                         color: "#808080"
                     }
                 }
-                Item {
-                    id: activityItemFiller
-                    Layout.fillWidth: true
-                }
                 Button {
-                    id: activityButton1
+                    id: shareButton
+                    anchors.right: activityItem.right
 
                     Layout.preferredWidth: (path === "") ? 0 : parent.height
                     Layout.preferredHeight: parent.height
                     Layout.alignment: Qt.AlignRight
                     flat: true
-                    hoverEnabled: false
+                    hoverEnabled: true
                     visible: (path === "") ? false : true
-                    display: AbstractButton.IconOnly
-                    icon.source: "qrc:///client/theme/files.svg"
-                    icon.color: "transparent"
-
-                    onClicked: {
-                         Qt.openUrlExternally(path)
-                    }
-                }
-                Button {
-                    id: activityButton2
-
-                    Layout.preferredWidth: (link === "") ? 0 : parent.height
-                    Layout.preferredHeight:  parent.height
-                    Layout.alignment: Qt.AlignRight
-                    flat: true
-                    hoverEnabled: false
-                    visible: (link === "") ? false : true
                     display: AbstractButton.IconOnly
                     icon.source: "qrc:///client/theme/public.svg"
                     icon.color: "transparent"
-
-                    onClicked: {
-                        Qt.openUrlExternally(link)
+                    background: Rectangle {
+                        color: parent.hovered ? Style.lightHover : "transparent"
                     }
+                    ToolTip.visible: hovered
+                    ToolTip.delay: 1000
+                    ToolTip.text: qsTr("Open share dialog")
+                    onClicked: systrayBackend.openShareDialog(displaypath,abspath)
                 }
             }
 
