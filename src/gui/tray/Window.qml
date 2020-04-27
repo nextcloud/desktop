@@ -630,7 +630,7 @@ Window {
                     hoverEnabled: true
                     visible: (path === "") ? false : true
                     display: AbstractButton.IconOnly
-                    icon.source: "qrc:///client/theme/public.svg"
+                    icon.source: "qrc:///client/theme/share.svg"
                     icon.color: "transparent"
                     background: Rectangle {
                         color: parent.hovered ? Style.lightHover : "transparent"
