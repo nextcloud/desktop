@@ -4,9 +4,11 @@ set -xe
 shopt -s extglob
 
 PPA=ppa:nextcloud-devs/client
+PPA_ALPHA=ppa:nextcloud-devs/client-alpha
 PPA_BETA=ppa:nextcloud-devs/client-beta
 
 OBS_PROJECT=home:ivaradi
+OBS_PROJECT_ALPHA=home:ivaradi:alpha
 OBS_PROJECT_BETA=home:ivaradi:beta
 OBS_PACKAGE=nextcloud-client
 
@@ -37,7 +39,9 @@ cd "${DRONE_DIR}"
 
 echo "$kind" > kind
 
-if test "$kind" = "beta"; then
+if test "$kind" = "alpha"; then
+    repo=nextcloud-devs/client-alpha
+elif test "$kind" = "beta"; then
     repo=nextcloud-devs/client-beta
 else
     repo=nextcloud-devs/client
@@ -94,7 +98,10 @@ done
 if test "${pull_request}" = "master"; then
     kind=`cat kind`
 
-    if test "$kind" = "beta"; then
+    if test "$kind" = "alpha"; then
+        PPA=$PPA_ALPHA
+        OBS_PROJECT=$OBS_PROJECT_ALPHA
+    elif test "$kind" = "beta"; then
         PPA=$PPA_BETA
         OBS_PROJECT=$OBS_PROJECT_BETA
     fi

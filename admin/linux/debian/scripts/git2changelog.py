@@ -79,9 +79,11 @@ def collectEntries(baseCommit, baseVersion, kind):
         words = line.split("\t")
         (commit, name, email, date, revdate) = words[0:5]
         subject = "\t".join(words[5:])
-        revdate = datetime.datetime.utcfromtimestamp(long(revdate)).strftime("%Y%m%d.%H%M%S")
 
-        kind = "beta"
+        revdate = datetime.datetime.utcfromtimestamp(long(revdate)).strftime("%Y%m%d.%H%M%S")
+        revdate += "." + commit
+
+        kind = "alpha"
 
         if commit==newVersionCommit:
             result = processVersionTag(newVersionTag)
@@ -112,6 +114,11 @@ def collectEntries(baseCommit, baseVersion, kind):
 
         entries.append((commit, name, email, date, revdate, subject,
                         baseVersion, kind))
+
+    if entries:
+        (commit, name, email, date, revdate, subject, baseVersion, kind) = entries[-1]
+        revdate = datetime.datetime.now().strftime("%Y%m%d.%H%M%S")+ "." + commit
+        entries[-1] = (commit, name, email, date, revdate, subject, baseVersion, kind)
 
     entries.reverse()
 
