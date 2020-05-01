@@ -897,7 +897,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>Non foi posíbel rastrexar de xeito fiábel os cambios nos cartafoles sincronizados.
 
-Isto significa que o cliente de sincronización podería non enviar os cambios inmediatamente, e no canto diso, só examinará buscando cambios locais e enviaraos ocasionalmente (cada dúas horas, como predeterminado)
+Isto significa que o cliente de sincronización podería non enviar os cambios inmediatamente, e no canto diso, só examinará buscando cambios locais e enviaraos ocasionalmente (por omisión cada dúas horas)
 
 %1</translation>
     </message>
