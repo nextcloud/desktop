@@ -2102,7 +2102,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished"/>
+        <translation>Prøver at forbinde til %1 hos %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
@@ -2127,7 +2127,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Opretter lokal sync mappe %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
@@ -2137,17 +2137,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="462"/>
         <source>failed.</source>
-        <translation type="unfinished"/>
+        <translation>mislykkedes.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="464"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke oprette lokal mappe %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Ingen afsides mappe angivet!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="530"/>
@@ -2157,23 +2157,23 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>opretter mappe hos Nextcloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="559"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Afsides folder %1 oprettet med succes.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="561"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Den afsides mappe %1 findes allerede. Forbinder til den for synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="563"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="565"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Folder oprettelsen resulterede i HTTP fejlkode %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="567"/>
@@ -2189,7 +2189,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="576"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="577"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Oprettelse af afsides mappe %1 fejlet med fejl &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="594"/>
@@ -2787,12 +2787,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="277"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ingen resultater for &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="364"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Jeg delte noget med dig</translation>
     </message>
 </context>
 <context>
@@ -2800,7 +2800,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="66"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Brugernavn</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="82"/>
@@ -2810,7 +2810,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="412"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>Kan gendele</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="422"/>
@@ -2820,17 +2820,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="431"/>
         <source>Can create</source>
-        <translation type="unfinished"/>
+        <translation>Kan oprette</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="437"/>
         <source>Can change</source>
-        <translation type="unfinished"/>
+        <translation>Kan ændre</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="443"/>
         <source>Can delete</source>
-        <translation type="unfinished"/>
+        <translation>Kan slette</translation>
     </message>
 </context>
 <context>
@@ -2843,7 +2843,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Du skal indskrives som bruger %1</translation>
     </message>
 </context>
 <context>
@@ -2851,17 +2851,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Godkendelse</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
         <source>SSL Cipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>SSL Cipher Debug Visning</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Ny godkendelse påkrævet</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -2875,23 +2875,23 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="465"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation type="unfinished"/>
+        <translation>Del med %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="501"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Deling af kontekst menu</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="658"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Jeg delte noget med dig</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="671"/>
         <location filename="../src/gui/socketapi.cpp" line="702"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Dele muligheder</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
@@ -2990,7 +2990,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="104"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Udstedt den:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
@@ -3000,7 +3000,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Fingeraftryk&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
@@ -3015,12 +3015,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; Dette certifikat blev manuelt godkendt&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (self-signed)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="139"/>
@@ -3031,33 +3031,35 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Denne forbindelsen er krypteret med %1 bit %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Forbindelsen er IKKE sikret da den ikke er krypteret.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Server version: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation type="unfinished"/>
+        <translation>Ingen understøttelse af SSL session tickets/identifiers</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Certifikat information:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>Forbindelsen er ikke sikret</translation>
     </message>
 </context>
 <context>
@@ -3065,41 +3067,41 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Stol på dette certifikatet alligevel?</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Ubetroet Certifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Kan ikke sikret forbinde til &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
-        <translation type="unfinished"/>
+        <translation>med Certifikat %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="175"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;ikke angivet&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="205"/>
         <source>Organization: %1</source>
-        <translation type="unfinished"/>
+        <translation>Organisation: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Unit: %1</source>
-        <translation type="unfinished"/>
+        <translation>Enhed: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
@@ -3273,17 +3275,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="519"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Mappehierarki for dybt</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="522"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavnet kan ikke krypteres på dit filsystem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="531"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Uafgjort konflikt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="535"/>
@@ -3298,110 +3300,110 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="566"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Kodning af filnavn ikke gyldig</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="731"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Ugyldige karakterer, omdøb venligst &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="801"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Kun %1 til rådighed, behøver mindst %2 for at starte</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="836"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ikke i stand til at oprette en lokal sync database. Verificer at du har skriveadgang til sync mappen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="864"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke læse blacklist fra den lokale database</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="905"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke læse fra synkroniserings loggen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="968"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke åbne synkroniserings loggen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1034"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Filnavnet indeholder mindst ét ugyldigt tegn</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1276"/>
         <location filename="../src/libsync/syncengine.cpp" line="1316"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Ignoreret på grund af &quot;vælg hvad der skal synkroniseres&quot; blacklist</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1335"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Ikke tilladt da du ikke har ret til at tilføje undermapper i den mappe</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1350"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation type="unfinished"/>
+        <translation>Ikke tilladt da du ikke har ret til at tilføje en overermapper</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Ikke tilladt da du ikke har ret til at tilføje filer i den mappe</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1382"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Ikke tilladt at sende denne fil da den er skrivebeskyttet på serveren. Genetablerer</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1398"/>
         <location filename="../src/libsync/syncengine.cpp" line="1417"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Du har ikke tilladelse til at fjerne, genetablerer</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1431"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokale filer og dele folder fjernet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1485"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Flyt ikke tilladt, enhed genetableret</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1496"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Flyt ikke tilladt fordi %1 er skrivebeskyttet</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1496"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>destinationen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1496"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>oprindelsen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1690"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Diskplads begrænset: Downloads der bringer ledig plads under %1 ignoreres.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1697"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Der er utilstrækkelig plads på serveren til visse uploads.</translation>
     </message>
 </context>
 <context>
@@ -3409,7 +3411,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserings Log</translation>
     </message>
 </context>
 <context>
@@ -3426,7 +3428,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/theme.cpp" line="357"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 Desktop Klient&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="360"/>
@@ -3478,7 +3480,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="691"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ønsker du virkelig at fjerne forbindelse til kontoen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt;Dette sletter &lt;b&gt;ikke&lt;/b&gt;nogen filer.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="696"/>
@@ -3501,7 +3503,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="211"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Værten &quot;%1&quot; sendte et ugyldigt certifikat. Fortsæt?</translation>
     </message>
 </context>
 <context>
@@ -3509,7 +3511,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="169"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>Du er blevet logget ud af %1 som bruger %2. Log venligst ind igen</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="193"/>
@@ -3811,7 +3813,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>Start en &amp;hel sync (Sletter den lokale mappe!)</translation>
     </message>
 </context>
 <context>
@@ -3824,7 +3826,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kodeord</translation>
     </message>
 </context>
 <context>
@@ -3832,12 +3834,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Venligst skift til din browser for at fortsætte.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Der opstod en fejl under forsøget på at oprette forbindelse. Prøv venligst igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
@@ -3855,12 +3857,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
         <source>Server Address</source>
-        <translation type="unfinished"/>
+        <translation>Serveradresse</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Registrer hos en udbyder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -3873,7 +3875,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation type="unfinished"/>
+        <translation>Hele din konto er synkroniseret til den lokale folder</translation>
     </message>
 </context>
 <context>
@@ -3881,12 +3883,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="457"/>
         <source>%n day ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dag siden</numerusform><numerusform>%n dage siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="459"/>
         <source>%n days ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 dag siden</numerusform><numerusform>%n dage siden</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="463"/>
@@ -3896,12 +3898,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="469"/>
         <source>%n hour ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n time siden</numerusform><numerusform>%n time siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="471"/>
         <source>%n hours ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n timer siden</numerusform><numerusform>%n timer siden</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="478"/>
@@ -3916,17 +3918,17 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="484"/>
         <source>%n minute ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minut siden</numerusform><numerusform>%n minut siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="486"/>
         <source>%n minutes ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minutter siden</numerusform><numerusform>%n minutter siden</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="490"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Noget tid siden</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="153"/>
@@ -3998,17 +4000,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Checksum hovedet er misdannet.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Checksum hovedet indeholder en ukendt type checksum &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Den hentede fil svarer ikke til checksummen, den bliver genoptaget.</translation>
     </message>
 </context>
 <context>
@@ -4016,7 +4018,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="41"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>Systembakken ikke tilgængelig</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="42"/>
@@ -4037,12 +4039,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Hentet</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Sendt</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -4057,17 +4059,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Flyttet til %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Ignoreret</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Fejl ved adgang til filsystem</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
@@ -4077,7 +4079,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Lokale metadata sendt</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
@@ -4088,12 +4090,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="66"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>henter</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>sender</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="70"/>
@@ -4108,7 +4110,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>ignorerer</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -4119,7 +4121,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>opdaterer lokale metadata</translation>
     </message>
 </context>
 <context>
@@ -4127,52 +4129,52 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="62"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Udefineret status</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="65"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Venter på at begynde sync</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="68"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering er i gang</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="71"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Sync Succes</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="74"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Sync succes, visse filer blev ignoreret.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="77"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Fejl ved sync</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="80"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Fejl ved opsætning</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="83"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Forbereder synkronisering</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Afbryder …</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Sync er suspenderet</translation>
     </message>
 </context>
 <context>
@@ -4180,7 +4182,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke åbne browser</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
