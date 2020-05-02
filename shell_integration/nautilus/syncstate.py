@@ -209,6 +209,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         all_internal_files = True
         for i, file_uri in enumerate(files):
             filename = get_local_path(file_uri.get_uri())
+            filename = os.path.realpath(filename)
 
             # Check if its a folder (ends with an /), if yes add a "/"
             # otherwise it will not find the entry in the table
