@@ -191,11 +191,12 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
     def check_registered_paths(self, filename):
         topLevelFolder = False
         internalFile = False
+        absfilename = os.path.realpath(filename)
         for reg_path in socketConnect.registered_paths:
-            if filename == reg_path:
+            if absfilename == reg_path:
                 topLevelFolder = True
                 break
-            if filename.startswith(reg_path):
+            if absfilename.startswith(reg_path):
                 internalFile = True
                 # you can't have a registered path below another so it is save to break here
                 break
@@ -447,6 +448,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.InfoProvider):
             return
 
         filename = get_local_path(item.get_uri())
+        filename = os.path.realpath(filename)
         if item.is_directory():
             filename += os.sep
 
