@@ -80,7 +80,7 @@ void ClientProxy::setupQtProxyFromConfig()
             QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
             break;
         case QNetworkProxy::DefaultProxy:
-            qCInfo(lcClientProxy) << "Set proxy configuration to use the prefered system proxy for http tcp connections";
+            qCInfo(lcClientProxy) << "Set proxy configuration to use the preferred system proxy for http tcp connections";
             {
                 QNetworkProxyQuery query;
                 query.setProtocolTag("http");
