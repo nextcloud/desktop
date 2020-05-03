@@ -242,7 +242,7 @@ void PropagateUploadEncrypted::slotFolderLockedError(const QByteArray& fileId, i
 
         // Perhaps I should remove the elapsed timer if the lock is from this client?
         if (_folderLockFirstTry.elapsed() > /* five minutes */ 1000 * 60 * 5 ) {
-            qCDebug(lcPropagateUploadEncrypted) << "One minute passed, ignoring more attemps to lock the folder.";
+            qCDebug(lcPropagateUploadEncrypted) << "One minute passed, ignoring more attempts to lock the folder.";
         return;
         }
         slotTryLock(fileId);
