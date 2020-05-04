@@ -1,3 +1,0 @@
-nextcloud-client: binary-or-shlib-defines-rpath
-nextcloud-client: binary-without-manpage
-nextcloud-client: license-problem-convert-utf-code
