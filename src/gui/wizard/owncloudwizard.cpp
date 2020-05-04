@@ -277,8 +277,13 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
     case Vfs::Off:
         Q_UNREACHABLE();
     }
-    connect(msgBox, &QMessageBox::finished, receiver, [callback, msgBox](int result) {
-        callback(result == QMessageBox::AcceptRole);
+
+    connect(msgBox, &QMessageBox::accepted, receiver, [callback, msgBox] {
+        callback(true);
+        msgBox->deleteLater();
+    });
+    connect(msgBox, &QMessageBox::reject, receiver, [callback, msgBox]{
+        callback(false);
         msgBox->deleteLater();
     });
     msgBox->open();
