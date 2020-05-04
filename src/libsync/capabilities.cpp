@@ -24,6 +24,7 @@ Capabilities::Capabilities(const QVariantMap &capabilities)
     : _capabilities(capabilities)
     , _fileSharingCapabilities(_capabilities.value(QStringLiteral("files_sharing")).toMap())
     , _fileSharingPublicCapabilities(_fileSharingCapabilities.value(QStringLiteral("public"), {}).toMap())
+    , _tusSupport(_capabilities.value(QLatin1String("files")).toMap().value(QStringLiteral("tus_support")).toMap())
 {
 }
 
@@ -163,6 +164,11 @@ bool Capabilities::bigfilechunkingEnabled() const
     return _capabilities.value("files").toMap().value(QStringLiteral("bigfilechunking"), true).toBool();
 }
 
+const TusSupport &Capabilities::tusSupport() const
+{
+    return _tusSupport;
+}
+
 bool Capabilities::chunkingParallelUploadDisabled() const
 {
     return _capabilities.value("dav").toMap().value("chunkingParallelUploadDisabled").toBool();
@@ -215,5 +221,22 @@ QString Capabilities::zsyncSupportedVersion() const
 QStringList Capabilities::blacklistedFiles() const
 {
     return _capabilities.value("files").toMap().value("blacklisted_files").toStringList();
+}
+
+TusSupport::TusSupport(const QVariantMap &tus_support)
+{
+    if (tus_support.isEmpty()) {
+        return;
+    }
+    version = QVersionNumber::fromString(tus_support.value(QStringLiteral("version")).toString());
+    resumable = QVersionNumber::fromString(tus_support.value(QStringLiteral("resumable")).toString());
+    extensions = tus_support.value(QStringLiteral("extension")).toString().split(QLatin1Char(','), QString::SkipEmptyParts);
+    max_chunk_size = tus_support.value(QStringLiteral("max_chunk_size")).value<quint64>();
+    http_method_override = tus_support.value(QStringLiteral("http_method_override")).toString();
+}
+
+bool TusSupport::isValid() const
+{
+    return !version.isNull();
 }
 }

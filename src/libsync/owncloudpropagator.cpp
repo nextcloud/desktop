@@ -18,6 +18,7 @@
 #include "common/syncjournalfilerecord.h"
 #include "propagatedownload.h"
 #include "propagateupload.h"
+#include "propagateuploadtus.h"
 #include "propagateremotedelete.h"
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
@@ -335,11 +336,15 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
             return job;
         } else {
             PropagateUploadFileCommon *job = nullptr;
-            if (item->_size > syncOptions()._initialChunkSize && account()->capabilities().chunkingNg()) {
-                // Item is above _initialChunkSize, thus will be classified as to be chunked
-                job = new PropagateUploadFileNG(this, item);
+            if (account()->capabilities().tusSupport().isValid()) {
+                job = new PropagateUploadFileTUS(this, item);
             } else {
-                job = new PropagateUploadFileV1(this, item);
+                if (item->_size > syncOptions()._initialChunkSize && account()->capabilities().chunkingNg()) {
+                    // Item is above _initialChunkSize, thus will be classified as to be chunked
+                    job = new PropagateUploadFileNG(this, item);
+                } else {
+                    job = new PropagateUploadFileV1(this, item);
+                }
             }
             job->setDeleteExisting(deleteExisting);
             return job;

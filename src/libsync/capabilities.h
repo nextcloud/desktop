@@ -20,8 +20,31 @@
 
 #include <QVariantMap>
 #include <QStringList>
+#include <QVersionNumber>
 
 namespace OCC {
+
+
+struct TusSupport
+{
+    /**
+    <tus_support>
+    <version>1.0.0</version>
+    <resumable>1.0.0</resumable>
+    <extension>creation,creation-with-upload</extension>
+    <max_chunk_size>0</max_chunk_size>
+    <http_method_override/>
+    </tus_support>
+    */
+    TusSupport(const QVariantMap &tus_support);
+    QVersionNumber version;
+    QVersionNumber resumable;
+    QStringList extensions;
+    quint64 max_chunk_size;
+    QString http_method_override;
+
+    bool isValid() const;
+};
 
 /**
  * @brief The Capabilities class represents the capabilities of an ownCloud
@@ -61,6 +84,8 @@ public:
 
     /// Wheter to use chunking
     bool bigfilechunkingEnabled() const;
+
+    const TusSupport &tusSupport() const;
 
     /// disable parallel upload in chunking
     bool chunkingParallelUploadDisabled() const;
@@ -154,6 +179,7 @@ private:
     QVariantMap _capabilities;
     QVariantMap _fileSharingCapabilities;
     QVariantMap _fileSharingPublicCapabilities;
+    TusSupport _tusSupport;
 };
 }
 
