@@ -1,3 +1,127 @@
+ChangeLog
+====================
+For details check https://nextcloud.com/blog/category/release.
+
+2.6 Series ChangeLog
+====================
+
+version 2.6.4 (release 2020-03-04)
+* Fix Explorer pinning: Add fallbacks for Shell commands (fixes #1599)
+* WebFlowCredentials: Make username comparison case-insensitive (fix #1741)
+* ActivityListModel: Show full date and time as a Tooltip only
+* Disable HTTP/2 for now due to Qt bug, allow enabling it via env var
+* Fix Explorer integration re-save and hide option on non-Windows
+* l10n: Changes to improve source strings
+* Updater: Add query-parameter 'updatesegment' to the update check
+* Allow Desktop translation merging and custom backport branches
+
+version 2.6.3 (release 2020-02-17)
+* Add UserInfo class and fetch quota via API instead of PropfindJob
+* l10n: Changed grammar and triple dots to ellipsis
+* l10n: Changed spelling of "user name" to "username"
+* Start the client in background if activated by D-Bus
+* Do not install files related to cloud providers under Xenial
+* Make sure that the libcloudprovider integration is using a valid D-Bus path
+* Changed product name to Nextcloud
+* Update autoupdate.rst
+* Use system proxy by default if no config file is present
+* Install libcloudproviders files by default on debian
+* Windows 7 is out of support
+* BugFix: Handle broken shared file error gracefully
+* Fix Explorer integration on Windows and the crash on other systems
+* Welcome to 2020
+* Updated year in legalnotice.cpp
+* apply http2 qt resend patch from owncloud
+
+version 2.6.2 (release 2019-12-24)
+* Revert DEFAULT_REMOTE_POLL_INTERVAL back from 5 seconds to 30 seconds
+* Use user-provided username in displayName() - Fix #836
+* Fix typo
+* Build with libcloudproviders on debian and in the AppImage
+* Fix tests for Windows platform
+* Merge the list of ignored files/symlinks into one Activity notification.
+* Fix clang's variadic macro warnings
+* Add libdbus-1-dev to the build dependencies
+* Compare QDateTime objects more efficient
+* Improve the translation of "Share via …"
+* Upgrade for Qt 5.12.5 in docker-ci
+* Bump Qt 5.12.5 image
+* Add timestamp to Mac installer code signing
+* MacOS build: Avoid the Get-Task-Allow Entitlement (Notarization)
+* Build for Debian stable and oldstable
+* Happy new year
+* Fall back to old login flow on GS as this is not yet ready
+* [stable-2.6] macOS build: Avoid the Get-Task-Allow Entitlement (Notarization)
+* Fix remote wipe keychain storage (issue #1592)
+* Fix copyright year in MacOSXBundleInfo.plist.in for 2019
+* Fix macOS GUI (Qt 5.12)
+* Windows: Workaround for storing >= 4k (4096 bit) client-cert SSL keys
+* Fix Activity List: Add check to avoid first empty entry
+* Fix macOS GUI (Qt 5.12) No. 2 (continuation of #1651)
+* Show date and time in activity log (fixes issue #1683)
+* Login Flow v2 enhancements
+* Activity List: Fix crash and folder opening
+* Fix issue #1237: White text on almost-white background
+* Heavy refactoring: Windows workaround for >= 4k (4096 bit) client-cert SSL keys and large certs
+* Fix date in ActivityWidget and remove unnecessary string conversion
+
+version 2.6.1 (release 2019-11-04)
+* Changed max GUI bandwidth limits
+* Add sync date next to "Synchronized with local folder"
+* Slideshow buttons
+* Fix qt warning about registering a URL sheme first.
+* Issue #1216: added sync-exclude entry for emacs recovery files
+* Race condition in the remote size loading logic
+* Review of msvc/gcc warnings -> code cleanup, prevention of implicit casts, variadic macros
+* Fix double slashes
+* Fixing E2E CSR transmission failure for new connections
+* Fixed missing 'translatable' exclusions, added missing window titles
+* Checks if exclude file is empty before creating the regular expressions.
+* Add server info to menu
+* Fixed grammar
+* Prevent jumping of tray menu
+* Don't run connection wizard when quitting the application
+* Avoiding copying in range-based loops
+* Add a 'Content-Length: 0' header to initial POST requests
+* Remote wipe.
+* Pick from upstream: Update qtmacgoodies for an OSX crash fix #6930
+* fix for issue no. #1351
+* Merge the list of ignored files/symlinks into one Activity notification.
+* Update submodules for Qt 5.12.5 (qtmacgoodies)
+* Fix duplicate items in Apps menu (a bug introduced in #1477)
+* Fix #1182
+* Fix remote wipe when a proxy is configured.
+* Fix updater message: Download link instead of "use the system's update
+
+version 2.6.0 Login flow v2 (release 2019-09-27)
+* Reinstate Debian build in the new Drone config
+* Typo
+* Marking unused strings as unstranslatable
+* Fixes #607
+* Fixes issue #878
+* Fixes issue #1187
+* Displays FileIgnored activities with an info icon
+* Minor text change in the link to help in the tab 'General'.
+* Update Qt 5.5 compatibility patch for Xenial
+* Remove Ubuntu Cosmic and add Eoan package
+* Add proper CA to client side certificate connection
+* Remove dependency on libgnome-keyring0 on Eoan
+* Read .sync_exclude.lst in each subdirectory
+* Updates ChangeLog.
+* Login flow v2
+* Adds SSL client cert storage to webflow + Login Flow v2
+* Windows: Workaround for CredWriteW used by QtKeychain
+* Integrated registry check on windows when hasDarkSystray is called.
+* Logo update
+* Updated .gitignore to integrate unwanted files when working with VSC …
+* Full-Scaled new logo in Windows 10 start menu tile
+* Qt5.5 compatiblity patch for login flow V2 + UI improvement (Use newer digest algorithms in TLS error dialog)
+* Fix for #1382 "linux client crashes for no discernable reason"
+* UI improvement: Message box: Delete / Keep all files
+* Improve wording of the context menu in the file manager extension.
+* Changes wording in the share context menu.
+* Fix White Window issue on Windows by upgrading to Qt 5.12.5
+
 2.5 Series ChangeLog
 ====================
 
