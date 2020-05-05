@@ -1,0 +1,5 @@
+Change: Wizard is hidden behind the browser
+
+We now raise the wizard after a successful authentication
+
+https://github.com/owncloud/client/issues/7856

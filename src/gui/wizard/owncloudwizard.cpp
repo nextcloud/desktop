@@ -32,6 +32,7 @@
 #include <QtCore>
 #include <QtGui>
 #include <QMessageBox>
+#include <owncloudgui.h>
 
 #include <stdlib.h>
 
@@ -158,6 +159,7 @@ void OwncloudWizard::successfulStep()
         break;
     }
 
+    ownCloudGui::raiseDialog(this);
     next();
 }
 
