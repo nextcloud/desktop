@@ -15,7 +15,7 @@ Window {
     width:      Style.trayWindowWidth
     height:     Style.trayWindowHeight
     color:      "transparent"
-    flags:      Qt.FramelessWindowHint
+    flags:      Qt.Dialog | Qt.FramelessWindowHint
 
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
