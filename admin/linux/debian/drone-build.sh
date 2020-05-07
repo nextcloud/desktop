@@ -14,7 +14,7 @@ OBS_PROJECT_ALPHA=home:ivaradi:alpha
 OBS_PROJECT_BETA=home:ivaradi:beta
 OBS_PACKAGE=nextcloud-desktop
 
-UBUNTU_DISTRIBUTIONS="xenial bionic eoan focal groovy"
+UBUNTU_DISTRIBUTIONS="bionic eoan focal groovy"
 DEBIAN_DISTRIBUTIONS="buster stretch"
 
 pull_request=${DRONE_PULL_REQUEST:=master}
