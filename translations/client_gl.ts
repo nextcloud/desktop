@@ -692,7 +692,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="112"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="215"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Produciuse un erro ao acceder ao punto final da «marca»: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Produciuse un erro ao acceder ao punto final da «testemuña»: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
@@ -918,7 +918,7 @@ Se decide eliminar os ficheiros, non poderá dispor deles a non ser que sexa o p
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
         <translation>Todos os ficheiros foron eliminados do seu cartafol de sincronización local «%1».
-Estes ficheiros eliminaranse do servidor e non estarán dispoñibles nos outros dispositivos se non se restauran.
+Estes ficheiros eliminaranse do servidor e non estarán dispoñíbeis nos outros dispositivos se non se restauran.
 Se esta acción non foi intencionada, pode restaurar os datos perdidos agora.</translation>
     </message>
     <message>
@@ -1830,7 +1830,7 @@ Os rexistros escribiranse en %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Produciuse un erro ao acceder ao punto final da «marca»: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Produciuse un erro ao acceder ao punto final da «testemuña»: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
