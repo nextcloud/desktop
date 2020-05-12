@@ -52,6 +52,7 @@
 #include <QFileDialog>
 #include <QClipboard>
 
+#include <QProcess>
 #include <QStandardPaths>
 
 #ifdef Q_OS_MAC
@@ -195,18 +196,24 @@ SocketApi::SocketApi(QObject *parent)
         // Example for official signed packages: "9B5WD74GWJ." "com.owncloud.desktopclient" ".socketApi"
         socketPath = SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi";
 #ifdef Q_OS_MAC
-        int ret = 0;
         CFURLRef url = (CFURLRef)CFAutorelease((CFURLRef)CFBundleCopyBundleURL(CFBundleGetMainBundle()));
         QString bundlePath = QUrl::fromCFURL(url).path();
-        QString cmd;
 
-        // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
-        cmd = QString("pluginkit -v -e use -i " APPLICATION_REV_DOMAIN ".FinderSyncExt");
-        ret = system(cmd.toLocal8Bit());
-
+        auto _system = [](const QString &cmd, const QStringList &args){
+            QProcess process;
+            process.setProcessChannelMode(QProcess::MergedChannels);
+            process.start(cmd, args);
+            if (!process.waitForFinished())
+            {
+                qCWarning(lcSocketApi) << "Failed to load shell extension:" << cmd << args.join(" ") << process.errorString();
+            } else {
+                qCInfo(lcSocketApi) << (process.exitCode() != 0 ? "Failed to load" : "Loaded") <<  "shell extension:" << cmd << args.join(" ") << process.readAll();
+            }
+        };
         // Add it again. This was needed for Mojave to trigger a load.
-        cmd = QString("pluginkit -v -a ") + bundlePath + "Contents/PlugIns/FinderSyncExt.appex/";
-        ret = system(cmd.toLocal8Bit());
+        _system(QStringLiteral("pluginkit"), {QStringLiteral("-a"),QStringLiteral("%1Contents/PlugIns/FinderSyncExt.appex/").arg(bundlePath)});
+        // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
+        _system(QStringLiteral("pluginkit"), {QStringLiteral("-e"), QStringLiteral("use"), QStringLiteral("-i"), QStringLiteral(APPLICATION_REV_DOMAIN ".FinderSyncExt")});
 
 #endif
     } else if (Utility::isLinux() || Utility::isBSD()) {
