@@ -39,9 +39,9 @@ bool FileUtil::IsChildFile(const wchar_t* rootFolder, vector<wstring>* files)
 
 bool FileUtil::IsChildFile(const wchar_t* rootFolder, const wchar_t* file)
 {
-    wstring* f = new wstring(file);
+    const wstring f(file);
 
-    size_t found = f->find(rootFolder);
+    size_t found = f.find(rootFolder);
 
     if(found != string::npos)
     {
