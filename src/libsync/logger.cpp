@@ -25,10 +25,16 @@
 
 namespace OCC {
 
+QtMessageHandler s_originalMessageHandler = nullptr;
+
 static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
     auto logger = Logger::instance();
-    if (!logger->isNoop()) {
+    if (type == QtDebugMsg && !logger->logDebug()) {
+        if (s_originalMessageHandler) {
+            s_originalMessageHandler(type, ctx, message);
+        }
+    } else if (!logger->isNoop()) {
         logger->doLog(qFormatLogMessage(type, ctx, message));
     }
 }
@@ -50,7 +56,7 @@ Logger::Logger(QObject *parent)
 {
     qSetMessagePattern("[%{function} \t%{message}");
 #ifndef NO_MSG_HANDLER
-   qInstallMessageHandler(mirallLogCatcher);
+   s_originalMessageHandler = qInstallMessageHandler(mirallLogCatcher);
 #else
     Q_UNUSED(mirallLogCatcher)
 #endif
