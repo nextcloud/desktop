@@ -59,6 +59,9 @@ public:
     bool chunkingNg() const;
     QString zsyncSupportedVersion() const;
 
+    /// Wheter to use chunking
+    bool bigfilechunkingEnabled() const;
+
     /// disable parallel upload in chunking
     bool chunkingParallelUploadDisabled() const;
 

@@ -38,7 +38,12 @@ namespace OCC {
 
 void PropagateUploadFileV1::doStartUpload()
 {
-    _chunkCount = int(std::ceil(_item->_size / double(chunkSize())));
+    if (!propagator()->account()->capabilities().bigfilechunkingEnabled())
+    {
+        _chunkCount = 1;
+    } else {
+        _chunkCount = int(std::ceil(_item->_size / double(chunkSize())));
+    }
     _startChunk = 0;
     _transferId = uint(qrand()) ^ uint(_item->_modtime) ^ (uint(_item->_size) << 16);
 
