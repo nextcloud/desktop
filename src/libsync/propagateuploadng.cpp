@@ -337,18 +337,18 @@ void PropagateUploadFileNG::slotPropfindFinished()
     for (auto chunkOffset : _serverChunks.keys()) {
         auto chunkSize = _serverChunks[chunkOffset].size;
         if (markRangeAsDone(chunkOffset, chunkSize)) {
-            qCDebug(lcPropagateUpload) << "Reusing existing data:" << chunkOffset << chunkSize;
+            qCDebug(lcPropagateUploadNG) << "Reusing existing data:" << chunkOffset << chunkSize;
             _sent += chunkSize;
             _serverChunks.remove(chunkOffset);
         } else {
-            qCDebug(lcPropagateUpload) << "Discarding existing data:" << chunkOffset << chunkSize;
+            qCDebug(lcPropagateUploadNG) << "Discarding existing data:" << chunkOffset << chunkSize;
         }
     }
 
     if (_sent > _bytesToUpload) {
         // Normally this can't happen because the size is xor'ed with the transfer id, and it is
         // therefore impossible that there is more data on the server than on the file.
-        qCCritical(lcPropagateUpload) << "Inconsistency while resuming " << _item->_file
+        qCCritical(lcPropagateUploadNG) << "Inconsistency while resuming " << _item->_file
                                       << ": the size on the server (" << _sent << ") is bigger than the size of the file ("
                                       << _item->_size << ")";
 
@@ -361,10 +361,10 @@ void PropagateUploadFileNG::slotPropfindFinished()
         return;
     }
 
-    qCInfo(lcPropagateUpload) << "Resuming " << _item->_file << "; sent =" << _sent << "; total=" << _bytesToUpload;
+    qCInfo(lcPropagateUploadNG) << "Resuming " << _item->_file << "; sent =" << _sent << "; total=" << _bytesToUpload;
 
     if (!_serverChunks.isEmpty()) {
-        qCInfo(lcPropagateUpload) << "To Delete" << _serverChunks.keys();
+        qCInfo(lcPropagateUploadNG) << "To Delete" << _serverChunks.keys();
         propagator()->_activeJobList.append(this);
         _removeJobError = false;
 
@@ -415,7 +415,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
             abortWithError(status, job->errorString());
             return;
         } else {
-            qCWarning(lcPropagateUpload) << "DeleteJob errored out" << job->errorString() << job->reply()->url();
+            qCWarning(lcPropagateUploadNG) << "DeleteJob errored out" << job->errorString() << job->reply()->url();
             _removeJobError = true;
             // Let the other jobs finish
         }
@@ -547,7 +547,7 @@ void PropagateUploadFileNG::startNextChunk()
     auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
             fileName, _currentChunkOffset, _currentChunkSize, &propagator()->_bandwidthManager));
     if (!device->open(QIODevice::ReadOnly)) {
-        qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
+        qCWarning(lcPropagateUploadNG) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
@@ -580,14 +580,14 @@ void PropagateUploadFileNG::startNextChunk()
 
 void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generatedFileName)
 {
-    qCDebug(lcPropagateUpload)
+    qCDebug(lcPropagateUploadNG)
         << "Finished generation of:" << generatedFileName
         << "size:" << FileSystem::getSize(generatedFileName);
 
     auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
             generatedFileName, 0, FileSystem::getSize(generatedFileName), &propagator()->_bandwidthManager));
     if (!device->open(QIODevice::ReadOnly)) {
-        qCWarning(lcPropagateUpload) << "Could not prepare generated file: " << generatedFileName << device->errorString();
+        qCWarning(lcPropagateUploadNG) << "Could not prepare generated file: " << generatedFileName << device->errorString();
         abortWithError(SyncFileItem::SoftError, device->errorString());
         return;
     }
@@ -598,7 +598,7 @@ void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generated
     _sent += FileSystem::getSize(generatedFileName);
     _bytesToUpload += FileSystem::getSize(generatedFileName);
 
-    qCDebug(lcPropagateUpload) << "Starting upload of .zsync";
+    qCDebug(lcPropagateUploadNG) << "Starting upload of .zsync";
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     auto devicePtr = device.get(); // for connections later
@@ -617,7 +617,7 @@ void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generated
 
 void PropagateUploadFileNG::slotZsyncMetadataUploadFinished()
 {
-    qCDebug(lcPropagateUpload) << "Uploading of .zsync complete";
+    qCDebug(lcPropagateUploadNG) << "Uploading of .zsync complete";
 
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
     ASSERT(job);
@@ -686,7 +686,7 @@ void PropagateUploadFileNG::slotPutFinished()
             targetSize,
             propagator()->syncOptions()._maxChunkSize);
 
-        qCInfo(lcPropagateUpload) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime.count()
+        qCInfo(lcPropagateUploadNG) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime.count()
                                   << "ms, desired is" << targetDuration.count() << "ms, expected good chunk size is"
                                   << predictedGoodSize << "bytes and nudged next chunk size to "
                                   << propagator()->_chunkSize << "bytes";
@@ -763,13 +763,13 @@ void PropagateUploadFileNG::slotMoveJobFinished()
 
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if (fid.isEmpty()) {
-        qCWarning(lcPropagateUpload) << "Server did not return a OC-FileID" << _item->_file;
+        qCWarning(lcPropagateUploadNG) << "Server did not return a OC-FileID" << _item->_file;
         abortWithError(SyncFileItem::NormalError, tr("Missing File ID from server"));
         return;
     } else {
         // the old file id should only be empty for new files uploaded
         if (!_item->_fileId.isEmpty() && _item->_fileId != fid) {
-            qCWarning(lcPropagateUpload) << "File ID changed!" << _item->_fileId << fid;
+            qCWarning(lcPropagateUploadNG) << "File ID changed!" << _item->_fileId << fid;
         }
         _item->_fileId = fid;
     }
@@ -777,7 +777,7 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     _item->_etag = getEtagFromReply(job->reply());
     ;
     if (_item->_etag.isEmpty()) {
-        qCWarning(lcPropagateUpload) << "Server did not return an ETAG" << _item->_file;
+        qCWarning(lcPropagateUploadNG) << "Server did not return an ETAG" << _item->_file;
         abortWithError(SyncFileItem::NormalError, tr("Missing ETag from server"));
         return;
     }

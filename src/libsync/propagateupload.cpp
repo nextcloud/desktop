@@ -40,6 +40,8 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcPutJob, "sync.networkjob.put", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPollJob, "sync.networkjob.poll", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateUpload, "sync.propagator.upload", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateUploadV1, "sync.propagator.upload.v1", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateUploadNG, "sync.propagator.upload.ng", QtInfoMsg)
 
 /**
  * We do not want to upload files that are currently being modified.
