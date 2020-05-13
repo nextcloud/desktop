@@ -1684,12 +1684,12 @@ Zapisi se zapisuju u %1</translation>
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="162"/>
+        <location filename="../src/libsync/logger.cpp" line="168"/>
         <source>Error</source>
         <translation>Pogreška</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="163"/>
+        <location filename="../src/libsync/logger.cpp" line="169"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Datoteka ‘%1’&lt;br/&gt;se ne može otvoriti radi zapisivanja.&lt;br/&gt;&lt;br/&gt;Izlaz zapisa &lt;b&gt;ne može&lt;/b&gt; se spremiti!&lt;/nobr&gt;</translation>
     </message>
