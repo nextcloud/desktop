@@ -3229,7 +3229,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
         <source>Access is forbidden</source>
-        <translation>Tillgång förbjuden</translation>
+        <translation>Åtkomst förbjuden</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
