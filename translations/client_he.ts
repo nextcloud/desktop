@@ -768,7 +768,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="373"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 וקובץ %n נוסף הוסר.</numerusform><numerusform>%1 ו־%n קבצים נוספים הוסרו.</numerusform><numerusform>%1 ו־%n קבצים נוספים הוסרו.</numerusform><numerusform>%1 ו־%n קבצים נוספים הוסרו.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="375"/>
@@ -779,7 +779,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 וקובץ %n נוסף התקבל.</numerusform><numerusform>%1 ו־%n קבצים נוספים התקבלו.</numerusform><numerusform>%1 ו־%n קבצים נוספים התקבלו.</numerusform><numerusform>%1 ו־%n קבצים נוספים התקבלו.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
@@ -790,7 +790,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 וקובץ %n נוסף עודכנו.</numerusform><numerusform>%1 ו־%n קבצים נוספים עודכנו.</numerusform><numerusform>%1 ו־%n קבצים נוספים עודכנו.</numerusform><numerusform>%1 ו־%n קבצים נוספים עודכנו.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="389"/>
@@ -847,7 +847,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 נעולה כרגע.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -886,7 +886,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1032"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>הקובץ %1 נוצר אך הוחרג מהסנכרון בעבר. הוא לא יסונכרן.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1043"/>
