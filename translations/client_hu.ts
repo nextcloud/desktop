@@ -917,7 +917,9 @@ Ha úgy dönt, hogy törli ezeket a fájlokat, akkor többé nem fogja azokat el
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>Az összes fájl törölve lett a(z) „%1” helyi szinkronizálási mappából.
+Ezek a fájlok törölve lesznek a kiszolgálóról, és nem lesznek elérhetők a többi eszközén, ha nem lesznek visszaállítva.
+Ha ez a művelet nem volt szándékos, akkor most visszaállíthatja az elvesztett adatokat.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1097"/>
