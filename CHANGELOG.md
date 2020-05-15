@@ -30,6 +30,7 @@ Summary
 * Change - Restart the client after an update: [#3922](https://github.com/owncloud/enterprise/issues/3922)
 * Change - Wizard is hidden behind the browser: [#7856](https://github.com/owncloud/client/issues/7856)
 * Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
+* Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
 Details
@@ -173,6 +174,12 @@ Details
    We now correctly handle the bigfilechunking capability
 
    https://github.com/owncloud/client/issues/7862
+
+* Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
+
+   We changed the behaviour of the client to display a dock entry when we have a window open.
+
+   https://github.com/owncloud/client/issues/7868
 
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
