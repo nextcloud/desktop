@@ -38,7 +38,6 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, int 
 {
     GMenuModel *model;
     GActionGroup *action_group;
-    _recentlyChanged = new QList<QPair<QString, QString>>();
     QString accountName = QString("Folder/%1").arg(folderId);
 
     _cloudProvider = CLOUD_PROVIDERS_PROVIDER_EXPORTER(cloudprovider);
@@ -109,11 +108,11 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
         if (f) {
             QString fullPath = f->path() + '/' + progress._lastCompletedItem._file;
             if (QFile(fullPath).exists()) {
-                if (_recentlyChanged->length() > 5)
-                    _recentlyChanged->removeFirst();
-                _recentlyChanged->append(qMakePair(actionText, fullPath));
+                if (_recentlyChanged.length() > 5)
+                    _recentlyChanged.removeFirst();
+                _recentlyChanged.append(qMakePair(actionText, fullPath));
             } else {
-                _recentlyChanged->append(qMakePair(actionText, QString("")));
+                _recentlyChanged.append(qMakePair(actionText, QString("")));
             }
         }
 
@@ -152,9 +151,9 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
             && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
         GMenuItem* item;
         g_menu_remove_all (G_MENU(_recentMenu));
-        if(!_recentlyChanged->isEmpty()) {
+        if(!_recentlyChanged.isEmpty()) {
             QList<QPair<QString, QString>>::iterator i;
-            for (i = _recentlyChanged->begin(); i != _recentlyChanged->end(); i++) {
+            for (i = _recentlyChanged.begin(); i != _recentlyChanged.end(); i++) {
                 QString label = i->first;
                 QString fullPath = i->second;
                 item = menu_item_new(label, "cloudprovider.showfile");
