@@ -35,7 +35,7 @@ public slots:
     void slotFolderListChanged(const Folder::Map &folderMap);
 
 private:
-    QMap<QString, CloudProviderWrapper*> *_map;
+    QMap<QString, CloudProviderWrapper*> _map;
     unsigned int _folder_index;
 };
 
