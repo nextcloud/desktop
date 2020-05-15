@@ -1,0 +1,5 @@
+Change: Mac does not display a dock entry
+
+We changed the behaviour of the client to display a dock entry when we have a window open.
+
+https://github.com/owncloud/client/issues/7868

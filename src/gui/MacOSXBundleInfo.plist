@@ -3,9 +3,7 @@
 <plist version="1.0">
 <dict>
         <key>NSPrincipalClass</key>
-	<string>NSApplication</string>
-	<key>LSUIElement</key>
-	<true/>
+        <string>NSApplication</string>
 	<key>CFBundleDevelopmentRegion</key>
         <string>English</string>
         <key>CFBundleExecutable</key>

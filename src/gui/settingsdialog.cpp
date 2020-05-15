@@ -44,6 +44,12 @@
 #include <QPainterPath>
 #include <QMessageBox>
 
+#ifdef Q_OS_MAC
+#include "settingsdialog_mac.h"
+
+void setActivationPolicy(ActivationPolicy policy);
+#endif
+
 namespace {
 const QString TOOLBAR_CSS()
 {
@@ -173,6 +179,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     customizeStyle();
 
     cfg.restoreGeometry(this);
+
+#ifdef Q_OS_MAC
+    setActivationPolicy(ActivationPolicy::Accessory);
+#endif
 }
 
 SettingsDialog::~SettingsDialog()
@@ -213,6 +223,18 @@ void SettingsDialog::changeEvent(QEvent *e)
     }
 
     QDialog::changeEvent(e);
+}
+
+void SettingsDialog::setVisible(bool visible)
+{
+#ifdef Q_OS_MAC
+    if (visible) {
+        setActivationPolicy(ActivationPolicy::Regular);
+    } else {
+        setActivationPolicy(ActivationPolicy::Accessory);
+    }
+#endif
+    QDialog::setVisible(visible);
 }
 
 void SettingsDialog::slotSwitchPage(QAction *action)

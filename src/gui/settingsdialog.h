@@ -68,6 +68,7 @@ protected:
     void reject() override;
     void accept() override;
     void changeEvent(QEvent *) override;
+    void setVisible(bool visible) override;
 
 private slots:
     void accountAdded(AccountState *);
