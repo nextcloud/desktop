@@ -45,7 +45,7 @@ private slots:
 
         AccountPtr account = Account::create();
         QUrl url("http://example.de");
-        HttpCredentialsTest *cred = new HttpCredentialsTest("testuser", "secret");
+        auto *cred = new HttpCredentialsTest("testuser", "secret");
         account->setCredentials(cred);
         account->setUrl( url );
 
@@ -153,7 +153,7 @@ private slots:
 
         AccountPtr account = Account::create();
         QUrl url("http://example.de");
-        HttpCredentialsTest *cred = new HttpCredentialsTest("testuser", "secret");
+        auto *cred = new HttpCredentialsTest("testuser", "secret");
         account->setCredentials(cred);
         account->setUrl( url );
         url.setUserName(cred->user());

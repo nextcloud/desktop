@@ -145,7 +145,7 @@ void ShareLinkWidget::setupUiOptions()
     const QDate expireDate = _linkShare.data()->getExpireDate().isValid() ? _linkShare.data()->getExpireDate() : QDate();
     const SharePermissions perm = _linkShare.data()->getPermissions();
     bool checked = false;
-    QActionGroup *permissionsGroup = new QActionGroup(this);
+    auto *permissionsGroup = new QActionGroup(this);
 
     // Prepare sharing menu
     _linkContextMenu = new QMenu(this);
@@ -335,7 +335,7 @@ void ShareLinkWidget::slotPasswordSet()
 
 void ShareLinkWidget::startAnimation(const int start, const int end)
 {
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "maximumHeight", this);
+    auto *animation = new QPropertyAnimation(this, "maximumHeight", this);
 
     animation->setDuration(500);
     animation->setStartValue(start);

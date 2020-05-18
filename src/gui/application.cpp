@@ -608,9 +608,9 @@ void Application::setupTranslations()
     if (!enforcedLocale.isEmpty())
         uiLanguages.prepend(enforcedLocale);
 
-    QTranslator *translator = new QTranslator(this);
-    QTranslator *qtTranslator = new QTranslator(this);
-    QTranslator *qtkeychainTranslator = new QTranslator(this);
+    auto *translator = new QTranslator(this);
+    auto *qtTranslator = new QTranslator(this);
+    auto *qtkeychainTranslator = new QTranslator(this);
 
     foreach (QString lang, uiLanguages) {
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973

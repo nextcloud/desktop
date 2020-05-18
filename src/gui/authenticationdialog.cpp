@@ -28,18 +28,18 @@ AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &
     , _password(new QLineEdit)
 {
     setWindowTitle(tr("Authentication Required"));
-    QVBoxLayout *lay = new QVBoxLayout(this);
-    QLabel *label = new QLabel(tr("Enter username and password for '%1' at %2.").arg(realm, domain));
+    auto *lay = new QVBoxLayout(this);
+    auto *label = new QLabel(tr("Enter username and password for '%1' at %2.").arg(realm, domain));
     label->setTextFormat(Qt::PlainText);
     lay->addWidget(label);
 
-    QFormLayout *form = new QFormLayout;
+    auto *form = new QFormLayout;
     form->addRow(tr("&User:"), _user);
     form->addRow(tr("&Password:"), _password);
     lay->addLayout(form);
     _password->setEchoMode(QLineEdit::Password);
 
-    QDialogButtonBox *box = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal);
+    auto *box = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal);
     connect(box, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(box, &QDialogButtonBox::rejected, this, &QDialog::reject);
     lay->addWidget(box);

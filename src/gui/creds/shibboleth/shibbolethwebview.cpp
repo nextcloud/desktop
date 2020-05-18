@@ -87,9 +87,9 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget *parent)
         // open an additional window to display some cipher debug info
         QWebPage *debugPage = new UserAgentWebPage(this);
         debugPage->mainFrame()->load(QUrl("https://cc.dcsec.uni-hannover.de/"));
-        QWebView *debugView = new QWebView(this);
+        auto *debugView = new QWebView(this);
         debugView->setPage(debugPage);
-        QMainWindow *window = new QMainWindow(this);
+        auto *window = new QMainWindow(this);
         window->setWindowTitle(tr("SSL Cipher Debug View"));
         window->setCentralWidget(debugView);
         window->show();

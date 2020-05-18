@@ -88,7 +88,7 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
 // The actual check
 void ConnectionValidator::slotCheckServerAndAuth()
 {
-    CheckServerJob *checkJob = new CheckServerJob(_account, this);
+    auto *checkJob = new CheckServerJob(_account, this);
     checkJob->setTimeout(timeoutToUseMsec);
     checkJob->setIgnoreCredentialFailure(true);
     connect(checkJob, &CheckServerJob::instanceFound, this, &ConnectionValidator::slotStatusFound);
@@ -173,7 +173,7 @@ void ConnectionValidator::checkAuthentication()
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
     qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
-    PropfindJob *job = new PropfindJob(_account, "/", this);
+    auto *job = new PropfindJob(_account, "/", this);
     job->setTimeout(timeoutToUseMsec);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, &PropfindJob::result, this, &ConnectionValidator::slotAuthSuccess);
@@ -223,7 +223,7 @@ void ConnectionValidator::slotAuthSuccess()
 void ConnectionValidator::checkServerCapabilities()
 {
     // The main flow now needs the capabilities
-    JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
+    auto *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
     job->setTimeout(timeoutToUseMsec);
     QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotCapabilitiesRecieved);
     job->start();
@@ -273,7 +273,7 @@ void ConnectionValidator::ocsConfigReceived(const QJsonDocument &json, AccountPt
 
 void ConnectionValidator::fetchUser()
 {
-    UserInfo *userInfo = new UserInfo(_accountState.data(), true, true, this);
+    auto *userInfo = new UserInfo(_accountState.data(), true, true, this);
     QObject::connect(userInfo, &UserInfo::fetchedLastInfo, this, &ConnectionValidator::slotUserFetched);
     userInfo->setActive(true);
 }

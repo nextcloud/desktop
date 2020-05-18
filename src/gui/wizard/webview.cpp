@@ -184,7 +184,7 @@ WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWeb
 
 QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type) {
     Q_UNUSED(type);
-    ExternalWebEnginePage *view = new ExternalWebEnginePage(this->profile());
+    auto *view = new ExternalWebEnginePage(this->profile());
     return view;
 }
 

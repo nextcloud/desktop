@@ -137,7 +137,7 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
 
     // Avatar Image
     if(_fetchAvatarImage) {
-        AvatarJob *job = new AvatarJob(account, account->davUser(), 128, this);
+        auto *job = new AvatarJob(account, account->davUser(), 128, this);
         job->setTimeout(20 * 1000);
         QObject::connect(job, &AvatarJob::avatarPixmap, this, &UserInfo::slotAvatarImage);
         job->start();

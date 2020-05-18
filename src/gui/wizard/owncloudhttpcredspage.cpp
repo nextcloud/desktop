@@ -84,9 +84,9 @@ void OwncloudHttpCredsPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+    auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     AbstractCredentials *cred = ocWizard->account()->credentials();
-    HttpCredentials *httpCreds = qobject_cast<HttpCredentials *>(cred);
+    auto *httpCreds = qobject_cast<HttpCredentials *>(cred);
     if (httpCreds) {
         const QString user = httpCreds->fetchUser();
         if (!user.isEmpty()) {
@@ -134,7 +134,7 @@ bool OwncloudHttpCredsPage::validatePage()
         startSpinner();
 
         // Reset cookies to ensure the username / password is actually used
-        OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+        auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
         ocWizard->account()->clearCookieJar();
 
         emit completeChanged();
