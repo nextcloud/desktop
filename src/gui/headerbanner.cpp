@@ -101,9 +101,9 @@ void HeaderBanner::setup(const QString &title, const QPixmap &logo, const QPixma
 {
     QStyle *style = parentWidget()->style();
     //const int layoutHorizontalSpacing = style->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
-    int topLevelMarginLeft = style->pixelMetric(QStyle::PM_LayoutLeftMargin, 0, parentWidget());
-    int topLevelMarginRight = style->pixelMetric(QStyle::PM_LayoutRightMargin, 0, parentWidget());
-    int topLevelMarginTop = style->pixelMetric(QStyle::PM_LayoutTopMargin, 0, parentWidget());
+    int topLevelMarginLeft = style->pixelMetric(QStyle::PM_LayoutLeftMargin, nullptr, parentWidget());
+    int topLevelMarginRight = style->pixelMetric(QStyle::PM_LayoutRightMargin, nullptr, parentWidget());
+    int topLevelMarginTop = style->pixelMetric(QStyle::PM_LayoutTopMargin, nullptr, parentWidget());
     //int topLevelMarginBottom = style->pixelMetric(QStyle::PM_LayoutBottomMargin, 0, parentWidget());
 
     layout->setRowMinimumHeight(0, ModernHeaderTopMargin);
