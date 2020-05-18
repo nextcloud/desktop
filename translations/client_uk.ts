@@ -347,7 +347,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="796"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Дійсно зупинити синхронізацію теки &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примітка:&lt;/b&gt; Це &lt;b&gt;не&lt;/b&gt; призведе до вилучення файлів.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="802"/>
@@ -442,17 +442,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1162"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Деякі теки не було синхронізовано, оскільки їхній розмір завеликий:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1164"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Деякі теки не було синхронізовано, оскільки вони розміщені у зовнішніх сховищах:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1165"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Деякі теки не було синхронізовано, оскільки їхній розмір завеликий або розміщені у зовнішніх сховищах:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1211"/>
@@ -462,7 +462,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1212"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Дійсно вилучити з&apos;єднання з обліковим записом &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примітка:&lt;/b&gt; Це &lt;b&gt;не &lt;/b&gt; призведе до вилучення файлів.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1218"/>
@@ -523,12 +523,12 @@
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation type="unfinished"/>
+        <translation>Файли зі списку ігнорування, а також символічні посилання не синхронізовано, включно:</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>Для докладного перегляду змін, будь ласка, відкрийте застосунок Події.</translation>
     </message>
 </context>
 <context>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="199"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>Помилка з доступом до файлу налаштувань %1. Будь ласка, перевірте чи файл буде доступний для вашого користувача.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="202"/>
@@ -623,12 +623,12 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Будь ласка, зазначте пароль для наскрізного шифрування:&lt;br&gt;&lt;br&gt;Користувач: %2&lt;br&gt;Обліковий запис: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1008"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Зазначте пароль для наскрізного шифрування</translation>
     </message>
 </context>
 <context>
@@ -677,7 +677,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>Служба виявлення файлів на сервері повідомила про відсутні дані.</translation>
     </message>
 </context>
 <context>
@@ -686,7 +686,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="212"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Сервер повернув помилку: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="112"/>
@@ -725,22 +725,22 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="80"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо відкрити переглядач, будь ласка, скопіюйте посилання до вашого переглядача.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="143"/>
         <source>Waiting for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Очікування на авторизацію</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Запит на авторизацію</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Початок авторизації</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
@@ -758,7 +758,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="144"/>
         <source>%1 should be a folder but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 має бути текою, але не є такою.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="147"/>
@@ -768,7 +768,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="373"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 та ще %n файл було вилучено.</numerusform><numerusform>%1 та ще %n файли було вилучено.</numerusform><numerusform>%1 та ще %n файлів було вилучено.</numerusform><numerusform>%1 та ще %n файлів було вилучено.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="375"/>
@@ -779,7 +779,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 та ще %n файл було звантажено.</numerusform><numerusform>%1 та ще %n файли було звантажено.</numerusform><numerusform>%1 та ще %n файлів було звантажено.</numerusform><numerusform>%1 та ще %n файлів було звантажено.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
@@ -790,7 +790,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 та ще %n файл було оновлено.</numerusform><numerusform>%1 та ще %n файли було оновлено.</numerusform><numerusform>%1 та ще %n файлів було оновлено.</numerusform><numerusform>%1 та ще %n файлів було оновлено.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="389"/>
@@ -801,7 +801,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 було перейменовано на %2 та ще %n інший файл було перейменовано.</numerusform><numerusform>%1 було перейменовано на %2 та ще %n інших файли було перейменовано.</numerusform><numerusform>%1 було перейменовано на %2 та ще %n інших файлів було перейменовано.</numerusform><numerusform>%1 було перейменовано на %2 та ще %n інших файлів було перейменовано.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="396"/>
@@ -812,7 +812,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 було переміщено до %2 та ще %n інший файл було переміщено.</numerusform><numerusform>%1 було переміщено до %2 та ще %n інших файли було переміщено.</numerusform><numerusform>%1 було переміщено до %2 та ще %n інших файлів було переміщено.</numerusform><numerusform>%1 було переміщено до %2 та ще %n інших файлів було переміщено.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="403"/>
@@ -822,17 +822,17 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 та ще %n файл мають конфлікт синхронізації.</numerusform><numerusform>%1 та ще %n файли мають конфлікт синхронізації.</numerusform><numerusform>%1 та ще %n файлів мають конфлікт синхронізації.</numerusform><numerusform>%1 та ще %n файлів мають конфлікт синхронізації.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="410"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 має конфлікт синхронізації. Будь ласка, перевірте цей файл!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 та ще %n файл неможливо синхронізувати через помилки. Дивіться журнал для докладної інформації.</numerusform><numerusform>%1 та ще %n файли неможливо синхронізувати через помилки. Дивіться журнал для докладної інформації.</numerusform><numerusform>%1 та ще %n файлів неможливо синхронізувати через помилки. Дивіться журнал для докладної інформації.</numerusform><numerusform>%1 та ще %n файлів неможливо синхронізувати через помилки. Дивіться журнал для докладної інформації.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="417"/>
@@ -842,12 +842,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 та ще %n файл зараз заблоковано.</numerusform><numerusform>%1 та ще %n файли зараз заблоковано.</numerusform><numerusform>%1 та ще %n файлів зараз заблоковано.</numerusform><numerusform>%1 та ще %n файлів зараз заблоковано.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation type="unfinished"/>
+        <translation>%1 зараз заблоковано.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -1806,7 +1806,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Сервер повернув помилку: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -2925,7 +2925,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="808"/>
         <source>Edit</source>
-        <translation type="unfinished"/>
+        <translation>Редагувати</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="769"/>
@@ -3478,7 +3478,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="691"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Дійсно вилучити з&apos;єднання з обліковим записом &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примітка:&lt;/b&gt; Це &lt;b&gt;не &lt;/b&gt; призведе до вилучення файлів.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="696"/>
@@ -4016,7 +4016,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="41"/>
         <source>System Tray not available</source>
-        <translation>Системний Трей не доступний</translation>
+        <translation>Системний лоток недоступний</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="42"/>
