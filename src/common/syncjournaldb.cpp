@@ -1861,12 +1861,12 @@ QByteArray SyncJournalDb::getChecksumType(int checksumTypeId)
         return {};
     query.bindValue(1, checksumTypeId);
     if (!query.exec()) {
-        return 0;
+        return nullptr;
     }
 
     if (!query.next()) {
         qCWarning(lcDb) << "No checksum type mapping found for" << checksumTypeId;
-        return 0;
+        return nullptr;
     }
     return query.baValue(0);
 }

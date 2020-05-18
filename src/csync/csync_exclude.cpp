@@ -133,7 +133,7 @@ bool csync_is_windows_reserved_word(const char *filename)
 
 static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path, bool excludeConflictFiles)
 {
-    const char *bname = NULL;
+    const char *bname = nullptr;
     size_t blen = 0;
     int rc = -1;
     CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
