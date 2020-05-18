@@ -317,7 +317,7 @@ private slots:
         });
 
         // For directly editing the remote checksum
-        FileInfo &remoteInfo = dynamic_cast<FileInfo &>(fakeFolder.remoteModifier());
+        auto &remoteInfo = dynamic_cast<FileInfo &>(fakeFolder.remoteModifier());
 
         // Base mtime with no ms content (filesystem is seconds only)
         auto mtime = QDateTime::currentDateTimeUtc().addDays(-4);

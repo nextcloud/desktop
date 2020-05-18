@@ -686,7 +686,7 @@ void PropagateDownloadFile::slotGetFinished()
     // Do checksum validation for the download. If there is no checksum header, the validator
     // will also emit the validated() signal to continue the flow in slot transmissionChecksumValidated()
     // as this is (still) also correct.
-    ValidateChecksumHeader *validator = new ValidateChecksumHeader(this);
+    auto *validator = new ValidateChecksumHeader(this);
     connect(validator, &ValidateChecksumHeader::validated,
         this, &PropagateDownloadFile::transmissionChecksumValidated);
     connect(validator, &ValidateChecksumHeader::validationFailed,

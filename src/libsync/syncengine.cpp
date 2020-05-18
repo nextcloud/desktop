@@ -765,7 +765,7 @@ void SyncEngine::startSync()
         QVector<SyncJournalDb::PollInfo> pollInfos = _journal->getPollInfos();
         if (!pollInfos.isEmpty()) {
             qCInfo(lcEngine) << "Finish Poll jobs before starting a sync";
-            CleanupPollsJob *job = new CleanupPollsJob(pollInfos, _account,
+            auto *job = new CleanupPollsJob(pollInfos, _account,
                 _journal, _localPath, this);
             connect(job, &CleanupPollsJob::finished, this, &SyncEngine::startSync);
             connect(job, &CleanupPollsJob::aborted, this, &SyncEngine::slotCleanPollsJobAborted);
@@ -899,7 +899,7 @@ void SyncEngine::startSync()
         connect(_discoveryMainThread.data(), &DiscoveryMainThread::etagConcatenation, this, &SyncEngine::slotRootEtagReceived);
     }
 
-    DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx.data());
+    auto *discoveryJob = new DiscoveryJob(_csync_ctx.data());
     discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
     discoveryJob->_selectiveSyncWhiteList =
         _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);

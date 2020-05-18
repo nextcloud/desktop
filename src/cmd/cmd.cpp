@@ -437,9 +437,9 @@ int main(int argc, char **argv)
         }
     }
 
-    SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
+    auto *sslErrorHandler = new SimpleSslErrorHandler;
 
-    HttpCredentialsText *cred = new HttpCredentialsText(user, password);
+    auto *cred = new HttpCredentialsText(user, password);
 
     if (options.trustSSL) {
         cred->setSSLTrusted(true);
@@ -456,7 +456,7 @@ int main(int argc, char **argv)
         // 'dav' endpoint instead of the nonshib one (which still use the old chunking)
 
         QEventLoop loop;
-        JsonApiJob *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
+        auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
         QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
             auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
             qDebug() << "Server capabilities" << caps;

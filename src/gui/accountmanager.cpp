@@ -211,7 +211,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
 
     // Save cookies.
     if (acc->_am) {
-        CookieJar *jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
+        auto *jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
         if (jar) {
             qCInfo(lcAccountManager) << "Saving cookies." << acc->cookieJarPath();
             jar->save(acc->cookieJarPath());
@@ -347,7 +347,7 @@ AccountPtr AccountManager::createAccount()
 
 void AccountManager::displayMnemonic(const QString& mnemonic)
 {
-    QDialog *widget = new QDialog;
+    auto *widget = new QDialog;
     Ui_Dialog ui;
     ui.setupUi(widget);
     widget->setWindowTitle(tr("End to end encryption mnemonic"));

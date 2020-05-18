@@ -329,7 +329,7 @@ void PropagateUploadFileNG::startNextChunk()
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     auto devicePtr = device.get(); // for connections later
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), url, std::move(device), headers, _currentChunk, this);
+    auto *job = new PUTFileJob(propagator()->account(), url, std::move(device), headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress,
@@ -344,7 +344,7 @@ void PropagateUploadFileNG::startNextChunk()
 
 void PropagateUploadFileNG::slotPutFinished()
 {
-    PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
+    auto *job = qobject_cast<PUTFileJob *>(sender());
     ASSERT(job);
 
     slotJobDestroyed(job); // remove it from the _jobs list

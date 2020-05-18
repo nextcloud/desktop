@@ -51,7 +51,7 @@ OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
 
 void OwncloudOAuthCredsPage::initializePage()
 {
-    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+    auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
     ocWizard->account()->setCredentials(CredentialsFactory::create("http"));
     _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
@@ -75,7 +75,7 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
     switch (r) {
     case OAuth::NotSupported: {
         /* OAuth not supported (can't open browser), fallback to HTTP credentials */
-        OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+        auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
         ocWizard->back();
         ocWizard->setAuthType(DetermineAuthTypeJob::Basic);
         break;
@@ -89,7 +89,7 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
         _token = token;
         _user = user;
         _refreshToken = refreshToken;
-        OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+        auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
         Q_ASSERT(ocWizard);
         emit connectToOCUrl(ocWizard->account()->url().toString());
         break;
@@ -109,7 +109,7 @@ void OwncloudOAuthCredsPage::setConnected()
 
 AbstractCredentials *OwncloudOAuthCredsPage::getCredentials() const
 {
-    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+    auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
     return new HttpCredentialsGui(_user, _token, _refreshToken,
         ocWizard->_clientSslCertificate, ocWizard->_clientSslKey);

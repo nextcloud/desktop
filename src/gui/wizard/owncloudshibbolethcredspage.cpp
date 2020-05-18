@@ -37,13 +37,13 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     if (!_browser.isNull()) {
         return;
     }
-    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+    auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     AccountPtr account = ocWizard->account();
 
     // we need to reset the cookie jar to drop temporary cookies (like the shib cookie)
     // i.e. if someone presses "back"
     QNetworkAccessManager *qnam = account->networkAccessManager();
-    CookieJar *jar = new CookieJar;
+    auto *jar = new CookieJar;
     jar->restore(account->cookieJarPath());
     // Implicitly deletes the old cookie jar, and reparents the jar
     qnam->setCookieJar(jar);
