@@ -43,9 +43,9 @@ ActivityListModel::ActivityListModel(AccountState *accountState, QObject *parent
 QHash<int, QByteArray> ActivityListModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[DisplayPathRole] = "displaypath";
+    roles[DisplayPathRole] = "displayPath";
     roles[PathRole] = "path";
-    roles[AbsolutePathRole] = "abspath";
+    roles[AbsolutePathRole] = "absolutePath";
     roles[LinkRole] = "link";
     roles[MessageRole] = "message";
     roles[ActionRole] = "type";
@@ -109,15 +109,15 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         }
         return QString();
     case AbsolutePathRole: {
-        auto folder = FolderMan::instance()->folder(a._folder);
+        const auto folder = FolderMan::instance()->folder(a._folder);
         QString relPath(a._file);
         if (!a._file.isEmpty()) {
             if (folder) {
                 relPath.prepend(folder->remotePath());
             }
             list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
-            if (list.count() > 0) {
-                return QString(list.at(0));
+            if (!list.empty()) {
+                return list.at(0);
             } else {
                 qWarning("File not local folders while processing absolute path request.");
                 return QString();

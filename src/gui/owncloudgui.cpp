@@ -90,13 +90,11 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::shutdown,
         this, &ownCloudGui::slotShutdown);
     connect(_tray.data(), &Systray::openShareDialog,
-        this, [=](const QString &sharePath, const QString &localPath, const bool publicLink = false)
-            {
-
+        this, [=](const QString &sharePath, const QString &localPath, bool publicLink = false) {
                 if (publicLink) {
-                    this->slotShowShareDialog(sharePath,localPath, ShareDialogStartPage::PublicLinks);
+                    slotShowShareDialog(sharePath,localPath, ShareDialogStartPage::PublicLinks);
                 } else {
-                    this->slotShowShareDialog(sharePath,localPath, ShareDialogStartPage::UsersAndGroups);
+                    slotShowShareDialog(sharePath,localPath, ShareDialogStartPage::UsersAndGroups);
                 }
             });
 

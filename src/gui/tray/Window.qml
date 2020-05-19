@@ -555,7 +555,7 @@ Window {
                 spacing: 0
 
                 MouseArea {
-                    enabled: (path !== "") ? true : false
+                    enabled: (path !== "")
                     anchors.left: activityItem.left
                     anchors.right: ((shareButton.visible) ? shareButton.left : activityItem.right)
                     height: parent.height
@@ -602,7 +602,7 @@ Window {
 
                     Text {
                         id: activityTextInfo
-                        text: (type === "Activity" || type === "Sync") ? displaypath : ((type === "File") ? subject : message)
+                        text: (type === "Activity" || type === "Sync") ? displayPath : ((type === "File") ? subject : message)
                         height: (text === "") ? 0 : activityTextTitle.height
                         width: Style.activityLabelBaseWidth + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
@@ -638,7 +638,7 @@ Window {
                     ToolTip.visible: hovered
                     ToolTip.delay: 1000
                     ToolTip.text: qsTr("Open share dialog")
-                    onClicked: systrayBackend.openShareDialog(displaypath,abspath)
+                    onClicked: systrayBackend.openShareDialog(displayPath,absolutePath)
                 }
             }
 
