@@ -68,7 +68,7 @@ signals:
 
     Q_INVOKABLE void hideWindow();
     Q_INVOKABLE void showWindow();
-    Q_INVOKABLE void openShareDialog(const QString &sharepath, const QString &localPath);
+    Q_INVOKABLE void openShareDialog(const QString &sharePath, const QString &localPath);
 
 public slots:
     void slotNewUserSelected();
