@@ -61,14 +61,14 @@ For more info: [Wiki/Daily Builds](https://github.com/nextcloud/desktop/wiki/Dai
 ### :bomb: Reporting issues
 
 - If you find any bugs or have any suggestion for improvement, please
-file an issue at https://github.com/nextcloud/client/issues. Do not
+file an issue at https://github.com/nextcloud/desktop/issues. Do not
 contact the authors directly by mail, as this increases the chance
 of your report being lost. :boom:
 
 ### :smiley: :trophy: Pull requests
 
 - If you created a patch :heart_eyes:, please submit a [Pull
-Request](https://github.com/nextcloud/client/pulls).
+Request](https://github.com/nextcloud/desktop/pulls).
 - How to create a pull request? This guide will help you get started: [Opening a pull request](https://opensource.guide/how-to-contribute/#opening-a-pull-request) :heart:
 
 
