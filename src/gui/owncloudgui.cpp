@@ -90,12 +90,8 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::shutdown,
         this, &ownCloudGui::slotShutdown);
     connect(_tray.data(), &Systray::openShareDialog,
-        this, [=](const QString &sharePath, const QString &localPath, bool publicLink = false) {
-                if (publicLink) {
-                    slotShowShareDialog(sharePath,localPath, ShareDialogStartPage::PublicLinks);
-                } else {
-                    slotShowShareDialog(sharePath,localPath, ShareDialogStartPage::UsersAndGroups);
-                }
+        this, [=](const QString &sharePath, const QString &localPath) {
+                slotShowShareDialog(sharePath,localPath, ShareDialogStartPage::UsersAndGroups);
             });
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
