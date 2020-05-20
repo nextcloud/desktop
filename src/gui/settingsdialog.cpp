@@ -92,7 +92,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(_actionBefore);
 
     // Adds space between users + activities and general + network actions
-    auto* spacer = new QWidget();
+    auto *spacer = new QWidget();
     spacer->setMinimumWidth(10);
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _toolBar->addWidget(spacer);
