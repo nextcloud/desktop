@@ -156,7 +156,7 @@ void DiscoveryJob::update_job_update_callback(bool local,
     const char *dirUrl,
     void *userdata)
 {
-    DiscoveryJob *updateJob = static_cast<DiscoveryJob *>(userdata);
+    auto *updateJob = static_cast<DiscoveryJob *>(userdata);
     if (updateJob) {
         // Don't wanna overload the UI
         if (!updateJob->_lastUpdateProgressCallbackCall.isValid()) {
@@ -263,7 +263,7 @@ DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &accou
 void DiscoverySingleDirectoryJob::start()
 {
     // Start the actual HTTP job
-    LsColJob *lsColJob = new LsColJob(_account, _subPath, this);
+    auto *lsColJob = new LsColJob(_account, _subPath, this);
 
     QList<QByteArray> props;
     props << "resourcetype"
@@ -652,7 +652,7 @@ void DiscoveryMainThread::abort()
 csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
     void *userdata)
 {
-    DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
+    auto *discoveryJob = static_cast<DiscoveryJob *>(userdata);
     if (discoveryJob) {
         qCDebug(lcDiscovery) << discoveryJob << url << "Calling into main thread...";
 
@@ -685,9 +685,9 @@ csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
 std::unique_ptr<csync_file_stat_t> DiscoveryJob::remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
     void *userdata)
 {
-    DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
+    auto *discoveryJob = static_cast<DiscoveryJob *>(userdata);
     if (discoveryJob) {
-        DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult *>(dhandle);
+        auto *directoryResult = static_cast<DiscoveryDirectoryResult *>(dhandle);
         if (!directoryResult->list.empty()) {
             auto file_stat = std::move(directoryResult->list.front());
             directoryResult->list.pop_front();
@@ -699,9 +699,9 @@ std::unique_ptr<csync_file_stat_t> DiscoveryJob::remote_vio_readdir_hook(csync_v
 
 void DiscoveryJob::remote_vio_closedir_hook(csync_vio_handle_t *dhandle, void *userdata)
 {
-    DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
+    auto *discoveryJob = static_cast<DiscoveryJob *>(userdata);
     if (discoveryJob) {
-        DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult *>(dhandle);
+        auto *directoryResult = static_cast<DiscoveryDirectoryResult *>(dhandle);
         QString path = directoryResult->path;
         qCDebug(lcDiscovery) << discoveryJob << path;
         // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread

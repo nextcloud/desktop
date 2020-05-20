@@ -63,7 +63,7 @@ using namespace OCC;
 #ifndef ZLIB_FOUND
         QSKIP("ZLIB not found.", SkipSingle);
 #else
-        ComputeChecksum *vali = new ComputeChecksum(this);
+        auto *vali = new ComputeChecksum(this);
         _expectedType = "Adler32";
         vali->setChecksumType(_expectedType);
 
@@ -83,7 +83,7 @@ using namespace OCC;
 
     void testUploadChecksummingMd5() {
 
-        ComputeChecksum *vali = new ComputeChecksum(this);
+        auto *vali = new ComputeChecksum(this);
         _expectedType = OCC::checkSumMD5C;
         vali->setChecksumType(_expectedType);
         connect(vali, SIGNAL(done(QByteArray,QByteArray)), this, SLOT(slotUpValidated(QByteArray,QByteArray)));
@@ -100,7 +100,7 @@ using namespace OCC;
 
     void testUploadChecksummingSha1() {
 
-        ComputeChecksum *vali = new ComputeChecksum(this);
+        auto *vali = new ComputeChecksum(this);
         _expectedType = OCC::checkSumSHA1C;
         vali->setChecksumType(_expectedType);
         connect(vali, SIGNAL(done(QByteArray,QByteArray)), this, SLOT(slotUpValidated(QByteArray,QByteArray)));
@@ -125,7 +125,7 @@ using namespace OCC;
         adler.append(FileSystem::calcAdler32( _testfile ));
         _successDown = false;
 
-        ValidateChecksumHeader *vali = new ValidateChecksumHeader(this);
+        auto *vali = new ValidateChecksumHeader(this);
         connect(vali, SIGNAL(validated(QByteArray,QByteArray)), this, SLOT(slotDownValidated()));
         connect(vali, SIGNAL(validationFailed(QString)), this, SLOT(slotDownError(QString)));
         vali->start(_testfile, adler);

@@ -77,7 +77,7 @@ void OcsJob::start()
     addRawHeader("Ocs-APIREQUEST", "true");
     addRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    QBuffer *buffer = new QBuffer;
+    auto *buffer = new QBuffer;
 
     QUrlQuery queryItems;
     if (_verb == "GET") {

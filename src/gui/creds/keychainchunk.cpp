@@ -68,7 +68,7 @@ void WriteJob::start()
 
 void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 {
-    QKeychain::WritePasswordJob *writeJob = static_cast<QKeychain::WritePasswordJob *>(incomingJob);
+    auto *writeJob = static_cast<QKeychain::WritePasswordJob *>(incomingJob);
 
     // errors?
     if (writeJob) {
@@ -114,7 +114,7 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
             _key + (index > 0 ? (QString(".") + QString::number(index)) : QString()),
             _account->id());
 
-        QKeychain::WritePasswordJob *job = new QKeychain::WritePasswordJob(_serviceName);
+        auto *job = new QKeychain::WritePasswordJob(_serviceName);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
         addSettingsToJob(_account, job);
 #endif
@@ -158,7 +158,7 @@ void ReadJob::start()
         _key,
         _keychainMigration ? QString() : _account->id());
 
-    QKeychain::ReadPasswordJob *job = new QKeychain::ReadPasswordJob(_serviceName);
+    auto *job = new QKeychain::ReadPasswordJob(_serviceName);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
     addSettingsToJob(_account, job);
 #endif
@@ -171,7 +171,7 @@ void ReadJob::start()
 void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
 {
     // Errors or next chunk?
-    QKeychain::ReadPasswordJob *readJob = static_cast<QKeychain::ReadPasswordJob *>(incomingJob);
+    auto *readJob = static_cast<QKeychain::ReadPasswordJob *>(incomingJob);
 
     if (readJob) {
         if (readJob->error() == NoError && readJob->binaryData().length() > 0) {

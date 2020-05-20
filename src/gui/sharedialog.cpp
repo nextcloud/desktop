@@ -109,7 +109,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     }
 
     if (QFileInfo(_localPath).isFile()) {
-        ThumbnailJob *job = new ThumbnailJob(_sharePath, _accountState->account(), this);
+        auto *job = new ThumbnailJob(_sharePath, _accountState->account(), this);
         connect(job, &ThumbnailJob::jobFinished, this, &ShareDialog::slotThumbnailFetched);
         job->start();
     }

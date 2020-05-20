@@ -85,7 +85,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     // Find the responsible QNAM if possible.
     QNetworkAccessManager *sending_qnam = nullptr;
     QWeakPointer<QNetworkAccessManager> qnam_alive;
-    if (Account *account = qobject_cast<Account *>(sender())) {
+    if (auto *account = qobject_cast<Account *>(sender())) {
         // Since we go into an event loop, it's possible for the account's qnam
         // to be destroyed before we get back. We can use this to check for its
         // liveness.
@@ -236,7 +236,7 @@ void ProxyAuthHandler::storeCredsInKeychain()
 
     _settings->setValue(keychainUsernameKey(), _username);
 
-    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName(), this);
+    auto *job = new WritePasswordJob(Theme::instance()->appName(), this);
     job->setSettings(_settings.data());
     job->setInsecureFallback(false);
     job->setKey(keychainPasswordKey());

@@ -463,7 +463,7 @@ void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
 
 void FolderMan::slotFolderCanSyncChanged()
 {
-    Folder *f = qobject_cast<Folder *>(sender());
+    auto *f = qobject_cast<Folder *>(sender());
      ASSERT(f);
     if (f->canSync()) {
         _socketApi->slotRegisterPath(f->alias());
@@ -608,7 +608,7 @@ void FolderMan::slotRunOneEtagJob()
 
 void FolderMan::slotAccountStateChanged()
 {
-    AccountState *accountState = qobject_cast<AccountState *>(sender());
+    auto *accountState = qobject_cast<AccountState *>(sender());
     if (!accountState) {
         return;
     }
@@ -790,7 +790,7 @@ void FolderMan::slotRemoveFoldersForAccount(AccountState *accountState)
 
 void FolderMan::slotForwardFolderSyncStateChange()
 {
-    if (Folder *f = qobject_cast<Folder *>(sender())) {
+    if (auto *f = qobject_cast<Folder *>(sender())) {
         emit folderSyncStateChange(f);
     }
 }
@@ -1378,7 +1378,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
 
     const QString userDir = QDir::cleanPath(canonicalPath(path)) + '/';
     for (auto i = _folderMap.constBegin(); i != _folderMap.constEnd(); ++i) {
-        Folder *f = static_cast<Folder *>(i.value());
+        auto *f = static_cast<Folder *>(i.value());
         QString folderDir = QDir::cleanPath(canonicalPath(f->path())) + '/';
 
         bool differentPaths = QString::compare(folderDir, userDir, cs) != 0;

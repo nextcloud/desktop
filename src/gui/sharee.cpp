@@ -73,7 +73,7 @@ void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
 {
     _search = search;
     _shareeBlacklist = blacklist;
-    OcsShareeJob *job = new OcsShareeJob(_account);
+    auto *job = new OcsShareeJob(_account);
     connect(job, &OcsShareeJob::shareeJobFinished, this, &ShareeModel::shareesFetched);
     connect(job, &OcsJob::ocsError, this, &ShareeModel::displayErrorMessage);
     job->getSharees(_search, _type, 1, 50);

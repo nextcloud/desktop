@@ -137,7 +137,7 @@ void User::slotRefreshNotifications()
     // start a server notification handler if no notification requests
     // are running
     if (_notificationRequestsRunning == 0) {
-        ServerNotificationHandler *snh = new ServerNotificationHandler(_account.data());
+        auto *snh = new ServerNotificationHandler(_account.data());
         connect(snh, &ServerNotificationHandler::newNotificationList,
             this, &User::slotBuildNotificationDisplay);
 
@@ -185,7 +185,7 @@ void User::slotSendNotificationRequest(const QString &accountName, const QString
     if (validVerbs.contains(verb)) {
         AccountStatePtr acc = AccountManager::instance()->account(accountName);
         if (acc) {
-            NotificationConfirmJob *job = new NotificationConfirmJob(acc->account());
+            auto *job = new NotificationConfirmJob(acc->account());
             QUrl l(link);
             job->setLinkAndVerb(l, verb);
             job->setProperty("activityRow", QVariant::fromValue(row));
@@ -206,7 +206,7 @@ void User::slotSendNotificationRequest(const QString &accountName, const QString
 
 void User::slotNotifyNetworkError(QNetworkReply *reply)
 {
-    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob *>(sender());
+    auto *job = qobject_cast<NotificationConfirmJob *>(sender());
     if (!job) {
         return;
     }
@@ -219,7 +219,7 @@ void User::slotNotifyNetworkError(QNetworkReply *reply)
 
 void User::slotNotifyServerFinished(const QString &reply, int replyCode)
 {
-    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob *>(sender());
+    auto *job = qobject_cast<NotificationConfirmJob *>(sender());
     if (!job) {
         return;
     }

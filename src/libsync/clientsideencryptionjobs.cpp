@@ -37,7 +37,7 @@ void GetFolderEncryptStatusJob::start()
     req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/xml"));
 
 	QByteArray xml = "<d:propfind xmlns:d=\"DAV:\"> <d:prop xmlns:nc=\"http://nextcloud.org/ns\"> <nc:is-encrypted/> </d:prop> </d:propfind>";
-	QBuffer *buf = new QBuffer(this);
+	auto *buf = new QBuffer(this);
 	buf->setData(xml);
 	buf->open(QIODevice::ReadOnly);
   QString tmpPath = path() + (!_folder.isEmpty() ? "/" + _folder : QString());

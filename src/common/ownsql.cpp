@@ -384,7 +384,7 @@ void SqlQuery::bindValue(int pos, const QVariant &value)
     case QVariant::String: {
         if (!value.toString().isNull()) {
             // lifetime of string == lifetime of its qvariant
-            const QString *str = static_cast<const QString *>(value.constData());
+            const auto *str = static_cast<const QString *>(value.constData());
             res = sqlite3_bind_text16(_stmt, pos, str->utf16(),
                 (str->size()) * sizeof(QChar), SQLITE_TRANSIENT);
         } else {

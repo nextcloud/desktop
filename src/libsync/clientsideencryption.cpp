@@ -91,7 +91,7 @@ QByteArray generateRandomFilename()
 
 QByteArray generateRandom(int size)
 {
-    unsigned char *tmp = (unsigned char *)malloc(sizeof(unsigned char) * size);
+    auto *tmp = (unsigned char *)malloc(sizeof(unsigned char) * size);
 
     int ret = RAND_bytes(tmp, size);
     if (ret != 1) {
@@ -175,7 +175,7 @@ QByteArray encryptPrivateKey(
     QByteArray privateKeyB64 = privateKey.toBase64();
 
     // Make sure we have enough room in the cipher text
-    unsigned char *ctext = (unsigned char *)malloc(sizeof(unsigned char) * (privateKeyB64.size() + 32));
+    auto *ctext = (unsigned char *)malloc(sizeof(unsigned char) * (privateKeyB64.size() + 32));
 
     // Do the actual encryption
     int len = 0;
@@ -196,7 +196,7 @@ QByteArray encryptPrivateKey(
     clen += len;
 
     /* Get the tag */
-    unsigned char *tag = (unsigned char *)calloc(sizeof(unsigned char), 16);
+    auto *tag = (unsigned char *)calloc(sizeof(unsigned char), 16);
     if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
         qCInfo(lcCse()) << "Error getting the tag";
         handleErrors();
@@ -263,7 +263,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
         return QByteArray();
     }
 
-    unsigned char *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
+    auto *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
     int plen;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
@@ -352,7 +352,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         return QByteArray();
     }
 
-    unsigned char *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
+    auto *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
     int plen;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
@@ -447,7 +447,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     QByteArray dataB64 = data.toBase64();
 
     // Make sure we have enough room in the cipher text
-    unsigned char *ctext = (unsigned char *)malloc(sizeof(unsigned char) * (dataB64.size() + 16));
+    auto *ctext = (unsigned char *)malloc(sizeof(unsigned char) * (dataB64.size() + 16));
 
     // Do the actual encryption
     int len = 0;
@@ -470,7 +470,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     clen += len;
 
     /* Get the tag */
-    unsigned char *tag = (unsigned char *)calloc(sizeof(unsigned char), 16);
+    auto *tag = (unsigned char *)calloc(sizeof(unsigned char), 16);
     if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
         qCInfo(lcCse()) << "Error getting the tag";
         handleErrors();
@@ -534,7 +534,7 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
         qCInfo(lcCseDecryption()) << "Size of data is: " << data.size();
     }
 
-    unsigned char *out = (unsigned char *) OPENSSL_malloc(outlen);
+    auto *out = (unsigned char *) OPENSSL_malloc(outlen);
     if (!out) {
         qCInfo(lcCseDecryption()) << "Could not alloc space for the decrypted metadata";
         handleErrors();
@@ -592,7 +592,7 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
         qCInfo(lcCse()) << "Encryption Length:" << outLen;
     }
 
-    unsigned char *out = (uchar*) OPENSSL_malloc(outLen);
+    auto *out = (uchar*) OPENSSL_malloc(outLen);
     if (!out) {
         qCInfo(lcCse()) << "Error requesting memory for the encrypted contents";
         exit(1);
@@ -638,7 +638,7 @@ void ClientSideEncryption::fetchFromKeyChain() {
                 _account->id()
     );
 
-    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::publicKeyFetched);
@@ -646,7 +646,7 @@ void ClientSideEncryption::fetchFromKeyChain() {
 }
 
 void ClientSideEncryption::publicKeyFetched(Job *incoming) {
-    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
+    auto *readJob = static_cast<ReadPasswordJob *>(incoming);
 
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
@@ -671,7 +671,7 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming) {
                 _account->id()
     );
 
-    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::privateKeyFetched);
@@ -685,7 +685,7 @@ void ClientSideEncryption::setFolderEncryptedStatus(const QString& folder, bool 
 }
 
 void ClientSideEncryption::privateKeyFetched(Job *incoming) {
-    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
+    auto *readJob = static_cast<ReadPasswordJob *>(incoming);
 
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
@@ -711,7 +711,7 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming) {
                 _account->id()
     );
 
-    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::mnemonicKeyFetched);
@@ -719,7 +719,7 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming) {
 }
 
 void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming) {
-    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
+    auto *readJob = static_cast<ReadPasswordJob *>(incoming);
 
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->textData().length() == 0) {
@@ -744,7 +744,7 @@ void ClientSideEncryption::writePrivateKey() {
                 _account->id()
     );
 
-    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    auto *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(_privateKey);
@@ -762,7 +762,7 @@ void ClientSideEncryption::writeCertificate() {
                 _account->id()
     );
 
-    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    auto *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(_certificate.toPem());
@@ -780,7 +780,7 @@ void ClientSideEncryption::writeMnemonic() {
                 _account->id()
     );
 
-    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    auto *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setTextData(_mnemonic);
@@ -799,7 +799,7 @@ void ClientSideEncryption::forgetSensitiveData()
     _mnemonic = QString();
 
     auto startDeleteJob = [this](QString user) {
-        DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+        auto *job = new DeletePasswordJob(Theme::instance()->appName());
         job->setInsecureFallback(false);
         job->setKey(AbstractCredentials::keychainKey(_account->url().toString(), user, _account->id()));
         job->start();
@@ -1408,7 +1408,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
         return false;
     }
 
-    unsigned char *out = (unsigned char *)malloc(sizeof(unsigned char) * (1024 + 16 -1));
+    auto *out = (unsigned char *)malloc(sizeof(unsigned char) * (1024 + 16 -1));
     int len = 0;
     int total_len = 0;
 
@@ -1439,7 +1439,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     total_len += len;
 
     /* Get the tag */
-    unsigned char *tag = (unsigned char *)malloc(sizeof(unsigned char) * 16);
+    auto *tag = (unsigned char *)malloc(sizeof(unsigned char) * 16);
     if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
         qCInfo(lcCse()) << "Could not get tag";
         return false;
@@ -1495,7 +1495,7 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
 
     qint64 size = input->size() - 16;
 
-    unsigned char *out = (unsigned char *)malloc(sizeof(unsigned char) * (1024 + 16 -1));
+    auto *out = (unsigned char *)malloc(sizeof(unsigned char) * (1024 + 16 -1));
     int len = 0;
 
     while(input->pos() < size) {

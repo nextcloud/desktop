@@ -534,12 +534,12 @@ void Account::writeAppPasswordOnce(QString appPassword){
                 id()
     );
 
-    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    auto *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->setBinaryData(appPassword.toLatin1());
     connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
-        WritePasswordJob *writeJob = static_cast<WritePasswordJob *>(incoming);
+        auto *writeJob = static_cast<WritePasswordJob *>(incoming);
         if (writeJob->error() == NoError)
             qCInfo(lcAccount) << "appPassword stored in keychain";
         else
@@ -558,11 +558,11 @@ void Account::retrieveAppPassword(){
                 id()
     );
 
-    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     connect(job, &ReadPasswordJob::finished, [this](Job *incoming) {
-        ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
+        auto *readJob = static_cast<ReadPasswordJob *>(incoming);
         QString pwd("");
         // Error or no valid public key error out
         if (readJob->error() == NoError &&
@@ -587,11 +587,11 @@ void Account::deleteAppPassword(){
         return;
     }
 
-    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    auto *job = new DeletePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     connect(job, &DeletePasswordJob::finished, [this](Job *incoming) {
-        DeletePasswordJob *deleteJob = static_cast<DeletePasswordJob *>(incoming);
+        auto *deleteJob = static_cast<DeletePasswordJob *>(incoming);
         if (deleteJob->error() == NoError)
             qCInfo(lcAccount) << "appPassword deleted from keychain";
         else
@@ -612,7 +612,7 @@ void Account::fetchDirectEditors(const QUrl &directEditingURL, const QString &di
     if (!directEditingURL.isEmpty() &&
         (directEditingETag.isEmpty() || directEditingETag != _lastDirectEditingETag)) {
             // Fetch the available editors and their mime types
-            JsonApiJob *job = new JsonApiJob(sharedFromThis(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing"), this);
+            auto *job = new JsonApiJob(sharedFromThis(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing"), this);
             QObject::connect(job, &JsonApiJob::jsonReceived, this, &Account::slotDirectEditingRecieved);
             job->start();
     }
@@ -633,7 +633,7 @@ void Account::slotDirectEditingRecieved(const QJsonDocument &json)
             auto mimeTypes = editor.value("mimetypes").toArray();
             auto optionalMimeTypes = editor.value("optionalMimetypes").toArray();
 
-            DirectEditor *directEditor = new DirectEditor(id, name);
+            auto *directEditor = new DirectEditor(id, name);
 
             foreach(auto mimeType, mimeTypes) {
                 directEditor->addMimetype(mimeType.toString().toLatin1());
