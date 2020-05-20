@@ -8,97 +8,8 @@ import QtGraphicalEffects 1.0
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
-import com.nextcloud.gui 1.0
 
 Window {
-
-    function setTrayWindowPosition()
-    {
-        var trayIconCenter = systrayBackend.calcTrayIconCenter();
-        console.debug("Calculated tray icon center:",trayIconCenter);
-        var currentScreen = systrayBackend.screenIndex();
-        console.debug("Tray menu about to show on screen",currentScreen,".");
-        trayWindow.screen = Qt.application.screens[currentScreen];
-        trayWindow.show();
-        trayWindow.raise();
-        trayWindow.requestActivate();
-        var trayWindowX;
-        var trayWindowY;
-        var taskbarOrientation = systrayBackend.taskbarOrientation();
-        var taskbarRect = systrayBackend.taskbarRect();
-        var screenRect = Qt.rect(0, 0, Screen.width, Screen.height)
-        if (Qt.platform.os === "linux") {
-            screenRect.x = Screen.virtualX
-            screenRect.y = Screen.virtualY
-        }
-
-        switch(taskbarOrientation) {
-            // Platform separation here: Windows and macOS draw coordinates have to be given in screen-coordinates
-            // KDE and most xorg based DEs expect them as virtual coordinates
-            case Systray.Bottom:
-                console.debug("Taskbar is on the bottom.");
-                trayWindowX = trayIconCenter.x - trayWindow.width / 2;
-                trayWindowY = screenRect.bottom - taskbarRect.height - trayWindow.height - 4;
-                break;
-            case Systray.Left:
-                console.debug("Taskbar is on the left.");
-                trayWindowX = screenRect.left + taskbarRect.width + 4;
-                trayWindowY = trayIconCenter.y;
-                break;
-            case Systray.Top:
-                console.debug("Taskbar is on the top.");
-                trayWindowX = trayIconCenter.x - trayWindow.width / 2;
-                trayWindowY = screenRect.top + taskbarRect.height + 4;
-                break;
-            case Systray.Right:
-                console.debug("Taskbar is on the right.");
-                trayWindowX = screenRect.right - taskbarRect.width - trayWindow.width - 4;
-                trayWindowY = trayIconCenter.y;
-                break;
-        }
-
-        console.debug("Screen.height:", Screen.height);
-        console.debug("Screen.desktopAvailableHeight:", Screen.desktopAvailableHeight);
-        console.debug("Screen.virtualY:", Screen.virtualY);
-        console.debug("Screen.width:", Screen.width);
-        console.debug("Screen.desktopAvailableWidth:", Screen.desktopAvailableWidth);
-        console.debug("Screen.virtualX:", Screen.virtualX);
-        console.debug("Taskbar height:", taskbarRect.height);
-        console.debug("Taskbar width:", taskbarRect.width);
-
-        if (screenRect.right <= trayWindowX + trayWindow.width) {
-            console.debug("Out-of-screen condition on the right detected. Adjusting window position.");
-            trayWindowX = screenRect.right - trayWindow.width - 4;
-
-            if (Qt.platform.os === "linux") {
-                trayWindowX -= taskbarOrientation === Systray.Right ? taskbarRect.width : 0;
-            }
-        }
-        if (trayWindowX <= screenRect.left) {
-            console.debug("Out-of-screen condition on the left detected. Adjusting window position.");
-            trayWindowX = screenRect.left + 4;
-
-            if (Qt.platform.os === "linux") {
-               trayWindowX += taskbarOrientation === Systray.Left ? taskbarRect.width : 0;
-            }
-        }
-        if (trayWindowY <= screenRect.top) {
-            console.debug("Out-of-screen condition on the top detected. Adjusting window position.");
-            trayWindowY = screenRect.top + 4;
-
-            if (Qt.platform.os === "linux") {
-                trayWindowY += taskbarOrientation === Systray.Top ? taskbarRect.height : 0;
-            }
-        }
-        if (screenRect.bottom <= trayWindowY + trayWindow.height) {
-            console.debug("Out-of-screen condition on the bottom detected. Adjusting window position.");
-            trayWindowY = screenRect.bottom - trayWindow.height - 4;
-        }
-        console.debug("Tray window position: x =",trayWindowX," y =",trayWindowY);
-        trayWindow.setX(trayWindowX);
-        trayWindow.setY(trayWindowY);
-    }
-
     id:         trayWindow
 
     width:      Style.trayWindowWidth
@@ -151,7 +62,17 @@ Window {
         target: systrayBackend
         onShowWindow: {
             accountMenu.close();
-            setTrayWindowPosition();
+
+            trayWindow.screen = Qt.application.screens[systrayBackend.screenIndex()];
+
+            var position = systrayBackend.computeWindowPosition(trayWindow.width, trayWindow.height)
+            trayWindow.x = position.x
+            trayWindow.y = position.y
+
+            trayWindow.show();
+            trayWindow.raise();
+            trayWindow.requestActivate();
+
             systrayBackend.setOpened();
             userModelBackend.fetchCurrentActivityModel();
         }

@@ -20,6 +20,7 @@
 #include "accountmanager.h"
 #include "tray/UserModel.h"
 
+class QScreen;
 class QQmlApplicationEngine;
 
 namespace OCC {
@@ -57,10 +58,11 @@ public:
     Q_INVOKABLE bool syncIsPaused();
     Q_INVOKABLE void setOpened();
     Q_INVOKABLE void setClosed();
-    Q_INVOKABLE int screenIndex();
-    Q_INVOKABLE QPoint calcTrayIconCenter();
-    Q_INVOKABLE TaskBarPosition taskbarOrientation();
-    Q_INVOKABLE QRect taskbarRect();
+    Q_INVOKABLE int screenIndex() const;
+    Q_INVOKABLE QPoint calcTrayIconCenter() const;
+    Q_INVOKABLE TaskBarPosition taskbarOrientation() const;
+    Q_INVOKABLE QRect taskbarGeometry() const;
+    Q_INVOKABLE QPoint computeWindowPosition(int width, int height) const;
 
 signals:
     void currentUserChanged();
@@ -80,6 +82,11 @@ public slots:
 private:
     static Systray *_instance;
     Systray();
+
+    QScreen *currentScreen() const;
+    QRect currentScreenRect() const;
+    QPoint computeWindowReferencePoint(int width, int height) const;
+
     bool _isOpen = false;
     bool _syncIsPaused = false;
     QQmlApplicationEngine *_trayEngine;

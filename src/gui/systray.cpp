@@ -61,8 +61,6 @@ Systray::Systray()
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Systray::showWindow);
-
-    qmlRegisterUncreatableType<Systray>("com.nextcloud.gui", 1, 0, "Systray", "This type is uncreatable, it is exported for its enums");
 }
 
 void Systray::create()
@@ -146,8 +144,22 @@ void Systray::pauseResumeSync()
 /* Helper functions for cross-platform tray icon position and taskbar orientation detection */
 /********************************************************************************************/
 
+QScreen *Systray::currentScreen() const
+{
+    const auto screens = QGuiApplication::screens();
+    const auto cursorPos = QCursor::pos();
+
+    for (const auto screen : screens) {
+        if (screen->geometry().contains(cursorPos)) {
+            return screen;
+        }
+    }
+
+    return nullptr;
+}
+
 /// Return the current screen index based on cursor position
-int Systray::screenIndex()
+int Systray::screenIndex() const
 {
     auto qPos = QCursor::pos();
     for (int i = 0; i < QGuiApplication::screens().count(); i++) {
@@ -158,7 +170,7 @@ int Systray::screenIndex()
     return 0;
 }
 
-Systray::TaskBarPosition Systray::taskbarOrientation()
+Systray::TaskBarPosition Systray::taskbarOrientation() const
 {
 // macOS: Always on top
 #if defined(Q_OS_MACOS)
@@ -208,7 +220,7 @@ Systray::TaskBarPosition Systray::taskbarOrientation()
 }
 
 // TODO: Get real taskbar dimensions Linux as well
-QRect Systray::taskbarRect()
+QRect Systray::taskbarGeometry() const
 {
 #if defined(Q_OS_WIN)
     QRect tbRect = Utility::getTaskbarDimensions();
@@ -234,15 +246,90 @@ QRect Systray::taskbarRect()
 #endif
 }
 
-QPoint Systray::calcTrayIconCenter()
+QRect Systray::currentScreenRect() const
 {
-// QSystemTrayIcon::geometry() is broken for ages on most Linux DEs (invalid geometry returned)
-// thus we can use this only for Windows and macOS
+    const auto screen = currentScreen();
+    const auto rect = screen->geometry();
+    return rect.translated(screen->virtualGeometry().topLeft());
+}
+
+QPoint Systray::computeWindowReferencePoint(int width, int height) const
+{
+    const auto trayIconCenter = calcTrayIconCenter();
+    const auto taskbarRect = taskbarGeometry();
+    const auto taskbarScreenEdge = taskbarOrientation();
+    const auto screenRect = currentScreenRect();
+
+    switch(taskbarScreenEdge) {
+    case TaskBarPosition::Bottom:
+        return {
+            trayIconCenter.x() - width / 2,
+            screenRect.bottom() - taskbarRect.height() - height - 4
+        };
+    case TaskBarPosition::Left:
+        return {
+            screenRect.left() + taskbarRect.width() + 4,
+            trayIconCenter.y()
+        };
+    case TaskBarPosition::Top:
+        return {
+            trayIconCenter.x() - width / 2,
+            screenRect.top() + taskbarRect.height() + 4
+        };
+    case TaskBarPosition::Right:
+        return {
+            screenRect.right() - taskbarRect.width() - width - 4,
+            trayIconCenter.y()
+        };
+    }
+    Q_UNREACHABLE();
+}
+
+QPoint Systray::computeWindowPosition(int width, int height) const
+{
+    auto referencePoint = computeWindowReferencePoint(width, height);
+
+    const auto taskbarScreenEdge = taskbarOrientation();
+    const auto taskbarRect = taskbarGeometry();
+    const auto screenRect = currentScreenRect();
+
+    if (screenRect.right() <= referencePoint.x() + width) {
+        referencePoint.rx() = screenRect.right() - width - 4;
+#if !defined(Q_OS_WIN) && !defined(Q_OS_MACOS)
+        referencePoint.rx() -= taskbarScreenEdge == TaskBarPosition::Right ? taskbarRect.width() : 0;
+#endif
+    }
+
+    if (referencePoint.x() <= screenRect.left()) {
+        referencePoint.rx() = screenRect.left() + 4;
+#if !defined(Q_OS_WIN) && !defined(Q_OS_MACOS)
+        referencePoint.rx() += taskbarScreenEdge == TaskBarPosition::Left ? taskbarRect.width() : 0;
+#endif
+    }
+
+    if (referencePoint.y() <= screenRect.top()) {
+        referencePoint.ry() = screenRect.top() + 4;
+
+#if !defined(Q_OS_WIN) && !defined(Q_OS_MACOS)
+        referencePoint.ry() += taskbarScreenEdge == TaskBarPosition::Top ? taskbarRect.height() : 0;
+#endif
+    }
+    if (screenRect.bottom() <= referencePoint.y() + height) {
+        referencePoint.ry() = screenRect.bottom() - height - 4;
+    }
+
+    return referencePoint;
+}
+
+QPoint Systray::calcTrayIconCenter() const
+{
+    // QSystemTrayIcon::geometry() is broken for ages on most Linux DEs (invalid geometry returned)
+    // thus we can use this only for Windows and macOS
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
     auto trayIconCenter = geometry().center();
     return trayIconCenter;
 #else
-// On Linux, fall back to mouse position (assuming tray icon is activated by mouse click)
+    // On Linux, fall back to mouse position (assuming tray icon is activated by mouse click)
     return QCursor::pos();
 #endif
 }
