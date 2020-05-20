@@ -87,33 +87,19 @@ public:
 
     struct DownloadInfo
     {
-        DownloadInfo()
-            : _errorCount(0)
-            , _valid(false)
-        {
-        }
         QString _tmpfile;
         QByteArray _etag;
-        int _errorCount;
-        bool _valid;
+        int _errorCount = 0;
+        bool _valid = false;
     };
     struct UploadInfo
     {
-        UploadInfo()
-            : _chunk(0)
-            , _transferid(0)
-            , _size(0)
-            , _modtime(0)
-            , _errorCount(0)
-            , _valid(false)
-        {
-        }
-        int _chunk;
-        int _transferid;
-        quint64 _size; //currently unused
-        qint64 _modtime;
-        int _errorCount;
-        bool _valid;
+        int _chunk = 0;
+        int _transferid = 0;
+        quint64 _size = 0; //currently unused
+        qint64 _modtime = 0;
+        int _errorCount = 0;
+        bool _valid = false;
         QByteArray _contentChecksum;
         /**
          * Returns true if this entry refers to a chunked upload that can be continued.
