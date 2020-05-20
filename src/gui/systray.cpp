@@ -19,10 +19,9 @@
 #include "tray/UserModel.h"
 
 #include <QCursor>
-#include <QDesktopServices>
 #include <QGuiApplication>
-#include <QQmlComponent>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QScreen>
 
 #ifdef USE_FDO_NOTIFICATIONS
@@ -50,8 +49,8 @@ Systray *Systray::instance()
 Systray::Systray()
     : _isOpen(false)
     , _syncIsPaused(false)
+    , _trayEngine(new QQmlApplicationEngine(this))
 {
-    _trayEngine = new QQmlApplicationEngine;
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
     _trayEngine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
