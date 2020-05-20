@@ -362,7 +362,7 @@ void FolderWizardRemotePath::slotFolderEntryEdited(const QString &text)
         return;
     }
 
-    _ui.folderTreeWidget->setCurrentItem(0);
+    _ui.folderTreeWidget->setCurrentItem(nullptr);
     _lscolTimer.start(); // avoid sending a request on each keystroke
 }
 
@@ -375,7 +375,7 @@ void FolderWizardRemotePath::slotLsColFolderEntry()
     LsColJob *job = runLsColJob(path);
     // No error handling, no updating, we do this manually
     // because of extra logic in the typed-path case.
-    disconnect(job, 0, this, 0);
+    disconnect(job, nullptr, this, nullptr);
     connect(job, &LsColJob::finishedWithError,
         this, &FolderWizardRemotePath::slotTypedPathError);
     connect(job, &LsColJob::directoryListingSubfolders,
