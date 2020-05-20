@@ -149,12 +149,7 @@ if(BUILD_CLIENT)
     find_package(PdfLatex)
 
     find_package(ZLIB REQUIRED)
-
-    if (APPLE OR WIN32)
-        set(USE_OUR_OWN_SQLITE3 TRUE)
-    else()
-        find_package(SQLite3 3.9.0 REQUIRED)
-    endif()
+    find_package(SQLite3 3.9.0 REQUIRED)
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)

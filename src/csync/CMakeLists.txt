@@ -47,17 +47,6 @@ if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
     list(APPEND csync_SRCS std/asprintf.c)
 endif()
 
-if (USE_OUR_OWN_SQLITE3)
-    add_library(sqlite STATIC ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3/sqlite3.c)
-    set_target_properties(sqlite PROPERTIES AUTOMOC OFF)
-    target_include_directories(sqlite PUBLIC ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3)
-    add_library(SQLite::SQLite3 ALIAS sqlite)
-    MESSAGE(STATUS "Using own sqlite3 from " ${CMAKE_SOURCE_DIR}/src/3rdparty/sqlite3/)
-    if (CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID MATCHES "Clang")
-        target_compile_options(sqlite PRIVATE -w)
-    endif()
-endif()
-
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library("${csync_NAME}" SHARED ${common_SOURCES} ${csync_SRCS})
