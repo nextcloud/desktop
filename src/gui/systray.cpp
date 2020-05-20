@@ -158,16 +158,9 @@ QScreen *Systray::currentScreen() const
     return nullptr;
 }
 
-/// Return the current screen index based on cursor position
-int Systray::screenIndex() const
+QVariant Systray::currentScreenVar() const
 {
-    auto qPos = QCursor::pos();
-    for (int i = 0; i < QGuiApplication::screens().count(); i++) {
-        if (QGuiApplication::screens().at(i)->geometry().contains(qPos)) {
-            return i;
-        }
-    }
-    return 0;
+    return QVariant::fromValue(currentScreen());
 }
 
 Systray::TaskBarPosition Systray::taskbarOrientation() const
@@ -195,17 +188,13 @@ Systray::TaskBarPosition Systray::taskbarOrientation() const
     }
 // Probably Linux
 #else
-    auto currentScreen = screenIndex();
-    auto screenWidth = QGuiApplication::screens().at(currentScreen)->geometry().width();
-    auto screenHeight = QGuiApplication::screens().at(currentScreen)->geometry().height();
-    auto virtualY = QGuiApplication::screens().at(currentScreen)->virtualGeometry().y();
-    auto virtualX = QGuiApplication::screens().at(currentScreen)->virtualGeometry().x();
-    QPoint trayIconCenter = calcTrayIconCenter();
+    const auto screenRect = currentScreenRect();
+    const auto trayIconCenter = calcTrayIconCenter();
 
-    auto distBottom = screenHeight - (trayIconCenter.y() - virtualY);
-    auto distRight = screenWidth - (trayIconCenter.x() - virtualX);
-    auto distLeft = trayIconCenter.x() - virtualX;
-    auto distTop = trayIconCenter.y() - virtualY;
+    auto distBottom = screenRect.bottom() - trayIconCenter.y();
+    auto distRight = screenRect.right() - trayIconCenter.x();
+    auto distLeft = trayIconCenter.x() - screenRect.left();
+    auto distTop = trayIconCenter.y() - screenRect.top();
 
     if (distBottom < distRight && distBottom < distTop && distBottom < distLeft) {
         return TaskBarPosition::Bottom;
@@ -225,7 +214,7 @@ QRect Systray::taskbarGeometry() const
 #if defined(Q_OS_WIN)
     QRect tbRect = Utility::getTaskbarDimensions();
     //QML side expects effective pixels, convert taskbar dimensions if necessary
-    auto pixelRatio = QGuiApplication::screens().at(screenIndex())->devicePixelRatio();
+    auto pixelRatio = currentScreen()->devicePixelRatio();
     if (pixelRatio != 1) {
         tbRect.setHeight(tbRect.height() / pixelRatio);
         tbRect.setWidth(tbRect.width() / pixelRatio);
@@ -233,14 +222,14 @@ QRect Systray::taskbarGeometry() const
     return tbRect;
 #elif defined(Q_OS_MACOS)
     // Finder bar is always 22px height on macOS (when treating as effective pixels)
-    auto screenWidth = QGuiApplication::screens().at(screenIndex())->geometry().width();
+    auto screenWidth = currentScreenRect().width();
     return QRect(0, 0, screenWidth, 22);
 #else
     if (taskbarOrientation() == TaskBarPosition::Bottom || taskbarOrientation() == TaskBarPosition::Top) {
-        auto screenWidth = QGuiApplication::screens().at(screenIndex())->geometry().width();
+        auto screenWidth = currentScreenRect().width();
         return QRect(0, 0, screenWidth, 32);
     } else {
-        auto screenHeight = QGuiApplication::screens().at(screenIndex())->geometry().height();
+        auto screenHeight = currentScreenRect().height();
         return QRect(0, 0, 32, screenHeight);
     }
 #endif
