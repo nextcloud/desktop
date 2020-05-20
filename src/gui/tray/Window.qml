@@ -8,6 +8,7 @@ import QtGraphicalEffects 1.0
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
+import com.nextcloud.gui 1.0
 
 Window {
 
@@ -29,24 +30,24 @@ Window {
         switch(tbOrientation) {
             // Platform separation here: Windows and macOS draw coordinates have to be given in screen-coordinates
             // KDE and most xorg based DEs expect them as virtual coordinates
-            case 0:
+            case Systray.Bottom:
                 console.debug("Taskbar is on the bottom.");
                 trayWindowX = trayIconCenter.x - trayWindow.width / 2;
                 trayWindowY = (Qt.platform.os !== "linux") ? (Screen.height - taskbarRect.height - trayWindow.height - 4)
                                                            : (Screen.height + Screen.virtualY - taskbarRect.height - trayWindow.height - 4);
                 break;
-            case 1:
+            case Systray.Left:
                 console.debug("Taskbar is on the left.");
                 trayWindowX = (Qt.platform.os !== "linux") ? (taskbarRect.width + 4)
                                                            : (Screen.virtualX + taskbarRect.width + 4);
                 trayWindowY = trayIconCenter.y;
                 break;
-            case 2:
+            case Systray.Top:
                 console.debug("Taskbar is on the top.");
                 trayWindowX = trayIconCenter.x - trayWindow.width / 2;
                 trayWindowY = Screen.virtualY + taskbarRect.height + 4;
                 break;
-            case 3:
+            case Systray.Right:
                 console.debug("Taskbar is on the right.");
                 trayWindowX = (Qt.platform.os !== "linux") ? (Screen.width - taskbarRect.width - trayWindow.width - 4)
                                                            : (Screen.width + Screen.virtualX - taskbarRect.width - trayWindow.width - 4);
@@ -68,7 +69,7 @@ Window {
             if (Qt.platform.os !== "linux") {
                 trayWindowX = Screen.width - trayWindow.width - 4;
             } else {
-                trayWindowX = Screen.width + Screen.virtualX - trayWindow.width - 4 - (tbOrientation === 3 ? taskbarRect.width : 0);
+                trayWindowX = Screen.width + Screen.virtualX - trayWindow.width - 4 - (tbOrientation === Systray.Right ? taskbarRect.width : 0);
             }
         }
         if (trayWindowX <= Screen.x && Qt.platform.os !== "linux") {
@@ -77,7 +78,7 @@ Window {
         }
         if (trayWindowX <= Screen.virtualX && Qt.platform.os === "linux") {
            console.debug("Out-of-screen condition on the left detected. Adjusting window position.");
-           trayWindowX = Screen.virtualX + 4 + (tbOrientation === 1 ? taskbarRect.width : 0)
+           trayWindowX = Screen.virtualX + 4 + (tbOrientation === Systray.Left ? taskbarRect.width : 0)
         }
         if (trayWindowY <= Screen.y && Qt.platform.os !== "linux") {
             console.debug("Out-of-screen condition on the top detected. Adjusting window position.");
@@ -85,7 +86,7 @@ Window {
         }
         if (trayWindowY <= Screen.virtualY && Qt.platform.os === "linux") {
             console.debug("Out-of-screen condition on the top detected. Adjusting window position.");
-            trayWindowY = Screen.virtualY + 4 + (tbOrientation === 2 ? taskbarRect.height : 0);
+            trayWindowY = Screen.virtualY + 4 + (tbOrientation === Systray.Top ? taskbarRect.height : 0);
         }
         if (Screen.height <= trayWindowY - Screen.virtualY + trayWindow.height) {
             console.debug("Out-of-screen condition on the bottom detected. Adjusting window position.");

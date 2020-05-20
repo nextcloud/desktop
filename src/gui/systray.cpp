@@ -62,6 +62,7 @@ Systray::Systray()
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Systray::showWindow);
 
+    qmlRegisterUncreatableType<Systray>("com.nextcloud.gui", 1, 0, "Systray", "This type is uncreatable, it is exported for its enums");
 }
 
 void Systray::create()
