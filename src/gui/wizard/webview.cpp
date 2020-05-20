@@ -144,7 +144,7 @@ WebViewPageUrlSchemeHandler::WebViewPageUrlSchemeHandler(QObject *parent)
 void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request) {
     QUrl url = request->requestUrl();
 
-    QString path = url.path(nullptr).mid(1); // get undecoded path
+    QString path = url.path().mid(1); // get undecoded path
     const QStringList parts = path.split("&");
 
     QString server;
