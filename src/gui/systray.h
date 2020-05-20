@@ -33,13 +33,6 @@ namespace Ui {
     class Systray;
 }
 
-enum TaskBarPosition {
-    Bottom = 0,
-    Left,
-    Top,
-    Right
-};
-
 /**
  * @brief The Systray class
  * @ingroup gui
@@ -52,6 +45,9 @@ public:
     static Systray *instance();
     virtual ~Systray() {};
 
+    enum class TaskBarPosition { Bottom, Left, Top, Right };
+    Q_ENUM(TaskBarPosition);
+
     void create();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
     void setToolTip(const QString &tip);
@@ -63,7 +59,7 @@ public:
     Q_INVOKABLE void setClosed();
     Q_INVOKABLE int screenIndex();
     Q_INVOKABLE QPoint calcTrayIconCenter();
-    Q_INVOKABLE int taskbarOrientation();
+    Q_INVOKABLE TaskBarPosition taskbarOrientation();
     Q_INVOKABLE QRect taskbarRect();
 
 signals:

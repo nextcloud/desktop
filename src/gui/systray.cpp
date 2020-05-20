@@ -157,7 +157,7 @@ int Systray::screenIndex()
     return 0;
 }
 
-int Systray::taskbarOrientation()
+Systray::TaskBarPosition Systray::taskbarOrientation()
 {
 // macOS: Always on top
 #if defined(Q_OS_MACOS)
@@ -180,18 +180,56 @@ int Systray::taskbarOrientation()
     default:
         return TaskBarPosition::Bottom;
     }
-// Else (generally linux DEs): fallback to cursor position nearest edge logic
+// Probably Linux
 #else
-    return 0;
+    auto currentScreen = screenIndex();
+    auto screenWidth = QGuiApplication::screens().at(currentScreen)->geometry().width();
+    auto screenHeight = QGuiApplication::screens().at(currentScreen)->geometry().height();
+    auto virtualY = QGuiApplication::screens().at(currentScreen)->virtualGeometry().y();
+    auto virtualX = QGuiApplication::screens().at(currentScreen)->virtualGeometry().x();
+    QPoint trayIconCenter = calcTrayIconCenter();
+
+    auto distBottom = screenHeight - (trayIconCenter.y() - virtualY);
+    auto distRight = screenWidth - (trayIconCenter.x() - virtualX);
+    auto distLeft = trayIconCenter.x() - virtualX;
+    auto distTop = trayIconCenter.y() - virtualY;
+
+    if (distBottom < distRight && distBottom < distTop && distBottom < distLeft) {
+        return TaskBarPosition::Bottom;
+    } else if (distLeft < distTop && distLeft < distRight && distLeft < distBottom) {
+        return TaskBarPosition::Left;
+    } else if (distTop < distRight && distTop < distBottom && distTop < distLeft) {
+        return TaskBarPosition::Top;
+    } else {
+        return TaskBarPosition::Right;
+    }
 #endif
 }
 
+// TODO: Get real taskbar dimensions Linux as well
 QRect Systray::taskbarRect()
 {
 #if defined(Q_OS_WIN)
-    return Utility::getTaskbarDimensions();
+    QRect tbRect = Utility::getTaskbarDimensions();
+    //QML side expects effective pixels, convert taskbar dimensions if necessary
+    auto pixelRatio = QGuiApplication::screens().at(screenIndex())->devicePixelRatio();
+    if (pixelRatio != 1) {
+        tbRect.setHeight(tbRect.height() / pixelRatio);
+        tbRect.setWidth(tbRect.width() / pixelRatio);
+    }
+    return tbRect;
+#elif defined(Q_OS_MACOS)
+    // Finder bar is always 22px height on macOS (when treating as effective pixels)
+    auto screenWidth = QGuiApplication::screens().at(screenIndex())->geometry().width();
+    return QRect(0, 0, screenWidth, 22);
 #else
-    return QRect(0, 0, 0, 32);
+    if (taskbarOrientation() == TaskBarPosition::Bottom || taskbarOrientation() == TaskBarPosition::Top) {
+        auto screenWidth = QGuiApplication::screens().at(screenIndex())->geometry().width();
+        return QRect(0, 0, screenWidth, 32);
+    } else {
+        auto screenHeight = QGuiApplication::screens().at(screenIndex())->geometry().height();
+        return QRect(0, 0, 32, screenHeight);
+    }
 #endif
 }
 

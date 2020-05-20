@@ -23,36 +23,8 @@ Window {
         trayWindow.requestActivate();
         var trayWindowX;
         var trayWindowY;
-        var taskbarHeight;
-        var taskbarWidth;
-        var tbOrientation;
-        if (Qt.platform.os === "linux") {
-            var distBottom = Screen.height - (trayIconCenter.y - Screen.virtualY);
-            var distRight = Screen.width - (trayIconCenter.x - Screen.virtualX);
-            var distLeft = trayIconCenter.x - Screen.virtualX;
-            var distTop = trayIconCenter.y - Screen.virtualY;
-            if (distBottom < distRight && distBottom < distTop && distBottom < distLeft) {
-                tbOrientation = 0;
-            } else if (distLeft < distTop && distLeft < distRight && distLeft < distBottom) {
-                tbOrientation = 1;
-            } else if (distTop < distRight && distTop < distBottom && distTop < distLeft) {
-                tbOrientation = 2;
-            } else {
-                tbOrientation = 3;
-            }
-        } else {
-            tbOrientation = systrayBackend.taskbarOrientation();
-        }
-        if (Qt.platform.os === "osx") {
-            taskbarHeight = 22;
-            taskbarWidth = Screen.width;
-        } else if (Qt.platform.os === "linux") {
-            taskbarHeight = (tbOrientation === 0 || tbOrientation === 2) ? 32 : Screen.height;
-            taskbarWidth = (tbOrientation === 0 || tbOrientation === 2) ? Screen.width : 32;
-        } else {
-            taskbarHeight = systrayBackend.taskbarRect().height;
-            taskbarWidth = systrayBackend.taskbarRect().width;
-        }
+        var tbOrientation = systrayBackend.taskbarOrientation();
+        var taskbarRect = systrayBackend.taskbarRect();
 
         switch(tbOrientation) {
             // Platform separation here: Windows and macOS draw coordinates have to be given in screen-coordinates
@@ -60,43 +32,43 @@ Window {
             case 0:
                 console.debug("Taskbar is on the bottom.");
                 trayWindowX = trayIconCenter.x - trayWindow.width / 2;
-                trayWindowY = (Qt.platform.os !== "linux") ? (Screen.height - taskbarHeight - trayWindow.height - 4)
-                                                           : (Screen.height + Screen.virtualY - taskbarHeight - trayWindow.height - 4);
+                trayWindowY = (Qt.platform.os !== "linux") ? (Screen.height - taskbarRect.height - trayWindow.height - 4)
+                                                           : (Screen.height + Screen.virtualY - taskbarRect.height - trayWindow.height - 4);
                 break;
             case 1:
                 console.debug("Taskbar is on the left.");
-                trayWindowX = (Qt.platform.os !== "linux") ? (taskbarWidth + 4)
-                                                           : (Screen.virtualX + taskbarWidth + 4);
+                trayWindowX = (Qt.platform.os !== "linux") ? (taskbarRect.width + 4)
+                                                           : (Screen.virtualX + taskbarRect.width + 4);
                 trayWindowY = trayIconCenter.y;
                 break;
             case 2:
                 console.debug("Taskbar is on the top.");
                 trayWindowX = trayIconCenter.x - trayWindow.width / 2;
-                trayWindowY = Screen.virtualY + taskbarHeight + 4;
+                trayWindowY = Screen.virtualY + taskbarRect.height + 4;
                 break;
             case 3:
                 console.debug("Taskbar is on the right.");
-                trayWindowX = (Qt.platform.os !== "linux") ? (Screen.width - taskbarWidth - trayWindow.width - 4)
-                                                           : (Screen.width + Screen.virtualX - taskbarWidth - trayWindow.width - 4);
+                trayWindowX = (Qt.platform.os !== "linux") ? (Screen.width - taskbarRect.width - trayWindow.width - 4)
+                                                           : (Screen.width + Screen.virtualX - taskbarRect.width - trayWindow.width - 4);
                 trayWindowY = trayIconCenter.y;
                 break;
         }
 
-        console.debug("Screen.height:",Screen.height);
-        console.debug("Screen.desktopAvailableHeight:",Screen.desktopAvailableHeight);
-        console.debug("Screen.virtualY:",Screen.virtualY);
-        console.debug("Screen.width:",Screen.width);
-        console.debug("Screen.desktopAvailableWidth:",Screen.desktopAvailableWidth);
-        console.debug("Screen.virtualX:",Screen.virtualX);
-        console.debug("Taskbar height:",taskbarHeight);
-        console.debug("Taskbar width:",taskbarWidth);
+        console.debug("Screen.height:", Screen.height);
+        console.debug("Screen.desktopAvailableHeight:", Screen.desktopAvailableHeight);
+        console.debug("Screen.virtualY:", Screen.virtualY);
+        console.debug("Screen.width:", Screen.width);
+        console.debug("Screen.desktopAvailableWidth:", Screen.desktopAvailableWidth);
+        console.debug("Screen.virtualX:", Screen.virtualX);
+        console.debug("Taskbar height:", taskbarRect.height);
+        console.debug("Taskbar width:", taskbarRect.width);
 
         if (Screen.width <= trayWindowX + trayWindow.width) {
             console.debug("Out-of-screen condition on the right detected. Adjusting window position.");
             if (Qt.platform.os !== "linux") {
                 trayWindowX = Screen.width - trayWindow.width - 4;
             } else {
-                trayWindowX = Screen.width + Screen.virtualX - trayWindow.width - 4 - (tbOrientation === 3 ? taskbarWidth : 0);
+                trayWindowX = Screen.width + Screen.virtualX - trayWindow.width - 4 - (tbOrientation === 3 ? taskbarRect.width : 0);
             }
         }
         if (trayWindowX <= Screen.x && Qt.platform.os !== "linux") {
@@ -105,7 +77,7 @@ Window {
         }
         if (trayWindowX <= Screen.virtualX && Qt.platform.os === "linux") {
            console.debug("Out-of-screen condition on the left detected. Adjusting window position.");
-           trayWindowX = Screen.virtualX + 4 + (tbOrientation === 1 ? taskbarWidth : 0)
+           trayWindowX = Screen.virtualX + 4 + (tbOrientation === 1 ? taskbarRect.width : 0)
         }
         if (trayWindowY <= Screen.y && Qt.platform.os !== "linux") {
             console.debug("Out-of-screen condition on the top detected. Adjusting window position.");
@@ -113,7 +85,7 @@ Window {
         }
         if (trayWindowY <= Screen.virtualY && Qt.platform.os === "linux") {
             console.debug("Out-of-screen condition on the top detected. Adjusting window position.");
-            trayWindowY = Screen.virtualY + 4 + (tbOrientation === 2 ? taskbarHeight : 0);
+            trayWindowY = Screen.virtualY + 4 + (tbOrientation === 2 ? taskbarRect.height : 0);
         }
         if (Screen.height <= trayWindowY - Screen.virtualY + trayWindow.height) {
             console.debug("Out-of-screen condition on the bottom detected. Adjusting window position.");
