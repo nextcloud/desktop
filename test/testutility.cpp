@@ -156,9 +156,9 @@ private slots:
     {
         QVERIFY(isMac() || isWindows() ? fsCasePreserving() : ! fsCasePreserving());
         QScopedValueRollback<bool> scope(OCC::fsCasePreserving_override);
-        OCC::fsCasePreserving_override = 1;
+        OCC::fsCasePreserving_override = true;
         QVERIFY(fsCasePreserving());
-        OCC::fsCasePreserving_override = 0;
+        OCC::fsCasePreserving_override = false;
         QVERIFY(! fsCasePreserving());
     }
 
