@@ -144,7 +144,7 @@ WebViewPageUrlSchemeHandler::WebViewPageUrlSchemeHandler(QObject *parent)
 void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *request) {
     QUrl url = request->requestUrl();
 
-    QString path = url.path(0).mid(1); // get undecoded path
+    QString path = url.path().mid(1); // get undecoded path
     const QStringList parts = path.split("&");
 
     QString server;
@@ -184,7 +184,7 @@ WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWeb
 
 QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type) {
     Q_UNUSED(type);
-    ExternalWebEnginePage *view = new ExternalWebEnginePage(this->profile());
+    auto *view = new ExternalWebEnginePage(this->profile());
     return view;
 }
 

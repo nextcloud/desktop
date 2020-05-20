@@ -590,9 +590,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
   QByteArray filename;
   QByteArray fullpath;
-  csync_vio_handle_t *dh = NULL;
+  csync_vio_handle_t *dh = nullptr;
   std::unique_ptr<csync_file_stat_t> dirent;
-  csync_file_stat_t *previous_fs = NULL;
+  csync_file_stat_t *previous_fs = nullptr;
   int read_from_db = 0;
   int rc = 0;
 
@@ -625,7 +625,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       return 0;
   }
 
-  if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
+  if ((dh = csync_vio_opendir(ctx, uri)) == nullptr) {
       if (ctx->abort) {
           qCDebug(lcUpdate, "Aborted!");
           ctx->status_code = CSYNC_STATUS_ABORTED;
@@ -783,7 +783,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
 error:
   ctx->remote.read_from_db = read_from_db;
-  if (dh != NULL) {
+  if (dh != nullptr) {
     csync_vio_closedir(ctx, dh);
   }
   return -1;

@@ -447,7 +447,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
         QString kindStr = Progress::asResultString(progress._lastCompletedItem);
         QString timeStr = QTime::currentTime().toString("hh:mm");
         QString actionText = tr("%1 (%2, %3)").arg(progress._lastCompletedItem._file, kindStr, timeStr);
-        QAction *action = new QAction(actionText, this);
+        auto *action = new QAction(actionText, this);
         Folder *f = FolderMan::instance()->folder(folder);
         if (f) {
             QString fullPath = f->path() + '/' + progress._lastCompletedItem._file;
@@ -527,7 +527,7 @@ void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
 
 void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &message)
 {
-    QMessageBox *msgBox = new QMessageBox;
+    auto *msgBox = new QMessageBox;
     msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setText(message);

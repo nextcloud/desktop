@@ -32,7 +32,7 @@ ToolTipUpdater::ToolTipUpdater(QTreeView *treeView)
 bool ToolTipUpdater::eventFilter(QObject * /*obj*/, QEvent *ev)
 {
     if (ev->type() == QEvent::ToolTip) {
-        QHelpEvent *helpEvent = static_cast<QHelpEvent *>(ev);
+        auto *helpEvent = static_cast<QHelpEvent *>(ev);
         _toolTipPos = helpEvent->globalPos();
     }
     return false;

@@ -271,13 +271,13 @@ void SocketApi::onLostConnection()
 
 void SocketApi::slotSocketDestroyed(QObject *obj)
 {
-    QIODevice *socket = static_cast<QIODevice *>(obj);
+    auto *socket = static_cast<QIODevice *>(obj);
     _listeners.erase(std::remove_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket)), _listeners.end());
 }
 
 void SocketApi::slotReadSocket()
 {
-    QIODevice *socket = qobject_cast<QIODevice *>(sender());
+    auto *socket = qobject_cast<QIODevice *>(sender());
     ASSERT(socket);
     SocketListener *listener = &*std::find_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket));
 
@@ -482,7 +482,7 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
     if (!editor)
         return;
 
-    JsonApiJob *job = new JsonApiJob(fileData.folder->accountState()->account(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing/open"), this);
+    auto *job = new JsonApiJob(fileData.folder->accountState()->account(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing/open"), this);
 
     QUrlQuery params;
     params.addQueryItem("path", fileData.accountRelativePath);

@@ -326,6 +326,11 @@ void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &sync
     _journal->deleteStaleErrorBlacklistEntries(blacklist_file_paths);
 }
 
+#if (QT_VERSION < 0x050600)
+template <typename T>
+constexpr typename std::add_const<T>::type &qAsConst(T &t) noexcept { return t; }
+#endif
+
 void SyncEngine::conflictRecordMaintenance()
 {
     // Remove stale conflict entries from the database
@@ -760,7 +765,7 @@ void SyncEngine::startSync()
         QVector<SyncJournalDb::PollInfo> pollInfos = _journal->getPollInfos();
         if (!pollInfos.isEmpty()) {
             qCInfo(lcEngine) << "Finish Poll jobs before starting a sync";
-            CleanupPollsJob *job = new CleanupPollsJob(pollInfos, _account,
+            auto *job = new CleanupPollsJob(pollInfos, _account,
                 _journal, _localPath, this);
             connect(job, &CleanupPollsJob::finished, this, &SyncEngine::startSync);
             connect(job, &CleanupPollsJob::aborted, this, &SyncEngine::slotCleanPollsJobAborted);
@@ -894,7 +899,7 @@ void SyncEngine::startSync()
         connect(_discoveryMainThread.data(), &DiscoveryMainThread::etagConcatenation, this, &SyncEngine::slotRootEtagReceived);
     }
 
-    DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx.data());
+    auto *discoveryJob = new DiscoveryJob(_csync_ctx.data());
     discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
     discoveryJob->_selectiveSyncWhiteList =
         _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);

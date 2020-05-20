@@ -213,7 +213,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
             _ui->mainOwnerLabel->setText(QString("Shared with you by ").append(share->getOwnerDisplayName()));
         }
 
-        ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _parentScrollArea);
+        auto *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _parentScrollArea);
         connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
         connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
         s->setBackgroundRole(layout->count() % 2 == 0 ? QPalette::Base : QPalette::AlternateBase);
@@ -411,7 +411,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
 
     // create menu with checkable permissions
-    QMenu *menu = new QMenu(this);
+    auto *menu = new QMenu(this);
     _permissionReshare= new QAction(tr("Can reshare"), this);
     _permissionReshare->setCheckable(true);
     _permissionReshare->setEnabled(maxSharingPermissions & SharePermissionShare);
@@ -518,7 +518,7 @@ void ShareUserLine::loadAvatar()
      * Currently only regular users can have avatars.
      */
     if (_share->getShareWith()->type() == Sharee::User) {
-        AvatarJob *job = new AvatarJob(_share->account(), _share->getShareWith()->shareWith(), avatarSize, this);
+        auto *job = new AvatarJob(_share->account(), _share->getShareWith()->shareWith(), avatarSize, this);
         connect(job, &AvatarJob::avatarPixmap, this, &ShareUserLine::slotAvatarLoaded);
         job->start();
     }
@@ -623,7 +623,7 @@ void ShareUserLine::slotDeleteAnimationFinished()
 
 void ShareUserLine::slotShareDeleted()
 {
-    QPropertyAnimation *animation = new QPropertyAnimation(this, "maximumHeight", this);
+    auto *animation = new QPropertyAnimation(this, "maximumHeight", this);
 
     animation->setDuration(500);
     animation->setStartValue(height());

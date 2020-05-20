@@ -228,11 +228,7 @@ if (APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
 
-option(SANITIZE_ADDRESS "Enable address sanitizer in tests" OFF)
-if (SANITIZE_ADDRESS)
-    include(SanitizerFlags)
-    enable_sanitizer()
-endif ()
+include(SanitizerFlags)
 
 # Handle Translations, pick all client_* files from trans directory.
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)

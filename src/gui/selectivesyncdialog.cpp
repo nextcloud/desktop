@@ -106,7 +106,7 @@ QSize SelectiveSyncWidget::sizeHint() const
 
 void SelectiveSyncWidget::refreshFolders()
 {
-    LsColJob *job = new LsColJob(_account, _folderPath, this);
+    auto *job = new LsColJob(_account, _folderPath, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size");
     connect(job, &LsColJob::directoryListingSubfolders,
@@ -153,7 +153,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
         parent->setToolTip(0, path);
         parent->setData(0, Qt::UserRole, path);
     } else {
-        SelectiveSyncTreeViewItem *item = static_cast<SelectiveSyncTreeViewItem *>(findFirstChild(parent, pathTrail.first()));
+        auto *item = static_cast<SelectiveSyncTreeViewItem *>(findFirstChild(parent, pathTrail.first()));
         if (!item) {
             item = new SelectiveSyncTreeViewItem(parent);
             if (parent->checkState(0) == Qt::Checked
@@ -191,7 +191,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
 
-    SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
+    auto *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
 
     QUrl url = _account->davUrl();
     QString pathToRemove = url.path();
@@ -290,7 +290,7 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
     if (!_folderPath.isEmpty()) {
         prefix = _folderPath + QLatin1Char('/');
     }
-    LsColJob *job = new LsColJob(_account, prefix + dir, this);
+    auto *job = new LsColJob(_account, prefix + dir, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size");
     connect(job, &LsColJob::directoryListingSubfolders,
@@ -457,10 +457,10 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &fold
 void SelectiveSyncDialog::init(const AccountPtr &account)
 {
     setWindowTitle(tr("Choose What to Sync"));
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    auto *layout = new QVBoxLayout(this);
     _selectiveSync = new SelectiveSyncWidget(account, this);
     layout->addWidget(_selectiveSync);
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
+    auto *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     _okButton = buttonBox->addButton(QDialogButtonBox::Ok);
     connect(_okButton, &QPushButton::clicked, this, &SelectiveSyncDialog::accept);
     QPushButton *button;

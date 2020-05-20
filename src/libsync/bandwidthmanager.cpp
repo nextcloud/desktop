@@ -139,7 +139,7 @@ void BandwidthManager::registerDownloadJob(GETFileJob *j)
 
 void BandwidthManager::unregisterDownloadJob(QObject *o)
 {
-    GETFileJob *j = reinterpret_cast<GETFileJob *>(o); // note, we might already be in the ~QObject
+    auto *j = reinterpret_cast<GETFileJob *>(o); // note, we might already be in the ~QObject
     _downloadJobList.removeAll(j);
     if (_relativeLimitCurrentMeasuredJob == j) {
         _relativeLimitCurrentMeasuredJob = nullptr;

@@ -241,7 +241,7 @@ void ActivityListModel::startFetchJob()
     if (!_accountState->isConnected()) {
         return;
     }
-    JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
+    auto *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
     QObject::connect(job, &JsonApiJob::jsonReceived,
         this, &ActivityListModel::slotActivitiesReceived);
 
@@ -291,7 +291,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         a._icon = json.value("icon").toString();
 
         if (!a._icon.isEmpty()) {
-            IconJob *iconJob = new IconJob(QUrl(a._icon));
+            auto *iconJob = new IconJob(QUrl(a._icon));
             iconJob->setProperty("activityId", a._id);
             connect(iconJob, &IconJob::jobFinished, this, &ActivityListModel::slotIconDownloaded);
         }

@@ -121,7 +121,7 @@ void HttpCredentialsGui::showDialog()
     dialog.setLabelText(msg);
     dialog.setTextValue(_previousPassword);
     dialog.setTextEchoMode(QLineEdit::Password);
-    if (QLabel *dialogLabel = dialog.findChild<QLabel *>()) {
+    if (auto *dialogLabel = dialog.findChild<QLabel *>()) {
         dialogLabel->setOpenExternalLinks(true);
         dialogLabel->setTextFormat(Qt::RichText);
     }

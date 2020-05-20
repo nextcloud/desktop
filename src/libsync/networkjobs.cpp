@@ -78,7 +78,7 @@ void RequestEtagJob::start()
                    "    <d:getetag/>\n"
                    "  </d:prop>\n"
                    "</d:propfind>\n");
-    QBuffer *buf = new QBuffer(this);
+    auto *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     // assumes ownership
@@ -209,7 +209,9 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo
             if (name == QLatin1String("href")) {
                 // We don't use URL encoding in our request URL (which is the expected path) (QNAM will do it for us)
                 // but the result will have URL encoding..
-                QString hrefString = QString::fromUtf8(QByteArray::fromPercentEncoding(reader.readElementText().toUtf8()));
+                QString hrefString = QUrl::fromLocalFile(QUrl::fromPercentEncoding(reader.readElementText().toUtf8()))
+                        .adjusted(QUrl::NormalizePathSegments)
+                        .path();
                 if (!hrefString.startsWith(expectedPath)) {
                     qCWarning(lcLsColJob) << "Invalid href" << hrefString << "expected starting with" << expectedPath;
                     return false;
@@ -341,7 +343,7 @@ void LsColJob::start()
                    "  <d:prop>\n"
         + propStr + "  </d:prop>\n"
                     "</d:propfind>\n");
-    QBuffer *buf = new QBuffer(this);
+    auto *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     if (_url.isValid()) {
@@ -563,7 +565,7 @@ void PropfindJob::start()
         + propStr + "  </d:prop>\n"
                     "</d:propfind>\n";
 
-    QBuffer *buf = new QBuffer(this);
+    auto *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
@@ -725,7 +727,7 @@ void ProppatchJob::start()
         + propStr + "  </d:prop></d:set>\n"
                     "</d:propertyupdate>\n";
 
-    QBuffer *buf = new QBuffer(this);
+    auto *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     sendRequest("PROPPATCH", makeDavUrl(path()), req, buf);
@@ -1038,7 +1040,7 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
         oldUrl = account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
 
     // Retrieve the new link by PROPFIND
-    PropfindJob *job = new PropfindJob(account, remotePath, target);
+    auto *job = new PropfindJob(account, remotePath, target);
     job->setProperties(
         QList<QByteArray>()
         << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation

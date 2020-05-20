@@ -120,7 +120,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _model = new FolderStatusModel;
     _model->setAccountState(_accountState);
     _model->setParent(this);
-    FolderStatusDelegate *delegate = new FolderStatusDelegate;
+    auto *delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
@@ -159,12 +159,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(_model, &QAbstractItemModel::rowsInserted,
         this, &AccountSettings::refreshSelectiveSyncStatus);
 
-    QAction *syncNowAction = new QAction(this);
+    auto *syncNowAction = new QAction(this);
     syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
     connect(syncNowAction, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolder);
     addAction(syncNowAction);
 
-    QAction *syncNowWithRemoteDiscovery = new QAction(this);
+    auto *syncNowWithRemoteDiscovery = new QAction(this);
     syncNowWithRemoteDiscovery->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
     connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery);
     addAction(syncNowWithRemoteDiscovery);
@@ -215,7 +215,7 @@ void AccountSettings::slotNewMnemonicGenerated()
 {
     _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
 
-    QAction *mnemonic = new QAction(tr("Enable encryption"), this);
+    auto *mnemonic = new QAction(tr("Enable encryption"), this);
     connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
     connect(mnemonic, &QAction::triggered, _ui->encryptionMessage, &KMessageWidget::hide);
 
@@ -595,7 +595,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
     auto folderMan = FolderMan::instance();
 
-    QMenu *menu = new QMenu(tv);
+    auto *menu = new QMenu(tv);
 
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -668,7 +668,7 @@ void AccountSettings::slotAddFolder()
     FolderMan *folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(false); // do not start more syncs.
 
-    FolderWizard *folderWizard = new FolderWizard(_accountState->account(), this);
+    auto *folderWizard = new FolderWizard(_accountState->account(), this);
 
     connect(folderWizard, &QDialog::accepted, this, &AccountSettings::slotFolderWizardAccepted);
     connect(folderWizard, &QDialog::rejected, this, &AccountSettings::slotFolderWizardRejected);
@@ -678,7 +678,7 @@ void AccountSettings::slotAddFolder()
 
 void AccountSettings::slotFolderWizardAccepted()
 {
-    FolderWizard *folderWizard = qobject_cast<FolderWizard *>(sender());
+    auto *folderWizard = qobject_cast<FolderWizard *>(sender());
     FolderMan *folderMan = FolderMan::instance();
 
     qCInfo(lcAccountSettings) << "Folder wizard completed";

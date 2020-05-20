@@ -141,16 +141,16 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
     }
 
     // create label first
-    QLabel *label = new QLabel(parent);
+    auto *label = new QLabel(parent);
     label->setStyleSheet(QLatin1String("QLabel { padding: 8px; }"));
     label->setTextFormat(Qt::RichText);
     label->setText(details);
 
     // plug label into widget action
-    QWidgetAction *action = new QWidgetAction(parent);
+    auto *action = new QWidgetAction(parent);
     action->setDefaultWidget(label);
     // plug action into menu
-    QMenu *menu = new QMenu(parent);
+    auto *menu = new QMenu(parent);
     menu->menuAction()->setText(txt);
     menu->addAction(action);
 

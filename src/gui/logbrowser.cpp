@@ -58,23 +58,23 @@ LogBrowser::LogBrowser(QWidget *parent)
     setWindowTitle(tr("Log Output"));
     setMinimumWidth(600);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    auto *mainLayout = new QVBoxLayout;
     // mainLayout->setMargin(0);
 
     mainLayout->addWidget(_logWidget);
 
-    QHBoxLayout *toolLayout = new QHBoxLayout;
+    auto *toolLayout = new QHBoxLayout;
     mainLayout->addLayout(toolLayout);
 
     // Search input field
-    QLabel *lab = new QLabel(tr("&Search:") + " ");
+    auto *lab = new QLabel(tr("&Search:") + " ");
     _findTermEdit = new QLineEdit;
     lab->setBuddy(_findTermEdit);
     toolLayout->addWidget(lab);
     toolLayout->addWidget(_findTermEdit);
 
     // find button
-    QPushButton *findBtn = new QPushButton;
+    auto *findBtn = new QPushButton;
     findBtn->setText(tr("&Find"));
     connect(findBtn, &QAbstractButton::clicked, this, &LogBrowser::slotFind);
     toolLayout->addWidget(findBtn);
@@ -90,7 +90,7 @@ LogBrowser::LogBrowser(QWidget *parent)
     connect(_logDebugCheckBox, &QCheckBox::stateChanged, this, &LogBrowser::slotDebugCheckStateChanged);
     toolLayout->addWidget(_logDebugCheckBox);
 
-    QDialogButtonBox *btnbox = new QDialogButtonBox;
+    auto *btnbox = new QDialogButtonBox;
     QPushButton *closeBtn = btnbox->addButton(QDialogButtonBox::Close);
     connect(closeBtn, &QAbstractButton::clicked, this, &QWidget::close);
 
@@ -132,7 +132,7 @@ LogBrowser::LogBrowser(QWidget *parent)
     // Direct connection for log coming from this thread, and queued for the one in a different thread
     connect(Logger::instance(), &Logger::logWindowLog, this, &LogBrowser::slotNewLog, Qt::AutoConnection);
 
-    QAction *showLogWindow = new QAction(this);
+    auto *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
     connect(showLogWindow, &QAction::triggered, this, &QWidget::close);
     addAction(showLogWindow);

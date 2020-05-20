@@ -692,7 +692,7 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="112"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="215"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Produciuse un erro ao acceder ao punto final da «marca»: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Produciuse un erro ao acceder ao punto final da «testemuña»: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
@@ -897,7 +897,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</source>
         <translation>Non foi posíbel rastrexar de xeito fiábel os cambios nos cartafoles sincronizados.
 
-Isto significa que o cliente de sincronización podería non enviar os cambios inmediatamente, e no canto diso, só examinará buscando cambios locais e enviaraos ocasionalmente (cada dúas horas, como predeterminado)
+Isto significa que o cliente de sincronización podería non enviar os cambios inmediatamente, e no canto diso, só examinará buscando cambios locais e enviaraos ocasionalmente (por omisión cada dúas horas)
 
 %1</translation>
     </message>
@@ -918,7 +918,7 @@ Se decide eliminar os ficheiros, non poderá dispor deles a non ser que sexa o p
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
         <translation>Todos os ficheiros foron eliminados do seu cartafol de sincronización local «%1».
-Estes ficheiros eliminaranse do servidor e non estarán dispoñibles nos outros dispositivos se non se restauran.
+Estes ficheiros eliminaranse do servidor e non estarán dispoñíbeis nos outros dispositivos se non se restauran.
 Se esta acción non foi intencionada, pode restaurar os datos perdidos agora.</translation>
     </message>
     <message>
@@ -1684,12 +1684,12 @@ Os rexistros escribiranse en %1</translation>
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="162"/>
+        <location filename="../src/libsync/logger.cpp" line="168"/>
         <source>Error</source>
         <translation>Produciuse un erro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="163"/>
+        <location filename="../src/libsync/logger.cpp" line="169"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;O ficheiro «%1»&lt;br/&gt; non se pode abrir para escritura.&lt;br/&gt;&lt;br/&gt;A saída do rexistro &lt;b&gt;non&lt;/n&gt; se pode gardar!&lt;/nobr&gt;</translation>
     </message>
@@ -1830,7 +1830,7 @@ Os rexistros escribiranse en %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Produciuse un erro ao acceder ao punto final da «marca»: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Produciuse un erro ao acceder ao punto final da «testemuña»: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>

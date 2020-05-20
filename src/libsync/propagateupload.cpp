@@ -509,7 +509,7 @@ void UploadDevice::setChoked(bool b)
 
 void PropagateUploadFileCommon::startPollJob(const QString &path)
 {
-    PollJob *job = new PollJob(propagator()->account(), path, _item,
+    auto *job = new PollJob(propagator()->account(), path, _item,
         propagator()->_journal, propagator()->_localDir, this);
     connect(job, &PollJob::finishedSignal, this, &PropagateUploadFileCommon::slotPollFinished);
     SyncJournalDb::PollInfo info;
@@ -524,7 +524,7 @@ void PropagateUploadFileCommon::startPollJob(const QString &path)
 
 void PropagateUploadFileCommon::slotPollFinished()
 {
-    PollJob *job = qobject_cast<PollJob *>(sender());
+    auto *job = qobject_cast<PollJob *>(sender());
     ASSERT(job);
 
     propagator()->_activeJobList.removeOne(this);

@@ -57,7 +57,7 @@ void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray 
 {
     if (statusCode == successStatusCode) {
         qCWarning(lcServerNotification) << "New Notification ETag Response Header received " << value;
-        AccountState *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
+        auto *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
         account->setNotificationsEtagResponseHeader(value);
     }
 }
@@ -83,7 +83,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
     auto notifies = json.object().value("ocs").toObject().value("data").toArray();
 
-    AccountState *ai = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
+    auto *ai = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
 
     ActivityList list;
 
@@ -103,7 +103,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._icon = json.value("icon").toString();
 
         if (!a._icon.isEmpty()) {
-            IconJob *iconJob = new IconJob(QUrl(a._icon));
+            auto *iconJob = new IconJob(QUrl(a._icon));
             iconJob->setProperty("activityId", a._id);
             connect(iconJob, &IconJob::jobFinished, this, &ServerNotificationHandler::slotIconDownloaded);
         }

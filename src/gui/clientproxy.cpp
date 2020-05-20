@@ -80,7 +80,7 @@ void ClientProxy::setupQtProxyFromConfig()
             QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
             break;
         case QNetworkProxy::DefaultProxy:
-            qCInfo(lcClientProxy) << "Set proxy configuration to use the prefered system proxy for http tcp connections";
+            qCInfo(lcClientProxy) << "Set proxy configuration to use the preferred system proxy for http tcp connections";
             {
                 QNetworkProxyQuery query;
                 query.setProtocolTag("http");
@@ -130,7 +130,7 @@ const char *ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 
 void ClientProxy::lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot)
 {
-    SystemProxyRunnable *runnable = new SystemProxyRunnable(url);
+    auto *runnable = new SystemProxyRunnable(url);
     QObject::connect(runnable, SIGNAL(systemProxyLookedUp(QNetworkProxy)), dst, slot);
     QThreadPool::globalInstance()->start(runnable); // takes ownership and deletes
 }

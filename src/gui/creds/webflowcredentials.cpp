@@ -152,7 +152,7 @@ void WebFlowCredentials::fetchFromKeychain() {
 void WebFlowCredentials::askFromUser() {
     // Determine if the old flow has to be used (GS for now)
     // Do a DetermineAuthTypeJob to make sure that the server is still using Flow2
-    DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
+    auto *job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     connect(job, &DetermineAuthTypeJob::authType, [this](DetermineAuthTypeJob::AuthType type) {
         // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
         bool useFlow2 = (type != DetermineAuthTypeJob::WebViewFlow);
@@ -340,7 +340,7 @@ void WebFlowCredentials::slotWriteClientCaCertsPEMJobDone(KeychainChunk::WriteJo
     }
 
     // done storing ca certs, time for the password
-    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    auto *job = new WritePasswordJob(Theme::instance()->appName());
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
     addSettingsToJob(_account, job);
 #endif
@@ -360,7 +360,7 @@ void WebFlowCredentials::slotWriteJobDone(QKeychain::Job *job)
     default:
         qCWarning(lcWebFlowCredentials) << "Error while writing password" << job->errorString();
     }
-    WritePasswordJob *wjob = qobject_cast<WritePasswordJob *>(job);
+    auto *wjob = qobject_cast<WritePasswordJob *>(job);
     wjob->deleteLater();
 }
 
@@ -390,11 +390,11 @@ void WebFlowCredentials::forgetSensitiveData() {
         return;
     }
 
-    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    auto *job = new DeletePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
     connect(job, &Job::finished, this, [](QKeychain::Job *job) {
-        DeletePasswordJob *djob = qobject_cast<DeletePasswordJob *>(job);
+        auto *djob = qobject_cast<DeletePasswordJob *>(job);
         djob->deleteLater();
     });
     job->start();
@@ -565,7 +565,7 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob 
         _user,
         _keychainMigration ? QString() : _account->id());
 
-    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    auto *job = new ReadPasswordJob(Theme::instance()->appName());
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
     addSettingsToJob(_account, job);
 #endif
@@ -576,7 +576,7 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob 
 }
 
 void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
-    QKeychain::ReadPasswordJob *job = qobject_cast<ReadPasswordJob *>(incomingJob);
+    auto *job = qobject_cast<ReadPasswordJob *>(incomingJob);
     QKeychain::Error error = job->error();
 
     // If we could not find the entry try the old entries
@@ -612,7 +612,7 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
 
 void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
     auto startDeleteJob = [this, oldKeychainEntries](QString key) {
-        DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+        auto *job = new DeletePasswordJob(Theme::instance()->appName());
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
         addSettingsToJob(_account, job);
 #endif
@@ -622,7 +622,7 @@ void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
                                 oldKeychainEntries ? QString() : _account->id()));
 
         connect(job, &Job::finished, this, [](QKeychain::Job *job) {
-            DeletePasswordJob *djob = qobject_cast<DeletePasswordJob *>(job);
+            auto *djob = qobject_cast<DeletePasswordJob *>(job);
             djob->deleteLater();
         });
         job->start();

@@ -286,7 +286,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
 {
     if (role == Qt::CheckStateRole) {
         auto info = infoForIndex(index);
-        Qt::CheckState checked = static_cast<Qt::CheckState>(value.toInt());
+        auto checked = static_cast<Qt::CheckState>(value.toInt());
 
         if (info && info->_checked != checked) {
             info->_checked = checked;
@@ -589,7 +589,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 			_accountState->account()->e2e()->fetchFolderEncryptedStatus();
 		}
 
-    LsColJob *job = new LsColJob(_accountState->account(), path, this);
+    auto *job = new LsColJob(_accountState->account(), path, this);
     info->_fetchingJob = job;
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size"
@@ -893,7 +893,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         return; // for https://github.com/owncloud/client/issues/2648#issuecomment-71377909
     }
 
-    Folder *f = qobject_cast<Folder *>(sender());
+    auto *f = qobject_cast<Folder *>(sender());
     if (!f) {
         return;
     }

@@ -1669,12 +1669,12 @@ Logs will be written to %1</source>
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="162"/>
+        <location filename="../src/libsync/logger.cpp" line="168"/>
         <source>Error</source>
         <translation>ข้อผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="163"/>
+        <location filename="../src/libsync/logger.cpp" line="169"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;ไฟล์ &apos;%1&apos;&lt;br/&gt;ไม่สามารถเปิดขึ้นมาเพื่อเขียนข้อมูลได้&lt;br/&gt;&lt;br/&gt;ผลลัพธ์ของไฟล์ log &lt;b&gt;ไม่สามารถ&lt;/b&gt; บันทึกข้อมูลได้!&lt;/nobr&gt;</translation>
     </message>

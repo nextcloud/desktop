@@ -53,7 +53,7 @@ static QString instancesLockFilename(const QString &appSessionId)
 QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char **argv)
     : QApplication(argc, argv),
       firstPeer(-1),
-      pidPeer(0)
+      pidPeer(nullptr)
 {
     this->appId = appId;
 
@@ -61,7 +61,7 @@ QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char *
 
     // This shared memory holds a zero-terminated array of active (or crashed) instances
     instances = new QSharedMemory(appSessionId, this);
-    actWin = 0;
+    actWin = nullptr;
     block = false;
 
     // First instance creates the shared memory, later instances attach to it
@@ -71,7 +71,7 @@ QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char *
             qWarning() << "Failed to initialize instances shared memory: "
                        << instances->errorString();
             delete instances;
-            instances = 0;
+            instances = nullptr;
             return;
         }
     }
@@ -81,7 +81,7 @@ QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char *
 
     lockfile.open(QtLockedFile::ReadWrite);
     lockfile.lock(QtLockedFile::WriteLock);
-    qint64 *pids = static_cast<qint64 *>(instances->data());
+    auto *pids = static_cast<qint64 *>(instances->data());
     if (!created) {
         // Find the first instance that it still running
         // The whole list needs to be iterated in order to append to it
@@ -109,7 +109,7 @@ QtSingleApplication::~QtSingleApplication()
     lockfile.open(QtLockedFile::ReadWrite);
     lockfile.lock(QtLockedFile::WriteLock);
     // Rewrite array, removing current pid and previously crashed ones
-    qint64 *pids = static_cast<qint64 *>(instances->data());
+    auto *pids = static_cast<qint64 *>(instances->data());
     qint64 *newpids = pids;
     for (; *pids; ++pids) {
         if (*pids != appPid && isRunning(*pids))
@@ -122,7 +122,7 @@ QtSingleApplication::~QtSingleApplication()
 bool QtSingleApplication::event(QEvent *event)
 {
     if (event->type() == QEvent::FileOpen) {
-        QFileOpenEvent *foe = static_cast<QFileOpenEvent*>(event);
+        auto *foe = static_cast<QFileOpenEvent*>(event);
         emit fileOpenRequest(foe->file());
         return true;
     }

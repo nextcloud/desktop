@@ -141,7 +141,7 @@ void ShibbolethCredentials::fetchFromKeychain()
 
 void ShibbolethCredentials::fetchFromKeychainHelper()
 {
-    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    auto *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
     job->setInsecureFallback(false);
     job->setKey(keychainKey(_url.toString(), user(),
@@ -153,7 +153,7 @@ void ShibbolethCredentials::fetchFromKeychainHelper()
 void ShibbolethCredentials::askFromUser()
 {
     // First, we do a DetermineAuthTypeJob to make sure that the server is still using shibboleth and did not upgrade to oauth
-    DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
+    auto *job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     connect(job, &DetermineAuthTypeJob::authType, [this, job](DetermineAuthTypeJob::AuthType type) {
         if (type == DetermineAuthTypeJob::Shibboleth) {
             // Normal case, still shibboleth
@@ -197,7 +197,7 @@ void ShibbolethCredentials::invalidateToken()
 {
     _ready = false;
 
-    CookieJar *jar = static_cast<CookieJar *>(_account->networkAccessManager()->cookieJar());
+    auto *jar = static_cast<CookieJar *>(_account->networkAccessManager()->cookieJar());
 
     // Remove the _shibCookie
     auto cookies = jar->allCookies();
@@ -234,7 +234,7 @@ void ShibbolethCredentials::slotFetchUser()
 {
     // We must first do a request to webdav so the session is enabled.
     // (because for some reason we can't access the API without that..  a bug in the server maybe?)
-    EntityExistsJob *job = new EntityExistsJob(_account->sharedFromThis(), _account->davPath(), this);
+    auto *job = new EntityExistsJob(_account->sharedFromThis(), _account->davPath(), this);
     connect(job, &EntityExistsJob::exists, this, &ShibbolethCredentials::slotFetchUserHelper);
     job->setIgnoreCredentialFailure(true);
     job->start();
@@ -242,7 +242,7 @@ void ShibbolethCredentials::slotFetchUser()
 
 void ShibbolethCredentials::slotFetchUserHelper()
 {
-    ShibbolethUserJob *job = new ShibbolethUserJob(_account->sharedFromThis(), this);
+    auto *job = new ShibbolethUserJob(_account->sharedFromThis(), this);
     connect(job, &ShibbolethUserJob::userFetched, this, &ShibbolethCredentials::slotUserFetched);
     job->start();
 }
@@ -287,7 +287,7 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
     }
 
     if (job->error() == QKeychain::NoError) {
-        ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(job);
+        auto *readJob = static_cast<ReadPasswordJob *>(job);
         delete readJob->settings();
         QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(readJob->textData().toUtf8());
         if (cookies.count() > 0) {
@@ -310,7 +310,7 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
     if (_keychainMigration && _ready) {
         persist();
 
-        DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+        auto *job = new DeletePasswordJob(Theme::instance()->appName());
         job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
         job->setKey(keychainKey(_account->url().toString(), user(), QString()));
         job->start();
@@ -326,7 +326,7 @@ void ShibbolethCredentials::showLoginWindow()
         return;
     }
 
-    CookieJar *jar = static_cast<CookieJar *>(_account->networkAccessManager()->cookieJar());
+    auto *jar = static_cast<CookieJar *>(_account->networkAccessManager()->cookieJar());
     // When opening a new window clear all the session cookie that might keep the user from logging in
     // (or the session may already be open in the server, and there will not be redirect asking for the
     // real long term cookie we want to store)
@@ -366,7 +366,7 @@ QByteArray ShibbolethCredentials::shibCookieName()
 
 void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie)
 {
-    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    auto *job = new WritePasswordJob(Theme::instance()->appName());
     job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
     // we don't really care if it works...
     //connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
@@ -377,7 +377,7 @@ void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie)
 
 void ShibbolethCredentials::removeShibCookie()
 {
-    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    auto *job = new DeletePasswordJob(Theme::instance()->appName());
     job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
     job->setKey(keychainKey(_account->url().toString(), user(), _account->id()));
     job->start();

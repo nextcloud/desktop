@@ -22,7 +22,7 @@
 #include <QDesktopServices>
 #include <QGuiApplication>
 #include <QQmlComponent>
-#include <QQmlEngine>
+#include <QQmlApplicationEngine>
 #include <QScreen>
 
 #ifdef USE_FDO_NOTIFICATIONS
@@ -50,19 +50,13 @@ Systray *Systray::instance()
 Systray::Systray()
     : _isOpen(false)
     , _syncIsPaused(false)
-    , _trayComponent(nullptr)
-    , _trayContext(nullptr)
 {
-    // Create QML tray engine, build component, set C++ backend context used in window.qml
-    // Use pointer instead of engine() helper function until Qt 5.12 is minimum standard
-    _trayEngine = new QQmlEngine;
+    _trayEngine = new QQmlApplicationEngine;
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
     _trayEngine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
     _trayEngine->rootContext()->setContextProperty("appsMenuModelBackend", UserAppsModel::instance());
     _trayEngine->rootContext()->setContextProperty("systrayBackend", this);
-
-    _trayComponent = new QQmlComponent(_trayEngine, QUrl(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml")));
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
         this, &Systray::slotNewUserSelected);
@@ -73,13 +67,11 @@ Systray::Systray()
 
 void Systray::create()
 {
-    if (_trayContext == nullptr) {
-        if (!AccountManager::instance()->accounts().isEmpty()) {
-            _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
-        }
-        _trayContext = _trayEngine->contextForObject(_trayComponent->create());
-        hideWindow();
+    if (!AccountManager::instance()->accounts().isEmpty()) {
+        _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
     }
+    _trayEngine->load(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
+    hideWindow();
 }
 
 void Systray::slotNewUserSelected()
