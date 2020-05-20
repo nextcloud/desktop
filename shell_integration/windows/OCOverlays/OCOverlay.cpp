@@ -15,7 +15,6 @@
 #include "OCOverlay.h"
 
 #include "OCOverlayFactory.h"
-#include "RegistryUtil.h"
 #include "StringUtil.h"
 
 #include "UtilConstants.h"
