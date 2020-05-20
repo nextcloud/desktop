@@ -3655,7 +3655,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
-        <translation type="unfinished"/>
+        <translation>Prijava ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="937"/>
@@ -3725,12 +3725,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Nastavitve ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Nov račun ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
@@ -4222,7 +4222,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="231"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Pridruži se</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="252"/>
