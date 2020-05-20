@@ -24,7 +24,7 @@ Window {
         trayWindow.requestActivate();
         var trayWindowX;
         var trayWindowY;
-        var tbOrientation = systrayBackend.taskbarOrientation();
+        var taskbarOrientation = systrayBackend.taskbarOrientation();
         var taskbarRect = systrayBackend.taskbarRect();
         var screenRect = Qt.rect(0, 0, Screen.width, Screen.height)
         if (Qt.platform.os === "linux") {
@@ -32,7 +32,7 @@ Window {
             screenRect.y = Screen.virtualY
         }
 
-        switch(tbOrientation) {
+        switch(taskbarOrientation) {
             // Platform separation here: Windows and macOS draw coordinates have to be given in screen-coordinates
             // KDE and most xorg based DEs expect them as virtual coordinates
             case Systray.Bottom:
@@ -71,7 +71,7 @@ Window {
             trayWindowX = screenRect.right - trayWindow.width - 4;
 
             if (Qt.platform.os === "linux") {
-                trayWindowX -= tbOrientation === Systray.Right ? taskbarRect.width : 0;
+                trayWindowX -= taskbarOrientation === Systray.Right ? taskbarRect.width : 0;
             }
         }
         if (trayWindowX <= screenRect.left) {
@@ -79,7 +79,7 @@ Window {
             trayWindowX = screenRect.left + 4;
 
             if (Qt.platform.os === "linux") {
-               trayWindowX += tbOrientation === Systray.Left ? taskbarRect.width : 0;
+               trayWindowX += taskbarOrientation === Systray.Left ? taskbarRect.width : 0;
             }
         }
         if (trayWindowY <= screenRect.top) {
@@ -87,7 +87,7 @@ Window {
             trayWindowY = screenRect.top + 4;
 
             if (Qt.platform.os === "linux") {
-                trayWindowY += tbOrientation === Systray.Top ? taskbarRect.height : 0;
+                trayWindowY += taskbarOrientation === Systray.Top ? taskbarRect.height : 0;
             }
         }
         if (screenRect.bottom <= trayWindowY + trayWindow.height) {
