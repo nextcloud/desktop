@@ -81,31 +81,22 @@ public:
         InsufficientRemoteStorage
     };
 
-    SyncJournalErrorBlacklistRecord()
-        : _retryCount(0)
-        , _errorCategory(Category::Normal)
-        , _lastTryModtime(0)
-        , _lastTryTime(0)
-        , _ignoreDuration(0)
-    {
-    }
-
     /// The number of times the operation was unsuccessful so far.
-    int _retryCount;
+    int _retryCount = 0;
 
     /// The last error string.
     QString _errorString;
     /// The error category. Sometimes used for special actions.
-    Category _errorCategory;
+    Category _errorCategory = Category::Normal;
 
-    qint64 _lastTryModtime;
+    qint64 _lastTryModtime = 0;
     QByteArray _lastTryEtag;
 
     /// The last time the operation was attempted (in s since epoch).
-    qint64 _lastTryTime;
+    qint64 _lastTryTime = 0;
 
     /// The number of seconds the file shall be ignored.
-    qint64 _ignoreDuration;
+    qint64 _ignoreDuration = 0;
 
     QString _file;
     QString _renameTarget;
