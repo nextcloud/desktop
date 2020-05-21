@@ -57,7 +57,7 @@ private:
     Folder *_folder;
     CloudProvidersProviderExporter *_cloudProvider;
     CloudProvidersAccountExporter *_cloudProviderAccount;
-    QList<QPair<QString, QString>> *_recentlyChanged;
+    QList<QPair<QString, QString>> _recentlyChanged;
     bool _paused;
     GMenu* _mainMenu = nullptr;
     GMenu* _recentMenu = nullptr;
