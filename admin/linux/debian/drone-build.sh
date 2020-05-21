@@ -14,8 +14,13 @@ OBS_PROJECT_ALPHA=home:ivaradi:alpha
 OBS_PROJECT_BETA=home:ivaradi:beta
 OBS_PACKAGE=nextcloud-desktop
 
-UBUNTU_DISTRIBUTIONS="bionic eoan focal groovy"
-DEBIAN_DISTRIBUTIONS="buster stretch"
+if test "${DRONE_TARGET_BRANCH}" = "stable-2.6"; then
+    UBUNTU_DISTRIBUTIONS="bionic eoan focal groovy"
+    DEBIAN_DISTRIBUTIONS="buster stretch testing"
+else
+    UBUNTU_DISTRIBUTIONS="eoan focal groovy"
+    DEBIAN_DISTRIBUTIONS="testing"
+fi
 
 pull_request=${DRONE_PULL_REQUEST:=master}
 
