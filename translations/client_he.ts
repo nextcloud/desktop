@@ -827,7 +827,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="410"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>ל־%1 יש סתירת סנכרון. נא לבדוק את קובץ הסתירה!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
@@ -837,7 +837,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="417"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן לסנכרן את %1 עקב שגיאה. יש לעיין ביומן לקבלת פרטים.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
@@ -1385,12 +1385,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>לחפש עדכונים &amp;אוטומטית</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>&amp;Check for Update now</source>
-        <translation type="unfinished"/>
+        <translation>ל&amp;חפש עדכונים כעת</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
@@ -2655,7 +2655,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>שיתוף %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="277"/>
@@ -3189,7 +3189,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>אין עוד מקום פנוי על השרת %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
@@ -3304,12 +3304,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="566"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>קידוד שם הקובץ שגוי</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="731"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>תווים שגויים, נא לשנות את השם של „%1”</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="801"/>
