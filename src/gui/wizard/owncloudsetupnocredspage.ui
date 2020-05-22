@@ -201,7 +201,7 @@
             <item>
              <widget class="OCC::PostfixLineEdit" name="leUrl">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
