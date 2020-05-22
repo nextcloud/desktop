@@ -47,12 +47,6 @@ class FolderWatcher;
 class FolderDefinition
 {
 public:
-    FolderDefinition()
-        : paused(false)
-        , ignoreHiddenFiles(false)
-    {
-    }
-
     /// The name of the folder in the ui and internally
     QString alias;
     /// path on local machine
@@ -62,11 +56,9 @@ public:
     /// path on remote
     QString targetPath;
     /// whether the folder is paused
-    bool paused;
+    bool paused = false;
     /// whether the folder syncs hidden files
-    bool ignoreHiddenFiles;
-    /// the folder has client side encryption
-    bool isClientSideEncrypted;
+    bool ignoreHiddenFiles = false;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
 

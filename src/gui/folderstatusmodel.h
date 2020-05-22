@@ -58,35 +58,24 @@ public:
 
     struct SubFolderInfo
     {
-        SubFolderInfo()
-            : _folder(nullptr)
-            , _size(0)
-            , _isExternal(false)
-            , _fetched(false)
-            , _hasError(false)
-            , _fetchingLabel(false)
-            , _isUndecided(false)
-            , _checked(Qt::Checked)
-        {
-        }
-        Folder *_folder;
+        Folder *_folder = nullptr;
         QString _name;
         QString _path;
         QVector<int> _pathIdx;
         QVector<SubFolderInfo> _subs;
-        qint64 _size;
-        bool _isExternal;
+        qint64 _size = 0;
+        bool _isExternal = false;
 
-        bool _fetched; // If we did the LSCOL for this folder already
+        bool _fetched = false; // If we did the LSCOL for this folder already
         QPointer<LsColJob> _fetchingJob; // Currently running LsColJob
-        bool _hasError; // If the last fetching job ended in an error
+        bool _hasError = false; // If the last fetching job ended in an error
         QString _lastErrorString;
-        bool _fetchingLabel; // Whether a 'fetching in progress' label is shown.
+        bool _fetchingLabel = false; // Whether a 'fetching in progress' label is shown.
         // undecided folders are the big folders that the user has not accepted yet
-        bool _isUndecided;
+        bool _isUndecided = false;
         QByteArray _fileId; // the file id for this folder on the server.
 
-        Qt::CheckState _checked;
+        Qt::CheckState _checked = Qt::Checked;
 
         // Whether this has a FetchLabel subrow
         bool hasLabel() const;
@@ -96,19 +85,14 @@ public:
 
         struct Progress
         {
-            Progress()
-                : _warningCount(0)
-                , _overallPercent(0)
-            {
-            }
             bool isNull() const
             {
                 return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty();
             }
             QString _progressString;
             QString _overallSyncString;
-            int _warningCount;
-            int _overallPercent;
+            int _warningCount = 0;
+            int _overallPercent = 0;
         };
         Progress _progress;
     };
