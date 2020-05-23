@@ -35,7 +35,7 @@ NextcloudTheme::NextcloudTheme()
 
 QString NextcloudTheme::wizardUrlHint() const
 {
-    return QString("https://...");
+    return QString("https://host:port");
 }
 
 }
