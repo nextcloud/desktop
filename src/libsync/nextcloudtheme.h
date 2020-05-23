@@ -29,6 +29,7 @@ class NextcloudTheme : public Theme
 public:
     NextcloudTheme();
 
+    QString wizardUrlHint() const override;
 };
 }
 #endif // NEXTCLOUD_THEME_H
