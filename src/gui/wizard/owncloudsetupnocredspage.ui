@@ -207,7 +207,7 @@
                </sizepolicy>
               </property>
               <property name="placeholderText">
-               <string notr="true">https://...</string>
+               <string notr="true"/>
               </property>
              </widget>
             </item>
