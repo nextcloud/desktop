@@ -143,9 +143,7 @@ LogBrowser::LogBrowser(QWidget *parent)
     _logWidget->document()->setMaximumBlockCount(lines);
 }
 
-LogBrowser::~LogBrowser()
-{
-}
+LogBrowser::~LogBrowser() = default;
 
 void LogBrowser::showEvent(QShowEvent *)
 {

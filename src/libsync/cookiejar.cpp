@@ -71,9 +71,7 @@ CookieJar::CookieJar(QObject *parent)
 {
 }
 
-CookieJar::~CookieJar()
-{
-}
+CookieJar::~CookieJar() = default;
 
 bool CookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url)
 {

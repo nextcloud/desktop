@@ -73,9 +73,7 @@ qint64 freeSpaceLimit()
     return value;
 }
 
-OwncloudPropagator::~OwncloudPropagator()
-{
-}
+OwncloudPropagator::~OwncloudPropagator() = default;
 
 
 int OwncloudPropagator::maximumActiveTransferJob()
@@ -1001,9 +999,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 
 // ================================================================================
 
-CleanupPollsJob::~CleanupPollsJob()
-{
-}
+CleanupPollsJob::~CleanupPollsJob() = default;
 
 void CleanupPollsJob::start()
 {
