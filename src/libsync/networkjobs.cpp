@@ -182,9 +182,7 @@ static QString readContentsAsString(QXmlStreamReader &reader)
 }
 
 
-LsColXMLParser::LsColXMLParser()
-{
-}
+LsColXMLParser::LsColXMLParser() = default;
 
 bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo> *fileInfo, const QString &expectedPath)
 {

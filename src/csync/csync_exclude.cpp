@@ -261,9 +261,7 @@ ExcludedFiles::ExcludedFiles(QString localPath)
         addInTreeExcludeFilePath(fi.absoluteFilePath());
 }
 
-ExcludedFiles::~ExcludedFiles()
-{
-}
+ExcludedFiles::~ExcludedFiles() = default;
 
 void ExcludedFiles::addExcludeFilePath(const QString &path)
 {
