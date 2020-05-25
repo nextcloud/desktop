@@ -191,16 +191,18 @@ Systray::TaskBarPosition Systray::taskbarOrientation() const
     const auto screenRect = currentScreenRect();
     const auto trayIconCenter = calcTrayIconCenter();
 
-    auto distBottom = screenRect.bottom() - trayIconCenter.y();
-    auto distRight = screenRect.right() - trayIconCenter.x();
-    auto distLeft = trayIconCenter.x() - screenRect.left();
-    auto distTop = trayIconCenter.y() - screenRect.top();
+    const auto distBottom = screenRect.bottom() - trayIconCenter.y();
+    const auto distRight = screenRect.right() - trayIconCenter.x();
+    const auto distLeft = trayIconCenter.x() - screenRect.left();
+    const auto distTop = trayIconCenter.y() - screenRect.top();
 
-    if (distBottom < distRight && distBottom < distTop && distBottom < distLeft) {
+    const auto minDist = std::min({distRight, distTop, distBottom});
+
+    if (minDist == distBottom) {
         return TaskBarPosition::Bottom;
-    } else if (distLeft < distTop && distLeft < distRight && distLeft < distBottom) {
+    } else if (minDist == distLeft) {
         return TaskBarPosition::Left;
-    } else if (distTop < distRight && distTop < distBottom && distTop < distLeft) {
+    } else if (minDist == distTop) {
         return TaskBarPosition::Top;
     } else {
         return TaskBarPosition::Right;
