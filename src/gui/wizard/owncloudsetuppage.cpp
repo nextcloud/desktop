@@ -415,9 +415,7 @@ void OwncloudSetupPage::slotCertificateAccepted()
     }
 }
 
-OwncloudSetupPage::~OwncloudSetupPage()
-{
-}
+OwncloudSetupPage::~OwncloudSetupPage() = default;
 
 void OwncloudSetupPage::slotStyleChanged()
 {

@@ -87,9 +87,7 @@ BandwidthManager::BandwidthManager(OwncloudPropagator *p)
     _relativeDownloadDelayTimer.setSingleShot(true); // will be restarted from the measuring timer
 }
 
-BandwidthManager::~BandwidthManager()
-{
-}
+BandwidthManager::~BandwidthManager() = default;
 
 void BandwidthManager::registerUploadDevice(UploadDevice *p)
 {

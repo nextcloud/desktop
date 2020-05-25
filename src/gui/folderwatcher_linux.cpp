@@ -42,9 +42,7 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
     QMetaObject::invokeMethod(this, "slotAddFolderRecursive", Q_ARG(QString, path));
 }
 
-FolderWatcherPrivate::~FolderWatcherPrivate()
-{
-}
+FolderWatcherPrivate::~FolderWatcherPrivate() = default;
 
 // attention: result list passed by reference!
 bool FolderWatcherPrivate::findFoldersBelow(const QDir &dir, QStringList &fullList)

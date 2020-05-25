@@ -49,9 +49,7 @@ FolderStatusModel::FolderStatusModel(QObject *parent)
 
 }
 
-FolderStatusModel::~FolderStatusModel()
-{
-}
+FolderStatusModel::~FolderStatusModel() = default;
 
 static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo &lhs, const FolderStatusModel::SubFolderInfo &rhs)
 {

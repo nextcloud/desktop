@@ -72,9 +72,7 @@ ClientSideEncryption* Account::e2e()
     return &_e2e;
 }
 
-Account::~Account()
-{
-}
+Account::~Account() = default;
 
 QString Account::davPath() const
 {

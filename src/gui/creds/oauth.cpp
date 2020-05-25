@@ -27,9 +27,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcOauth, "nextcloud.sync.credentials.oauth", QtInfoMsg)
 
-OAuth::~OAuth()
-{
-}
+OAuth::~OAuth() = default;
 
 static void httpReplyAndClose(QTcpSocket *socket, const char *code, const char *html,
     const char *moreHeaders = nullptr)

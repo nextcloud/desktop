@@ -53,9 +53,7 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     setupCustomization();
 }
 
-OwncloudWizardResultPage::~OwncloudWizardResultPage()
-{
-}
+OwncloudWizardResultPage::~OwncloudWizardResultPage() = default;
 
 void OwncloudWizardResultPage::setComplete(bool complete)
 {

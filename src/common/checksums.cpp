@@ -255,9 +255,7 @@ void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumTy
     emit validated(checksumType, checksum);
 }
 
-CSyncChecksumHook::CSyncChecksumHook()
-{
-}
+CSyncChecksumHook::CSyncChecksumHook() = default;
 
 QByteArray CSyncChecksumHook::hook(const QByteArray &path, const QByteArray &otherChecksumHeader, void * /*this_obj*/)
 {
