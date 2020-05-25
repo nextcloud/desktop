@@ -73,7 +73,7 @@ namespace {
         return res;
     }
 
-    QByteArray handleErrors(void)
+    QByteArray handleErrors()
     {
         auto *bioErrors = BIO_new(BIO_s_mem());
         ERR_print_errors(bioErrors); // This line is not printing anything.

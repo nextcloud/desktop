@@ -85,7 +85,7 @@ const char *csync_instruction_str(enum csync_instructions_e instr)
 }
 
 
-void csync_memstat_check(void) {
+void csync_memstat_check() {
   int s = 0;
   struct csync_memstat_s m;
   FILE* fp;
