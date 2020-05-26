@@ -830,7 +830,7 @@ bool JsonApiJob::finished()
         qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
         statusCode = httpStatusCode;
     } else {
-        QRegExp rex("\"statuscode\":(\\d+),");
+        QRegExp rex(R"("statuscode":(\d+),)");
         // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
         if (jsonStr.contains(rex)) {
             statusCode = rex.cap(1).toInt();

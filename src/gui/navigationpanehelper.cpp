@@ -90,9 +90,9 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 entriesToRemove.removeOne(folder->navigationPaneClsid());
 
                 QString clsidStr = folder->navigationPaneClsid().toString();
-                QString clsidPath = QString() % "Software\\Classes\\CLSID\\" % clsidStr;
-                QString clsidPathWow64 = QString() % "Software\\Classes\\Wow6432Node\\CLSID\\" % clsidStr;
-                QString namespacePath = QString() % "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace\\" % clsidStr;
+                QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
+                QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
+                QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
 
                 QString title = folder->shortGuiRemotePathOrAppName();
                 // Write the account name in the sidebar only when using more than one account.
@@ -157,9 +157,9 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     // Then remove anything that isn't in our folder list anymore.
     foreach (auto &clsid, entriesToRemove) {
         QString clsidStr = clsid.toString();
-        QString clsidPath = QString() % "Software\\Classes\\CLSID\\" % clsidStr;
-        QString clsidPathWow64 = QString() % "Software\\Classes\\Wow6432Node\\CLSID\\" % clsidStr;
-        QString namespacePath = QString() % "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace\\" % clsidStr;
+        QString clsidPath = QString() % R"(Software\Classes\CLSID\)" % clsidStr;
+        QString clsidPathWow64 = QString() % R"(Software\Classes\Wow6432Node\CLSID\)" % clsidStr;
+        QString namespacePath = QString() % R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\)" % clsidStr;
 
         qCInfo(lcNavPane) << "Explorer Cloud storage provider: now unused, removing own CLSID" << clsidStr;
 #ifdef Q_OS_WIN
