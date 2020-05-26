@@ -239,6 +239,7 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
 {
     const auto bestVfsMode = bestAvailableVfsMode();
     QMessageBox *msgBox = nullptr;
+    QPushButton *acceptButton = nullptr;
     switch (bestVfsMode)
     {
     case Vfs::WindowsCfApi:
@@ -253,7 +254,7 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
                "The virtual files mode is mutually exclusive with selective sync. "
                "Currently unselected folders will be translated to online-only folders "
                "and your selective sync settings will be reset."), QMessageBox::NoButton, receiver);
-        msgBox->addButton(tr("Enable virtual files"), QMessageBox::AcceptRole);
+        acceptButton = msgBox->addButton(tr("Enable virtual files"), QMessageBox::AcceptRole);
         msgBox->addButton(tr("Continue to use selective sync"), QMessageBox::RejectRole);
         break;
     case Vfs::WithSuffix:
@@ -273,19 +274,15 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
                "This is a new, experimental mode. If you decide to use it, please report any "
                "issues that come up.")
                 .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX), QMessageBox::NoButton, receiver);
-        msgBox->addButton(tr("Enable experimental placeholder mode"), QMessageBox::AcceptRole);
+        acceptButton = msgBox->addButton(tr("Enable experimental placeholder mode"), QMessageBox::AcceptRole);
         msgBox->addButton(tr("Stay safe"), QMessageBox::RejectRole);
         break;
     case Vfs::Off:
         Q_UNREACHABLE();
     }
 
-    connect(msgBox, &QMessageBox::accepted, receiver, [callback, msgBox] {
-        callback(true);
-        msgBox->deleteLater();
-    });
-    connect(msgBox, &QMessageBox::reject, receiver, [callback, msgBox]{
-        callback(false);
+    connect(msgBox, &QMessageBox::accepted, receiver, [callback, msgBox, acceptButton] {
+        callback(msgBox->clickedButton() == acceptButton);
         msgBox->deleteLater();
     });
     msgBox->open();

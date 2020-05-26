@@ -610,11 +610,11 @@ void AccountSettings::slotDisableVfsCurrentFolder()
            "will become available again."
            "\n\n"
            "This action will abort any currently running synchronization."));
-    msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
+    auto acceptButton = msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder](int result) {
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder, acceptButton] {
         msgBox->deleteLater();
-        if (result != QMessageBox::AcceptRole || !folder)
+        if (msgBox->clickedButton() == acceptButton|| !folder)
             return;
 
         // It is unsafe to switch off vfs while a sync is running - wait if necessary.

@@ -203,11 +203,11 @@ void GeneralSettings::slotUpdateChannelChanged(int index)
            "version."),
         QMessageBox::NoButton,
         this);
-    msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
+    auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox](int result) {
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton] {
         msgBox->deleteLater();
-        if (result == QMessageBox::AcceptRole) {
+        if (msgBox->clickedButton() == acceptButton) {
             ConfigFile().setUpdateChannel(channel);
             if (OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
                 updater->setUpdateUrl(Updater::updateUrl());
