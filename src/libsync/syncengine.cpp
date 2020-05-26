@@ -1027,7 +1027,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         // files with names that contain these.
         // It's important to respect the capability also for older servers -- the
         // version check doesn't make sense for custom servers.
-        invalidFilenamePattern = "[\\\\:?*\"<>|]";
+        invalidFilenamePattern = R"([\\:?*"<>|])";
     }
     if (!invalidFilenamePattern.isEmpty()) {
         const QRegExp invalidFilenameRx(invalidFilenamePattern);
