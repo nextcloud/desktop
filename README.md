@@ -48,6 +48,8 @@ you can join us at
 
 The current maintainers of this repository are:
 
+* Hannah von Reth <hannah.vonreth@owncloud.com>
+* Dominik Schmidt <dev@dominik-schmidt.de>
 * Markus Goetz <guruz@owncloud.com>
 * Olivier Goffart <ogoffart@owncloud.com>
 * Christian Kamm <mail@ckamm.de>
@@ -57,6 +59,7 @@ patches from a variety of authors](https://github.com/owncloud/client/graphs/con
 
 Past maintainers:
 
+* Thomas Müller <thomas.mueller@owncloud.com>
 * Klaas Freitag <freitag@owncloud.com>
 * Daniel Molkentin <daniel@molkentin.de>
 * Andreas Schneider <asn@cryptomilk.org>

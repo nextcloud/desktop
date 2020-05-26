@@ -343,7 +343,7 @@ QString Theme::about() const
     devString = tr("<p>Version %2. For more information visit <a href=\"%3\">https://%4</a></p>"
                        "<p>For known issues and help, please visit: <a href=\"https://central.owncloud.org/c/desktop-client\">https://central.owncloud.org</a></p>"
                        "<p><small>By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, "
-                       " Jan-Christoph Borchardt, and others.</small></p>")
+                       " Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Hannah von Reth, and others.</small></p>")
                     .arg(Utility::escape(MIRALL_VERSION_STRING),
                         Utility::escape("https://" MIRALL_STRINGIFY(APPLICATION_DOMAIN)),
                         Utility::escape(MIRALL_STRINGIFY(APPLICATION_DOMAIN)));
