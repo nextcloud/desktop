@@ -129,7 +129,7 @@ void showInFileManager(const QString &localPath)
     } else if (Utility::isMac()) {
         QStringList scriptArgs;
         scriptArgs << QLatin1String("-e")
-                   << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
+                   << QString::fromLatin1(R"(tell application "Finder" to reveal POSIX file "%1")")
                           .arg(localPath);
         QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
         scriptArgs.clear();

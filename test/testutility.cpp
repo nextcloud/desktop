@@ -120,7 +120,7 @@ private slots:
 	    qDebug() << "Version of installed Nextcloud: " << ver;
 	    QVERIFY( !ver.isEmpty());
 
-	    QRegExp rx( "Nextcloud version \\d+\\.\\d+\\.\\d+.*" );
+	    QRegExp rx( R"(Nextcloud version \d+\.\d+\.\d+.*)" );
             QVERIFY( rx.exactMatch(ver));
 	} else {
 	    QVERIFY( versionOfInstalledBinary().isEmpty());
