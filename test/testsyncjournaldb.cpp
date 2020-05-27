@@ -150,7 +150,7 @@ private slots:
 
     void testUploadInfo()
     {
-        typedef SyncJournalDb::UploadInfo Info;
+        using Info = SyncJournalDb::UploadInfo;
         Info record = _db.getUploadInfo("nonexistant");
         QVERIFY(!record._valid);
 
