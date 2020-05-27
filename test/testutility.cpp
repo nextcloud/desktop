@@ -20,6 +20,11 @@ class TestUtility : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testFormatFingerprint()
     {
         QVERIFY2(formatFingerprint("68ac906495480a3404beee4874ed853a037a7a8f")
