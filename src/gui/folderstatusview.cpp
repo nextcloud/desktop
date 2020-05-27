@@ -25,7 +25,7 @@ QModelIndex FolderStatusView::indexAt(const QPoint &point) const
 {
     QModelIndex index = QTreeView::indexAt(point);
     if (index.data(FolderStatusDelegate::AddButton).toBool() && !visualRect(index).contains(point)) {
-        return QModelIndex();
+        return {};
     }
     return index;
 }
