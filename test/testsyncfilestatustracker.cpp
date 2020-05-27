@@ -26,7 +26,7 @@ public:
             if (QFileInfo(at(i)[0].toString()) == file)
                 return at(i)[1].value<SyncFileStatus>();
         }
-        return SyncFileStatus();
+        return {};
     }
 
     bool statusEmittedBefore(const QString &firstPath, const QString &secondPath) const {
