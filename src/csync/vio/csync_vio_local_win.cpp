@@ -25,6 +25,8 @@
 #include <fcntl.h>
 #include <stdio.h>
 
+#include <memory>
+
 #include "windows.h"
 
 #include "c_private.h"
@@ -166,7 +168,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
   if (path == "." || path == "..")
       return csync_vio_local_readdir(dhandle);
 
-  file_stat.reset(new csync_file_stat_t);
+  file_stat = std::make_unique<csync_file_stat_t>();
   file_stat->path = path;
 
   if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
