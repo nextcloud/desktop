@@ -57,9 +57,7 @@ AccountState::AccountState(AccountPtr account)
     _timeSinceLastETagCheck.invalidate();
 }
 
-AccountState::~AccountState()
-{
-}
+AccountState::~AccountState() = default;
 
 AccountState *AccountState::loadFromSettings(AccountPtr account, QSettings & /*settings*/)
 {

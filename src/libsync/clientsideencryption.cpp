@@ -610,9 +610,7 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
 }
 
 }
-ClientSideEncryption::ClientSideEncryption()
-{
-}
+ClientSideEncryption::ClientSideEncryption() = default;
 
 void ClientSideEncryption::setAccount(AccountPtr account)
 {

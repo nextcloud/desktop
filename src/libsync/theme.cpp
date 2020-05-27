@@ -50,9 +50,7 @@ Theme *Theme::instance()
     return _instance;
 }
 
-Theme::~Theme()
-{
-}
+Theme::~Theme() = default;
 
 QString Theme::statusHeaderText(SyncResult::Status status) const
 {
