@@ -28,7 +28,7 @@
 
 const char OCSYNC_EXPORT *csync_instruction_str(enum csync_instructions_e instr);
 
-void OCSYNC_EXPORT csync_memstat_check(void);
+void OCSYNC_EXPORT csync_memstat_check();
 
 /* Returns true if we're reasonably certain that hash equality
  * for the header means content equality.
