@@ -1,0 +1,14 @@
+Checks: '-*,
+    modernize-make-shared,
+    modernize-replace-*,
+    modernize-shrink-to-fit,
+    modernize-use-bool-literals,
+    modernize-use-emplace,
+    modernize-use-noexcept,
+    modernize-use-transparent-functors,
+    modernize-use-uncaught-exceptions,
+'
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*'
+AnalyzeTemporaryDtors: false
+FormatStyle:     none
