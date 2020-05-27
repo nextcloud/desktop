@@ -52,7 +52,6 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
     , _ignoreCredentialFailure(false)
     , _reply(nullptr)
     , _path(path)
-    , _redirectCount(0)
 {
     _timer.setSingleShot(true);
     _timer.setInterval((httpTimeout ? httpTimeout : 300) * 1000); // default to 5 minutes.
