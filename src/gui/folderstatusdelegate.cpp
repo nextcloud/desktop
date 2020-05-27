@@ -91,7 +91,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
         h += margin + 2 * margin + errMsgs.count() * fm.height();
     }
 
-    return QSize(0, h);
+    return {0, h};
 }
 
 int FolderStatusDelegate::rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm)

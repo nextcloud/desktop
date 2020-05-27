@@ -135,7 +135,10 @@ GeneralSettings::~GeneralSettings()
 
 QSize GeneralSettings::sizeHint() const
 {
-    return QSize(ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height());
+    return {
+        ownCloudGui::settingsDialogSize().width(),
+        QWidget::sizeHint().height()
+    };
 }
 
 void GeneralSettings::loadMiscSettings()

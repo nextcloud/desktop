@@ -1593,7 +1593,7 @@ RemotePermissions SyncEngine::getPermissions(const QString &file) const
     if (it != _csync_ctx->remote.files.end()) {
         return it->second->remotePerm;
     }
-    return RemotePermissions();
+    return {};
 }
 
 void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
