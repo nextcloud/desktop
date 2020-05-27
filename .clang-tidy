@@ -1,6 +1,6 @@
 Checks: '-*,
     cppcoreguidelines-init-variables,
-    modernize-make-shared,
+    modernize-make-*,
     modernize-redundant-void-arg,
     modernize-replace-*,
     modernize-return-braced-init-list,

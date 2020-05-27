@@ -17,6 +17,8 @@
 #include <QNetworkReply>
 #include <QMap>
 #include <QtTest>
+#include <memory>
+
 
 /*
  * TODO: In theory we should use QVERIFY instead of Q_ASSERT for testing, but this
@@ -895,8 +897,8 @@ public:
         _account->setCredentials(new FakeCredentials{_fakeQnam});
         _account->setDavDisplayName("fakename");
 
-        _journalDb.reset(new OCC::SyncJournalDb(localPath() + "._sync_test.db"));
-        _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), "", _journalDb.get()));
+        _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + "._sync_test.db");
+        _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), "", _journalDb.get());
 
         // A new folder will update the local file state database on first sync.
         // To have a state matching what users will encounter, we have to a sync
