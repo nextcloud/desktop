@@ -447,12 +447,12 @@ QIcon Theme::folderOfflineIcon(bool sysTray) const
 
 QColor Theme::wizardHeaderTitleColor() const
 {
-    return QColor(APPLICATION_WIZARD_HEADER_TITLE_COLOR);
+    return {APPLICATION_WIZARD_HEADER_TITLE_COLOR};
 }
 
 QColor Theme::wizardHeaderBackgroundColor() const
 {
-    return QColor(APPLICATION_WIZARD_HEADER_BACKGROUND_COLOR);
+    return {APPLICATION_WIZARD_HEADER_BACKGROUND_COLOR};
 }
 
 QPixmap Theme::wizardHeaderLogo() const
@@ -581,7 +581,7 @@ bool Theme::isDarkColor(const QColor &color)
 
 QColor Theme::getBackgroundAwareLinkColor(const QColor &backgroundColor)
 {
-    return QColor((isDarkColor(backgroundColor) ? QColor("#6193dc") : QGuiApplication::palette().color(QPalette::Link)));
+    return {(isDarkColor(backgroundColor) ? QColor("#6193dc") : QGuiApplication::palette().color(QPalette::Link))};
 }
 
 QColor Theme::getBackgroundAwareLinkColor()
