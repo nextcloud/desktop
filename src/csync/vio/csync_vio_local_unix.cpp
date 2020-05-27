@@ -26,6 +26,8 @@
 #include <dirent.h>
 #include <stdio.h>
 
+#include <memory>
+
 #include "c_private.h"
 #include "c_lib.h"
 #include "c_string.h"
@@ -101,7 +103,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
           return {};
   } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
 
-  file_stat.reset(new csync_file_stat_t);
+  file_stat = std::make_unique<csync_file_stat_t>();
   file_stat->path = c_utf8_from_locale(dirent->d_name);
   QByteArray fullPath = QByteArray() % const_cast<const char *>(handle->path) % '/' % QByteArray() % const_cast<const char *>(dirent->d_name);
   if (file_stat->path.isNull()) {
