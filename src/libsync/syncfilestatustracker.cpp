@@ -139,7 +139,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
     if (_syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + relativePath,
             _syncEngine->localPath(),
             _syncEngine->ignoreHiddenFiles())) {
-        return SyncFileStatus(SyncFileStatus::StatusWarning);
+        return SyncFileStatus::StatusWarning;
     }
 
     if (_dirtyPaths.contains(relativePath))

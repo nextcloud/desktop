@@ -89,7 +89,10 @@ NetworkSettings::~NetworkSettings()
 
 QSize NetworkSettings::sizeHint() const
 {
-    return QSize(ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height());
+    return {
+        ownCloudGui::settingsDialogSize().width(),
+        QWidget::sizeHint().height()
+    };
 }
 
 void NetworkSettings::loadProxySettings()

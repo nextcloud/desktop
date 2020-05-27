@@ -93,7 +93,7 @@ void QProgressIndicator::setColor(const QColor & color)
 
 QSize QProgressIndicator::sizeHint() const
 {
-    return QSize(20,20);
+    return {20, 20};
 }
 
 int QProgressIndicator::heightForWidth(int w) const
