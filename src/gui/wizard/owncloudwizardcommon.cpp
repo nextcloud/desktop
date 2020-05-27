@@ -47,7 +47,7 @@ namespace WizardCommon {
 
     QString titleTemplate()
     {
-        return QString::fromLatin1("<font color=\"%1\" size=\"5\">").arg(Theme::instance()->wizardHeaderTitleColor().name()) + QString::fromLatin1("%1</font>");
+        return QString::fromLatin1(R"(<font color="%1" size="5">)").arg(Theme::instance()->wizardHeaderTitleColor().name()) + QString::fromLatin1("%1</font>");
     }
 
     QString subTitleTemplate()

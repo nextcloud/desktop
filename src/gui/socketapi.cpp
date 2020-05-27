@@ -177,7 +177,7 @@ SocketApi::SocketApi(QObject *parent)
     QString socketPath;
 
     if (Utility::isWindows()) {
-        socketPath = QLatin1String("\\\\.\\pipe\\")
+        socketPath = QLatin1String(R"(\\.\pipe\)")
             + QLatin1String("ownCloud-")
             + QString::fromLocal8Bit(qgetenv("USERNAME"));
         // TODO: once the windows extension supports multiple
