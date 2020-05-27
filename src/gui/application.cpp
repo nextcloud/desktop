@@ -261,7 +261,7 @@ Application::Application(int &argc, char **argv)
 
 #if defined(BUILD_UPDATER)
     // Update checks
-    UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
+    auto *updaterScheduler = new UpdaterScheduler(this);
     connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
         _gui.data(), &ownCloudGui::slotShowTrayMessage);
     connect(updaterScheduler, &UpdaterScheduler::requestRestart,

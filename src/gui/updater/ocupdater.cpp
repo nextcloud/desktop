@@ -43,7 +43,7 @@ UpdaterScheduler::UpdaterScheduler(QObject *parent)
         this, &UpdaterScheduler::slotTimerFired);
 
     // Note: the sparkle-updater is not an OCUpdater
-    if (OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
+    if (auto *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
         connect(updater, &OCUpdater::newUpdateAvailable,
             this, &UpdaterScheduler::updaterAnnouncement);
         connect(updater, &OCUpdater::requestRestart, this, &UpdaterScheduler::requestRestart);
@@ -219,7 +219,7 @@ bool OCUpdater::updateSucceeded() const
 void OCUpdater::slotVersionInfoArrived()
 {
     _timeoutWatchdog->stop();
-    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    auto *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
         qCWarning(lcUpdater) << "Failed to reach version check url: " << reply->errorString();
@@ -254,7 +254,7 @@ NSISUpdater::NSISUpdater(const QUrl &url)
 
 void NSISUpdater::slotWriteFile()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    auto *reply = qobject_cast<QNetworkReply *>(sender());
     if (_file->isOpen()) {
         _file->write(reply->readAll());
     }
@@ -262,7 +262,7 @@ void NSISUpdater::slotWriteFile()
 
 void NSISUpdater::slotDownloadFinished()
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+    auto *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
         setDownloadState(DownloadFailed);
@@ -319,7 +319,7 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
 void NSISUpdater::showDialog(const UpdateInfo &info)
 {
     // if the version tag is set, there is a newer version.
-    QDialog *msgBox = new QDialog;
+    auto *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
 
     QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation, nullptr, nullptr);
@@ -327,16 +327,16 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
 
     msgBox->setWindowIcon(infoIcon);
 
-    QVBoxLayout *layout = new QVBoxLayout(msgBox);
-    QHBoxLayout *hlayout = new QHBoxLayout;
+    auto *layout = new QVBoxLayout(msgBox);
+    auto *hlayout = new QHBoxLayout;
     layout->addLayout(hlayout);
 
     msgBox->setWindowTitle(tr("New Version Available"));
 
-    QLabel *ico = new QLabel;
+    auto *ico = new QLabel;
     ico->setFixedSize(iconSize, iconSize);
     ico->setPixmap(infoIcon.pixmap(iconSize));
-    QLabel *lbl = new QLabel;
+    auto *lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available.</p>"
                      "<p><b>%2</b> is available for download. The installed version is %3.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
@@ -349,7 +349,7 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
     hlayout->addWidget(ico);
     hlayout->addWidget(lbl);
 
-    QDialogButtonBox *bb = new QDialogButtonBox;
+    auto *bb = new QDialogButtonBox;
     bb->setWindowFlags(bb->windowFlags() & ~Qt::WindowContextHelpButtonHint);
     QPushButton *skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
     QPushButton *reject = bb->addButton(tr("Skip this time"), QDialogButtonBox::AcceptRole);
