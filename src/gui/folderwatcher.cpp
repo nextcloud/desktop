@@ -44,9 +44,7 @@ FolderWatcher::FolderWatcher(Folder *folder)
 {
 }
 
-FolderWatcher::~FolderWatcher()
-{
-}
+FolderWatcher::~FolderWatcher() = default;
 
 void FolderWatcher::init(const QString &root)
 {

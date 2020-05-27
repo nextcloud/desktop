@@ -21,9 +21,7 @@
 
 namespace OCC {
 
-SyncRunFileLog::SyncRunFileLog()
-{
-}
+SyncRunFileLog::SyncRunFileLog() = default;
 
 QString SyncRunFileLog::dateTimeStr(const QDateTime &dt)
 {

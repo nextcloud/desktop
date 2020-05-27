@@ -77,9 +77,7 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
     _ui.warnLabel->hide();
 }
 
-FolderWizardLocalPath::~FolderWizardLocalPath()
-{
-}
+FolderWizardLocalPath::~FolderWizardLocalPath() = default;
 
 void FolderWizardLocalPath::initializePage()
 {
@@ -416,9 +414,7 @@ LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
     return job;
 }
 
-FolderWizardRemotePath::~FolderWizardRemotePath()
-{
-}
+FolderWizardRemotePath::~FolderWizardRemotePath() = default;
 
 bool FolderWizardRemotePath::isComplete() const
 {
@@ -485,9 +481,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     layout->addWidget(_selectiveSync);
 }
 
-FolderWizardSelectiveSync::~FolderWizardSelectiveSync()
-{
-}
+FolderWizardSelectiveSync::~FolderWizardSelectiveSync() = default;
 
 
 void FolderWizardSelectiveSync::initializePage()
@@ -552,9 +546,7 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     setButtonText(QWizard::FinishButton, tr("Add Sync Connection"));
 }
 
-FolderWizard::~FolderWizard()
-{
-}
+FolderWizard::~FolderWizard() = default;
 
 bool FolderWizard::eventFilter(QObject *watched, QEvent *event)
 {
