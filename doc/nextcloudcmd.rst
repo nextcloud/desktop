@@ -8,6 +8,34 @@ repositories to the same state. Contrary to the GUI-based client,
 ``nextcloudcmd`` does not repeat synchronizations on its own. It also does not 
 monitor for file system changes.
 
+
+Install ``nextcloudcmd``
+~~~~~~~~~~~~
+
+CentOS
+
+::
+
+    $ sudo yum -y install epel-release
+    $ sudo yum -y install nextcloud-client
+
+Ubuntu/Debian
+
+::
+
+    $ sudo add-apt-repository ppa:nextcloud-devs/client
+    $ sudo apt update
+    $ sudo apt install nextcloud-client
+
+
+Refer to the link
+
+- https://nextcloud.com/install/#install-clients
+- https://launchpad.net/~nextcloud-devs/+archive/ubuntu/client
+- https://pkgs.alpinelinux.org/packages?name=nextcloud-client
+- https://help.nextcloud.com/t/linux-packages-status/10216
+
+
 To invoke ``nextcloudcmd``, you must provide the local and the remote repository 
 URL using the following command::
 
@@ -84,3 +112,13 @@ Exclude List
 installed along with ``nextcloudcmd`` and thus be available in a system location,
 be placed next to the binary as ``sync-exclude.lst`` or be explicitly specified
 with the ``--exclude`` switch.
+
+Example
+~~~~~~~~~~~~
+
+- Synchronize a local directory to the specified directory of the nextcloud server
+
+::
+
+    $ nextcloudcmd /home/user/<my_sync_folder> \
+    https://<username>:<secret>@<server_address>/remote.php/webdav/<Directory_that_has_been_created>
