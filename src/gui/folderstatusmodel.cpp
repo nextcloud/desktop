@@ -483,7 +483,7 @@ QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex &par
         return {};
     case RootFolder:
         if (_folders.count() <= parent.row())
-            return QModelIndex(); // should not happen
+            return {}; // should not happen
         return createIndex(row, column, const_cast<SubFolderInfo *>(&_folders[parent.row()]));
     case SubFolder: {
         auto pinfo = static_cast<SubFolderInfo *>(parent.internalPointer());
