@@ -53,10 +53,9 @@ struct QTokenizerPrivate {
     typedef typename T::value_type char_type;
 
     struct State {
-        bool inQuote;
-        bool inEscape;
-        char_type quoteChar;
-        State() : inQuote(false), inEscape(false), quoteChar('\0') {}
+        bool inQuote = false;
+        bool inEscape = false;
+        char_type quoteChar = '\0';
     };
 
     QTokenizerPrivate(const T& _string, const T& _delims) :

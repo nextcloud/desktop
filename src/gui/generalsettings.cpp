@@ -50,7 +50,6 @@ namespace OCC {
 GeneralSettings::GeneralSettings(QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::GeneralSettings)
-    , _currentlyLoading(false)
 {
     _ui->setupUi(this);
 

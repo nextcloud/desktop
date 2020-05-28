@@ -55,14 +55,14 @@ public:
     QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
 
     QByteArray _path;
-    quint64 _inode;
-    qint64 _modtime;
-    ItemType _type;
+    quint64 _inode = 0;
+    qint64 _modtime = 0;
+    ItemType _type = ItemTypeSkip;
     QByteArray _etag;
     QByteArray _fileId;
-    qint64 _fileSize;
+    qint64 _fileSize = 0;
     RemotePermissions _remotePerm;
-    bool _serverHasIgnoredFiles;
+    bool _serverHasIgnoredFiles = false;
     QByteArray _checksumHeader;
     QByteArray _e2eMangledName;
 };

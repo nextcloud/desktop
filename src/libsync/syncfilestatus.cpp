@@ -16,8 +16,6 @@
 
 namespace OCC {
 SyncFileStatus::SyncFileStatus()
-    : _tag(StatusNone)
-    , _shared(false)
 {
 }
 

@@ -40,12 +40,8 @@ struct DiscoveryDirectoryResult
 {
     QString path;
     QString msg;
-    int code;
+    int code = EIO;
     std::deque<std::unique_ptr<csync_file_stat_t>> list;
-    DiscoveryDirectoryResult()
-        : code(EIO)
-    {
-    }
 };
 
 /**

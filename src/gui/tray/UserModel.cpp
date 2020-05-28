@@ -518,7 +518,6 @@ UserModel *UserModel::instance()
 
 UserModel::UserModel(QObject *parent)
     : QAbstractListModel(parent)
-    , _currentUserId()
 {
     // TODO: Remember selected user from last quit via settings file
     if (AccountManager::instance()->accounts().size() > 0) {

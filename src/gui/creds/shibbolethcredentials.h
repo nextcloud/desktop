@@ -91,12 +91,12 @@ private:
     QUrl _url;
     QByteArray prepareCookieData() const;
 
-    bool _ready;
-    bool _stillValid;
+    bool _ready = false;
+    bool _stillValid = false;
     QPointer<ShibbolethWebView> _browser;
     QNetworkCookie _shibCookie;
     QString _user;
-    bool _keychainMigration;
+    bool _keychainMigration = false;
 };
 
 } // namespace OCC

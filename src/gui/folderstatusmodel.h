@@ -140,8 +140,8 @@ private slots:
 private:
     QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo *root,
         const QStringList &oldBlackList) const;
-    const AccountState *_accountState;
-    bool _dirty; // If the selective sync checkboxes were changed
+    const AccountState *_accountState = nullptr;
+    bool _dirty = false; // If the selective sync checkboxes were changed
 
     /**
      * Keeps track of items that are fetching data from the server.

@@ -50,7 +50,7 @@ protected:
 private:
     QString _localFolder;
     QString _remoteFolder;
-    bool _complete;
+    bool _complete = false;
 
     Ui_OwncloudWizardResultPage _ui;
 };

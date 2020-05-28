@@ -47,11 +47,8 @@ FolderMan *FolderMan::_instance = nullptr;
 
 FolderMan::FolderMan(QObject *parent)
     : QObject(parent)
-    , _currentSyncFolder(nullptr)
-    , _syncEnabled(true)
     , _lockWatcher(new LockWatcher)
     , _navigationPaneHelper(this)
-    , _appRestartRequired(false)
 {
     ASSERT(!_instance);
     _instance = this;

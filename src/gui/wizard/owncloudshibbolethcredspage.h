@@ -58,7 +58,7 @@ private:
     void setupBrowser();
 
     QPointer<ShibbolethWebView> _browser;
-    bool _afterInitialSetup;
+    bool _afterInitialSetup = false;
     QNetworkCookie _cookie;
 };
 

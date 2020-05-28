@@ -71,14 +71,14 @@ private:
     void customizeStyle();
 
     Ui_OwncloudAdvancedSetupPage _ui;
-    bool _checking;
-    bool _created;
-    bool _localFolderValid;
+    bool _checking = false;
+    bool _created = false;
+    bool _localFolderValid = false;
     QProgressIndicator *_progressIndi;
     QString _remoteFolder;
     QStringList _selectiveSyncBlacklist;
-    qint64 _rSize;
-    qint64 _rSelectedSize;
+    qint64 _rSize = -1;
+    qint64 _rSelectedSize = -1;
 };
 
 } // namespace OCC

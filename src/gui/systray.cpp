@@ -47,9 +47,7 @@ Systray *Systray::instance()
 }
 
 Systray::Systray()
-    : _isOpen(false)
-    , _syncIsPaused(false)
-    , _trayEngine(new QQmlApplicationEngine(this))
+    : _trayEngine(new QQmlApplicationEngine(this))
 {
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);

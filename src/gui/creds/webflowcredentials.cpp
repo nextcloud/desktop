@@ -87,10 +87,6 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 #endif
 
 WebFlowCredentials::WebFlowCredentials()
-    : _ready(false)
-    , _credentialsValid(false)
-    , _keychainMigration(false)
-    , _retryOnKeyChainError(false)
 {
 
 }
@@ -103,8 +99,6 @@ WebFlowCredentials::WebFlowCredentials(const QString &user, const QString &passw
     , _clientSslCaCertificates(caCertificates)
     , _ready(true)
     , _credentialsValid(true)
-    , _keychainMigration(false)
-    , _retryOnKeyChainError(false)
 {
 
 }
