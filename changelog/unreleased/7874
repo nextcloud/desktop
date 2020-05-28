@@ -1,0 +1,5 @@
+Bugfix: Closing prompt has the same effect as accepting
+
+We fixed the handling of the user's input.
+
+https://github.com/owncloud/client/issues/7874
