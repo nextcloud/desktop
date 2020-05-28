@@ -36,14 +36,7 @@ namespace OCC {
 
 OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     : QWizardPage()
-    , _ui()
-    , _checking(false)
-    , _created(false)
-    , _localFolderValid(false)
     , _progressIndi(new QProgressIndicator(this))
-    , _remoteFolder()
-    , _rSize(-1)
-    , _rSelectedSize(-1)
 {
     _ui.setupUi(this);
 

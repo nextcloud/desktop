@@ -76,8 +76,8 @@ public slots:
 private:
     static Systray *_instance;
     Systray();
-    bool _isOpen;
-    bool _syncIsPaused;
+    bool _isOpen = false;
+    bool _syncIsPaused = false;
     QQmlApplicationEngine *_trayEngine;
 };
 

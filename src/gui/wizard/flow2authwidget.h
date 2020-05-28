@@ -48,7 +48,7 @@ signals:
     void pollNow();
 
 private:
-    Account *_account;
+    Account *_account = nullptr;
     QScopedPointer<Flow2Auth> _asyncAuth;
     Ui_Flow2AuthWidget _ui;
 
@@ -62,7 +62,7 @@ private:
     void customizeStyle();
 
     QProgressIndicator *_progressIndi;
-    int _statusUpdateSkipCount;
+    int _statusUpdateSkipCount = 0;
 };
 
 } // namespace OCC

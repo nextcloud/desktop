@@ -104,8 +104,6 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 }
 
 HttpCredentials::HttpCredentials()
-    : _ready(false)
-    , _keychainMigration(false)
 {
 }
 

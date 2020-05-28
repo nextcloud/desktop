@@ -101,11 +101,11 @@ protected:
     virtual void timerEvent(QTimerEvent * event); 
     virtual void paintEvent(QPaintEvent * event);
 private:
-    int m_angle;
-    int m_timerId;
-    int m_delay;
-    bool m_displayedWhenStopped;
-    QColor m_color;
+    int m_angle = 0;
+    int m_timerId = -1;
+    int m_delay = 40;
+    bool m_displayedWhenStopped = false;
+    QColor m_color = Qt::black;
 };
 
 #endif // QPROGRESSINDICATOR_H

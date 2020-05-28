@@ -127,15 +127,6 @@ public:
      */
     struct OWNCLOUDSYNC_EXPORT Progress
     {
-        Progress()
-            : _progressPerSec(0)
-            , _prevCompleted(0)
-            , _initialSmoothing(1.0)
-            , _completed(0)
-            , _total(0)
-        {
-        }
-
         /** Returns the estimates about progress per second and eta. */
         Estimates estimates() const;
 
@@ -155,16 +146,16 @@ public:
         void setCompleted(quint64 completed);
 
         // Updated by update()
-        double _progressPerSec;
-        quint64 _prevCompleted;
+        double _progressPerSec = 0;
+        quint64 _prevCompleted = 0;
 
         // Used to get to a good value faster when
         // progress measurement stats. See update().
-        double _initialSmoothing;
+        double _initialSmoothing = 1.0;
 
         // Set and updated by ProgressInfo
-        quint64 _completed;
-        quint64 _total;
+        quint64 _completed = 0;
+        quint64 _total = 0;
 
         friend class ProgressInfo;
     };

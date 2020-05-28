@@ -50,8 +50,8 @@ public:
     QString toSocketAPIString() const;
 
 private:
-    SyncFileStatusTag _tag;
-    bool _shared;
+    SyncFileStatusTag _tag = StatusNone;
+    bool _shared = false;
 };
 
 inline bool operator==(const SyncFileStatus &a, const SyncFileStatus &b)

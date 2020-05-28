@@ -137,10 +137,10 @@ protected:
     QString _previousPassword;
 
     QString _fetchErrorString;
-    bool _ready;
+    bool _ready = false;
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
-    bool _keychainMigration;
+    bool _keychainMigration = false;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 };
 

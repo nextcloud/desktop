@@ -103,8 +103,8 @@ Q_SIGNALS:
     void asked();
 
 protected:
-    Account *_account;
-    bool _wasFetched;
+    Account *_account = nullptr;
+    bool _wasFetched = false;
 };
 
 } // namespace OCC

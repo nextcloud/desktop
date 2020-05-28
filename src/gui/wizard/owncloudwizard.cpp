@@ -47,16 +47,13 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _browserCredsPage(new OwncloudOAuthCredsPage)
-    , _flow2CredsPage(new Flow2AuthCredsPage)
 #ifndef NO_SHIBBOLETH
     , _shibbolethCredsPage(new OwncloudShibbolethCredsPage)
 #endif
+    , _flow2CredsPage(new Flow2AuthCredsPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage)
     , _resultPage(new OwncloudWizardResultPage)
-    , _credentialsPage(nullptr)
     , _webViewPage(new WebViewPage(this))
-    , _setupLog()
-    , _registration(false)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);

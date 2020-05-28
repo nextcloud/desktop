@@ -29,8 +29,7 @@
 namespace OCC {
 
 Flow2AuthCredsPage::Flow2AuthCredsPage()
-    : AbstractCredentialsWizardPage(),
-    _flow2AuthWidget(nullptr)
+    : AbstractCredentialsWizardPage()
 {
     _layout = new QVBoxLayout(this);
 

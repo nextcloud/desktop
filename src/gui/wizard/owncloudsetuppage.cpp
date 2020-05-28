@@ -39,16 +39,10 @@ namespace OCC {
 
 OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     : QWizardPage()
-    , _ui()
-    , _oCUrl()
-    , _ocUser()
-    , _authTypeKnown(false)
-    , _checking(false)
-    , _authType(DetermineAuthTypeJob::Basic)
     , _progressIndi(new QProgressIndicator(this))
+    , _ocWizard(qobject_cast<OwncloudWizard *>(parent))
 {
     _ui.setupUi(this);
-    _ocWizard = qobject_cast<OwncloudWizard *>(parent);
 
     Theme *theme = Theme::instance();
     setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(theme->appNameGUI())));

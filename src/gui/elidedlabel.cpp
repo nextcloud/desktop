@@ -20,7 +20,6 @@ namespace OCC {
 
 ElidedLabel::ElidedLabel(QWidget *parent)
     : QLabel(parent)
-    , _elideMode(Qt::ElideNone)
 {
 }
 
