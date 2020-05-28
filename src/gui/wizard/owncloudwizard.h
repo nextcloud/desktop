@@ -117,12 +117,12 @@ private:
     Flow2AuthCredsPage *_flow2CredsPage;
     OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage;
-    AbstractCredentialsWizardPage *_credentialsPage;
+    AbstractCredentialsWizardPage *_credentialsPage = nullptr;
     WebViewPage *_webViewPage;
 
     QStringList _setupLog;
 
-    bool _registration;
+    bool _registration = false;
 
     friend class OwncloudSetupWizard;
 };

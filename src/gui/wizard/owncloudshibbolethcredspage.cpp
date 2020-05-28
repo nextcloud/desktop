@@ -27,8 +27,6 @@ namespace OCC {
 
 OwncloudShibbolethCredsPage::OwncloudShibbolethCredsPage()
     : AbstractCredentialsWizardPage()
-    , _browser(nullptr)
-    , _afterInitialSetup(false)
 {
 }
 

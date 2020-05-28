@@ -38,7 +38,7 @@ protected:
 
 private:
     QString _text;
-    Qt::TextElideMode _elideMode;
+    Qt::TextElideMode _elideMode = Qt::ElideNone;
 };
 }
 

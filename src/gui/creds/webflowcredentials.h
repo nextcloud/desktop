@@ -119,12 +119,12 @@ protected:
     QSslCertificate _clientSslCertificate;
     QList<QSslCertificate> _clientSslCaCertificates;
 
-    bool _ready;
-    bool _credentialsValid;
-    bool _keychainMigration;
+    bool _ready = false;
+    bool _credentialsValid = false;
+    bool _keychainMigration = false;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
-    WebFlowCredentialsDialog *_askDialog;
+    WebFlowCredentialsDialog *_askDialog = nullptr;
 };
 
 } // namespace OCC

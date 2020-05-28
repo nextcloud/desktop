@@ -466,7 +466,7 @@ private:
     Theme &operator=(Theme const &);
 
     static Theme *_instance;
-    bool _mono;
+    bool _mono = false;
 #ifndef TOKEN_AUTH_ONLY
     mutable QHash<QString, QIcon> _iconCache;
 #endif

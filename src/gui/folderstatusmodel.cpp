@@ -43,8 +43,6 @@ static QString removeTrailingSlash(const QString &s)
 
 FolderStatusModel::FolderStatusModel(QObject *parent)
     : QAbstractItemModel(parent)
-    , _accountState(nullptr)
-    , _dirty(false)
 {
 
 }

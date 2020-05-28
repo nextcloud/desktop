@@ -48,11 +48,6 @@ Logger *Logger::instance()
 
 Logger::Logger(QObject *parent)
     : QObject(parent)
-    , _showTime(true)
-    , _logWindowActivated(false)
-    , _doFileFlush(false)
-    , _logExpire(0)
-    , _logDebug(false)
 {
     qSetMessagePattern("[%{function} \t%{message}");
 #ifndef NO_MSG_HANDLER

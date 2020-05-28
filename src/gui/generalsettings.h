@@ -62,7 +62,7 @@ private:
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
     QPointer<SyncLogDialog> _syncLogDialog;
-    bool _currentlyLoading;
+    bool _currentlyLoading = false;
 };
 
 

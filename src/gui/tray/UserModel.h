@@ -134,7 +134,7 @@ private:
     static UserModel *_instance;
     UserModel(QObject *parent = 0);
     QList<User*> _users;
-    int _currentUserId;
+    int _currentUserId = 0;
     bool _init = true;
 
     void buildUserList();

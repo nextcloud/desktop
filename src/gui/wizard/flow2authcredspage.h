@@ -61,8 +61,8 @@ public:
     QString _appPassword;
 
 private:
-    Flow2AuthWidget *_flow2AuthWidget;
-    QVBoxLayout *_layout;
+    Flow2AuthWidget *_flow2AuthWidget = nullptr;
+    QVBoxLayout *_layout = nullptr;
 };
 
 } // namespace OCC

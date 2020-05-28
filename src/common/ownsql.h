@@ -62,9 +62,9 @@ private:
     bool openHelper(const QString &filename, int sqliteFlags);
     CheckDbResult checkDb();
 
-    sqlite3 *_db;
+    sqlite3 *_db = nullptr;
     QString _error; // last error string
-    int _errId;
+    int _errId = 0;
 
     friend class SqlQuery;
     QSet<SqlQuery *> _queries;

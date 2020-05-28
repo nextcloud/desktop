@@ -51,11 +51,6 @@ namespace {
 
 ShibbolethCredentials::ShibbolethCredentials()
     : AbstractCredentials()
-    , _url()
-    , _ready(false)
-    , _stillValid(false)
-    , _browser(nullptr)
-    , _keychainMigration(false)
 {
 }
 

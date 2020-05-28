@@ -97,12 +97,12 @@ private:
     Logger(QObject *parent = nullptr);
     ~Logger();
     QList<Log> _logs;
-    bool _showTime;
-    bool _logWindowActivated;
+    bool _showTime = true;
+    bool _logWindowActivated = false;
     QFile _logFile;
-    bool _doFileFlush;
-    int _logExpire;
-    bool _logDebug;
+    bool _doFileFlush = false;
+    int _logExpire = 0;
+    bool _logDebug = false;
     QScopedPointer<QTextStream> _logstream;
     mutable QMutex _mutex;
     QString _logDirectory;

@@ -204,7 +204,6 @@ QString Theme::hidpiFileName(const QString &fileName, QPaintDevice *dev)
 
 Theme::Theme()
     : QObject(nullptr)
-    , _mono(false)
 {
 }
 
