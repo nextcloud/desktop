@@ -43,13 +43,13 @@ QDataStream &operator>>(QDataStream &stream, QList<QNetworkCookie> &list)
 {
     list.clear();
 
-    quint32 version;
+    quint32 version = 0;
     stream >> version;
 
     if (version != JAR_VERSION)
         return stream;
 
-    quint32 count;
+    quint32 count = 0;
     stream >> count;
     for (quint32 i = 0; i < count; ++i) {
         QByteArray value;

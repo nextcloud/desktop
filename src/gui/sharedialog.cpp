@@ -309,7 +309,7 @@ void ShareDialog::slotCreateLinkShare()
 
 void ShareDialog::slotLinkShareRequiresPassword()
 {
-    bool ok;
+    bool ok = false;
     QString password = QInputDialog::getText(this,
                                              tr("Password for share required"),
                                              tr("Please enter a password for your link share:"),

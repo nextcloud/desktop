@@ -179,7 +179,7 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
     QString *errorString)
 {
 #ifndef Q_OS_WIN
-    bool success;
+    bool success = false;
     QFile orig(originFileName);
     // We want a rename that also overwites.  QFile::rename does not overwite.
     // Qt 5.1 has QSaveFile::renameOverwrite we could use.
@@ -396,7 +396,7 @@ QByteArray FileSystem::calcAdler32(const QString &filename)
 
     unsigned int adler = adler32(0L, Z_NULL, 0);
     if (file.open(QIODevice::ReadOnly)) {
-        qint64 size;
+        qint64 size = 0;
         while (!file.atEnd()) {
             size = file.read(buf.data(), bufSize);
             if (size > 0)

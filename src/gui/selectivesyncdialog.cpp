@@ -433,7 +433,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWi
     , _folder(folder)
     , _okButton(nullptr) // defined in init()
 {
-    bool ok;
+    bool ok = false;
     init(account);
     QStringList selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {
@@ -463,7 +463,7 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
     auto *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     _okButton = buttonBox->addButton(QDialogButtonBox::Ok);
     connect(_okButton, &QPushButton::clicked, this, &SelectiveSyncDialog::accept);
-    QPushButton *button;
+    QPushButton *button = nullptr;
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
     connect(button, &QAbstractButton::clicked, this, &QDialog::reject);
     layout->addWidget(buttonBox);
@@ -472,7 +472,7 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
 void SelectiveSyncDialog::accept()
 {
     if (_folder) {
-        bool ok;
+        bool ok = false;
         auto oldBlackListSet = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
         if (!ok) {
             return;

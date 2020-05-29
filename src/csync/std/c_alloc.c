@@ -62,7 +62,7 @@ void *c_realloc(void *ptr, size_t size) {
 }
 
 char *c_strdup(const char *str) {
-  char *ret;
+  char *ret = NULL;
   ret = (char *) c_malloc(strlen(str) + 1);
   if (ret == NULL) {
     return NULL;
@@ -72,8 +72,8 @@ char *c_strdup(const char *str) {
 }
 
 char *c_strndup(const char *str, size_t size) {
-  char *ret;
-  size_t len;
+  char *ret = NULL;
+  size_t len = 0;
   len = strlen(str);
   if (len > size) {
     len = size;

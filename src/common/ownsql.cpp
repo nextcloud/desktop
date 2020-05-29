@@ -253,7 +253,7 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
     }
     if (!_sql.isEmpty()) {
         int n = 0;
-        int rc;
+        int rc = 0;
         do {
             rc = sqlite3_prepare_v2(_db, _sql.constData(), -1, &_stmt, nullptr);
             if ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)) {
@@ -306,7 +306,7 @@ bool SqlQuery::exec()
 
     // Don't do anything for selects, that is how we use the lib :-|
     if (!isSelect() && !isPragma()) {
-        int rc, n = 0;
+        int rc = 0, n = 0;
         do {
             rc = sqlite3_step(_stmt);
             if (rc == SQLITE_LOCKED) {

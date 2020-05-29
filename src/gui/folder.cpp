@@ -903,20 +903,20 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
 
     // add new directories or remove gone away dirs to the watcher
     if (_folderWatcher && item->isDirectory()) {
-	switch (item->_instruction) {
-	    case CSYNC_INSTRUCTION_NEW:
+    switch (item->_instruction) {
+        case CSYNC_INSTRUCTION_NEW:
                 _folderWatcher->addPath(path() + item->_file);
-	    break;
-	    case CSYNC_INSTRUCTION_REMOVE:
+        break;
+        case CSYNC_INSTRUCTION_REMOVE:
                 _folderWatcher->removePath(path() + item->_file);
-	    break;
-	    case CSYNC_INSTRUCTION_RENAME:
+        break;
+        case CSYNC_INSTRUCTION_RENAME:
                 _folderWatcher->removePath(path() + item->_file);
                 _folderWatcher->addPath(path() + item->destination());
-	    break;
+        break;
         default:
         break;
-	}
+    }
     }
 
     // Success and failure of sync items adjust what the next sync is
@@ -953,7 +953,8 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
     auto journal = journalDb();
 
     // Add the entry to the blacklist if it is neither in the blacklist or whitelist already
-    bool ok1, ok2;
+    bool ok1 = false;
+    bool ok2 = false;
     auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
     auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
     if (ok1 && ok2 && !blacklist.contains(newFolder) && !whitelist.contains(newFolder)) {

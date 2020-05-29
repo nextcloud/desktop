@@ -288,7 +288,7 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
         return;
     }
 
-    bool ok;
+    bool ok = false;
 
     auto oldBlackListSet = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
     if (ok) {
@@ -418,7 +418,7 @@ int main(int argc, char **argv)
     if (!options.proxy.isNull()) {
         QString host;
         int port = 0;
-        bool ok;
+        bool ok = false;
 
         QStringList pList = options.proxy.split(':');
         if (pList.count() == 3) {
