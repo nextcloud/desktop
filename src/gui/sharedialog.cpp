@@ -52,10 +52,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _maxSharingPermissions(maxSharingPermissions)
     , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
     , _startPage(startPage)
-    , _linkWidgetList({})
-    , _emptyShareLinkWidget(nullptr)
-    , _userGroupWidget(nullptr)
-    , _progressIndicator(nullptr)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -295,7 +291,9 @@ void ShareDialog::showSharingUi()
     }
 
     if (theme->linkSharing()) {
-        _manager->fetchShares(_sharePath);
+        if(_manager != nullptr) {
+            _manager->fetchShares(_sharePath);
+        }
     }
 }
 
@@ -378,4 +376,4 @@ void ShareDialog::changeEvent(QEvent *e)
     QDialog::changeEvent(e);
 }
 
-}
+} // namespace OCC
