@@ -615,7 +615,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder, acceptButton] {
         msgBox->deleteLater();
-        if (msgBox->clickedButton() == acceptButton|| !folder)
+        if (msgBox->clickedButton() != acceptButton|| !folder)
             return;
 
         // It is unsafe to switch off vfs while a sync is running - wait if necessary.
