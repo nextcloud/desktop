@@ -486,7 +486,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.paused = paused;
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
-    folder = addFolderInternal(folderDefinition, accountState, std::make_unique<Vfs>());
+    folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>());
     if (folder) {
         QStringList blackList = settings.value(QLatin1String("blackList")).toStringList();
         if (!blackList.empty()) {
