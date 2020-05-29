@@ -1,0 +1,6 @@
+Bugfix: Crash on migration of old settings
+
+We fixed a crash when user settings are migrated
+to a new client version.
+
+https://github.com/owncloud/client/issues/7878
