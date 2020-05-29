@@ -85,7 +85,7 @@ QString Utility::vfsCurrentAvailabilityText(VfsItemAvailability availability)
     case VfsItemAvailability::OnlineOnly:
         return QCoreApplication::translate("utility", "Available online only");
     }
-    ENFORCE(false);
+    Q_UNREACHABLE();
 }
 
 QString Utility::vfsPinActionText()
