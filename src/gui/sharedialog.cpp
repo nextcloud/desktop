@@ -145,8 +145,10 @@ void ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
 
     connect(linkShare.data(), &Share::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
     connect(linkShare.data(), &Share::shareDeleted, _linkWidgetList.at(index), &ShareLinkWidget::slotDeleteShareFetched);
-    connect(_manager, &ShareManager::linkShareRequiresPassword, _linkWidgetList.at(index), &ShareLinkWidget::slotCreateShareRequiresPassword);
-    connect(_manager, &ShareManager::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
+    if(_manager != nullptr) {
+        connect(_manager, &ShareManager::linkShareRequiresPassword, _linkWidgetList.at(index), &ShareLinkWidget::slotCreateShareRequiresPassword);
+        connect(_manager, &ShareManager::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
+    }
 
     // Connect all shares signals to gui slots
     connect(this, &ShareDialog::toggleAnimation, _linkWidgetList.at(index), &ShareLinkWidget::slotToggleAnimation);
@@ -299,7 +301,9 @@ void ShareDialog::showSharingUi()
 
 void ShareDialog::slotCreateLinkShare()
 {
-    _manager->createLinkShare(_sharePath, QString(), QString());
+    if(_manager != nullptr) {
+        _manager->createLinkShare(_sharePath, QString(), QString());
+    }
 }
 
 void ShareDialog::slotLinkShareRequiresPassword()
@@ -317,8 +321,10 @@ void ShareDialog::slotLinkShareRequiresPassword()
         return;
     }
 
-    // Try to create the link share again with the newly entered password
-    _manager->createLinkShare(_sharePath, QString(), password);
+    if(_manager != nullptr) {
+        // Try to create the link share again with the newly entered password
+        _manager->createLinkShare(_sharePath, QString(), password);
+    }
 }
 
 void ShareDialog::slotDeleteShare()
