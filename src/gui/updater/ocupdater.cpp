@@ -229,7 +229,7 @@ void OCUpdater::slotVersionInfoArrived()
 
     QString xml = QString::fromUtf8(reply->readAll());
 
-    bool ok;
+    bool ok = false;
     _updateInfo = UpdateInfo::parseString(xml, &ok);
     if (ok) {
         versionInfoArrived(_updateInfo);

@@ -41,7 +41,7 @@ static void check_c_malloc(void **state)
 
 static void check_c_malloc_zero(void **state)
 {
-  void *p;
+  void *p = NULL;
 
   (void) state; /* unused */
 

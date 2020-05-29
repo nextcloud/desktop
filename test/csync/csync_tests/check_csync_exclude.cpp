@@ -37,7 +37,7 @@ class ExcludedFilesTest
 public:
 
 static int setup(void **state) {
-    CSYNC *csync;
+    CSYNC *csync = nullptr;
 
     csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
     excludedFiles = new ExcludedFiles;
@@ -49,7 +49,7 @@ static int setup(void **state) {
 }
 
 static int setup_init(void **state) {
-    CSYNC *csync;
+    CSYNC *csync = nullptr;
 
     csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
     excludedFiles = new ExcludedFiles;
@@ -74,7 +74,7 @@ static int setup_init(void **state) {
 
 static int teardown(void **state) {
     CSYNC *csync = (CSYNC*)*state;
-    int rc;
+    int rc = 0;
 
     auto statedb = csync->statedb;
     delete csync;
@@ -272,7 +272,7 @@ static void check_csync_excluded_per_dir(void **)
 
 #define FOO_DIR "/tmp/check_csync1/foo"
 #define FOO_EXCLUDE_LIST FOO_DIR "/.sync-exclude.lst"
-    int rc;
+    int rc = 0;
     rc = system("mkdir -p " FOO_DIR);
     assert_int_equal(rc, 0);
     FILE *fh = fopen(FOO_EXCLUDE_LIST, "w");

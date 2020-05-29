@@ -1002,7 +1002,7 @@ void AccountSettings::slotAccountStateChanged()
 
     if (state != AccountState::Connected) {
         /* check if there are expanded root items, if so, close them */
-        int i;
+        int i = 0;
         for (i = 0; i < _model->rowCount(); ++i) {
             if (_ui->_folderList->isExpanded(_model->index(i)))
                 _ui->_folderList->setExpanded(_model->index(i), false);
@@ -1077,7 +1077,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
             continue;
         }
 
-        bool ok;
+        bool ok = false;
         auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
         QString p;
         foreach (const auto &it, undecidedList) {

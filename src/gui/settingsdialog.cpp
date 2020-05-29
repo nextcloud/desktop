@@ -202,7 +202,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     auto height = _toolBar->sizeHint().height();
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
-    QAction *accountAction;
+    QAction *accountAction = nullptr;
     QImage avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     if (avatar.isNull()) {

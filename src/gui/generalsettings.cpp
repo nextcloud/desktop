@@ -111,7 +111,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     /* Set the left contents margin of the layout to zero to make the checkboxes
      * align properly vertically , fixes bug #3758
      */
-    int m0, m1, m2, m3;
+    int m0 = 0;
+    int m1 = 0;
+    int m2 = 0;
+    int m3 = 0;
     _ui->horizontalLayout_3->getContentsMargins(&m0, &m1, &m2, &m3);
     _ui->horizontalLayout_3->setContentsMargins(0, m1, m2, m3);
 

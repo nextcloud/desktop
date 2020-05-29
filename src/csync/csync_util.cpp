@@ -88,7 +88,7 @@ const char *csync_instruction_str(enum csync_instructions_e instr)
 void csync_memstat_check() {
   int s = 0;
   struct csync_memstat_s m;
-  FILE* fp;
+  FILE* fp = nullptr;
 
   /* get process memory stats */
   fp = fopen("/proc/self/statm","r");
@@ -169,7 +169,7 @@ static const char short_months[12][4] = {
 time_t oc_httpdate_parse( const char *date ) {
     struct tm gmt;
     char wkday[4], mon[4];
-    int n;
+    int n = 0;
     time_t result = 0;
 
     memset(&gmt, 0, sizeof(struct tm));

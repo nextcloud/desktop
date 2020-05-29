@@ -558,7 +558,7 @@ private slots:
     }
 
     void passwordRequired() {
-        bool ok;
+        bool ok = false;
         QString password = QInputDialog::getText(nullptr,
                                                  tr("Password for share required"),
                                                  tr("Please enter a password for your link share:"),

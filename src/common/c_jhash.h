@@ -39,7 +39,7 @@
  * have at least 1/4 probability of changing.
  * If _c_mix() is run forward, every bit of c will change between 1/3 and
  * 2/3 of the time.  (Well, 22/100 and 78/100 for some 2-bit deltas.)
- * _c_mix() was built out of 36 single-cycle latency instructions in a 
+ * _c_mix() was built out of 36 single-cycle latency instructions in a
  * structure that could supported 2x parallelism, like so:
  *     a -= b;
  *     a -= c; x = (c>>13);
@@ -125,7 +125,10 @@
  *            avalanche. About 36+6len instructions.
  */
 static inline uint32_t c_jhash(const uint8_t *k, uint32_t length, uint32_t initval) {
-   uint32_t a,b,c,len;
+   uint32_t a = 0;
+   uint32_t b = 0;
+   uint32_t c = 0;
+   uint32_t len = 0;
 
    /* Set up the internal state */
    len = length;
@@ -184,7 +187,10 @@ static inline uint32_t c_jhash(const uint8_t *k, uint32_t length, uint32_t initv
  *            achieves avalanche. About 41+5len instructions.
  */
 static inline uint64_t c_jhash64(const uint8_t *k, uint64_t length, uint64_t intval) {
-  uint64_t a,b,c,len;
+  uint64_t a = 0;
+  uint64_t b = 0;
+  uint64_t c = 0;
+  uint64_t len = 0;
 
   /* Set up the internal state */
   len = length;

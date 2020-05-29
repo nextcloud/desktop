@@ -858,7 +858,7 @@ void SyncEngine::startSync()
         return shouldDiscoverLocally(path);
     };
 
-    bool ok;
+    bool ok = false;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {
         bool usingSelectiveSync = (!selectiveSyncBlackList.isEmpty());
@@ -1302,7 +1302,7 @@ QString SyncEngine::adjustRenamedPath(const QString &original)
  */
 void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
 {
-    bool selectiveListOk;
+    bool selectiveListOk = false;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &selectiveListOk);
     std::sort(selectiveSyncBlackList.begin(), selectiveSyncBlackList.end());
     SyncFileItemPtr needle;

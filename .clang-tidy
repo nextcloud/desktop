@@ -1,4 +1,5 @@
 Checks: '-*,
+    cppcoreguidelines-init-variables,
     modernize-make-shared,
     modernize-redundant-void-arg,
     modernize-replace-*,
