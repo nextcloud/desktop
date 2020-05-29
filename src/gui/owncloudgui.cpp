@@ -90,6 +90,11 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::shutdown,
         this, &ownCloudGui::slotShutdown);
 
+    connect(_tray.data(), &Systray::openShareDialog,
+        this, [=](const QString &sharePath, const QString &localPath) {
+                slotShowShareDialog(sharePath, localPath, ShareDialogStartPage::UsersAndGroups);
+            });
+
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,
         &ownCloudGui::slotUpdateProgress);
@@ -104,7 +109,6 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::slotShowOptionalTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage,
         this, &ownCloudGui::slotShowGuiMessage);
-
 }
 
 void ownCloudGui::createTray()

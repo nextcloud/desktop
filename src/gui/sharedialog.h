@@ -88,13 +88,14 @@ private:
     QByteArray _numericFileId;
     QString _privateLinkUrl;
     ShareDialogStartPage _startPage;
-    ShareManager *_manager;
+    ShareManager *_manager = nullptr;
 
     QList<ShareLinkWidget*> _linkWidgetList;
-    ShareLinkWidget* _emptyShareLinkWidget;
-    ShareUserGroupWidget *_userGroupWidget;
-    QProgressIndicator *_progressIndicator;
+    ShareLinkWidget* _emptyShareLinkWidget = nullptr;
+    ShareUserGroupWidget *_userGroupWidget = nullptr;
+    QProgressIndicator *_progressIndicator = nullptr;
 };
-}
+
+} // namespace OCC
 
 #endif // SHAREDIALOG_H

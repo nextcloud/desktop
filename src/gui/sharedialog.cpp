@@ -52,10 +52,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _maxSharingPermissions(maxSharingPermissions)
     , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
     , _startPage(startPage)
-    , _linkWidgetList({})
-    , _emptyShareLinkWidget(nullptr)
-    , _userGroupWidget(nullptr)
-    , _progressIndicator(nullptr)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -149,8 +145,11 @@ void ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
 
     connect(linkShare.data(), &Share::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
     connect(linkShare.data(), &Share::shareDeleted, _linkWidgetList.at(index), &ShareLinkWidget::slotDeleteShareFetched);
-    connect(_manager, &ShareManager::linkShareRequiresPassword, _linkWidgetList.at(index), &ShareLinkWidget::slotCreateShareRequiresPassword);
-    connect(_manager, &ShareManager::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
+
+    if(_manager) {
+        connect(_manager, &ShareManager::linkShareRequiresPassword, _linkWidgetList.at(index), &ShareLinkWidget::slotCreateShareRequiresPassword);
+        connect(_manager, &ShareManager::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
+    }
 
     // Connect all shares signals to gui slots
     connect(this, &ShareDialog::toggleAnimation, _linkWidgetList.at(index), &ShareLinkWidget::slotToggleAnimation);
@@ -295,13 +294,17 @@ void ShareDialog::showSharingUi()
     }
 
     if (theme->linkSharing()) {
-        _manager->fetchShares(_sharePath);
+        if(_manager) {
+            _manager->fetchShares(_sharePath);
+        }
     }
 }
 
 void ShareDialog::slotCreateLinkShare()
 {
-    _manager->createLinkShare(_sharePath, QString(), QString());
+    if(_manager) {
+        _manager->createLinkShare(_sharePath, QString(), QString());
+    }
 }
 
 void ShareDialog::slotLinkShareRequiresPassword()
@@ -319,8 +322,10 @@ void ShareDialog::slotLinkShareRequiresPassword()
         return;
     }
 
-    // Try to create the link share again with the newly entered password
-    _manager->createLinkShare(_sharePath, QString(), password);
+    if(_manager) {
+        // Try to create the link share again with the newly entered password
+        _manager->createLinkShare(_sharePath, QString(), password);
+    }
 }
 
 void ShareDialog::slotDeleteShare()
@@ -351,7 +356,7 @@ void ShareDialog::slotAccountStateChanged(int state)
     bool enabled = (state == AccountState::State::Connected);
     qCDebug(lcSharing) << "Account connected?" << enabled;
 
-    if (_userGroupWidget != nullptr) {
+    if (_userGroupWidget) {
         _userGroupWidget->setEnabled(enabled);
     }
 
@@ -378,4 +383,4 @@ void ShareDialog::changeEvent(QEvent *e)
     QDialog::changeEvent(e);
 }
 
-}
+} // namespace OCC
