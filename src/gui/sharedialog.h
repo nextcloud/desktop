@@ -90,7 +90,7 @@ private:
     ShareDialogStartPage _startPage;
     ShareManager *_manager = nullptr;
 
-    QList<ShareLinkWidget*> _linkWidgetList = {};
+    QList<ShareLinkWidget*> _linkWidgetList;
     ShareLinkWidget* _emptyShareLinkWidget = nullptr;
     ShareUserGroupWidget *_userGroupWidget = nullptr;
     QProgressIndicator *_progressIndicator = nullptr;

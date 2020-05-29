@@ -145,7 +145,8 @@ void ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
 
     connect(linkShare.data(), &Share::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
     connect(linkShare.data(), &Share::shareDeleted, _linkWidgetList.at(index), &ShareLinkWidget::slotDeleteShareFetched);
-    if(_manager != nullptr) {
+
+    if(_manager) {
         connect(_manager, &ShareManager::linkShareRequiresPassword, _linkWidgetList.at(index), &ShareLinkWidget::slotCreateShareRequiresPassword);
         connect(_manager, &ShareManager::serverError, _linkWidgetList.at(index), &ShareLinkWidget::slotServerError);
     }
@@ -293,7 +294,7 @@ void ShareDialog::showSharingUi()
     }
 
     if (theme->linkSharing()) {
-        if(_manager != nullptr) {
+        if(_manager) {
             _manager->fetchShares(_sharePath);
         }
     }
@@ -301,7 +302,7 @@ void ShareDialog::showSharingUi()
 
 void ShareDialog::slotCreateLinkShare()
 {
-    if(_manager != nullptr) {
+    if(_manager) {
         _manager->createLinkShare(_sharePath, QString(), QString());
     }
 }
@@ -321,7 +322,7 @@ void ShareDialog::slotLinkShareRequiresPassword()
         return;
     }
 
-    if(_manager != nullptr) {
+    if(_manager) {
         // Try to create the link share again with the newly entered password
         _manager->createLinkShare(_sharePath, QString(), password);
     }
@@ -355,7 +356,7 @@ void ShareDialog::slotAccountStateChanged(int state)
     bool enabled = (state == AccountState::State::Connected);
     qCDebug(lcSharing) << "Account connected?" << enabled;
 
-    if (_userGroupWidget != nullptr) {
+    if (_userGroupWidget) {
         _userGroupWidget->setEnabled(enabled);
     }
 
