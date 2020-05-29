@@ -27,6 +27,7 @@ Summary
 * Bugfix - Client sometimes crashes when a placeholder file was moved: [#7799](https://github.com/owncloud/client/issues/7799)
 * Bugfix - Don't override cookies with old values: [#7831](https://github.com/owncloud/client/pull/7831)
 * Bugfix - Closing prompt has the same effect as accepting: [#7874](https://github.com/owncloud/client/issues/7874)
+* Bugfix - Crash on migration of old settings: [#7878](https://github.com/owncloud/client/issues/7878)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - Restart the client after an update: [#3922](https://github.com/owncloud/enterprise/issues/3922)
 * Change - Wizard is hidden behind the browser: [#7856](https://github.com/owncloud/client/issues/7856)
@@ -156,6 +157,12 @@ Details
    We fixed the handling of the user's input.
 
    https://github.com/owncloud/client/issues/7874
+
+* Bugfix - Crash on migration of old settings: [#7878](https://github.com/owncloud/client/issues/7878)
+
+   We fixed a crash when user settings are migrated to a new client version.
+
+   https://github.com/owncloud/client/issues/7878
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
