@@ -21,9 +21,7 @@
 
 namespace OCC {
 
-SyncRunFileLog::SyncRunFileLog()
-{
-}
+SyncRunFileLog::SyncRunFileLog() = default;
 
 QString SyncRunFileLog::dateTimeStr(const QDateTime &dt)
 {
@@ -168,7 +166,7 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     }
     QString ts = QString::fromLatin1(item._responseTimeStamp);
     if (ts.length() > 6) {
-        QRegExp rx("(\\d\\d:\\d\\d:\\d\\d)");
+        QRegExp rx(R"((\d\d:\d\d:\d\d))");
         if (ts.contains(rx)) {
             ts = rx.cap(0);
         }

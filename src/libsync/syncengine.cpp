@@ -1027,7 +1027,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         // files with names that contain these.
         // It's important to respect the capability also for older servers -- the
         // version check doesn't make sense for custom servers.
-        invalidFilenamePattern = "[\\\\:?*\"<>|]";
+        invalidFilenamePattern = R"([\\:?*"<>|])";
     }
     if (!invalidFilenamePattern.isEmpty()) {
         const QRegExp invalidFilenameRx(invalidFilenamePattern);
@@ -1593,7 +1593,7 @@ RemotePermissions SyncEngine::getPermissions(const QString &file) const
     if (it != _csync_ctx->remote.files.end()) {
         return it->second->remotePerm;
     }
-    return RemotePermissions();
+    return {};
 }
 
 void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)

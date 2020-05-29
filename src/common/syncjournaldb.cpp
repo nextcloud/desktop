@@ -665,7 +665,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add filesize col");
     }
 
-    if (1) {
+    if (true) {
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
         if (!query.exec()) {
@@ -675,7 +675,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add inode index");
     }
 
-    if (1) {
+    if (true) {
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_path ON metadata(path);");
         if (!query.exec()) {

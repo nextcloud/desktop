@@ -41,7 +41,5 @@ SyncLogDialog::SyncLogDialog(QWidget *parent)
     }
 }
 
-SyncLogDialog::~SyncLogDialog()
-{
-}
+SyncLogDialog::~SyncLogDialog() = default;
 }

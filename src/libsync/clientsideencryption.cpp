@@ -73,7 +73,7 @@ namespace {
         return res;
     }
 
-    QByteArray handleErrors(void)
+    QByteArray handleErrors()
     {
         auto *bioErrors = BIO_new(BIO_s_mem());
         ERR_print_errors(bioErrors); // This line is not printing anything.
@@ -610,9 +610,7 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
 }
 
 }
-ClientSideEncryption::ClientSideEncryption()
-{
-}
+ClientSideEncryption::ClientSideEncryption() = default;
 
 void ClientSideEncryption::setAccount(AccountPtr account)
 {

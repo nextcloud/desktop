@@ -1,7 +1,9 @@
 // stub to prevent linker error
 #include "accountmanager.h"
 
-OCC::AccountManager *OCC::AccountManager::instance() { return static_cast<AccountManager *>(new QObject); }
+Q_GLOBAL_STATIC(QObject, dummy)
+
+OCC::AccountManager *OCC::AccountManager::instance() { return static_cast<AccountManager *>(dummy()); }
 void OCC::AccountManager::save(bool) { }
 void OCC::AccountManager::saveAccountState(AccountState *) { }
 void OCC::AccountManager::deleteAccount(AccountState *) { }

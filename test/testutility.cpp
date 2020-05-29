@@ -20,6 +20,11 @@ class TestUtility : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase()
+    {
+        QStandardPaths::setTestModeEnabled(true);
+    }
+
     void testFormatFingerprint()
     {
         QVERIFY2(formatFingerprint("68ac906495480a3404beee4874ed853a037a7a8f")
@@ -120,7 +125,7 @@ private slots:
 	    qDebug() << "Version of installed Nextcloud: " << ver;
 	    QVERIFY( !ver.isEmpty());
 
-	    QRegExp rx( "Nextcloud version \\d+\\.\\d+\\.\\d+.*" );
+	    QRegExp rx( R"(Nextcloud version \d+\.\d+\.\d+.*)" );
             QVERIFY( rx.exactMatch(ver));
 	} else {
 	    QVERIFY( versionOfInstalledBinary().isEmpty());
@@ -156,9 +161,9 @@ private slots:
     {
         QVERIFY(isMac() || isWindows() ? fsCasePreserving() : ! fsCasePreserving());
         QScopedValueRollback<bool> scope(OCC::fsCasePreserving_override);
-        OCC::fsCasePreserving_override = 1;
+        OCC::fsCasePreserving_override = true;
         QVERIFY(fsCasePreserving());
-        OCC::fsCasePreserving_override = 0;
+        OCC::fsCasePreserving_override = false;
         QVERIFY(! fsCasePreserving());
     }
 

@@ -16,12 +16,10 @@
 #define SYSTRAY_H
 
 #include <QSystemTrayIcon>
-#include <QQmlContext>
 
 #include "accountmanager.h"
 #include "tray/UserModel.h"
 
-class QIcon;
 class QQmlApplicationEngine;
 
 namespace OCC {

@@ -2,83 +2,83 @@
 <context>
     <name>CloudProviderWrapper</name>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="106"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="123"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Перевірка на зміни у &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="128"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Синхронізую %1 з %2  (залишилося %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="133"/>
         <source>Syncing %1 of %2</source>
         <translation>Синхронізую %1 з %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="140"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Синхронізую %1 (залишилося %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="143"/>
         <source>Syncing %1</source>
         <translation>Синхронізую %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="164"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="226"/>
         <source>No recently changed files</source>
         <translation>Файли не змінювалися останнім часом</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="180"/>
         <source>Sync paused</source>
         <translation>Синхронізацію призупинено</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="184"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="183"/>
         <source>Syncing</source>
         <translation>Синхронізація</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="219"/>
         <source>Open website</source>
         <translation>Відкрити вебсайт</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="231"/>
         <source>Recently changed</source>
         <translation>Останні зміни</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
         <source>Pause synchronization</source>
         <translation>Призупинити синхронізацію</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="245"/>
         <source>Help</source>
         <translation>Допомога</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="248"/>
         <source>Settings</source>
         <translation>Налаштування</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="251"/>
         <source>Log out</source>
         <translation>Вийти</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="254"/>
         <source>Quit sync client</source>
         <translation>Вийти з клієнта синхронізації</translation>
     </message>
@@ -169,17 +169,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="282"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="281"/>
         <source>Connection timed out</source>
         <translation>Час очікування з&apos;єднання вичерпано</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="284"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="283"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Незнайома помилка: відповідь мережі вилучено</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="436"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="435"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Відповідь сервера: &quot;%1 %2&quot; до &quot;%3 %4&quot;</translation>
     </message>
@@ -473,47 +473,47 @@
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="127"/>
+        <location filename="../src/gui/accountstate.cpp" line="125"/>
         <source>Signed out</source>
         <translation>Вийшов</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="129"/>
+        <location filename="../src/gui/accountstate.cpp" line="127"/>
         <source>Disconnected</source>
         <translation>Від&apos;єднаний</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="131"/>
+        <location filename="../src/gui/accountstate.cpp" line="129"/>
         <source>Connected</source>
         <translation>З&apos;єднаний</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="133"/>
+        <location filename="../src/gui/accountstate.cpp" line="131"/>
         <source>Service unavailable</source>
         <translation>Сервіс недоступний</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="135"/>
+        <location filename="../src/gui/accountstate.cpp" line="133"/>
         <source>Maintenance mode</source>
         <translation>Режим обслуговування</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="137"/>
+        <location filename="../src/gui/accountstate.cpp" line="135"/>
         <source>Network error</source>
         <translation>Помилка мережі</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="139"/>
+        <location filename="../src/gui/accountstate.cpp" line="137"/>
         <source>Configuration error</source>
         <translation>Помилка конфігурації</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="141"/>
+        <location filename="../src/gui/accountstate.cpp" line="139"/>
         <source>Asking Credentials</source>
         <translation>Запит на повноваження доступу</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="143"/>
+        <location filename="../src/gui/accountstate.cpp" line="141"/>
         <source>Unknown account state</source>
         <translation>Невідомий стан облікового запису</translation>
     </message>
@@ -613,7 +613,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1021"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
         <source>Error writing metadata to the database</source>
         <translation>Помилка із записом метаданих до бази даних</translation>
     </message>
@@ -621,12 +621,12 @@
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="998"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Будь ласка, зазначте пароль для наскрізного шифрування:&lt;br&gt;&lt;br&gt;Користувач: %2&lt;br&gt;Обліковий запис: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1008"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1006"/>
         <source>Enter E2E passphrase</source>
         <translation>Зазначте пароль для наскрізного шифрування</translation>
     </message>
@@ -683,28 +683,28 @@
 <context>
     <name>OCC::Flow2Auth</name>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="109"/>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="212"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="107"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="210"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Сервер повернув помилку: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="112"/>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="215"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="110"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="213"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="218"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="216"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="221"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="116"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Відповідь сервера не містить всі очікувані поля</translation>
     </message>
 </context>
 <context>
@@ -717,7 +717,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation type="unfinished"/>
+        <translation>Увійдіть у вашому переглядачі (процес входу v2)</translation>
     </message>
 </context>
 <context>
@@ -881,12 +881,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1029"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Теку %1 було створено, але раніше виключено з синхронізації. Дані всередині цієї теки не буде синхронізовано.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1032"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 було створено, але раніше виключено з синхронізації. Цей файл не буде синхронізовано.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1043"/>
@@ -1074,144 +1074,144 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="144"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="142"/>
         <source>You need to be connected to add a folder</source>
         <translation>Ви маєте мати з&apos;єднання з мережею, щоб додати теку</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="146"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="144"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Клацніть на цю кнопку, щоб додати теку до синхронізації.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="153"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="155"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="157"/>
         <source>%1 (%2)</source>
         <extracomment>Example text: &quot;File.txt (23KB)&quot;</extracomment>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="186"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="184"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Помилка під час завантаження списку тек з сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="187"/>
         <source>Fetching folder list from server …</source>
         <translation>Отримання списку тек з сервера...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="213"/>
         <source>There are unresolved conflicts. Click for details.</source>
         <translation>Наявні нерозв&apos;язані конфлікти. Клацніть для докладної інформації.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="239"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="237"/>
         <source>Signed out</source>
         <translation>Вийшов</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Перевірка на зміни у віддаленому ресурсі &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="925"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Перевірка на зміни у локальному ресурсі &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="932"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
         <source>Reconciling changes</source>
         <translation>Узгодження змін</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="967"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Синхронізую %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="996"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1007"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
         <source>, </source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>завантаження %1/с</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1002"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1008"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>відвантаження %1/с</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1012"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1018"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 of %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1022"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1041"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 лишилося, %1 з %2, файл %3 з %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1049"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 з %2, файл %3 з %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
         <source>file %1 of %2</source>
         <translation>файл %1 з %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1100"/>
         <source>Waiting …</source>
         <translation>Очікується...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation><numerusform>Очікуються %n інша тека</numerusform><numerusform>Очікуються %n інших тек</numerusform><numerusform>Очікуються %n інших тек</numerusform><numerusform>Очікуються %n інших тек</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1110"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1108"/>
         <source>Preparing to sync …</source>
         <translation>Підготовка до синхронізації...</translation>
     </message>
@@ -1219,7 +1219,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWatcherPrivate</name>
     <message>
-        <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
+        <location filename="../src/gui/folderwatcher_linux.cpp" line="85"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
         <translation type="unfinished"/>
     </message>
@@ -1227,12 +1227,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="550"/>
+        <location filename="../src/gui/folderwizard.cpp" line="544"/>
         <source>Add Folder Sync Connection</source>
         <translation>Додати з&apos;єднання для синхронізації теки </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="552"/>
+        <location filename="../src/gui/folderwizard.cpp" line="546"/>
         <source>Add Sync Connection</source>
         <translation>Додайте з&apos;єднання для синхронізації</translation>
     </message>
@@ -1250,7 +1250,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Введіть шлях до локальної теки.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="135"/>
+        <location filename="../src/gui/folderwizard.cpp" line="133"/>
         <source>Select the source folder</source>
         <translation>Оберіть початкову теку</translation>
     </message>
@@ -1258,47 +1258,47 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="183"/>
+        <location filename="../src/gui/folderwizard.cpp" line="181"/>
         <source>Create Remote Folder</source>
         <translation>Створити Віддалену Теку</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="184"/>
+        <location filename="../src/gui/folderwizard.cpp" line="182"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Введіть ім&apos;я нової теки, яка буде створена тут &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="214"/>
+        <location filename="../src/gui/folderwizard.cpp" line="212"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Теку успішно створено на %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="225"/>
+        <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Authentication failed accessing %1</source>
         <translation>Помилка аутентифікації при доступі до %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="227"/>
+        <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Не вдалося створити теку на %1. Будь ласка, перевірте вручну.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="236"/>
+        <location filename="../src/gui/folderwizard.cpp" line="234"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Неможливо вивести вміст теки. Помилка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="317"/>
+        <location filename="../src/gui/folderwizard.cpp" line="315"/>
         <source>Choose this to sync the entire account</source>
         <translation>Оберіть це для синхронізації всього облікового запису</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="447"/>
+        <location filename="../src/gui/folderwizard.cpp" line="443"/>
         <source>This folder is already being synced.</source>
         <translation>Тека вже синхронізується.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="449"/>
+        <location filename="../src/gui/folderwizard.cpp" line="445"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Тека &lt;i&gt;%1&lt;/i&gt; вже синхронізується, та вона є батьківською для &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
@@ -1350,7 +1350,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Правові застереження</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1486,7 +1486,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Клацніть тут&lt;/a&gt; для запиту пароля на застосунок через вебінтерфейс.</translation>
     </message>
 </context>
 <context>
@@ -1578,7 +1578,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <location filename="../src/gui/legalnotice.ui" line="25"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Правові застереження</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
@@ -1616,7 +1616,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Отримати повідомлення зневадження</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -1651,17 +1651,17 @@ Logs will be written to %1</source>
         <translation>Зберегти файл журналу у файл на диску для обробки.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="212"/>
+        <location filename="../src/gui/logbrowser.cpp" line="210"/>
         <source>Save log file</source>
         <translation>Зберегти файл журналу</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="222"/>
+        <location filename="../src/gui/logbrowser.cpp" line="220"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="222"/>
+        <location filename="../src/gui/logbrowser.cpp" line="220"/>
         <source>Could not write to log file %1</source>
         <translation>Не вдалося записати в файл журналу %1</translation>
     </message>
@@ -1732,7 +1732,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation>Хост</translation>
+        <translation>Вузол</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
@@ -1766,7 +1766,7 @@ Logs will be written to %1</source>
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Обмежити до 3/4 оціненої ширини каналу</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
@@ -1782,7 +1782,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
-        <translation>Ім&apos;я хоста проксі-сервера</translation>
+        <translation>Ім&apos;я вузла проксі-сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
@@ -1808,32 +1808,32 @@ Logs will be written to %1</source>
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="112"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="110"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Сервер повернув помилку: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="115"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="113"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="118"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="116"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="119"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Відповідь сервера не містить всі очікувані поля</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="125"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="123"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Помилка із входом&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="131"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="129"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Неправильний користувач&lt;/h1&gt;&lt;p&gt;Ви увійшли з користувачем &lt;em&gt;%1&lt;/em&gt;, але потрібно входити з користувачем &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Будь ласка, вийдіть з %3 у іншій вкладці, після цього &lt;a href=&apos;%4&apos;&gt;клацніть тут&lt;/a&gt; та увійдіть з користувачем %2&lt;/p&gt;</translation>
     </message>
@@ -1927,7 +1927,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="167"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Увага:&lt;/strong&gt; Локальна тека не є порожньою. Будь ласка, виберіть спосіб розв&apos;язання!&lt;/small&gt;&lt;/p&gt;увага</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="176"/>
@@ -2045,18 +2045,19 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Демонстрація екрану, онлайнові зустрічі та вебконференції</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="181"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Цей URL є небезпечним, оскільки не шифрується.
+Не рекомендується його використання.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
         <source>This URL is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Цей URL є безпечним. Ви можете його використовувати.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="224"/>
@@ -2104,7 +2105,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished"/>
+        <translation>З&apos;єднання з %1 через %2...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
@@ -2119,7 +2120,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Отримано неправильну відповідь на запит авторизації WebDAV.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
@@ -2129,7 +2130,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Створення локальної теки для синхронізації %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
@@ -2266,9 +2267,9 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="973"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="971"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка із записом метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2276,7 +2277,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="357"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо звантажити файл %1 через відсутність інформації про шифрування.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="427"/>
@@ -2286,12 +2287,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Це звантаження зменшить розмір вільного місця на локальному диску нижче встановленого обмеження.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="481"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>На диску залишилося менше %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="601"/>
@@ -2306,7 +2307,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="661"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Звантажений файл є порожнім незважаючи на те, що сервер повідомив, що файл мав бути %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="850"/>
@@ -2321,20 +2322,20 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="941"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка із записом метаданих до бази даних</translation>
     </message>
 </context>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="234"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="232"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Відновлення не вдалося: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="302"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="300"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Файл або теку було вилучено зі спільного ресурсу для читання, не вдалося відновити: %1</translation>
     </message>
 </context>
 <context>
@@ -2342,7 +2343,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="170"/>
         <source>could not delete file %1, error: %2</source>
-        <translation type="unfinished"/>
+        <translation>неможливо вилучити файл %1, помилка: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
@@ -2357,7 +2358,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="203"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка із записом метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2370,7 +2371,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="102"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо вилучити теку &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="123"/>
@@ -2389,7 +2390,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка із записом метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2410,7 +2411,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка із записом метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2424,7 +2425,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка із записом метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2432,18 +2433,18 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="214"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1 неможливо завантажити, оскільки існує інший файл з таким же ім&apos;ям, але в іншому регістрі</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
         <location filename="../src/libsync/propagateupload.cpp" line="603"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Завантаження %1 перевищує квоту цієї теки</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Файл вилучено (почніть завантаження) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="348"/>
@@ -2458,7 +2459,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="685"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка із записом метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2476,12 +2477,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="449"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Неочікуваний код повернення від сервера (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Відсутній ідентифікатор файлу на сервері</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="470"/>
@@ -2517,7 +2518,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Потрібна авторизація на проксі-сервері.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -2532,7 +2533,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>Проксі-сервер вимагає ім&apos;я користувача та пароль.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2553,12 +2554,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>Завантаження...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Зніміть позначку з віддалених тек, які ви не бажаєте синхронізувати.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -2579,7 +2580,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="279"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Помилка під час завантаження списку підтек.</translation>
     </message>
 </context>
 <context>
@@ -2633,12 +2634,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Шлях до Nextcloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Значок</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="81"/>
@@ -2681,12 +2682,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Примітка:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="51"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Пароль:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
@@ -2696,17 +2697,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
         <source>Expiration date:</source>
-        <translation type="unfinished"/>
+        <translation>Дійсний до:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Термін дії до:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
         <source>Allow Editing</source>
-        <translation type="unfinished"/>
+        <translation>Дозволити редагування</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="156"/>
@@ -2716,17 +2717,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation type="unfinished"/>
+        <translation>Дозволити завантаження та редагування</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>Передача файлу (тільки для завантаження)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Add note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Додати примітку отримувачеві</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
@@ -2779,7 +2780,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
-        <translation type="unfinished"/>
+        <translation>Поділитися з користувачами або групами...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="267"/>
@@ -2802,7 +2803,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="66"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Ім&apos;я користувача</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="82"/>
@@ -2812,22 +2813,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="412"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>Може ділитися з іншими</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="422"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Закрити спільний доступ</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="431"/>
         <source>Can create</source>
-        <translation type="unfinished"/>
+        <translation>Може створювати</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="437"/>
         <source>Can change</source>
-        <translation type="unfinished"/>
+        <translation>Може змінювати</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="443"/>
@@ -2882,49 +2883,49 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="501"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Контекстне мені спільного доступу</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="658"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Я чимось поділив(ла)ся з вами</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="671"/>
         <location filename="../src/gui/socketapi.cpp" line="702"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Параметри спільного доступу</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Share via %1</source>
-        <translation type="unfinished"/>
+        <translation>Поділитися за допомогою %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="673"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Копіювати приватне посилання</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="674"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Надіслати приватне посилання електронною поштою</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="700"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Надання цього файлу у спільний доступ іншим не дозволено</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="713"/>
         <location filename="../src/gui/socketapi.cpp" line="715"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Копіювати публічне посилання</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="719"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Копіювати внутрішнє посилання</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="808"/>
@@ -3046,7 +3047,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Версія сервера: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
@@ -3061,7 +3062,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>З&apos;єднання не є безпечним</translation>
     </message>
 </context>
 <context>
@@ -3079,7 +3080,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо встановити безпечне з&apos;єднання з &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
@@ -3152,12 +3153,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося завантажити або створити файл журналу. Перевірте, що ви маєте права на читання та запис до локальної теки синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося визначити.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="132"/>
@@ -3172,17 +3173,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>Доступ заборонено.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>Файл або теку не знайдено</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Спроба створити теку, яка вже існує.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
@@ -3207,7 +3208,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Приєднана тека є тимчасово недоступною на сервері</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
@@ -3217,12 +3218,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Помилка під час відкриття теки</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Помилка під час прочитання теки.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="173"/>
@@ -3232,7 +3233,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="244"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (пропущено через попередню помилку, повторна спроба через %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="485"/>
@@ -3247,22 +3248,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="492"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Імена файлів, які закінчуються на кому, не підтримуються файловою системою.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="502"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Імена файлів, що містять символ &apos;%1&apos; не підтримуються файловою системою.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="505"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Таке ім&apos;я файлу є зарезервованим іменем файлової системи.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Ім&apos;я файлу містить кілька пробілів.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="513"/>
@@ -3272,17 +3273,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="516"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Файл або теку проігноровано, оскільки є прихованим(ою).</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="519"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Єрархія тек є заглибокою</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="522"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо зашифрувати ім&apos;я файлу на файловій системі</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="531"/>
@@ -3292,7 +3293,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="535"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Конфлікт: звантажено версію з сервера, локальну копію перейменовано, але не завантажено.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="539"/>
@@ -3318,17 +3319,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="836"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо відкрити або створити локальну синхронізовану базу даних. Перевірте, що ви маєте доступ на запис у синхронізованій теці.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="864"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо прочитати чорний список з локальної бази даних</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="905"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо прочитати з журналу синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="968"/>
@@ -3354,12 +3355,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1350"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation type="unfinished"/>
+        <translation>Не дозволено, оскільки у вас відсутні повноваження додавати батьківську теку.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Не дозволено, оскільки у вас відсутні повноваження додавати файли до цієї теки.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1382"/>
@@ -3400,12 +3401,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1690"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Закінчується місце на диску. Звантаження, які можуть зменшити вільне місце до 1% буде пропущено.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1697"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Недостатньо місця на сервері для окремих завантажень.</translation>
     </message>
 </context>
 <context>
@@ -3427,21 +3428,21 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="357"/>
+        <location filename="../src/libsync/theme.cpp" line="355"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 клієнт для робочої істанції&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="360"/>
-        <location filename="../src/libsync/theme.cpp" line="370"/>
+        <location filename="../src/libsync/theme.cpp" line="358"/>
+        <location filename="../src/libsync/theme.cpp" line="368"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="374"/>
+        <location filename="../src/libsync/theme.cpp" line="372"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Цю збірку поставлено %1&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3449,27 +3450,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="319"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Првторити усі завантаження</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="368"/>
         <source>You renamed</source>
-        <translation type="unfinished"/>
+        <translation>Ви перейменували</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="370"/>
         <source>You deleted</source>
-        <translation type="unfinished"/>
+        <translation>Ви вилучили</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
         <source>You created</source>
-        <translation type="unfinished"/>
+        <translation>Ви створили</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>You changed</source>
-        <translation type="unfinished"/>
+        <translation>Ви змінили</translation>
     </message>
 </context>
 <context>
@@ -3487,12 +3488,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="696"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Вилучити з&apos;єднання</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="697"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Скасувати</translation>
     </message>
 </context>
 <context>
@@ -3500,12 +3501,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="210"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Знайдено неправильний сертифікат</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="211"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Вузол &quot;%1&quot; надав неправильний сертифікат. Продовжити?</translation>
     </message>
 </context>
 <context>
@@ -3513,12 +3514,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="169"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>Ви вийшли з %1 під користувачем %2. Будь ласка, авторизуйтеся повторно.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="193"/>
         <source>Please login with the user: %1</source>
-        <translation type="unfinished"/>
+        <translation>Будь ласка, увійдіть під користувачем: %1</translation>
     </message>
 </context>
 <context>
@@ -3526,7 +3527,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentialsdialog.cpp" line="34"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Увійти</translation>
     </message>
 </context>
 <context>
@@ -3534,7 +3535,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="224"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Ця версія сервера не підтримується</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="225"/>
@@ -3549,17 +3550,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="266"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Від</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Від&apos;єднано від %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Від&apos;єднано від облікових записів:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="279"/>
@@ -3579,13 +3580,13 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="298"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізацію облікового запису вимкнено</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="299"/>
         <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація на паузі</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="339"/>
@@ -3595,7 +3596,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="347"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Нерозв&apos;язані конфлікти</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="349"/>
@@ -3650,12 +3651,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
-        <translation type="unfinished"/>
+        <translation>Увійти...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="937"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Сихнронізація %1 з %2 (лишилося: %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -3665,7 +3666,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="942"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Сихнронізація %1 з %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="951"/>
@@ -3675,7 +3676,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="954"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Сихнронізація %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="972"/>
@@ -3720,17 +3721,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Налаштування...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Новий обліковий запис...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
-        <translation type="unfinished"/>
+        <translation>Перегляд усіх дій...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
@@ -3774,7 +3775,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Запитувати підтвердження перед синхроні&amp;зацією тек, розміром більше за</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
@@ -3785,7 +3786,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>Запитувати підтвердження перед синхронізацією зовні&amp;шніх сховищ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
@@ -3836,22 +3837,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Будь ласка, перейдіть до вашого переглядача для продовження</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Помилка під час встановлення з&apos;єднання. Спробуйте ще раз.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити переглядач</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Копіювати посилання</translation>
     </message>
 </context>
 <context>
@@ -3859,17 +3860,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
         <source>Server Address</source>
-        <translation type="unfinished"/>
+        <translation>Адреса сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Зареєструватися з провайдером</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Увійти</translation>
     </message>
 </context>
 <context>
@@ -3885,12 +3886,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="457"/>
         <source>%n day ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n день тому</numerusform><numerusform>%n дні тому</numerusform><numerusform>%n днів тому</numerusform><numerusform>%n днів тому</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="459"/>
         <source>%n days ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n день тому</numerusform><numerusform>%n дні тому</numerusform><numerusform>%n днів тому</numerusform><numerusform>%n днів тому</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="463"/>
@@ -3900,12 +3901,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="469"/>
         <source>%n hour ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n годину тому</numerusform><numerusform>%n години тому</numerusform><numerusform>%n годин тому</numerusform><numerusform>%n годин тому</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="471"/>
         <source>%n hours ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n годину тому</numerusform><numerusform>%n години тому</numerusform><numerusform>%n годин тому</numerusform><numerusform>%n годин тому</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="478"/>
@@ -3920,12 +3921,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="484"/>
         <source>%n minute ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n хвилину тому</numerusform><numerusform>%n хвилини тому</numerusform><numerusform>%n хвилин тому</numerusform><numerusform>%n хвилин тому</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="486"/>
         <source>%n minutes ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n хвилину тому</numerusform><numerusform>%n хвилини тому</numerusform><numerusform>%n хвилин тому</numerusform><numerusform>%n хвилин тому</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="490"/>
@@ -3964,32 +3965,32 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n рік</numerusform><numerusform>%n роки</numerusform><numerusform>%n років</numerusform><numerusform>%n років</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n місяць</numerusform><numerusform>%n місяці</numerusform><numerusform>%n місяців</numerusform><numerusform>%n місяців</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n день</numerusform><numerusform>%n дні</numerusform><numerusform>%n днів</numerusform><numerusform>%n днів</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n година</numerusform><numerusform>%n години</numerusform><numerusform>%n годин</numerusform><numerusform>%n годин</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n хвилина</numerusform><numerusform>%n хвилини</numerusform><numerusform>%n хвилин</numerusform><numerusform>%n хвилин</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n секунда</numerusform><numerusform>%n секунди</numerusform><numerusform>%n секунд</numerusform><numerusform>%n секунд</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>
@@ -4002,17 +4003,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Контрольна сума заголовку неправильно сформовано.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Контрольна сума заголовку містила невідомий вид контрольної суми &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Контрольна сума звантаженого файлу неправильна, буде продовжено.</translation>
     </message>
 </context>
 <context>
@@ -4031,7 +4032,7 @@ It is not advisable to use it.</source>
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="336"/>
+        <location filename="../src/libsync/theme.cpp" line="334"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -4051,7 +4052,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Серверну версію звантажено, скопійовано змінений локальний файл до конфліктного файлу</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -4081,7 +4082,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Оновлено локальні метадані</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
@@ -4123,58 +4124,58 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>оновлення локальних метаданих</translation>
     </message>
 </context>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="62"/>
+        <location filename="../src/libsync/theme.cpp" line="60"/>
         <source>Status undefined</source>
         <translation>Статус не визначено</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="65"/>
+        <location filename="../src/libsync/theme.cpp" line="63"/>
         <source>Waiting to start sync</source>
         <translation>Очікування початку синхронізації</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="68"/>
+        <location filename="../src/libsync/theme.cpp" line="66"/>
         <source>Sync is running</source>
         <translation>Проводиться синхронізація</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="71"/>
+        <location filename="../src/libsync/theme.cpp" line="69"/>
         <source>Sync Success</source>
         <translation>Синхронізація успішно виконана</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="74"/>
+        <location filename="../src/libsync/theme.cpp" line="72"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Синхронізацію завершено, деякі файли проігноровано.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="77"/>
+        <location filename="../src/libsync/theme.cpp" line="75"/>
         <source>Sync Error</source>
         <translation>Помилка синхронізації</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="80"/>
+        <location filename="../src/libsync/theme.cpp" line="78"/>
         <source>Setup Error</source>
         <translation>Помилка налаштування</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="83"/>
+        <location filename="../src/libsync/theme.cpp" line="81"/>
         <source>Preparing to sync</source>
         <translation>Підготовка до синхронізації</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="86"/>
+        <location filename="../src/libsync/theme.cpp" line="84"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>Скасування...</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="89"/>
+        <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Sync is paused</source>
         <translation>Синхронізація призупинена</translation>
     </message>
@@ -4184,22 +4185,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо запустити переглядач</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Помилка під час запуску переглядача для переходу за посиланням %1. Можливо у системі не встановлено типовий переглядач?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо запустити поштовий клієнт</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Помилка під час запуску поштового клієнта для створення нового повідомлення1. Можливо у системі не встановлено типовий поштовий клієнт?</translation>
     </message>
 </context>
 <context>
@@ -4245,7 +4246,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="346"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Обліковий запис %1 не має активованих дій.</translation>
     </message>
 </context>
 </TS>

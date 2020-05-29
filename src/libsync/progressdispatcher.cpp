@@ -113,9 +113,7 @@ ProgressDispatcher::ProgressDispatcher(QObject *parent)
 {
 }
 
-ProgressDispatcher::~ProgressDispatcher()
-{
-}
+ProgressDispatcher::~ProgressDispatcher() = default;
 
 void ProgressDispatcher::setProgressInfo(const QString &folder, const ProgressInfo &progress)
 {

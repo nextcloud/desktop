@@ -52,7 +52,6 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
     , _ignoreCredentialFailure(false)
     , _reply(nullptr)
     , _path(path)
-    , _redirectCount(0)
 {
     _timer.setSingleShot(true);
     _timer.setInterval((httpTimeout ? httpTimeout : 300) * 1000); // default to 5 minutes.
@@ -433,7 +432,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
         return base;
     }
 
-    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, requestVerb(reply), reply.request().url().toDisplayString());
+    return AbstractNetworkJob::tr(R"(Server replied "%1 %2" to "%3 %4")").arg(QString::number(httpStatus), httpReason, requestVerb(reply), reply.request().url().toDisplayString());
 }
 
 } // namespace OCC

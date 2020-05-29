@@ -41,9 +41,7 @@ Flow2Auth::Flow2Auth(Account *account, QObject *parent)
     QObject::connect(&_pollTimer, &QTimer::timeout, this, &Flow2Auth::slotPollTimerTimeout);
 }
 
-Flow2Auth::~Flow2Auth()
-{
-}
+Flow2Auth::~Flow2Auth() = default;
 
 void Flow2Auth::start()
 {
