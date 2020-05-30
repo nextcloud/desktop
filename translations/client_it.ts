@@ -526,7 +526,7 @@
         <translation>I file dall&apos;elenco degli ignorati così come i collegamenti simbolici non sono sincronizzati. Questo include:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="444"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Per altre attività, apri l&apos;applicazione Attività.</translation>
     </message>
@@ -3670,14 +3670,14 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Accedi...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
-        <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>Sincronizzazione di %1 di %2  (%3 rimanenti)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Esci</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation>Sincronizzazione di %1 di %2  (%3 rimanenti)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="942"/>

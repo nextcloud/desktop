@@ -526,7 +526,7 @@
         <translation>Ez-ikusien zerrendako fitxategiak eta esteka sinbolikoak ez dira sinkronizatuko. Hauek:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="444"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Jarduera gehiagorako ireki Jarduerak aplikazioa.</translation>
     </message>
@@ -3670,14 +3670,14 @@ Ez da gomendagarria erabiltzea.</translation>
         <translation>Hasi saioa …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
-        <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>%2tik %1 sinkronizatzen (%3 gelditzen dira)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Saioa bukatu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation>%2tik %1 sinkronizatzen (%3 gelditzen dira)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="942"/>

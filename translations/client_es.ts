@@ -526,7 +526,7 @@
         <translation>Los archivos de la la lista de ignorados así como los enlace simbólicos no están sincronizados: Esto incluye:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="444"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Para más detalles, por favor, abre la app Actividades.</translation>
     </message>
@@ -3669,14 +3669,14 @@ No se recomienda usarla.</translation>
         <translation>Iniciar sesión ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
-        <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>Sincronizando %1 de %2  (quedan %3)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Cerrar sesión</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation>Sincronizando %1 de %2  (quedan %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="942"/>

@@ -526,7 +526,7 @@
         <translation>シンボリックリンクと同様に無視されるファイルは同期されません。以下の通り:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="444"/>
         <source>For more activities please open the Activity app.</source>
         <translation>その他のアクティビティについては、アクティビティアプリを開いてください。</translation>
     </message>
@@ -3666,14 +3666,14 @@ It is not advisable to use it.</source>
         <translation>ログイン…</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
-        <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>同期中 %2 中 %1 (残り %3)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>ログアウト</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation>同期中 %2 中 %1 (残り %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="942"/>

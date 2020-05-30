@@ -526,7 +526,7 @@
         <translation>来自忽略列表的文件和符号链接不会被同步。这包含：</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="444"/>
         <source>For more activities please open the Activity app.</source>
         <translation>有关更多活动，请打开 “活动” 应用。</translation>
     </message>
@@ -3669,14 +3669,14 @@ It is not advisable to use it.</source>
         <translation>登录 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
-        <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>正在同步 ％2 的 ％1（还剩 ％3）</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>登出</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation>正在同步 ％2 的 ％1（还剩 ％3）</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="942"/>

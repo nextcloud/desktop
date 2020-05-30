@@ -526,7 +526,7 @@
         <translation>Soubory ze seznamu ignorovaných a symbolické odkazy nejsou synchronizovány. Mezi to patří:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="424"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="444"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Pro více aktivit, otevřete aplikaci Aktivity</translation>
     </message>
@@ -3669,14 +3669,14 @@ Nedoporučuje se jí používat.</translation>
         <translation>Přihlásit…</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
-        <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>Synchronizuje se %1 z %2 (zbývá %3)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Odhlásit se</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
+        <source>Syncing %1 of %2 (%3 left)</source>
+        <translation>Synchronizuje se %1 z %2 (zbývá %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="942"/>
