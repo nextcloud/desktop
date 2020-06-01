@@ -2719,7 +2719,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="156"/>
         <source>Read only</source>
-        <translation type="unfinished"/>
+        <translation>Hanya baca</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
@@ -2754,7 +2754,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Tambah tautan lain</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="406"/>
@@ -2820,7 +2820,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="412"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>Dapat membagikan</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="422"/>
@@ -4082,7 +4082,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Galat</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
