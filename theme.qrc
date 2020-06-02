@@ -153,6 +153,7 @@
         <file>theme/change.svg</file>
         <file>theme/lock-http.svg</file>
         <file>theme/lock-https.svg</file>
+        <file>theme/lock-broken.svg</file>
         <file>theme/network.svg</file>
         <file>theme/account.svg</file>
         <file>theme/colored/add.svg</file>

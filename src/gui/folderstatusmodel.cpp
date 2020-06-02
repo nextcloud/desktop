@@ -158,6 +158,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::DecorationRole:
             if (_accountState->account()->e2e()->isFolderEncrypted(x._path)) {
                 return QIcon(QLatin1String(":/client/theme/lock-https.svg"));
+            } else if (x._size > 0 && _accountState->account()->e2e()->isAnyParentFolderEncrypted(x._path)) {
+                return QIcon(QLatin1String(":/client/theme/lock-broken.svg"));
             }
             return QFileIconProvider().icon(x._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
         case Qt::ForegroundRole:

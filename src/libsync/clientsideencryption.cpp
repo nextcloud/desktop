@@ -1482,6 +1482,22 @@ bool ClientSideEncryption::isFolderEncrypted(const QString& path) const {
   return (*it);
 }
 
+bool ClientSideEncryption::isAnyParentFolderEncrypted(const QString &path) const
+{
+    int slashPosition = 0;
+
+    while ((slashPosition = path.indexOf("/", slashPosition + 1)) != -1) {
+        // Ignore the last slash
+        if (slashPosition == path.length() - 1) break;
+
+        if (isFolderEncrypted(path.left(slashPosition + 1))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray& returnTag)
 {
     if (!input->open(QIODevice::ReadOnly)) {
