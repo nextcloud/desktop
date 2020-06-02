@@ -4124,7 +4124,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>galat</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
