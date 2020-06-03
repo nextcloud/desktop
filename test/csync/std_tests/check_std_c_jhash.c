@@ -16,10 +16,17 @@
 static void check_c_jhash_trials(void **state)
 {
   uint8_t qa[MAXLEN+1], qb[MAXLEN+2], *a = &qa[0], *b = &qb[1];
-  uint32_t c[HASHSTATE], d[HASHSTATE], i, j=0, k, l, m, z;
+  uint32_t c[HASHSTATE];
+  uint32_t d[HASHSTATE];
+  uint32_t i = 0;
+  uint32_t j = 0;
+  uint32_t k = 0;
+  uint32_t l = 0;
+  uint32_t m = 0;
+  uint32_t z = 0;
   uint32_t e[HASHSTATE],f[HASHSTATE],g[HASHSTATE],h[HASHSTATE];
   uint32_t x[HASHSTATE],y[HASHSTATE];
-  uint32_t hlen;
+  uint32_t hlen = 0;
 
   (void) state; /* unused */
 
@@ -75,14 +82,20 @@ static void check_c_jhash_trials(void **state)
 
 static void check_c_jhash_alignment_problems(void **state)
 {
-  uint32_t test;
-  uint8_t buf[MAXLEN+20], *b;
-  uint32_t len;
+  uint32_t test = 0;
+  uint8_t buf[MAXLEN+20];
+  uint8_t *b = NULL;
+  uint32_t len = 0;
   uint8_t q[] = "This is the time for all good men to come to the aid of their country";
   uint8_t qq[] = "xThis is the time for all good men to come to the aid of their country";
   uint8_t qqq[] = "xxThis is the time for all good men to come to the aid of their country";
   uint8_t qqqq[] = "xxxThis is the time for all good men to come to the aid of their country";
-  uint32_t h,i,j,ref,x,y;
+  uint32_t h = 0;
+  uint32_t i = 0;
+  uint32_t j = 0;
+  uint32_t ref = 0;
+  uint32_t x = 0;
+  uint32_t y = 0;
 
   (void) state; /* unused */
 
@@ -110,7 +123,9 @@ static void check_c_jhash_alignment_problems(void **state)
 static void check_c_jhash_null_strings(void **state)
 {
   uint8_t buf[1];
-  uint32_t h, i, t;
+  uint32_t h = 0;
+  uint32_t i = 0;
+  uint32_t t = 0;
 
   (void) state; /* unused */
 
@@ -126,11 +141,22 @@ static void check_c_jhash_null_strings(void **state)
 static void check_c_jhash64_trials(void **state)
 {
   uint8_t qa[MAXLEN + 1], qb[MAXLEN + 2];
-  uint8_t *a, *b;
-  uint64_t c[HASHSTATE], d[HASHSTATE], i, j=0, k, l, m, z;
-  uint64_t e[HASHSTATE],f[HASHSTATE],g[HASHSTATE],h[HASHSTATE];
-  uint64_t x[HASHSTATE],y[HASHSTATE];
-  uint64_t hlen;
+  uint8_t *a = NULL, *b = NULL;
+  uint64_t c[HASHSTATE];
+  uint64_t d[HASHSTATE];
+  uint64_t i = 0;
+  uint64_t j=0;
+  uint64_t k = 0;
+  uint64_t l = 0;
+  uint64_t m = 0;
+  uint64_t z = 0;
+  uint64_t e[HASHSTATE];
+  uint64_t f[HASHSTATE];
+  uint64_t g[HASHSTATE];
+  uint64_t h[HASHSTATE];
+  uint64_t x[HASHSTATE];
+  uint64_t y[HASHSTATE];
+  uint64_t hlen = 0;
 
   (void) state; /* unused */
 
@@ -200,8 +226,9 @@ static void check_c_jhash64_trials(void **state)
 
 static void check_c_jhash64_alignment_problems(void **state)
 {
-  uint8_t buf[MAXLEN+20], *b;
-  uint64_t len;
+  uint8_t buf[MAXLEN+20];
+  uint8_t *b = NULL;
+  uint64_t len = 0;
   uint8_t q[] = "This is the time for all good men to come to the aid of their country";
   uint8_t qq[] = "xThis is the time for all good men to come to the aid of their country";
   uint8_t qqq[] = "xxThis is the time for all good men to come to the aid of their country";
@@ -210,7 +237,13 @@ static void check_c_jhash64_alignment_problems(void **state)
   uint8_t oo[] = "xxxxxThis is the time for all good men to come to the aid of their country";
   uint8_t ooo[] = "xxxxxxThis is the time for all good men to come to the aid of their country";
   uint8_t oooo[] = "xxxxxxxThis is the time for all good men to come to the aid of their country";
-  uint64_t h,i,j,ref,t,x,y;
+  uint64_t h = 0;
+  uint64_t i = 0;
+  uint64_t j = 0;
+  uint64_t ref = 0;
+  uint64_t t = 0;
+  uint64_t x = 0;
+  uint64_t y = 0;
 
   (void) state; /* unused */
 
@@ -261,7 +294,9 @@ static void check_c_jhash64_alignment_problems(void **state)
 static void check_c_jhash64_null_strings(void **state)
 {
   uint8_t buf[1];
-  uint64_t h, i, t;
+  uint64_t h = 0;
+  uint64_t i = 0;
+  uint64_t t = 0;
 
   (void) state; /* unused */
 

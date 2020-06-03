@@ -616,8 +616,7 @@ bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder)
     while (!renameOk) {
         renameOk = FolderMan::instance()->startFromScratch(localFolder);
         if (!renameOk) {
-            QMessageBox::StandardButton but;
-            but = QMessageBox::question(nullptr, tr("Folder rename failed"),
+            QMessageBox::StandardButton but = QMessageBox::question(nullptr, tr("Folder rename failed"),
                 tr("Can't remove and back up the folder because the folder or a file in it is open in another program."
                    " Please close the folder or file and hit retry or cancel the setup."),
                 QMessageBox::Retry | QMessageBox::Abort, QMessageBox::Retry);

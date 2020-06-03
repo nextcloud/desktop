@@ -93,7 +93,7 @@ UpdateInfo UpdateInfo::parseFile(const QString &filename, bool *ok)
     }
 
     QString errorMsg;
-    int errorLine, errorCol;
+    int errorLine = 0, errorCol = 0;
     QDomDocument doc;
     if (!doc.setContent(&file, false, &errorMsg, &errorLine, &errorCol)) {
         qCCritical(lcUpdater) << errorMsg << " at " << errorLine << "," << errorCol;
@@ -102,7 +102,7 @@ UpdateInfo UpdateInfo::parseFile(const QString &filename, bool *ok)
         return UpdateInfo();
     }
 
-    bool documentOk;
+    bool documentOk = false;
     UpdateInfo c = parseElement(doc.documentElement(), &documentOk);
     if (ok) {
         *ok = documentOk;
@@ -113,7 +113,7 @@ UpdateInfo UpdateInfo::parseFile(const QString &filename, bool *ok)
 UpdateInfo UpdateInfo::parseString(const QString &xml, bool *ok)
 {
     QString errorMsg;
-    int errorLine, errorCol;
+    int errorLine = 0, errorCol = 0;
     QDomDocument doc;
     if (!doc.setContent(xml, false, &errorMsg, &errorLine, &errorCol)) {
         qCCritical(lcUpdater) << errorMsg << " at " << errorLine << "," << errorCol;
@@ -122,7 +122,7 @@ UpdateInfo UpdateInfo::parseString(const QString &xml, bool *ok)
         return UpdateInfo();
     }
 
-    bool documentOk;
+    bool documentOk = false;
     UpdateInfo c = parseElement(doc.documentElement(), &documentOk);
     if (ok) {
         *ok = documentOk;

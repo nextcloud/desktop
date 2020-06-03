@@ -64,7 +64,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     while (di.hasNext()) {
         di.next();
         const QFileInfo &fi = di.fileInfo();
-        bool ok;
+        bool ok = false;
         // The use of isSymLink here is okay:
         // we never want to go into this branch for .lnk files
         bool isDir = fi.isDir() && !fi.isSymLink() && !FileSystem::isJunction(fi.absoluteFilePath());

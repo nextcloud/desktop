@@ -23,7 +23,7 @@
 
 static void check_csync_instruction_str(void **state)
 {
-  const char *str;
+  const char *str = nullptr;
 
   (void) state; /* unused */
 

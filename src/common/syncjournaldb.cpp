@@ -811,7 +811,7 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 
 qint64 SyncJournalDb::getPHash(const QByteArray &file)
 {
-    int64_t h;
+    int64_t h = 0;
 
     if (file.isEmpty()) {
         return -1;

@@ -235,7 +235,7 @@ namespace {
         return res;
     }
 
-    QByteArray handleErrors(void)
+    QByteArray handleErrors()
     {
         Bio bioErrors;
         ERR_print_errors(bioErrors); // This line is not printing anything.
@@ -305,6 +305,7 @@ QByteArray encryptPrivateKey(
     QByteArray iv = generateRandom(12);
 
     CipherCtx ctx;
+
     /* Create and initialise the context */
     if(!ctx) {
         qCInfo(lcCse()) << "Error creating cipher";
@@ -424,7 +425,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     }
 
     QByteArray ptext(cipherTXT.size() + 16, '\0');
-    int plen;
+    int plen = 0;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
      * EVP_DecryptUpdate can be called multiple times if necessary
@@ -500,7 +501,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     }
 
     QByteArray ptext(cipherTXT.size() + 16, '\0');
-    int plen;
+    int plen = 0;
 
     /* Provide the message to be decrypted, and obtain the plaintext output.
      * EVP_DecryptUpdate can be called multiple times if necessary
@@ -544,6 +545,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     QByteArray iv = generateRandom(16);
 
     CipherCtx ctx;
+
     /* Create and initialise the context */
     if(!ctx) {
         qCInfo(lcCse()) << "Error creating cipher";

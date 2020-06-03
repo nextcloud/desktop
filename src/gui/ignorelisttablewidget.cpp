@@ -108,7 +108,7 @@ void IgnoreListTableWidget::slotWriteIgnoreFile(const QString & file)
 
 void IgnoreListTableWidget::slotAddPattern()
 {
-    bool okClicked;
+    bool okClicked = false;
     QString pattern = QInputDialog::getText(this, tr("Add Ignore Pattern"),
         tr("Add a new ignore pattern:"),
         QLineEdit::Normal, QString(), &okClicked);

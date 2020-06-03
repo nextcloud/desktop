@@ -126,10 +126,10 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
 
 void FolderWatcherPrivate::slotReceivedNotification(int fd)
 {
-    int len;
-    struct inotify_event *event;
-    int i;
-    int error;
+    int len = 0;
+    struct inotify_event *event = nullptr;
+    int i = 0;
+    int error = 0;
     QVarLengthArray<char, 2048> buffer(2048);
 
     do {
