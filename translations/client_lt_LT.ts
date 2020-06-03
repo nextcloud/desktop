@@ -55,7 +55,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="231"/>
         <source>Recently changed</source>
-        <translation type="unfinished"/>
+        <translation>Neseniai pakeista</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
@@ -80,7 +80,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="254"/>
         <source>Quit sync client</source>
-        <translation type="unfinished"/>
+        <translation>Išeiti iš sinchronizavimo kliento</translation>
     </message>
 </context>
 <context>
@@ -107,7 +107,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>Naršyklės autentifikavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create folder</source>
-        <translation type="unfinished"/>
+        <translation>Sukurti aplanką</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -189,12 +189,12 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="353"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Šifravimo mnemonika</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Norėdami apsaugoti Jūsų kriptografinę tapatybę, mes ją užšifruojame 12  žodžių mnemonika. Įsiminkite ir saugokite žodžius. Jie bus reikalingi, jei norėsite prie savo paskyros pridėti kitus įrenginius (pvz., mobilųjį telefoną ar nešiojamąjį kompiuterį).</translation>
     </message>
 </context>
 <context>
@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="211"/>
         <source>Storage space: …</source>
-        <translation type="unfinished"/>
+        <translation>Saugojimo vieta: …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="190"/>
@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Parodyti E2E mnemoniką</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="589"/>
@@ -523,12 +523,12 @@
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation type="unfinished"/>
+        <translation>Failai, pažymėti kaip ingoruotini, kaip ir simbolinės nuorodos nėra sinchronizuojami. Tai įtraukia:</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="444"/>
         <source>For more activities please open the Activity app.</source>
-        <translation type="unfinished"/>
+        <translation>Jei norite matyti daugiau veiklos, atidarykite programą Veikla.</translation>
     </message>
 </context>
 <context>
@@ -556,7 +556,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikato slaptažodis:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="199"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>Įvyko klaida,  nepavyko pasiekti konfigūracijos failo, esančio% 1. Įsitikinkite, kad Jūs turite teisę pasiekti šį  failą.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="202"/>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1006"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite E2E slaptą frazę</translation>
     </message>
 </context>
 <context>
@@ -692,13 +692,13 @@
         <location filename="../src/gui/creds/flow2auth.cpp" line="110"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="213"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Įvyko klaida, bandant pasiekti &quot;prieigos raktą“ (angl. Token) : &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="216"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko išanalizuoti serverio grąžinto JSON: &lt;br&gt;&lt;em&gt; %1 &lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="116"/>
@@ -717,7 +717,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation type="unfinished"/>
+        <translation>Prisijunkite prie savo naršyklės („Login Flow v2“)</translation>
     </message>
 </context>
 <context>
@@ -735,12 +735,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Pieigos teisių apklausa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
         <source>Starting authorization</source>
-        <translation type="unfinished"/>
+        <translation>Prieigos teisių inicijavimas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
@@ -894,7 +894,9 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko užtinkti patikimo aplankalų sinchronozacijos sekimo.
+
+Tai reiškia, kad sinchronizacijos klientas gali iš karto neįkelti lokalių pakeitimų, o tik juos nuskaityti. Įkėlimas bus atliekamas tam tikrais laiko tarpais (pagal numatytuosius nustatymus kas dvi valandas).</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1088"/>
@@ -902,14 +904,18 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Visi sinchronizavimo aplanke &apos;%1&apos;  esantys failai buvo ištrinti serveryje.
+Ištrynimas bus sinchronizuojamas su Jūsų lokaliu sinchronizavimo aplanku. Todėl ištrinti failai nebebus pasiekiami, nebent turite teises juos atkurti.
+Jei nuspręsite atkurti failus ir turite tam teises, jie bus pakartotinai sinchronizuojami su serveriu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1093"/>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>Visi failai, esantys lokaliame sinchronizavimo aplankale % 1, buvo ištrinti.
+Šie failai bus ištrinti iš serverio ir nebebus pasiekiami kituose jūsų įrenginiuose, jei nebus atkurti.
+Jei failus ištrynėte per klaidą, galite atkurti prarastus duomenis dabar.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1097"/>
@@ -996,7 +1002,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/folderman.cpp" line="1287"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizacija sėkmingai pavyko.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1289"/>
@@ -1329,7 +1335,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="188"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Mes gavome kitą „E-Tag“ atnaujinimui. Pakrtosime kitą kartą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
@@ -1388,12 +1394,12 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Automatiškai tikrinti, ar nėra atnaujinimų </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>&amp;Check for Update now</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Patikrinti, ar nėra aktyvių atnaujinimų</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
@@ -1447,12 +1453,12 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/socketapi.cpp" line="528"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Reikalingas bendrinimosi slaptažodis</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="529"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Prašome įveskite slaptažodį bendrinamai nuorodai:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="548"/>
@@ -1525,7 +1531,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Modelis</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
@@ -1545,14 +1551,16 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Pašalinti visus</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Failai ar aplankai, atitinkantys požymį, nebus sinchronizuojami.
+
+ Elementai, kurie gali būti ištrinti, bus ištrinti, jei jie trukdo pašalinti katalogą. Tai naudinga metaduomenims.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -1596,7 +1604,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Licencijuojama pagal GNU bendrosios viešosios licencijos (GPL) 2.0 versiją arba bet kurią vėlesnę.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1631,7 +1639,9 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Įjungus šią parinktį ir nesant sukonfiguruotam jokiam kitam įvykių registravimui, žurnalai bus įrašomi į laikiną aplanką ir baigs galioti po kelių valandų. Šis nustatymas išlieka naujai paleidžiant klientą.
+
+Žurnalo įvykia bus įrašomi į %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -1679,7 +1689,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/libsync/logger.cpp" line="169"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Failas &apos;%1&apos;&lt;br/&gt;negali būti atidarytas rašymui.&lt;br/&gt;&lt;br/&gt;Įvykių žurnalo išvestis &lt;b&gt;negali&lt;/b&gt;būti išsaugota!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1730,7 +1740,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>Rankiniu būdu nurodykite tarpinį serverį kaip</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -1823,7 +1833,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="116"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko išanalizuoti serverio grąžinto JSON: &lt;br&gt;&lt;em&gt; %1 &lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="119"/>
@@ -1838,7 +1848,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="129"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Netinkamas naudotojas&lt;/h1&gt;&lt;p&gt;Jūs prisijungėte kaip naudotojas&lt;em&gt;%1&lt;/em&gt;, bet turite būti prisijungęs kaip &lt;em&gt;%2&lt;/em&gt; naudotojas. &lt;br&gt; Prašome, atsijunkite nuo  %3, tada &lt;a href=&apos;%4&apos;&gt;paspauskite čia&lt;/a&gt; ir prisijunkite kaip %2 naudotojas &lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2124,7 +2134,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Neteisingas atsakymas į patvirtintą „WebDAV“ užklausą</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
@@ -2668,12 +2678,12 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="312"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Reikalingas bendrinimo slaptažodis</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="313"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Prašome įveskite slaptažodį bendrinamai nuorodai:</translation>
     </message>
 </context>
 <context>
@@ -2784,7 +2794,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
-        <translation type="unfinished"/>
+        <translation>Bendrinti su naudotojais ar grupėmis ...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="267"/>
@@ -3435,7 +3445,7 @@ Patariama jo nenaudoti.</translation>
         <location filename="../src/libsync/theme.cpp" line="355"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 Darbastalio klientas&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="358"/>
@@ -3454,7 +3464,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="319"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Pakartoti visus įkėlimus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="368"/>
