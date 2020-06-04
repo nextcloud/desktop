@@ -86,7 +86,7 @@ static int teardown(void **state) {
     rc = system("rm -rf /tmp/check_csync2");
     assert_int_equal(rc, 0);
 
-    *state = NULL;
+    *state = nullptr;
 
     return 0;
 }
@@ -717,5 +717,5 @@ int torture_run_tests(void)
         cmocka_unit_test(T::check_csync_exclude_expand_escapes),
     };
 
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests(tests, nullptr, nullptr);
 }

@@ -63,8 +63,8 @@ static bool _csync_sameextension(const char *p1, const char *p2) {
 
     /* If the found extension contains a '/', it is because the . was in the folder name
      *            => no extensions */
-    if (e1 && strchr(e1, '/')) e1 = NULL;
-    if (e2 && strchr(e2, '/')) e2 = NULL;
+    if (e1 && strchr(e1, '/')) e1 = nullptr;
+    if (e2 && strchr(e2, '/')) e2 = nullptr;
 
     /* If none have extension, it is the same extension */
     if (!e1 && !e2)

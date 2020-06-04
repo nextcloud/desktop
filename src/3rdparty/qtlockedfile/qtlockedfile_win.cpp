@@ -94,7 +94,7 @@ bool QtLockedFile::lock(LockMode mode, bool block)
             QString mut_name = QString::fromLatin1(MUTEX_PREFIX)
                                + fi.absoluteFilePath().toLower();
 
-            m_mutex_hnd = CreateMutexW(NULL, FALSE, (TCHAR*)mut_name.utf16());
+            m_mutex_hnd = CreateMutexW(nullptr, FALSE, (TCHAR*)mut_name.utf16());
 
             if (m_mutex_hnd == 0) {
                 qWarning("QtLockedFile::lock(): CreateMutex: %s",
@@ -118,7 +118,7 @@ bool QtLockedFile::lock(LockMode mode, bool block)
         if (res == WAIT_TIMEOUT) {
             if (i) {
                 // A failed nonblocking rw locking. Undo changes to semaphore.
-                if (ReleaseSemaphore(m_semaphore_hnd, i, NULL) == 0) {
+                if (ReleaseSemaphore(m_semaphore_hnd, i, nullptr) == 0) {
                     qWarning("QtLockedFile::unlock(): ReleaseSemaphore: %s",
                              errorCodeToString(GetLastError()).toLatin1().constData());
                     // Fall through

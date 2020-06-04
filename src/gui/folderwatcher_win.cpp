@@ -37,10 +37,10 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         (wchar_t *)longPath.utf16(),
         FILE_LIST_DIRECTORY,
         FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
-        NULL,
+        nullptr,
         OPEN_EXISTING,
         FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED,
-        NULL);
+        nullptr);
 
     if (_directory == INVALID_HANDLE_VALUE) {
         DWORD errorCode = GetLastError();
@@ -72,7 +72,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
                 &dwBytesReturned,
                 &overlapped,
-                NULL)) {
+                nullptr)) {
             DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
@@ -156,14 +156,14 @@ void WatcherThread::closeHandle()
 {
     if (_directory) {
         CloseHandle(_directory);
-        _directory = NULL;
+        _directory = nullptr;
     }
 }
 
 void WatcherThread::run()
 {
-    _resultEvent = CreateEvent(NULL, true, false, NULL);
-    _stopEvent = CreateEvent(NULL, true, false, NULL);
+    _resultEvent = CreateEvent(nullptr, true, false, nullptr);
+    _stopEvent = CreateEvent(nullptr, true, false, nullptr);
 
     // If this buffer fills up before we've extracted its data we will lose
     // change information. Therefore start big.
