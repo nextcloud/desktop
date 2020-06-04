@@ -22,7 +22,7 @@ class TestNextcloudPropagator : public QObject
 private slots:
     void testUpdateErrorFromSession()
     {
-//        NextcloudPropagator propagator( NULL, QLatin1String("test1"), QLatin1String("test2"), new ProgressDatabase);
+        //OwncloudPropagator propagator(nullptr, QLatin1String("test1"), QLatin1String("test2"), new ProgressDatabase);
         QVERIFY( true );
     }
 

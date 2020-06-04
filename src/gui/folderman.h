@@ -87,7 +87,7 @@ public:
       */
     QStringList findFileInLocalFolders(const QString &relPath, const AccountPtr acc);
 
-    /** Returns the folder by alias or NULL if no folder with the alias exists. */
+    /** Returns the folder by alias or \c nullptr if no folder with the alias exists. */
     Folder *folder(const QString &);
 
     /**

@@ -91,7 +91,7 @@ namespace FileSystem {
      */
     bool OCSYNC_EXPORT rename(const QString &originFileName,
         const QString &destinationFileName,
-        QString *errorString = NULL);
+        QString *errorString = nullptr);
 
     /**
      * Rename the file \a originFileName to \a destinationFileName, and

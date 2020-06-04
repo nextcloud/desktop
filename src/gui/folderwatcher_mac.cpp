@@ -86,13 +86,13 @@ void FolderWatcherPrivate::startWatching()
     qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::startWatching()" << _folder;
     CFStringRef folderCF = CFStringCreateWithCharacters(0, reinterpret_cast<const UniChar *>(_folder.unicode()),
         _folder.length());
-    CFArrayRef pathsToWatch = CFStringCreateArrayBySeparatingStrings(NULL, folderCF, CFSTR(":"));
+    CFArrayRef pathsToWatch = CFStringCreateArrayBySeparatingStrings(nullptr, folderCF, CFSTR(":"));
 
-    FSEventStreamContext ctx = { 0, this, NULL, NULL, NULL };
+    FSEventStreamContext ctx = { 0, this, nullptr, nullptr, nullptr };
 
     // TODO: Add kFSEventStreamCreateFlagFileEvents ?
 
-    _stream = FSEventStreamCreate(NULL,
+    _stream = FSEventStreamCreate(nullptr,
         &callback,
         &ctx,
         pathsToWatch,
