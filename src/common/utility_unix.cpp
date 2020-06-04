@@ -74,7 +74,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
         ts << QLatin1String("[Desktop Entry]") << endl
            << QLatin1String("Name=") << guiName << endl
            << QLatin1String("GenericName=") << QLatin1String("File Synchronizer") << endl
-           << QLatin1String("Exec=") << QCoreApplication::applicationFilePath() << endl
+           << QLatin1String("Exec=") << QCoreApplication::applicationFilePath() << " --background" << endl
            << QLatin1String("Terminal=") << "false" << endl
            << QLatin1String("Icon=") << APPLICATION_ICON_NAME << endl
            << QLatin1String("Categories=") << QLatin1String("Network") << endl
