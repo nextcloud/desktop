@@ -666,7 +666,7 @@ QByteArray Utility::conflictFileBaseName(const QByteArray &conflictName)
 
 QString Utility::sanitizeForFileName(const QString &name)
 {
-    const auto invalid = QStringLiteral("/?<>\\:*|\"");
+    const auto invalid = QStringLiteral(R"(/?<>\:*|")");
     QString result;
     result.reserve(name.size());
     for (const auto c : name) {

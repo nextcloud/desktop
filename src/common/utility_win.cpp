@@ -25,7 +25,7 @@
 #include <string>
 #include <QLibrary>
 
-static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+static const char runPathC[] = R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run)";
 
 namespace OCC {
 
@@ -91,7 +91,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
 static inline bool hasDarkSystray_private()
 {
     if(Utility::registryGetKeyValue(    HKEY_CURRENT_USER,
-                                        "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+                                        R"(Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)",
                                         "SystemUsesLightTheme" ) == 1) {
         return false;
     }

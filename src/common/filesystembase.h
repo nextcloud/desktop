@@ -175,10 +175,10 @@ namespace FileSystem {
         if( str[0] == '/' || str[0] == '\\' ) {
             // Don't prepend if already UNC
             if( !(len > 1 && (str[1] == '/' || str[1] == '\\')) ) {
-                longStr.append("\\\\?");
+                longStr.append(R"(\\?)");
             }
         } else {
-            longStr.append("\\\\?\\"); // prepend string by this four magic chars.
+            longStr.append(R"(\\?\)"); // prepend string by this four magic chars.
         }
         longStr += str;
 
