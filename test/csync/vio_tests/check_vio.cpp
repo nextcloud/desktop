@@ -88,7 +88,7 @@ static int teardown(void **state) {
     rc = system("rm -rf /tmp/csync_test/");
     assert_int_equal(rc, 0);
 
-    *state = NULL;
+    *state = nullptr;
     return 0;
 }
 
@@ -135,7 +135,7 @@ static void check_csync_vio_closedir_null(void **state)
     CSYNC *csync = (CSYNC*)*state;
     int rc;
 
-    rc = csync_vio_closedir(csync, NULL);
+    rc = csync_vio_closedir(csync, nullptr);
     assert_int_equal(rc, -1);
 }
 
@@ -147,5 +147,5 @@ int torture_run_tests(void)
         cmocka_unit_test(check_csync_vio_closedir_null),
     };
 
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests(tests, nullptr, nullptr);
 }

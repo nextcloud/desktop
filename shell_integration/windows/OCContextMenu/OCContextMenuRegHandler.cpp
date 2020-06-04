@@ -24,16 +24,16 @@ namespace {
 HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR pszData)
 {
     HRESULT hr;
-    HKEY hKey = NULL;
+    HKEY hKey = nullptr;
 
     // Creates the specified registry key. If the key already exists, the 
     // function opens it. 
     hr = HRESULT_FROM_WIN32(RegCreateKeyEx(HKEY_CLASSES_ROOT, pszSubKey, 0,
-        NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL));
+        nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &hKey, nullptr));
 
     if (SUCCEEDED(hr))
     {
-        if (pszData != NULL)
+        if (pszData != nullptr)
         {
             // Set the specified value of the key.
             DWORD cbData = lstrlen(pszData) * sizeof(*pszData);
@@ -50,7 +50,7 @@ HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR
 HRESULT GetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PWSTR pszData, DWORD cbData)
 {
     HRESULT hr;
-    HKEY hKey = NULL;
+    HKEY hKey = nullptr;
 
     // Try to open the specified registry key. 
     hr = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_CLASSES_ROOT, pszSubKey, 0,
@@ -59,8 +59,8 @@ HRESULT GetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PWSTR 
     if (SUCCEEDED(hr))
     {
         // Get the data for the specified value name.
-        hr = HRESULT_FROM_WIN32(RegQueryValueEx(hKey, pszValueName, NULL,
-            NULL, reinterpret_cast<LPBYTE>(pszData), &cbData));
+        hr = HRESULT_FROM_WIN32(RegQueryValueEx(hKey, pszValueName, nullptr,
+            nullptr, reinterpret_cast<LPBYTE>(pszData), &cbData));
 
         RegCloseKey(hKey);
     }
@@ -72,7 +72,7 @@ HRESULT GetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PWSTR 
 
 HRESULT OCContextMenuRegHandler::RegisterInprocServer(PCWSTR pszModule, const CLSID& clsid, PCWSTR pszFriendlyName, PCWSTR pszThreadModel)
 {
-    if (pszModule == NULL || pszThreadModel == NULL)
+    if (pszModule == nullptr || pszThreadModel == nullptr)
     {
         return E_INVALIDARG;
     }
@@ -88,7 +88,7 @@ HRESULT OCContextMenuRegHandler::RegisterInprocServer(PCWSTR pszModule, const CL
     hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"CLSID\\%s", szCLSID);
     if (SUCCEEDED(hr))
     {
-        hr = SetHKCRRegistryKeyAndValue(szSubkey, NULL, pszFriendlyName);
+        hr = SetHKCRRegistryKeyAndValue(szSubkey, nullptr, pszFriendlyName);
 
         // Create the HKCR\CLSID\{<CLSID>}\InprocServer32 key.
         if (SUCCEEDED(hr))
@@ -99,7 +99,7 @@ HRESULT OCContextMenuRegHandler::RegisterInprocServer(PCWSTR pszModule, const CL
             {
                 // Set the default value of the InprocServer32 key to the 
                 // path of the COM module.
-                hr = SetHKCRRegistryKeyAndValue(szSubkey, NULL, pszModule);
+                hr = SetHKCRRegistryKeyAndValue(szSubkey, nullptr, pszModule);
                 if (SUCCEEDED(hr))
                 {
                     // Set the threading model of the component.
@@ -136,7 +136,7 @@ HRESULT OCContextMenuRegHandler::UnregisterInprocServer(const CLSID& clsid)
 HRESULT OCContextMenuRegHandler::RegisterShellExtContextMenuHandler(
     PCWSTR pszFileType, const CLSID& clsid, PCWSTR pszFriendlyName)
 {
-    if (pszFileType == NULL)
+    if (pszFileType == nullptr)
     {
         return E_INVALIDARG;
     }
@@ -154,7 +154,7 @@ HRESULT OCContextMenuRegHandler::RegisterShellExtContextMenuHandler(
     if (*pszFileType == L'.')
     {
         wchar_t szDefaultVal[260];
-        hr = GetHKCRRegistryKeyAndValue(pszFileType, NULL, szDefaultVal,
+        hr = GetHKCRRegistryKeyAndValue(pszFileType, nullptr, szDefaultVal,
             sizeof(szDefaultVal));
 
         // If the key exists and its default value is not empty, use the 
@@ -171,7 +171,7 @@ HRESULT OCContextMenuRegHandler::RegisterShellExtContextMenuHandler(
     if (SUCCEEDED(hr))
     {
         // Set the default value of the key.
-        hr = SetHKCRRegistryKeyAndValue(szSubkey, NULL, szCLSID);
+        hr = SetHKCRRegistryKeyAndValue(szSubkey, nullptr, szCLSID);
     }
 
     return hr;
@@ -180,7 +180,7 @@ HRESULT OCContextMenuRegHandler::RegisterShellExtContextMenuHandler(
 HRESULT OCContextMenuRegHandler::UnregisterShellExtContextMenuHandler(
     PCWSTR pszFileType, PCWSTR pszFriendlyName)
 {
-    if (pszFileType == NULL)
+    if (pszFileType == nullptr)
     {
         return E_INVALIDARG;
     }
@@ -195,7 +195,7 @@ HRESULT OCContextMenuRegHandler::UnregisterShellExtContextMenuHandler(
     if (*pszFileType == L'.')
     {
         wchar_t szDefaultVal[260];
-        hr = GetHKCRRegistryKeyAndValue(pszFileType, NULL, szDefaultVal,
+        hr = GetHKCRRegistryKeyAndValue(pszFileType, nullptr, szDefaultVal,
             sizeof(szDefaultVal));
 
         // If the key exists and its default value is not empty, use the 

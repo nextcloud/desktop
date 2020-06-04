@@ -240,7 +240,7 @@ int OCSYNC_EXPORT csync_reconcile(CSYNC *ctx);
  *
  * @param ctx           The csync context.
  *
- * @return              The userdata saved in the context, NULL if an error
+ * @return              The userdata saved in the context, \c nullptr if an error
  *                      occurred.
  */
 void *csync_get_userdata(CSYNC *ctx);
@@ -262,7 +262,7 @@ int OCSYNC_EXPORT csync_set_userdata(CSYNC *ctx, void *userdata);
  *
  * @param ctx           The csync context.
  *
- * @return              The authentication callback set or NULL if an error
+ * @return              The authentication callback set or \c nullptr if an error
  *                      occurred.
  */
 csync_auth_callback OCSYNC_EXPORT csync_get_auth_callback(CSYNC *ctx);
