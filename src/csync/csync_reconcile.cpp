@@ -37,7 +37,7 @@ Q_LOGGING_CATEGORY(lcReconcile, "nextcloud.sync.csync.reconciler", QtInfoMsg)
 #include "inttypes.h"
 
 /* Check if a file is ignored because one parent is ignored.
- * return the node of the ignored directoy if it's the case, or NULL if it is not ignored */
+ * return the node of the ignored directoy if it's the case, or \c nullptr if it is not ignored */
 static csync_file_stat_t *_csync_check_ignored(csync_s::FileMap *tree, const ByteArrayRef &path)
 {
     /* compute the size of the parent directory */

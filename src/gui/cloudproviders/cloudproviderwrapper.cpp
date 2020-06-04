@@ -286,7 +286,7 @@ activate_action_open (GSimpleAction *action, GVariant *parameter, gpointer user_
     }
 
     if(g_str_equal(name, "showfile")) {
-        const gchar *path = g_variant_get_string (parameter, NULL);
+        const gchar *path = g_variant_get_string(parameter, nullptr);
         g_print("showfile => %s\n", path);
         showInFileManager(QString(path));
     }

@@ -17,7 +17,7 @@
 #include "OCOverlayRegistrationHandler.h"
 #include "OCOverlayFactory.h"
 
-HINSTANCE instanceHandle = NULL;
+HINSTANCE instanceHandle = nullptr;
 
 long dllReferenceCount = 0;
 

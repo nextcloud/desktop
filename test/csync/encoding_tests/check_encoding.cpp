@@ -31,7 +31,7 @@
 
 static void check_iconv_to_native_normalization(void **state)
 {
-    mbchar_t *out = NULL;
+    mbchar_t *out = nullptr;
     const char *in= "\x48\xc3\xa4"; // UTF8
 #ifdef __APPLE__
     const char *exp_out = "\x48\x61\xcc\x88"; // UTF-8-MAC
@@ -94,7 +94,7 @@ static void check_to_multibyte(void **state)
     int rc = -1;
 
     mbchar_t *mb_string = c_utf8_path_to_locale( TESTSTRING );
-    mbchar_t *mb_null   = c_utf8_path_to_locale( NULL );
+    mbchar_t *mb_null   = c_utf8_path_to_locale( nullptr );
 
     (void) state;
 
@@ -103,7 +103,7 @@ static void check_to_multibyte(void **state)
 #else
     assert_string_equal(mb_string, TESTSTRING);
 #endif
-    assert_true( mb_null == NULL );
+    assert_true( mb_null == nullptr );
     assert_int_equal(rc, -1);
 
     c_free_locale_string(mb_string);
@@ -178,6 +178,6 @@ int torture_run_tests(void)
 
     };
 
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests(tests, nullptr, nullptr);
 }
 
