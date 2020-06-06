@@ -768,6 +768,11 @@ bool UserModel::currentUserHasActivities()
     return _users[currentUserIndex()]->hasActivities();
 }
 
+bool UserModel::currentUserHasLocalFolder()
+{
+    return _users[currentUserIndex()]->getFolder() != nullptr;
+}
+
 void UserModel::fetchCurrentActivityModel()
 {
     _users[currentUserId()]->slotRefresh();
