@@ -459,7 +459,7 @@ Window {
                         Menu {
                             id: appsMenu
                             y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
-                            width: (Style.headerButtonIconSize * 3)
+                            width: Math.min(contentItem.childrenRect.width + 4, Style.trayWindowWidth / 2)
                             closePolicy: "CloseOnPressOutside"
 
                             background: Rectangle {
@@ -476,6 +476,7 @@ Window {
                                     text: appName
                                     font.pixelSize: Style.topLinePixelSize
                                     icon.source: appIconUrl
+                                    width: contentItem.implicitWidth + leftPadding + rightPadding
                                     onTriggered: appsMenuModelBackend.openAppUrl(appUrl)
                                 }
                             }
