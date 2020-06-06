@@ -68,9 +68,9 @@ namespace {
 
     static const char optionsC[] =
         "Options:\n"
-        "  -h --help            : show this help screen.\n"
-        "  --version            : show version information.\n"
-        "  --logwindow          : open a window to show log output.\n"
+        "  --help, -h           : show this help screen.\n"
+        "  --version, -v        : show version information.\n"
+        "  --logwindow, -l      : open a window to show log output.\n"
         "  --logfile <filename> : write log output to file <filename>.\n"
         "  --logdir <name>      : write each sync log output in a new file\n"
         "                         in folder <name>.\n"
@@ -495,7 +495,7 @@ void Application::parseOptions(const QStringList &options)
             _debugMode = true;
         } else if (option == QLatin1String("--background")) {
             _backgroundMode = true;
-        } else if (option == QLatin1String("--version")) {
+        } else if (option == QLatin1String("--version") || option == QLatin1String("-v")) {
             _versionOnly = true;
         } else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
