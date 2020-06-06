@@ -198,4 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+Icon[fi_FI]=@APPLICATION_ICON_NAME@
+Name[fi_FI]=@APPLICATION_NAME@ työpöydän synkronointipääte
+Comment[fi_FI]=@APPLICATION_NAME@ työpöydän synkronointipääte
 GenericName[fi_FI]=Kansio synkronointi
