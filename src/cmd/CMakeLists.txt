@@ -32,6 +32,7 @@ if(NOT BUILD_LIBRARIES_ONLY)
     target_include_directories(${cmd_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
 endif()
 
+# OSX: Copy nextcloudcmd to app bundle, src/gui will run macdeployqt
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     add_custom_command(TARGET ${cmd_NAME} POST_BUILD
         COMMAND "cp"
