@@ -417,12 +417,16 @@ ActivityListModel *User::getActivityModel()
 
 void User::openLocalFolder()
 {
+    const auto folder = getFolder();
+
+    if (folder != nullptr) {
 #ifdef Q_OS_WIN
-    QString path = "file:///" + this->getFolder()->path();
+        QString path = "file:///" + folder->path();
 #else
-    QString path = "file://" + this->getFolder()->path();
+        QString path = "file://" + folder->path();
 #endif
-    QDesktopServices::openUrl(path);
+        QDesktopServices::openUrl(path);
+    }
 }
 
 void User::login() const
