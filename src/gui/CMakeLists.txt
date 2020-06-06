@@ -388,16 +388,21 @@ install(TARGETS ${APPLICATION_EXECUTABLE}
 #FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary
 # currently it needs to be done because the code right above needs to be executed no matter
 # if building a bundle or not and the install_qt4_executable needs to be called afterwards
+#
+# OSX: Run macdeployqt for src/gui and for src/cmd using the -executable option
 if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
     get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
     get_filename_component(QT_BIN_DIR "${QT_QMAKE_EXECUTABLE}" DIRECTORY)
     find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN_DIR}")
+
+    set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 
     add_custom_command(TARGET ${APPLICATION_EXECUTABLE} POST_BUILD
         COMMAND "${MACDEPLOYQT_EXECUTABLE}"
             "$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>/../.."
             -qmldir=${CMAKE_SOURCE_DIR}/src/gui
             -always-overwrite
+            -executable="$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>/${cmd_NAME}"
         COMMENT "Running macdeployqt..."
     )
 endif()
