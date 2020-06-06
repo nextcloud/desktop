@@ -30,6 +30,7 @@ Window {
         currentAccountAvatar.source = "image://avatars/currentUser"
         currentAccountUser.text = userModelBackend.currentUserName();
         currentAccountServer.text = userModelBackend.currentUserServer();
+        openLocalFolderButton.visible = userModelBackend.currentUserHasLocalFolder();
         trayWindowTalkButton.visible = userModelBackend.currentServerHasTalk() ? true : false;
         currentAccountStateIndicator.source = ""
         currentAccountStateIndicator.source = userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
@@ -52,6 +53,7 @@ Window {
         }
         onNewUserSelected: {
             accountMenu.close();
+            openLocalFolderButton.visible = userModelBackend.currentUserHasLocalFolder();
             trayWindowTalkButton.visible = userModelBackend.currentServerHasTalk() ? true : false;
         }
     }
@@ -360,6 +362,7 @@ Window {
                     Layout.preferredWidth:  Style.trayWindowHeaderHeight
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
                     flat: true
+                    visible: userModelBackend.currentUserHasLocalFolder()
 
                     icon.source: "qrc:///client/theme/white/folder.svg"
                     icon.width: Style.headerButtonIconSize
