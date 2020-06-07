@@ -31,6 +31,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QPainter>
+#include <QPainterPath>
 
 #include "networkjobs.h"
 #include "account.h"
