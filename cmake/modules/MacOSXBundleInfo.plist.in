@@ -30,6 +30,8 @@
         <string>(C) 2014-2020 @APPLICATION_VENDOR@</string>
         <key>NSSupportsAutomaticGraphicsSwitching</key>
         <true/>
+        <key>NSRequiresAquaSystemAppearance</key>
+        <false/>
         <key>SUShowReleaseNotes</key>
         <false/>
         <key>SUPublicDSAKeyFile</key>
