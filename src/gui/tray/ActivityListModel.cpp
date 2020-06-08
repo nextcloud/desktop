@@ -96,8 +96,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 relPath.prepend(folder->remotePath());
             list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
             if (list.count() > 0) {
-                QString path = "file:///" + QString(list.at(0));
-                return QUrl(path);
+                return QUrl::fromLocalFile(list.at(0));
             }
             // File does not exist anymore? Let's try to open its path
             if (QFileInfo(relPath).exists()) {
