@@ -19,37 +19,6 @@ endif()
 
 #set (QML_IMPORT_PATH "${CMAKE_SOURCE_DIR}/src/gui/tray" CACHE STRING "Extra qml module import paths" FORCE)
 
-set(client_UI_SRCS
-    accountsettings.ui
-    folderwizardsourcepage.ui
-    folderwizardtargetpage.ui
-    generalsettings.ui
-    legalnotice.ui
-    ignorelisteditor.ui
-    ignorelisttablewidget.ui
-    networksettings.ui
-    synclogdialog.ui
-    settingsdialog.ui
-    sharedialog.ui
-    sharelinkwidget.ui
-    shareusergroupwidget.ui
-    shareuserline.ui
-    sslerrordialog.ui
-    addcertificatedialog.ui
-    proxyauthdialog.ui
-    mnemonicdialog.ui
-    tray/Window.qml
-    tray/UserLine.qml
-    wizard/flow2authwidget.ui
-    wizard/owncloudadvancedsetuppage.ui
-    wizard/owncloudconnectionmethoddialog.ui
-    wizard/owncloudhttpcredspage.ui
-    wizard/owncloudoauthcredspage.ui
-    wizard/owncloudsetupnocredspage.ui
-    wizard/owncloudwizardresultpage.ui
-    wizard/webview.ui
-)
-
 set(client_SRCS
     accountmanager.cpp
     accountsettings.cpp
@@ -216,13 +185,10 @@ ENDIF()
 set( final_src
     ${MIRALL_RC_SRC}
     ${client_SRCS}
-    ${client_UI_SRCS}
     ${client_version}
     ${client_manifest}
-    ${guiMoc}
     ${client_I18N}
     ${3rdparty_SRC}
-    ${3rdparty_MOC}
 )
 
 if(QTKEYCHAIN_FOUND OR QT5KEYCHAIN_FOUND)
