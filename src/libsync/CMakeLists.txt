@@ -26,6 +26,7 @@ set(libsync_SRCS
     discoveryphase.cpp
     encryptfolderjob.cpp
     filesystem.cpp
+    httplogger.cpp
     logger.cpp
     accessmanager.cpp
     configfile.cpp
