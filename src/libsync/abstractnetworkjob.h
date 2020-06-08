@@ -236,12 +236,6 @@ QString OWNCLOUDSYNC_EXPORT extractErrorMessage(const QByteArray &errorResponse)
 /** Builds a error message based on the error and the reply body. */
 QString OWNCLOUDSYNC_EXPORT errorMessage(const QString &baseError, const QByteArray &body);
 
-/** Helper to construct the HTTP verb used in the request
- *
- * Returns an empty QByteArray for UnknownOperation.
- */
-QByteArray OWNCLOUDSYNC_EXPORT requestVerb(const QNetworkReply &reply);
-
 /** Nicer errorString() for QNetworkReply
  *
  * By default QNetworkReply::errorString() often produces messages like

@@ -28,11 +28,13 @@
 #include <QCoreApplication>
 #include <QAuthenticator>
 #include <QMetaEnum>
+#include <QRegularExpression>
 
 #include "common/asserts.h"
 #include "networkjobs.h"
 #include "account.h"
 #include "owncloudpropagator.h"
+#include "httplogger.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -172,10 +174,9 @@ void AbstractNetworkJob::slotFinished()
     if (_reply->error() == QNetworkReply::SslHandshakeFailedError) {
         qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
-
     // Qt doesn't yet transparently resend HTTP2 requests, do so here
     const auto maxHttp2Resends = 3;
-    QByteArray verb = requestVerb(*reply());
+    QByteArray verb = HttpLogger::requestVerb(*reply());
     if (_reply->error() == QNetworkReply::ContentReSendError
         && _reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()) {
 
@@ -425,27 +426,6 @@ QString errorMessage(const QString &baseError, const QByteArray &body)
     return msg;
 }
 
-QByteArray requestVerb(const QNetworkReply &reply)
-{
-    switch (reply.operation()) {
-    case QNetworkAccessManager::HeadOperation:
-        return "HEAD";
-    case QNetworkAccessManager::GetOperation:
-        return "GET";
-    case QNetworkAccessManager::PutOperation:
-        return "PUT";
-    case QNetworkAccessManager::PostOperation:
-        return "POST";
-    case QNetworkAccessManager::DeleteOperation:
-        return "DELETE";
-    case QNetworkAccessManager::CustomOperation:
-        return reply.request().attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
-    case QNetworkAccessManager::UnknownOperation:
-        break;
-    }
-    return QByteArray();
-}
-
 QString networkReplyErrorString(const QNetworkReply &reply)
 {
     QString base = reply.errorString();
@@ -457,7 +437,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
         return base;
     }
 
-    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, requestVerb(reply), reply.request().url().toDisplayString());
+    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, HttpLogger::requestVerb(reply), reply.request().url().toDisplayString());
 }
 
 void AbstractNetworkJob::retry()
@@ -465,7 +445,7 @@ void AbstractNetworkJob::retry()
     ENFORCE(_reply);
     auto req = _reply->request();
     QUrl requestedUrl = req.url();
-    QByteArray verb = requestVerb(*_reply);
+    QByteArray verb = HttpLogger::requestVerb(*_reply);
     qCInfo(lcNetworkJob) << "Restarting" << verb << requestedUrl;
     resetTimeout();
     if (_requestBody) {

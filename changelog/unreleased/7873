@@ -1,0 +1,5 @@
+Change: Option to log HTTP requests and responses
+
+We now allow to log http requests and responses
+
+https://github.com/owncloud/client/issues/7873

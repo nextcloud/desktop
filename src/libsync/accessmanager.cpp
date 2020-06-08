@@ -27,6 +27,7 @@
 #include "cookiejar.h"
 #include "accessmanager.h"
 #include "common/utility.h"
+#include "httplogger.h"
 
 namespace OCC {
 
@@ -82,8 +83,11 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 
         newRequest.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, http2EnabledEnv);
     }
+    HttpLogger::logRequest(newRequest, op, outgoingData);
 
-    return QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
+    const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
+    HttpLogger::logReplyOnFinished(reply);
+    return reply;
 }
 
 } // namespace OCC

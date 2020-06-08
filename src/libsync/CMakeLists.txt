@@ -14,6 +14,7 @@ set(libsync_SRCS
     discovery.cpp
     discoveryphase.cpp
     filesystem.cpp
+    httplogger.cpp
     logger.cpp
     accessmanager.cpp
     configfile.cpp
