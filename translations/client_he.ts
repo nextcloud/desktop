@@ -572,17 +572,17 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="198"/>
+        <location filename="../src/gui/application.cpp" line="208"/>
         <source>Error accessing the configuration file</source>
         <translation>אירעה שגיאה בגישה לקובץ ההגדרות</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="199"/>
+        <location filename="../src/gui/application.cpp" line="209"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
         <translation>איראה שגיאה בגישה לקובץ ההגדרות ב %1. אנא וודא כי הקובץ נגיש למשתמש שלך.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="202"/>
+        <location filename="../src/gui/application.cpp" line="212"/>
         <source>Quit %1</source>
         <translation>צא מ %1</translation>
     </message>
@@ -2094,14 +2094,14 @@ It is not advisable to use it.</source>
         <translation>ההתחברות אל %1 ב־%2 נכשלה:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
-        <source>The server reported the following error:</source>
-        <translation>השרת דיווח על השגיאה הבאה:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>הזמן שהוקצב להתחברות אל %1 ב־%2 פג.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
+        <source>The server reported the following error:</source>
+        <translation>השרת דיווח על השגיאה הבאה:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>

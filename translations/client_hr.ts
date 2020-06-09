@@ -572,17 +572,17 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="198"/>
+        <location filename="../src/gui/application.cpp" line="208"/>
         <source>Error accessing the configuration file</source>
         <translation>Pogreška pri pristupanju konfiguracijskoj datoteci</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="199"/>
+        <location filename="../src/gui/application.cpp" line="209"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
         <translation>Došlo je do pogreške prilikom pristupanja konfiguracijskoj datoteci na %1. Provjerite može li korisnik pristupiti datoteci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="202"/>
+        <location filename="../src/gui/application.cpp" line="212"/>
         <source>Quit %1</source>
         <translation>Zatvori %1</translation>
     </message>
@@ -2109,14 +2109,14 @@ Nije preporučljivo koristiti ga.</translation>
         <translation>Neuspješno povezivanje s %1 na %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
-        <source>The server reported the following error:</source>
-        <translation>Poslužitelj je prijavio sljedeću pogrešku:</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Istek vremena tijekom povezivanja s %1 na %2.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
+        <source>The server reported the following error:</source>
+        <translation>Poslužitelj je prijavio sljedeću pogrešku:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
