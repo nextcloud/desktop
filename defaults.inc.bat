@@ -40,8 +40,17 @@ if "%OPENSSL_PATH%" == ""                   set OPENSSL_PATH=c:/OpenSSL
 
 if "%Png2Ico_EXECUTABLE%" == ""             set Png2Ico_EXECUTABLE=c:/Nextcloud/tools/png2ico.exe
 
+if "%VS_VERSION%" == ""						set VS_VERSION=2019
+
 Rem Required for Qt's windeployqt to find the VC Redist Setup (and for auto-discovery of signtool.exe)
-if "%VCINSTALLDIR%" == ""                   set VCINSTALLDIR=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC
+if "%VCINSTALLDIR%" == ""	(
+	if "%VS_VERSION%" == "2017"	(
+		set VCINSTALLDIR=C:\Program^ Files^ ^(x86^)\Microsoft^ Visual^ Studio\2017\Community\VC
+	)
+	if "%VS_VERSION%" == "2019"	(
+		set VCINSTALLDIR=C:\Program^ Files^ ^(x86^)\Microsoft^ Visual^ Studio\2019\Community\VC
+	)
+)
 
 Rem Required for Git Bash's mkdir.exe (mkdir -p ...)
 if "%WIN_GIT_PATH%" == ""                   set WIN_GIT_PATH=C:\Program Files\Git

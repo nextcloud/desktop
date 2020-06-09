@@ -29,6 +29,7 @@ call :testEnv BUILD_TARGETS
 call :testEnv QT_PATH
 call :testEnv OPENSSL_PATH
 call :testEnv Png2Ico_EXECUTABLE
+call :testEnv VS_VERSION
 call :testEnv VCINSTALLDIR
 call :testEnv WIN_GIT_PATH
 
@@ -40,6 +41,7 @@ Rem ****************************************************************************
 
 echo "***** build qtkeychain."
 start "build-qtkeychain.bat %BUILD_TYPE%" /D "%PROJECT_PATH%/" /B /wait "%~dp0/build-qtkeychain.bat" %BUILD_TYPE%
+echo "test"
 if %ERRORLEVEL% neq 0 goto onError
 
 
