@@ -417,12 +417,11 @@ ActivityListModel *User::getActivityModel()
 
 void User::openLocalFolder()
 {
-#ifdef Q_OS_WIN
-    QString path = "file:///" + this->getFolder()->path();
-#else
-    QString path = "file://" + this->getFolder()->path();
-#endif
-    QDesktopServices::openUrl(path);
+    const auto folder = getFolder();
+
+    if (folder != nullptr) {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(folder->path()));
+    }
 }
 
 void User::login() const
@@ -762,6 +761,11 @@ ActivityListModel *UserModel::currentActivityModel()
 bool UserModel::currentUserHasActivities()
 {
     return _users[currentUserIndex()]->hasActivities();
+}
+
+bool UserModel::currentUserHasLocalFolder()
+{
+    return _users[currentUserIndex()]->getFolder() != nullptr;
 }
 
 void UserModel::fetchCurrentActivityModel()
