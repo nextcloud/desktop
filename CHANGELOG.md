@@ -33,6 +33,7 @@ Summary
 * Change - Wizard is hidden behind the browser: [#7856](https://github.com/owncloud/client/issues/7856)
 * Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
 * Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
+* Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
 Details
@@ -194,6 +195,12 @@ Details
    We changed the behaviour of the client to display a dock entry when we have a window open.
 
    https://github.com/owncloud/client/issues/7868
+
+* Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
+
+   We now allow to log http requests and responses
+
+   https://github.com/owncloud/client/issues/7873
 
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
