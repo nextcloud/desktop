@@ -41,7 +41,6 @@ Rem ****************************************************************************
 
 echo "***** build qtkeychain."
 start "build-qtkeychain.bat %BUILD_TYPE%" /D "%PROJECT_PATH%/" /B /wait "%~dp0/build-qtkeychain.bat" %BUILD_TYPE%
-echo "test"
 if %ERRORLEVEL% neq 0 goto onError
 
 

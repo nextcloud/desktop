@@ -122,14 +122,20 @@ if "%PULL_DESKTOP%" == "1" (
     )
     if !ERRORLEVEL! neq 0 goto onError
 
-    echo "* git pull at %MY_REPO%/."
-    start "git pull" /D "%MY_REPO%/" /B /wait git pull --tags origin master
+    echo "* git pull master at %MY_REPO%/."
+    start "git pull master" /D "%MY_REPO%/" /B /wait git pull --tags origin master
 )
 if %ERRORLEVEL% neq 0 goto onError
 
 if "%CHECKOUT_DESKTOP%" == "1" (
     echo "* git checkout %TAG% at %MY_REPO%/."
     start "git checkout %TAG%" /D "%MY_REPO%/" /B /wait git checkout %TAG%
+    if !ERRORLEVEL! neq 0 goto onError
+
+    if "%PULL_DESKTOP%" == "1" (
+        echo "* git pull %TAG% at %MY_REPO%/."
+        start "git pull %TAG%" /D "%MY_REPO%/" /B /wait git pull
+    )
 )
 if %ERRORLEVEL% neq 0 goto onError
 
@@ -154,7 +160,7 @@ if "%BUILD_TYPE%" == "Debug" (
     set WINDEPLOYQT_BUILD_TYPE=release
 )
 echo "* Run windeployqt to collect all %APP_NAME%.exe dependencies and output it to %MY_QT_DEPLOYMENT_PATH%/."
-start "windeployqt" /B /wait windeployqt.exe --%WINDEPLOYQT_BUILD_TYPE% --compiler-runtime "%MY_INSTALL_PATH%/bin/%APP_NAME%.exe" --dir "%MY_QT_DEPLOYMENT_PATH%/"
+start "windeployqt" /B /wait windeployqt.exe --%WINDEPLOYQT_BUILD_TYPE% --compiler-runtime "%MY_INSTALL_PATH%/bin/%APP_NAME%.exe" --dir "%MY_QT_DEPLOYMENT_PATH%/" --qmldir "%MY_REPO%/src/gui"
 if %ERRORLEVEL% neq 0 goto onError
 
 Rem ******************************************************************************************

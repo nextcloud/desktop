@@ -32,7 +32,7 @@ rem Comma separated list of build targets (default: Win64, Win32)
 if "%BUILD_TARGETS%" == ""                  set BUILD_TARGETS=Win64,Win32
 
 if "%PROJECT_PATH%" == ""                   set PROJECT_PATH=c:/Nextcloud/client-building
-if "%QT_PATH%" == ""                        set QT_PATH=c:/Qt/5.12.5
+if "%QT_PATH%" == ""                        set QT_PATH=c:/Qt/5.12.8
 
                                             set PATH=c:/Nextcloud/tools/cmake/bin;c:/Nextcloud/tools;C:/Program Files (x86)/NSIS;%PATH%
 
@@ -40,10 +40,10 @@ if "%OPENSSL_PATH%" == ""                   set OPENSSL_PATH=c:/OpenSSL
 
 if "%Png2Ico_EXECUTABLE%" == ""             set Png2Ico_EXECUTABLE=c:/Nextcloud/tools/png2ico.exe
 
-if "%VS_VERSION%" == ""						set VS_VERSION=2019
+if "%VS_VERSION%" == ""                     set VS_VERSION=2019
 
 Rem Required for Qt's windeployqt to find the VC Redist Setup (and for auto-discovery of signtool.exe)
-if "%VCINSTALLDIR%" == ""	(
+if "%VCINSTALLDIR%" == "" (
 	if "%VS_VERSION%" == "2017"	(
 		set VCINSTALLDIR=C:\Program^ Files^ ^(x86^)\Microsoft^ Visual^ Studio\2017\Community\VC
 	)
