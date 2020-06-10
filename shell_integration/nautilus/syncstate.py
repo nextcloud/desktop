@@ -205,6 +205,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
     def get_file_items(self, window, files):
         # Show the menu extension to share a file or folder
 
+        if len(files) == 0: return [] #Appears to happen occasionally
         # Get usable file paths from the uris
         all_internal_files = True
         for i, file_uri in enumerate(files):
