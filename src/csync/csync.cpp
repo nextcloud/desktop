@@ -67,7 +67,7 @@ csync_s::csync_s(const char *localUri, OCC::SyncJournalDb *statedb)
 int csync_update(CSYNC *ctx) {
   int rc = -1;
 
-  if (ctx == nullptr) {
+  if (!ctx) {
     errno = EBADF;
     return -1;
   }
@@ -256,14 +256,14 @@ csync_s::~csync_s() {
 }
 
 void *csync_get_userdata(CSYNC *ctx) {
-  if (ctx == nullptr) {
+  if (!ctx) {
     return nullptr;
   }
   return ctx->callbacks.userdata;
 }
 
 int csync_set_userdata(CSYNC *ctx, void *userdata) {
-  if (ctx == nullptr) {
+  if (!ctx) {
     return -1;
   }
 
@@ -273,7 +273,7 @@ int csync_set_userdata(CSYNC *ctx, void *userdata) {
 }
 
 csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
-  if (ctx == nullptr) {
+  if (!ctx) {
     return nullptr;
   }
 
@@ -281,7 +281,7 @@ csync_auth_callback csync_get_auth_callback(CSYNC *ctx) {
 }
 
 int csync_set_status(CSYNC *ctx, int status) {
-  if (ctx == nullptr || status < 0) {
+  if (!ctx || status < 0) {
     return -1;
   }
 
@@ -291,7 +291,7 @@ int csync_set_status(CSYNC *ctx, int status) {
 }
 
 CSYNC_STATUS csync_get_status(CSYNC *ctx) {
-  if (ctx == nullptr) {
+  if (!ctx) {
     return CSYNC_STATUS_ERROR;
   }
 
@@ -305,21 +305,21 @@ const char *csync_get_status_string(CSYNC *ctx)
 
 void csync_request_abort(CSYNC *ctx)
 {
-  if (ctx != nullptr) {
+  if (ctx) {
     ctx->abort = true;
   }
 }
 
 void csync_resume(CSYNC *ctx)
 {
-  if (ctx != nullptr) {
+  if (ctx) {
     ctx->abort = false;
   }
 }
 
 int  csync_abort_requested(CSYNC *ctx)
 {
-  if (ctx != nullptr) {
+  if (ctx) {
     return ctx->abort;
   } else {
     return (1 == 0);

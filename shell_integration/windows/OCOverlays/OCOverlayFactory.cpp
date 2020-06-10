@@ -70,7 +70,7 @@ IFACEMETHODIMP OCOverlayFactory::CreateInstance(
 {
     HRESULT hResult = CLASS_E_NOAGGREGATION;
 
-    if (pUnkOuter != nullptr) { return hResult; }
+    if (pUnkOuter) { return hResult; }
 
     hResult = E_OUTOFMEMORY;
     OCOverlay *lrOverlay = new (std::nothrow) OCOverlay(_state);
