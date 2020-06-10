@@ -2,6 +2,20 @@
 
 This allows you to easily build the desktop client for 64-bit and 32-bit Windows.
 
+## Update: 2020-06-11
+
+Upgrades / new default versions:
+- Qt 5.12.8
+- OpenSSL 1.1.1g
+- Visual Studio 2019 (and 2017) support
+- can build Desktop client series 2.6 and 2.7 (QML)
+
+Note: You need to patch an include file of Qt 5.12.8 for use with MSVC, see section: Install list
+
+Also note that the Qt Maintenance tool now requires you to register an Qt Account (free).
+
+VS2019 is now default, if you want to use 2017, set: `VS_VERSION=2017`
+
 ## Update: 2019-09-27
 
 Upgrades / new default versions:
@@ -10,7 +24,7 @@ Upgrades / new default versions:
 
 ## Update: 2019-08-18
 
-Qt 5.12.4 for Windows doesn't require the old 1.0.x DLL's anymore (libeay32.dll + ssleay32.dll)
+Qt 5.12.4 and up for Windows don't require the old 1.0.x DLL's anymore (libeay32.dll + ssleay32.dll)
 and is linked against OpenSSL 1.1.1
 
 This finally removes the odd mixture of diverging DLL versions.
@@ -48,42 +62,57 @@ Optional:
 ## General
 - Grab a cup of coffee
 - Download of the Windows 10 x64 VM: https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/
-- See README.Nextclouders in this repo for a list of noteworthy changes I made to the original build
-  scripts found at nextcloud/client-building
+  or use your native Windows if you don't want to use a VM.
 
 ### Assumed working folder
-- C:\Nextcloud
+- `C:\Nextcloud`
 
-  - Warning: Don't use white spaces in the build (project) paths, since this breaks support for some tools like png2ico !
-  - If you prefer to, you may specify a project directory outside of the cloned client-building repo.
+- Create folders:
+  - `C:\Nextcloud`
+  - `C:\Nextcloud\tools`
+
+- Warning: Don't use white spaces in the build (project) paths, since this breaks support for some tools like png2ico !
+- If you prefer to, you may specify a project directory outside of the cloned client-building repo.
 
 ### Install list
-- [ ] Visual Studio 2017 (select in the wizard: "Desktop Development with C++"):
-      https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=15
+- [ ] Visual Studio 2019 (select in the wizard: "Desktop Development with C++, Clang tools"):
+      https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16
 
 - [ ] Git bash (it comes with Git):
       https://git-scm.com/download/win
 
-- [ ] Qt 5.12.5 (select in the wizard: MSVC 2017 64-bit AND 32-bit and all the "Qt ..." options, not required: Debug Info Files):
-      https://www.qt.io/download
+- [ ] Qt 5.12.8 (select in the wizard: MSVC 2017 64-bit AND 32-bit and all the "Qt ..." options, not required: Debug Info Files):
+      http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe
 
       Install to: C:\Qt
+
+  Note: MSVC 2017 is binary compatible with VS 2019, so don't be confused ;-)
+
+  You need to patch an include file of Qt 5.12.8 for use with MSVC: https://github.com/nextcloud/client-building/Windows/Qt-5.12.8-QtCore-Patch/qlinkedlist.h
+
+      After installing Qt 5.12.8 put qlinkedlist.h in the following two folders:
+      - C:\Qt\5.12.8\msvc2017\include\QtCore
+      - C:\Qt\5.12.8\msvc2017_64\include\QtCore
+
+  It was modified to solve this bug: https://bugreports.qt.io/browse/QTBUG-81727
 
 - [ ] CMake 3.14.x (choose the ZIP version, extract and rename to: C:\Nextcloud\tools\cmake):
       https://cmake.org/download/
 
-- [ ] Png2Icon - you need to use this version: https://github.com/hiiamok/png2ImageMagickICO
+- [ ] Png2Icon - you need to use this version: https://download.nextcloud.com/desktop/development/Windows/tools/png2ico.exe
 
-      Put the generated png2ico.exe to: C:\Nextcloud\tools\
+      Put png2ico.exe to: C:\Nextcloud\tools\
+
+  For reference, original source of png2ico: https://github.com/hiiamok/png2ImageMagickICO
 
 - [ ] OpenSSL: Windows Build:
-      https://slproweb.com/products/Win32OpenSSL.html     (e.g.: Win64 AND Win32 OpenSSL v1.1.1d)
+      https://slproweb.com/products/Win32OpenSSL.html     (e.g.: Win64 AND Win32 OpenSSL v1.1.1g)
 
       Install to:
-      - C:\OpenSSL\Win64
-      - C:\OpenSSL\Win32
+      - 64-bit: C:\OpenSSL\Win64
+      - 32-bit: C:\OpenSSL\Win32
 
-    Note: Qt 5.12.5 also includes the option to install OpenSSL 1.1.1 libraries from the Maintenance tool wizard.
+    Note: Qt 5.12.8 also includes the option to install OpenSSL 1.1.1 libraries from the Maintenance tool wizard.
           You may also use these libraries instead of the ones above but then you have to modify the paths in defaults.inc.bat
           and be sure to check for updates on a regular basis!
 
@@ -102,10 +131,6 @@ Optional:
 This has to be done ONLY ONCE to create the build folder structure and fetch the required
 repos (qtkeychain, zlib and Nextcloud's desktop):
 
-- Create folders:
-  - C:\Nextcloud
-  - C:\Nextcloud\tools
-
 - Open Git Bash:
   ```
   cd /c/Nextcloud
@@ -115,17 +140,13 @@ repos (qtkeychain, zlib and Nextcloud's desktop):
 - Take a look at this file and adapt the environment variables to your needs. You may also define them in the Windows
   Environment Variables settings, if you don't want modify the file directly:
 
-  - C:\Nextcloud\client-building\defaults.inc.bat
+  - `C:\Nextcloud\client-building\defaults.inc.bat`
 
 - Again in Git Bash:
   ```
   cd client-building
   ./init.bat
   ```
-
-- Extract the OpenSSL Pre-compiled Win32/64 libraries to the newly created directories:
-
-  - C:\Nextcloud\client-building\deploy-extra\[Release + Debug]\[Win64 + Win32]\
 
 - Recommended: Do a test run to check for all the required environment variables:
   ```
@@ -216,9 +237,7 @@ collect and the CMake options and generators they use.
    - sets all required variables if not already present in the environment
 
 - common.inc.bat
-  - determines the build type (Release or Debug) and sets the CMake generator:
-    - 64-bit: "Visual Studio 15 2017 Win64"
-    - 32-bit: "Visual Studio 15 2017"
+  - determines the build type (Release or Debug) and sets the CMake generator
 
 - datetime.inc.bat + datetime.inc.callee
   - provide a locale-independent way to get a unified build date instead of using %DATE%
