@@ -93,17 +93,17 @@ static void check_to_multibyte(void **state)
 {
     int rc = -1;
 
-    mbchar_t *mb_string = c_utf8_path_to_locale( TESTSTRING );
-    mbchar_t *mb_null   = c_utf8_path_to_locale( nullptr );
+    mbchar_t *mb_string = c_utf8_path_to_locale(TESTSTRING);
+    mbchar_t *mb_null   = c_utf8_path_to_locale(nullptr);
 
     (void) state;
 
 #ifdef _WIN32
-    assert_int_equal( wcscmp( LTESTSTRING, mb_string), 0 );
+    assert_int_equal(wcscmp(LTESTSTRING, mb_string), 0);
 #else
     assert_string_equal(mb_string, TESTSTRING);
 #endif
-    assert_true( mb_null == nullptr );
+    assert_false(mb_null);
     assert_int_equal(rc, -1);
 
     c_free_locale_string(mb_string);
@@ -159,12 +159,12 @@ static void check_long_win_path(void **state)
             "olonglonglonglong\\file.txt";
 
     QByteArray new_long = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(longPath, strlen(longPath)));
-    // printf( "XXXXXXXXXXXX %s %d\n", new_long, mem_reserved);
+    // printf("XXXXXXXXXXXX %s %d\n", new_long, mem_reserved);
 
     assert_string_equal(new_long, longPathConv);
 
-    // printf( "YYYYYYYYYYYY %ld\n", strlen(new_long));
-    assert_int_equal( strlen(new_long), 286);
+    // printf("YYYYYYYYYYYY %ld\n", strlen(new_long));
+    assert_int_equal(strlen(new_long), 286);
 }
 
 int torture_run_tests(void)

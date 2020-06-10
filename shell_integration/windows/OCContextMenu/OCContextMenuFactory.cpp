@@ -65,7 +65,7 @@ IFACEMETHODIMP OCContextMenuFactory::CreateInstance(IUnknown *pUnkOuter, REFIID 
     HRESULT hr = CLASS_E_NOAGGREGATION;
 
     // pUnkOuter is used for aggregation. We do not support it in the sample.
-    if (pUnkOuter == nullptr) {
+    if (!pUnkOuter) {
         hr = E_OUTOFMEMORY;
 
         // Create the COM component.

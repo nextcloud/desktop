@@ -40,7 +40,7 @@ Systray *Systray::_instance = nullptr;
 
 Systray *Systray::instance()
 {
-    if (_instance == nullptr) {
+    if (!_instance) {
         _instance = new Systray();
     }
     return _instance;

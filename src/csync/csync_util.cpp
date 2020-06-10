@@ -74,7 +74,7 @@ const char *csync_instruction_str(enum csync_instructions_e instr)
 {
   int idx = 0;
 
-  while (_instr[idx].instr_str != nullptr) {
+  while (_instr[idx].instr_str) {
     if (_instr[idx].instr_code == instr) {
       return _instr[idx].instr_str;
     }
@@ -92,7 +92,7 @@ void csync_memstat_check() {
 
   /* get process memory stats */
   fp = fopen("/proc/self/statm","r");
-  if (fp == nullptr) {
+  if (!fp) {
     return;
   }
   s = fscanf(fp, "%d%d%d%d%d%d%d", &m.size, &m.resident, &m.shared, &m.trs,

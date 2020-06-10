@@ -33,7 +33,7 @@ HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR
 
     if (SUCCEEDED(hr))
     {
-        if (pszData != nullptr)
+        if (pszData)
         {
             // Set the specified value of the key.
             DWORD cbData = lstrlen(pszData) * sizeof(*pszData);
@@ -72,7 +72,7 @@ HRESULT GetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PWSTR 
 
 HRESULT OCContextMenuRegHandler::RegisterInprocServer(PCWSTR pszModule, const CLSID& clsid, PCWSTR pszFriendlyName, PCWSTR pszThreadModel)
 {
-    if (pszModule == nullptr || pszThreadModel == nullptr)
+    if (!pszModule || !pszThreadModel)
     {
         return E_INVALIDARG;
     }
@@ -136,7 +136,7 @@ HRESULT OCContextMenuRegHandler::UnregisterInprocServer(const CLSID& clsid)
 HRESULT OCContextMenuRegHandler::RegisterShellExtContextMenuHandler(
     PCWSTR pszFileType, const CLSID& clsid, PCWSTR pszFriendlyName)
 {
-    if (pszFileType == nullptr)
+    if (!pszFileType)
     {
         return E_INVALIDARG;
     }
@@ -180,7 +180,7 @@ HRESULT OCContextMenuRegHandler::RegisterShellExtContextMenuHandler(
 HRESULT OCContextMenuRegHandler::UnregisterShellExtContextMenuHandler(
     PCWSTR pszFileType, PCWSTR pszFriendlyName)
 {
-    if (pszFileType == nullptr)
+    if (!pszFileType)
     {
         return E_INVALIDARG;
     }
