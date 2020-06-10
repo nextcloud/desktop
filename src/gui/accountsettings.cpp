@@ -495,7 +495,7 @@ void AccountSettings::slotLockForDecryptionError(const QByteArray& fileId, int h
 void AccountSettings::slotEditCurrentIgnoredFiles()
 {
     Folder *f = FolderMan::instance()->folder(selectedFolderAlias());
-    if (f == nullptr)
+    if (!f)
         return;
     openIgnoredFilesDialog(f->path());
 }

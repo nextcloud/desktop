@@ -124,7 +124,7 @@ static bool hasDarkSystray_private()
     CFStringRef darkInterfaceStyle = CFSTR("Dark");
     interfaceStyle = (CFStringRef)CFPreferencesCopyAppValue(interfaceStyleKey,
         kCFPreferencesCurrentApplication);
-    if (interfaceStyle != nullptr) {
+    if (interfaceStyle) {
         returnValue = (kCFCompareEqualTo == CFStringCompare(interfaceStyle, darkInterfaceStyle, 0));
         CFRelease(interfaceStyle);
     }

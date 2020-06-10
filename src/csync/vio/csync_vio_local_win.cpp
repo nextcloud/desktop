@@ -100,7 +100,7 @@ int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
   dhandle_t *handle = nullptr;
   int rc = -1;
 
-  if (dhandle == nullptr) {
+  if (!dhandle) {
     errno = EBADF;
     return -1;
   }

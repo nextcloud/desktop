@@ -419,7 +419,7 @@ void User::openLocalFolder()
 {
     const auto folder = getFolder();
 
-    if (folder != nullptr) {
+    if (folder) {
         QDesktopServices::openUrl(QUrl::fromLocalFile(folder->path()));
     }
 }
@@ -509,7 +509,7 @@ UserModel *UserModel::_instance = nullptr;
 
 UserModel *UserModel::instance()
 {
-    if (_instance == nullptr) {
+    if (!_instance) {
         _instance = new UserModel();
     }
     return _instance;
@@ -808,7 +808,7 @@ UserAppsModel *UserAppsModel::_instance = nullptr;
 
 UserAppsModel *UserAppsModel::instance()
 {
-    if (_instance == nullptr) {
+    if (!_instance) {
         _instance = new UserAppsModel();
     }
     return _instance;
