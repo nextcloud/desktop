@@ -3,7 +3,59 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.6.2...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.6.3...master
+
+Summary
+-------
+
+* Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
+* Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
+* Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
+* Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
+* Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
+
+Details
+-------
+
+* Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
+
+   We no longer hardcode a plugin location only available on the build system. If a setup uses a non
+   default plugin location, please consider setting the environment variable QT_PLUGIN_PATH.
+
+   https://github.com/owncloud/enterprise/issues/3839
+
+* Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
+
+   We now correctly handle the bigfilechunking capability
+
+   https://github.com/owncloud/client/issues/7862
+
+* Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
+
+   We changed the behaviour of the client to display a dock entry when we have a window open.
+
+   https://github.com/owncloud/client/issues/7868
+
+* Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
+
+   We now allow to log http requests and responses
+
+   https://github.com/owncloud/client/issues/7873
+
+* Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
+
+   A user might not want to provide .well-known/openid-configuration. The new changes enable us
+   to authenticate with OpenID Connect without it, by directly compiling the required urls into
+   the client.
+
+   https://github.com/owncloud/client/pull/7681
+
+Changelog for ownCloud Desktop Client [2.6.3] (2020-06-10)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.6.3 relevant to
+ownCloud admins and users.
+
+[2.6.3]: https://github.com/owncloud/client/compare/v2.6.2...v2.6.3
 
 Summary
 -------
@@ -28,13 +80,8 @@ Summary
 * Bugfix - Don't override cookies with old values: [#7831](https://github.com/owncloud/client/pull/7831)
 * Bugfix - Closing prompt has the same effect as accepting: [#7874](https://github.com/owncloud/client/issues/7874)
 * Bugfix - Crash on migration of old settings: [#7878](https://github.com/owncloud/client/issues/7878)
-* Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - Restart the client after an update: [#3922](https://github.com/owncloud/enterprise/issues/3922)
 * Change - Wizard is hidden behind the browser: [#7856](https://github.com/owncloud/client/issues/7856)
-* Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
-* Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
-* Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
-* Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
 Details
 -------
@@ -165,13 +212,6 @@ Details
 
    https://github.com/owncloud/client/issues/7878
 
-* Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
-
-   We no longer hardcode a plugin location only available on the build system. If a setup uses a non
-   default plugin location, please consider setting the environment variable QT_PLUGIN_PATH.
-
-   https://github.com/owncloud/enterprise/issues/3839
-
 * Change - Restart the client after an update: [#3922](https://github.com/owncloud/enterprise/issues/3922)
 
    We now start the client after an update, if the client was running before the update.
@@ -183,32 +223,6 @@ Details
    We now raise the wizard after a successful authentication
 
    https://github.com/owncloud/client/issues/7856
-
-* Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
-
-   We now correctly handle the bigfilechunking capability
-
-   https://github.com/owncloud/client/issues/7862
-
-* Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
-
-   We changed the behaviour of the client to display a dock entry when we have a window open.
-
-   https://github.com/owncloud/client/issues/7868
-
-* Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
-
-   We now allow to log http requests and responses
-
-   https://github.com/owncloud/client/issues/7873
-
-* Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
-
-   A user might not want to provide .well-known/openid-configuration. The new changes enable us
-   to authenticate with OpenID Connect without it, by directly compiling the required urls into
-   the client.
-
-   https://github.com/owncloud/client/pull/7681
 
 Changelog for ownCloud Desktop Client [2.6.2] (2020-02-21)
 =======================================
