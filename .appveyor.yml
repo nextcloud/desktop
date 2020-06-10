@@ -23,7 +23,7 @@ init:
 install:
 - ps: |
     git submodule update --init --recursive
-    & git clone -q --depth=1 git://anongit.kde.org/craftmaster.git $HOME/CraftMaster 2>&1
+    & git clone -q --depth=1 https://github.com/KDE/craftmaster.git $HOME/CraftMaster 2>&1
 
     craft $env:TARGET -i craft
     craft $env:TARGET --add-blueprint-repository [git]https://github.com/owncloud/craft-blueprints-owncloud.git
