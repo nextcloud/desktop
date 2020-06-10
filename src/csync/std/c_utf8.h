@@ -83,7 +83,7 @@ extern "C" {
  *
  * @param  str     The utf8 string to convert.
  *
- * @return The malloced converted multibyte string or NULL on error.
+ * @return The malloced converted multibyte string or \c nullptr on error.
  *
  * @see c_free_locale_string()
  * @see c_utf8_from_locale()

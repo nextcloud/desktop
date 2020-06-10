@@ -43,7 +43,7 @@ IFACEMETHODIMP OCOverlayFactory::QueryInterface(REFIID riid, void **ppv)
     else
     {
         hResult = E_NOINTERFACE;
-        *ppv = NULL;
+        *ppv = nullptr;
     }
 
     return hResult;
@@ -70,7 +70,7 @@ IFACEMETHODIMP OCOverlayFactory::CreateInstance(
 {
     HRESULT hResult = CLASS_E_NOAGGREGATION;
 
-    if (pUnkOuter != NULL) { return hResult; }
+    if (pUnkOuter != nullptr) { return hResult; }
 
     hResult = E_OUTOFMEMORY;
     OCOverlay *lrOverlay = new (std::nothrow) OCOverlay(_state);

@@ -95,7 +95,7 @@ static int setup_testenv(void **state) {
 
     /* --- initialize csync */
     statevar *mystate = (statevar*)malloc( sizeof(statevar) );
-    mystate->result = NULL;
+    mystate->result = nullptr;
 
     mystate->csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
 
@@ -134,7 +134,7 @@ static int teardown(void **state) {
     rc = wipe_testdir();
     assert_int_equal(rc, 0);
 
-    *state = NULL;
+    *state = nullptr;
     return 0;
 }
 
@@ -277,7 +277,7 @@ static void create_file( const char *path, const char *name, const char *content
   assert_int_equal( 0, hFile==INVALID_HANDLE_VALUE );
 
   int len = strlen(content);
-  mbchar_t *dst = NULL;
+  mbchar_t *dst = nullptr;
 
   dst = c_utf8_string_to_locale(content);
   WriteFile(hFile, dst, len * sizeof(mbchar_t), &dwWritten, 0);
@@ -462,5 +462,5 @@ int torture_run_tests(void)
         cmocka_unit_test_setup_teardown(check_readdir_bigunicode, setup_testenv, teardown),
     };
 
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    return cmocka_run_group_tests(tests, nullptr, nullptr);
 }

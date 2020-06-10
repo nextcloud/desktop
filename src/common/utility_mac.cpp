@@ -56,9 +56,9 @@ bool hasLaunchOnStartup_private(const QString &)
         CFStringRef appUrlRefString = CFURLGetString(urlRef); // no need for release
         for (int i = 0; i < CFArrayGetCount(itemsArray); i++) {
             LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
-            CFURLRef itemUrlRef = NULL;
+            CFURLRef itemUrlRef = nullptr;
 
-            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
+            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, nullptr) == noErr && itemUrlRef) {
                 CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
                 if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
                     returnValue = true;
@@ -98,9 +98,9 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
         CFStringRef appUrlRefString = CFURLGetString(urlRef);
         for (int i = 0; i < CFArrayGetCount(itemsArray); i++) {
             LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
-            CFURLRef itemUrlRef = NULL;
+            CFURLRef itemUrlRef = nullptr;
 
-            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
+            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, nullptr) == noErr && itemUrlRef) {
                 CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
                 if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
                     LSSharedFileListItemRemove(loginItems, item); // remove it!
@@ -120,11 +120,11 @@ static bool hasDarkSystray_private()
 {
     bool returnValue = false;
     CFStringRef interfaceStyleKey = CFSTR("AppleInterfaceStyle");
-    CFStringRef interfaceStyle = NULL;
+    CFStringRef interfaceStyle = nullptr;
     CFStringRef darkInterfaceStyle = CFSTR("Dark");
     interfaceStyle = (CFStringRef)CFPreferencesCopyAppValue(interfaceStyleKey,
         kCFPreferencesCurrentApplication);
-    if (interfaceStyle != NULL) {
+    if (interfaceStyle != nullptr) {
         returnValue = (kCFCompareEqualTo == CFStringCompare(interfaceStyle, darkInterfaceStyle, 0));
         CFRelease(interfaceStyle);
     }
