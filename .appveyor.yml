@@ -20,7 +20,7 @@ install:
     git submodule update --init --recursive
 
     #use cmd to silence powershell behaviour for stderr
-    & cmd /C "git clone -q --depth=1 git://anongit.kde.org/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
+    & cmd /C "git clone -q --depth=1 https://github.com/KDE/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
 
     craft $env:TARGET -i craft
     craft $env:TARGET --add-blueprint-repository [git]https://github.com/owncloud/craft-blueprints-owncloud.git
