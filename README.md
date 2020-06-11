@@ -88,7 +88,7 @@ Optional:
 
   Note: MSVC 2017 is binary compatible with VS 2019, so don't be confused ;-)
 
-  You need to patch an include file of Qt 5.12.8 for use with MSVC: https://github.com/nextcloud/client-building/Windows/Qt-5.12.8-QtCore-Patch/qlinkedlist.h
+  You need to patch an include file of Qt 5.12.8 for use with MSVC: https://github.com/nextcloud/client-building/raw/master/Windows/Qt-5.12.8-QtCore-Patch/qlinkedlist.h
 
       After installing Qt 5.12.8 put qlinkedlist.h in the following two folders:
       - C:\Qt\5.12.8\msvc2017\include\QtCore
