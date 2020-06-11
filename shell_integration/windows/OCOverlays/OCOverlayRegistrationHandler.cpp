@@ -73,7 +73,7 @@ HRESULT OCOverlayRegistrationHandler::RemoveRegistryEntries(PCWSTR friendlyName)
 
 HRESULT OCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, PCWSTR friendlyName, const CLSID& clsid)
 {
-    if (modulePath == nullptr) {
+    if (!modulePath) {
         return E_FAIL;
     }
 
