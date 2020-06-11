@@ -52,8 +52,8 @@ include_directories(
 add_subdirectory(csync)
 add_subdirectory(libsync)
 if (NOT BUILD_LIBRARIES_ONLY)
-    add_subdirectory(gui)
     add_subdirectory(cmd)
+    add_subdirectory(gui)
 
     if (WITH_CRASHREPORTER)
         add_subdirectory(3rdparty/libcrashreporter-qt)
