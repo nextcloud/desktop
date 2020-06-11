@@ -2618,7 +2618,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="219"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivitas</translation>
     </message>
 </context>
 <context>
