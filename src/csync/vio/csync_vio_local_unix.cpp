@@ -59,7 +59,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   dirname = c_utf8_path_to_locale(name);
 
   handle->dh = _topendir( dirname );
-  if (handle->dh == nullptr) {
+  if (!handle->dh) {
     c_free_locale_string(dirname);
     SAFE_FREE(handle);
     return nullptr;
@@ -75,7 +75,7 @@ int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
   dhandle_t *handle = nullptr;
   int rc = -1;
 
-  if (dhandle == nullptr) {
+  if (!dhandle) {
     errno = EBADF;
     return -1;
   }
@@ -99,7 +99,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
 
   do {
       dirent = _treaddir(handle->dh);
-      if (dirent == nullptr)
+      if (!dirent)
           return {};
   } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
 

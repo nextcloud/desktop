@@ -1128,7 +1128,7 @@ void ownCloudGui::slotHelp()
 
 void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 {
-    if (raiseWidget && raiseWidget->parentWidget() == nullptr) {
+    if (raiseWidget && !raiseWidget->parentWidget()) {
         // Qt has a bug which causes parent-less dialogs to pop-under.
         raiseWidget->showNormal();
         raiseWidget->raise();

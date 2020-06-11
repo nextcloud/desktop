@@ -617,7 +617,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   // if the etag of this dir is still the same, its content is restored from the
   // database.
   if( do_read_from_db ) {
-      if( ! fill_tree_from_db(ctx, db_uri) ) {
+      if(!fill_tree_from_db(ctx, db_uri)) {
         errno = ENOENT;
         ctx->status_code = CSYNC_STATUS_OPENDIR_ERROR;
         goto error;
@@ -625,7 +625,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       return 0;
   }
 
-  if ((dh = csync_vio_opendir(ctx, uri)) == nullptr) {
+  if (!(dh = csync_vio_opendir(ctx, uri))) {
       if (ctx->abort) {
           qCDebug(lcUpdate, "Aborted!");
           ctx->status_code = CSYNC_STATUS_ABORTED;
@@ -783,7 +783,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
 error:
   ctx->remote.read_from_db = read_from_db;
-  if (dh != nullptr) {
+  if (dh) {
     csync_vio_closedir(ctx, dh);
   }
   return -1;

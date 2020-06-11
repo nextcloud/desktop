@@ -53,7 +53,7 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
 int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
   int rc = -1;
 
-  if (dhandle == nullptr) {
+  if (!dhandle) {
     errno = EBADF;
     return -1;
   }
