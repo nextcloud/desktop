@@ -37,6 +37,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcSystray, "nextcloud.gui.systray")
+
 Systray *Systray::_instance = nullptr;
 
 Systray *Systray::instance()
@@ -254,6 +256,11 @@ QPoint Systray::computeWindowReferencePoint() const
     const auto taskbarScreenEdge = taskbarOrientation();
     const auto screenRect = currentScreenRect();
 
+    qCDebug(lcSystray) << "screenRect:" << screenRect;
+    qCDebug(lcSystray) << "taskbarRect:" << taskbarRect;
+    qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
+    qCDebug(lcSystray) << "trayIconCenter:" << trayIconCenter;
+
     switch(taskbarScreenEdge) {
     case TaskBarPosition::Bottom:
         return {
@@ -318,6 +325,12 @@ QPoint Systray::computeWindowPosition(int width, int height) const
 
         return rect.translated(offset);
     }();
+
+    qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
+    qCDebug(lcSystray) << "screenRect:" << screenRect;
+    qCDebug(lcSystray) << "windowRect (reference)" << QRect(topLeft, bottomRight);
+    qCDebug(lcSystray) << "windowRect (adjusted )" << windowRect;
+
     return windowRect.topLeft();
 }
 
