@@ -652,17 +652,21 @@ QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
     int dim = baseAvatar.width();
 
     QImage avatar(dim, dim, QImage::Format_ARGB32);
-    avatar.fill(Qt::transparent);
 
-    QPainter painter(&avatar);
-    painter.setRenderHint(QPainter::Antialiasing);
+	//Let User::avatar() handle a faulty avatar, just prevent errors here
+	if (!avatar.isNull()) {
+	    avatar.fill(Qt::transparent);
 
-    QPainterPath path;
-    path.addEllipse(0, 0, dim, dim);
-    painter.setClipPath(path);
+		QPainter painter(&avatar);
+		painter.setRenderHint(QPainter::Antialiasing);
 
-    painter.drawImage(0, 0, baseAvatar);
-    painter.end();
+		QPainterPath path;
+		path.addEllipse(0, 0, dim, dim);
+		painter.setClipPath(path);
+
+		painter.drawImage(0, 0, baseAvatar);
+		painter.end();
+	}
 
     return avatar;
 }
