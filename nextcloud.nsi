@@ -326,12 +326,12 @@ FunctionEnd
 
 Function InstallRedistributables
    ${If} ${RunningX64}
-      ExecWait '"$OUTDIR\vcredist_x64.exe" /install /quiet /norestart'
+      ExecWait '"$OUTDIR\vc_redist.x64.exe" /install /quiet /norestart'
    ${Else}
-      ExecWait '"$OUTDIR\vcredist_x86.exe" /install /quiet /norestart'
+      ExecWait '"$OUTDIR\vc_redist.x86.exe" /install /quiet /norestart'
    ${EndIf}
-   Delete "$OUTDIR\vcredist_x86.exe"
-   Delete "$OUTDIR\vcredist_x64.exe"
+   Delete "$OUTDIR\vc_redist.x86.exe"
+   Delete "$OUTDIR\vc_redist.x64.exe"
 FunctionEnd
 
 ##############################################################################
