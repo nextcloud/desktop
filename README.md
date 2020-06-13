@@ -2,6 +2,12 @@
 
 This allows you to easily build the desktop client for 64-bit and 32-bit Windows.
 
+## Update: 2020-06-13
+
+The VC Runtime redistributable filenames have changed in VS 2019.
+
+If you still want to use VS 2017 you may have to change them, see: https://github.com/nextcloud/client-building/pull/28
+
 ## Update: 2020-06-11
 
 Upgrades / new default versions:
