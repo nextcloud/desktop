@@ -34,7 +34,7 @@ QtObject {
 
     property int addAccountButtonHeight: 50
 
-    property int headerButtonIconSize: (trayWindowHeaderHeight / 2.2)
+    property int headerButtonIconSize: 32
 
     property int activityLabelBaseWidth: 240
 
