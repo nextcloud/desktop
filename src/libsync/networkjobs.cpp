@@ -31,6 +31,7 @@
 #include <QJsonObject>
 #ifndef TOKEN_AUTH_ONLY
 #include <QPainter>
+#include <QPainterPath>
 #endif
 
 #include "networkjobs.h"
