@@ -56,6 +56,7 @@ Window {
         target: Systray
         onShowWindow: {
             accountMenu.close();
+            appsMenu.close();
 
             trayWindow.screen = Qt.application.screens[Systray.currentScreenIndex()];
 
