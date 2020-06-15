@@ -8,6 +8,7 @@ QtObject {
     property color ncBlue:      "#0082c9"
     property color ncBlueHover: "#009dd9"
     property color lightHover:  "#f7f7f7"
+    property color menuBorder:  "#ededed"
 
     // Fonts
     // We are using pixel size because this is cross platform comparable, point size isn't
