@@ -2718,7 +2718,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
         <source>Allow Editing</source>
-        <translation>Zezwalaj na edycję</translation>
+        <translation>Pozwól na edycję</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="156"/>
@@ -2728,7 +2728,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation>Zezwalaj na wysyłanie i edycję</translation>
+        <translation>Pozwól na wysyłanie i edycję</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
