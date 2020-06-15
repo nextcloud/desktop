@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.2
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
+import com.nextcloud.desktopclient 1.0
 
 MenuItem {
     id: userLine
@@ -31,7 +32,7 @@ MenuItem {
                     }
                     onClicked: {
                         if (!isCurrentUser) {
-                            userModelBackend.switchCurrentUser(id)
+                            UserModel.switchCurrentUser(id)
                         } else {
                             accountMenu.close()
                         }
@@ -140,7 +141,7 @@ MenuItem {
                         text: isConnected ? qsTr("Log out") : qsTr("Log in")
                         font.pixelSize: Style.topLinePixelSize
                         onClicked: {
-                            isConnected ? userModelBackend.logout(index) : userModelBackend.login(index)
+                            isConnected ? UserModel.logout(index) : UserModel.login(index)
                             accountMenu.close()
                         }
                     }
@@ -149,7 +150,7 @@ MenuItem {
                         text: qsTr("Remove Account")
                         font.pixelSize: Style.topLinePixelSize
                         onClicked: {
-                            userModelBackend.removeAccount(index)
+                            UserModel.removeAccount(index)
                             accountMenu.close()
                         }
                     }

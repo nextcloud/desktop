@@ -9,6 +9,8 @@ import QtGraphicalEffects 1.0
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
 
+import com.nextcloud.desktopclient 1.0
+
 Window {
     id:         trayWindow
 
@@ -21,19 +23,19 @@ Window {
     onActiveChanged: {
         if(!active) {
             trayWindow.hide();
-            systrayBackend.setClosed();
+            Systray.setClosed();
         }
     }
 
     onVisibleChanged: {
         currentAccountAvatar.source = ""
         currentAccountAvatar.source = "image://avatars/currentUser"
-        currentAccountUser.text = userModelBackend.currentUserName();
-        currentAccountServer.text = userModelBackend.currentUserServer();
-        openLocalFolderButton.visible = userModelBackend.currentUserHasLocalFolder();
-        trayWindowTalkButton.visible = userModelBackend.currentServerHasTalk() ? true : false;
+        currentAccountUser.text = UserModel.currentUserName();
+        currentAccountServer.text = UserModel.currentUserServer();
+        openLocalFolderButton.visible = UserModel.currentUserHasLocalFolder();
+        trayWindowTalkButton.visible = UserModel.currentServerHasTalk();
         currentAccountStateIndicator.source = ""
-        currentAccountStateIndicator.source = userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+        currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
 
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
         // see also id:accountMenu below
@@ -42,30 +44,30 @@ Window {
     }
 
     Connections {
-        target: userModelBackend
+        target: UserModel
         onRefreshCurrentUserGui: {
             currentAccountAvatar.source = ""
             currentAccountAvatar.source = "image://avatars/currentUser"
-            currentAccountUser.text = userModelBackend.currentUserName();
-            currentAccountServer.text = userModelBackend.currentUserServer();
+            currentAccountUser.text = UserModel.currentUserName();
+            currentAccountServer.text = UserModel.currentUserServer();
             currentAccountStateIndicator.source = ""
-            currentAccountStateIndicator.source = userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+            currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
         }
         onNewUserSelected: {
             accountMenu.close();
-            openLocalFolderButton.visible = userModelBackend.currentUserHasLocalFolder();
-            trayWindowTalkButton.visible = userModelBackend.currentServerHasTalk() ? true : false;
+            openLocalFolderButton.visible = UserModel.currentUserHasLocalFolder();
+            trayWindowTalkButton.visible = UserModel.currentServerHasTalk();
         }
     }
 
     Connections {
-        target: systrayBackend
+        target: Systray
         onShowWindow: {
             accountMenu.close();
 
-            trayWindow.screen = Qt.application.screens[systrayBackend.currentScreenIndex()];
+            trayWindow.screen = Qt.application.screens[Systray.currentScreenIndex()];
 
-            var position = systrayBackend.computeWindowPosition(trayWindow.width, trayWindow.height)
+            var position = Systray.computeWindowPosition(trayWindow.width, trayWindow.height)
             trayWindow.x = position.x
             trayWindow.y = position.y
 
@@ -73,12 +75,12 @@ Window {
             trayWindow.raise();
             trayWindow.requestActivate();
 
-            systrayBackend.setOpened();
-            userModelBackend.fetchCurrentActivityModel();
+            Systray.setOpened();
+            UserModel.fetchCurrentActivityModel();
         }
         onHideWindow: {
             trayWindow.hide();
-            systrayBackend.setClosed();
+            Systray.setClosed();
         }
     }
 
@@ -140,9 +142,8 @@ Window {
 
                         // We call open() instead of popup() because we want to position it
                         // exactly below the dropdown button, not the mouse
-                        onClicked:
-                        {
-                            syncPauseButton.text = systrayBackend.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                        onClicked: {
+                            syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             accountMenu.open()
                         }
 
@@ -171,7 +172,7 @@ Window {
 
                             Instantiator {
                                 id: userLineInstantiator
-                                model: userModelBackend
+                                model: UserModel
                                 delegate: UserLine {}
                                 onObjectAdded: accountMenu.insertItem(index, object)
                                 onObjectRemoved: accountMenu.removeItem(object)
@@ -204,7 +205,7 @@ Window {
                                         Layout.fillHeight: true
                                     }
                                 }
-                                onClicked: userModelBackend.addAccount()
+                                onClicked: UserModel.addAccount()
                             }
 
                             MenuSeparator { id: accountMenuSeparator }
@@ -212,25 +213,25 @@ Window {
                             MenuItem {
                                 id: syncPauseButton
                                 font.pixelSize: Style.topLinePixelSize
-                                onClicked: systrayBackend.pauseResumeSync()
+                                onClicked: Systray.pauseResumeSync()
                             }
 
                             MenuItem {
                                 text: qsTr("Open settings")
                                 font.pixelSize: Style.topLinePixelSize
-                                onClicked: systrayBackend.openSettings()
+                                onClicked: Systray.openSettings()
                             }
 
                             MenuItem {
                                 text: qsTr("Help")
                                 font.pixelSize: Style.topLinePixelSize
-                                onClicked: systrayBackend.openHelp()
+                                onClicked: Systray.openHelp()
                             }
 
                             MenuItem {
                                 text: qsTr("Quit Nextcloud")
                                 font.pixelSize: Style.topLinePixelSize
-                                onClicked: systrayBackend.shutdown()
+                                onClicked: Systray.shutdown()
                             }
                         }
                     }
@@ -310,7 +311,7 @@ Window {
 
                             Image {
                                 id: currentAccountStateIndicator
-                                source: userModelBackend.isUserConnected(userModelBackend.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+                                source: UserModel.isUserConnected(UserModel.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
                                 cache: false
                                 x: currentAccountStateIndicatorBackground.x + 1
                                 y: currentAccountStateIndicatorBackground.y + 1
@@ -327,7 +328,7 @@ Window {
                             Label {
                                 id: currentAccountUser
                                 width: Style.currentAccountLabelWidth
-                                text: userModelBackend.currentUserName()
+                                text: UserModel.currentUserName()
                                 elide: Text.ElideRight
                                 color: "white"
                                 font.pixelSize: Style.topLinePixelSize
@@ -336,7 +337,7 @@ Window {
                             Label {
                                 id: currentAccountServer
                                 width: Style.currentAccountLabelWidth
-                                text: userModelBackend.currentUserServer()
+                                text: UserModel.currentUserServer()
                                 elide: Text.ElideRight
                                 color: "white"
                                 font.pixelSize: Style.subLinePixelSize
@@ -363,17 +364,17 @@ Window {
                 HeaderButton {
                     id: openLocalFolderButton
 
-                    visible: userModelBackend.currentUserHasLocalFolder()
+                    visible: UserModel.currentUserHasLocalFolder()
                     icon.source: "qrc:///client/theme/white/folder.svg"
-                    onClicked: userModelBackend.openCurrentAccountLocalFolder()
+                    onClicked: UserModel.openCurrentAccountLocalFolder()
                 }
 
                 HeaderButton {
                     id: trayWindowTalkButton
 
-                    visible: userModelBackend.currentServerHasTalk()
+                    visible: UserModel.currentServerHasTalk()
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
-                    onClicked: userModelBackend.openCurrentAccountTalk()
+                    onClicked: UserModel.openCurrentAccountTalk()
                 }
 
                 HeaderButton {
@@ -382,7 +383,7 @@ Window {
                     onClicked: {
                         /*
                         // The count() property was introduced in QtQuick.Controls 2.3 (Qt 5.10)
-                        // so we handle this with userModelBackend.openCurrentAccountServer()
+                        // so we handle this with UserModel.openCurrentAccountServer()
                         //
                         // See UserModel::openCurrentAccountServer() to disable this workaround
                         // in the future for Qt >= 5.10
@@ -390,12 +391,12 @@ Window {
                         if(appsMenu.count() > 0) {
                             appsMenu.popup();
                         } else {
-                            userModelBackend.openCurrentAccountServer();
+                            UserModel.openCurrentAccountServer();
                         }
                         */
 
                         appsMenu.open();
-                        userModelBackend.openCurrentAccountServer();
+                        UserModel.openCurrentAccountServer();
                     }
 
                     Menu {
@@ -411,7 +412,7 @@ Window {
 
                         Instantiator {
                             id: appsMenuInstantiator
-                            model: appsMenuModelBackend
+                            model: UserAppsModel
                             onObjectAdded: appsMenu.insertItem(index, object)
                             onObjectRemoved: appsMenu.removeItem(object)
                             delegate: MenuItem {
@@ -419,7 +420,7 @@ Window {
                                 font.pixelSize: Style.topLinePixelSize
                                 icon.source: appIconUrl
                                 width: contentItem.implicitWidth + leftPadding + rightPadding
-                                onTriggered: appsMenuModelBackend.openAppUrl(appUrl)
+                                onTriggered: UserAppsModel.openAppUrl(appUrl)
                             }
                         }
                     }
@@ -534,7 +535,7 @@ Window {
                     ToolTip.visible: hovered
                     ToolTip.delay: 1000
                     ToolTip.text: qsTr("Open share dialog")
-                    onClicked: systrayBackend.openShareDialog(displayPath,absolutePath)
+                    onClicked: Systray.openShareDialog(displayPath,absolutePath)
                 }
             }
 

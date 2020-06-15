@@ -54,9 +54,24 @@ Systray::Systray()
 {
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
-    _trayEngine->rootContext()->setContextProperty("userModelBackend", UserModel::instance());
-    _trayEngine->rootContext()->setContextProperty("appsMenuModelBackend", UserAppsModel::instance());
-    _trayEngine->rootContext()->setContextProperty("systrayBackend", this);
+
+    qmlRegisterSingletonType<UserModel>("com.nextcloud.desktopclient", 1, 0, "UserModel",
+        [](QQmlEngine *, QJSEngine *) -> QObject * {
+            return UserModel::instance();
+        }
+    );
+
+    qmlRegisterSingletonType<UserAppsModel>("com.nextcloud.desktopclient", 1, 0, "UserAppsModel",
+        [](QQmlEngine *, QJSEngine *) -> QObject * {
+            return UserAppsModel::instance();
+        }
+    );
+
+    qmlRegisterSingletonType<Systray>("com.nextcloud.desktopclient", 1, 0, "Systray",
+        [](QQmlEngine *, QJSEngine *) -> QObject * {
+            return Systray::instance();
+        }
+    );
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
         this, &Systray::slotNewUserSelected);
