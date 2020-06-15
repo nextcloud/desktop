@@ -62,11 +62,17 @@ Window {
         target: systrayBackend
         onShowWindow: {
             accountMenu.close();
+
+            trayWindow.screen = Qt.application.screens[systrayBackend.currentScreenIndex()];
+
+            var position = systrayBackend.computeWindowPosition(trayWindow.width, trayWindow.height)
+            trayWindow.x = position.x
+            trayWindow.y = position.y
+
             trayWindow.show();
             trayWindow.raise();
             trayWindow.requestActivate();
-            trayWindow.setX( Qt.application.screens[systrayBackend.screenIndex()].virtualX + systrayBackend.calcTrayWindowX());
-            trayWindow.setY( Qt.application.screens[systrayBackend.screenIndex()].virtualY + systrayBackend.calcTrayWindowY());
+
             systrayBackend.setOpened();
             userModelBackend.fetchCurrentActivityModel();
         }
