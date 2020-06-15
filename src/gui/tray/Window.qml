@@ -491,9 +491,10 @@ Window {
 
                     Text {
                         id: activityTextInfo
-                        text: (type === "Activity" || type === "Sync") ? displayPath
+                        text: (type === "Sync") ? displayPath
                             : (type === "File") ? subject
-                            : message
+                            : (type === "Notification") ? message
+                            : ""
                         height: (text === "") ? 0 : activityTextTitle.height
                         width: Style.activityLabelBaseWidth + ((path === "") ? activityItem.height : 0) + ((link === "") ? activityItem.height : 0) - 8
                         elide: Text.ElideRight
