@@ -360,182 +360,66 @@ Window {
                     Layout.fillWidth: true
                 }
 
-                Button {
+                HeaderButton {
                     id: openLocalFolderButton
 
-                    Layout.alignment: Qt.AlignRight
-                    display: AbstractButton.IconOnly
-                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                    flat: true
                     visible: userModelBackend.currentUserHasLocalFolder()
-
                     icon.source: "qrc:///client/theme/white/folder.svg"
-                    icon.width: Style.headerButtonIconSize
-                    icon.height: Style.headerButtonIconSize
-                    icon.color: "transparent"
-
-                    MouseArea {
-                        id: folderBtnMouseArea
-
-                        anchors.fill: parent
-                        hoverEnabled: Style.hoverEffectsEnabled
-                        onClicked:
-                        {
-                            userModelBackend.openCurrentAccountLocalFolder();
-                        }
-                    }
-
-                    background:
-                        Rectangle {
-                        color: folderBtnMouseArea.containsMouse ? "white" : "transparent"
-                        opacity: 0.2
-                    }
+                    onClicked: userModelBackend.openCurrentAccountLocalFolder()
                 }
 
-                Button {
+                HeaderButton {
                     id: trayWindowTalkButton
 
-                    Layout.alignment: Qt.AlignRight
-                    display: AbstractButton.IconOnly
-                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                    flat: true
-                    visible: userModelBackend.currentServerHasTalk() ? true : false
-
+                    visible: userModelBackend.currentServerHasTalk()
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
-                    icon.width: Style.headerButtonIconSize
-                    icon.height: Style.headerButtonIconSize
-                    icon.color: "transparent"
-
-                    MouseArea {
-                        id: talkBtnMouseArea
-
-                        anchors.fill: parent
-                        hoverEnabled: Style.hoverEffectsEnabled
-                        onClicked:
-                        {
-                            userModelBackend.openCurrentAccountTalk();
-                        }
-                    }
-
-                    background:
-                        Rectangle {
-                        color: talkBtnMouseArea.containsMouse ? "white" : "transparent"
-                        opacity: 0.2
-                    }
+                    onClicked: userModelBackend.openCurrentAccountTalk()
                 }
 
-                Button {
+                HeaderButton {
                     id: trayWindowAppsButton
-
-                    Layout.alignment: Qt.AlignRight
-                    display: AbstractButton.IconOnly
-                    Layout.preferredWidth:  Style.trayWindowHeaderHeight
-                    Layout.preferredHeight: Style.trayWindowHeaderHeight
-                    flat: true
-
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
-                    icon.width: Style.headerButtonIconSize
-                    icon.height: Style.headerButtonIconSize
-                    icon.color: "transparent"
+                    onClicked: {
+                        /*
+                        // The count() property was introduced in QtQuick.Controls 2.3 (Qt 5.10)
+                        // so we handle this with userModelBackend.openCurrentAccountServer()
+                        //
+                        // See UserModel::openCurrentAccountServer() to disable this workaround
+                        // in the future for Qt >= 5.10
 
-                    MouseArea {
-                        id: appsBtnMouseArea
-
-                        anchors.fill: parent
-                        hoverEnabled: Style.hoverEffectsEnabled
-                        onClicked:
-                        {
-                            /*
-                            // The count() property was introduced in QtQuick.Controls 2.3 (Qt 5.10)
-                            // so we handle this with userModelBackend.openCurrentAccountServer()
-                            //
-                            // See UserModel::openCurrentAccountServer() to disable this workaround
-                            // in the future for Qt >= 5.10
-
-                            if(appsMenu.count() > 0) {
-                                appsMenu.popup();
-                            } else {
-                                userModelBackend.openCurrentAccountServer();
-                            }
-                            */
-
-                            appsMenu.open();
+                        if(appsMenu.count() > 0) {
+                            appsMenu.popup();
+                        } else {
                             userModelBackend.openCurrentAccountServer();
                         }
+                        */
 
-                        Menu {
-                            id: appsMenu
-                            y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
-                            width: Math.min(contentItem.childrenRect.width + 4, Style.trayWindowWidth / 2)
-                            closePolicy: "CloseOnPressOutside"
-
-                            background: Rectangle {
-                                border.color: Style.ncBlue
-                                radius: 2
-                            }
-
-                            Instantiator {
-                                id: appsMenuInstantiator
-                                model: appsMenuModelBackend
-                                onObjectAdded: appsMenu.insertItem(index, object)
-                                onObjectRemoved: appsMenu.removeItem(object)
-                                delegate: MenuItem {
-                                    text: appName
-                                    font.pixelSize: Style.topLinePixelSize
-                                    icon.source: appIconUrl
-                                    width: contentItem.implicitWidth + leftPadding + rightPadding
-                                    onTriggered: appsMenuModelBackend.openAppUrl(appUrl)
-                                }
-                            }
-                        }
+                        appsMenu.open();
+                        userModelBackend.openCurrentAccountServer();
                     }
 
-                    background:
-                        Item {
-                        id: rightHoverContainer
-                        height: Style.trayWindowHeaderHeight
-                        width: Style.trayWindowHeaderHeight
-                        Rectangle {
-                            width: Style.trayWindowHeaderHeight / 2
-                            height: Style.trayWindowHeaderHeight / 2
-                            color: "white"
-                            opacity: 0.2
-                            visible: appsBtnMouseArea.containsMouse
+                    Menu {
+                        id: appsMenu
+                        y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
+                        width: Math.min(contentItem.childrenRect.width + 4, Style.trayWindowWidth / 2)
+                        closePolicy: "CloseOnPressOutside"
+
+                        background: Rectangle {
+                            border.color: Style.ncBlue
+                            radius: 2
                         }
-                        Rectangle {
-                            width: Style.trayWindowHeaderHeight / 2
-                            height: Style.trayWindowHeaderHeight / 2
-                            anchors.bottom: rightHoverContainer.bottom
-                            color: "white"
-                            opacity: 0.2
-                            visible: appsBtnMouseArea.containsMouse
-                        }
-                        Rectangle {
-                            width: Style.trayWindowHeaderHeight / 2
-                            height: Style.trayWindowHeaderHeight / 2
-                            anchors.bottom: rightHoverContainer.bottom
-                            anchors.right: rightHoverContainer.right
-                            color: "white"
-                            opacity: 0.2
-                            visible: appsBtnMouseArea.containsMouse
-                        }
-                        Rectangle {
-                            id: rightHoverContainerClipper
-                            anchors.right: rightHoverContainer.right
-                            width: Style.trayWindowHeaderHeight / 2
-                            height: Style.trayWindowHeaderHeight / 2
-                            color: "transparent"
-                            clip: true
-                            Rectangle {
-                                width: Style.trayWindowHeaderHeight
-                                height: Style.trayWindowHeaderHeight
-                                anchors.right: rightHoverContainerClipper.right
-                                radius: Style.trayWindowRadius
-                                color: "white"
-                                opacity: 0.2
-                                visible: appsBtnMouseArea.containsMouse
+
+                        Instantiator {
+                            id: appsMenuInstantiator
+                            model: appsMenuModelBackend
+                            onObjectAdded: appsMenu.insertItem(index, object)
+                            onObjectRemoved: appsMenu.removeItem(object)
+                            delegate: MenuItem {
+                                text: appName
+                                font.pixelSize: Style.topLinePixelSize
+                                icon.source: appIconUrl
+                                width: contentItem.implicitWidth + leftPadding + rightPadding
+                                onTriggered: appsMenuModelBackend.openAppUrl(appUrl)
                             }
                         }
                     }
