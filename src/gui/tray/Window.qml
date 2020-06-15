@@ -83,7 +83,7 @@ Window {
         anchors.fill:   parent
         radius:         Style.trayWindowRadius
         border.width:   Style.trayWindowBorderWidth
-        border.color:   Style.ncBlue
+        border.color:   Style.menuBorder
 
         Rectangle {
             id: trayWindowHeaderBackground
@@ -152,7 +152,7 @@ Window {
                             closePolicy: "CloseOnPressOutside"
 
                             background: Rectangle {
-                                border.color: Style.ncBlue
+                                border.color: Style.menuBorder
                                 radius: Style.currentAccountButtonRadius
                             }
 
@@ -400,7 +400,7 @@ Window {
                         closePolicy: "CloseOnPressOutside"
 
                         background: Rectangle {
-                            border.color: Style.ncBlue
+                            border.color: Style.menuBorder
                             radius: 2
                         }
 

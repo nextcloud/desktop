@@ -133,7 +133,7 @@ MenuItem {
                     width: 120
 
                     background: Rectangle {
-                        border.color: Style.ncBlue
+                        border.color: Style.menuBorder
                         radius: 2
                     }
 
