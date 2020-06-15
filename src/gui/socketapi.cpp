@@ -795,10 +795,12 @@ SyncJournalFileRecord SocketApi::FileData::journalRecord() const
 void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
 {
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
-	if (argument.isEmpty()) {
-		listener->sendMessage(QString("GET_MENU_ITEMS:END"));
-		return;
-	}
+
+    if (argument.isEmpty()) {
+        listener->sendMessage(QString("GET_MENU_ITEMS:END"));
+        return;
+    }
+	
     bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
     FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
     bool isOnTheServer = fileData.journalRecord().isValid();
