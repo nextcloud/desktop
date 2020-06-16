@@ -42,6 +42,9 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
             [=]() { if (isConnected()) {slotRefresh();} });
     connect(_account.data(), &AccountState::hasFetchedNavigationApps,
         this, &User::slotRebuildNavigationAppList);
+    connect(_account->account().data(), &Account::accountChangedDisplayName, this, &User::nameChanged);
+
+    connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &User::hasLocalFolderChanged);
 }
 
 void User::slotBuildNotificationDisplay(const ActivityList &list)
@@ -149,6 +152,7 @@ void User::slotRefreshNotifications()
 
 void User::slotRebuildNavigationAppList()
 {
+    emit serverHasTalkChanged();
     // Rebuild App list
     UserAppsModel::instance()->buildAppList();
 }
@@ -399,7 +403,7 @@ void User::setCurrentUser(const bool &isCurrent)
     _isCurrentUser = isCurrent;
 }
 
-Folder *User::getFolder()
+Folder *User::getFolder() const
 {
     foreach (Folder *folder, FolderMan::instance()->map()) {
         if (folder->accountState() == _account.data()) {
@@ -470,6 +474,11 @@ QImage User::avatar(bool whiteBg) const
     } else {
         return img;
     }
+}
+
+bool User::hasLocalFolder() const
+{
+    return getFolder() != nullptr;
 }
 
 bool User::serverHasTalk() const
@@ -544,7 +553,7 @@ Q_INVOKABLE int UserModel::numUsers()
     return _users.size();
 }
 
-Q_INVOKABLE int UserModel::currentUserId()
+Q_INVOKABLE int UserModel::currentUserId() const
 {
     return _currentUserId;
 }
@@ -577,15 +586,6 @@ Q_INVOKABLE QImage UserModel::currentUserAvatar()
 QImage UserModel::avatarById(const int &id)
 {
     return _users[id]->avatar(true);
-}
-
-Q_INVOKABLE QString UserModel::currentUserName()
-{
-    if (_users.count() >= 1) {
-        return _users[_currentUserId]->name();
-    } else {
-        return QString("No users");
-    }
 }
 
 Q_INVOKABLE QString UserModel::currentUserServer()
@@ -780,6 +780,11 @@ AccountAppList UserModel::appList() const
     } else {
         return AccountAppList();
     }
+}
+
+User *UserModel::currentUser() const
+{
+    return _users[currentUserId()];
 }
 
 /*-------------------------------------------------------------------------------------*/

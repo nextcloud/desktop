@@ -30,10 +30,6 @@ Window {
     onVisibleChanged: {
         currentAccountAvatar.source = ""
         currentAccountAvatar.source = "image://avatars/currentUser"
-        currentAccountUser.text = UserModel.currentUserName();
-        currentAccountServer.text = UserModel.currentUserServer();
-        openLocalFolderButton.visible = UserModel.currentUserHasLocalFolder();
-        trayWindowTalkButton.visible = UserModel.currentServerHasTalk();
         currentAccountStateIndicator.source = ""
         currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
 
@@ -48,15 +44,11 @@ Window {
         onRefreshCurrentUserGui: {
             currentAccountAvatar.source = ""
             currentAccountAvatar.source = "image://avatars/currentUser"
-            currentAccountUser.text = UserModel.currentUserName();
-            currentAccountServer.text = UserModel.currentUserServer();
             currentAccountStateIndicator.source = ""
             currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
         }
         onNewUserSelected: {
             accountMenu.close();
-            openLocalFolderButton.visible = UserModel.currentUserHasLocalFolder();
-            trayWindowTalkButton.visible = UserModel.currentServerHasTalk();
         }
     }
 
@@ -327,8 +319,9 @@ Window {
                             Layout.leftMargin: 6
                             Label {
                                 id: currentAccountUser
+
                                 width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUserName()
+                                text: UserModel.currentUser.name
                                 elide: Text.ElideRight
                                 color: "white"
                                 font.pixelSize: Style.topLinePixelSize
@@ -337,7 +330,7 @@ Window {
                             Label {
                                 id: currentAccountServer
                                 width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUserServer()
+                                text: UserModel.currentUser.server
                                 elide: Text.ElideRight
                                 color: "white"
                                 font.pixelSize: Style.subLinePixelSize
@@ -364,7 +357,7 @@ Window {
                 HeaderButton {
                     id: openLocalFolderButton
 
-                    visible: UserModel.currentUserHasLocalFolder()
+                    visible: UserModel.currentUser.hasLocalFolder
                     icon.source: "qrc:///client/theme/white/folder.svg"
                     onClicked: UserModel.openCurrentAccountLocalFolder()
                 }
@@ -372,7 +365,7 @@ Window {
                 HeaderButton {
                     id: trayWindowTalkButton
 
-                    visible: UserModel.currentServerHasTalk()
+                    visible: UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     onClicked: UserModel.openCurrentAccountTalk()
                 }
