@@ -156,9 +156,7 @@ void ownCloudGui::slotOpenSettingsDialog()
 
 void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
 {
-
-    // Left click
-    if (reason == QSystemTrayIcon::Trigger) {
+    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::Context) {
         if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
             // brought wizard to front
         } else if (_shareDialogs.size() > 0) {
