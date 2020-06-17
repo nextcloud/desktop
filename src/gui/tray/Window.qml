@@ -405,11 +405,24 @@ Window {
                             onObjectAdded: appsMenu.insertItem(index, object)
                             onObjectRemoved: appsMenu.removeItem(object)
                             delegate: MenuItem {
+                                id: appEntry
                                 text: appName
                                 font.pixelSize: Style.topLinePixelSize
                                 icon.source: appIconUrl
                                 width: contentItem.implicitWidth + leftPadding + rightPadding
                                 onTriggered: UserAppsModel.openAppUrl(appUrl)
+                                hoverEnabled: true
+
+                                background: Item {
+                                    width: appsMenu.width
+                                    height: parent.height
+
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        anchors.margins: 1
+                                        color: appEntry.hovered ? Style.lightHover : "transparent"
+                                    }
+                                }
                             }
                         }
                     }
