@@ -24,7 +24,7 @@ class FolderMetadata;
  * emits:
  * finalized() if the encrypted file is ready to be uploaded
  * error() if there was an error with the encryption
- * folerNotEncrypted() if the file is within a folder that's not encrypted.
+ * folderNotEncrypted() if the file is within a folder that's not encrypted.
  *
  */
 
@@ -60,7 +60,7 @@ signals:
     void error();
 
     // Emited if the file is not in a encrypted folder.
-    void folerNotEncrypted();
+    void folderNotEncrypted();
 
 private:
   OwncloudPropagator *_propagator;

@@ -63,7 +63,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedStatusFetched(const QString &f
       job->start();
   } else {
     qCDebug(lcPropagateUploadEncrypted) << "Folder is not encrypted, getting back to default.";
-    emit folerNotEncrypted();
+    emit folderNotEncrypted();
   }
 }
 

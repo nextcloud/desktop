@@ -173,7 +173,7 @@ void PropagateUploadFileCommon::start()
 {
     if (propagator()->account()->capabilities().clientSideEncryptionAvaliable()) {
       _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), _item);
-      connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folerNotEncrypted,
+      connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
         this, &PropagateUploadFileCommon::setupUnencryptedFile);
       connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
         this, &PropagateUploadFileCommon::setupEncryptedFile);
