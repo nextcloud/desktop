@@ -67,7 +67,7 @@ public:
     bool versionOnly(); // only display the version?
     void showVersion();
 
-    void showSettingsDialog();
+    void showMainDialog();
 
 public slots:
     // TODO: this should not be public
