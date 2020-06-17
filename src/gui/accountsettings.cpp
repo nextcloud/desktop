@@ -556,8 +556,9 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
         // Verify if the folder is empty before attempting to encrypt.
 
         bool isEncrypted = acc->e2e()->isFolderEncrypted(info->_path);
+        bool isParentEncrypted = acc->e2e()->isAnyParentFolderEncrypted(info->_path);
 
-        if (!isEncrypted) {
+        if (!isEncrypted && !isParentEncrypted) {
             ac = menu.addAction(tr("Encrypt"));
             connect(ac, &QAction::triggered, [this, info] { slotMarkSubfolderEncrypted(info); });
         } else {
