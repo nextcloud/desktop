@@ -271,11 +271,11 @@ endif()
 # application.cpp still uses QDesktopServices::storageLocation
 target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "QT_DISABLE_DEPRECATED_BEFORE=0")
 
-include(libcloudproviders/libcloudproviders.cmake)
-
 install(TARGETS ${APPLICATION_EXECUTABLE} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 if(UNIX AND NOT APPLE)
+    include(libcloudproviders/libcloudproviders.cmake)
+
     configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
                    ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
     install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${DATADIR}/applications )

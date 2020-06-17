@@ -1,9 +1,8 @@
-
 # The cloudproviders feature can only be enabled if the libcloudproviders
 # and gio-2.0 libraries are available, and failure due to any missing
 # dependency should be graceful.
 set(LIBCLOUDPROVIDERS_POSSIBLE "")
-find_package(Libcloudproviders)
+find_package(Libcloudproviders QUIET)
 find_package(PkgConfig)
 if(LIBCLOUDPROVIDERS_FOUND AND PKG_CONFIG_FOUND)
     pkg_search_module(GIO gio-2.0)
