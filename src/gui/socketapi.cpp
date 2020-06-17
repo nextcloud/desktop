@@ -799,7 +799,6 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
     bool isOnTheServer = fileData.journalRecord().isValid();
     auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
-    auto capabilities = fileData.folder->accountState()->account()->capabilities();
 
     if (fileData.folder && fileData.folder->accountState()->isConnected()) {
         DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
