@@ -86,6 +86,7 @@ public slots:
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
     void slotOpenSettingsDialog();
+    void slotOpenMainDialog();
     void slotSettingsDialogActivated();
     void slotHelp();
     void slotOpenPath(const QString &path);

@@ -433,14 +433,14 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
         parseOptions(options);
         setupLogging();
-    } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
+    } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
             // This call is mirrored with the one in int main()
-            qCWarning(lcApplication) << "Ignoring MSG_SHOWSETTINGS, possibly double-invocation of client via session restore and auto start";
+            qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
             return;
         }
-        showSettingsDialog();
+        showMainDialog();
     }
 }
 
@@ -662,9 +662,9 @@ bool Application::versionOnly()
     return _versionOnly;
 }
 
-void Application::showSettingsDialog()
+void Application::showMainDialog()
 {
-    _gui->slotShowSettings();
+    _gui->slotOpenMainDialog();
 }
 
 void Application::slotGuiIsShowingSettings()
