@@ -162,26 +162,29 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 
-  QFile input(info.absoluteFilePath());
-  QFile output(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
+  if (info.isDir()) {
+      _completeFileName = encryptedFile.encryptedFilename;
+  } else {
+      QFile input(info.absoluteFilePath());
+      QFile output(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
 
-  QByteArray tag;
-  bool encryptionResult = EncryptionHelper::fileEncryption(
-    encryptedFile.encryptionKey,
-    encryptedFile.initializationVector,
-    &input, &output, tag);
+      QByteArray tag;
+      bool encryptionResult = EncryptionHelper::fileEncryption(
+        encryptedFile.encryptionKey,
+        encryptedFile.initializationVector,
+        &input, &output, tag);
 
-  if (!encryptionResult) {
-    qCDebug(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
-    unlockFolder();
-    return;
+      if (!encryptionResult) {
+        qCDebug(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
+        unlockFolder();
+        return;
+      }
+
+      encryptedFile.authenticationTag = tag;
+      _completeFileName = output.fileName();
   }
 
-  _completeFileName = output.fileName();
-
   qCDebug(lcPropagateUploadEncrypted) << "Creating the metadata for the encrypted file.";
-
-  encryptedFile.authenticationTag = tag;
 
   _metadata->addEncryptedFile(encryptedFile);
   _encryptedFile = encryptedFile;
