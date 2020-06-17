@@ -552,7 +552,7 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
     auto info   = _model->infoForIndex(index);
     auto acc = _accountState->account();
 
-    if (acc->capabilities().clientSideEncryptionAvaliable()) {
+    if (acc->capabilities().clientSideEncryptionAvailable()) {
         // Verify if the folder is empty before attempting to encrypt.
 
         bool isEncrypted = acc->e2e()->isFolderEncrypted(info->_path);
@@ -1023,7 +1023,7 @@ void AccountSettings::slotAccountStateChanged()
          * if it has, do not offer to create one.
          */
         qCInfo(lcAccountSettings) << "Account" << accountsState()->account()->displayName()
-            << "Client Side Encryption" << accountsState()->account()->capabilities().clientSideEncryptionAvaliable();
+            << "Client Side Encryption" << accountsState()->account()->capabilities().clientSideEncryptionAvailable();
     }
 }
 

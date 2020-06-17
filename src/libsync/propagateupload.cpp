@@ -171,7 +171,7 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 
 void PropagateUploadFileCommon::start()
 {
-    if (propagator()->account()->capabilities().clientSideEncryptionAvaliable()) {
+    if (propagator()->account()->capabilities().clientSideEncryptionAvailable()) {
       _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), _item);
       connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
         this, &PropagateUploadFileCommon::setupUnencryptedFile);

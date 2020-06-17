@@ -343,7 +343,7 @@ void PropagateDownloadFile::start()
 
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
 
-    if (propagator()->account()->capabilities().clientSideEncryptionAvaliable()) {
+    if (propagator()->account()->capabilities().clientSideEncryptionAvailable()) {
         _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), _item);
         connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusNotEncrypted, [this] {
           startAfterIsEncryptedIsChecked();

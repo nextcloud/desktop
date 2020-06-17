@@ -743,7 +743,7 @@ void ClientSideEncryption::setAccount(AccountPtr account)
 void ClientSideEncryption::initialize()
 {
     qCInfo(lcCse()) << "Initializing";
-    if (!_account->capabilities().clientSideEncryptionAvaliable()) {
+    if (!_account->capabilities().clientSideEncryptionAvailable()) {
         qCInfo(lcCse()) << "No Client side encryption available on server.";
         emit initializationFinished();
         return;

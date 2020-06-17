@@ -57,7 +57,7 @@ public:
     bool notificationsAvailable() const;
 
     /// returns true if the server supports client side encryption
-    bool clientSideEncryptionAvaliable() const;
+    bool clientSideEncryptionAvailable() const;
 
     /// returns true if the capabilities are loaded already.
     bool isValid() const;

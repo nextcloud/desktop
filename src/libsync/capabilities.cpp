@@ -84,7 +84,7 @@ bool Capabilities::shareResharing() const
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
 }
 
-bool Capabilities::clientSideEncryptionAvaliable() const
+bool Capabilities::clientSideEncryptionAvailable() const
 {
     auto it = _capabilities.constFind(QStringLiteral("end-to-end-encryption"));
     if (it != _capabilities.constEnd())

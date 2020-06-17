@@ -583,7 +583,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 
 		//TODO: This is the correct place, but this doesn't seems to be the right
 		// Way to call fetchFolderEncryptedStatus.
-		if (_accountState->account()->capabilities().clientSideEncryptionAvaliable()) {
+		if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
 			_accountState->account()->e2e()->fetchFolderEncryptedStatus();
 		}
 
