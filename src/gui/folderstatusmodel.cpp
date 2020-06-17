@@ -581,12 +581,6 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         path += info->_path;
     }
 
-		//TODO: This is the correct place, but this doesn't seems to be the right
-		// Way to call fetchFolderEncryptedStatus.
-		if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
-			_accountState->account()->e2e()->fetchFolderEncryptedStatus();
-		}
-
     auto *job = new LsColJob(_accountState->account(), path, this);
     info->_fetchingJob = job;
     job->setProperties(QList<QByteArray>() << "resourcetype"
