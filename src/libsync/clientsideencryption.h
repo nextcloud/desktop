@@ -105,6 +105,7 @@ signals:
     void initializationFinished();
     void mnemonicGenerated(const QString& mnemonic);
     void showMnemonic(const QString& mnemonic);
+    void folderEncryptedStatusFetchDone();
 
 private:
     void getPrivateKeyFromServer();
