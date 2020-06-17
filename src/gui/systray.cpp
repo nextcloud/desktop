@@ -50,7 +50,8 @@ Systray *Systray::instance()
 }
 
 Systray::Systray()
-    : _trayEngine(new QQmlApplicationEngine(this))
+    : QSystemTrayIcon(nullptr)
+    , _trayEngine(new QQmlApplicationEngine(this))
 {
     _trayEngine->addImportPath("qrc:/qml/theme");
     _trayEngine->addImageProvider("avatars", new ImageProvider);
