@@ -55,7 +55,12 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
+#pragma push_macro("QT_DISABLE_DEPRECATED_BEFORE")
+#undef QT_DISABLE_DEPRECATED_BEFORE
+#define QT_DISABLE_DEPRECATED_BEFORE 0
 #include <QDesktopServices>
+#pragma pop_macro("QT_DISABLE_DEPRECATED_BEFORE")
+
 
 class QSocket;
 
@@ -195,16 +200,10 @@ Application::Application(int &argc, char **argv)
     if (!ConfigFile().exists()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
-#ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
-#define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
-#endif
-        QT_WARNING_PUSH
-        QT_WARNING_DISABLE_DEPRECATED
         // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
         // behavior of adding "data" to the path
         QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
         if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
-        QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
             auto confDir = ConfigFile().configPath();

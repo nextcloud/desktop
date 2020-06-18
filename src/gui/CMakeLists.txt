@@ -268,9 +268,6 @@ if(WITH_CRASHREPORTER)
     endif()
 endif()
 
-# application.cpp still uses QDesktopServices::storageLocation
-target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "QT_DISABLE_DEPRECATED_BEFORE=0")
-
 install(TARGETS ${APPLICATION_EXECUTABLE} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 if(UNIX AND NOT APPLE)
