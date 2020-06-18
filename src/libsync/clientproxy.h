@@ -41,6 +41,9 @@ public:
     static bool isUsingSystemDefault();
     static void lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot);
 
+    static QString printQNetworkProxy(const QNetworkProxy &proxy);
+    static const char *proxyTypeToCStr(QNetworkProxy::ProxyType type);
+
 public slots:
     void setupQtProxyFromConfig();
 };
@@ -58,7 +61,6 @@ private:
     QUrl _url;
 };
 
-QString printQNetworkProxy(const QNetworkProxy &proxy);
 }
 
 #endif // CLIENTPROXY_H

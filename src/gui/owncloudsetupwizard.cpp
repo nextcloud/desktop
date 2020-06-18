@@ -170,7 +170,7 @@ void OwncloudSetupWizard::slotCheckServer(const QString &urlString)
 void OwncloudSetupWizard::slotSystemProxyLookupDone(const QNetworkProxy &proxy)
 {
     if (proxy.type() != QNetworkProxy::NoProxy) {
-        qCInfo(lcWizard) << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
+        qCInfo(lcWizard) << "Setting QNAM proxy to be system proxy" << ClientProxy::printQNetworkProxy(proxy);
     } else {
         qCInfo(lcWizard) << "No system proxy set by OS";
     }
