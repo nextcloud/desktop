@@ -16,6 +16,7 @@
 #include "config.h"
 
 #include "account.h"
+#include "accountmanager.h"
 #include "accountstate.h"
 #include "folder.h"
 #include "folderman.h"
@@ -476,6 +477,7 @@ void Folder::startVfs()
     vfsParams.journal = &_journal;
     vfsParams.providerName = Theme::instance()->appNameGUI();
     vfsParams.providerVersion = Theme::instance()->version();
+    vfsParams.multipleAccountsRegistered = AccountManager::instance()->accounts().size() > 1;
 
     connect(_vfs.data(), &Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
     connect(_vfs.data(), &Vfs::doneHydrating, this, &Folder::slotHydrationDone);
