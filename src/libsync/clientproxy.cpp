@@ -56,9 +56,29 @@ bool ClientProxy::isUsingSystemDefault()
     return true;
 }
 
+const char *proxyTypeToCStr(QNetworkProxy::ProxyType type)
+{
+    switch (type) {
+    case QNetworkProxy::NoProxy:
+        return "NoProxy";
+    case QNetworkProxy::DefaultProxy:
+        return "DefaultProxy";
+    case QNetworkProxy::Socks5Proxy:
+        return "Socks5Proxy";
+    case QNetworkProxy::HttpProxy:
+        return "HttpProxy";
+    case QNetworkProxy::HttpCachingProxy:
+        return "HttpCachingProxy";
+    case QNetworkProxy::FtpCachingProxy:
+        return "FtpCachingProxy";
+    default:
+        return "NoProxy";
+    }
+}
+
 QString printQNetworkProxy(const QNetworkProxy &proxy)
 {
-    return QString("%1://%2:%3").arg(proxy.type()).arg(proxy.hostName()).arg(proxy.port());
+    return QString("%1://%2:%3").arg(proxyTypeToCStr(proxy.type())).arg(proxy.hostName()).arg(proxy.port());
 }
 
 void ClientProxy::setupQtProxyFromConfig()
