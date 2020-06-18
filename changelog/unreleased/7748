@@ -1,0 +1,5 @@
+Change: Enabling native VFS on Windows create two shortcuts in the Explorer
+
+We now remove legacy shortcuts when we enable VFS
+
+https://github.com/owncloud/client/issues/7748

@@ -551,6 +551,9 @@ void AccountSettings::slotEnableVfsCurrentFolder()
         if (!enable || !folder)
             return;
 
+        // we might need to add or remove the panel entry as cfapi brings this feature out of the box
+        FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
+
         // It is unsafe to switch on vfs while a sync is running - wait if necessary.
         auto connection = std::make_shared<QMetaObject::Connection>();
         auto switchVfsOn = [folder, connection, this]() {
@@ -617,6 +620,9 @@ void AccountSettings::slotDisableVfsCurrentFolder()
         msgBox->deleteLater();
         if (msgBox->clickedButton() != acceptButton|| !folder)
             return;
+
+        // we might need to add or remove the panel entry as cfapi brings this feature out of the box
+        FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
 
         // It is unsafe to switch off vfs while a sync is running - wait if necessary.
         auto connection = std::make_shared<QMetaObject::Connection>();
