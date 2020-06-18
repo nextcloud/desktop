@@ -77,7 +77,7 @@ bool GetFolderEncryptStatusJob::finished()
 
         QString currFile;
         int currEncryptedStatus = -1;
-        QMap<QString, bool> folderStatus;
+        QHash<QString, bool> folderStatus;
         while (!reader.atEnd()) {
             auto type = reader.readNext();
             if (type == QXmlStreamReader::StartElement) {

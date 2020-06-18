@@ -1223,7 +1223,7 @@ void ClientSideEncryption::fetchFolderEncryptedStatus() {
     getEncryptedStatus->start();
 }
 
-void ClientSideEncryption::folderEncryptedStatusFetched(const QMap<QString, bool>& result)
+void ClientSideEncryption::folderEncryptedStatusFetched(const QHash<QString, bool>& result)
 {
     _refreshingEncryptionStatus = false;
     _folder2encryptedStatus = result;

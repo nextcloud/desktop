@@ -94,7 +94,7 @@ public slots:
     void slotRequestMnemonic();
 
 private slots:
-    void folderEncryptedStatusFetched(const QMap<QString, bool> &values);
+    void folderEncryptedStatusFetched(const QHash<QString, bool> &values);
     void folderEncryptedStatusError(int error);
 
     void publicKeyFetched(QKeychain::Job *incoming);
@@ -122,8 +122,8 @@ private:
     bool isInitialized = false;
     bool _refreshingEncryptionStatus = false;
     //TODO: Save this on disk.
-    QMap<QByteArray, QByteArray> _folder2token;
-    QMap<QString, bool> _folder2encryptedStatus;
+    QHash<QByteArray, QByteArray> _folder2token;
+    QHash<QString, bool> _folder2encryptedStatus;
 
 public:
     //QSslKey _privateKey;
