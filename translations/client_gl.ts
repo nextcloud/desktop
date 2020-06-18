@@ -1455,7 +1455,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/socketapi.cpp" line="528"/>
         <source>Password for share required</source>
-        <translation>Requírese un contrasinal para compartir</translation>
+        <translation>É necesario un contrasinal para compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="529"/>
@@ -2675,7 +2675,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="312"/>
         <source>Password for share required</source>
-        <translation>Requírese un contrasinal para compartir</translation>
+        <translation>É necesario un contrasinal para compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="313"/>
