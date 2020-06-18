@@ -29,6 +29,7 @@
 #include <QNetworkAccessManager>
 #include <QSslSocket>
 #include <QNetworkCookieJar>
+#include <QNetworkProxy>
 
 #include <QFileInfo>
 #include <QDir>
@@ -161,9 +162,14 @@ void Account::setCredentials(AbstractCredentials *cred)
 {
     // set active credential manager
     QNetworkCookieJar *jar = nullptr;
+    QNetworkProxy proxy;
+
     if (_am) {
         jar = _am->cookieJar();
         jar->setParent(nullptr);
+
+        // Remember proxy (issue #2108)
+        proxy = _am->proxy();
 
         _am = QSharedPointer<QNetworkAccessManager>();
     }
@@ -180,6 +186,9 @@ void Account::setCredentials(AbstractCredentials *cred)
 
     if (jar) {
         _am->setCookieJar(jar);
+    }
+    if (proxy.type() != QNetworkProxy::DefaultProxy) {
+        _am->setProxy(proxy);
     }
     connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
         SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
@@ -237,12 +246,15 @@ void Account::resetNetworkAccessManager()
 
     qCDebug(lcAccount) << "Resetting QNAM";
     QNetworkCookieJar *jar = _am->cookieJar();
+    QNetworkProxy proxy = _am->proxy();
 
     // Use a QSharedPointer to allow locking the life of the QNAM on the stack.
     // Make it call deleteLater to make sure that we can return to any QNAM stack frames safely.
     _am = QSharedPointer<QNetworkAccessManager>(_credentials->createQNAM(), &QObject::deleteLater);
 
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
+    _am->setProxy(proxy);   // Remember proxy (issue #2108)
+
     connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
         SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
     connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
