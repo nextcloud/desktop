@@ -62,6 +62,11 @@ struct OCSYNC_EXPORT VfsSetupParams
     QString providerName;
     QString providerVersion;
 
+    /** when registering with the system we might use
+     *  a different presentaton to identify the accounts
+     */
+    bool multipleAccountsRegistered = false;
+
     /** Whether native shell integration shall be enabled
      *
      * For some plugins that doesn't work well in tests.

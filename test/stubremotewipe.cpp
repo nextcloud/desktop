@@ -9,6 +9,7 @@ void OCC::AccountManager::save(bool) { }
 OCC::AccountState *OCC::AccountManager::addAccount(const AccountPtr& ac) { return new OCC::AccountState(ac); }
 void OCC::AccountManager::deleteAccount(AccountState *) { }
 void OCC::AccountManager::accountRemoved(OCC::AccountState*) { }
+QList<OCC::AccountStatePtr> OCC::AccountManager::accounts() const { return QList<OCC::AccountStatePtr>(); }
 OCC::AccountStatePtr OCC::AccountManager::account(const QString &){ return AccountStatePtr(); }
 const QMetaObject OCC::AccountManager::staticMetaObject = QObject::staticMetaObject;
 

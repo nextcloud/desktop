@@ -420,6 +420,11 @@ void AccountManager::shutdown()
     }
 }
 
+QList<AccountStatePtr> AccountManager::accounts() const
+{
+     return _accounts;
+}
+
 bool AccountManager::isAccountIdAvailable(const QString &id) const
 {
     if (_additionalBlockedAccountIds.contains(id))
