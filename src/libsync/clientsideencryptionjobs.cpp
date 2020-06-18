@@ -35,6 +35,7 @@ void GetFolderEncryptStatusJob::start()
 	req.setPriority(QNetworkRequest::HighPriority);
 	req.setRawHeader("OCS-APIREQUEST", "true");
     req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/xml"));
+    req.setRawHeader("Depth", "infinity");
 
 	QByteArray xml = R"(<d:propfind xmlns:d="DAV:"> <d:prop xmlns:nc="http://nextcloud.org/ns"> <nc:is-encrypted/> </d:prop> </d:propfind>)";
 	auto *buf = new QBuffer(this);
