@@ -56,7 +56,7 @@ bool ClientProxy::isUsingSystemDefault()
     return true;
 }
 
-const char *proxyTypeToCStr(QNetworkProxy::ProxyType type)
+const char *ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 {
     switch (type) {
     case QNetworkProxy::NoProxy:
@@ -76,7 +76,7 @@ const char *proxyTypeToCStr(QNetworkProxy::ProxyType type)
     }
 }
 
-QString printQNetworkProxy(const QNetworkProxy &proxy)
+QString ClientProxy::printQNetworkProxy(const QNetworkProxy &proxy)
 {
     return QString("%1://%2:%3").arg(proxyTypeToCStr(proxy.type())).arg(proxy.hostName()).arg(proxy.port());
 }
