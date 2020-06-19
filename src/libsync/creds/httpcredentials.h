@@ -16,11 +16,13 @@
 #ifndef MIRALL_CREDS_HTTP_CREDENTIALS_H
 #define MIRALL_CREDS_HTTP_CREDENTIALS_H
 
+#include "creds/abstractcredentials.h"
+#include "networkjobs.h"
+
 #include <QMap>
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QNetworkRequest>
-#include "creds/abstractcredentials.h"
 
 class QNetworkReply;
 class QAuthenticator;
@@ -106,7 +108,7 @@ public:
     void setAccount(Account *account) override;
 
     // Whether we are using OAuth
-    bool isUsingOAuth() const { return !_refreshToken.isNull(); }
+    bool isUsingOAuth() const { return _authType == DetermineAuthTypeJob::AuthType::OAuth; }
 
     bool retryIfNeeded(AbstractNetworkJob *) override;
 
@@ -170,6 +172,8 @@ protected:
     QSslCertificate _clientSslCertificate;
     bool _keychainMigration = false;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
+
+    DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
 
     QVector<QPointer<AbstractNetworkJob>> _retryQueue; // Jobs we need to retry once the auth token is fetched
 };

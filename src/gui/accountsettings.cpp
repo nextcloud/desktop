@@ -184,6 +184,11 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     connect(&_quotaInfo, &QuotaInfo::quotaUpdated,
         this, &AccountSettings::slotUpdateQuota);
+
+    ui->openBrowserButton->setVisible(false);
+    connect(ui->openBrowserButton, &QToolButton::clicked, this, [this]{
+        qobject_cast<HttpCredentialsGui *>(_accountState->account()->credentials())->openBrowser();
+    });
 }
 
 
@@ -855,6 +860,7 @@ void AccountSettings::slotAccountStateChanged()
                 errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->serverVersion());
             }
             showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
+            ui->openBrowserButton->setVisible(false);
             break;
         }
         case AccountState::ServiceUnavailable:
@@ -867,16 +873,12 @@ void AccountSettings::slotAccountStateChanged()
             showConnectionLabel(tr("Signed out from %1.").arg(serverWithUser));
             break;
         case AccountState::AskingCredentials: {
-            QUrl url;
-            if (auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials())) {
+            auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials());
+            if (cred && cred->isUsingOAuth()) {
                 connect(cred, &HttpCredentialsGui::authorisationLinkChanged,
                     this, &AccountSettings::slotAccountStateChanged, Qt::UniqueConnection);
-                url = cred->authorisationLink();
-            }
-            if (url.isValid()) {
-                showConnectionLabel(tr("Obtaining authorization from the browser. "
-                                       "<a href='%1'>Click here</a> to re-open the browser.")
-                                        .arg(url.toString(QUrl::FullyEncoded)));
+                showConnectionLabel(tr("Obtaining authorization from the browser."));
+                ui->openBrowserButton->setVisible(true);
             } else {
                 showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
             }

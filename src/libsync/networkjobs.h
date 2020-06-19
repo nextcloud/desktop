@@ -386,9 +386,10 @@ class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public QObject
 {
     Q_OBJECT
 public:
-    enum AuthType {
+    enum class AuthType {
         Basic, // also the catch-all fallback for backwards compatibility reasons
         OAuth,
+        Unknown
     };
     Q_ENUM(AuthType)
 

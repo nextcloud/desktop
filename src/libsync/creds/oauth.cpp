@@ -375,6 +375,7 @@ void OAuth::fetchWellKnown()
 
 void OAuth::openBrowser()
 {
+    _account->clearCookieJar(); // #6574
     authorisationLinkAsync([this](const QUrl &link) {
         if (!QDesktopServices::openUrl(link)) {
             qCWarning(lcOauth) << "QDesktopServices::openUrl Failed";

@@ -46,7 +46,8 @@ void HttpCredentialsGui::askFromUserAsync()
     // First, we will check what kind of auth we need.
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
-        if (type == DetermineAuthTypeJob::OAuth) {
+        _authType = type;
+        if (type == DetermineAuthTypeJob::AuthType::OAuth) {
             _asyncAuth.reset(new OAuth(_account, this));
             connect(_asyncAuth.data(), &OAuth::result,
                 this, &HttpCredentialsGui::asyncAuthResult);
@@ -54,7 +55,7 @@ void HttpCredentialsGui::askFromUserAsync()
                 this, &HttpCredentialsGui::authorisationLinkChanged);
             _asyncAuth->startAuthentication();
             emit authorisationLinkChanged();
-        } else if (type == DetermineAuthTypeJob::Basic) {
+        } else if (type == DetermineAuthTypeJob::AuthType::Basic) {
             showDialog();
         } else {
             // Shibboleth?

@@ -46,7 +46,6 @@ OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
 
     connect(_ui.openLinkButton, &QCommandLinkButton::clicked, [this] {
         _ui.errorLabel->hide();
-        qobject_cast<OwncloudWizard *>(wizard())->account()->clearCookieJar(); // #6574
         if (_asyncAuth)
             _asyncAuth->openBrowser();
     });
@@ -91,7 +90,7 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
         /* OAuth not supported (can't open browser), fallback to HTTP credentials */
         OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
         ocWizard->back();
-        ocWizard->setAuthType(DetermineAuthTypeJob::Basic);
+        ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::Basic);
         break;
     }
     case OAuth::Error:

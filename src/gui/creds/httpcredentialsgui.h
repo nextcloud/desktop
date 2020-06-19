@@ -33,29 +33,34 @@ public:
         : HttpCredentials()
     {
     }
+
     HttpCredentialsGui(const QString &user, const QString &password,
             const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
         : HttpCredentials(user, password, clientCertBundle, clientCertPassword)
     {
+        _authType = DetermineAuthTypeJob::AuthType::Basic;
     }
+
     HttpCredentialsGui(const QString &user, const QString &password, const QString &refreshToken,
             const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
         : HttpCredentials(user, password, clientCertBundle, clientCertPassword)
     {
+        _authType = DetermineAuthTypeJob::AuthType::OAuth;
         _refreshToken = refreshToken;
     }
 
+    void openBrowser()
+    {
+        if (isUsingOAuth())
+        {
+            _asyncAuth->openBrowser();
+        }
+    }
     /**
      * This will query the server and either uses OAuth via _asyncAuth->start()
      * or call showDialog to ask the password
      */
     void askFromUser() override;
-    /**
-     * In case of oauth, return an URL to the link to open the browser.
-     * An invalid URL otherwise
-     */
-    QUrl authorisationLink() const { return _asyncAuth ? _asyncAuth->authorisationLink() : QUrl(); }
-
 
     static QString requestAppPasswordText(const Account *account);
 private slots:
@@ -67,7 +72,6 @@ signals:
     void authorisationLinkChanged();
 
 private:
-
     QScopedPointer<OAuth, QScopedPointerObjectDeleteLater<OAuth>> _asyncAuth;
 };
 

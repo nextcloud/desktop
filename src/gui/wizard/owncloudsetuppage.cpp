@@ -42,7 +42,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     , _ocUser()
     , _authTypeKnown(false)
     , _checking(false)
-    , _authType(DetermineAuthTypeJob::Basic)
+    , _authType(DetermineAuthTypeJob::AuthType::Basic)
     , _progressIndi(new QProgressIndicator(this))
 {
     _ui.setupUi(this);
@@ -181,10 +181,12 @@ void OwncloudSetupPage::initializePage()
 int OwncloudSetupPage::nextId() const
 {
     switch (_authType) {
-    case DetermineAuthTypeJob::Basic:
+    case DetermineAuthTypeJob::AuthType::Basic:
         return WizardCommon::Page_HttpCreds;
-    case DetermineAuthTypeJob::OAuth:
+    case DetermineAuthTypeJob::AuthType::OAuth:
         return WizardCommon::Page_OAuthCreds;
+    case DetermineAuthTypeJob::AuthType::Unknown:
+        Q_UNREACHABLE();
     }
     return WizardCommon::Page_HttpCreds;
 }

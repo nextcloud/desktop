@@ -885,9 +885,9 @@ void DetermineAuthTypeJob::start()
     propfind->setIgnoreCredentialFailure(true);
     connect(propfind, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
-        auto result = Basic;
+        auto result = AuthType::Basic;
         if (authChallenge.contains("bearer ")) {
-            result = OAuth;
+            result = AuthType::OAuth;
         } else if (authChallenge.isEmpty()) {
             qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
         }
