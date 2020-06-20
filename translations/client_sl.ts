@@ -1879,7 +1879,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Na voljo je nova različica %1 %2. Klinkite na &lt;a href=&apos;%3&apos;&gt;povezavo&lt;/a&gt; za prejem posodobitve.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -2105,7 +2105,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished"/>
+        <translation>Poteka poskus povezave z %1 na %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
@@ -3283,7 +3283,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="522"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Zapisa imena datoteke na tem datotečnem sistemu ni mogoče kodirati.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="531"/>
@@ -3488,7 +3488,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="694"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Odstrani povezavo</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="695"/>
