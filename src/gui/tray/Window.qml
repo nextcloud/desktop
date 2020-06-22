@@ -201,7 +201,12 @@ Window {
                                 onClicked: UserModel.addAccount()
                             }
 
-                            MenuSeparator { id: accountMenuSeparator }
+                            MenuSeparator {
+                                contentItem: Rectangle {
+                                    implicitHeight: 1
+                                    color: Style.menuBorder
+                                }
+                            }
 
                             MenuItem {
                                 id: syncPauseButton
