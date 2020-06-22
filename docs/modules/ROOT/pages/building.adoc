@@ -4,7 +4,7 @@
 :install-powershell-url: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-windows-powershell?view=powershell-6
 :python-2_7-url: https://www.python.org/download/releases/2.7/
 :python-3_6-url: https://www.python.org/downloads/release/python-360/
-:ms-visual-studio-2017-url: https://visualstudio.microsoft.com/vs/whatsnew/
+:ms-visual-studio-2019-url: https://visualstudio.microsoft.com/en/downloads/
 :mingw-w64-url: https://mingw-w64.org/doku.php
 :cmake-url: http://www.cmake.org/download
 :git-url: http://git-scm.com
@@ -142,7 +142,7 @@ You are asked where you want to put the main folder, called `CraftRoot`, which w
 Please chose a disk with sufficient free space. 
 
 Last but not least, you need to chose the compiler you want to use.
-The official builds only supports {ms-visual-studio-2017-url}[Microsoft Visual Studio 2017].
+The official builds only supports {ms-visual-studio-2019-url}[Microsoft Visual Studio 2019].
 However, if you're feeling adventurous, you can also try to use {mingw-w64-url}[Mingw-w64]. 
 In contrast to Visual Studio, which you need to install in advance, KDE Craft can install `Mingw-w64` for you.
 
@@ -202,11 +202,12 @@ craft --fetch owncloud-client
 ....
 
 You can find the git checkout in `C:\CraftRoot\downloads\git\owncloud\owncloud-client`.
-There you can use the usual git commands to switch branches and remotes, e.g., to build the `2.6` stable branch:
+There you can use the usual git commands to switch branches and remotes, e.g., to build the `2.6` stable branch you can use craft with --set version parameter:
 
 [source,powershell]
 ....
 git checkout 2.6
+craft --set version=2.6 owncloud-client
 ....
 
 Afterwards you can build the client like this:
@@ -214,6 +215,7 @@ Afterwards you can build the client like this:
 [source,powershell]
 ....
 craft --configure --make --install
+craft owncloud-client
 ....
 
 ==== Run the Client
