@@ -21,6 +21,7 @@
 #include <QNetworkReply>
 #include <QMap>
 #include <QtTest>
+#include <cookiejar.h>
 
 /*
  * TODO: In theory we should use QVERIFY instead of Q_ASSERT for testing, but this
@@ -1107,7 +1108,11 @@ private:
     Override _override;
 
 public:
-    FakeQNAM(FileInfo initialRoot) : _remoteRootFileInfo{std::move(initialRoot)} { }
+    FakeQNAM(FileInfo initialRoot)
+        : _remoteRootFileInfo{std::move(initialRoot)}
+    {
+        setCookieJar(new OCC::CookieJar);
+    }
     FileInfo &currentRemoteState() { return _remoteRootFileInfo; }
     FileInfo &uploadState() { return _uploadFileInfo; }
 
