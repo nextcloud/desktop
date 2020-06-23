@@ -690,7 +690,14 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._pathIdx << newSubs.size();
         newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
         newInfo._path = relativePath;
-        newInfo._name = removeTrailingSlash(relativePath).split('/').last();
+
+        SyncJournalFileRecord rec;
+        parentInfo->_folder->journalDb()->getFileRecordByE2eMangledName(removeTrailingSlash(relativePath), &rec);
+        if (rec.isValid()) {
+            newInfo._name = removeTrailingSlash(rec._path).split('/').last();
+        } else {
+            newInfo._name = removeTrailingSlash(relativePath).split('/').last();
+        }
 
         const auto& folderInfo = job->_folderInfos.value(path);
         newInfo._size = folderInfo.size;
