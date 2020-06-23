@@ -3320,7 +3320,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="864"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן לקרוא את רשימת החסימה ממסד הנתונים המקומי</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="905"/>
@@ -3335,7 +3335,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1034"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>שם הקובץ מכיל אות שגויה אחת לפחות</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1276"/>
@@ -3377,7 +3377,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1485"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>אסור להעביר, הפריט שוחזר</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1496"/>
@@ -3743,7 +3743,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
-        <translation type="unfinished"/>
+        <translation>להקריס כעת</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>

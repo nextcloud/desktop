@@ -1230,7 +1230,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="85"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ši problema dažniausiai nutinka, kai sutrinka „inotify“ laikrodžiai. Norėdami gauti daugiau informacijos, žiūrėkite DUK.</translation>
     </message>
 </context>
 <context>
