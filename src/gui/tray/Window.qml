@@ -58,11 +58,7 @@ Window {
             accountMenu.close();
             appsMenu.close();
 
-            trayWindow.screen = Qt.application.screens[Systray.currentScreenIndex()];
-
-            var position = Systray.computeWindowPosition(trayWindow.width, trayWindow.height)
-            trayWindow.x = position.x
-            trayWindow.y = position.y
+            Systray.positionWindow(trayWindow);
 
             trayWindow.show();
             trayWindow.raise();
