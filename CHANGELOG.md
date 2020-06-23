@@ -9,6 +9,7 @@ Summary
 -------
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
+* Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
 * Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
 * Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
 * Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
@@ -23,6 +24,12 @@ Details
    default plugin location, please consider setting the environment variable QT_PLUGIN_PATH.
 
    https://github.com/owncloud/enterprise/issues/3839
+
+* Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
+
+   We now remove legacy shortcuts when we enable VFS
+
+   https://github.com/owncloud/client/issues/7748
 
 * Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
 
