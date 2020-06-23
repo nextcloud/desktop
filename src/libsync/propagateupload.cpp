@@ -171,18 +171,41 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 
 void PropagateUploadFileCommon::start()
 {
-    if (propagator()->account()->capabilities().clientSideEncryptionAvailable()) {
-      _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), _item);
-      connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
-        this, &PropagateUploadFileCommon::setupUnencryptedFile);
-      connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
-        this, &PropagateUploadFileCommon::setupEncryptedFile);
-      connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
-        []{ qCDebug(lcPropagateUpload) << "Error setting up encryption."; });
-      _uploadEncryptedHelper->start();
-   } else {
-      setupUnencryptedFile();
+    const auto rootPath = [=]() {
+        const auto result = propagator()->_remoteFolder;
+        if (result.startsWith('/')) {
+            return result.mid(1);
+        } else {
+            return result;
+        }
+    }();
+    const auto path = QString(rootPath + _item->_file);
+    const auto parentPath = path.left(path.lastIndexOf('/'));
+
+    SyncJournalFileRecord parentRec;
+    bool ok = propagator()->_journal->getFileRecord(parentPath, &parentRec);
+    if (!ok) {
+        done(SyncFileItem::NormalError);
+        return;
     }
+
+    const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
+    const auto account = propagator()->account();
+
+    if (!account->capabilities().clientSideEncryptionAvailable() ||
+        !account->e2e()->isFolderEncrypted(remoteParentPath + '/')) {
+        setupUnencryptedFile();
+        return;
+    }
+
+    _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item);
+    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
+            this, &PropagateUploadFileCommon::setupUnencryptedFile);
+    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
+            this, &PropagateUploadFileCommon::setupEncryptedFile);
+    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
+            []{ qCDebug(lcPropagateUpload) << "Error setting up encryption."; });
+    _uploadEncryptedHelper->start();
 }
 
 void PropagateUploadFileCommon::setupEncryptedFile(const QString& path, const QString& filename, quint64 size)

@@ -16,10 +16,11 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagateUploadEncrypted, "nextcloud.sync.propagator.upload.encrypted", QtInfoMsg)
 
-PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item)
-: _propagator(propagator),
- _item(item),
- _metadata(nullptr)
+PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item)
+    : _propagator(propagator)
+    , _remoteParentPath(remoteParentPath)
+    , _item(item)
+    , _metadata(nullptr)
 {
 }
 
@@ -38,9 +39,7 @@ void PropagateUploadEncrypted::start()
       * If the folder is unencrypted we just follow the old way.
       */
       qCDebug(lcPropagateUploadEncrypted) << "Starting to send an encrypted file!";
-      QFileInfo info(_item->_file);
-      auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(),
-                                                           info.path());
+      auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), _remoteParentPath);
 
       connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
               this, &PropagateUploadEncrypted::slotFolderEncryptedStatusFetched);
@@ -157,8 +156,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
       encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
   }
 
-  _item->_encryptedFileName = _item->_file.section(QLatin1Char('/'), 0, -2)
-          + QLatin1Char('/') + encryptedFile.encryptedFilename;
+  _item->_encryptedFileName = _remoteParentPath + QLatin1Char('/') + encryptedFile.encryptedFilename;
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 
@@ -219,7 +217,7 @@ void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileI
     qCDebug(lcPropagateUploadEncrypted) << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
     qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actuall uploader will take over";
     emit finalized(outputInfo.path() + QLatin1Char('/') + outputInfo.fileName(),
-                   _item->_file.section(QLatin1Char('/'), 0, -2) + QLatin1Char('/') + outputInfo.fileName(),
+                   _remoteParentPath + QLatin1Char('/') + outputInfo.fileName(),
                    outputInfo.size());
 }
 
