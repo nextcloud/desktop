@@ -14,6 +14,7 @@ Summary
 * Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
 * Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
+* Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
 
 Details
 -------
@@ -56,6 +57,12 @@ Details
    the client.
 
    https://github.com/owncloud/client/pull/7681
+
+* Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
+
+   With the support of the TUS protocol we are now able to easily and reliably upload files to ocis.
+
+   https://github.com/owncloud/product/issues/19
 
 Changelog for ownCloud Desktop Client [2.6.3] (2020-06-10)
 =======================================
