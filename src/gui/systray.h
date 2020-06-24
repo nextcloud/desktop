@@ -90,7 +90,7 @@ private:
 
     bool _isOpen = false;
     bool _syncIsPaused = false;
-    QQmlApplicationEngine *_trayEngine = nullptr;
+    QPointer<QQmlApplicationEngine> _trayEngine;
 };
 
 } // namespace OCC
