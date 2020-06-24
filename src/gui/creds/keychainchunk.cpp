@@ -202,8 +202,25 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
             }
 #endif
         } else {
-            if (readJob->error() != QKeychain::Error::EntryNotFound ||
-                ((readJob->error() == QKeychain::Error::EntryNotFound) && _chunkCount == 0)) {
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+            if (!readJob->insecureFallback()) { // If insecureFallback is set, the next test would be pointless
+                if (_retryOnKeyChainError && (readJob->error() == QKeychain::NoBackendAvailable
+                        || readJob->error() == QKeychain::OtherError)) {
+                    // Could be that the backend was not yet available. Wait some extra seconds.
+                    // (Issues #4274 and #6522)
+                    // (For kwallet, the error is OtherError instead of NoBackendAvailable, maybe a bug in QtKeychain)
+                    qCInfo(lcKeychainChunk) << "Backend unavailable (yet?) Retrying in a few seconds." << readJob->errorString();
+                    QTimer::singleShot(10000, this, &ReadJob::start);
+                    _retryOnKeyChainError = false;
+                    readJob->deleteLater();
+                    return;
+                }
+                _retryOnKeyChainError = false;
+            }
+#endif
+
+            if (readJob->error() != QKeychain::EntryNotFound ||
+                ((readJob->error() == QKeychain::EntryNotFound) && _chunkCount == 0)) {
                 _error = readJob->error();
                 _errorString = readJob->errorString();
                 qCWarning(lcKeychainChunk) << "Unable to read" << readJob->key() << "chunk" << QString::number(_chunkCount) << readJob->errorString();

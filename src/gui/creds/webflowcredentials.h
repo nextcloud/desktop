@@ -122,7 +122,6 @@ protected:
     bool _ready = false;
     bool _credentialsValid = false;
     bool _keychainMigration = false;
-    bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
     WebFlowCredentialsDialog *_askDialog = nullptr;
 };

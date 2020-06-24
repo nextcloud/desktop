@@ -450,21 +450,6 @@ void WebFlowCredentials::fetchFromKeychainHelper() {
 
 void WebFlowCredentials::slotReadClientCertPEMJobDone(KeychainChunk::ReadJob *readJob)
 {
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-    Q_ASSERT(!readJob->insecureFallback()); // If insecureFallback is set, the next test would be pointless
-    if (_retryOnKeyChainError && (readJob->error() == QKeychain::NoBackendAvailable
-            || readJob->error() == QKeychain::OtherError)) {
-        // Could be that the backend was not yet available. Wait some extra seconds.
-        // (Issues #4274 and #6522)
-        // (For kwallet, the error is OtherError instead of NoBackendAvailable, maybe a bug in QtKeychain)
-        qCInfo(lcWebFlowCredentials) << "Backend unavailable (yet?) Retrying in a few seconds." << readJob->errorString();
-        QTimer::singleShot(10000, this, &WebFlowCredentials::fetchFromKeychainHelper);
-        _retryOnKeyChainError = false;
-        return;
-    }
-    _retryOnKeyChainError = false;
-#endif
-
     // Store PEM in memory
     if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
         QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(readJob->binaryData(), QSsl::Pem);
