@@ -49,6 +49,7 @@ public:
     enum class TaskBarPosition { Bottom, Left, Top, Right };
     Q_ENUM(TaskBarPosition);
 
+    void setTrayEngine(QQmlApplicationEngine *trayEngine);
     void create();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
     void setToolTip(const QString &tip);
@@ -89,7 +90,7 @@ private:
 
     bool _isOpen = false;
     bool _syncIsPaused = false;
-    QQmlApplicationEngine *_trayEngine;
+    QQmlApplicationEngine *_trayEngine = nullptr;
 };
 
 } // namespace OCC
