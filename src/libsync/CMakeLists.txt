@@ -1,11 +1,3 @@
-if ( APPLE )
-    list(APPEND OS_SPECIFIC_LINK_LIBRARIES
-         /System/Library/Frameworks/CoreServices.framework
-         /System/Library/Frameworks/Foundation.framework
-         /System/Library/Frameworks/AppKit.framework
-    )
-endif()
-
 set(libsync_SRCS
     account.cpp
     bandwidthmanager.cpp
@@ -112,10 +104,17 @@ ENDIF(NOT APPLE)
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
 target_link_libraries(${synclib_NAME} PUBLIC
     "${csync_NAME}"
-    ${OS_SPECIFIC_LINK_LIBRARIES}
     Qt5::Core Qt5::Network
     zsync
 )
+
+if ( APPLE )
+    target_link_libraries(${synclib_NAME} PUBLIC
+         /System/Library/Frameworks/CoreServices.framework
+         /System/Library/Frameworks/Foundation.framework
+         /System/Library/Frameworks/AppKit.framework
+    )
+endif()
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt5 REQUIRED COMPONENTS Widgets)

@@ -1,45 +1,19 @@
-include_directories(${CMAKE_SOURCE_DIR}/src
-                    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
-                    ${CMAKE_SOURCE_DIR}/src/3rdparty/zsync/c
-                    ${CMAKE_SOURCE_DIR}/src/csync
-                    ${CMAKE_SOURCE_DIR}/src/csync/std
-                    ${CMAKE_SOURCE_DIR}/src/gui
-                    ${CMAKE_SOURCE_DIR}/src/libsync
-                    ${CMAKE_BINARY_DIR}/src/csync
-                    ${CMAKE_BINARY_DIR}/src/libsync
-                    ${CMAKE_CURRENT_SOURCE_DIR}
-                    ${CMAKE_CURRENT_BINARY_DIR}
-                   )
-
 include(owncloud_add_test.cmake)
 
-owncloud_add_test(OwncloudPropagator "")
-owncloud_add_test(Updater "")
+owncloud_add_test(OwncloudPropagator)
+owncloud_add_test(Updater)
 
-SET(FolderWatcher_SRC ../src/gui/folderwatcher.cpp)
+owncloud_add_test(OwnSql)
+owncloud_add_test(SyncJournalDB)
+owncloud_add_test(SyncFileItem)
+owncloud_add_test(ConcatUrl)
+owncloud_add_test(Cookies)
+owncloud_add_test(XmlParse)
+owncloud_add_test(ChecksumValidator)
 
-IF( NOT WIN32 AND NOT APPLE )
-list(APPEND FolderWatcher_SRC  ../src/gui/folderwatcher_linux.cpp)
-ENDIF()
-IF( WIN32 )
-list(APPEND  FolderWatcher_SRC ../src/gui/folderwatcher_win.cpp)
-ENDIF()
-IF( APPLE )
-list(APPEND FolderWatcher_SRC ../src/gui/folderwatcher_mac.cpp)
-list(APPEND FolderWatcher_SRC ../src/gui/socketapisocket_mac.mm)
-ENDIF()
-owncloud_add_test(NetrcParser ../src/cmd/netrcparser.cpp)
-owncloud_add_test(OwnSql "")
-owncloud_add_test(SyncJournalDB "")
-owncloud_add_test(SyncFileItem "")
-owncloud_add_test(ConcatUrl "")
-owncloud_add_test(Cookies "")
-owncloud_add_test(XmlParse "")
-owncloud_add_test(ChecksumValidator "")
+owncloud_add_test(ExcludedFiles)
 
-owncloud_add_test(ExcludedFiles "")
-
-owncloud_add_test(Utility "")
+owncloud_add_test(Utility)
 owncloud_add_test(SyncEngine "syncenginetestutils.h")
 owncloud_add_test(SyncVirtualFiles "syncenginetestutils.h")
 owncloud_add_test(SyncMove "syncenginetestutils.h")
@@ -61,29 +35,17 @@ owncloud_add_test(DatabaseError "syncenginetestutils.h")
 # For unknown reasons the DatabaseErrorTest occasionally aborts during drone execution
 set_tests_properties(DatabaseErrorTest PROPERTIES LABELS "nodrone" )
 
-owncloud_add_test(LockedFiles "syncenginetestutils.h;../src/gui/lockwatcher.cpp")
+owncloud_add_test(LockedFiles "syncenginetestutils.h")
 
-owncloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
+owncloud_add_test(FolderWatcher)
 
 if( UNIX AND NOT APPLE )
-    owncloud_add_test(InotifyWatcher "${FolderWatcher_SRC}")
+    owncloud_add_test(InotifyWatcher)
 endif(UNIX AND NOT APPLE)
 
 owncloud_add_benchmark(LargeSync "syncenginetestutils.h")
 
-SET(FolderMan_SRC ../src/gui/folderman.cpp)
-list(APPEND FolderMan_SRC ../src/gui/folder.cpp )
-list(APPEND FolderMan_SRC ../src/gui/socketapi.cpp )
-list(APPEND FolderMan_SRC ../src/gui/accountstate.cpp )
-list(APPEND FolderMan_SRC ../src/gui/syncrunfilelog.cpp )
-list(APPEND FolderMan_SRC ../src/gui/lockwatcher.cpp )
-list(APPEND FolderMan_SRC ../src/gui/guiutility.cpp )
-list(APPEND FolderMan_SRC ../src/gui/navigationpanehelper.cpp )
-list(APPEND FolderMan_SRC ../src/gui/connectionvalidator.cpp )
-list(APPEND FolderMan_SRC ../src/gui/clientproxy.cpp )
-list(APPEND FolderMan_SRC ${FolderWatcher_SRC})
-list(APPEND FolderMan_SRC stub.cpp )
-owncloud_add_test(FolderMan "${FolderMan_SRC}")
+owncloud_add_test(FolderMan)
 
 owncloud_add_test(OAuth "syncenginetestutils.h")
 

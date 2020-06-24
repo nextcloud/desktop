@@ -2,17 +2,14 @@ find_package(Qt5 COMPONENTS Core Test Xml Network REQUIRED)
 
 include(ECMAddTests)
 
-function(owncloud_add_test test_class additional_cpp)
+function(owncloud_add_test test_class)
     set(OWNCLOUD_TEST_CLASS ${test_class})
     string(TOLOWER "${OWNCLOUD_TEST_CLASS}" OWNCLOUD_TEST_CLASS_LOWERCASE)
-    list(APPEND additional_cpp test${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp)
 
-    ecm_add_test("${additional_cpp}"
+    ecm_add_test(test${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp ${ARGN}
         TEST_NAME "${OWNCLOUD_TEST_CLASS}Test"
         LINK_LIBRARIES
-        updater
-        ${APPLICATION_EXECUTABLE}sync
-        Qt5::Core Qt5::Test Qt5::Xml Qt5::Network
+        owncloudCore Qt5::Test
     )
 
     target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE OWNCLOUD_TEST OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")

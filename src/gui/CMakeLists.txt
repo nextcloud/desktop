@@ -161,23 +161,10 @@ if(Qt5LinguistTools_FOUND)
     qt5_add_translation(client_I18N ${TRANSLATIONS})
 endif()
 
-IF( WIN32 )
-    configure_file(
-      ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
-      ${CMAKE_CURRENT_BINARY_DIR}/version.rc
-      @ONLY)
-    set(client_version ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
-    IF(NOT MSVC)
-        set(client_manifest ${CMAKE_CURRENT_SOURCE_DIR}/manifest-mingw.rc)
-    ENDIF()
-ENDIF()
-
 set( final_src
     ${MIRALL_RC_SRC}
     ${client_SRCS}
     ${client_UI_SRCS}
-    ${client_version}
-    ${client_manifest}
     ${guiMoc}
     ${client_I18N}
     ${3rdparty_SRC}
@@ -197,11 +184,60 @@ if(APPLE)
 endif()
 ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
-add_executable(${APPLICATION_EXECUTABLE} main.cpp ${final_src})
+add_library(owncloudCore STATIC ${final_src})
+set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
+target_link_libraries(owncloudCore PUBLIC Qt5::Widgets Qt5::Network Qt5::Xml
+                                          ${synclib_NAME})
+
+add_library(updater STATIC ${updater_SRCS})
+target_link_libraries(updater ${synclib_NAME} ${updater_DEPS} Qt5::Widgets Qt5::Network Qt5::Xml)
+target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries( owncloudCore PUBLIC updater)
+
+target_include_directories(owncloudCore PUBLIC
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+## handle DBUS for Fdo notifications
+if( UNIX AND NOT APPLE )
+    find_package(Qt5 COMPONENTS DBus)
+    target_link_libraries(owncloudCore PUBLIC Qt5::DBus)
+    target_compile_definitions(owncloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
+endif()
+
+if (APPLE)
+    find_package(Qt5 COMPONENTS MacExtras)
+    target_link_libraries(owncloudCore PUBLIC Qt5::MacExtras)
+endif()
+
+if(WITH_CRASHREPORTER)
+    target_link_libraries(owncloudCore PUBLIC crashreporter-handler)
+
+    if(UNIX AND NOT MAC)
+        find_package(Threads REQUIRED)
+        target_link_libraries(owncloudCore PUBLIC ${CMAKE_THREAD_LIBS_INIT})
+    endif()
+endif()
+
+add_executable(${APPLICATION_EXECUTABLE} main.cpp)
 set_target_properties(${APPLICATION_EXECUTABLE} PROPERTIES AUTOUIC ON AUTORCC ON)
+target_link_libraries( ${APPLICATION_EXECUTABLE} owncloudCore )
 
 if(NOT APPLE)
-    if(NOT WIN32)
+    IF( WIN32 )
+        configure_file(
+          ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
+          ${CMAKE_CURRENT_BINARY_DIR}/version.rc
+          @ONLY)
+        target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+        IF(NOT MSVC)
+            target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/manifest-mingw.rc)
+        ENDIF()
+    else()
         file(GLOB _icons "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
         foreach(_file ${_icons})
             string(REPLACE "${theme_dir}/colored/" "" _res ${_file})
@@ -229,43 +265,6 @@ else()
       )
 
   set_target_properties(${APPLICATION_EXECUTABLE} PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist)
-endif()
-
-add_library(updater STATIC ${updater_SRCS})
-target_link_libraries(updater ${synclib_NAME} ${updater_DEPS} Qt5::Widgets Qt5::Network Qt5::Xml)
-target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-
-target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::Xml)
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
-target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
-
-target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-## handle DBUS for Fdo notifications
-if( UNIX AND NOT APPLE )
-    find_package(Qt5 COMPONENTS DBus)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::DBus)
-    target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "USE_FDO_NOTIFICATIONS")
-endif()
-
-if (APPLE)
-    find_package(Qt5 COMPONENTS MacExtras)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::MacExtras)
-endif()
-
-if(WITH_CRASHREPORTER)
-    target_link_libraries(${APPLICATION_EXECUTABLE} crashreporter-handler)
-
-    if(UNIX AND NOT MAC)
-        find_package(Threads REQUIRED)
-        target_link_libraries( ${APPLICATION_EXECUTABLE} ${CMAKE_THREAD_LIBS_INIT})
-    endif()
 endif()
 
 install(TARGETS ${APPLICATION_EXECUTABLE} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
