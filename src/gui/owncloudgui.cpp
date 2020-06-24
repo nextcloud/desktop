@@ -32,6 +32,7 @@
 #include "cloudproviders/cloudprovidermanager.h"
 #endif
 
+#include <QQmlApplicationEngine>
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
@@ -66,7 +67,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     , _app(parent)
 {
     _tray = Systray::instance();
-    _tray->setParent(this);
+    _tray->setTrayEngine(new QQmlApplicationEngine(this));
     // for the beginning, set the offline icon until the account was verified
     _tray->setIcon(Theme::instance()->folderOfflineIcon(/*systray?*/ true));
 
