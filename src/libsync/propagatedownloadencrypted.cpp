@@ -6,9 +6,11 @@ Q_LOGGING_CATEGORY(lcPropagateDownloadEncrypted, "nextcloud.sync.propagator.down
 
 namespace OCC {
 
-PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item) :
- _propagator(propagator), _item(item), _info(_item->_file)
-
+PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent)
+    : QObject(parent)
+    , _propagator(propagator)
+    , _item(item)
+    , _info(_item->_file)
 {
 }
 
