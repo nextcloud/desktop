@@ -1,13 +1,13 @@
 #include "webflowcredentials.h"
 
 #include "creds/httpcredentials.h"
+#include "creds/keychainchunk.h"
 
 #include <QAuthenticator>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QPointer>
 #include <QTimer>
-#include <keychain.h>
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QLabel>
@@ -18,7 +18,6 @@
 #include "theme.h"
 #include "wizard/webview.h"
 #include "webflowcredentialsdialog.h"
-#include "keychainchunk.h"
 
 using namespace QKeychain;
 

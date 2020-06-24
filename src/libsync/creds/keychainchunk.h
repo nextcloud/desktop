@@ -39,7 +39,8 @@ static constexpr int MaxChunks = 10;
 /*
  * @brief: Abstract base class for KeychainChunk jobs.
  */
-class Job : public QObject {
+class Job : public QObject
+{
     Q_OBJECT
 public:
     Job(QObject *parent = nullptr);
@@ -84,7 +85,8 @@ protected:
 /*
 * @brief: Simple wrapper class for QKeychain::WritePasswordJob, splits too large keychain entry's data into chunks on Windows
 */
-class WriteJob : public KeychainChunk::Job {
+class OWNCLOUDSYNC_EXPORT WriteJob : public KeychainChunk::Job
+{
     Q_OBJECT
 public:
     WriteJob(Account *account, const QString &key, const QByteArray &data, QObject *parent = nullptr);
@@ -100,7 +102,8 @@ private slots:
 /*
 * @brief: Simple wrapper class for QKeychain::ReadPasswordJob, splits too large keychain entry's data into chunks on Windows
 */
-class ReadJob : public KeychainChunk::Job {
+class OWNCLOUDSYNC_EXPORT ReadJob : public KeychainChunk::Job
+{
     Q_OBJECT
 public:
     ReadJob(Account *account, const QString &key, const bool &keychainMigration, QObject *parent = nullptr);
