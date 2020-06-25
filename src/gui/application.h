@@ -31,6 +31,7 @@
 #include "progressdispatcher.h"
 #include "clientproxy.h"
 #include "folderman.h"
+
 #if defined(Q_OS_MAC)
 #include "vfs_maccontroller.h"
 #endif
@@ -75,8 +76,8 @@ public:
 public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
-    void slotDeleteOnlineFiles();
     void slotCrash();
+	void slotDeleteOnlineFiles();
 	void slotMountVirtualDrive(AccountState *accountState);
 
 protected:
@@ -101,13 +102,11 @@ protected slots:
 
 private:
     void setHelp();
+	bool removeDirs(const QString& dirName);
 
     QPointer<ownCloudGui> _gui;
 
     Theme *_theme;
-    #if defined(Q_OS_MAC)
-        VfsMacController *cont;
-    #endif
 
     bool _helpOnly;
     bool _versionOnly;
@@ -129,7 +128,6 @@ private:
 
     QNetworkConfigurationManager _networkConfigurationManager;
     QTimer _checkConnectionTimer;
-	QTimer *_cronDeleteOnlineFiles; //< Variable for cron delete online files task
 
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;

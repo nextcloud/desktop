@@ -34,11 +34,13 @@
 #include "sharedialog.h"
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
+
+#if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
+#endif
+
 #include "owncloudsetupwizard.h"
 #include "version.h"
-
-#include "config.h"
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
@@ -52,10 +54,8 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
-#include <QProcess>
 #include <QDesktopServices>
-
-#include <openssl/crypto.h>
+#include <QGuiApplication>
 
 class QSocket;
 
@@ -67,8 +67,9 @@ namespace {
 
     static const char optionsC[] =
         "Options:\n"
-        "  -h --help            : show this help screen.\n"
-        "  --logwindow          : open a window to show log output.\n"
+        "  --help, -h           : show this help screen.\n"
+        "  --version, -v        : show version information.\n"
+        "  --logwindow, -l      : open a window to show log output.\n"
         "  --logfile <filename> : write log output to file <filename>.\n"
         "  --logdir <name>      : write each sync log output in a new file\n"
         "                         in folder <name>.\n"
@@ -247,9 +248,6 @@ Application::Application(int &argc, char **argv)
 
     foreach (auto ai, AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
-
-		if(configFile.enableVirtualFileSystem())
-			slotMountVirtualDrive(ai.data());
     }
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
@@ -266,15 +264,22 @@ Application::Application(int &argc, char **argv)
     connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
         this, &Application::slotSystemOnlineConfigurationChanged);
 
+#if defined(BUILD_UPDATER)
     // Update checks
-    UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
+    auto *updaterScheduler = new UpdaterScheduler(this);
     connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
         _gui.data(), &ownCloudGui::slotShowTrayMessage);
     connect(updaterScheduler, &UpdaterScheduler::requestRestart,
         _folderManager.data(), &FolderMan::slotScheduleAppRestart);
+#endif
 
     // Cleanup at Quit.
     connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
+
+    // Allow other classes to hook into isShowingSettingsDialog() signals (re-auth widgets, for example)
+    connect(_gui.data(), &ownCloudGui::isShowingSettingsDialog, this, &Application::slotGuiIsShowingSettings);
+
+    _gui->createTray();
 }
 
 Application::~Application()
@@ -301,23 +306,12 @@ Application::~Application()
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
-    /*
-	if (_cronDeleteOnlineFiles)
-    {
-        disconnect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
-        _cronDeleteOnlineFiles->stop();
-        delete _cronDeleteOnlineFiles;
-        _cronDeleteOnlineFiles = NULL;
-    }
-	*/
-
     if (_gui) {
         disconnect(accountState, &AccountState::stateChanged,
             _gui.data(), &ownCloudGui::slotAccountStateChanged);
         disconnect(accountState->account().data(), &Account::serverVersionChanged,
             _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
-
     if (_folderManager) {
         disconnect(accountState, &AccountState::stateChanged,
             _folderManager.data(), &FolderMan::slotAccountStateChanged);
@@ -345,49 +339,6 @@ void Application::slotAccountStateAdded(AccountState *accountState)
         _folderManager.data(), &FolderMan::slotServerVersionChanged);
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
-}
-
-void Application::slotMountVirtualDrive(AccountState *accountState) {
-    // Mount the virtual FileSystem.
-#if defined(Q_OS_MAC)
-    QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";
-    QString mountPath = "/Volumes/" + _theme->appName() + "fs";
-    VfsMacController::instance()->initialize(rootPath, mountPath, accountState);
-    VfsMacController::instance()->mount();
-#endif
-
-#if defined(Q_OS_WIN)
-	//FIXME
-	ConfigFile cfgFile;
-	QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
-	QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
-	QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
-	QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
-
-	if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
-		cfgFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/") 
-			+ Theme::instance()->appName());
-
-	if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
-		cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
-
-	if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
-		cfgFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
-
-	//FIXME
-	WCHAR mountLetter[260] = L"X:\\";
-	wcscpy(mountLetter, availableLogicalDrive.toStdWString().c_str());
-    VfsWindows::instance()->initialize(m_defaultFileStreamMirrorPath, *mountLetter, accountState);
-    VfsWindows::instance()->mount();
-#endif
-
-    //< For cron delete dir/files online. Execute each 60000 msec
-
-	//< Uncomment for test "Clean local folder" case.
- 	/*_cronDeleteOnlineFiles = new QTimer(this);
-	connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
-	_cronDeleteOnlineFiles->start(60000);
-	*/
 }
 
 void Application::slotCleanup()
@@ -461,7 +412,7 @@ void Application::slotownCloudWizardDone(int res)
             Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
         }
 
-        _gui->slotShowSettings();
+        Systray::instance()->showWindow();
     }
 }
 
@@ -495,14 +446,14 @@ void Application::slotParseMessage(const QString &msg, QObject *)
         QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
         parseOptions(options);
         setupLogging();
-    } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
+    } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
             // This call is mirrored with the one in int main()
-            qCWarning(lcApplication) << "Ignoring MSG_SHOWSETTINGS, possibly double-invocation of client via session restore and auto start";
+            qCWarning(lcApplication) << "Ignoring MSG_SHOWMAINDIALOG, possibly double-invocation of client via session restore and auto start";
             return;
         }
-        showSettingsDialog();
+        showMainDialog();
     }
 }
 
@@ -557,7 +508,7 @@ void Application::parseOptions(const QStringList &options)
             _debugMode = true;
         } else if (option == QLatin1String("--background")) {
             _backgroundMode = true;
-        } else if (option == QLatin1String("--version")) {
+        } else if (option == QLatin1String("--version") || option == QLatin1String("-v")) {
             _versionOnly = true;
         } else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
@@ -670,9 +621,9 @@ void Application::setupTranslations()
     if (!enforcedLocale.isEmpty())
         uiLanguages.prepend(enforcedLocale);
 
-    QTranslator *translator = new QTranslator(this);
-    QTranslator *qtTranslator = new QTranslator(this);
-    QTranslator *qtkeychainTranslator = new QTranslator(this);
+    auto *translator = new QTranslator(this);
+    auto *qtTranslator = new QTranslator(this);
+    auto *qtkeychainTranslator = new QTranslator(this);
 
     foreach (QString lang, uiLanguages) {
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
@@ -714,33 +665,24 @@ void Application::setupTranslations()
     }
 }
 
-bool removeDirs(const QString & dirName)
+bool Application::giveHelp()
 {
-    bool result = true;
-    QDir dir(dirName);
+    return _helpOnly;
+}
 
-    if (dir.exists(dirName)) {
-        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
-            if (info.isDir()) {
-                result = removeDirs(info.absoluteFilePath());
-            }
-            else {
-                result = QFile::remove(info.absoluteFilePath());
-                if (!result) {
-                    const QFile::Permissions permissions = QFile::permissions(info.absoluteFilePath());
-                    if (!(permissions & QFile::WriteUser)) {
-                        result = QFile::setPermissions(info.absoluteFilePath(), permissions | QFile::WriteUser) && QFile::remove(info.absoluteFilePath());
-                    }
-                }
-            }
+bool Application::versionOnly()
+{
+    return _versionOnly;
+}
 
-            if (!result) {
-                return result;
-            }
-        }
-        result = true;
-    }
-    return result;
+void Application::showMainDialog()
+{
+    _gui->slotOpenMainDialog();
+}
+
+void Application::slotGuiIsShowingSettings()
+{
+    emit isShowingSettingsDialog();
 }
 
 void Application::slotDeleteOnlineFiles()
@@ -827,19 +769,76 @@ void Application::slotDeleteOnlineFiles()
 
 }
 
-bool Application::giveHelp()
-{
-    return _helpOnly;
+void Application::slotMountVirtualDrive(AccountState *accountState) {
+    // Mount the virtual FileSystem.
+#if defined(Q_OS_MAC)
+    QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";
+    QString mountPath = "/Volumes/" + _theme->appName() + "fs";
+    VfsMacController::instance()->initialize(rootPath, mountPath, accountState);
+    VfsMacController::instance()->mount();
+#endif
+
+#if defined(Q_OS_WIN)
+	//FIXME
+	ConfigFile cfgFile;
+	QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+	QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+	QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
+	QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
+
+	if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
+		cfgFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/") 
+			+ Theme::instance()->appName());
+
+	if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
+		cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
+
+	if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
+		cfgFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
+
+	//FIXME
+	WCHAR mountLetter[260] = L"X:\\";
+	wcscpy(mountLetter, availableLogicalDrive.toStdWString().c_str());
+    VfsWindows::instance()->initialize(m_defaultFileStreamMirrorPath, *mountLetter, accountState);
+    VfsWindows::instance()->mount();
+#endif
+
+    //< For cron delete dir/files online. Execute each 60000 msec
+
+	//< Uncomment for test "Clean local folder" case.
+ 	/*_cronDeleteOnlineFiles = new QTimer(this);
+	connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
+	_cronDeleteOnlineFiles->start(60000);
+	*/
 }
 
-bool Application::versionOnly()
+bool Application::removeDirs(const QString & dirName)
 {
-    return _versionOnly;
-}
+    bool result = true;
+    QDir dir(dirName);
 
-void Application::showSettingsDialog()
-{
-    _gui->slotShowSettings();
+    if (dir.exists(dirName)) {
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isDir()) {
+                result = removeDirs(info.absoluteFilePath());
+            }
+            else {
+                result = QFile::remove(info.absoluteFilePath());
+                if (!result) {
+                    const QFile::Permissions permissions = QFile::permissions(info.absoluteFilePath());
+                    if (!(permissions & QFile::WriteUser)) {
+                        result = QFile::setPermissions(info.absoluteFilePath(), permissions | QFile::WriteUser) && QFile::remove(info.absoluteFilePath());
+                    }
+                }
+            }
+
+            if (!result) {
+                return result;
+            }
+        }
+        result = true;
+    }
+    return result;
 }
 
 } // namespace OCC
