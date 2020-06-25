@@ -29,23 +29,21 @@ class HttpCredentialsGui : public HttpCredentials
 {
     Q_OBJECT
 public:
-    explicit HttpCredentialsGui()
-        : HttpCredentials()
+    explicit HttpCredentialsGui(DetermineAuthTypeJob::AuthType authType)
+        : HttpCredentials(authType)
     {
     }
 
     HttpCredentialsGui(const QString &user, const QString &password,
             const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
-        : HttpCredentials(user, password, clientCertBundle, clientCertPassword)
+        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password, clientCertBundle, clientCertPassword)
     {
-        _authType = DetermineAuthTypeJob::AuthType::Basic;
     }
 
     HttpCredentialsGui(const QString &user, const QString &password, const QString &refreshToken,
             const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
-        : HttpCredentials(user, password, clientCertBundle, clientCertPassword)
+        : HttpCredentials(DetermineAuthTypeJob::AuthType::OAuth, user, password, clientCertBundle, clientCertPassword)
     {
-        _authType = DetermineAuthTypeJob::AuthType::OAuth;
         _refreshToken = refreshToken;
     }
 

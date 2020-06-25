@@ -21,7 +21,7 @@ using namespace OCC;
 class HttpCredentialsTest : public HttpCredentials {
 public:
     HttpCredentialsTest(const QString& user, const QString& password)
-        : HttpCredentials(user, password)
+        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password)
     {}
 
     void askFromUser() override {

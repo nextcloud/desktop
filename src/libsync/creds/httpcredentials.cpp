@@ -115,7 +115,7 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 }
 
 // From wizard
-HttpCredentials::HttpCredentials(const QString &user, const QString &password, const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
+HttpCredentials::HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password, const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
     : _user(user)
     , _password(password)
     , _ready(true)
@@ -123,6 +123,7 @@ HttpCredentials::HttpCredentials(const QString &user, const QString &password, c
     , _clientCertPassword(clientCertPassword)
     , _keychainMigration(false)
     , _retryOnKeyChainError(false)
+    , _authType(authType)
 {
     if (!unpackClientCertBundle()) {
         ASSERT(false, "pkcs12 client cert bundle passed to HttpCredentials must be valid");

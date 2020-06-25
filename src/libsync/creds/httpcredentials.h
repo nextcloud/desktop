@@ -81,8 +81,11 @@ public:
     /// Don't add credentials if this is set on a QNetworkRequest
     static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
 
-    HttpCredentials() = default;
-    explicit HttpCredentials(const QString &user, const QString &password,
+    HttpCredentials(DetermineAuthTypeJob::AuthType authType)
+        : _authType(authType)
+    {
+    }
+    explicit HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password,
             const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
 
     QString authType() const override;

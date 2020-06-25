@@ -286,14 +286,15 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
-    QString authTypePrefix = "http_";
+    const QString authTypePrefix = QStringLiteral("http_");
     Q_FOREACH (QString key, settings.childKeys()) {
         if (!key.startsWith(authTypePrefix))
             continue;
         acc->_settingsMap.insert(key, settings.value(key));
     }
-
-    acc->setCredentials(new HttpCredentialsGui);
+    DetermineAuthTypeJob::AuthType authType = settings.value(QStringLiteral("http_oauth"), false).toBool() ?
+                DetermineAuthTypeJob::AuthType::OAuth : DetermineAuthTypeJob::AuthType::Basic;
+    acc->setCredentials(new HttpCredentialsGui(authType));
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String("General"));
