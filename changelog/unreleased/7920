@@ -1,0 +1,5 @@
+Change: The layout in the advanced account setup page might be broken
+
+We changed the way the elements are layed out
+
+https://github.com/owncloud/client/issues/7920
