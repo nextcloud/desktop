@@ -72,13 +72,13 @@ void OwncloudOAuthCredsPage::initializePage()
     _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
     _asyncAuth->startAuthentication();
-    wizard()->hide();
+    wizard()->showMinimized();
 }
 
 void OCC::OwncloudOAuthCredsPage::cleanupPage()
 {
     // The next or back button was activated, show the wizard again
-    wizard()->show();
+    wizard()->showNormal();
     _asyncAuth.reset();
 }
 
@@ -96,7 +96,7 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
     case OAuth::Error:
         /* Error while getting the access token.  (Timeout, or the server did not accept our client credentials */
         _ui.errorLabel->show();
-        wizard()->show();
+        wizard()->showNormal();
         break;
     case OAuth::LoggedIn: {
         _token = token;
@@ -117,7 +117,7 @@ int OwncloudOAuthCredsPage::nextId() const
 
 void OwncloudOAuthCredsPage::setConnected()
 {
-    wizard()->show();
+    wizard()->showNormal();
 }
 
 AbstractCredentials *OwncloudOAuthCredsPage::getCredentials() const
