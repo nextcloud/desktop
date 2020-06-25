@@ -248,6 +248,9 @@ Application::Application(int &argc, char **argv)
 
     foreach (auto ai, AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
+
+		if(configFile.enableVirtualFileSystem())
+			slotMountVirtualDrive(ai.data());
     }
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
@@ -798,6 +801,7 @@ void Application::slotMountVirtualDrive(AccountState *accountState) {
 
 	//FIXME
 	WCHAR mountLetter[260] = L"X:\\";
+	qDebug() << Q_FUNC_INFO << availableLogicalDrive;
 	wcscpy(mountLetter, availableLogicalDrive.toStdWString().c_str());
     VfsWindows::instance()->initialize(m_defaultFileStreamMirrorPath, *mountLetter, accountState);
     VfsWindows::instance()->mount();
