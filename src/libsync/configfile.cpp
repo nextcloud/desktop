@@ -20,6 +20,7 @@
 #include "common/asserts.h"
 
 #include "creds/abstractcredentials.h"
+#include "creds/keychainchunk.h"
 
 #include "csync_exclude.h"
 
@@ -651,7 +652,23 @@ void ConfigFile::setProxyType(int proxyType,
         settings.setValue(QLatin1String(proxyPortC), port);
         settings.setValue(QLatin1String(proxyNeedsAuthC), needsAuth);
         settings.setValue(QLatin1String(proxyUserC), user);
-        settings.setValue(QLatin1String(proxyPassC), pass.toUtf8().toBase64());
+
+        if (pass.isEmpty()) {
+            settings.remove(QLatin1String(proxyPassC));
+
+            auto *job = new QKeychain::DeletePasswordJob(Theme::instance()->appName());
+            job->setInsecureFallback(false);
+            job->setKey(keychainProxyPasswordKey());
+            job->setAutoDelete(true);
+            job->start();
+        } else {
+            // Write password to keychain
+            auto *job = new KeychainChunk::WriteJob(keychainProxyPasswordKey(), pass.toUtf8());
+            if (job->startAwait()) {
+                settings.remove(QLatin1String(proxyPassC));
+            }
+            job->deleteLater();
+        }
     }
     settings.sync();
 }
@@ -726,8 +743,36 @@ QString ConfigFile::proxyUser() const
 
 QString ConfigFile::proxyPassword() const
 {
-    QByteArray pass = getValue(proxyPassC).toByteArray();
-    return QString::fromUtf8(QByteArray::fromBase64(pass));
+    QByteArray passEncoded = getValue(proxyPassC).toByteArray();
+    auto pass = QString::fromUtf8(QByteArray::fromBase64(passEncoded));
+    passEncoded.clear();
+
+    const auto key = keychainProxyPasswordKey();
+
+    if (!pass.isEmpty()) {
+        // Security: Migrate password from config file to keychain
+        auto *job = new KeychainChunk::WriteJob(key, pass.toUtf8());
+        if (job->startAwait()) {
+            QSettings settings(configFile(), QSettings::IniFormat);
+            settings.remove(QLatin1String(proxyPassC));
+            qCInfo(lcConfigFile()) << "Migrated proxy password to keychain for" << key;
+        }
+        job->deleteLater();
+    } else {
+        // Read password from keychain
+        auto *job = new KeychainChunk::ReadJob(key);
+        if (job->startAwait()) {
+            pass = job->textData();
+        }
+        job->deleteLater();
+    }
+
+    return pass;
+}
+
+QString ConfigFile::keychainProxyPasswordKey() const
+{
+    return QString::fromLatin1("proxy-password");
 }
 
 int ConfigFile::useUploadLimit() const
