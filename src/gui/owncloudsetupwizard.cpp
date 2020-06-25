@@ -33,14 +33,15 @@
 #include "clientproxy.h"
 #include "filesystem.h"
 #include "owncloudgui.h"
+#include "settingsdialog.h"
 
 #include "creds/dummycredentials.h"
 
 namespace OCC {
 
-OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent)
+OwncloudSetupWizard::OwncloudSetupWizard(QWidget *parent)
     : QObject(parent)
-    , _ocWizard(new OwncloudWizard)
+    , _ocWizard(new OwncloudWizard(parent))
     , _remoteFolder()
 {
     connect(_ocWizard, &OwncloudWizard::determineAuthType,

@@ -225,12 +225,7 @@ QString AccountSettings::selectedFolderAlias() const
 
 void AccountSettings::slotOpenAccountWizard()
 {
-    // We can't call isSystemTrayAvailable with appmenu-qt5 because it breaks the systemtray
-    // (issue #4693, #4944)
-    if (qgetenv("QT_QPA_PLATFORMTHEME") == "appmenu-qt5" || QSystemTrayIcon::isSystemTrayAvailable()) {
-        topLevelWidget()->close();
-    }
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), nullptr);
+    OwncloudSetupWizard::runWizard(qApp,  SLOT(slotownCloudWizardDone(int)), this);
 }
 
 void AccountSettings::slotToggleSignInState()

@@ -174,7 +174,6 @@ void OwncloudSetupPage::initializePage()
         // Hack: setCommitPage() changes caption, but after an error this page could still be visible
         setButtonText(QWizard::CommitButton, tr("&Next >"));
         validatePage();
-        setVisible(false);
     }
 }
 

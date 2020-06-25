@@ -63,6 +63,8 @@ public:
 
     void hideAndShowTray();
 
+    SettingsDialog *settingsDialog() const;
+
 signals:
     void setupProxy();
 

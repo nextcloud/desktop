@@ -41,6 +41,7 @@
 #include "version.h"
 #include "csync_exclude.h"
 #include "common/vfs.h"
+#include "settingsdialog.h"
 
 #include "config.h"
 
@@ -387,7 +388,7 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
     if (AccountManager::instance()->accounts().isEmpty()) {
         // allow to add a new account if there is non any more. Always think
         // about single account theming!
-        OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
+        OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)), _gui->settingsDialog());
     }
 }
 

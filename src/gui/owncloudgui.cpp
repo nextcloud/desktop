@@ -397,6 +397,11 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
     }
 }
 
+SettingsDialog *ownCloudGui::settingsDialog() const
+{
+    return _settingsDialog;
+}
+
 void ownCloudGui::slotContextMenuAboutToShow()
 {
     _contextMenuVisibleManual = true;
@@ -963,7 +968,7 @@ void ownCloudGui::slotPauseAllFolders()
 
 void ownCloudGui::slotNewAccountWizard()
 {
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
+    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), _settingsDialog);
 }
 
 void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
@@ -1050,28 +1055,28 @@ void ownCloudGui::slotHelp()
 
 void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 {
-    if (raiseWidget && !raiseWidget->parentWidget()) {
-        // Qt has a bug which causes parent-less dialogs to pop-under.
-        raiseWidget->showNormal();
-        raiseWidget->raise();
-        raiseWidget->activateWindow();
-#ifdef Q_OS_WIN
-        // Windows disallows raising a Window when you're not the active application.
-        // Use a common hack to attach to the active application
-        const auto activeProcessId = GetWindowThreadProcessId(GetForegroundWindow(), nullptr);
-        if (activeProcessId != qApp->applicationPid()) {
-            const auto threadId = GetCurrentThreadId();
-            // don't step here with a debugger...
-            if (AttachThreadInput(threadId, activeProcessId, true))
-            {
-                const auto hwnd = reinterpret_cast<HWND>(raiseWidget->winId());
-                SetForegroundWindow(hwnd);
-                SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
-                AttachThreadInput(threadId, activeProcessId, false);
-            }
+    auto window = raiseWidget->window();
+    Q_ASSERT(window);
+    window->showNormal();
+    window->raise();
+    window->activateWindow();
+
+#if defined(Q_OS_WIN)
+    // Windows disallows raising a Window when you're not the active application.
+    // Use a common hack to attach to the active application
+    const auto activeProcessId = GetWindowThreadProcessId(GetForegroundWindow(), nullptr);
+    if (activeProcessId != qApp->applicationPid()) {
+        const auto threadId = GetCurrentThreadId();
+        // don't step here with a debugger...
+        if (AttachThreadInput(threadId, activeProcessId, true))
+        {
+            const auto hwnd = reinterpret_cast<HWND>(window->winId());
+            SetForegroundWindow(hwnd);
+            SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+            AttachThreadInput(threadId, activeProcessId, false);
         }
-#endif
     }
+#endif
 }
 
 
