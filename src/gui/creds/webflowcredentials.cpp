@@ -598,11 +598,7 @@ void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
         job->setKey(keychainKey(_account->url().toString(),
                                 key,
                                 oldKeychainEntries ? QString() : _account->id()));
-
-        connect(job, &Job::finished, this, [](QKeychain::Job *job) {
-            auto *djob = qobject_cast<DeletePasswordJob *>(job);
-            djob->deleteLater();
-        });
+        job->setAutoDelete(true);
         job->start();
     };
 
