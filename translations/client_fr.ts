@@ -1247,7 +1247,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="546"/>
         <source>Add Sync Connection</source>
-        <translation>Ajouter une Synchronisation</translation>
+        <translation>Ajouter la synchronisation</translation>
     </message>
 </context>
 <context>
@@ -3428,7 +3428,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>Log de Synchronisation</translation>
+        <translation>Journal de synchronisation</translation>
     </message>
 </context>
 <context>
