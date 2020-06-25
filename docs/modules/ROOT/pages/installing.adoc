@@ -18,11 +18,11 @@ You will also find links to source code archives and older versions on the downl
 
 * Windows 7+
 * Mac OS X 10.10+ (64-bit only)
-* CentOS 6 & 7 & 8
-* Debian 8.0 & 9.0 & 10
-* Fedora 27 & 28 & 29 & 30 & 31
-* Ubuntu 18.04 & 19.04 & 19.10
-* openSUSE Leap 42.2 & 42.3 & 15.0 & 15.1 & 15.2
+* CentOS 7.6 & 8
+* Debian 9.0 & 10
+* Fedora 30 & 31 & 32
+* Ubuntu 18.04 & 19.04 & 19.10 & 20.04
+* openSUSE Leap 15.0 & 15.1 & 15.2
 
 NOTE: For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous Ubuntu https://wiki.ubuntu.com/LTS[LTS].
 
