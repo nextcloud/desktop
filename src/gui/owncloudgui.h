@@ -20,7 +20,6 @@
 #include "progressdispatcher.h"
 
 #include <QObject>
-#include <QSignalMapper>
 #include <QPointer>
 #include <QAction>
 #include <QMenu>
@@ -35,12 +34,10 @@ namespace OCC {
 class Folder;
 
 class SettingsDialog;
-class SettingsDialogMac;
 class ShareDialog;
 class Application;
 class LogBrowser;
 class AccountState;
-class QuotaInfo;
 
 enum class ShareDialogStartPage {
     UsersAndGroups,
@@ -60,48 +57,41 @@ public:
     bool checkAccountExists(bool openSettings);
 
     static void raiseDialog(QWidget *raiseWidget);
-    static QSize settingsDialogSize() { return QSize(800, 500); }
+    static QSize settingsDialogSize() { return {800, 500}; }
     void setupOverlayIcons();
 #ifdef WITH_LIBCLOUDPROVIDERS
     void setupCloudProviders();
     bool cloudProviderApiAvailable();
 #endif
-
-    /// Whether the tray menu is visible
-    bool contextMenuVisible() const;
+    void createTray();
 
 signals:
     void setupProxy();
     void serverError(int code, const QString &message);
+    void isShowingSettingsDialog();
 
 public slots:
-    void setupContextMenu();
-    void updateContextMenu();
-    void updateContextMenuNeeded();
-    void slotContextMenuAboutToShow();
-    void slotContextMenuAboutToHide();
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction(const QString &alias);
-    void slotRebuildRecentMenus();
     void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
     void slotShowSettings();
     void slotShowSyncProtocol();
     void slotShutdown();
-    void slotSyncStateChange(Folder *folder);
+    void slotSyncStateChange(Folder *);
     void slotTrayClicked(QSystemTrayIcon::ActivationReason reason);
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
     void slotOpenSettingsDialog();
+    void slotOpenMainDialog();
+    void slotSettingsDialogActivated();
     void slotHelp();
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(Account *account);
-    void slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode);
-    void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
 
 
     /**
@@ -115,9 +105,6 @@ public slots:
 
     void slotRemoveDestroyedShareDialogs();
 
-protected slots:
-    void slotOcsError(int statusCode, const QString &message);
-
 private slots:
     void slotLogin();
     void slotLogout();
@@ -127,73 +114,24 @@ private slots:
 
 private:
     void setPauseOnAllFoldersHelper(bool pause);
-    void setupActions();
-    void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
-    void fetchNavigationApps(AccountStatePtr account);
-    void buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;
-#if defined(Q_OS_MAC)
-    QPointer<SettingsDialogMac> _settingsDialog;
-#else
     QPointer<SettingsDialog> _settingsDialog;
-#endif
     QPointer<LogBrowser> _logBrowser;
-    // tray's menu
-    QScopedPointer<QMenu> _contextMenu;
-
-    // Manually tracking whether the context menu is visible via aboutToShow
-    // and aboutToHide. Unfortunately aboutToHide isn't reliable everywhere
-    // so this only gets used with _workaroundManualVisibility (when the tray's
-    // isVisible() is unreliable)
-    bool _contextMenuVisibleManual = false;
 
 #ifdef WITH_LIBCLOUDPROVIDERS
     QDBusConnection _bus;
 #endif
 
-    QMenu *_recentActionsMenu;
-    QVector<QMenu *> _accountMenus;
-    bool _workaroundShowAndHideTray = false;
-    bool _workaroundNoAboutToShowUpdate = false;
-    bool _workaroundFakeDoubleClick = false;
-    bool _workaroundManualVisibility = false;
-    QTimer _delayedTrayUpdateTimer;
     QMap<QString, QPointer<ShareDialog>> _shareDialogs;
 
     QAction *_actionNewAccountWizard;
     QAction *_actionSettings;
-    QAction *_actionStatus;
     QAction *_actionEstimate;
-    QAction *_actionRecent;
-    QAction *_actionHelp;
-    QAction *_actionQuit;
-    QAction *_actionCrash;
 
-    QMenu *_navLinksMenu;
-    QMap<AccountStatePtr, QJsonArray> _navApps;
 
     QList<QAction *> _recentItemsActions;
     Application *_app;
-};
-
-/**
-  * @brief Quota info menu item
-  * @ingroup gui
-  */
-class QuotaAction : public QObject {
-    Q_OBJECT
-public:
-    explicit QuotaAction(QAction *action, AccountStatePtr accountState);
-
-private slots:
-    void slotUpdateQuota(qint64, qint64);
-
-private:
-    AccountStatePtr _accountState;
-    QAction *_action;
-    QuotaInfo *_quotaInfo;
-
 };
 
 } // namespace OCC
