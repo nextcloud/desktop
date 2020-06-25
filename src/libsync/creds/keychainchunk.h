@@ -45,6 +45,8 @@ class Job : public QObject
 public:
     Job(QObject *parent = nullptr);
 
+    virtual ~Job();
+
     const QKeychain::Error error() const {
         return _error;
     }
@@ -53,6 +55,9 @@ public:
     }
 
     QByteArray binaryData() const {
+        return _chunkBuffer;
+    }
+    QString textData() const {
         return _chunkBuffer;
     }
 
@@ -74,6 +79,7 @@ protected:
     QString _key;
     bool _insecureFallback = false;
     bool _keychainMigration = false;
+    bool _isJobRunning = false;
 
     QKeychain::Error _error = QKeychain::NoError;
     QString _errorString;
@@ -90,7 +96,23 @@ class OWNCLOUDSYNC_EXPORT WriteJob : public KeychainChunk::Job
     Q_OBJECT
 public:
     WriteJob(Account *account, const QString &key, const QByteArray &data, QObject *parent = nullptr);
+    WriteJob(const QString &key, const QByteArray &data, QObject *parent = nullptr);
+
+    /**
+     * Call this method to start the job (async).
+     * You should connect some slot to the finished() signal first.
+     *
+     * @see QKeychain::Job::start()
+     */
     void start();
+
+    /**
+     * Call this method to start the job synchronously.
+     * Awaits completion with no need to connect some slot to the finished() signal first.
+     *
+     * @return Returns true on succeess (QKeychain::NoError).
+    */
+    bool startAwait();
 
 signals:
     void finished(KeychainChunk::WriteJob *incomingJob);
@@ -107,7 +129,23 @@ class OWNCLOUDSYNC_EXPORT ReadJob : public KeychainChunk::Job
     Q_OBJECT
 public:
     ReadJob(Account *account, const QString &key, const bool &keychainMigration, QObject *parent = nullptr);
+    ReadJob(const QString &key, QObject *parent = nullptr);
+
+    /**
+     * Call this method to start the job (async).
+     * You should connect some slot to the finished() signal first.
+     *
+     * @see QKeychain::Job::start()
+     */
     void start();
+
+    /**
+     * Call this method to start the job synchronously.
+     * Awaits completion with no need to connect some slot to the finished() signal first.
+     *
+     * @return Returns true on succeess (QKeychain::NoError).
+    */
+    bool startAwait();
 
 signals:
     void finished(KeychainChunk::ReadJob *incomingJob);
