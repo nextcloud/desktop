@@ -4,16 +4,6 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 add_subdirectory(updater)
 
-#TODO Move resources files
-set(MIRALL_RC_SRC ../../client.qrc)
-if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
-    list(APPEND MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
-    set(theme_dir ${OEM_THEME_DIR}/theme)
-else()
-    list(APPEND MIRALL_RC_SRC ../../theme.qrc)
-    set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
-endif()
-
 set(client_UI_SRCS
     accountsettings.ui
     folderwizardsourcepage.ui
@@ -155,34 +145,16 @@ else()
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_win.cpp )
 endif()
 
-
-find_package(Qt5LinguistTools)
-if(Qt5LinguistTools_FOUND)
-    qt5_add_translation(client_I18N ${TRANSLATIONS})
-endif()
-
 set( final_src
     ${MIRALL_RC_SRC}
     ${client_SRCS}
     ${client_UI_SRCS}
-    ${guiMoc}
-    ${client_I18N}
     ${3rdparty_SRC}
-    ${3rdparty_MOC}
 )
 
 if(TARGET qt5keychain)
     list(APPEND libsync_LINK_TARGETS qt5keychain)
 endif()
-
-# add executable icon on windows and osx
-
-file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
-if(APPLE)
-    file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
-    MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
-endif()
-ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
 add_library(owncloudCore STATIC ${final_src})
 set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
@@ -226,6 +198,34 @@ endif()
 add_executable(${APPLICATION_EXECUTABLE} main.cpp)
 set_target_properties(${APPLICATION_EXECUTABLE} PROPERTIES AUTOUIC ON AUTORCC ON)
 target_link_libraries( ${APPLICATION_EXECUTABLE} owncloudCore )
+
+
+find_package(Qt5LinguistTools)
+if(Qt5LinguistTools_FOUND)
+    qt5_add_translation(client_I18N ${TRANSLATIONS})
+    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${client_I18N})
+endif()
+
+#TODO Move resources files
+target_sources(${APPLICATION_EXECUTABLE} PRIVATE ../../client.qrc)
+if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
+    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${OEM_THEME_DIR}/theme.qrc)
+    set(theme_dir ${OEM_THEME_DIR}/theme)
+else()
+    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ../../theme.qrc)
+    set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
+endif()
+
+# add executable icon on windows and osx
+
+file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
+if(APPLE)
+    file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
+    MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
+endif()
+
+ecm_add_app_icon(appIcons ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
+target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${appIcons})
 
 if(NOT APPLE)
     IF( WIN32 )
