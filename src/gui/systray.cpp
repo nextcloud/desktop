@@ -23,6 +23,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickWindow>
 #include <QScreen>
 
 #ifdef USE_FDO_NOTIFICATIONS
@@ -170,6 +171,14 @@ void Systray::pauseResumeSync()
 /* Helper functions for cross-platform tray icon position and taskbar orientation detection */
 /********************************************************************************************/
 
+void Systray::positionWindow(QQuickWindow *window) const
+{
+    window->setScreen(currentScreen());
+
+    const auto position = computeWindowPosition(window->width(), window->height());
+    window->setPosition(position);
+}
+
 QScreen *Systray::currentScreen() const
 {
     const auto screens = QGuiApplication::screens();
@@ -182,13 +191,6 @@ QScreen *Systray::currentScreen() const
     }
 
     return nullptr;
-}
-
-int Systray::currentScreenIndex() const
-{
-    const auto screens = QGuiApplication::screens();
-    const auto screenIndex = screens.indexOf(currentScreen());
-    return screenIndex > 0 ? screenIndex : 0;
 }
 
 Systray::TaskBarPosition Systray::taskbarOrientation() const
