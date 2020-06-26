@@ -81,7 +81,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPixmap(QWizard::LogoPixmap, theme->wizardHeaderLogo());
     setOption(QWizard::NoBackButtonOnStartPage);
     setOption(QWizard::NoBackButtonOnLastPage);
-    setOption(QWizard::NoCancelButton);
+    setOption(QWizard::NoCancelButton, false);
+    setOption(QWizard::CancelButtonOnLeft);
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
 }
