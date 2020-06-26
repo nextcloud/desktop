@@ -87,7 +87,6 @@ class ProtocolWidget : public QWidget
 public:
     explicit ProtocolWidget(QWidget *parent = nullptr);
     ~ProtocolWidget() override;
-    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
 
     void storeSyncActivity(QTextStream &ts);
 

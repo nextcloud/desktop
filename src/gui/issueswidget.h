@@ -45,7 +45,6 @@ class IssuesWidget : public QWidget
 public:
     explicit IssuesWidget(QWidget *parent = nullptr);
     ~IssuesWidget() override;
-    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
 
     void storeSyncIssues(QTextStream &ts);
     void showFolderErrors(const QString &folderAlias);

@@ -55,8 +55,6 @@ class AccountSettings : public QWidget
 public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
-    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
-
 
 signals:
     void folderChanged();

@@ -122,11 +122,6 @@ GeneralSettings::~GeneralSettings()
     delete _syncLogDialog;
 }
 
-QSize GeneralSettings::sizeHint() const
-{
-    return QSize(ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height());
-}
-
 void GeneralSettings::loadMiscSettings()
 {
     QScopedValueRollback<bool> scope(_currentlyLoading, true);

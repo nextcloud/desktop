@@ -6,14 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>693</width>
-    <height>457</height>
+    <width>800</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Settings</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -26,10 +29,10 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <item row="1" column="0">
+   <item>
+    <widget class="QStackedWidget" name="stack"/>
+   </item>
+   <item>
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="leftMargin">
@@ -50,9 +53,6 @@
       </item>
      </layout>
     </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QStackedWidget" name="stack"/>
    </item>
   </layout>
  </widget>

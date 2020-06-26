@@ -90,10 +90,6 @@ NetworkSettings::~NetworkSettings()
     delete _ui;
 }
 
-QSize NetworkSettings::sizeHint() const
-{
-    return QSize(ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height());
-}
 
 void NetworkSettings::loadProxySettings()
 {
