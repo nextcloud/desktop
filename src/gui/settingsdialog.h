@@ -16,6 +16,7 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QMainWindow>
 #include <QStyledItemDelegate>
 
 #include "progressdispatcher.h"
@@ -43,7 +44,7 @@ class ActivitySettings;
  * @brief The SettingsDialog class
  * @ingroup gui
  */
-class SettingsDialog : public QDialog
+class SettingsDialog : public QMainWindow
 {
     Q_OBJECT
     Q_PROPERTY(QWidget* currentPage READ currentPage)
@@ -65,8 +66,6 @@ public slots:
     void slotAccountDisplayNameChanged();
 
 protected:
-    void reject() override;
-    void accept() override;
     void changeEvent(QEvent *) override;
     void setVisible(bool visible) override;
 
@@ -89,8 +88,6 @@ private:
     // Maps the action in the dialog to their according account. Needed in
     // case the account avatar changes
     QHash<Account *, QAction *> _actionForAccount;
-
-    QToolBar *_toolBar;
 
     ActivitySettings *_activitySettings;
 

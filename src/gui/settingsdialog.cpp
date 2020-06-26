@@ -84,21 +84,17 @@ QString shortDisplayNameForSettings(OCC::Account *account)
 namespace OCC {
 
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
-    : QDialog(parent, Qt::WindowFlags() & ~Qt::WindowContextHelpButtonHint)
+    : QMainWindow(parent, Qt::WindowFlags() & ~Qt::WindowContextHelpButtonHint)
     , _ui(new Ui::SettingsDialog)
     , _gui(gui)
 {
     ConfigFile cfg;
     _ui->setupUi(this);
-    _toolBar = new QToolBar;
-    _toolBar->setIconSize(QSize(32, 32));
-    _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    layout()->setMenuBar(_toolBar);
 
     // People perceive this as a Window, so also make Ctrl+W work
     QAction *closeWindowAction = new QAction(this);
     closeWindowAction->setShortcut(QKeySequence("Ctrl+W"));
-    connect(closeWindowAction, &QAction::triggered, this, &SettingsDialog::accept);
+    connect(closeWindowAction, &QAction::triggered, this, &SettingsDialog::hide);
     addAction(closeWindowAction);
 
     setObjectName("Settings"); // required as group for saveGeometry call
@@ -111,7 +107,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     // all buttons must have the same size in order to keep a good layout
     _activityAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
     _actionGroup->addAction(_activityAction);
-    _toolBar->addAction(_activityAction);
+    _ui->toolBar->addAction(_activityAction);
     _activitySettings = new ActivitySettings;
     _ui->stack->addWidget(_activitySettings);
     connect(_activitySettings, &ActivitySettings::guiLog, _gui,
@@ -120,20 +116,20 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
-    _toolBar->addAction(generalAction);
+    _ui->toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
     QObject::connect(generalSettings, &GeneralSettings::showAbout, gui, &ownCloudGui::slotAbout);
 
     QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
     _actionGroup->addAction(networkAction);
-    _toolBar->addAction(networkAction);
+    _ui->toolBar->addAction(networkAction);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
     QWidget *spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    _toolBar->addWidget(spacer);
+    _ui->toolBar->addWidget(spacer);
 
     QAction *quitAction = createColorAwareAction(QLatin1String(":/client/resources/quit.png"), tr("Quit %1").arg(qApp->applicationName()));
     quitAction->setCheckable(false);
@@ -145,7 +141,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
             qApp->quit();
         }
     });
-    _toolBar->addAction(quitAction);
+    _ui->toolBar->addAction(quitAction);
 
     _actionGroupWidgets.insert(_activityAction, _activitySettings);
     _actionGroupWidgets.insert(generalAction, generalSettings);
@@ -163,8 +159,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
-    QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
-    connect(closeButton, SIGNAL(clicked()), SLOT(accept()));
+    connect(_ui->hideButton, &QPushButton::click, &QMainWindow::hide);;
 
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
@@ -195,20 +190,6 @@ QWidget* SettingsDialog::currentPage()
     return _ui->stack->currentWidget();
 }
 
-// close event is not being called here
-void SettingsDialog::reject()
-{
-    ConfigFile cfg;
-    cfg.saveGeometry(this);
-    QDialog::reject();
-}
-
-void SettingsDialog::accept()
-{
-    ConfigFile cfg;
-    cfg.saveGeometry(this);
-    QDialog::accept();
-}
 
 void SettingsDialog::changeEvent(QEvent *e)
 {
@@ -222,11 +203,17 @@ void SettingsDialog::changeEvent(QEvent *e)
         break;
     }
 
-    QDialog::changeEvent(e);
+    QMainWindow::changeEvent(e);
 }
 
 void SettingsDialog::setVisible(bool visible)
 {
+    if (!visible)
+    {
+        ConfigFile cfg;
+        cfg.saveGeometry(this);
+    }
+
 #ifdef Q_OS_MAC
     if (visible) {
         setActivationPolicy(ActivationPolicy::Regular);
@@ -234,7 +221,7 @@ void SettingsDialog::setVisible(bool visible)
         setActivationPolicy(ActivationPolicy::Accessory);
     }
 #endif
-    QDialog::setVisible(visible);
+    QMainWindow::setVisible(visible);
 }
 
 void SettingsDialog::slotSwitchPage(QAction *action)
@@ -244,7 +231,7 @@ void SettingsDialog::slotSwitchPage(QAction *action)
 
 void SettingsDialog::showFirstPage()
 {
-    QList<QAction *> actions = _toolBar->actions();
+    QList<QAction *> actions = _ui->toolBar->actions();
     if (!actions.empty()) {
         actions.first()->trigger();
     }
@@ -284,7 +271,7 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data()));
     }
-    _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
+    _ui->toolBar->insertAction(_ui->toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
@@ -344,7 +331,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
             continue;
         }
         if (as->accountsState() == s) {
-            _toolBar->removeAction(it.key());
+            _ui->toolBar->removeAction(it.key());
 
             if (_ui->stack->currentWidget() == it.value()) {
                 showFirstPage();
@@ -369,12 +356,12 @@ void SettingsDialog::customizeStyle()
     QString highlightTextColor(palette().highlightedText().color().name());
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
-    _toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
+    _ui->toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
 
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
         QIcon icon = Utility::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
-        QToolButton *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
+        QToolButton *btn = qobject_cast<QToolButton *>(_ui->toolBar->widgetForAction(a));
         if (btn) {
             btn->setIcon(icon);
         }
