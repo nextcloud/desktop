@@ -17,15 +17,23 @@ defaults:
 
 jobs:
 # ------------------------------------------------------------------------------------------------------------------------------------------
-  build-windows:
-    name: Windows
-    runs-on: windows-latest
+  build:
+    name: Build ownCloud
+    runs-on: ${{ matrix.os }}
     strategy:
         matrix:
-            target: ["windows-msvc2017_32-cl", "windows-msvc2017_64-cl"]
+            include:
+            - target: windows-msvc2017_32-cl
+              os: windows-latest
+              python: py
+            - target: windows-msvc2017_64-cl
+              os: windows-latest
+              python: py
+            - target: macos-64-clang
+              os: macos-latest
+              python: python3
     env:
-      WORKSPACE: ${{ github.workspace }}
-      CRAFT: C:/CraftMaster/${{ matrix.target }}/craft/bin/craft.py
+      CRAFT: ${{ matrix.python }} "${{ github.workspace }}/CraftMaster/CraftMaster/CraftMaster.py" --config "${{ github.workspace }}/.craft.ini" --target ${{ matrix.target }} --variables "WORKSPACE=${{ github.workspace }}" -c
 
     steps:
     - name: Check out source code
@@ -35,38 +43,36 @@ jobs:
         submodules: true
 
     - name: Clone CraftMaster
-      run: git clone --depth=1 https://invent.kde.org/kde/craftmaster.git C:/CraftMaster/CraftMaster
-
-    - name: Configure CraftMaster
-      run: py C:/CraftMaster/CraftMaster/CraftMaster.py --config $env:WORKSPACE/.craft.ini --variables "WORKSPACE=$env:WORKSPACE"
+      run: git clone --depth=1 https://invent.kde.org/kde/craftmaster.git "${{ github.workspace }}/CraftMaster/CraftMaster"
 
     - name: Craft unshelve
-      run: py $env:CRAFT --unshelve $env:WORKSPACE/.craft.shelf
+      run:  Invoke-Expression "$env:CRAFT --unshelve `"${{ github.workspace }}/.craft.shelf`" "
 
     - name: Install NSIS
-      run: py $env:CRAFT dev-utils/nsis
+      run: Invoke-Expression "$env:CRAFT dev-utils/nsis"
 
     - name: Install dependencies
-      run: py $env:CRAFT --install-deps owncloud/owncloud-client
+      run: Invoke-Expression "$env:CRAFT --install-deps owncloud/owncloud-client"
 
     - name: Build
-      run: py $env:CRAFT --no-cache --src-dir $env:WORKSPACE owncloud/owncloud-client
+      run: Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" owncloud/owncloud-client"
 
     - name: Run tests
-      run: py $env:CRAFT --no-cache --src-dir $env:WORKSPACE --test owncloud/owncloud-client
+      run: Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --test owncloud/owncloud-client"
 
     - name: Package
-      run: py $env:CRAFT --no-cache --src-dir $env:WORKSPACE --package owncloud/owncloud-client
+      run: if ($IsWindows) { Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --package owncloud/owncloud-client" } else {Write-Host "Skip packaging on mac as the build gets stuck when mounting"}
 
     - name: Update shelf
       run: |
-        py $env:CRAFT --shelve $env:WORKSPACE/.craft.shelf
-        Copy-Item $env:WORKSPACE/.craft.shelf $env:WORKSPACE/binaries/
+        New-Item -ItemType Directory "${{ github.workspace }}/binaries/" -ErrorAction SilentlyContinue
+        Invoke-Expression "$env:CRAFT --shelve `"${{ github.workspace }}/.craft.shelf`" "
+        Copy-Item "${{ github.workspace }}/.craft.shelf" "${{ github.workspace }}/binaries/"
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Windows
+        name: ${{ matrix.os }} - ${{ matrix.target }}
         path: ${{ github.workspace }}/binaries/*
 
 
