@@ -1,0 +1,5 @@
+Change: The settings ui shows a prompt for a few seconds
+
+We now hide that prompt by default and only show it if needed.
+
+https://github.com/owncloud/client/pull/7925

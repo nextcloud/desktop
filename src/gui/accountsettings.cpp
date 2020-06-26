@@ -136,6 +136,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     ui->_folderList->setAttribute(Qt::WA_Hover, true);
     ui->_folderList->installEventFilter(mouseCursorChanger);
 
+    ui->selectiveSyncStatus->hide();
+
     createAccountToolbox();
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &AccountSettings::slotAccountAdded);
