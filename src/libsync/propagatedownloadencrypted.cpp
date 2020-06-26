@@ -6,9 +6,10 @@ Q_LOGGING_CATEGORY(lcPropagateDownloadEncrypted, "nextcloud.sync.propagator.down
 
 namespace OCC {
 
-PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent)
+PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propagator, const QString &localParentPath, SyncFileItemPtr item, QObject *parent)
     : QObject(parent)
     , _propagator(propagator)
+    , _localParentPath(localParentPath)
     , _item(item)
     , _info(_item->_file)
 {
@@ -89,7 +90,7 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
     if (encryptedFilename == file.encryptedFilename) {
       _encryptedInfo = file;
       _item->_encryptedFileName = _item->_file;
-      _item->_file = _item->_file.section(QLatin1Char('/'), 0, -2) + QLatin1Char('/') + _encryptedInfo.originalFilename;
+      _item->_file = _localParentPath + QLatin1Char('/') + _encryptedInfo.originalFilename;
 
       qCDebug(lcPropagateDownloadEncrypted) << "Found matching encrypted metadata for file, starting download";
       emit folderStatusEncrypted();

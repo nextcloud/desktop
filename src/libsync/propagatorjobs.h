@@ -71,6 +71,9 @@ public:
     void setDeleteExistingFile(bool enabled);
 
 private:
+    void startLocalMkdir();
+    void startDemanglingName(const QString &parentPath);
+
     bool _deleteExistingFile;
 };
 

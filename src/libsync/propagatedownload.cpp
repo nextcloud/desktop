@@ -343,8 +343,27 @@ void PropagateDownloadFile::start()
 
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
 
-    if (propagator()->account()->capabilities().clientSideEncryptionAvailable()) {
-        _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), _item, this);
+    const auto rootPath = [=]() {
+        const auto result = propagator()->_remoteFolder;
+        if (result.startsWith('/')) {
+            return result.mid(1);
+        } else {
+            return result;
+        }
+    }();
+    const auto remotePath = QString(rootPath + _item->_file);
+    const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
+
+    const auto account = propagator()->account();
+    if (!account->capabilities().clientSideEncryptionAvailable() ||
+        !account->e2e()->isFolderEncrypted(remoteParentPath + '/')) {
+        startAfterIsEncryptedIsChecked();
+    } else {
+        SyncJournalFileRecord parentRec;
+        propagator()->_journal->getFileRecordByE2eMangledName(remoteParentPath, &parentRec);
+        const auto parentPath = parentRec.isValid() ? parentRec._path : remoteParentPath;
+
+        _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, _item, this);
         connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusNotEncrypted, [this] {
           startAfterIsEncryptedIsChecked();
         });
@@ -357,8 +376,6 @@ void PropagateDownloadFile::start()
                tr("File %1 can not be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)));
         });
         _downloadEncryptedHelper->start();
-    } else {
-        startAfterIsEncryptedIsChecked();
     }
 }
 
@@ -503,7 +520,7 @@ void PropagateDownloadFile::startDownload()
     if (_item->_directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
         _job = new GETFileJob(propagator()->account(),
-            propagator()->_remoteFolder + _item->_file,
+            propagator()->_remoteFolder + (_isEncrypted ? _item->_encryptedFileName : _item->_file),
             &_tmpFile, headers, expectedEtagForResume, _resumeStart, this);
     } else {
         // We were provided a direct URL, use that one
