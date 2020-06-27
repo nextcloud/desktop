@@ -57,7 +57,6 @@ public slots:
         QAuthenticator *authenticator);
 
 private slots:
-    void slotKeychainJobDone();
     void slotSenderDestroyed(QObject *);
 
 private:
@@ -89,9 +88,8 @@ private:
     /// In several instances handleProxyAuthenticationRequired() can be called
     /// while it is still running. These counters detect what we're currently
     /// waiting for.
-    int _waitingForDialog;
-    int _waitingForKeychain;
-    bool _keychainJobRunning;
+    int _waitingForDialog = 0;
+    int _waitingForKeychain = 0;
 
     QPointer<ProxyAuthDialog> _dialog;
 
