@@ -39,6 +39,22 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 }
 #endif
 
+#ifdef Q_OS_WIN
+void jobKeyPrependAppName(QString &key)
+{
+    // NOTE: The following is normally done in AbstractCredentials::keychainKey
+    //       when an _account is specified by our other ctr overload (see 'kck' in this file).
+
+    // On Windows the credential keys aren't namespaced properly
+    // by qtkeychain. To work around that we manually add namespacing
+    // to the generated keys. See #6125.
+    // It's safe to do that since the key format is changing for 2.4
+    // anyway to include the account ids. That means old keys can be
+    // migrated to new namespaced keys on windows for 2.4.
+    key.prepend(QCoreApplication::applicationName() + "_");
+}
+#endif
+
 /*
 * Job
 */
@@ -73,32 +89,24 @@ WriteJob::WriteJob(const QString &key, const QByteArray &data, QObject *parent)
     : WriteJob(nullptr, key, data, parent)
 {
 #ifdef Q_OS_WIN
-    // NOTE: The following is normally done in AbstractCredentials::keychainKey
-    //       when an _account is specified by our other ctr overload (see 'kck' in this file).
-
-    // On Windows the credential keys aren't namespaced properly
-    // by qtkeychain. To work around that we manually add namespacing
-    // to the generated keys. See #6125.
-    // It's safe to do that since the key format is changing for 2.4
-    // anyway to include the account ids. That means old keys can be
-    // migrated to new namespaced keys on windows for 2.4.
-    _key.prepend(QCoreApplication::applicationName() + "_");
+    jobKeyPrependAppName(_key);
 #endif
 }
 
 void WriteJob::start()
 {
-    _isJobRunning = true;
+    _error = QKeychain::NoError;
+
     slotWriteJobDone(nullptr);
 }
 
-bool WriteJob::startAwait()
+bool WriteJob::exec()
 {
     start();
 
-    while (_isJobRunning) {
-        QApplication::processEvents(QEventLoop::AllEvents, 200);
-    }
+    QEventLoop waitLoop;
+    connect(this, &WriteJob::finished, &waitLoop, &QEventLoop::quit);
+    waitLoop.exec();
 
     if (error() != NoError) {
         qCWarning(lcKeychainChunk) << "WritePasswordJob failed with" << errorString();
@@ -147,8 +155,10 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 
             _chunkBuffer.clear();
 
-            _isJobRunning = false;
             emit finished(this);
+
+            if (_autoDelete)
+                deleteLater();
             return;
         }
 
@@ -159,7 +169,7 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
                 _account->id()
             ) : keyWithIndex;
 
-        auto *job = new QKeychain::WritePasswordJob(_serviceName);
+        auto *job = new QKeychain::WritePasswordJob(_serviceName, this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
         addSettingsToJob(_account, job);
 #endif
@@ -172,8 +182,10 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 
         chunk.clear();
     } else {
-        _isJobRunning = false;
         emit finished(this);
+
+        if (_autoDelete)
+            deleteLater();
     }
 
     writeJob->deleteLater();
@@ -198,16 +210,7 @@ ReadJob::ReadJob(const QString &key, QObject *parent)
     : ReadJob(nullptr, key, false, parent)
 {
 #ifdef Q_OS_WIN
-    // NOTE: The following is normally done in AbstractCredentials::keychainKey
-    //       when an _account is specified by our other ctr overload (see 'kck' in this file).
-
-    // On Windows the credential keys aren't namespaced properly
-    // by qtkeychain. To work around that we manually add namespacing
-    // to the generated keys. See #6125.
-    // It's safe to do that since the key format is changing for 2.4
-    // anyway to include the account ids. That means old keys can be
-    // migrated to new namespaced keys on windows for 2.4.
-    _key.prepend(QCoreApplication::applicationName() + "_");
+    jobKeyPrependAppName(_key);
 #endif
 }
 
@@ -215,6 +218,7 @@ void ReadJob::start()
 {
     _chunkCount = 0;
     _chunkBuffer.clear();
+    _error = QKeychain::NoError;
 
     const QString kck = _account ? AbstractCredentials::keychainKey(
             _account->url().toString(),
@@ -222,24 +226,23 @@ void ReadJob::start()
             _keychainMigration ? QString() : _account->id()
         ) : _key;
 
-    auto *job = new QKeychain::ReadPasswordJob(_serviceName);
+    auto *job = new QKeychain::ReadPasswordJob(_serviceName, this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
     addSettingsToJob(_account, job);
 #endif
     job->setInsecureFallback(_insecureFallback);
     job->setKey(kck);
     connect(job, &QKeychain::Job::finished, this, &KeychainChunk::ReadJob::slotReadJobDone);
-    _isJobRunning = true;
     job->start();
 }
 
-bool ReadJob::startAwait()
+bool ReadJob::exec()
 {
     start();
 
-    while (_isJobRunning) {
-        QApplication::processEvents(QEventLoop::AllEvents, 200);
-    }
+    QEventLoop waitLoop;
+    connect(this, &ReadJob::finished, &waitLoop, &QEventLoop::quit);
+    waitLoop.exec();
 
     if (error() == NoError) {
         return true;
@@ -273,7 +276,7 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
                         _keychainMigration ? QString() : _account->id()
                     ) : keyWithIndex;
 
-                QKeychain::ReadPasswordJob *job = new QKeychain::ReadPasswordJob(_serviceName);
+                QKeychain::ReadPasswordJob *job = new QKeychain::ReadPasswordJob(_serviceName, this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
                 addSettingsToJob(_account, job);
 #endif
@@ -317,8 +320,122 @@ void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
         readJob->deleteLater();
     }
 
-    _isJobRunning = false;
     emit finished(this);
+
+    if (_autoDelete)
+        deleteLater();
+}
+
+/*
+* DeleteJob
+*/
+DeleteJob::DeleteJob(Account *account, const QString &key, const bool &keychainMigration, QObject *parent)
+    : Job(parent)
+{
+    _account = account;
+    _key = key;
+
+    _keychainMigration = keychainMigration;
+}
+
+DeleteJob::DeleteJob(const QString &key, QObject *parent)
+    : DeleteJob(nullptr, key, false, parent)
+{
+#ifdef Q_OS_WIN
+    jobKeyPrependAppName(_key);
+#endif
+}
+
+void DeleteJob::start()
+{
+    _chunkCount = 0;
+    _error = QKeychain::NoError;
+
+    const QString kck = _account ? AbstractCredentials::keychainKey(
+            _account->url().toString(),
+            _key,
+            _keychainMigration ? QString() : _account->id()
+        ) : _key;
+
+    auto *job = new QKeychain::DeletePasswordJob(_serviceName, this);
+#if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
+    addSettingsToJob(_account, job);
+#endif
+    job->setInsecureFallback(_insecureFallback);
+    job->setKey(kck);
+    connect(job, &QKeychain::Job::finished, this, &KeychainChunk::DeleteJob::slotDeleteJobDone);
+    job->start();
+}
+
+bool DeleteJob::exec()
+{
+    start();
+
+    QEventLoop waitLoop;
+    connect(this, &DeleteJob::finished, &waitLoop, &QEventLoop::quit);
+    waitLoop.exec();
+
+    if (error() == NoError) {
+        return true;
+    }
+
+    _chunkCount = 0;
+    if (error() != EntryNotFound) {
+        qCWarning(lcKeychainChunk) << "DeletePasswordJob failed with" << errorString();
+    }
+    return false;
+}
+
+void DeleteJob::slotDeleteJobDone(QKeychain::Job *incomingJob)
+{
+    // Errors or next chunk?
+    auto *deleteJob = static_cast<QKeychain::DeletePasswordJob *>(incomingJob);
+
+    if (deleteJob) {
+        if (deleteJob->error() == NoError) {
+            _chunkCount++;
+
+#if defined(Q_OS_WIN)
+            // try to delete next chunk
+            if (_chunkCount < KeychainChunk::MaxChunks) {
+                const QString keyWithIndex = _key + QString(".") + QString::number(_chunkCount);
+                const QString kck = _account ? AbstractCredentials::keychainKey(
+                        _account->url().toString(),
+                        keyWithIndex,
+                        _keychainMigration ? QString() : _account->id()
+                    ) : keyWithIndex;
+
+                QKeychain::DeletePasswordJob *job = new QKeychain::DeletePasswordJob(_serviceName, this);
+#if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
+                addSettingsToJob(_account, job);
+#endif
+                job->setInsecureFallback(_insecureFallback);
+                job->setKey(kck);
+                connect(job, &QKeychain::Job::finished, this, &KeychainChunk::DeleteJob::slotDeleteJobDone);
+                job->start();
+
+                deleteJob->deleteLater();
+                return;
+            } else {
+                qCWarning(lcKeychainChunk) << "Maximum chunk count for" << deleteJob->key() << "reached, ignoring after" << KeychainChunk::MaxChunks;
+            }
+#endif
+        } else {
+            if (deleteJob->error() != QKeychain::EntryNotFound ||
+                ((deleteJob->error() == QKeychain::EntryNotFound) && _chunkCount == 0)) {
+                _error = deleteJob->error();
+                _errorString = deleteJob->errorString();
+                qCWarning(lcKeychainChunk) << "Unable to delete" << deleteJob->key() << "chunk" << QString::number(_chunkCount) << deleteJob->errorString();
+            }
+        }
+
+        deleteJob->deleteLater();
+    }
+
+    emit finished(this);
+
+    if (_autoDelete)
+        deleteLater();
 }
 
 } // namespace KeychainChunk
