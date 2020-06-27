@@ -654,20 +654,19 @@ void ConfigFile::setProxyType(int proxyType,
         settings.setValue(QLatin1String(proxyUserC), user);
 
         if (pass.isEmpty()) {
+            // Security: Don't keep password in config file
             settings.remove(QLatin1String(proxyPassC));
 
-            auto *job = new QKeychain::DeletePasswordJob(Theme::instance()->appName());
-            job->setInsecureFallback(false);
-            job->setKey(keychainProxyPasswordKey());
-            job->setAutoDelete(true);
-            job->start();
+            // Delete password from keychain
+            auto *job = new KeychainChunk::DeleteJob(keychainProxyPasswordKey());
+            job->exec();
         } else {
             // Write password to keychain
             auto *job = new KeychainChunk::WriteJob(keychainProxyPasswordKey(), pass.toUtf8());
-            if (job->startAwait()) {
+            if (job->exec()) {
+                // Security: Don't keep password in config file
                 settings.remove(QLatin1String(proxyPassC));
             }
-            job->deleteLater();
         }
     }
     settings.sync();
@@ -752,19 +751,17 @@ QString ConfigFile::proxyPassword() const
     if (!pass.isEmpty()) {
         // Security: Migrate password from config file to keychain
         auto *job = new KeychainChunk::WriteJob(key, pass.toUtf8());
-        if (job->startAwait()) {
+        if (job->exec()) {
             QSettings settings(configFile(), QSettings::IniFormat);
             settings.remove(QLatin1String(proxyPassC));
-            qCInfo(lcConfigFile()) << "Migrated proxy password to keychain for" << key;
+            qCInfo(lcConfigFile()) << "Migrated proxy password to keychain";
         }
-        job->deleteLater();
     } else {
         // Read password from keychain
         auto *job = new KeychainChunk::ReadJob(key);
-        if (job->startAwait()) {
+        if (job->exec()) {
             pass = job->textData();
         }
-        job->deleteLater();
     }
 
     return pass;
