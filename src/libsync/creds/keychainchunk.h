@@ -39,7 +39,7 @@ static constexpr int MaxChunks = 10;
 /*
  * @brief: Abstract base class for KeychainChunk jobs.
  */
-class Job : public QObject
+class OWNCLOUDSYNC_EXPORT Job : public QObject
 {
     Q_OBJECT
 public:
@@ -73,13 +73,29 @@ public:
     }
 #endif
 
+    /**
+     * @return Whether this job autodeletes itself once finished() has been emitted. Default is true.
+     * @see setAutoDelete()
+     */
+    bool autoDelete() const {
+        return _autoDelete;
+    }
+
+    /**
+     * Set whether this job should autodelete itself once finished() has been emitted.
+     * @see autoDelete()
+     */
+    void setAutoDelete(bool autoDelete) {
+        _autoDelete = autoDelete;
+    }
+
 protected:
     QString _serviceName;
     Account *_account;
     QString _key;
     bool _insecureFallback = false;
+    bool _autoDelete = true;
     bool _keychainMigration = false;
-    bool _isJobRunning = false;
 
     QKeychain::Error _error = QKeychain::NoError;
     QString _errorString;
@@ -112,7 +128,7 @@ public:
      *
      * @return Returns true on succeess (QKeychain::NoError).
     */
-    bool startAwait();
+    bool exec();
 
 signals:
     void finished(KeychainChunk::WriteJob *incomingJob);
@@ -145,7 +161,7 @@ public:
      *
      * @return Returns true on succeess (QKeychain::NoError).
     */
-    bool startAwait();
+    bool exec();
 
 signals:
     void finished(KeychainChunk::ReadJob *incomingJob);
@@ -158,6 +174,39 @@ private:
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 #endif
 }; // class ReadJob
+
+/*
+* @brief: Simple wrapper class for QKeychain::DeletePasswordJob
+*/
+class OWNCLOUDSYNC_EXPORT DeleteJob : public KeychainChunk::Job
+{
+    Q_OBJECT
+public:
+    DeleteJob(Account *account, const QString &key, const bool &keychainMigration, QObject *parent = nullptr);
+    DeleteJob(const QString &key, QObject *parent = nullptr);
+
+    /**
+     * Call this method to start the job (async).
+     * You should connect some slot to the finished() signal first.
+     *
+     * @see QKeychain::Job::start()
+     */
+    void start();
+
+    /**
+     * Call this method to start the job synchronously.
+     * Awaits completion with no need to connect some slot to the finished() signal first.
+     *
+     * @return Returns true on succeess (QKeychain::NoError).
+    */
+    bool exec();
+
+signals:
+    void finished(KeychainChunk::DeleteJob *incomingJob);
+
+private slots:
+    void slotDeleteJobDone(QKeychain::Job *incomingJob);
+}; // class DeleteJob
 
 } // namespace KeychainChunk
 
