@@ -57,7 +57,6 @@ public slots:
         QAuthenticator *authenticator);
 
 private slots:
-    void slotKeychainJobDone();
     void slotSenderDestroyed(QObject *);
 
 private:
@@ -91,7 +90,6 @@ private:
     /// waiting for.
     int _waitingForDialog = 0;
     int _waitingForKeychain = 0;
-    bool _keychainJobRunning = false;
 
     QPointer<ProxyAuthDialog> _dialog;
 

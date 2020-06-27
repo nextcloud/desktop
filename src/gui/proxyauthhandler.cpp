@@ -131,12 +131,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
             this, &ProxyAuthHandler::slotSenderDestroyed);
     }
 }
-
-void ProxyAuthHandler::slotKeychainJobDone()
-{
-    _keychainJobRunning = false;
-}
-
+ 
 void ProxyAuthHandler::slotSenderDestroyed(QObject *obj)
 {
     _gaveCredentialsTo.remove(obj);
@@ -144,10 +139,13 @@ void ProxyAuthHandler::slotSenderDestroyed(QObject *obj)
 
 bool ProxyAuthHandler::getCredsFromDialog()
 {
+    QEventLoop waitLoop;
+
     // Open the credentials dialog
     if (!_waitingForDialog) {
         _dialog->reset();
         _dialog->setProxyAddress(_proxy);
+        connect(_dialog, &QDialog::finished, &waitLoop, &QEventLoop::quit);
         _dialog->open();
     }
 
@@ -155,8 +153,8 @@ bool ProxyAuthHandler::getCredsFromDialog()
     // If that's the case, continue processing the dialog until
     // it's done.
     ++_waitingForDialog;
-    while (_dialog && _dialog->isVisible()) {
-        QApplication::processEvents(QEventLoop::ExcludeSocketNotifiers, 200);
+    if (_dialog) {
+        waitLoop.exec(QEventLoop::ExcludeSocketNotifiers);
     }
     --_waitingForDialog;
 
@@ -172,6 +170,7 @@ bool ProxyAuthHandler::getCredsFromDialog()
 bool ProxyAuthHandler::getCredsFromKeychain()
 {
     using namespace QKeychain;
+    QEventLoop waitLoop;
 
     if (_waitingForDialog) {
         return false;
@@ -190,9 +189,7 @@ bool ProxyAuthHandler::getCredsFromKeychain()
         _readPasswordJob->setInsecureFallback(false);
         _readPasswordJob->setKey(keychainPasswordKey());
         _readPasswordJob->setAutoDelete(false);
-        connect(_readPasswordJob.data(), &QKeychain::Job::finished,
-            this, &ProxyAuthHandler::slotKeychainJobDone);
-        _keychainJobRunning = true;
+        connect(_readPasswordJob.data(), &QKeychain::Job::finished, &waitLoop, &QEventLoop::quit);
         _readPasswordJob->start();
     }
 
@@ -201,10 +198,7 @@ bool ProxyAuthHandler::getCredsFromKeychain()
     // bad behavior when we reenter this code after the flag has been switched
     // but before the while loop has finished.
     ++_waitingForKeychain;
-    _keychainJobRunning = true;
-    while (_keychainJobRunning) {
-        QApplication::processEvents(QEventLoop::AllEvents, 200);
-    }
+    waitLoop.exec();
     --_waitingForKeychain;
 
     if (_readPasswordJob->error() == NoError) {
@@ -223,6 +217,7 @@ bool ProxyAuthHandler::getCredsFromKeychain()
 void ProxyAuthHandler::storeCredsInKeychain()
 {
     using namespace QKeychain;
+    QEventLoop waitLoop;
 
     if (_waitingForKeychain) {
         return;
@@ -238,15 +233,11 @@ void ProxyAuthHandler::storeCredsInKeychain()
     job->setKey(keychainPasswordKey());
     job->setTextData(_password);
     job->setAutoDelete(false);
-    connect(job, &QKeychain::Job::finished, this, &ProxyAuthHandler::slotKeychainJobDone);
-    _keychainJobRunning = true;
+    connect(job, &QKeychain::Job::finished, &waitLoop, &QEventLoop::quit);
     job->start();
 
     ++_waitingForKeychain;
-    _keychainJobRunning = true;
-    while (_keychainJobRunning) {
-        QApplication::processEvents(QEventLoop::AllEvents, 200);
-    }
+    waitLoop.exec();
     --_waitingForKeychain;
 
     job->deleteLater();
