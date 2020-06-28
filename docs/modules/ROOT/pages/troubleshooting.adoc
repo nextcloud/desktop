@@ -116,6 +116,34 @@ As an example, to define a test where you keep log data for two days, you can is
 
 `\` owncloud --logdir /tmp/owncloud_logs --logexpire 48``
 
+==== Control Log Content
+
+Thanks to the Qt framework, logging can be controlled at run-time through the QT_LOGGING_RULES environment variable.
+
+*Exclude log item categories*
+
+```
+QT_LOGGING_RULES='gui.socketapi=false;sync.database*=false' \
+  /PATH/TO/CLIENT \
+  --logdebug --logfile <file>
+```
+
+*Add HTTP logging entries*
+
+```
+QT_LOGGING_RULES='sync.httplogger=true' \
+  /PATH/TO/CLIENT \
+  --logdebug --logfile <file>
+```
+
+*Only show specific log item categories*
+
+```
+QT_LOGGING_RULES='*=false;sync.httplogger=true' \
+  /PATH/TO/CLIENT \
+  --logdebug --logfile <file>
+```
+
 === ownCloud server Log File
 
 The ownCloud server also maintains an ownCloud specific log file.
