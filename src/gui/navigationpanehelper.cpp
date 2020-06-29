@@ -60,7 +60,6 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     // Start by looking at every registered namespace extension for the sidebar, and look for an "ApplicationName" value
     // that matches ours when we saved.
     QVector<QUuid> entriesToRemove;
-#ifdef Q_OS_WIN
     Utility::registryWalkSubKeys(
         HKEY_CURRENT_USER,
         QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace"),
@@ -72,7 +71,6 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 entriesToRemove.append(clsid);
             }
         });
-#endif
 
     // Then re-save every folder that has a valid navigationPaneClsid to the registry.
     // We currently don't distinguish between new and existing CLSIDs, if it's there we just
@@ -99,7 +97,6 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
             QString targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 
             qCInfo(lcNavPane) << "Explorer Cloud storage provider: saving path" << targetFolderPath << "to CLSID" << clsidStr;
-#ifdef Q_OS_WIN
             // Steps taken from: https://msdn.microsoft.com/en-us/library/windows/desktop/dn889934%28v=vs.85%29.aspx
             // Step 1: Add your CLSID and name your extension
             Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath, QString(), REG_SZ, title);
@@ -140,11 +137,6 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
             // For us, to later be able to iterate and find our own namespace entries and associated CLSID.
             // Use the macro instead of the theme to make sure it matches with the uninstaller.
             Utility::registrySetKeyValue(HKEY_CURRENT_USER, namespacePath, QStringLiteral("ApplicationName"), REG_SZ, QLatin1String(APPLICATION_NAME));
-#else
-            // This code path should only occur on Windows (the config will be false, and the checkbox invisible on other platforms).
-            // Add runtime checks rather than #ifdefing out the whole code to help catch breakages when developing on other platforms.
-            Q_ASSERT(false);
-#endif
         }
     }
 
@@ -156,12 +148,10 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
         QString namespacePath = QString() % "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace\\" % clsidStr;
 
         qCInfo(lcNavPane) << "Explorer Cloud storage provider: now unused, removing own CLSID" << clsidStr;
-#ifdef Q_OS_WIN
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPath);
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPathWow64);
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, namespacePath);
         Utility::registryDeleteKeyValue(HKEY_CURRENT_USER, QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\HideDesktopIcons\\NewStartPanel"), clsidStr);
-#endif
     }
 }
 

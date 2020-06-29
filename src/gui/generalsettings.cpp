@@ -252,10 +252,12 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 {
+#ifdef Q_OS_WIN
     ConfigFile cfgFile;
     cfgFile.setShowInExplorerNavigationPane(checked);
     // Now update the registry with the change.
     FolderMan::instance()->navigationPaneHelper().setShowInExplorerNavigationPane(checked);
+#endif
 }
 
 void GeneralSettings::slotIgnoreFilesEditor()

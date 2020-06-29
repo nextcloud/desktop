@@ -599,8 +599,10 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
             if (_ocWizard->useVirtualFileSync()) {
                 folderDefinition.virtualFilesMode = bestAvailableVfsMode();
             }
+#ifdef Q_OS_WIN
             if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
                 folderDefinition.navigationPaneClsid = QUuid::createUuid();
+#endif
 
             auto f = folderMan->addFolder(account, folderDefinition);
             if (f) {

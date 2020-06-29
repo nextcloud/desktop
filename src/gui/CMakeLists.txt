@@ -48,7 +48,6 @@ set(client_SRCS
     ignorelisteditor.cpp
     lockwatcher.cpp
     logbrowser.cpp
-    navigationpanehelper.cpp
     networksettings.cpp
     ocsjob.cpp
     ocssharejob.cpp
@@ -122,13 +121,15 @@ IF( APPLE )
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )
-set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp)
+    list(APPEND client_SRCS folderwatcher_linux.cpp)
 ENDIF()
 IF( WIN32 )
-set(client_SRCS ${client_SRCS} folderwatcher_win.cpp)
+    list(APPEND client_SRCS
+            folderwatcher_win.cpp
+            navigationpanehelper.cpp)
 ENDIF()
 IF( APPLE )
-list(APPEND client_SRCS folderwatcher_mac.cpp)
+    list(APPEND client_SRCS folderwatcher_mac.cpp)
 ENDIF()
 
 set(3rdparty_SRC

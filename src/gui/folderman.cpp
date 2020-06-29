@@ -50,7 +50,9 @@ FolderMan::FolderMan(QObject *parent)
     , _currentSyncFolder(nullptr)
     , _syncEnabled(true)
     , _lockWatcher(new LockWatcher)
+#ifdef Q_OS_WIN
     , _navigationPaneHelper(this)
+#endif
     , _appRestartRequired(false)
 {
     ASSERT(!_instance);
@@ -998,7 +1000,9 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
         emit folderListChanged(_folderMap);
     }
 
+#ifdef Q_OS_WIN
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
     return folder;
 }
 
@@ -1122,7 +1126,9 @@ void FolderMan::removeFolder(Folder *f)
         delete f;
     }
 
+#ifdef Q_OS_WIN
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
+#endif
 
     emit folderListChanged(_folderMap);
 }

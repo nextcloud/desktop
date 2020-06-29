@@ -144,7 +144,9 @@ public:
     static QString unescapeAlias(const QString &);
 
     SocketApi *socketApi();
+#ifdef Q_OS_WIN
     NavigationPaneHelper &navigationPaneHelper() { return _navigationPaneHelper; }
+#endif
 
     /**
      * Check if @a path is a valid path for a new folder considering the already sync'ed items.
@@ -352,7 +354,9 @@ private:
     QTimer _startScheduledSyncTimer;
 
     QScopedPointer<SocketApi> _socketApi;
+#ifdef Q_OS_WIN
     NavigationPaneHelper _navigationPaneHelper;
+#endif
 
     bool _appRestartRequired;
 
