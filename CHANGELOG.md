@@ -14,6 +14,7 @@ Summary
 * Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
 * Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
 * Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
+* Change - The layout in the advanced account setup page might be broken: [#7920](https://github.com/owncloud/client/issues/7920)
 * Change - The client hides the window during the authentication process: [#7922](https://github.com/owncloud/client/pull/7922)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
@@ -57,6 +58,12 @@ Details
    We now allow to log http requests and responses
 
    https://github.com/owncloud/client/issues/7873
+
+* Change - The layout in the advanced account setup page might be broken: [#7920](https://github.com/owncloud/client/issues/7920)
+
+   We changed the way the elements are layed out
+
+   https://github.com/owncloud/client/issues/7920
 
 * Change - The client hides the window during the authentication process: [#7922](https://github.com/owncloud/client/pull/7922)
 
