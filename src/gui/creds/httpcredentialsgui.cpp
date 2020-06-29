@@ -13,18 +13,22 @@
  * for more details.
  */
 
+#include "application.h"
+#include "account.h"
+#include "common/asserts.h"
+#include "creds/httpcredentialsgui.h"
+#include "networkjobs.h"
+#include "settingsdialog.h"
+#include "theme.h"
+
+#include <QBuffer>
+#include <QDesktopServices>
 #include <QInputDialog>
 #include <QLabel>
-#include <QDesktopServices>
+#include <QMessageBox>
 #include <QNetworkReply>
 #include <QTimer>
-#include <QBuffer>
-#include "creds/httpcredentialsgui.h"
-#include "theme.h"
-#include "account.h"
-#include "networkjobs.h"
-#include <QMessageBox>
-#include "common/asserts.h"
+
 
 using namespace QKeychain;
 
@@ -113,7 +117,7 @@ void HttpCredentialsGui::showDialog()
             + QLatin1String("<br>");
     }
 
-    QInputDialog *dialog = new QInputDialog();
+    QInputDialog *dialog = new QInputDialog(qobject_cast<Application *>(qApp)->gui()->settingsDialog());
     dialog->setAttribute(Qt::WA_DeleteOnClose, true);
     dialog->setWindowTitle(tr("Enter Password"));
     dialog->setLabelText(msg);

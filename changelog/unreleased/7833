@@ -1,0 +1,5 @@
+Change: The password dialog is hidden behind a window
+
+We changed the password dialog to stay on top of the ownCloud window.
+
+https://github.com/owncloud/client/issues/7833
