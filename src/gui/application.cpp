@@ -167,6 +167,11 @@ bool Application::configVersionMigration()
     return true;
 }
 
+ownCloudGui *Application::gui() const
+{
+    return _gui;
+}
+
 Application::Application(int &argc, char **argv)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
     , _gui(nullptr)
