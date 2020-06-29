@@ -712,7 +712,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Connect to %1</source>
-        <translation>Tilkoblet til %1</translation>
+        <translation>Tilkoblet %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
@@ -1114,12 +1114,12 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Sjekker for endringer eksternt &apos;% 1&apos;</translation>
+        <translation>Sjekker for endringer eksternt &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Sjekker for endringer lokalt &apos;% 1&apos;</translation>
+        <translation>Sjekker for endringer lokalt &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
@@ -2650,7 +2650,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>%1 Sharing</source>
-        <translation>%1-deling</translation>
+        <translation>%1 deler</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="277"/>
@@ -3753,12 +3753,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Sjekker for endringer eksternt &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Sjekker for endringer lokalt &apos;%1&apos;</translation>
     </message>
 </context>
 <context>

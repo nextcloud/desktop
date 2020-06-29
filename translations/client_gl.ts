@@ -1797,7 +1797,7 @@ Os rexistros escribiranse en %1</translation>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
-        <translation>Nome de host para o servidor proxy</translation>
+        <translation>Nome de máquina para o servidor proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
