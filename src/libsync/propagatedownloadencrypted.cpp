@@ -21,7 +21,18 @@ void PropagateDownloadEncrypted::start() {
 
 void PropagateDownloadEncrypted::checkFolderEncryptedStatus()
 {
-  auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), _info.path());
+    const auto rootPath = [=]() {
+        const auto result = _propagator->_remoteFolder;
+        if (result.startsWith('/')) {
+            return result.mid(1);
+        } else {
+            return result;
+        }
+    }();
+    const auto remotePath = QString(rootPath + _item->_file);
+    const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
+
+  auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), remoteParentPath, this);
   connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
           this, &PropagateDownloadEncrypted::folderStatusReceived);
 

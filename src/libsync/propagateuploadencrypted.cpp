@@ -27,6 +27,23 @@ PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagato
 
 void PropagateUploadEncrypted::start()
 {
+    const auto rootPath = [=]() {
+        const auto result = _propagator->_remoteFolder;
+        if (result.startsWith('/')) {
+            return result.mid(1);
+        } else {
+            return result;
+        }
+    }();
+    const auto absoluteRemoteParentPath = [=]{
+        auto path = QString(rootPath + _remoteParentPath);
+        if (path.endsWith('/')) {
+            path.chop(1);
+        }
+        return path;
+    }();
+
+
   /* If the file is in a encrypted-enabled nextcloud instance, we need to
       * do the long road: Fetch the folder status of the encrypted bit,
       * if it's encrypted, find the ID of the folder.
@@ -40,7 +57,7 @@ void PropagateUploadEncrypted::start()
       * If the folder is unencrypted we just follow the old way.
       */
       qCDebug(lcPropagateUploadEncrypted) << "Starting to send an encrypted file!";
-      auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), _remoteParentPath, this);
+      auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), absoluteRemoteParentPath, this);
 
       connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
               this, &PropagateUploadEncrypted::slotFolderEncryptedStatusFetched);
