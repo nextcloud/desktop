@@ -211,19 +211,13 @@ Window {
                             }
 
                             MenuItem {
-                                text: qsTr("Open settings")
+                                text: qsTr("Settings")
                                 font.pixelSize: Style.topLinePixelSize
                                 onClicked: Systray.openSettings()
                             }
 
                             MenuItem {
-                                text: qsTr("Help")
-                                font.pixelSize: Style.topLinePixelSize
-                                onClicked: Systray.openHelp()
-                            }
-
-                            MenuItem {
-                                text: qsTr("Quit Nextcloud")
+                                text: qsTr("Exit");
                                 font.pixelSize: Style.topLinePixelSize
                                 onClicked: Systray.shutdown()
                             }
