@@ -85,6 +85,9 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::openHelp,
         this, &ownCloudGui::slotHelp);
 
+    connect(_tray.data(), &Systray::openMainDialog,
+        this, &ownCloudGui::slotOpenMainDialog);
+
     connect(_tray.data(), &Systray::openSettings,
         this, &ownCloudGui::slotShowSettings);
 
@@ -164,7 +167,7 @@ void ownCloudGui::slotOpenMainDialog()
 
 void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
 {
-    if (reason == QSystemTrayIcon::Trigger || reason == QSystemTrayIcon::Context) {
+    if (reason == QSystemTrayIcon::Trigger) {
         if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
             // brought wizard to front
         } else if (_shareDialogs.size() > 0) {
