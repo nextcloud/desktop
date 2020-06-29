@@ -69,6 +69,8 @@ public:
 
     void showMainDialog();
 
+    ownCloudGui *gui() const;
+
 public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
