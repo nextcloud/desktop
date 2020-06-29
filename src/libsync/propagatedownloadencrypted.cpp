@@ -101,7 +101,11 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
     if (encryptedFilename == file.encryptedFilename) {
       _encryptedInfo = file;
       _item->_encryptedFileName = _item->_file;
-      _item->_file = _localParentPath + QLatin1Char('/') + _encryptedInfo.originalFilename;
+      if (!_localParentPath.isEmpty()) {
+          _item->_file = _localParentPath + QLatin1Char('/') + _encryptedInfo.originalFilename;
+      } else {
+          _item->_file = _encryptedInfo.originalFilename;
+      }
 
       qCDebug(lcPropagateDownloadEncrypted) << "Found matching encrypted metadata for file, starting download";
       emit folderStatusEncrypted();
