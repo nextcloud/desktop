@@ -288,17 +288,19 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
      * https://github.com/owncloud/core/issues/22122#issuecomment-185637344
      * https://github.com/owncloud/client/issues/4996
      */
+    const SharePermissions defaultPermissions = static_cast<SharePermissions>(_account->capabilities().defaultPermissions());
     if (sharee->type() == Sharee::Federated
         && _account->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
-        int permissions = SharePermissionRead | SharePermissionUpdate;
+        SharePermissions permissions = SharePermissionRead | SharePermissionUpdate;
         if (!_isFile) {
             permissions |= SharePermissionCreate | SharePermissionDelete;
         }
+        permissions &= defaultPermissions;
         _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-            sharee->shareWith(), SharePermission(permissions));
+            sharee->shareWith(), permissions);
     } else {
         _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-            sharee->shareWith(), _maxSharingPermissions);
+            sharee->shareWith(), _maxSharingPermissions & defaultPermissions);
     }
 
     _ui->shareeLineEdit->setEnabled(false);
