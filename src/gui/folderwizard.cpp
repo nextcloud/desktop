@@ -319,6 +319,13 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
     Utility::sortFilenames(sortedList);
     foreach (QString path, sortedList) {
         path.remove(webdavFolder);
+
+        // Don't allow to select subfolders of encrypted subfolders
+        if (_account->capabilities().clientSideEncryptionAvailable() &&
+            _account->e2e()->isAnyParentFolderEncrypted(path)) {
+            continue;
+        }
+
         QStringList paths = path.split('/');
         if (paths.last().isEmpty())
             paths.removeLast();
@@ -344,6 +351,12 @@ void FolderWizardRemotePath::slotCurrentItemChanged(QTreeWidgetItem *item)
 {
     if (item) {
         QString dir = item->data(0, Qt::UserRole).toString();
+
+        // We don't want to allow creating subfolders in encrypted folders outside of the sync logic
+        const auto encrypted = _account->capabilities().clientSideEncryptionAvailable() &&
+                _account->e2e()->isFolderEncrypted(dir + '/');
+        _ui.addFolderButton->setEnabled(!encrypted);
+
         if (!dir.startsWith(QLatin1Char('/'))) {
             dir.prepend(QLatin1Char('/'));
         }

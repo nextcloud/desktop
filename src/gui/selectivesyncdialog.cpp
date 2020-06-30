@@ -248,6 +248,13 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     foreach (QString path, list) {
         auto size = job ? job->_folderInfos[path].size : 0;
         path.remove(pathToRemove);
+
+        // Don't allow to select subfolders of encrypted subfolders
+        if (_account->capabilities().clientSideEncryptionAvailable() &&
+            _account->e2e()->isAnyParentFolderEncrypted(_rootName + '/' + path)) {
+            continue;
+        }
+
         QStringList paths = path.split('/');
         if (paths.last().isEmpty())
             paths.removeLast();
