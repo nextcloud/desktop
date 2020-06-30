@@ -27,6 +27,7 @@ set(libsync_SRCS
     clientproxy.cpp
     cookiejar.cpp
     discoveryphase.cpp
+    encryptfolderjob.cpp
     filesystem.cpp
     logger.cpp
     accessmanager.cpp

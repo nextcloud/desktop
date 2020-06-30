@@ -743,7 +743,7 @@ void ClientSideEncryption::setAccount(AccountPtr account)
 void ClientSideEncryption::initialize()
 {
     qCInfo(lcCse()) << "Initializing";
-    if (!_account->capabilities().clientSideEncryptionAvaliable()) {
+    if (!_account->capabilities().clientSideEncryptionAvailable()) {
         qCInfo(lcCse()) << "No Client side encryption available on server.";
         emit initializationFinished();
         return;
@@ -1223,17 +1223,19 @@ void ClientSideEncryption::fetchFolderEncryptedStatus() {
     getEncryptedStatus->start();
 }
 
-void ClientSideEncryption::folderEncryptedStatusFetched(const QMap<QString, bool>& result)
+void ClientSideEncryption::folderEncryptedStatusFetched(const QHash<QString, bool>& result)
 {
     _refreshingEncryptionStatus = false;
     _folder2encryptedStatus = result;
     qCDebug(lcCse) << "Retrieved correctly the encrypted status of the folders." << result;
+    emit folderEncryptedStatusFetchDone();
 }
 
 void ClientSideEncryption::folderEncryptedStatusError(int error)
 {
     _refreshingEncryptionStatus = false;
     qCDebug(lcCse) << "Failed to retrieve the status of the folders." << error;
+    emit folderEncryptedStatusFetchDone();
 }
 
 FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata, int statusCode) : _account(account)

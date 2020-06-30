@@ -16,10 +16,12 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagateUploadEncrypted, "nextcloud.sync.propagator.upload.encrypted", QtInfoMsg)
 
-PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item)
-: _propagator(propagator),
- _item(item),
- _metadata(nullptr)
+PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item, QObject *parent)
+    : QObject(parent)
+    , _propagator(propagator)
+    , _remoteParentPath(remoteParentPath)
+    , _item(item)
+    , _metadata(nullptr)
 {
 }
 
@@ -38,9 +40,7 @@ void PropagateUploadEncrypted::start()
       * If the folder is unencrypted we just follow the old way.
       */
       qCDebug(lcPropagateUploadEncrypted) << "Starting to send an encrypted file!";
-      QFileInfo info(_item->_file);
-      auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(),
-                                                           info.path());
+      auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), _remoteParentPath, this);
 
       connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
               this, &PropagateUploadEncrypted::slotFolderEncryptedStatusFetched);
@@ -63,7 +63,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedStatusFetched(const QString &f
       job->start();
   } else {
     qCDebug(lcPropagateUploadEncrypted) << "Folder is not encrypted, getting back to default.";
-    emit folerNotEncrypted();
+    emit folderNotEncrypted();
   }
 }
 
@@ -157,31 +157,33 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
       encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
   }
 
-  _item->_encryptedFileName = _item->_file.section(QLatin1Char('/'), 0, -2)
-          + QLatin1Char('/') + encryptedFile.encryptedFilename;
+  _item->_encryptedFileName = _remoteParentPath + QLatin1Char('/') + encryptedFile.encryptedFilename;
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 
-  QFile input(info.absoluteFilePath());
-  QFile output(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
+  if (info.isDir()) {
+      _completeFileName = encryptedFile.encryptedFilename;
+  } else {
+      QFile input(info.absoluteFilePath());
+      QFile output(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
 
-  QByteArray tag;
-  bool encryptionResult = EncryptionHelper::fileEncryption(
-    encryptedFile.encryptionKey,
-    encryptedFile.initializationVector,
-    &input, &output, tag);
+      QByteArray tag;
+      bool encryptionResult = EncryptionHelper::fileEncryption(
+        encryptedFile.encryptionKey,
+        encryptedFile.initializationVector,
+        &input, &output, tag);
 
-  if (!encryptionResult) {
-    qCDebug(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
-    unlockFolder();
-    return;
+      if (!encryptionResult) {
+        qCDebug(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
+        unlockFolder();
+        return;
+      }
+
+      encryptedFile.authenticationTag = tag;
+      _completeFileName = output.fileName();
   }
 
-  _completeFileName = output.fileName();
-
   qCDebug(lcPropagateUploadEncrypted) << "Creating the metadata for the encrypted file.";
-
-  encryptedFile.authenticationTag = tag;
 
   _metadata->addEncryptedFile(encryptedFile);
   _encryptedFile = encryptedFile;
@@ -216,7 +218,7 @@ void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileI
     qCDebug(lcPropagateUploadEncrypted) << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
     qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actuall uploader will take over";
     emit finalized(outputInfo.path() + QLatin1Char('/') + outputInfo.fileName(),
-                   _item->_file.section(QLatin1Char('/'), 0, -2) + QLatin1Char('/') + outputInfo.fileName(),
+                   _remoteParentPath + QLatin1Char('/') + outputInfo.fileName(),
                    outputInfo.size());
 }
 

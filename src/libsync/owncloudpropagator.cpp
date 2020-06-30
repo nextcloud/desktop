@@ -510,7 +510,15 @@ void OwncloudPropagator::start(const SyncFileItemVector &items,
 
     connect(_rootJob.data(), &PropagatorJob::finished, this, &OwncloudPropagator::emitFinished);
 
-    scheduleNextJob();
+    // If needed, make sure we have up to date E2E information before scheduling the first job
+    // otherwise we start right away
+    if (_account->capabilities().clientSideEncryptionAvailable()) {
+        connect(_account->e2e(), &ClientSideEncryption::folderEncryptedStatusFetchDone,
+                this, &OwncloudPropagator::onFolderEncryptedStatusFetchDone);
+        _account->e2e()->fetchFolderEncryptedStatus();
+    } else {
+        scheduleNextJob();
+    }
 }
 
 const SyncOptions &OwncloudPropagator::syncOptions() const
@@ -606,6 +614,13 @@ bool OwncloudPropagator::hasCaseClashAccessibilityProblem(const QString &relfile
 QString OwncloudPropagator::getFilePath(const QString &tmp_file_name) const
 {
     return _localDir + tmp_file_name;
+}
+
+void OwncloudPropagator::onFolderEncryptedStatusFetchDone()
+{
+    disconnect(_account->e2e(), &ClientSideEncryption::folderEncryptedStatusFetchDone,
+               this, &OwncloudPropagator::onFolderEncryptedStatusFetchDone);
+    scheduleNextJob();
 }
 
 void OwncloudPropagator::scheduleNextJob()

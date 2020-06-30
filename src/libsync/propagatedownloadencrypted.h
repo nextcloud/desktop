@@ -15,7 +15,7 @@ namespace OCC {
 class PropagateDownloadEncrypted : public QObject {
   Q_OBJECT
 public:
-  PropagateDownloadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item);
+  PropagateDownloadEncrypted(OwncloudPropagator *propagator, const QString &localParentPath, SyncFileItemPtr item, QObject *parent = nullptr);
   void start();
   void checkFolderId(const QStringList &list);
   bool decryptFile(QFile& tmpFile);
@@ -37,6 +37,7 @@ signals:
 
 private:
   OwncloudPropagator *_propagator;
+  QString _localParentPath;
   SyncFileItemPtr _item;
   QFileInfo _info;
   EncryptedFile _encryptedInfo;

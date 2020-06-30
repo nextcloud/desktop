@@ -24,7 +24,7 @@ class FolderMetadata;
  * emits:
  * finalized() if the encrypted file is ready to be uploaded
  * error() if there was an error with the encryption
- * folerNotEncrypted() if the file is within a folder that's not encrypted.
+ * folderNotEncrypted() if the file is within a folder that's not encrypted.
  *
  */
 
@@ -32,7 +32,7 @@ class PropagateUploadEncrypted : public QObject
 {
   Q_OBJECT
 public:
-    PropagateUploadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item);
+    PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item, QObject *parent = nullptr);
     void start();
 
     /* unlocks the current folder that holds this file */
@@ -60,10 +60,11 @@ signals:
     void error();
 
     // Emited if the file is not in a encrypted folder.
-    void folerNotEncrypted();
+    void folderNotEncrypted();
 
 private:
   OwncloudPropagator *_propagator;
+  QString _remoteParentPath;
   SyncFileItemPtr _item;
 
   QElapsedTimer _folderLockFirstTry;
