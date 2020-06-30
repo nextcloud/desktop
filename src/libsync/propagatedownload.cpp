@@ -351,7 +351,8 @@ void PropagateDownloadFile::start()
             return result;
         }
     }();
-    const auto remotePath = QString(rootPath + _item->_file);
+    const auto remoteFilename = _item->_encryptedFileName.isEmpty() ? _item->_file : _item->_encryptedFileName;
+    const auto remotePath = QString(rootPath + remoteFilename);
     const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
 
     const auto account = propagator()->account();
@@ -359,9 +360,8 @@ void PropagateDownloadFile::start()
         !account->e2e()->isFolderEncrypted(remoteParentPath + '/')) {
         startAfterIsEncryptedIsChecked();
     } else {
-        const auto relativeRemotePath = _item->_file;
-        const auto slashPosition = relativeRemotePath.lastIndexOf('/');
-        const auto relativeRemoteParentPath = slashPosition >= 0 ? relativeRemotePath.left(slashPosition) : QString();
+        const auto slashPosition = remoteFilename.lastIndexOf('/');
+        const auto relativeRemoteParentPath = slashPosition >= 0 ? remoteFilename.left(slashPosition) : QString();
 
         SyncJournalFileRecord parentRec;
         propagator()->_journal->getFileRecordByE2eMangledName(relativeRemoteParentPath, &parentRec);

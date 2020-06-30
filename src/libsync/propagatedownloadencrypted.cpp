@@ -29,7 +29,8 @@ void PropagateDownloadEncrypted::checkFolderEncryptedStatus()
             return result;
         }
     }();
-    const auto remotePath = QString(rootPath + _item->_file);
+    const auto remoteFilename = _item->_encryptedFileName.isEmpty() ? _item->_file : _item->_encryptedFileName;
+    const auto remotePath = QString(rootPath + remoteFilename);
     const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
 
   auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), remoteParentPath, this);
@@ -100,7 +101,9 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
   for (const EncryptedFile &file : files) {
     if (encryptedFilename == file.encryptedFilename) {
       _encryptedInfo = file;
-      _item->_encryptedFileName = _item->_file;
+      if (_item->_encryptedFileName.isEmpty()) {
+        _item->_encryptedFileName = _item->_file;
+      }
       if (!_localParentPath.isEmpty()) {
           _item->_file = _localParentPath + QLatin1Char('/') + _encryptedInfo.originalFilename;
       } else {
