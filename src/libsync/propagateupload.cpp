@@ -198,7 +198,7 @@ void PropagateUploadFileCommon::start()
         return;
     }
 
-    _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item);
+    _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
             this, &PropagateUploadFileCommon::setupUnencryptedFile);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,

@@ -16,8 +16,9 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagateUploadEncrypted, "nextcloud.sync.propagator.upload.encrypted", QtInfoMsg)
 
-PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item)
-    : _propagator(propagator)
+PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item, QObject *parent)
+    : QObject(parent)
+    , _propagator(propagator)
     , _remoteParentPath(remoteParentPath)
     , _item(item)
     , _metadata(nullptr)
@@ -39,7 +40,7 @@ void PropagateUploadEncrypted::start()
       * If the folder is unencrypted we just follow the old way.
       */
       qCDebug(lcPropagateUploadEncrypted) << "Starting to send an encrypted file!";
-      auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), _remoteParentPath);
+      auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), _remoteParentPath, this);
 
       connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
               this, &PropagateUploadEncrypted::slotFolderEncryptedStatusFetched);

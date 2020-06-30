@@ -132,7 +132,7 @@ void PropagateRemoteMkdir::slotMkdir()
     }
 
     // We should be encrypted as well since our parent is
-    _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item);
+    _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
       this, &PropagateRemoteMkdir::slotStartMkcolJob);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,

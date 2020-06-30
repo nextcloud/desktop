@@ -32,7 +32,7 @@ class PropagateUploadEncrypted : public QObject
 {
   Q_OBJECT
 public:
-    PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item);
+    PropagateUploadEncrypted(OwncloudPropagator *propagator, const QString &remoteParentPath, SyncFileItemPtr item, QObject *parent = nullptr);
     void start();
 
     /* unlocks the current folder that holds this file */
