@@ -145,7 +145,7 @@ void WebFlowCredentials::fetchFromKeychain() {
 void WebFlowCredentials::askFromUser() {
     // Determine if the old flow has to be used (GS for now)
     // Do a DetermineAuthTypeJob to make sure that the server is still using Flow2
-    auto *job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
+    auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     connect(job, &DetermineAuthTypeJob::authType, [this](DetermineAuthTypeJob::AuthType type) {
         // LoginFlowV2 > WebViewFlow > OAuth > Shib > Basic
         bool useFlow2 = (type != DetermineAuthTypeJob::WebViewFlow);
@@ -238,10 +238,10 @@ void WebFlowCredentials::persist() {
 
     // write cert if there is one
     if (!_clientSslCertificate.isNull()) {
-        auto *job = new KeychainChunk::WriteJob(_account,
-                                                _user + clientCertificatePEMC,
-                                                _clientSslCertificate.toPem(),
-                                                this);
+        auto job = new KeychainChunk::WriteJob(_account,
+                                               _user + clientCertificatePEMC,
+                                               _clientSslCertificate.toPem(),
+                                               this);
         connect(job, &KeychainChunk::WriteJob::finished, this, &WebFlowCredentials::slotWriteClientCertPEMJobDone);
         job->start();
     } else {
@@ -254,10 +254,10 @@ void WebFlowCredentials::slotWriteClientCertPEMJobDone(KeychainChunk::WriteJob *
 {
     // write ssl key if there is one
     if (!_clientSslKey.isNull()) {
-        auto *job = new KeychainChunk::WriteJob(_account,
-                                                _user + clientKeyPEMC,
-                                                _clientSslKey.toPem(),
-                                                this);
+        auto job = new KeychainChunk::WriteJob(_account,
+                                               _user + clientKeyPEMC,
+                                               _clientSslKey.toPem(),
+                                               this);
         connect(job, &KeychainChunk::WriteJob::finished, this, &WebFlowCredentials::slotWriteClientKeyPEMJobDone);
         job->start();
     } else {
@@ -285,10 +285,10 @@ void WebFlowCredentials::writeSingleClientCaCertPEM()
             return;
         }
 
-        auto *job = new KeychainChunk::WriteJob(_account,
-                                                _user + clientCaCertificatePEMC + QString::number(index),
-                                                cert.toPem(),
-                                                this);
+        auto job = new KeychainChunk::WriteJob(_account,
+                                               _user + clientCaCertificatePEMC + QString::number(index),
+                                               cert.toPem(),
+                                               this);
         connect(job, &KeychainChunk::WriteJob::finished, this, &WebFlowCredentials::slotWriteClientCaCertsPEMJobDone);
         job->start();
     } else {
@@ -328,7 +328,7 @@ void WebFlowCredentials::slotWriteClientCaCertsPEMJobDone(KeychainChunk::WriteJo
     }
 
     // done storing ca certs, time for the password
-    auto *job = new WritePasswordJob(Theme::instance()->appName(), this);
+    auto job = new WritePasswordJob(Theme::instance()->appName(), this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
     addSettingsToJob(_account, job);
 #endif
@@ -376,7 +376,7 @@ void WebFlowCredentials::forgetSensitiveData() {
         return;
     }
 
-    auto *job = new DeletePasswordJob(Theme::instance()->appName(), this);
+    auto job = new DeletePasswordJob(Theme::instance()->appName(), this);
     job->setInsecureFallback(false);
     job->setKey(kck);
     job->start();
@@ -429,10 +429,10 @@ void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
 
 void WebFlowCredentials::fetchFromKeychainHelper() {
     // Read client cert from keychain
-    auto *job = new KeychainChunk::ReadJob(_account,
-                                           _user + clientCertificatePEMC,
-                                           _keychainMigration,
-                                           this);
+    auto job = new KeychainChunk::ReadJob(_account,
+                                          _user + clientCertificatePEMC,
+                                          _keychainMigration,
+                                          this);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCertPEMJobDone);
     job->start();
 }
@@ -448,10 +448,10 @@ void WebFlowCredentials::slotReadClientCertPEMJobDone(KeychainChunk::ReadJob *re
     }
 
     // Load key too
-    auto *job = new KeychainChunk::ReadJob(_account,
-                                           _user + clientKeyPEMC,
-                                           _keychainMigration,
-                                           this);
+    auto job = new KeychainChunk::ReadJob(_account,
+                                          _user + clientKeyPEMC,
+                                          _keychainMigration,
+                                          this);
     connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientKeyPEMJobDone);
     job->start();
 }
@@ -488,10 +488,10 @@ void WebFlowCredentials::readSingleClientCaCertPEM()
 {
     // try to fetch a client ca cert
     if (_clientSslCaCertificates.count() < _clientSslCaCertificatesMaxCount) {
-        auto *job = new KeychainChunk::ReadJob(_account,
-                                               _user + clientCaCertificatePEMC + QString::number(_clientSslCaCertificates.count()),
-                                               _keychainMigration,
-                                               this);
+        auto job = new KeychainChunk::ReadJob(_account,
+                                              _user + clientCaCertificatePEMC + QString::number(_clientSslCaCertificates.count()),
+                                              _keychainMigration,
+                                              this);
         connect(job, &KeychainChunk::ReadJob::finished, this, &WebFlowCredentials::slotReadClientCaCertsPEMJobDone);
         job->start();
     } else {
@@ -527,7 +527,7 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob 
         _user,
         _keychainMigration ? QString() : _account->id());
 
-    auto *job = new ReadPasswordJob(Theme::instance()->appName(), this);
+    auto job = new ReadPasswordJob(Theme::instance()->appName(), this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
     addSettingsToJob(_account, job);
 #endif
@@ -538,7 +538,7 @@ void WebFlowCredentials::slotReadClientCaCertsPEMJobDone(KeychainChunk::ReadJob 
 }
 
 void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
-    auto *job = qobject_cast<ReadPasswordJob *>(incomingJob);
+    auto job = qobject_cast<ReadPasswordJob *>(incomingJob);
     QKeychain::Error error = job->error();
 
     // If we could not find the entry try the old entries
@@ -572,7 +572,7 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
 
 void WebFlowCredentials::deleteKeychainEntries(bool oldKeychainEntries) {
     auto startDeleteJob = [this, oldKeychainEntries](QString key) {
-        auto *job = new KeychainChunk::DeleteJob(_account, key, oldKeychainEntries, this);
+        auto job = new KeychainChunk::DeleteJob(_account, key, oldKeychainEntries, this);
         job->start();
     };
 

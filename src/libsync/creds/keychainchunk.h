@@ -47,47 +47,30 @@ public:
 
     virtual ~Job();
 
-    const QKeychain::Error error() const {
-        return _error;
-    }
-    const QString errorString() const {
-        return _errorString;
-    }
+    QKeychain::Error error() const;
+    QString errorString() const;
 
-    QByteArray binaryData() const {
-        return _chunkBuffer;
-    }
-    QString textData() const {
-        return _chunkBuffer;
-    }
+    QByteArray binaryData() const;
+    QString textData() const;
 
-    const bool insecureFallback() const {
-        return _insecureFallback;
-    }
+    bool insecureFallback() const;
 
 // If we use it but don't support insecure fallback, give us nice compilation errors ;p
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
-    void setInsecureFallback(const bool &insecureFallback)
-    {
-        _insecureFallback = insecureFallback;
-    }
+    void setInsecureFallback(bool insecureFallback);
 #endif
 
     /**
      * @return Whether this job autodeletes itself once finished() has been emitted. Default is true.
      * @see setAutoDelete()
      */
-    bool autoDelete() const {
-        return _autoDelete;
-    }
+    bool autoDelete() const;
 
     /**
      * Set whether this job should autodelete itself once finished() has been emitted.
      * @see autoDelete()
      */
-    void setAutoDelete(bool autoDelete) {
-        _autoDelete = autoDelete;
-    }
+    void setAutoDelete(bool autoDelete);
 
 protected:
     QString _serviceName;
@@ -144,7 +127,7 @@ class OWNCLOUDSYNC_EXPORT ReadJob : public KeychainChunk::Job
 {
     Q_OBJECT
 public:
-    ReadJob(Account *account, const QString &key, const bool &keychainMigration, QObject *parent = nullptr);
+    ReadJob(Account *account, const QString &key, bool keychainMigration, QObject *parent = nullptr);
     ReadJob(const QString &key, QObject *parent = nullptr);
 
     /**
@@ -182,7 +165,7 @@ class OWNCLOUDSYNC_EXPORT DeleteJob : public KeychainChunk::Job
 {
     Q_OBJECT
 public:
-    DeleteJob(Account *account, const QString &key, const bool &keychainMigration, QObject *parent = nullptr);
+    DeleteJob(Account *account, const QString &key, bool keychainMigration, QObject *parent = nullptr);
     DeleteJob(const QString &key, QObject *parent = nullptr);
 
     /**

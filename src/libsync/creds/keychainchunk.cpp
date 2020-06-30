@@ -70,6 +70,48 @@ Job::~Job()
     _chunkBuffer.clear();
 }
 
+QKeychain::Error Job::error() const
+{
+    return _error;
+}
+
+QString Job::errorString() const
+{
+    return _errorString;
+}
+
+QByteArray Job::binaryData() const
+{
+    return _chunkBuffer;
+}
+
+QString Job::textData() const
+{
+    return _chunkBuffer;
+}
+
+bool Job::insecureFallback() const
+{
+    return _insecureFallback;
+}
+
+#if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
+void Job::setInsecureFallback(bool insecureFallback)
+{
+    _insecureFallback = insecureFallback;
+}
+#endif
+
+bool Job::autoDelete() const
+{
+    return _autoDelete;
+}
+
+void Job::setAutoDelete(bool autoDelete)
+{
+    _autoDelete = autoDelete;
+}
+
 /*
 * WriteJob
 */
@@ -118,9 +160,9 @@ bool WriteJob::exec()
 
 void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 {
-    auto *writeJob = static_cast<QKeychain::WritePasswordJob *>(incomingJob);
+    auto writeJob = qobject_cast<QKeychain::WritePasswordJob *>(incomingJob);
 
-    // errors?
+    // Errors? (writeJob can be nullptr here, see: WriteJob::start)
     if (writeJob) {
         _error = writeJob->error();
         _errorString = writeJob->errorString();
@@ -157,8 +199,9 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 
             emit finished(this);
 
-            if (_autoDelete)
+            if (_autoDelete) {
                 deleteLater();
+            }
             return;
         }
 
@@ -169,7 +212,7 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
                 _account->id()
             ) : keyWithIndex;
 
-        auto *job = new QKeychain::WritePasswordJob(_serviceName, this);
+        auto job = new QKeychain::WritePasswordJob(_serviceName, this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
         addSettingsToJob(_account, job);
 #endif
@@ -184,8 +227,9 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
     } else {
         emit finished(this);
 
-        if (_autoDelete)
+        if (_autoDelete) {
             deleteLater();
+        }
     }
 
     writeJob->deleteLater();
@@ -194,7 +238,7 @@ void WriteJob::slotWriteJobDone(QKeychain::Job *incomingJob)
 /*
 * ReadJob
 */
-ReadJob::ReadJob(Account *account, const QString &key, const bool &keychainMigration, QObject *parent)
+ReadJob::ReadJob(Account *account, const QString &key, bool keychainMigration, QObject *parent)
     : Job(parent)
 {
     _account = account;
@@ -226,7 +270,7 @@ void ReadJob::start()
             _keychainMigration ? QString() : _account->id()
         ) : _key;
 
-    auto *job = new QKeychain::ReadPasswordJob(_serviceName, this);
+    auto job = new QKeychain::ReadPasswordJob(_serviceName, this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
     addSettingsToJob(_account, job);
 #endif
@@ -259,77 +303,77 @@ bool ReadJob::exec()
 void ReadJob::slotReadJobDone(QKeychain::Job *incomingJob)
 {
     // Errors or next chunk?
-    auto *readJob = static_cast<QKeychain::ReadPasswordJob *>(incomingJob);
+    auto readJob = qobject_cast<QKeychain::ReadPasswordJob *>(incomingJob);
+    Q_ASSERT(readJob);
 
-    if (readJob) {
-        if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
-            _chunkBuffer.append(readJob->binaryData());
-            _chunkCount++;
+    if (readJob->error() == NoError && !readJob->binaryData().isEmpty()) {
+        _chunkBuffer.append(readJob->binaryData());
+        _chunkCount++;
 
 #if defined(Q_OS_WIN)
-            // try to fetch next chunk
-            if (_chunkCount < KeychainChunk::MaxChunks) {
-                const QString keyWithIndex = _key + QString(".") + QString::number(_chunkCount);
-                const QString kck = _account ? AbstractCredentials::keychainKey(
-                        _account->url().toString(),
-                        keyWithIndex,
-                        _keychainMigration ? QString() : _account->id()
-                    ) : keyWithIndex;
+        // try to fetch next chunk
+        if (_chunkCount < KeychainChunk::MaxChunks) {
+            const QString keyWithIndex = _key + QString(".") + QString::number(_chunkCount);
+            const QString kck = _account ? AbstractCredentials::keychainKey(
+                    _account->url().toString(),
+                    keyWithIndex,
+                    _keychainMigration ? QString() : _account->id()
+                ) : keyWithIndex;
 
-                QKeychain::ReadPasswordJob *job = new QKeychain::ReadPasswordJob(_serviceName, this);
+            auto job = new QKeychain::ReadPasswordJob(_serviceName, this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
-                addSettingsToJob(_account, job);
+            addSettingsToJob(_account, job);
 #endif
-                job->setInsecureFallback(_insecureFallback);
-                job->setKey(kck);
-                connect(job, &QKeychain::Job::finished, this, &KeychainChunk::ReadJob::slotReadJobDone);
-                job->start();
+            job->setInsecureFallback(_insecureFallback);
+            job->setKey(kck);
+            connect(job, &QKeychain::Job::finished, this, &KeychainChunk::ReadJob::slotReadJobDone);
+            job->start();
 
+            readJob->deleteLater();
+            return;
+        } else {
+            qCWarning(lcKeychainChunk) << "Maximum chunk count for" << readJob->key() << "reached, ignoring after" << KeychainChunk::MaxChunks;
+        }
+#endif
+    } else {
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+        if (!readJob->insecureFallback()) { // If insecureFallback is set, the next test would be pointless
+            if (_retryOnKeyChainError && (readJob->error() == QKeychain::NoBackendAvailable
+                    || readJob->error() == QKeychain::OtherError)) {
+                // Could be that the backend was not yet available. Wait some extra seconds.
+                // (Issues #4274 and #6522)
+                // (For kwallet, the error is OtherError instead of NoBackendAvailable, maybe a bug in QtKeychain)
+                qCInfo(lcKeychainChunk) << "Backend unavailable (yet?) Retrying in a few seconds." << readJob->errorString();
+                QTimer::singleShot(10000, this, &ReadJob::start);
+                _retryOnKeyChainError = false;
                 readJob->deleteLater();
                 return;
-            } else {
-                qCWarning(lcKeychainChunk) << "Maximum chunk count for" << readJob->key() << "reached, ignoring after" << KeychainChunk::MaxChunks;
             }
-#endif
-        } else {
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-            if (!readJob->insecureFallback()) { // If insecureFallback is set, the next test would be pointless
-                if (_retryOnKeyChainError && (readJob->error() == QKeychain::NoBackendAvailable
-                        || readJob->error() == QKeychain::OtherError)) {
-                    // Could be that the backend was not yet available. Wait some extra seconds.
-                    // (Issues #4274 and #6522)
-                    // (For kwallet, the error is OtherError instead of NoBackendAvailable, maybe a bug in QtKeychain)
-                    qCInfo(lcKeychainChunk) << "Backend unavailable (yet?) Retrying in a few seconds." << readJob->errorString();
-                    QTimer::singleShot(10000, this, &ReadJob::start);
-                    _retryOnKeyChainError = false;
-                    readJob->deleteLater();
-                    return;
-                }
-                _retryOnKeyChainError = false;
-            }
-#endif
-
-            if (readJob->error() != QKeychain::EntryNotFound ||
-                ((readJob->error() == QKeychain::EntryNotFound) && _chunkCount == 0)) {
-                _error = readJob->error();
-                _errorString = readJob->errorString();
-                qCWarning(lcKeychainChunk) << "Unable to read" << readJob->key() << "chunk" << QString::number(_chunkCount) << readJob->errorString();
-            }
+            _retryOnKeyChainError = false;
         }
+#endif
 
-        readJob->deleteLater();
+        if (readJob->error() != QKeychain::EntryNotFound ||
+            ((readJob->error() == QKeychain::EntryNotFound) && _chunkCount == 0)) {
+            _error = readJob->error();
+            _errorString = readJob->errorString();
+            qCWarning(lcKeychainChunk) << "Unable to read" << readJob->key() << "chunk" << QString::number(_chunkCount) << readJob->errorString();
+        }
     }
+
+    readJob->deleteLater();
 
     emit finished(this);
 
-    if (_autoDelete)
+    if (_autoDelete) {
         deleteLater();
+    }
 }
 
 /*
 * DeleteJob
 */
-DeleteJob::DeleteJob(Account *account, const QString &key, const bool &keychainMigration, QObject *parent)
+DeleteJob::DeleteJob(Account *account, const QString &key, bool keychainMigration, QObject *parent)
     : Job(parent)
 {
     _account = account;
@@ -357,7 +401,7 @@ void DeleteJob::start()
             _keychainMigration ? QString() : _account->id()
         ) : _key;
 
-    auto *job = new QKeychain::DeletePasswordJob(_serviceName, this);
+    auto job = new QKeychain::DeletePasswordJob(_serviceName, this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
     addSettingsToJob(_account, job);
 #endif
@@ -389,53 +433,53 @@ bool DeleteJob::exec()
 void DeleteJob::slotDeleteJobDone(QKeychain::Job *incomingJob)
 {
     // Errors or next chunk?
-    auto *deleteJob = static_cast<QKeychain::DeletePasswordJob *>(incomingJob);
+    auto deleteJob = qobject_cast<QKeychain::DeletePasswordJob *>(incomingJob);
+    Q_ASSERT(deleteJob);
 
-    if (deleteJob) {
-        if (deleteJob->error() == NoError) {
-            _chunkCount++;
+    if (deleteJob->error() == NoError) {
+        _chunkCount++;
 
 #if defined(Q_OS_WIN)
-            // try to delete next chunk
-            if (_chunkCount < KeychainChunk::MaxChunks) {
-                const QString keyWithIndex = _key + QString(".") + QString::number(_chunkCount);
-                const QString kck = _account ? AbstractCredentials::keychainKey(
-                        _account->url().toString(),
-                        keyWithIndex,
-                        _keychainMigration ? QString() : _account->id()
-                    ) : keyWithIndex;
+        // try to delete next chunk
+        if (_chunkCount < KeychainChunk::MaxChunks) {
+            const QString keyWithIndex = _key + QString(".") + QString::number(_chunkCount);
+            const QString kck = _account ? AbstractCredentials::keychainKey(
+                    _account->url().toString(),
+                    keyWithIndex,
+                    _keychainMigration ? QString() : _account->id()
+                ) : keyWithIndex;
 
-                QKeychain::DeletePasswordJob *job = new QKeychain::DeletePasswordJob(_serviceName, this);
+            auto job = new QKeychain::DeletePasswordJob(_serviceName, this);
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
-                addSettingsToJob(_account, job);
+            addSettingsToJob(_account, job);
 #endif
-                job->setInsecureFallback(_insecureFallback);
-                job->setKey(kck);
-                connect(job, &QKeychain::Job::finished, this, &KeychainChunk::DeleteJob::slotDeleteJobDone);
-                job->start();
+            job->setInsecureFallback(_insecureFallback);
+            job->setKey(kck);
+            connect(job, &QKeychain::Job::finished, this, &KeychainChunk::DeleteJob::slotDeleteJobDone);
+            job->start();
 
-                deleteJob->deleteLater();
-                return;
-            } else {
-                qCWarning(lcKeychainChunk) << "Maximum chunk count for" << deleteJob->key() << "reached, ignoring after" << KeychainChunk::MaxChunks;
-            }
-#endif
+            deleteJob->deleteLater();
+            return;
         } else {
-            if (deleteJob->error() != QKeychain::EntryNotFound ||
-                ((deleteJob->error() == QKeychain::EntryNotFound) && _chunkCount == 0)) {
-                _error = deleteJob->error();
-                _errorString = deleteJob->errorString();
-                qCWarning(lcKeychainChunk) << "Unable to delete" << deleteJob->key() << "chunk" << QString::number(_chunkCount) << deleteJob->errorString();
-            }
+            qCWarning(lcKeychainChunk) << "Maximum chunk count for" << deleteJob->key() << "reached, ignoring after" << KeychainChunk::MaxChunks;
         }
-
-        deleteJob->deleteLater();
+#endif
+    } else {
+        if (deleteJob->error() != QKeychain::EntryNotFound ||
+            ((deleteJob->error() == QKeychain::EntryNotFound) && _chunkCount == 0)) {
+            _error = deleteJob->error();
+            _errorString = deleteJob->errorString();
+            qCWarning(lcKeychainChunk) << "Unable to delete" << deleteJob->key() << "chunk" << QString::number(_chunkCount) << deleteJob->errorString();
+        }
     }
+
+    deleteJob->deleteLater();
 
     emit finished(this);
 
-    if (_autoDelete)
+    if (_autoDelete) {
         deleteLater();
+    }
 }
 
 } // namespace KeychainChunk
