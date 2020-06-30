@@ -1098,6 +1098,7 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
         if (!_getFilesBelowPathQuery.initOrReset(QByteArrayLiteral(
                 GET_FILE_RECORD_QUERY
                 " WHERE " IS_PREFIX_PATH_OF("?1", "path")
+                " OR " IS_PREFIX_PATH_OF("?1", "e2eMangledName")
                 // We want to ensure that the contents of a directory are sorted
                 // directly behind the directory itself. Without this ORDER BY
                 // an ordering like foo, foo-2, foo/file would be returned.
