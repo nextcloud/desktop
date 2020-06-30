@@ -23,6 +23,7 @@
 #include <QScopedPointer>
 #include <QSettings>
 #include <QSet>
+#include <QEventLoop>
 
 namespace QKeychain {
 class Job;
@@ -89,7 +90,7 @@ private:
 
     /// If the user cancels the credential dialog, blocked will be set to
     /// true and we won't bother him again.
-    bool _blocked;
+    bool _blocked = false;
 
     /// In several instances handleProxyAuthenticationRequired() can be called
     /// while it is still running. These counters detect what we're currently

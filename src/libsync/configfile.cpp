@@ -658,11 +658,11 @@ void ConfigFile::setProxyType(int proxyType,
             settings.remove(QLatin1String(proxyPassC));
 
             // Delete password from keychain
-            auto *job = new KeychainChunk::DeleteJob(keychainProxyPasswordKey());
+            auto job = new KeychainChunk::DeleteJob(keychainProxyPasswordKey());
             job->exec();
         } else {
             // Write password to keychain
-            auto *job = new KeychainChunk::WriteJob(keychainProxyPasswordKey(), pass.toUtf8());
+            auto job = new KeychainChunk::WriteJob(keychainProxyPasswordKey(), pass.toUtf8());
             if (job->exec()) {
                 // Security: Don't keep password in config file
                 settings.remove(QLatin1String(proxyPassC));
@@ -750,7 +750,7 @@ QString ConfigFile::proxyPassword() const
 
     if (!pass.isEmpty()) {
         // Security: Migrate password from config file to keychain
-        auto *job = new KeychainChunk::WriteJob(key, pass.toUtf8());
+        auto job = new KeychainChunk::WriteJob(key, pass.toUtf8());
         if (job->exec()) {
             QSettings settings(configFile(), QSettings::IniFormat);
             settings.remove(QLatin1String(proxyPassC));
@@ -758,7 +758,7 @@ QString ConfigFile::proxyPassword() const
         }
     } else {
         // Read password from keychain
-        auto *job = new KeychainChunk::ReadJob(key);
+        auto job = new KeychainChunk::ReadJob(key);
         if (job->exec()) {
             pass = job->textData();
         }
