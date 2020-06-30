@@ -71,6 +71,12 @@ private:
     /// Stores the current credentials in the keychain.
     void storeCredsInKeychain();
 
+    template<class T, typename PointerToMemberFunction>
+    void execAwait(const T *sender,
+                   PointerToMemberFunction signal,
+                   int &counter,
+                   const QEventLoop::ProcessEventsFlags flags = QEventLoop::AllEvents);
+
     QString keychainUsernameKey() const;
     QString keychainPasswordKey() const;
 
