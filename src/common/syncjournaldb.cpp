@@ -1133,7 +1133,7 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString> &filepathsToKeep,
     }
 
     SqlQuery query(_db);
-    query.prepare("SELECT phash, path FROM metadata order by path");
+    query.prepare("SELECT phash, path, e2eMangledName FROM metadata order by path");
 
     if (!query.exec()) {
         return false;
@@ -1142,11 +1142,12 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString> &filepathsToKeep,
     QByteArrayList superfluousItems;
 
     while (query.next()) {
-        const QString file = query.baValue(1);
-        bool keep = filepathsToKeep.contains(file);
+        const auto file = QString(query.baValue(1));
+        const auto mangledPath = QString(query.baValue(2));
+        bool keep = filepathsToKeep.contains(file) || filepathsToKeep.contains(mangledPath);
         if (!keep) {
             foreach (const QString &prefix, prefixesToKeep) {
-                if (file.startsWith(prefix)) {
+                if (file.startsWith(prefix) || mangledPath.startsWith(prefix)) {
                     keep = true;
                     break;
                 }
