@@ -17,6 +17,7 @@ Summary
 * Change - The layout in the advanced account setup page might be broken: [#7920](https://github.com/owncloud/client/issues/7920)
 * Change - The client hides the window during the authentication process: [#7922](https://github.com/owncloud/client/pull/7922)
 * Change - The settings ui shows a prompt for a few seconds: [#7925](https://github.com/owncloud/client/pull/7925)
+* Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
 
@@ -78,6 +79,25 @@ Details
    We now hide that prompt by default and only show it if needed.
 
    https://github.com/owncloud/client/pull/7925
+
+* Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
+
+   The ownCloud desktop client now supports OpenID Connect. OpenID Connect 1.0 is a simple
+   identity layer on top of the OAuth 2.0 protocol. It allows Clients to verify the identity of the
+   End-User based on the authentication performed by an Authorization Server, as well as to
+   obtain basic profile information about the End-User in an interoperable and REST-like
+   manner.
+
+   OpenID Connect allows clients of all types, including Web-based, mobile, and JavaScript
+   clients, to request and receive information about authenticated sessions and end-users. The
+   specification suite is extensible, allowing participants to use optional features such as
+   encryption of identity data, discovery of OpenID Providers, and session management, when it
+   makes sense for them.
+
+   See http://openid.net/connect/faq/ for a set of answers to Frequently Asked Questions about
+   OpenID Connect.
+
+   https://github.com/owncloud/client/pull/7509
 
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 
