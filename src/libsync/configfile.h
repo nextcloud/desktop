@@ -92,6 +92,9 @@ public:
     bool automaticLogDir() const;
     void setAutomaticLogDir(bool enabled);
 
+    bool logDebug() const;
+    void setLogDebug(bool enabled);
+
     // proxy settings
     void setProxyType(int proxyType,
         const QString &host = QString(),

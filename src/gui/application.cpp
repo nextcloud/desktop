@@ -411,7 +411,7 @@ void Application::setupLogging()
     logger->setLogDir(_logDir);
     logger->setLogExpire(_logExpire);
     logger->setLogFlush(_logFlush);
-    logger->setLogDebug(_logDebug);
+    logger->setLogDebug(_logDebug || ConfigFile().logDebug());
     if (!logger->isLoggingToFile() && ConfigFile().automaticLogDir()) {
         logger->setupTemporaryFolderLogDir();
     }
