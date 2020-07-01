@@ -1098,6 +1098,7 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
         if (!_getFilesBelowPathQuery.initOrReset(QByteArrayLiteral(
                 GET_FILE_RECORD_QUERY
                 " WHERE " IS_PREFIX_PATH_OF("?1", "path")
+                " OR " IS_PREFIX_PATH_OF("?1", "e2eMangledName")
                 // We want to ensure that the contents of a directory are sorted
                 // directly behind the directory itself. Without this ORDER BY
                 // an ordering like foo, foo-2, foo/file would be returned.
@@ -1133,7 +1134,7 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString> &filepathsToKeep,
     }
 
     SqlQuery query(_db);
-    query.prepare("SELECT phash, path FROM metadata order by path");
+    query.prepare("SELECT phash, path, e2eMangledName FROM metadata order by path");
 
     if (!query.exec()) {
         return false;
@@ -1142,11 +1143,12 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString> &filepathsToKeep,
     QByteArrayList superfluousItems;
 
     while (query.next()) {
-        const QString file = query.baValue(1);
-        bool keep = filepathsToKeep.contains(file);
+        const auto file = QString(query.baValue(1));
+        const auto mangledPath = QString(query.baValue(2));
+        bool keep = filepathsToKeep.contains(file) || filepathsToKeep.contains(mangledPath);
         if (!keep) {
             foreach (const QString &prefix, prefixesToKeep) {
-                if (file.startsWith(prefix)) {
+                if (file.startsWith(prefix) || mangledPath.startsWith(prefix)) {
                     keep = true;
                     break;
                 }

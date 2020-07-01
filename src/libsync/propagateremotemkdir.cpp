@@ -111,8 +111,9 @@ void PropagateRemoteMkdir::slotMkdir()
             return result;
         }
     }();
-    const auto path = QString(rootPath + _item->_file);
-    const auto parentPath = path.left(path.lastIndexOf('/'));
+    const auto path = _item->_file;
+    const auto slashPosition = path.lastIndexOf('/');
+    const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
 
     SyncJournalFileRecord parentRec;
     bool ok = propagator()->_journal->getFileRecord(parentPath, &parentRec);
@@ -122,11 +123,12 @@ void PropagateRemoteMkdir::slotMkdir()
     }
 
     const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
+    const auto absoluteRemoteParentPath = remoteParentPath.isEmpty() ? rootPath : rootPath + remoteParentPath + '/';
     const auto account = propagator()->account();
 
     if (!account->capabilities().clientSideEncryptionAvailable() ||
-        (!account->e2e()->isFolderEncrypted(remoteParentPath + '/') &&
-         !account->e2e()->isAnyParentFolderEncrypted(remoteParentPath + '/'))) {
+        (!account->e2e()->isFolderEncrypted(absoluteRemoteParentPath) &&
+         !account->e2e()->isAnyParentFolderEncrypted(absoluteRemoteParentPath))) {
         slotStartMkcolJob();
         return;
     }

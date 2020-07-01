@@ -153,13 +153,17 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return QString(QLatin1String("<qt>") + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size))) + QLatin1String("</qt>"));
         case Qt::CheckStateRole:
             return x._checked;
-        case Qt::DecorationRole:
-            if (_accountState->account()->e2e()->isFolderEncrypted(x._path)) {
+        case Qt::DecorationRole: {
+            Q_ASSERT(x._folder->remotePath().startsWith('/'));
+            const auto rootPath = x._folder->remotePath().mid(1);
+            const auto absoluteRemotePath = rootPath.isEmpty() ? x._path : rootPath + '/' + x._path;
+            if (_accountState->account()->e2e()->isFolderEncrypted(absoluteRemotePath)) {
                 return QIcon(QLatin1String(":/client/theme/lock-https.svg"));
-            } else if (x._size > 0 && _accountState->account()->e2e()->isAnyParentFolderEncrypted(x._path)) {
+            } else if (x._size > 0 && _accountState->account()->e2e()->isAnyParentFolderEncrypted(absoluteRemotePath)) {
                 return QIcon(QLatin1String(":/client/theme/lock-broken.svg"));
             }
             return QFileIconProvider().icon(x._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
+        }
         case Qt::ForegroundRole:
             if (x._isUndecided) {
                 return QColor(Qt::red);

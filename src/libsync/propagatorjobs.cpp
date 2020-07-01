@@ -174,9 +174,13 @@ void PropagateLocalMkdir::start()
         !account->e2e()->isFolderEncrypted(remoteParentPath + '/')) {
         startLocalMkdir();
     } else {
+        const auto relativeRemotePath = _item->_file;
+        const auto slashPosition = relativeRemotePath.lastIndexOf('/');
+        const auto relativeRemoteParentPath = slashPosition >= 0 ? relativeRemotePath.left(slashPosition) : QString();
+
         SyncJournalFileRecord parentRec;
-        propagator()->_journal->getFileRecordByE2eMangledName(remoteParentPath, &parentRec);
-        const auto parentPath = parentRec.isValid() ? parentRec._path : remoteParentPath;
+        propagator()->_journal->getFileRecordByE2eMangledName(relativeRemoteParentPath, &parentRec);
+        const auto parentPath = parentRec.isValid() ? parentRec._path : relativeRemoteParentPath;
         startDemanglingName(parentPath);
     }
 }
