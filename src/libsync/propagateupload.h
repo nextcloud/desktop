@@ -226,9 +226,12 @@ protected:
     };
     UploadFileInfo _fileToUpload;
     QByteArray _transmissionChecksumHeader;
+    JobParallelism _parallelism;
 
 public:
     PropagateUploadFileCommon(OwncloudPropagator *propagator, const SyncFileItemPtr &item);
+
+    JobParallelism parallelism() override;
 
     /**
      * Whether an existing entity with the same name may be deleted before

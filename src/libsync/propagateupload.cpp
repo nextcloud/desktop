@@ -168,9 +168,15 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     : PropagateItemJob(propagator, item)
     , _finished(false)
     , _deleteExisting(false)
+    , _parallelism(FullParallelism)
     , _uploadEncryptedHelper(nullptr)
     , _uploadingEncrypted(false)
 {
+}
+
+PropagatorJob::JobParallelism PropagateUploadFileCommon::parallelism()
+{
+    return _parallelism;
 }
 
 void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
