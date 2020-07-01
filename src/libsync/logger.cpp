@@ -73,7 +73,7 @@ Logger::Logger(QObject *parent)
     , _logExpire(0)
     , _logDebug(false)
 {
-    qSetMessagePattern("[%{function} \t%{message}");
+    qSetMessagePattern("%{time yyyy-MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
 #ifndef NO_MSG_HANDLER
    s_originalMessageHandler = qInstallMessageHandler(mirallLogCatcher);
 #else
