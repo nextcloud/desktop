@@ -73,6 +73,7 @@ static const char minChunkSizeC[] = "minChunkSize";
 static const char maxChunkSizeC[] = "maxChunkSize";
 static const char targetChunkUploadDurationC[] = "targetChunkUploadDuration";
 static const char automaticLogDirC[] = "logToTemporaryLogDir";
+static const char logDirC[] = "logDir";
 static const char logDebugC[] = "logDebug";
 static const char logExpireC[] = "logExpire";
 
@@ -853,6 +854,18 @@ void ConfigFile::setAutomaticLogDir(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(automaticLogDirC), enabled);
+}
+
+QString ConfigFile::logDir() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(logDirC), QString()).toString();
+}
+
+void ConfigFile::setLogDir(const QString &dir)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(logDirC), dir);
 }
 
 bool ConfigFile::logDebug() const

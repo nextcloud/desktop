@@ -408,7 +408,7 @@ void Application::setupLogging()
     // might be called from second instance
     auto logger = Logger::instance();
     logger->setLogFile(_logFile);
-    logger->setLogDir(_logDir);
+    logger->setLogDir(!_logDir.isEmpty() ? _logDir : ConfigFile().logDir());
     logger->setLogExpire(_logExpire > 0 ? _logExpire : ConfigFile().logExpire());
     logger->setLogFlush(_logFlush);
     logger->setLogDebug(_logDebug || ConfigFile().logDebug());

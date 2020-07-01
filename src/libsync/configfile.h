@@ -92,6 +92,9 @@ public:
     bool automaticLogDir() const;
     void setAutomaticLogDir(bool enabled);
 
+    QString logDir() const;
+    void setLogDir(const QString &dir);
+
     bool logDebug() const;
     void setLogDebug(bool enabled);
 
