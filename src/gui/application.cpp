@@ -410,7 +410,7 @@ void Application::setupLogging()
     logger->setLogFile(_logFile);
     logger->setLogDir(!_logDir.isEmpty() ? _logDir : ConfigFile().logDir());
     logger->setLogExpire(_logExpire > 0 ? _logExpire : ConfigFile().logExpire());
-    logger->setLogFlush(_logFlush);
+    logger->setLogFlush(_logFlush || ConfigFile().logFlush());
     logger->setLogDebug(_logDebug || ConfigFile().logDebug());
     if (!logger->isLoggingToFile() && ConfigFile().automaticLogDir()) {
         logger->setupTemporaryFolderLogDir();
