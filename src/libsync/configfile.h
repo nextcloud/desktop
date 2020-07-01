@@ -92,6 +92,18 @@ public:
     bool automaticLogDir() const;
     void setAutomaticLogDir(bool enabled);
 
+    QString logDir() const;
+    void setLogDir(const QString &dir);
+
+    bool logDebug() const;
+    void setLogDebug(bool enabled);
+
+    int logExpire() const;
+    void setLogExpire(int hours);
+
+    bool logFlush() const;
+    void setLogFlush(bool enabled);
+
     // proxy settings
     void setProxyType(int proxyType,
         const QString &host = QString(),

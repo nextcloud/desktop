@@ -18,10 +18,16 @@
 
 #include <QDir>
 #include <QStringList>
-#include <QThread>
+#include <QtGlobal>
 #include <qmetaobject.h>
 
+#include <iostream>
+
 #include <zlib.h>
+
+#ifdef Q_OS_WIN
+#include <io.h> // for stdout
+#endif
 
 namespace OCC {
 
@@ -37,6 +43,19 @@ static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, cons
     } else if (!logger->isNoop()) {
         logger->doLog(qFormatLogMessage(type, ctx, message));
     }
+    if(type == QtCriticalMsg || type == QtFatalMsg) {
+        std::cerr << qPrintable(qFormatLogMessage(type, ctx, message)) << std::endl;
+    }
+
+    if(type == QtFatalMsg) {
+        if (!logger->isNoop()) {
+            logger->close();
+        }
+#if defined(Q_OS_WIN)
+    // Make application terminate in a way that can be caught by the crash reporter
+        Utility::crash();
+#endif
+    }
 }
 
 
@@ -49,7 +68,7 @@ Logger *Logger::instance()
 Logger::Logger(QObject *parent)
     : QObject(parent)
 {
-    qSetMessagePattern("[%{function} \t%{message}");
+    qSetMessagePattern("%{time yyyy-MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
 #ifndef NO_MSG_HANDLER
    s_originalMessageHandler = qInstallMessageHandler(mirallLogCatcher);
 #else
@@ -87,7 +106,6 @@ void Logger::log(Log log)
         msg = log.timeStamp.toString(QLatin1String("MM-dd hh:mm:ss:zzz")) + QLatin1Char(' ');
     }
 
-    msg += QString().sprintf("%p ", (void *)QThread::currentThread());
     msg += log.message;
     // _logs.append(log);
     // std::cout << qPrintable(log.message) << std::endl;
@@ -123,6 +141,17 @@ void Logger::doLog(const QString &msg)
     emit logWindowLog(msg);
 }
 
+void Logger::close()
+{
+    QMutexLocker lock(&_mutex);
+    if (_logstream)
+    {
+        _logstream->flush();
+        _logFile.close();
+        _logstream.reset();
+    }
+}
+
 void Logger::mirallLog(const QString &message)
 {
     Log log_;
@@ -152,7 +181,7 @@ void Logger::setLogFile(const QString &name)
 
     bool openSucceeded = false;
     if (name == QLatin1String("-")) {
-        openSucceeded = _logFile.open(1, QIODevice::WriteOnly);
+        openSucceeded = _logFile.open(stdout, QIODevice::WriteOnly);
     } else {
         _logFile.setFileName(name);
         openSucceeded = _logFile.open(QIODevice::WriteOnly);
@@ -187,7 +216,7 @@ void Logger::setLogFlush(bool flush)
 
 void Logger::setLogDebug(bool debug)
 {
-    QLoggingCategory::setFilterRules(debug ? QStringLiteral("sync.*.debug=true\ngui.*.debug=true") : QString());
+    QLoggingCategory::setFilterRules(debug ? QStringLiteral("nextcloud.*.debug=true") : QString());
     _logDebug = debug;
 }
 
@@ -257,7 +286,7 @@ void Logger::enterNextLogFile()
 
         // Expire old log files and deal with conflicts
         QStringList files = dir.entryList(QStringList("*owncloud.log.*"),
-            QDir::Files);
+            QDir::Files, QDir::Name);
         QRegExp rx(R"(.*owncloud\.log\.(\d+).*)");
         int maxNumber = -1;
         foreach (const QString &s, files) {
@@ -276,10 +305,15 @@ void Logger::enterNextLogFile()
         auto previousLog = _logFile.fileName();
         setLogFile(dir.filePath(newLogName));
 
-        if (!previousLog.isEmpty()) {
-            QString compressedName = previousLog + ".gz";
-            if (compressLog(previousLog, compressedName)) {
-                QFile::remove(previousLog);
+        // Compress the previous log file. On a restart this can be the most recent
+        // log file.
+        auto logToCompress = previousLog;
+        if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(".gz"))
+            logToCompress = dir.absoluteFilePath(files.last());
+        if (!logToCompress.isEmpty()) {
+            QString compressedName = logToCompress + ".gz";
+            if (compressLog(logToCompress, compressedName)) {
+                QFile::remove(logToCompress);
             } else {
                 QFile::remove(compressedName);
             }

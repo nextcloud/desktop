@@ -34,7 +34,7 @@
 #include "csync_util.h"
 #include "vio/csync_vio.h"
 
-Q_LOGGING_CATEGORY(lcCSyncUtils, "sync.csync.utils", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCSyncUtils, "nextcloud.sync.csync.utils", QtInfoMsg)
 
 
 typedef struct {
