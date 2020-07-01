@@ -22,7 +22,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFlow2AuthWidget, "gui.wizard.flow2authwidget", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFlow2AuthWidget, "nextcloud.gui.wizard.flow2authwidget", QtInfoMsg)
 
 
 Flow2AuthWidget::Flow2AuthWidget(QWidget *parent)

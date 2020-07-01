@@ -49,7 +49,7 @@
 #include "common/c_jhash.h"
 #include "common/syncjournalfilerecord.h"
 
-Q_LOGGING_CATEGORY(lcCSync, "sync.csync.csync", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCSync, "nextcloud.sync.csync.csync", QtInfoMsg)
 
 
 csync_s::csync_s(const char *localUri, OCC::SyncJournalDb *statedb)

@@ -87,8 +87,8 @@ static QString buildMessage(const QString &verb, const QString &path, const QStr
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcSocketApi, "gui.socketapi", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPublicLink, "gui.socketapi.publiclink", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSocketApi, "nextcloud.gui.socketapi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPublicLink, "nextcloud.gui.socketapi.publiclink", QtInfoMsg)
 
 
 class BloomFilter

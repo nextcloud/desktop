@@ -50,7 +50,7 @@ namespace OCC {
 
 namespace chrono = std::chrono;
 
-Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
@@ -73,6 +73,10 @@ static const char minChunkSizeC[] = "minChunkSize";
 static const char maxChunkSizeC[] = "maxChunkSize";
 static const char targetChunkUploadDurationC[] = "targetChunkUploadDuration";
 static const char automaticLogDirC[] = "logToTemporaryLogDir";
+static const char logDirC[] = "logDir";
+static const char logDebugC[] = "logDebug";
+static const char logExpireC[] = "logExpire";
+static const char logFlushC[] = "logFlush";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -851,6 +855,54 @@ void ConfigFile::setAutomaticLogDir(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(automaticLogDirC), enabled);
+}
+
+QString ConfigFile::logDir() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(logDirC), QString()).toString();
+}
+
+void ConfigFile::setLogDir(const QString &dir)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(logDirC), dir);
+}
+
+bool ConfigFile::logDebug() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(logDebugC), false).toBool();
+}
+
+void ConfigFile::setLogDebug(bool enabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(logDebugC), enabled);
+}
+
+int ConfigFile::logExpire() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(logExpireC), 0).toBool();
+}
+
+void ConfigFile::setLogExpire(int hours)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(logExpireC), hours);
+}
+
+bool ConfigFile::logFlush() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(logFlushC), false).toBool();
+}
+
+void ConfigFile::setLogFlush(bool enabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(logFlushC), enabled);
 }
 
 QString ConfigFile::certificatePath() const
