@@ -172,6 +172,33 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     , _uploadEncryptedHelper(nullptr)
     , _uploadingEncrypted(false)
 {
+    const auto rootPath = [=]() {
+        const auto result = propagator->_remoteFolder;
+        if (result.startsWith('/')) {
+            return result.mid(1);
+        } else {
+            return result;
+        }
+    }();
+    const auto path = _item->_file;
+    const auto slashPosition = path.lastIndexOf('/');
+    const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+
+    SyncJournalFileRecord parentRec;
+    bool ok = propagator->_journal->getFileRecord(parentPath, &parentRec);
+    if (!ok) {
+        done(SyncFileItem::NormalError);
+        return;
+    }
+
+    const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
+    const auto absoluteRemoteParentPath = remoteParentPath.isEmpty() ? rootPath : rootPath + remoteParentPath + '/';
+    const auto account = propagator->account();
+
+    if (account->capabilities().clientSideEncryptionAvailable() &&
+        account->e2e()->isFolderEncrypted(absoluteRemoteParentPath)) {
+        _parallelism = WaitForFinished;
+    }
 }
 
 PropagatorJob::JobParallelism PropagateUploadFileCommon::parallelism()
