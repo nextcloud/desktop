@@ -164,6 +164,15 @@ bool PollJob::finished()
     return true;
 }
 
+PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+    : PropagateItemJob(propagator, item)
+    , _finished(false)
+    , _deleteExisting(false)
+    , _uploadEncryptedHelper(nullptr)
+    , _uploadingEncrypted(false)
+{
+}
+
 void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 {
     _deleteExisting = enabled;
