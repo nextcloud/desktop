@@ -124,7 +124,7 @@ void UserInfo::slotUpdateLastInfo(const QJsonDocument &json)
     // Quota
     auto objQuota = objData.value("quota").toObject();
     qint64 used = objQuota.value("used").toDouble();
-    qint64 total = objQuota.value("total").toDouble();
+    qint64 total = objQuota.value("quota").toDouble();
 
     if(_lastInfoReceived.isNull() || _lastQuotaUsedBytes != used || _lastQuotaTotalBytes != total) {
         _lastQuotaUsedBytes = used;

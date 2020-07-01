@@ -739,7 +739,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
         _ui->quotaProgressBar->setVisible(false);
         _ui->quotaInfoLabel->setToolTip(QString());
 
-        /* -1 means not computed; -2 means unknown; -3 means unlimited  (#3940)*/
+        /* -1 means not computed; -2 means unknown; -3 means unlimited  (#owncloud/client/issues/3940)*/
         if (total == 0 || total == -1) {
             _ui->quotaInfoLabel->setText(tr("Currently there is no storage usage information available."));
         } else {
