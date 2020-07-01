@@ -216,7 +216,7 @@ void Logger::setLogFlush(bool flush)
 
 void Logger::setLogDebug(bool debug)
 {
-    QLoggingCategory::setFilterRules(debug ? QStringLiteral("sync.*.debug=true\ngui.*.debug=true") : QString());
+    QLoggingCategory::setFilterRules(debug ? QStringLiteral("nextcloud.*.debug=true") : QString());
     _logDebug = debug;
 }
 
