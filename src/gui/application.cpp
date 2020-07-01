@@ -409,7 +409,7 @@ void Application::setupLogging()
     auto logger = Logger::instance();
     logger->setLogFile(_logFile);
     logger->setLogDir(_logDir);
-    logger->setLogExpire(_logExpire);
+    logger->setLogExpire(_logExpire > 0 ? _logExpire : ConfigFile().logExpire());
     logger->setLogFlush(_logFlush);
     logger->setLogDebug(_logDebug || ConfigFile().logDebug());
     if (!logger->isLoggingToFile() && ConfigFile().automaticLogDir()) {
