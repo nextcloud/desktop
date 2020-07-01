@@ -76,6 +76,7 @@ static const char automaticLogDirC[] = "logToTemporaryLogDir";
 static const char logDirC[] = "logDir";
 static const char logDebugC[] = "logDebug";
 static const char logExpireC[] = "logExpire";
+static const char logFlushC[] = "logFlush";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -890,6 +891,18 @@ void ConfigFile::setLogExpire(int hours)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(logExpireC), hours);
+}
+
+bool ConfigFile::logFlush() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(logFlushC), false).toBool();
+}
+
+void ConfigFile::setLogFlush(bool enabled)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(logFlushC), enabled);
 }
 
 QString ConfigFile::certificatePath() const

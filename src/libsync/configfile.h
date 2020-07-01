@@ -101,6 +101,9 @@ public:
     int logExpire() const;
     void setLogExpire(int hours);
 
+    bool logFlush() const;
+    void setLogFlush(bool enabled);
+
     // proxy settings
     void setProxyType(int proxyType,
         const QString &host = QString(),
