@@ -95,6 +95,9 @@ public:
     bool logDebug() const;
     void setLogDebug(bool enabled);
 
+    int logExpire() const;
+    void setLogExpire(int hours);
+
     // proxy settings
     void setProxyType(int proxyType,
         const QString &host = QString(),

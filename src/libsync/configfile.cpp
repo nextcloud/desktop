@@ -74,6 +74,7 @@ static const char maxChunkSizeC[] = "maxChunkSize";
 static const char targetChunkUploadDurationC[] = "targetChunkUploadDuration";
 static const char automaticLogDirC[] = "logToTemporaryLogDir";
 static const char logDebugC[] = "logDebug";
+static const char logExpireC[] = "logExpire";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -864,6 +865,18 @@ void ConfigFile::setLogDebug(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(logDebugC), enabled);
+}
+
+int ConfigFile::logExpire() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(logExpireC), 0).toBool();
+}
+
+void ConfigFile::setLogExpire(int hours)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(logExpireC), hours);
 }
 
 QString ConfigFile::certificatePath() const
