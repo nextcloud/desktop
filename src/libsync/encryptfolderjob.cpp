@@ -69,7 +69,7 @@ void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, co
     auto encryptedMetadata = emptyMetadata.encryptedMetadata();
     if (encryptedMetadata.isEmpty()) {
         //TODO: Mark the folder as unencrypted as the metadata generation failed.
-        _errorString = tr("Could not generate the metadata for encryption, Unlocking the folder. \n"
+        _errorString = tr("Could not generate the metadata for encryption, Unlocking the folder.\n"
                           "This can be an issue with your OpenSSL libraries.");
         emit finished(Error);
         return;
