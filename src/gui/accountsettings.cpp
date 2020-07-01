@@ -286,7 +286,7 @@ bool AccountSettings::canEncryptOrDecrypt (const FolderStatusModel::SubFolderInf
 
     if (folderPath.count() != 0) {
         QMessageBox msgBox;
-        msgBox.setText(tr("You cannot encrypt a folder with contents, please remove the files \n"
+        msgBox.setText(tr("You cannot encrypt a folder with contents, please remove the files.\n"
                        "Wait for the new sync, then encrypt it."));
         msgBox.exec();
         return false;
