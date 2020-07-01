@@ -24,7 +24,10 @@
 
 #include <zlib.h>
 
-#include <io.h>
+#ifdef Q_OS_WIN
+#include <io.h> // for stdout
+#endif
+
 namespace OCC {
 
 QtMessageHandler s_originalMessageHandler = nullptr;
