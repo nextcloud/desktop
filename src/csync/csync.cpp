@@ -340,5 +340,6 @@ std::unique_ptr<csync_file_stat_t> csync_file_stat_s::fromSyncJournalFileRecord(
     st->has_ignored_files = rec._serverHasIgnoredFiles;
     st->checksumHeader = rec._checksumHeader;
     st->e2eMangledName = rec._e2eMangledName;
+    st->isE2eEncrypted = rec._isE2eEncrypted;
     return st;
 }

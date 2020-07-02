@@ -65,6 +65,7 @@ public:
     bool _serverHasIgnoredFiles = false;
     QByteArray _checksumHeader;
     QByteArray _e2eMangledName;
+    bool _isE2eEncrypted = false;
 };
 
 bool OCSYNC_EXPORT

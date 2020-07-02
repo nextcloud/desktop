@@ -203,7 +203,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
   if(base.isValid()) { /* there is an entry in the database */
       // When the file is loaded from the file system it misses
-      // the e2e mangled name
+      // the e2e mangled name and e2e encryption status
+      fs->isE2eEncrypted = base._isE2eEncrypted;
       if (fs->e2eMangledName.isEmpty() && !base._e2eMangledName.isEmpty()) {
           fs->e2eMangledName = base._e2eMangledName;
           fs->path = base._path;
