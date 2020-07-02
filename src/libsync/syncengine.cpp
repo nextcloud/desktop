@@ -858,6 +858,11 @@ void SyncEngine::startSync()
         return shouldDiscoverLocally(path);
     };
 
+    slotStartDiscovery();
+}
+
+void SyncEngine::slotStartDiscovery()
+{
     bool ok = false;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {

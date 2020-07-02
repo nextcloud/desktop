@@ -168,6 +168,8 @@ signals:
     void seenLockedFile(const QString &fileName);
 
 private slots:
+    void slotStartDiscovery();
+
     void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QString &);
 
