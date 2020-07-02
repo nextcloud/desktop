@@ -869,10 +869,53 @@ void SyncEngine::startSync()
     }
 }
 
-void SyncEngine::onFolderEncryptedStatusFetchDone()
+void SyncEngine::onFolderEncryptedStatusFetchDone(const QHash<QString, bool> &values)
 {
     disconnect(_account->e2e(), &ClientSideEncryption::folderEncryptedStatusFetchDone,
                this, &SyncEngine::onFolderEncryptedStatusFetchDone);
+
+    Q_ASSERT(_remotePath.startsWith('/'));
+    const auto rootPath = [=]() {
+        const auto result = _remotePath;
+        if (result.startsWith('/')) {
+            return result.mid(1);
+        } else {
+            return result;
+        }
+    }();
+
+    std::for_each(values.constKeyValueBegin(), values.constKeyValueEnd(), [=](const std::pair<QString, bool> &pair) {
+        const auto key = pair.first;
+        const auto value = pair.second;
+
+        if (!key.startsWith(rootPath)) {
+            return;
+        }
+
+        Q_ASSERT(key.endsWith('/'));
+        const auto path = key.mid(rootPath.length()).chopped(1);
+
+        if (path.isEmpty()) {
+            // We don't store metadata about the root
+            return;
+        }
+
+        SyncJournalFileRecord rec;
+        _journal->getFileRecordByE2eMangledName(path, &rec);
+
+        if (!rec.isValid()) {
+            _journal->getFileRecord(path, &rec);
+        }
+
+        if (!rec.isValid()) {
+            // We don't know that folder yet anyway...
+            return;
+        }
+
+        rec._isE2eEncrypted = value;
+        _journal->setFileRecord(rec);
+    });
+
     slotStartDiscovery();
 }
 
