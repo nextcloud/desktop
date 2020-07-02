@@ -858,6 +858,21 @@ void SyncEngine::startSync()
         return shouldDiscoverLocally(path);
     };
 
+    // If needed, make sure we have up to date E2E information before the
+    // discovery phase, otherwise we start right away
+    if (_account->capabilities().clientSideEncryptionAvailable()) {
+        connect(_account->e2e(), &ClientSideEncryption::folderEncryptedStatusFetchDone,
+                this, &SyncEngine::onFolderEncryptedStatusFetchDone);
+        _account->e2e()->fetchFolderEncryptedStatus();
+    } else {
+        slotStartDiscovery();
+    }
+}
+
+void SyncEngine::onFolderEncryptedStatusFetchDone()
+{
+    disconnect(_account->e2e(), &ClientSideEncryption::folderEncryptedStatusFetchDone,
+               this, &SyncEngine::onFolderEncryptedStatusFetchDone);
     slotStartDiscovery();
 }
 

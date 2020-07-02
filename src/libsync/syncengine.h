@@ -168,6 +168,7 @@ signals:
     void seenLockedFile(const QString &fileName);
 
 private slots:
+    void onFolderEncryptedStatusFetchDone();
     void slotStartDiscovery();
 
     void slotFolderDiscovered(bool local, const QString &folder);
