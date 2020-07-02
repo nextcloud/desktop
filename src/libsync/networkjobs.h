@@ -333,7 +333,7 @@ public:
     void start() override;
 
 signals:
-    void etagRetreived(const QString &etag);
+    void etagRetrieved(const QString &etag);
 
 private slots:
     bool finished() override;
