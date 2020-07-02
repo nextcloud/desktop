@@ -1027,7 +1027,7 @@ bool DeleteApiJob::finished()
     const auto replyData = QString::fromUtf8(reply()->readAll());
     qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
     emit result(httpStatus);
-        return true;
+    return true;
 }
 
 void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
