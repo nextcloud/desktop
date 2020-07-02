@@ -110,7 +110,7 @@ bool RequestEtagJob::finished()
                 }
             }
         }
-        emit etagRetreived(etag);
+        emit etagRetrieved(etag);
     }
     return true;
 }
@@ -1027,7 +1027,7 @@ bool DeleteApiJob::finished()
     const auto replyData = QString::fromUtf8(reply()->readAll());
     qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
     emit result(httpStatus);
-		return true;
+        return true;
 }
 
 void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
@@ -1063,4 +1063,3 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
 }
 
 } // namespace OCC
-
