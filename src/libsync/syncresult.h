@@ -30,6 +30,7 @@ namespace OCC {
  */
 class OWNCLOUDSYNC_EXPORT SyncResult
 {
+    Q_GADGET
 public:
     enum Status {
         Undefined,
@@ -43,6 +44,7 @@ public:
         SetupError,
         Paused
     };
+    Q_ENUM(Status);
 
     SyncResult();
     void reset();
