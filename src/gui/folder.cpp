@@ -395,7 +395,7 @@ void Folder::showSyncResultPopup()
         createGuiLog(_syncResult.firstItemError()->_file, LogStatusError, errorCount);
     }
 
-    qCInfo(lcFolder) << "Folder sync result: " << int(_syncResult.status());
+    qCInfo(lcFolder) << "Folder" << _syncResult.folder() << "sync result: " << _syncResult.status();
 }
 
 void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
