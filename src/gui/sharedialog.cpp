@@ -29,6 +29,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QFrame>
+#include <QRegularExpression>
 
 namespace OCC {
 
@@ -91,19 +92,16 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     QString ocDir(_sharePath);
     ocDir.truncate(ocDir.length() - fileName.length());
 
-    ocDir.replace(QRegExp("^/*"), "");
-    ocDir.replace(QRegExp("/*$"), "");
+    // remove leading and trailing spaces
+    ocDir.remove(QRegularExpression(QStringLiteral("^/*|/*$")));
 
-    // Laying this out is complex because sharePath
-    // may be in use or not.
-    _ui->gridLayout->removeWidget(_ui->label_sharePath);
-    _ui->gridLayout->removeWidget(_ui->label_name);
     if (ocDir.isEmpty()) {
-        _ui->gridLayout->addWidget(_ui->label_name, 0, 1, 2, 1);
+        _ui->label_name->setVisible(true);
+        _ui->label_sharePath->setVisible(false);
         _ui->label_sharePath->setText(QString());
     } else {
-        _ui->gridLayout->addWidget(_ui->label_name, 0, 1, 1, 1);
-        _ui->gridLayout->addWidget(_ui->label_sharePath, 1, 1, 1, 1);
+        _ui->label_name->setVisible(true);
+        _ui->label_sharePath->setVisible(true);
         _ui->label_sharePath->setText(tr("Folder: %2").arg(ocDir));
     }
 
