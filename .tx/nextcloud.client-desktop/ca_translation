@@ -199,6 +199,6 @@ X-GNOME-Autostart-Delay=3
 
 # Translations
 Icon[ca]=@APPLICATION_ICON_NAME@
-Name[ca]=@APPLICATION_NAME@ client de sincronització d'escriptori
-Comment[ca]=@APPLICATION_NAME@ client de sincronització d'escriptori
+Name[ca]=Client de sincronització d'escriptori del @APPLICATION_NAME@
+Comment[ca]=Client de sincronització d'escriptori del @APPLICATION_NAME@
 GenericName[ca]=Directori de sincronització

@@ -291,7 +291,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="289"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Sie können einen Ordner nicht mit Inhalten verschlüsseln, bitte Dateien entfernen.
+Warten Sie auf die neue Synchronisierung und verschlüsseln Sie sie dann.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="589"/>
@@ -697,7 +698,8 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>Die Metadaten für die Verschlüsselung konnten nicht generiert werden. Entsperren des Ordners.
+Dies kann ein Problem mit Ihren OpenSSL-Bibliotheken sein.</translation>
     </message>
 </context>
 <context>
@@ -3449,6 +3451,21 @@ Es wird davon abgeraten sie zu verwenden.</translation>
 </context>
 <context>
     <name>OCC::Systray</name>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="85"/>
+        <source>Open main dialog</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="86"/>
+        <source>Settings</source>
+        <translation>Einstellungen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="87"/>
+        <source>Exit %1</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>
         <source>%1: %2</source>
