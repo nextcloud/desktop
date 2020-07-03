@@ -595,25 +595,16 @@ QSharedPointer<Share> ShareUserLine::share() const
 
 void ShareUserLine::displayPermissions()
 {
-    auto perm = _share->getPermissions();
+    const SharePermissions perm = _share->getPermissions();
 
-    _permissionUpdate->setChecked(false);
-    _permissionCreate->setChecked(false);
-    _permissionDelete->setChecked(false);
-    if (perm & SharePermissionUpdate) {
-        _permissionUpdate->setChecked(true);
-    }
-    if (!_isFile && perm & SharePermissionCreate) {
-        _permissionCreate->setChecked(true);
-    }
-    if (!_isFile && perm & SharePermissionDelete) {
-        _permissionDelete->setChecked(true);
-    }
+    _permissionUpdate->setChecked(perm & SharePermissionUpdate);
+    _permissionCreate->setChecked(!_isFile && perm & SharePermissionCreate);
+    _permissionDelete->setChecked(!_isFile && perm & SharePermissionDelete);
 
     if (perm & SharePermissionUpdate
         && (_isFile
-               || (perm & SharePermissionCreate
-                      && perm & SharePermissionDelete))) {
+            || (perm & SharePermissionCreate
+                && perm & SharePermissionDelete))) {
         _ui->permissionsEdit->setCheckState(Qt::Checked);
     } else if (perm & (SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete)) {
         _ui->permissionsEdit->setCheckState(Qt::PartiallyChecked);
@@ -621,9 +612,6 @@ void ShareUserLine::displayPermissions()
         _ui->permissionsEdit->setCheckState(Qt::Unchecked);
     }
 
-    _ui->permissionShare->setCheckState(Qt::Unchecked);
-    if (_share->getPermissions() & SharePermissionShare) {
-        _ui->permissionShare->setCheckState(Qt::Checked);
-    }
+    _ui->permissionShare->setChecked(perm & SharePermissionShare);
 }
 }
