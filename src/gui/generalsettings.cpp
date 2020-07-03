@@ -21,7 +21,6 @@
 #include "configfile.h"
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
-#include "synclogdialog.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -230,7 +229,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 GeneralSettings::~GeneralSettings()
 {
     delete _ui;
-    delete _syncLogDialog;
 }
 
 QSize GeneralSettings::sizeHint() const
