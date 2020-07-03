@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
+   <item>
     <widget class="QGroupBox" name="proxyGroupBox">
      <property name="enabled">
       <bool>true</bool>
@@ -22,15 +22,8 @@
      <property name="title">
       <string>Proxy Settings</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="1">
-       <widget class="QComboBox" name="typeComboBox">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
        <widget class="QRadioButton" name="noProxyRadioButton">
         <property name="text">
          <string>No Proxy</string>
@@ -43,7 +36,7 @@
         </attribute>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item>
        <widget class="QRadioButton" name="systemProxyRadioButton">
         <property name="text">
          <string>Use system proxy</string>
@@ -53,17 +46,28 @@
         </attribute>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QRadioButton" name="manualProxyRadioButton">
-        <property name="text">
-         <string>Specify proxy manually as</string>
-        </property>
-        <attribute name="buttonGroup">
-         <string notr="true">proxyButtonGroup</string>
-        </attribute>
-       </widget>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QRadioButton" name="manualProxyRadioButton">
+          <property name="text">
+           <string>Specify proxy manually as</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">proxyButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="typeComboBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item>
        <widget class="QWidget" name="manualSettings" native="true">
         <property name="enabled">
          <bool>false</bool>
@@ -183,7 +187,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QGroupBox" name="downloadBox">
@@ -196,15 +200,8 @@
        <property name="title">
         <string>Download Bandwidth</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="3" column="0">
-         <widget class="QRadioButton" name="downloadLimitRadioButton">
-          <property name="text">
-           <string>Limit to</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="2">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
          <widget class="QRadioButton" name="noDownloadLimitRadioButton">
           <property name="text">
            <string>No limit</string>
@@ -214,21 +211,25 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
+        <item>
+         <widget class="QRadioButton" name="autoDownloadLimitRadioButton">
+          <property name="toolTip">
+           <string>Limit to 3/4 of estimated bandwidth</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>147</width>
-            <height>25</height>
-           </size>
+          <property name="text">
+           <string>Limit automatically</string>
           </property>
-         </spacer>
+         </widget>
         </item>
-        <item row="3" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QRadioButton" name="downloadLimitRadioButton">
+            <property name="text">
+             <string>Limit to</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QSpinBox" name="downloadSpinBox">
             <property name="enabled">
@@ -251,15 +252,18 @@
           </item>
          </layout>
         </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QRadioButton" name="autoDownloadLimitRadioButton">
-          <property name="toolTip">
-           <string>Limit to 3/4 of estimated bandwidth</string>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
           </property>
-          <property name="text">
-           <string>Limit automatically</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>147</width>
+            <height>25</height>
+           </size>
           </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -275,25 +279,8 @@
        <property name="title">
         <string>Upload Bandwidth</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="2" column="0">
-         <widget class="QRadioButton" name="uploadLimitRadioButton">
-          <property name="text">
-           <string>Limit to</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QRadioButton" name="autoUploadLimitRadioButton">
-          <property name="toolTip">
-           <string>Limit to 3/4 of estimated bandwidth</string>
-          </property>
-          <property name="text">
-           <string>Limit automatically</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="2">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
          <widget class="QRadioButton" name="noUploadLimitRadioButton">
           <property name="text">
            <string>No limit</string>
@@ -303,8 +290,25 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item>
+         <widget class="QRadioButton" name="autoUploadLimitRadioButton">
+          <property name="toolTip">
+           <string>Limit to 3/4 of estimated bandwidth</string>
+          </property>
+          <property name="text">
+           <string>Limit automatically</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QRadioButton" name="uploadLimitRadioButton">
+            <property name="text">
+             <string>Limit to</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QSpinBox" name="uploadSpinBox">
             <property name="enabled">
@@ -331,14 +335,11 @@
          </layout>
         </item>
        </layout>
-       <zorder>autoUploadLimitRadioButton</zorder>
-       <zorder>uploadLimitRadioButton</zorder>
-       <zorder>noUploadLimitRadioButton</zorder>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

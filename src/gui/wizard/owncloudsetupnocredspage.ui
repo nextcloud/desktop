@@ -19,8 +19,8 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
     <widget class="QLabel" name="topLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -42,7 +42,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <spacer name="horizontalSpacer">
@@ -148,7 +148,7 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QLabel" name="errorLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
@@ -167,7 +167,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -183,14 +183,14 @@
      </property>
     </spacer>
    </item>
-   <item row="4" column="0">
+   <item>
     <layout class="QHBoxLayout" name="resultLayout">
      <property name="spacing">
       <number>0</number>
      </property>
     </layout>
    </item>
-   <item row="5" column="0">
+   <item>
     <widget class="QLabel" name="bottomLabel">
      <property name="text">
       <string>TextLabel</string>

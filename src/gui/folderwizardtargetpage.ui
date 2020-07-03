@@ -13,11 +13,72 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_6">
-   <item row="1" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Select a remote destination folder</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QTreeWidget" name="folderTreeWidget">
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="headerHidden">
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text">
+          <string>Folders</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QPushButton" name="addFolderButton">
+          <property name="text">
+           <string>Create Folder</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="refreshButton">
+          <property name="text">
+           <string>Refresh</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QLineEdit" name="folderEntry"/>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QFrame" name="warnFrame">
      <property name="palette">
       <palette>
@@ -92,91 +153,30 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <item row="0" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="warnLabel">
-          <property name="autoFillBackground">
-           <bool>true</bool>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="text">
-           <string>TextLabel</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::RichText</enum>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-          <property name="margin">
-           <number>3</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Select a remote destination folder</string>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="1">
-       <widget class="QPushButton" name="addFolderButton">
-        <property name="text">
-         <string>Create Folder</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="refreshButton">
-        <property name="text">
-         <string>Refresh</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" rowspan="4">
-       <widget class="QTreeWidget" name="folderTreeWidget">
-        <property name="sortingEnabled">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="warnLabel">
+        <property name="autoFillBackground">
          <bool>true</bool>
         </property>
-        <property name="headerHidden">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="wordWrap">
          <bool>true</bool>
         </property>
-        <column>
-         <property name="text">
-          <string>Folders</string>
-         </property>
-        </column>
+        <property name="margin">
+         <number>3</number>
+        </property>
        </widget>
       </item>
      </layout>

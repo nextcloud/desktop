@@ -16,22 +16,10 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="leftMargin">
-      <number>9</number>
-     </property>
-     <property name="topMargin">
-      <number>9</number>
-     </property>
-     <property name="rightMargin">
-      <number>9</number>
-     </property>
-     <property name="bottomMargin">
-      <number>9</number>
-     </property>
-     <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
       <widget class="QLabel" name="label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -47,30 +35,26 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QPushButton" name="btnBack">
-         <property name="text">
-          <string>Select a different URL</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnNoTLS">
-         <property name="text">
-          <string>Retry unencrypted over HTTP (insecure)</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnClientSideTLS">
-         <property name="text">
-          <string>Configure client-side TLS certificate</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item>
+      <widget class="QPushButton" name="btnBack">
+       <property name="text">
+        <string>Select a different URL</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnNoTLS">
+       <property name="text">
+        <string>Retry unencrypted over HTTP (insecure)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnClientSideTLS">
+       <property name="text">
+        <string>Configure client-side TLS certificate</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

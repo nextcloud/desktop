@@ -13,8 +13,15 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTextBrowser" name="_tbErrors">
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="_cbTrustConnect">
      <property name="font">
       <font>
@@ -26,17 +33,10 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QDialogButtonBox" name="_dialogButtonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QTextBrowser" name="_tbErrors">
-     <property name="openExternalLinks">
-      <bool>true</bool>
      </property>
     </widget>
    </item>

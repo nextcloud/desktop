@@ -13,11 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
     <widget class="QWidget" name="accountStatus" native="true">
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
        <widget class="SslButton" name="sslButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -30,7 +30,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item>
        <widget class="QLabel" name="connectLabel">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -52,24 +52,24 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
-       <widget class="QToolButton" name="_accountToolbox">
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
+      <item>
        <widget class="QToolButton" name="openBrowserButton">
         <property name="text">
          <string>Re-open Browser </string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QToolButton" name="_accountToolbox">
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <layout class="QHBoxLayout" name="storageGroupBox">
      <item>
       <widget class="QLabel" name="quotaInfoLabel">
@@ -123,7 +123,7 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QTreeView" name="_folderList">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
@@ -142,7 +142,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item>
     <widget class="QWidget" name="selectiveSyncStatus" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
