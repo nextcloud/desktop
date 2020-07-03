@@ -69,7 +69,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _pi_editing = new QProgressIndicator();
     _ui->horizontalLayout_create->insertWidget(2, _pi_create);
     _ui->horizontalLayout_password->addWidget(_pi_password);
-    _ui->layout_editing->addWidget(_pi_editing, 0, 2);
+    _ui->layout_editing->addWidget(_pi_editing);
     _ui->horizontalLayout_expire->insertWidget(_ui->horizontalLayout_expire->count() - 1, _pi_date);
 
     connect(_ui->nameLineEdit, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotShareNameEntered);
