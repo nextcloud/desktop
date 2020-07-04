@@ -80,12 +80,15 @@ Systray::Systray()
         }
     );
 
-#ifndef Q_OS_MAC
     auto contextMenu = new QMenu();
     contextMenu->addAction(tr("Open main dialog"), this, &Systray::openMainDialog);
     contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
+#ifndef Q_OS_MAC
     contextMenu->addAction(tr("Exit %1").arg(Theme::instance()->appNameGUI()), this, &Systray::shutdown);
     setContextMenu(contextMenu);
+#else
+    // On macOS this will be the Dock menu.
+    contextMenu->setAsDockMenu();
 #endif
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
