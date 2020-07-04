@@ -136,7 +136,11 @@ Application::Application(int &argc, char **argv)
 #endif
 
     setApplicationName(_theme->appName());
+#ifndef Q_OS_MAC
+    // For macOS the icon is set in the MacOSXBundleInfo.plist file. Setting it here lead to Dock display
+    // errors, shortly drawing an opaque background while the icon is bouncing at app launch.
     setWindowIcon(_theme->applicationIcon());
+#endif
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     auto confDir = ConfigFile().configPath();
