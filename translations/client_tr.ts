@@ -3453,7 +3453,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="85"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Ana pencereyi aç</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
@@ -3463,7 +3463,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 uygulamasından çık</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>

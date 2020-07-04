@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>Warning</source>
-        <translation>Precaución</translation>
+        <translation>Aviso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -291,7 +291,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="289"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>No puede cifrar una carpeta con contenidos, por favor, elimine los archivos.
+Espere a una nueva sincronización, luego cifrala.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="589"/>
@@ -697,7 +698,8 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>No se pueden generar los metadatos para el cifrado, desbloquea la carpeta.
+Esto podría ser un problema con tu librería OpenSSL</translation>
     </message>
 </context>
 <context>
@@ -3452,7 +3454,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="85"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Abrir diálogo principal</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
@@ -3462,7 +3464,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Salir %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>
