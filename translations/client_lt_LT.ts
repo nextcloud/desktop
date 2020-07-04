@@ -3456,7 +3456,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Nustatymai</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>

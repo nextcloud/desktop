@@ -3455,7 +3455,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Stillingar</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>

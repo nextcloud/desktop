@@ -3455,17 +3455,17 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="85"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Apri finestra principale</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Esci da %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>

@@ -3458,7 +3458,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>
