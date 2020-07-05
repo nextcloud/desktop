@@ -3455,7 +3455,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="85"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Abrir o diálogo principal</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
@@ -3465,7 +3465,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Saír de %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>
