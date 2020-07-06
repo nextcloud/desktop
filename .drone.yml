@@ -89,9 +89,7 @@ steps:
       chown -R test:test . &&
       su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test"
     # Static analysis with clang-tidy
-    - /bin/bash -c "
-      ln -s build/compile_commands.json . &&
-      run-clang-tidy-6.0"
+    - run-clang-tidy-6.0 -p build
 trigger:
   branch:
     - master
