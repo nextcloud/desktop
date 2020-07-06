@@ -62,8 +62,10 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
         connect(_webView, &WebView::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
     }
 
-    auto app = static_cast<Application *>(qApp);
-    connect(app, &Application::isShowingSettingsDialog, this, &WebFlowCredentialsDialog::slotShowSettingsDialog);
+    connect(ownCloudGui::instance(), &ownCloudGui::isShowingSettingsDialog, this, &WebFlowCredentialsDialog::slotShowSettingsDialog);
+
+    // Dialog visibility
+    connect(this, &WebFlowCredentialsDialog::onSetVisible, ownCloudGui::instance(), &ownCloudGui::slotDialogVisibilityChanged);
 
     _errorLabel = new QLabel();
     _errorLabel->hide();
@@ -147,6 +149,12 @@ void WebFlowCredentialsDialog::changeEvent(QEvent *e)
 void WebFlowCredentialsDialog::customizeStyle()
 {
     // HINT: Customize dialog's own style here, if necessary in the future (Dark-/Light-Mode switching)
+}
+
+void WebFlowCredentialsDialog::setVisible(bool visible)
+{
+    emit onSetVisible(visible);
+    QDialog::setVisible(visible);
 }
 
 void WebFlowCredentialsDialog::slotShowSettingsDialog()
