@@ -173,6 +173,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   // In both cases, the format is "SHA1:baff".
   QByteArray checksumHeader;
   QByteArray e2eMangledName;
+  bool isE2eEncrypted;
 
   CSYNC_STATUS error_status = CSYNC_STATUS_OK;
 
@@ -183,6 +184,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
     , child_modified(false)
     , has_ignored_files(false)
     , is_hidden(false)
+    , isE2eEncrypted(false)
   { }
 
   static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec);

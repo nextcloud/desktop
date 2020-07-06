@@ -178,8 +178,21 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                         basePath.constData(), other ? "found" : "not found");
                 }
 
+                const auto curParentPath = [=]{
+                    const auto slashPosition = cur->path.lastIndexOf('/');
+                    if (slashPosition >= 0) {
+                        return cur->path.left(slashPosition);
+                    } else {
+                        return QByteArray();
+                    }
+                }();
+                auto curParent = our_tree->findFile(curParentPath);
+
                 if(!other) {
                     // Stick with the NEW
+                    return;
+                } else if (!other->e2eMangledName.isEmpty() || (curParent && curParent->isE2eEncrypted)) {
+                    // Stick with the NEW as well, we want to always issue delete + upload in such cases
                     return;
                 } else if (other->instruction == CSYNC_INSTRUCTION_RENAME) {
                     // Some other EVAL_RENAME already claimed other.

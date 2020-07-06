@@ -1228,14 +1228,14 @@ void ClientSideEncryption::folderEncryptedStatusFetched(const QHash<QString, boo
     _refreshingEncryptionStatus = false;
     _folder2encryptedStatus = result;
     qCDebug(lcCse) << "Retrieved correctly the encrypted status of the folders." << result;
-    emit folderEncryptedStatusFetchDone();
+    emit folderEncryptedStatusFetchDone(result);
 }
 
 void ClientSideEncryption::folderEncryptedStatusError(int error)
 {
     _refreshingEncryptionStatus = false;
     qCDebug(lcCse) << "Failed to retrieve the status of the folders." << error;
-    emit folderEncryptedStatusFetchDone();
+    emit folderEncryptedStatusFetchDone({});
 }
 
 FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata, int statusCode) : _account(account)

@@ -527,8 +527,6 @@ private slots:
         _finishedEmited = true;
     }
 
-    void onFolderEncryptedStatusFetchDone();
-
     void scheduleNextJobImpl();
 
 signals:
