@@ -198,6 +198,8 @@ private:
         const QVariant &defaultValue = QVariant()) const;
     void setValue(const QString &key, const QVariant &value);
 
+    QString keychainProxyPasswordKey() const;
+
 private:
     typedef QSharedPointer<AbstractCredentials> SharedCreds;
 
