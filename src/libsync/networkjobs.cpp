@@ -649,6 +649,10 @@ void AvatarJob::start()
 
 QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
 {
+    if (baseAvatar.isNull()) {
+        return {};
+    }
+
     int dim = baseAvatar.width();
 
     QImage avatar(dim, dim, QImage::Format_ARGB32);
