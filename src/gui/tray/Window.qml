@@ -19,6 +19,8 @@ Window {
     color:      "transparent"
     flags:      Qt.Dialog | Qt.FramelessWindowHint
 
+    readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
+
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
         if(!active) {
@@ -145,6 +147,7 @@ Window {
                             y: (currentAccountButton.y + Style.trayWindowHeaderHeight + 2)
 
                             width: (Style.currentAccountButtonWidth - 2)
+                            height: Math.min(implicitHeight, maxMenuHeight)
                             closePolicy: "CloseOnPressOutside"
 
                             background: Rectangle {
@@ -437,6 +440,7 @@ Window {
                         y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
                         readonly property Item listContentItem: contentItem.contentItem
                         width: Math.min(listContentItem.childrenRect.width + 4, Style.trayWindowWidth / 2)
+                        height: Math.min(implicitHeight, maxMenuHeight)
                         closePolicy: "CloseOnPressOutside"
 
                         background: Rectangle {
