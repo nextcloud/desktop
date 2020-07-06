@@ -262,7 +262,8 @@ void GeneralSettings::slotIgnoreFilesEditor()
 
 void GeneralSettings::slotShowLegalNotice()
 {
-    auto notice = new LegalNotice();
+    auto dlg = qobject_cast<QDialog*>(parent()->parent());
+    auto notice = new LegalNotice(dlg);
     notice->exec();
     delete notice;
 }
