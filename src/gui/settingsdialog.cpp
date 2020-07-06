@@ -159,7 +159,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
-    connect(_ui->hideButton, &QPushButton::click, &QMainWindow::hide);;
+    connect(_ui->hideButton, &QPushButton::clicked, this, &SettingsDialog::hide);
 
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
