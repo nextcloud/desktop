@@ -85,6 +85,9 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::openHelp,
         this, &ownCloudGui::slotHelp);
 
+    connect(_tray.data(), &Systray::openAccountWizard,
+        this, &ownCloudGui::slotNewAccountWizard);
+
     connect(_tray.data(), &Systray::openMainDialog,
         this, &ownCloudGui::slotOpenMainDialog);
 
