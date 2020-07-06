@@ -2,6 +2,21 @@
 
 This allows you to easily build the desktop client for 64-bit and 32-bit Windows.
 
+## Update: 2020-06-20
+
+When building from a tag it is best to set PULL_DESKTOP to 0:
+
+```
+TAG_DESKTOP=v2.7.0-beta1 PULL_DESKTOP=0 ./build.bat Release
+```
+
+Otherwise the build might exit with the following error:
+
+```
+You are not currently on a branch.
+Please specify which branch you want to merge with.
+```
+
 ## Update: 2020-06-13
 
 The VC Runtime redistributable filenames have changed in VS 2019.
