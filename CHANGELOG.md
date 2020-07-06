@@ -14,7 +14,7 @@ Summary
 * Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
 * Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
 * Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
-* Change - The layout in the advanced account setup page might be broken: [#7920](https://github.com/owncloud/client/issues/7920)
+* Change - The layout of serveral ui elements is broken: [#7920](https://github.com/owncloud/client/issues/7920)
 * Change - The client hides the window during the authentication process: [#7922](https://github.com/owncloud/client/pull/7922)
 * Change - The settings ui shows a prompt for a few seconds: [#7925](https://github.com/owncloud/client/pull/7925)
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
@@ -61,11 +61,12 @@ Details
 
    https://github.com/owncloud/client/issues/7873
 
-* Change - The layout in the advanced account setup page might be broken: [#7920](https://github.com/owncloud/client/issues/7920)
+* Change - The layout of serveral ui elements is broken: [#7920](https://github.com/owncloud/client/issues/7920)
 
-   We changed the way the elements are layed out
+   We replace an old layout mechanism with a more advanced one.
 
    https://github.com/owncloud/client/issues/7920
+   https://github.com/owncloud/client/issues/7941
 
 * Change - The client hides the window during the authentication process: [#7922](https://github.com/owncloud/client/pull/7922)
 
