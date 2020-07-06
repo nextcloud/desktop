@@ -59,6 +59,7 @@ set(libsync_SRCS
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
+    creds/keychainchunk.cpp
 )
 
 if(TOKEN_AUTH_ONLY)

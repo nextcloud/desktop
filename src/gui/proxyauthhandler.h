@@ -57,7 +57,6 @@ public slots:
         QAuthenticator *authenticator);
 
 private slots:
-    void slotKeychainJobDone();
     void slotSenderDestroyed(QObject *);
 
 private:
@@ -71,6 +70,12 @@ private:
 
     /// Stores the current credentials in the keychain.
     void storeCredsInKeychain();
+
+    template<class T, typename PointerToMemberFunction>
+    void execAwait(const T *sender,
+                   PointerToMemberFunction signal,
+                   int &counter,
+                   const QEventLoop::ProcessEventsFlags flags = QEventLoop::AllEvents);
 
     QString keychainUsernameKey() const;
     QString keychainPasswordKey() const;
@@ -91,7 +96,6 @@ private:
     /// waiting for.
     int _waitingForDialog = 0;
     int _waitingForKeychain = 0;
-    bool _keychainJobRunning = false;
 
     QPointer<ProxyAuthDialog> _dialog;
 
