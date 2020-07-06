@@ -22,6 +22,7 @@ MenuItem {
                 Layout.preferredWidth: (userLineLayout.width * (5/6))
                 Layout.preferredHeight: (userLineLayout.height)
                 display: AbstractButton.IconOnly
+                hoverEnabled: true
                 flat: true
 
                 MouseArea {
@@ -39,8 +40,15 @@ MenuItem {
                     }
                 }
 
-                background: Rectangle {
-                    color: "transparent"
+
+                background: Item {
+                    height: parent.height
+                    width: parent.menu.width
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: 1
+                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                    }
                 }
 
                 RowLayout {
@@ -140,18 +148,40 @@ MenuItem {
                     MenuItem {
                         text: isConnected ? qsTr("Log out") : qsTr("Log in")
                         font.pixelSize: Style.topLinePixelSize
+                        hoverEnabled: true
                         onClicked: {
                             isConnected ? UserModel.logout(index) : UserModel.login(index)
                             accountMenu.close()
+                        }
+
+                        background: Item {
+                            height: parent.height
+                            width: parent.menu.width
+                            Rectangle {
+                                anchors.fill: parent
+                                anchors.margins: 1
+                                color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            }
                         }
                     }
 
                     MenuItem {
                         text: qsTr("Remove Account")
                         font.pixelSize: Style.topLinePixelSize
+                        hoverEnabled: true
                         onClicked: {
                             UserModel.removeAccount(index)
                             accountMenu.close()
+                        }
+
+                        background: Item {
+                            height: parent.height
+                            width: parent.menu.width
+                            Rectangle {
+                                anchors.fill: parent
+                                anchors.margins: 1
+                                color: parent.parent.hovered ? Style.lightHover : "transparent"
+                            }
                         }
                     }
                 }

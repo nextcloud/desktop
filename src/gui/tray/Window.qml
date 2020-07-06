@@ -170,6 +170,17 @@ Window {
                             MenuItem {
                                 id: addAccountButton
                                 height: Style.addAccountButtonHeight
+                                hoverEnabled: true
+
+                                background: Item {
+                                    height: parent.height
+                                    width: parent.menu.width
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        anchors.margins: 1
+                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                    }
+                                }
 
                                 RowLayout {
                                     anchors.fill: parent
@@ -207,19 +218,52 @@ Window {
                             MenuItem {
                                 id: syncPauseButton
                                 font.pixelSize: Style.topLinePixelSize
+                                hoverEnabled: true
                                 onClicked: Systray.pauseResumeSync()
+
+                                background: Item {
+                                    height: parent.height
+                                    width: parent.menu.width
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        anchors.margins: 1
+                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                    }
+                                }
                             }
 
                             MenuItem {
                                 text: qsTr("Settings")
                                 font.pixelSize: Style.topLinePixelSize
+                                hoverEnabled: true
                                 onClicked: Systray.openSettings()
+
+                                background: Item {
+                                    height: parent.height
+                                    width: parent.menu.width
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        anchors.margins: 1
+                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                    }
+                                }
                             }
 
                             MenuItem {
                                 text: qsTr("Exit");
                                 font.pixelSize: Style.topLinePixelSize
+                                hoverEnabled: true
                                 onClicked: Systray.shutdown()
+
+                                background: Item {
+                                    height: parent.height
+                                    width: parent.menu.width
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        anchors.margins: 1
+                                        color: parent.parent.hovered ? Style.lightHover : "transparent"
+                                    }
+                                }
                             }
                         }
                     }
