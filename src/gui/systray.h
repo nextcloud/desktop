@@ -64,6 +64,7 @@ public:
 
 signals:
     void currentUserChanged();
+    void openAccountWizard();
     void openMainDialog();
     void openSettings();
     void openHelp();

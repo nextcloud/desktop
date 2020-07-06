@@ -82,8 +82,12 @@ Systray::Systray()
 
 #ifndef Q_OS_MAC
     auto contextMenu = new QMenu();
-    contextMenu->addAction(tr("Open main dialog"), this, &Systray::openMainDialog);
-    contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
+    if (AccountManager::instance()->accounts().isEmpty()) {
+        contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);
+    } else {
+        contextMenu->addAction(tr("Open main dialog"), this, &Systray::openMainDialog);
+        contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
+    }
     contextMenu->addAction(tr("Exit %1").arg(Theme::instance()->appNameGUI()), this, &Systray::shutdown);
     setContextMenu(contextMenu);
 #endif
