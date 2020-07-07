@@ -158,6 +158,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   bool child_modified BITFIELD(1);
   bool has_ignored_files BITFIELD(1); // Specify that a directory, or child directory contains ignored files.
   bool is_hidden BITFIELD(1); // Not saved in the DB, only used during discovery for local files.
+  bool isE2eEncrypted BITFIELD(1);
 
   QByteArray path;
   QByteArray rename_path;
@@ -173,7 +174,6 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   // In both cases, the format is "SHA1:baff".
   QByteArray checksumHeader;
   QByteArray e2eMangledName;
-  bool isE2eEncrypted;
 
   CSYNC_STATUS error_status = CSYNC_STATUS_OK;
 
