@@ -24,31 +24,24 @@ jobs:
         matrix:
             target: ["windows-msvc2017_32-cl", "windows-msvc2017_64-cl"]
     env:
-      APPVEYOR_BUILD_FOLDER: ${{ github.workspace }}
+      WORKSPACE: ${{ github.workspace }}
       CRAFT: C:/CraftMaster/${{ matrix.target }}/craft/bin/craft.py
 
     steps:
     - name: Check out source code
       uses: actions/checkout@v2
       with:
-        fetch-depth: 50  # so git-describe works
+        fetch-depth: 1
         submodules: true
-
-    - name: Fetch tag information
-      if: startsWith(github.ref, 'refs/tags/')
-      run: git fetch -f origin $GITHUB_REF:$GITHUB_REF
 
     - name: Clone CraftMaster
       run: git clone --depth=1 https://invent.kde.org/kde/craftmaster.git C:/CraftMaster/CraftMaster
 
     - name: Configure CraftMaster
-      run: py C:/CraftMaster/CraftMaster/CraftMaster.py --config $env:APPVEYOR_BUILD_FOLDER/.appveyor.ini --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER"
+      run: py C:/CraftMaster/CraftMaster/CraftMaster.py --config $env:WORKSPACE/.craft.ini --variables "WORKSPACE=$env:WORKSPACE"
 
-    - name: Init Craft
-      run: py $env:CRAFT craft
-
-    - name: Add ownCloud blueprint
-      run: py $env:CRAFT --add-blueprint-repository https://github.com/owncloud/craft-blueprints-owncloud.git
+    - name: Craft unshelve
+      run: py $env:CRAFT --unshelve $env:WORKSPACE/.craft.shelf
 
     - name: Install NSIS
       run: py $env:CRAFT dev-utils/nsis
@@ -57,13 +50,18 @@ jobs:
       run: py $env:CRAFT --install-deps owncloud/owncloud-client
 
     - name: Build
-      run: py $env:CRAFT --no-cache --src-dir $env:APPVEYOR_BUILD_FOLDER owncloud/owncloud-client
+      run: py $env:CRAFT --no-cache --src-dir $env:WORKSPACE owncloud/owncloud-client
 
     - name: Run tests
-      run: py $env:CRAFT --no-cache --src-dir $env:APPVEYOR_BUILD_FOLDER --test owncloud/owncloud-client
+      run: py $env:CRAFT --no-cache --src-dir $env:WORKSPACE --test owncloud/owncloud-client
 
     - name: Package
-      run: py $env:CRAFT --no-cache --src-dir $env:APPVEYOR_BUILD_FOLDER --package owncloud/owncloud-client
+      run: py $env:CRAFT --no-cache --src-dir $env:WORKSPACE --package owncloud/owncloud-client
+
+    - name: Update shelf
+      run: |
+        py $env:CRAFT --shelve $env:WORKSPACE/.craft.shelf
+        Copy-Item $env:WORKSPACE/.craft.shelf $env:WORKSPACE/binaries/
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2

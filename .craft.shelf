@@ -1,0 +1,158 @@
+[General]
+version = 2
+blueprintrepositories = https://invent.kde.org/packaging/craft-blueprints-kde.git|master|;https://github.com/owncloud/craft-blueprints-owncloud.git|master|
+
+[core/cacert]
+version = 2020-01-01
+
+[dev-utils/autoconf]
+version = 2.69
+
+[dev-utils/automake]
+version = 1.16.1
+
+[dev-utils/bison]
+version = 3.3.2
+
+[dev-utils/breakpad-tools]
+version = cmake
+
+[dev-utils/ccache]
+version = 3.7.8
+
+[dev-utils/cmake]
+version = latest
+
+[dev-utils/cmake-base]
+version = 3.17.3
+
+[dev-utils/cmocka]
+version = 1.1.5
+
+[dev-utils/create-dmg]
+version = master
+
+[dev-utils/git]
+version = 2.26.2
+revision = installation: C:\Program Files\Git\cmd\git.exe
+
+[dev-utils/help2man]
+version = 1.47.6
+
+[dev-utils/icoutils]
+version = 0.32.3
+
+[dev-utils/jom]
+version = 1_1_3
+
+[dev-utils/kshimgen]
+version = 0.4.0
+
+[dev-utils/libtool]
+version = 2.4.6
+
+[dev-utils/m4]
+version = 1.4.18
+
+[dev-utils/nasm]
+version = 2.14.02
+
+[dev-utils/ninja]
+version = 1.10.0
+
+[dev-utils/packagesdev]
+version = 1.2.7
+
+[dev-utils/patch]
+version = 2.5.9
+
+[dev-utils/perl]
+version = 5.28.1
+
+[dev-utils/python2]
+version = 2
+
+[dev-utils/python3]
+version = 3
+
+[dev-utils/qtbinpatcher]
+version = 2.2.0
+
+[dev-utils/wget]
+version = 1.18
+
+[kde/frameworks/extra-cmake-modules]
+version = 5.71.0
+
+[libs/d3dcompiler]
+version = master
+
+[libs/gettext]
+version = 0.19.8.1
+
+[libs/iconv]
+version = 0.0.8
+
+[libs/liblzma]
+version = 5.2.3
+
+[libs/libpng]
+version = 1.6.37
+
+[libs/libxml2]
+version = 2.9.7
+
+[libs/openssl]
+version = 1.1.1g
+
+[libs/qt5/qtbase]
+version = 5.12.9
+
+[libs/qt5/qtdeclarative]
+version = 5.12.9
+
+[libs/qt5/qtmacextras]
+version = 5.12.9
+
+[libs/qt5/qtsvg]
+version = 5.12.9
+
+[libs/qt5/qttools]
+version = 5.12.9
+
+[libs/qt5/qttranslations]
+version = 5.12.9
+
+[libs/qt5/qtxmlpatterns]
+version = 5.12.9
+
+[libs/runtime]
+version = 15
+
+[libs/sqlite]
+version = 3.31.1
+
+[libs/zlib]
+version = 1.2.11
+
+[python-modules/pip]
+version = 3.4
+
+[python-modules/pip-system]
+version = 3.4
+
+[python-modules/virtualenv]
+version = master
+
+[qt-libs/qtkeychain]
+version = 0.10.0
+
+[virtual/base]
+version = 0.2
+
+[virtual/bin-base]
+version = 0.2
+
+[virtual/craft-blueprints-kde-base]
+version = 0.1
+
