@@ -137,7 +137,6 @@ namespace {
         // and we have a `forKey` static function that returns
         // an instance of this class
         PKeyCtx(PKeyCtx&& other)
-            : _ctx(nullptr)
         {
             std::swap(_ctx, other._ctx);
         }
@@ -159,12 +158,9 @@ namespace {
     private:
         Q_DISABLE_COPY(PKeyCtx)
 
-        PKeyCtx()
-            : _ctx(nullptr)
-        {
-        }
+        PKeyCtx() = default;
 
-        EVP_PKEY_CTX* _ctx;
+        EVP_PKEY_CTX* _ctx = nullptr;
     };
 
     class PKey {
@@ -179,7 +175,6 @@ namespace {
         // and we have a static functions that return
         // an instance of this class
         PKey(PKey&& other)
-            : _pkey(nullptr)
         {
             std::swap(_pkey, other._pkey);
         }
@@ -217,16 +212,10 @@ namespace {
     private:
         Q_DISABLE_COPY(PKey)
 
-        PKey()
-            : _pkey(nullptr)
-        {
-        }
+        PKey() = default;
 
-        EVP_PKEY* _pkey;
+        EVP_PKEY* _pkey = nullptr;
     };
-
-
-
 
     QByteArray BIO2ByteArray(Bio &b) {
         int pending = BIO_ctrl_pending(b);
