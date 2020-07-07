@@ -208,7 +208,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
         // the owner of the file that shared it first
-		// leave out if it's the current user
+        // leave out if it's the current user
         if(x == 0 && !share->getUidOwner().isEmpty() && !(share->getUidOwner() == _account->credentials()->user())) {
             _ui->mainOwnerLabel->setText(QString("Shared with you by ").append(share->getOwnerDisplayName()));
         }
@@ -320,7 +320,8 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
     } else {
 
         // Default permissions on creation
-        int permissions = SharePermissionRead | SharePermissionUpdate;
+        int permissions = SharePermissionCreate | SharePermissionUpdate
+                | SharePermissionDelete | SharePermissionShare;
         _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
             sharee->shareWith(), SharePermission(permissions));
     }
