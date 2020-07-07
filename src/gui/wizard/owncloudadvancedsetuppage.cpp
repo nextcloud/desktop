@@ -184,6 +184,9 @@ void OwncloudAdvancedSetupPage::updateStatus()
         if (dirNotEmpty) {
             t += tr("<p><small><strong>Warning:</strong> The local folder is not empty. "
                     "Pick a resolution!</small></p>");
+            _ui.resolutionWidget->setVisible(dirNotEmpty);
+        } else {
+            _ui.resolutionWidget->setVisible(false);
         }
     }
 
