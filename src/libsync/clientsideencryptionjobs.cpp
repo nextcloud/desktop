@@ -74,6 +74,9 @@ bool GetFolderEncryptStatusJob::finished()
             </d:response>
           </d:multistatus>
         */
+        QString base = account()->url().path();
+        if (base.endsWith(QLatin1Char('/')))
+            base.chop(1);
 
         QString currFile;
         int currEncryptedStatus = -1;
@@ -83,10 +86,6 @@ bool GetFolderEncryptStatusJob::finished()
             if (type == QXmlStreamReader::StartElement) {
                 if (reader.name() == QLatin1String("href")) {
                     // If the current file is not a folder, ignore it.
-                    QString base = account()->url().path();
-                    if (base.endsWith(QLatin1Char('/')))
-                        base.chop(1);
-
                     currFile = reader.readElementText(QXmlStreamReader::SkipChildElements);
                     currFile.remove(base + QLatin1String("/remote.php/webdav/"));
                     if (!currFile.endsWith('/'))
