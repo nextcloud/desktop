@@ -86,7 +86,7 @@ bool GetFolderEncryptStatusJob::finished()
             if (type == QXmlStreamReader::StartElement) {
                 if (reader.name() == QLatin1String("href")) {
                     // If the current file is not a folder, ignore it.
-                    currFile = reader.readElementText(QXmlStreamReader::SkipChildElements);
+                    currFile = QUrl::fromPercentEncoding(reader.readElementText(QXmlStreamReader::SkipChildElements).toUtf8());
                     currFile.remove(base + QLatin1String("/remote.php/webdav/"));
                     if (!currFile.endsWith('/'))
                         currFile.clear();
