@@ -77,6 +77,7 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
 
     auto job = new MkColJob(propagator()->account(),
                             propagator()->_remoteFolder + filename,
+                            {{"e2e-token", _uploadEncryptedHelper->_folderToken }},
                             this);
     connect(job, qOverload<QNetworkReply::NetworkError>(&MkColJob::finished),
             _uploadEncryptedHelper, &PropagateUploadEncrypted::unlockFolder);
