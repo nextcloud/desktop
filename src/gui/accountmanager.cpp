@@ -190,26 +190,26 @@ void AccountManager::save(bool saveCredentials)
 
 void AccountManager::saveAccount(Account *a)
 {
-    qCInfo(lcAccountManager) << "Saving account" << a->url().toString();
+    qCDebug(lcAccountManager) << "Saving account" << a->url().toString();
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->id());
     saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
 
     settings->sync();
-    qCInfo(lcAccountManager) << "Saved account settings, status:" << settings->status();
+    qCDebug(lcAccountManager) << "Saved account settings, status:" << settings->status();
 }
 
 void AccountManager::saveAccountState(AccountState *a)
 {
-    qCInfo(lcAccountManager) << "Saving account state" << a->account()->url().toString();
+    qCDebug(lcAccountManager) << "Saving account state" << a->account()->url().toString();
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->account()->id());
     a->writeToSettings(*settings);
     settings->endGroup();
 
     settings->sync();
-    qCInfo(lcAccountManager) << "Saved account state settings, status:" << settings->status();
+    qCDebug(lcAccountManager) << "Saved account state settings, status:" << settings->status();
 }
 
 void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
