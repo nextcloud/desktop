@@ -152,7 +152,7 @@ void ShareLinkWidget::setupUiOptions(){
         _allowEditingLinkAction->setChecked(checked);
 
     } else {
-        checked = perm & SharePermissionRead;
+        checked = (perm == SharePermissionRead);
         _readOnlyLinkAction = permissionsGroup->addAction(tr("Read only"));
         _readOnlyLinkAction->setCheckable(true);
         _readOnlyLinkAction->setChecked(checked);
@@ -165,7 +165,7 @@ void ShareLinkWidget::setupUiOptions(){
         _allowUploadEditingLinkAction->setCheckable(true);
         _allowUploadEditingLinkAction->setChecked(checked);
 
-        checked = perm & SharePermissionCreate;
+        checked = (perm == SharePermissionCreate);
         _allowUploadLinkAction = permissionsGroup->addAction(tr("File Drop (Upload Only)"));
         _allowUploadLinkAction->setCheckable(true);
         _allowUploadLinkAction->setChecked(checked);
