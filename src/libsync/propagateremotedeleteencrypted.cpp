@@ -22,7 +22,8 @@ PropagateRemoteDeleteEncrypted::PropagateRemoteDeleteEncrypted(OwncloudPropagato
 
 void PropagateRemoteDeleteEncrypted::start()
 {
-    QFileInfo info(_item->_file);
+    Q_ASSERT(!_item->_encryptedFileName.isEmpty());
+    QFileInfo info(_item->_encryptedFileName);
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Folder is encrypted, let's get the Id from it.";
     auto job = new LsColJob(_propagator->account(), info.path(), this);
     job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
