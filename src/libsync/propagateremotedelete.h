@@ -18,6 +18,8 @@
 
 namespace OCC {
 
+class PropagateRemoteDeleteEncrypted;
+
 /**
  * @brief The DeleteJob class
  * @ingroup libsync
@@ -51,6 +53,7 @@ class PropagateRemoteDelete : public PropagateItemJob
 {
     Q_OBJECT
     QPointer<DeleteJob> _job;
+    PropagateRemoteDeleteEncrypted *_deleteEncryptedHelper = nullptr;
 
 public:
     PropagateRemoteDelete(OwncloudPropagator *propagator, const SyncFileItemPtr &item)

@@ -80,12 +80,12 @@ void PropagateRemoteDelete::start()
         return;
 
     if (!_item->_encryptedFileName.isEmpty()) {
-        auto job = new PropagateRemoteDeleteEncrypted(propagator(), _item, this);
-        connect(job, &PropagateRemoteDeleteEncrypted::finished, this, [this] (bool success) {
+        _deleteEncryptedHelper = new PropagateRemoteDeleteEncrypted(propagator(), _item, this);
+        connect(_deleteEncryptedHelper, &PropagateRemoteDeleteEncrypted::finished, this, [this] (bool success) {
             Q_UNUSED(success) // Should we skip file deletion in case of failure?
             createDeleteJob(_item->_encryptedFileName);
         });
-        job->start();
+        _deleteEncryptedHelper->start();
     } else {
         createDeleteJob(_item->_file);
     }
@@ -98,6 +98,9 @@ void PropagateRemoteDelete::createDeleteJob(const QString &filename)
     _job = new DeleteJob(propagator()->account(),
                          propagator()->_remoteFolder + filename,
                          this);
+    if (_deleteEncryptedHelper && !_deleteEncryptedHelper->folderToken().isEmpty()) {
+        _job->setFolderToken(_deleteEncryptedHelper->folderToken());
+    }
     connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();
@@ -149,6 +152,17 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
 
     propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory());
     propagator()->_journal->commit("Remote Remove");
-    done(SyncFileItem::Success);
+
+    if (_deleteEncryptedHelper && !_job->folderToken().isEmpty()) {
+        propagator()->_activeJobList.append(this);
+        connect(_deleteEncryptedHelper, &PropagateRemoteDeleteEncrypted::folderUnlocked,
+                this, [this] {
+            propagator()->_activeJobList.removeOne(this);
+            done(SyncFileItem::Success);
+        });
+        _deleteEncryptedHelper->unlockFolder();
+    } else {
+        done(SyncFileItem::Success);
+    }
 }
 }
