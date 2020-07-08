@@ -166,7 +166,7 @@ void ShareLinkWidget::setupUiOptions(){
         _allowUploadEditingLinkAction->setChecked(checked);
 
         checked = (perm == SharePermissionCreate);
-        _allowUploadLinkAction = permissionsGroup->addAction(tr("File Drop (Upload Only)"));
+        _allowUploadLinkAction = permissionsGroup->addAction(tr("File drop (upload only)"));
         _allowUploadLinkAction->setCheckable(true);
         _allowUploadLinkAction->setChecked(checked);
     }
@@ -181,7 +181,7 @@ void ShareLinkWidget::setupUiOptions(){
     }
 
     // Adds action to display password widget (check box)
-    _passwordProtectLinkAction = _linkContextMenu->addAction(tr("Password Protect"));
+    _passwordProtectLinkAction = _linkContextMenu->addAction(tr("Password protect"));
     _passwordProtectLinkAction->setCheckable(true);
 
     if(_linkShare.data()->isPasswordSet()){
@@ -198,7 +198,7 @@ void ShareLinkWidget::setupUiOptions(){
     }
 
     // Adds action to display expiration date widget (check box)
-    _expirationDateLinkAction = _linkContextMenu->addAction(tr("Expiration Date"));
+    _expirationDateLinkAction = _linkContextMenu->addAction(tr("Set expiration date"));
     _expirationDateLinkAction->setCheckable(true);
     if(!expireDate.isNull()){
         _ui->calendar->setDate(expireDate);
