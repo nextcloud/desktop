@@ -211,14 +211,14 @@ void UpdateMetadataApiJob::start()
 
     QUrlQuery urlQuery;
     urlQuery.addQueryItem(QStringLiteral("format"), QStringLiteral("json"));
-    urlQuery.addQueryItem(QStringLiteral("token"), _token);
+    urlQuery.addQueryItem(QStringLiteral("e2e-token"), _token);
 
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     url.setQuery(urlQuery);
 
     QUrlQuery params;
     params.addQueryItem("metaData",QUrl::toPercentEncoding(_b64Metadata));
-    params.addQueryItem("token",_token);
+    params.addQueryItem("e2e-token", _token);
 
     QByteArray data = params.query().toLocal8Bit();
     auto buffer = new QBuffer(this);
@@ -254,7 +254,7 @@ void UnlockEncryptFolderApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
-    req.setRawHeader("token", _token);
+    req.setRawHeader("e2e-token", _token);
 
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     sendRequest("DELETE", url, req);
@@ -341,7 +341,7 @@ bool LockEncryptFolderApiJob::finished()
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     auto obj = json.object().toVariantMap();
-    auto token = obj["ocs"].toMap()["data"].toMap()["token"].toByteArray();
+    auto token = obj["ocs"].toMap()["data"].toMap()["e2e-token"].toByteArray();
     qCInfo(lcCseJob()) << "got json:" << token;
 
     //TODO: Parse the token and submit.
