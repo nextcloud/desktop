@@ -33,8 +33,14 @@ public:
     void start() override;
     bool finished() override;
 
+    QByteArray folderToken() const;
+    void setFolderToken(const QByteArray &folderToken);
+
 signals:
     void finishedSignal();
+
+private:
+    QByteArray _folderToken;
 };
 
 /**
