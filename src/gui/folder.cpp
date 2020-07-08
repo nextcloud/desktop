@@ -82,7 +82,7 @@ Folder::Folder(const FolderDefinition &definition,
         qCWarning(lcFolder, "Could not read system exclude file");
 
     connect(_accountState.data(), &AccountState::isConnectedChanged, this, &Folder::canSyncChanged);
-    connect(_engine.data(), &SyncEngine::rootEtag, this, &Folder::etagRetreivedFromSyncEngine);
+    connect(_engine.data(), &SyncEngine::rootEtag, this, &Folder::etagRetrievedFromSyncEngine);
 
     connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
     connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
@@ -293,12 +293,12 @@ void Folder::slotRunEtagJob()
     _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
     _requestEtagJob->setTimeout(60 * 1000);
     // check if the etag is different when retrieved
-    QObject::connect(_requestEtagJob.data(), &RequestEtagJob::etagRetreived, this, &Folder::etagRetreived);
+    QObject::connect(_requestEtagJob.data(), &RequestEtagJob::etagRetrieved, this, &Folder::etagRetrieved);
     FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
     // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }
 
-void Folder::etagRetreived(const QString &etag)
+void Folder::etagRetrieved(const QString &etag)
 {
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
@@ -312,7 +312,7 @@ void Folder::etagRetreived(const QString &etag)
     _accountState->tagLastSuccessfullETagRequest();
 }
 
-void Folder::etagRetreivedFromSyncEngine(const QString &etag)
+void Folder::etagRetrievedFromSyncEngine(const QString &etag)
 {
     qCInfo(lcFolder) << "Root etag from during sync:" << etag;
     accountState()->tagLastSuccessfullETagRequest();
