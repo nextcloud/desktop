@@ -39,12 +39,6 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
 
-    ui->descriptionLabel->setText(tr("Files or folders matching a pattern will not be synchronized. "
-                                     "Changes take effect the next time folders are synchronized.\n\n"
-                                     "Items where deletion is allowed will be deleted if they prevent a "
-                                     "directory from being removed. "
-                                     "This is useful for meta data."));
-
     ConfigFile cfgFile;
     readOnlyTooltip = tr("This entry is provided by the system at '%1' "
                          "and cannot be modified in this view.")
