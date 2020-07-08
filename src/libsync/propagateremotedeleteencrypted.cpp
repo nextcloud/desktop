@@ -81,7 +81,7 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
     bool found = false;
     const QVector<EncryptedFile> files = metadata.files();
     for (const EncryptedFile &file : files) {
-        if (file.encryptedFilename == fileName) {
+        if (file.originalFilename == fileName) {
             metadata.removeEncryptedFile(file);
             found = true;
             break;
