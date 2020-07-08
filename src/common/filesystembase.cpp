@@ -17,6 +17,7 @@
  */
 
 #include "filesystembase.h"
+#include "utility.h"
 
 #include <QDateTime>
 #include <QDir>
@@ -140,13 +141,7 @@ bool FileSystem::rename(const QString &originFileName,
             (wchar_t *)dest.utf16(),
             MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
         if (!success) {
-            wchar_t *string = 0;
-            FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                (LPWSTR)&string, 0, NULL);
-
-            error = QString::fromWCharArray(string);
-            LocalFree((HLOCAL)string);
+            error = Utility::formatWinError();
         }
     } else
 #endif

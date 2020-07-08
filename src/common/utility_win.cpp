@@ -17,12 +17,16 @@
  */
 
 #include "asserts.h"
+#include "utility.h"
+
+#include <comdef.h>
+#include <shlguid.h>
 #include <shlobj.h>
+#include <string>
 #include <winbase.h>
 #include <windows.h>
 #include <winerror.h>
-#include <shlguid.h>
-#include <string>
+
 #include <QLibrary>
 
 static const char systemRunPathC[] = "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
@@ -281,6 +285,12 @@ void Utility::UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSe
     LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
     hundredNSecs->LowPart = (DWORD) ll;
     hundredNSecs->HighPart = ll >>32;
+}
+
+
+QString Utility::formatWinError(long errorCode)
+{
+    return QStringLiteral("WindowsError: %1: %2").arg(QString::number(errorCode), QString::fromWCharArray(_com_error(errorCode).ErrorMessage()));
 }
 
 } // namespace OCC
