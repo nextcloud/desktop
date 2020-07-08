@@ -735,6 +735,10 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
             headers["OC-ConflictBaseEtag"] = conflictRecord.baseEtag;
     }
 
+    if (_uploadEncryptedHelper && !_uploadEncryptedHelper->_folderToken.isEmpty()) {
+        headers.insert("e2e-token", _uploadEncryptedHelper->_folderToken);
+    }
+
     return headers;
 }
 
