@@ -39,6 +39,10 @@ DeleteJob::DeleteJob(AccountPtr account, const QUrl &url, QObject *parent)
 void DeleteJob::start()
 {
     QNetworkRequest req;
+    if (!_folderToken.isEmpty()) {
+        req.setRawHeader("e2e-token", _folderToken);
+    }
+
     if (_url.isValid()) {
         sendRequest("DELETE", _url, req);
     } else {
@@ -58,6 +62,16 @@ bool DeleteJob::finished()
 
     emit finishedSignal();
     return true;
+}
+
+QByteArray DeleteJob::folderToken() const
+{
+    return _folderToken;
+}
+
+void DeleteJob::setFolderToken(const QByteArray &folderToken)
+{
+    _folderToken = folderToken;
 }
 
 void PropagateRemoteDelete::start()
