@@ -238,7 +238,10 @@ namespace Utility {
     OCSYNC_EXPORT void FiletimeToLargeIntegerFiletime(FILETIME *filetime, LARGE_INTEGER *hundredNSecs);
     OCSYNC_EXPORT void UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs);
 
-    OCSYNC_EXPORT QString formatWinError(long error = GetLastError());
+    OCSYNC_EXPORT QString formatWinError(long error);
+    inline QString formatLastWinError() {
+        return formatWinError(GetLastError());
+    };
 
 #endif
 }

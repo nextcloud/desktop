@@ -33,7 +33,7 @@ class WatcherThread : public QThread
 public:
     WatcherThread(const QString &path)
         : QThread()
-        , _path(path)
+        , _path(path + (path.endsWith(QLatin1Char('/')) ? QString() : QStringLiteral("/")))
         , _directory(0)
         , _resultEvent(0)
         , _stopEvent(0)
