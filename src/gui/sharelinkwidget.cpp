@@ -154,23 +154,24 @@ void ShareLinkWidget::setupUiOptions()
     permissionsGroup->setExclusive(true);
 
     if (_isFile) {
-        checked = perm & (SharePermissionRead & SharePermissionUpdate);
+        checked = (perm & SharePermissionRead) && (perm & SharePermissionUpdate);
         _allowEditingLinkAction = _linkContextMenu->addAction(tr("Allow Editing"));
         _allowEditingLinkAction->setCheckable(true);
         _allowEditingLinkAction->setChecked(checked);
 
     } else {
-        checked = perm & SharePermissionRead;
+        checked = (perm == SharePermissionRead);
         _readOnlyLinkAction = permissionsGroup->addAction(tr("Read only"));
         _readOnlyLinkAction->setCheckable(true);
         _readOnlyLinkAction->setChecked(checked);
 
-        checked = perm & (SharePermissionRead & SharePermissionCreate & SharePermissionUpdate & SharePermissionDelete);
+        checked = (perm & SharePermissionRead) && (perm & SharePermissionCreate)
+            && (perm & SharePermissionUpdate) && (perm & SharePermissionDelete);
         _allowUploadEditingLinkAction = permissionsGroup->addAction(tr("Allow Upload && Editing"));
         _allowUploadEditingLinkAction->setCheckable(true);
         _allowUploadEditingLinkAction->setChecked(checked);
 
-        checked = perm & SharePermissionCreate;
+        checked = (perm == SharePermissionCreate);
         _allowUploadLinkAction = permissionsGroup->addAction(tr("File Drop (Upload Only)"));
         _allowUploadLinkAction->setCheckable(true);
         _allowUploadLinkAction->setChecked(checked);
@@ -564,11 +565,11 @@ void ShareLinkWidget::customizeStyle()
     _addAnotherLinkAction->setIcon(Theme::createColorAwareIcon(":/client/theme/add.svg"));
 
     _ui->enableShareLink->setIcon(Theme::createColorAwareIcon(":/client/theme/copy.svg"));
-    
+
     _ui->shareLinkIconLabel->setPixmap(Theme::createColorAwarePixmap(":/client/theme/public.svg"));
-    
+
     _ui->shareLinkToolButton->setIcon(Theme::createColorAwareIcon(":/client/theme/more.svg"));
-    
+
     _ui->confirmNote->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
     _ui->confirmPassword->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
     _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
