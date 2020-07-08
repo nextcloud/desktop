@@ -74,6 +74,11 @@ void DeleteJob::setFolderToken(const QByteArray &folderToken)
     _folderToken = folderToken;
 }
 
+PropagatorJob::JobParallelism PropagateRemoteDelete::parallelism()
+{
+    return _item->_encryptedFileName.isEmpty() ? FullParallelism : WaitForFinished;
+}
+
 void PropagateRemoteDelete::start()
 {
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))

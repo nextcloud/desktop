@@ -60,6 +60,7 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
+    JobParallelism parallelism() override;
     void start() override;
     void createDeleteJob(const QString &filename);
     void abort(PropagatorJob::AbortType abortType) override;
