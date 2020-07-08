@@ -253,6 +253,7 @@ class OWNCLOUDSYNC_EXPORT MkColJob : public AbstractNetworkJob
 
 public:
     explicit MkColJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
+    explicit MkColJob(AccountPtr account, const QString &path, const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent = nullptr);
     explicit MkColJob(AccountPtr account, const QUrl &url,
         const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent = nullptr);
     void start() override;
