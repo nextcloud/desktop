@@ -359,9 +359,9 @@ QByteArray encryptPrivateKey(
     cipherTXT.append(tag);
 
     QByteArray result = cipherTXT.toBase64();
-    result += "fA==";
+    result += '|';
     result += iv.toBase64();
-    result += "fA==";
+    result += '|';
     result += salt.toBase64();
 
     return result;
@@ -371,11 +371,11 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
-    int sep = data.indexOf("fA==");
+    int sep = data.indexOf('|');
     qCInfo(lcCse()) << "sep at" << sep;
 
     QByteArray cipherTXT64 = data.left(sep);
-    QByteArray ivB64 = data.right(data.size() - sep - 4);
+    QByteArray ivB64 = data.right(data.size() - sep - 1);
 
     qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
     qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;
@@ -447,11 +447,11 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
-    int sep = data.indexOf("fA==");
+    int sep = data.indexOf('|');
     qCInfo(lcCse()) << "sep at" << sep;
 
     QByteArray cipherTXT64 = data.left(sep);
-    QByteArray ivB64 = data.right(data.size() - sep - 4);
+    QByteArray ivB64 = data.right(data.size() - sep - 1);
 
     qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
     qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;
@@ -606,7 +606,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     cipherTXT.append(tag);
 
     QByteArray result = cipherTXT.toBase64();
-    result += "fA==";
+    result += '|';
     result += iv.toBase64();
 
     return result;
@@ -1131,8 +1131,8 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
 
             // split off salt
             // Todo better place?
-            auto pos = key.lastIndexOf("fA==");
-            QByteArray salt = QByteArray::fromBase64(key.mid(pos + 4));
+            auto pos = key.lastIndexOf('|');
+            QByteArray salt = QByteArray::fromBase64(key.mid(pos + 1));
             auto key2 = key.left(pos);
 
             auto pass = EncryptionHelper::generatePassword(mnemonic, salt);
