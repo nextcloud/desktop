@@ -15,17 +15,20 @@ class PropagateRemoteDeleteEncrypted : public QObject
 public:
     PropagateRemoteDeleteEncrypted(OwncloudPropagator *_propagator, SyncFileItemPtr item, QObject *parent);
 
+    QByteArray folderToken();
+    void unlockFolder();
+
     void start();
 
 signals:
     void finished(bool success);
+    void folderUnlocked();
 
 private:
     void slotFolderEncryptedIdReceived(const QStringList &list);
     void slotTryLock(const QByteArray &folderId);
     void slotFolderLockedSuccessfully(const QByteArray &fileId, const QByteArray &token);
     void slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode);
-    void unlockFolder();
     void taskFailed();
 
     OwncloudPropagator *_propagator;

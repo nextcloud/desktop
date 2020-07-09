@@ -20,9 +20,15 @@ PropagateRemoteDeleteEncrypted::PropagateRemoteDeleteEncrypted(OwncloudPropagato
 
 }
 
+QByteArray PropagateRemoteDeleteEncrypted::folderToken()
+{
+    return _folderToken;
+}
+
 void PropagateRemoteDeleteEncrypted::start()
 {
-    QFileInfo info(_item->_file);
+    Q_ASSERT(!_item->_encryptedFileName.isEmpty());
+    QFileInfo info(_item->_encryptedFileName);
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Folder is encrypted, let's get the Id from it.";
     auto job = new LsColJob(_propagator->account(), info.path(), this);
     job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
@@ -64,7 +70,7 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
 {
     if (statusCode == 404) {
         qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata not found, ignoring.";
-        unlockFolder();
+        emit finished(true);
         return;
     }
 
@@ -80,7 +86,7 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
     bool found = false;
     const QVector<EncryptedFile> files = metadata.files();
     for (const EncryptedFile &file : files) {
-        if (file.encryptedFilename == fileName) {
+        if (file.originalFilename == fileName) {
             metadata.removeEncryptedFile(file);
             found = true;
             break;
@@ -89,7 +95,8 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
 
     if (!found) {
         // The removed file was not in the JSON so nothing else to do
-        unlockFolder();
+        emit finished(true);
+        return;
     }
 
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata updated, sending to the server.";
@@ -99,13 +106,18 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
                                         metadata.encryptedMetadata(),
                                         _folderToken);
 
-    connect(job, &UpdateMetadataApiJob::success, this, &PropagateRemoteDeleteEncrypted::unlockFolder);
+    connect(job, &UpdateMetadataApiJob::success, this, [this] { emit finished(true); });
     connect(job, &UpdateMetadataApiJob::error, this, &PropagateRemoteDeleteEncrypted::taskFailed);
     job->start();
 }
 
 void PropagateRemoteDeleteEncrypted::unlockFolder()
 {
+    if (!_folderLocked) {
+        emit folderUnlocked();
+        return;
+    }
+
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Unlocking folder" << _folderId;
     auto unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(),
                                                    _folderId, _folderToken, this);
@@ -113,7 +125,7 @@ void PropagateRemoteDeleteEncrypted::unlockFolder()
     connect(unlockJob, &UnlockEncryptFolderApiJob::success, [this] {
         qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Folder successfully unlocked" << _folderId;
         _folderLocked = false;
-        emit finished(true);
+        emit folderUnlocked();
     });
     connect(unlockJob, &UnlockEncryptFolderApiJob::error, this, &PropagateRemoteDeleteEncrypted::taskFailed);
     unlockJob->start();
@@ -123,6 +135,7 @@ void PropagateRemoteDeleteEncrypted::taskFailed()
 {
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Task failed of job" << sender();
     if (_folderLocked) {
+        connect(this, &PropagateRemoteDeleteEncrypted::folderUnlocked, this, [this] { emit finished(false); });
         unlockFolder();
     } else {
         emit finished(false);
