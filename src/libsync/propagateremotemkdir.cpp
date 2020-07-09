@@ -197,7 +197,14 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
     } else {
         // We still need to mark that folder encrypted
         propagator()->_activeJobList.append(this);
-        auto job = new OCC::EncryptFolderJob(propagator()->account(), _job->path(), _item->_fileId, this);
+
+        // We're expecting directory path in /Foo/Bar convention...
+        Q_ASSERT(_job->path().startsWith('/') && !_job->path().endsWith('/'));
+        // But encryption job expect it in Foo/Bar/ convention
+        // (otherwise we won't store the right string in the e2e object)
+        const auto path = QString(_job->path().mid(1) + '/');
+
+        auto job = new OCC::EncryptFolderJob(propagator()->account(), path, _item->_fileId, this);
         connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
         job->start();
     }
