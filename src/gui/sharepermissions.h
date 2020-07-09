@@ -28,7 +28,7 @@ enum SharePermission {
     SharePermissionCreate = 4,
     SharePermissionDelete = 8,
     SharePermissionShare = 16,
-    SharePermissionDefault = 1 << 30
+    SharePermissionDefault = 31
 };
 Q_DECLARE_FLAGS(SharePermissions, SharePermission)
 Q_DECLARE_OPERATORS_FOR_FLAGS(SharePermissions)
