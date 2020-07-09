@@ -122,6 +122,12 @@ MkColJob::MkColJob(AccountPtr account, const QString &path, QObject *parent)
 {
 }
 
+MkColJob::MkColJob(AccountPtr account, const QString &path, const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+    , _extraHeaders(extraHeaders)
+{
+}
+
 MkColJob::MkColJob(AccountPtr account, const QUrl &url,
     const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
