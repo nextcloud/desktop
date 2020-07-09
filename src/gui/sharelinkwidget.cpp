@@ -154,24 +154,25 @@ void ShareLinkWidget::setupUiOptions()
     permissionsGroup->setExclusive(true);
 
     if (_isFile) {
-        checked = perm & (SharePermissionRead & SharePermissionUpdate);
-        _allowEditingLinkAction = _linkContextMenu->addAction(tr("Allow Editing"));
+        checked = (perm & SharePermissionRead) && (perm & SharePermissionUpdate);
+        _allowEditingLinkAction = _linkContextMenu->addAction(tr("Allow editing"));
         _allowEditingLinkAction->setCheckable(true);
         _allowEditingLinkAction->setChecked(checked);
 
     } else {
-        checked = perm & SharePermissionRead;
+        checked = (perm == SharePermissionRead);
         _readOnlyLinkAction = permissionsGroup->addAction(tr("Read only"));
         _readOnlyLinkAction->setCheckable(true);
         _readOnlyLinkAction->setChecked(checked);
 
-        checked = perm & (SharePermissionRead & SharePermissionCreate & SharePermissionUpdate & SharePermissionDelete);
-        _allowUploadEditingLinkAction = permissionsGroup->addAction(tr("Allow Upload && Editing"));
+        checked = (perm & SharePermissionRead) && (perm & SharePermissionCreate)
+            && (perm & SharePermissionUpdate) && (perm & SharePermissionDelete);
+        _allowUploadEditingLinkAction = permissionsGroup->addAction(tr("Allow upload and editing"));
         _allowUploadEditingLinkAction->setCheckable(true);
         _allowUploadEditingLinkAction->setChecked(checked);
 
-        checked = perm & SharePermissionCreate;
-        _allowUploadLinkAction = permissionsGroup->addAction(tr("File Drop (Upload Only)"));
+        checked = (perm == SharePermissionCreate);
+        _allowUploadLinkAction = permissionsGroup->addAction(tr("File drop (upload only)"));
         _allowUploadLinkAction->setCheckable(true);
         _allowUploadLinkAction->setChecked(checked);
     }
@@ -186,7 +187,7 @@ void ShareLinkWidget::setupUiOptions()
     }
 
     // Adds action to display note widget (check box)
-    _noteLinkAction = _linkContextMenu->addAction(tr("Add note to recipient"));
+    _noteLinkAction = _linkContextMenu->addAction(tr("Note to recipient"));
     _noteLinkAction->setCheckable(true);
 
     if (_linkShare->getNote().isSimpleText() && !_linkShare->getNote().isEmpty()) {
@@ -196,7 +197,7 @@ void ShareLinkWidget::setupUiOptions()
     }
 
     // Adds action to display password widget (check box)
-    _passwordProtectLinkAction = _linkContextMenu->addAction(tr("Password Protect"));
+    _passwordProtectLinkAction = _linkContextMenu->addAction(tr("Password protect"));
     _passwordProtectLinkAction->setCheckable(true);
 
     if (_linkShare.data()->isPasswordSet()) {
@@ -213,7 +214,7 @@ void ShareLinkWidget::setupUiOptions()
     }
 
     // Adds action to display expiration date widget (check box)
-    _expirationDateLinkAction = _linkContextMenu->addAction(tr("Expiration Date"));
+    _expirationDateLinkAction = _linkContextMenu->addAction(tr("Set expiration date"));
     _expirationDateLinkAction->setCheckable(true);
     if (!expireDate.isNull()) {
         _ui->calendar->setDate(expireDate);
@@ -232,7 +233,7 @@ void ShareLinkWidget::setupUiOptions()
 
     // Adds action to unshare widget (check box)
     _unshareLinkAction = _linkContextMenu->addAction(QIcon(":/client/theme/delete.svg"),
-        tr("Unshare"));
+        tr("Delete share link"));
 
     _linkContextMenu->addSeparator();
 
@@ -564,11 +565,11 @@ void ShareLinkWidget::customizeStyle()
     _addAnotherLinkAction->setIcon(Theme::createColorAwareIcon(":/client/theme/add.svg"));
 
     _ui->enableShareLink->setIcon(Theme::createColorAwareIcon(":/client/theme/copy.svg"));
-    
+
     _ui->shareLinkIconLabel->setPixmap(Theme::createColorAwarePixmap(":/client/theme/public.svg"));
-    
+
     _ui->shareLinkToolButton->setIcon(Theme::createColorAwareIcon(":/client/theme/more.svg"));
-    
+
     _ui->confirmNote->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
     _ui->confirmPassword->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
     _ui->confirmExpirationDate->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
