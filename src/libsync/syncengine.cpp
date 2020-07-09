@@ -1040,6 +1040,17 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         _journal->commitIfNeededAndStartNewTransaction("Post discovery");
     }
 
+    // FIXME: This is a reasonable safety check, but specifically just a hotfix.
+    // See: https://github.com/nextcloud/desktop/issues/1433
+    // It's still unclear why we can get an empty FileMap even though folder isn't empty
+    // For now: Re-check if folder is really empty, if not bail out
+    auto test = QDir(_localPath).entryInfoList();
+    if (_csync_ctx.data()->local.files.empty() && QDir(_localPath).entryInfoList(QDir::NoDotAndDotDot).count() > 0) {
+        qCWarning(lcEngine) << "Received local tree with empty FileMap but sync folder isn't empty. Won't reconcile.";
+        finalize(false);
+        return;
+    }
+
     _progressInfo->_currentDiscoveredRemoteFolder.clear();
     _progressInfo->_currentDiscoveredLocalFolder.clear();
     _progressInfo->_status = ProgressInfo::Reconcile;
