@@ -33,9 +33,7 @@
 #include "capabilities.h"
 #include "common/asserts.h"
 #include "guiutility.h"
-#ifndef OWNCLOUD_TEST
 #include "sharemanager.h"
-#endif
 
 #include <array>
 #include <QBitArray>
@@ -560,9 +558,6 @@ void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listen
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
 }
 
-// don't pull the share manager into socketapi unittests
-#ifndef OWNCLOUD_TEST
-
 class GetOrCreatePublicLinkShare : public QObject
 {
     Q_OBJECT
@@ -656,26 +651,6 @@ private:
     ShareManager _shareManager;
     QString _serverPath;
 };
-
-#else
-
-class GetOrCreatePublicLinkShare : public QObject
-{
-    Q_OBJECT
-public:
-    GetOrCreatePublicLinkShare(const AccountPtr &, const QString &, QObject *)
-    {
-    }
-
-    void run()
-    {
-    }
-signals:
-    void done(const QString &link);
-    void error(int code, const QString &message);
-};
-
-#endif
 
 void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListener *)
 {

@@ -12,7 +12,7 @@ function(owncloud_add_test test_class)
         owncloudCore Qt5::Test
     )
 
-    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE OWNCLOUD_TEST OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")
+    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")
 
     target_include_directories(${OWNCLOUD_TEST_CLASS}Test PRIVATE "${CMAKE_SOURCE_DIR}/test/")
 endfunction()
@@ -29,5 +29,5 @@ macro(owncloud_add_benchmark test_class additional_cpp)
         ${APPLICATION_EXECUTABLE}sync
         Qt5::Core Qt5::Test Qt5::Xml Qt5::Network
     )
-    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Bench PRIVATE OWNCLOUD_TEST OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")
+    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Bench PRIVATE OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")
 endmacro()
