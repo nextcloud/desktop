@@ -123,6 +123,9 @@ option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 # build the GUI component, when disabled only owncloudcmd is built
 option(BUILD_GUI "BUILD_GUI" ON)
 
+# specify additional vfs plugins
+set(VIRTUAL_FILE_SYSTEM_PLUGINS suffix win CACHE STRING "Name of internal plugin in src/libsync/vfs or the locations of virtual file plugins")
+
 # When this option is enabled, 5xx errors are not added to the blacklist
 # Normally you don't want to enable this option because if a particular file
 # triggers a bug on the server, you want the file to be blacklisted.

@@ -1,8 +1,5 @@
 # Globbing for plugins has a problem with in-source builds
 # that create directories for the build.
-#file(GLOB VIRTUAL_FILE_SYSTEM_PLUGINS RELATIVE ${CMAKE_CURRENT_LIST_DIR} "*")
-
-list(APPEND VIRTUAL_FILE_SYSTEM_PLUGINS "suffix" "win")
 
 foreach(vfsPlugin ${VIRTUAL_FILE_SYSTEM_PLUGINS})
     set(vfsPluginPath ${vfsPlugin})
