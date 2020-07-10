@@ -2744,7 +2744,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Umožnit úpravy</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="156"/>
@@ -2764,12 +2764,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
         <source>Allow upload and editing</source>
-        <translation type="unfinished"/>
+        <translation>Umožnit nahrávání a úpravy</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>File drop (upload only)</source>
-        <translation type="unfinished"/>
+        <translation>Přetažení souboru (pouze nahrání)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
@@ -2779,12 +2779,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Poznámka pro příjemce</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Chránit heslem</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
@@ -2794,7 +2794,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Nastavit datum skončení platnosti</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
@@ -2804,7 +2804,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
         <source>Delete share link</source>
-        <translation type="unfinished"/>
+        <translation>Smazat sdílecí odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
