@@ -2805,7 +2805,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
         <source>Delete share link</source>
-        <translation>Excluir compartilhamento do link</translation>
+        <translation>Excluir o link de compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
