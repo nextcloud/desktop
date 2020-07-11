@@ -218,12 +218,19 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 socketApi()->slotUnregisterPath(folderAlias);
                 auto settings = account->settings();
 
+                auto journalFileMoveSuccess = true;
+                journalFileMoveSuccess = oldJournal.rename(folderDefinition.journalPath);
+                journalFileMoveSuccess = oldJournalShm.rename(folderDefinition.journalPath.append("-shm"));
+                journalFileMoveSuccess = oldJournalWal.rename(folderDefinition.journalPath.append("-wal"));
+
+                if (!journalFileMoveSuccess) {
+                    qCWarning(lcFolderMan) << "Wasn't able to move pre-2.7 syncjournal databse files to new location. One-time loss off sync settings possible.";
+                } else {
+                    qCInfo(lcFolderMan) << "Successfully migrated syncjournal database.";
+                }
+
                 Folder *f = addFolderInternal(folderDefinition, account.data());
                 f->saveToSettings();
-
-                oldJournal.remove();
-                oldJournalShm.remove();
-                oldJournalWal.remove();
 
                 return;
             }
