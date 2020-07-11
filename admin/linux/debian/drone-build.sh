@@ -43,6 +43,7 @@ fi
 set -x
 
 cd "${DRONE_WORKSPACE}"
+git fetch --tags
 read basever revdate kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog stable)
 
 cd "${DRONE_DIR}"
