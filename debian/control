@@ -245,6 +245,15 @@ Description: Nextcloud folder synchronization tool (transitional package)
  This is a transitional package for compatibility with the old Nextcloud
  client PPA packages names. It can be safely deleted.
 
+Package: nextcloud-client-l10n
+Section: oldlibs
+Priority: optional
+Architecture: all
+Depends: nextcloud-desktop-l10n (= ${binary:Version}), ${misc:Depends}
+Description: Nextcloud folder synchronization - localization (transitional package)
+ This is a transitional package for compatibility with the old Nextcloud
+ client PPA packages names. It can be safely deleted.
+
 Package: nextcloud-client-caja
 Section: oldlibs
 Priority: optional
