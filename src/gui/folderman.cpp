@@ -219,9 +219,16 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 auto settings = account->settings();
 
                 auto journalFileMoveSuccess = true;
-                journalFileMoveSuccess = oldJournal.rename(folderDefinition.journalPath);
-                journalFileMoveSuccess = oldJournalShm.rename(folderDefinition.journalPath.append("-shm"));
-                journalFileMoveSuccess = oldJournalWal.rename(folderDefinition.journalPath.append("-wal"));
+                // Due to db logic can't be sure which of these file exist.
+                if (oldJournal.exists()) {
+                    journalFileMoveSuccess = oldJournal.rename(folderDefinition.journalPath);
+                }
+                if (oldJournalShm.exists()) {
+                    journalFileMoveSuccess = oldJournalShm.rename(folderDefinition.journalPath.append("-shm"));
+                }
+                if (oldJournalWal.exists()) {
+                    journalFileMoveSuccess = oldJournalWal.rename(folderDefinition.journalPath.append("-wal"));
+                }
 
                 if (!journalFileMoveSuccess) {
                     qCWarning(lcFolderMan) << "Wasn't able to move pre-2.7 syncjournal databse files to new location. One-time loss off sync settings possible.";
