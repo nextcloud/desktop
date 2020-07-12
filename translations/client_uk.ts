@@ -3477,7 +3477,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Вийти %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>
