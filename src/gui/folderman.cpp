@@ -221,17 +221,17 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 auto journalFileMoveSuccess = true;
                 // Due to db logic can't be sure which of these file exist.
                 if (oldJournal.exists()) {
-                    journalFileMoveSuccess = oldJournal.rename(folderDefinition.journalPath);
+                    journalFileMoveSuccess &= oldJournal.rename(folderDefinition.journalPath);
                 }
                 if (oldJournalShm.exists()) {
-                    journalFileMoveSuccess = oldJournalShm.rename(folderDefinition.journalPath.append("-shm"));
+                    journalFileMoveSuccess &= oldJournalShm.rename(folderDefinition.journalPath.append("-shm"));
                 }
                 if (oldJournalWal.exists()) {
-                    journalFileMoveSuccess = oldJournalWal.rename(folderDefinition.journalPath.append("-wal"));
+                    journalFileMoveSuccess &= oldJournalWal.rename(folderDefinition.journalPath.append("-wal"));
                 }
 
                 if (!journalFileMoveSuccess) {
-                    qCWarning(lcFolderMan) << "Wasn't able to move pre-2.7 syncjournal databse files to new location. One-time loss off sync settings possible.";
+                    qCWarning(lcFolderMan) << "Wasn't able to move pre-2.7 syncjournal database files to new location. One-time loss off sync settings possible.";
                 } else {
                     qCInfo(lcFolderMan) << "Successfully migrated syncjournal database.";
                 }
