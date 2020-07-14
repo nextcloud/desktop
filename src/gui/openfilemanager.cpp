@@ -88,11 +88,6 @@ static bool checkDolphinCanSelect()
 void showInFileManager(const QString &localPath)
 {
     if (Utility::isWindows()) {
-#ifdef Q_OS_WIN
-        if (QSysInfo::windowsVersion() <= QSysInfo::WV_2003) {
-            return;
-        }
-#endif
         QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
         QFileInfo fi(localPath);
 
