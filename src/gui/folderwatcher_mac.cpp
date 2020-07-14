@@ -100,6 +100,7 @@ void FolderWatcherPrivate::startWatching()
         kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents | kFSEventStreamCreateFlagIgnoreSelf);
 
     CFRelease(pathsToWatch);
+    CFRelease(folderCF);
     FSEventStreamScheduleWithRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
     FSEventStreamStart(_stream);
 }
