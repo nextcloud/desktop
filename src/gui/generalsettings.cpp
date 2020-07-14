@@ -37,6 +37,7 @@
 #include <QDir>
 #include <QScopedValueRollback>
 #include <QMessageBox>
+#include <QOperatingSystemVersion>
 
 namespace OCC {
 
@@ -70,10 +71,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     // Hide on non-Windows, or WindowsVersion < 10.
     // The condition should match the default value of ConfigFile::showInExplorerNavigationPane.
-#ifdef Q_OS_WIN
-    if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
-#endif
-        _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
+    _ui->showInExplorerNavigationPaneCheckBox->setVisible(QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows10);
 
     /* Set the left contents margin of the layout to zero to make the checkboxes
      * align properly vertically , fixes bug #3758
