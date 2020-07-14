@@ -213,11 +213,6 @@ bool Capabilities::versioningEnabled() const
     return _capabilities.value("files").toMap().value("versioning").toBool();
 }
 
-QString Capabilities::zsyncSupportedVersion() const
-{
-    return _capabilities[QStringLiteral("dav")].toMap()[QStringLiteral("zsync")].toString();
-}
-
 QStringList Capabilities::blacklistedFiles() const
 {
     return _capabilities.value("files").toMap().value("blacklisted_files").toStringList();

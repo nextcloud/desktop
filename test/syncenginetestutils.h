@@ -406,7 +406,6 @@ public:
                 : fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
             xml.writeTextElement(ocUri, QStringLiteral("id"), fileInfo.fileId);
             xml.writeTextElement(ocUri, QStringLiteral("checksums"), fileInfo.checksums);
-            xml.writeTextElement(ocUri, QStringLiteral("zsync"), QStringLiteral("true"));
             buffer.write(fileInfo.extraDavProperties);
             xml.writeEndElement(); // prop
             xml.writeTextElement(davUri, QStringLiteral("status"), "HTTP/1.1 200 OK");
@@ -764,15 +763,10 @@ public:
     static FileInfo *perform(FileInfo &uploadsFileInfo, FileInfo &remoteRootFileInfo, const QNetworkRequest &request)
     {
         QString source = getFilePathFromUrl(request.url());
-        bool zsync = false;
         Q_ASSERT(!source.isEmpty());
-        Q_ASSERT(source.endsWith("/.file") || source.endsWith("/.file.zsync"));
-        if (source.endsWith("/.file"))
-            source = source.left(source.length() - qstrlen("/.file"));
-        if (source.endsWith("/.file.zsync")) {
-            source = source.left(source.length() - qstrlen("/.file.zsync"));
-            zsync = true;
-        }
+        Q_ASSERT(source.endsWith("/.file"));
+        source = source.left(source.length() - qstrlen("/.file"));
+
         auto sourceFolder = uploadsFileInfo.find(source);
         Q_ASSERT(sourceFolder);
         Q_ASSERT(sourceFolder->isDir);
@@ -784,33 +778,20 @@ public:
         QString fileName = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
         Q_ASSERT(!fileName.isEmpty());
 
-        // Ignore .zsync metadata
-        if (sourceFolder->children.contains(".zsync"))
-            sourceFolder->children.remove(".zsync");
-
         // Compute the size and content from the chunks if possible
         for (auto chunkName : sourceFolder->children.keys()) {
             auto &x = sourceFolder->children[chunkName];
-            if (!zsync && chunkName.toLongLong() != prev)
+            if (chunkName.toLongLong() != prev)
                 break;
             Q_ASSERT(!x.isDir);
             Q_ASSERT(x.size > 0); // There should not be empty chunks
             size += x.size;
-            Q_ASSERT(!payload || payload == x.contentChar || !"For zsync all chunks must start with the same character");
+            Q_ASSERT(!payload || payload == x.contentChar);
             payload = x.contentChar;
             ++count;
             prev = chunkName.toLongLong() + x.size;
         }
         Q_ASSERT(sourceFolder->children.count() == count); // There should not be holes or extra files
-
-        // For zsync, get the size from the header, and allow no-chunk uploads (shrinking files)
-        if (zsync) {
-            size = request.rawHeader("OC-Total-File-Length").toLongLong();
-            if (count == 0) {
-                if (auto info = remoteRootFileInfo.find(fileName))
-                    payload = info->contentChar;
-            }
-        }
 
         // NOTE: This does not actually assemble the file data from the chunks!
         FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
@@ -861,99 +842,6 @@ public:
         emit finished();
     }
 
-    qint64 readData(char *, qint64) override { return 0; }
-};
-
-class FakeChunkZsyncMoveReply : public QNetworkReply
-{
-    Q_OBJECT
-    FileInfo *fileInfo;
-
-public:
-    FakeChunkZsyncMoveReply(FileInfo &uploadsFileInfo, FileInfo &remoteRootFileInfo,
-        QNetworkAccessManager::Operation op, const QNetworkRequest &request,
-        quint64 delayMs, QVector<quint64> &mods, QObject *parent)
-        : QNetworkReply{ parent }
-    {
-        setRequest(request);
-        setUrl(request.url());
-        setOperation(op);
-        open(QIODevice::ReadOnly);
-
-        Q_ASSERT(!mods.isEmpty());
-
-        QString source = getFilePathFromUrl(request.url());
-        Q_ASSERT(!source.isEmpty());
-        Q_ASSERT(source.endsWith("/.file.zsync"));
-        source = source.left(source.length() - qstrlen("/.file.zsync"));
-        auto sourceFolder = uploadsFileInfo.find(source);
-        Q_ASSERT(sourceFolder);
-        Q_ASSERT(sourceFolder->isDir);
-        int count = 0;
-
-        // Ignore .zsync metadata
-        if (sourceFolder->children.contains(".zsync"))
-            sourceFolder->children.remove(".zsync");
-
-        for (auto chunkName : sourceFolder->children.keys()) {
-            auto &x = sourceFolder->children[chunkName];
-            Q_ASSERT(!x.isDir);
-            Q_ASSERT(x.size > 0); // There should not be empty chunks
-            quint64 start = quint64(chunkName.toLongLong());
-            auto it = mods.begin();
-            while (it != mods.end()) {
-                if (*it >= start && *it < start + x.size) {
-                    ++count;
-                    mods.erase(it);
-                } else
-                    ++it;
-            }
-        }
-
-        Q_ASSERT(count > 0); // There should be at least one chunk
-        Q_ASSERT(mods.isEmpty()); // All files should match a modification
-
-        QString fileName = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
-        Q_ASSERT(!fileName.isEmpty());
-
-        fileInfo = remoteRootFileInfo.find(fileName);
-        Q_ASSERT(fileInfo);
-        if (!fileInfo) {
-            abort();
-            return;
-        }
-
-        QVERIFY(request.hasRawHeader("If")); // The client should put this header
-        if (request.rawHeader("If") != QByteArray("<" + request.rawHeader("Destination") + "> ([\"" + fileInfo->etag.toLatin1() + "\"])")) {
-            QMetaObject::invokeMethod(this, "respondPreconditionFailed", Qt::QueuedConnection);
-            return;
-        }
-
-        fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-        remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
-
-        QTimer::singleShot(delayMs, this, &FakeChunkZsyncMoveReply::respond);
-    }
-
-    Q_INVOKABLE void respond()
-    {
-        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
-        setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
-        setRawHeader("ETag", fileInfo->etag.toLatin1());
-        setRawHeader("OC-FileId", fileInfo->fileId);
-        emit metaDataChanged();
-        emit finished();
-    }
-
-    Q_INVOKABLE void respondPreconditionFailed()
-    {
-        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
-        setError(InternalServerError, "Precondition Failed");
-        emit metaDataChanged();
-        emit finished();
-    }
-
-    void abort() override {}
     qint64 readData(char *, qint64) override { return 0; }
 };
 

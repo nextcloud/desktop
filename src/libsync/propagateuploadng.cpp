@@ -12,10 +12,6 @@
  * for more details.
  */
 
-extern "C" {
-#include "libzsync/zsync.h"
-}
-
 #include "config.h"
 #include "propagateupload.h"
 #include "owncloudpropagator_p.h"
@@ -53,146 +49,30 @@ QUrl PropagateUploadFileNG::chunkUrl(qint64 chunkOffset)
     return Utility::concatUrlPath(propagator()->account()->url(), path);
 }
 
-void PropagateUploadFileNG::slotZsyncSeedFinished(void *_zs)
-{
-    zsync_unique_ptr<struct zsync_state> zs(static_cast<struct zsync_state *>(_zs), [](struct zsync_state *zs) {
-        zsync_end(zs);
-    });
-    { /* And print how far we've progressed towards the target file */
-        long long done, total;
-
-        zsync_progress(zs.get(), &done, &total);
-        qCInfo(lcZsyncPut).nospace() << "Done reading: "
-                                     << _item->_file << " " << fixed << qSetRealNumberPrecision(1) << (100.0f * done) / total
-                                     << "% of target seeded.";
-    }
-
-    /* Get a set of byte ranges that we need to complete the target */
-    int _nrange = 0;
-    zsync_unique_ptr<off_t> zbyterange(zsync_needed_byte_ranges(zs.get(), &_nrange, 0), [](off_t *zbr) {
-        free(zbr);
-    });
-    if (!zbyterange) {
-        abortWithError(SyncFileItem::NormalError, tr("Failed to get zsync byte ranges."));
-        return;
-    }
-
-    qCDebug(lcZsyncPut) << "Number of ranges:" << _nrange;
-
-    // The remote file size according to zsync metadata
-    auto remoteSize = static_cast<qint64>(zsync_file_length(zs.get()));
-
-    /* If we have no ranges then we have equal files and we are done */
-    if (_nrange == 0 && _item->_size == remoteSize) {
-        propagator()->reportFileTotal(*_item, 0);
-        finalize();
-        return;
-    }
-
-    // Size of combined uploads
-    int totalBytes = 0;
-
-    /* The rightmost range returned by zsync can be larger than the local or remote
-     * file size. That happens because zsync only considers whole blocks.
-     *
-     * There are two symmetric cases:
-     *
-     *   local smaller than remote (block size 6 bytes)
-     *     local:   abcdefg
-     *     remote:  abcdefaaa
-     *     blocks:        000000
-     *     desired:       0
-     *
-     *   remote smaller than local (block size 6 bytes)
-     *     local:   abcdefaaa
-     *     remote:  abcdefg
-     *     blocks:        000000
-     *     desired:       011     (so two blocks, the second one will be added below)
-     *
-     * To address this we limit the zsync blocks to min(localsize, remotesize). That
-     * way we only attempt to upload data that's locally available (local smaller)
-     * and can easily handle the case of a locally grown file below (remote smaller).
-     */
-    qint64 minSize = qMin(_item->_size, remoteSize);
-    for (int i = 0; i < _nrange; i++) {
-        UploadRangeInfo rangeinfo = { qint64(zbyterange.get()[(2 * i)]), qint64(zbyterange.get()[(2 * i) + 1]) - qint64(zbyterange.get()[(2 * i)]) + 1 };
-        if (rangeinfo.start < minSize) {
-            if (rangeinfo.end() > minSize)
-                rangeinfo.size = minSize - rangeinfo.start;
-            _rangesToUpload.append(rangeinfo);
-            totalBytes += rangeinfo.size;
-        }
-    }
-
-    // If the local file has grown, upload the new local data
-    if (_item->_size > remoteSize) {
-        qint64 appendedBytes = _item->_size - remoteSize;
-        // Append to the last range if possible
-        if (!_rangesToUpload.isEmpty() && _rangesToUpload.last().end() == remoteSize) {
-            _rangesToUpload.last().size += appendedBytes;
-        } else {
-            UploadRangeInfo rangeinfo = { remoteSize, appendedBytes };
-            _rangesToUpload.append(rangeinfo);
-        }
-        totalBytes += appendedBytes;
-    }
-
-    for (const auto &range : _rangesToUpload)
-        qCDebug(lcZsyncPut) << "Upload range:" << range.start << range.size;
-    qCDebug(lcZsyncPut) << "Total bytes:" << totalBytes << "of file size" << _item->_size;
-
-    propagator()->reportFileTotal(*_item, totalBytes);
-    _bytesToUpload = totalBytes;
-
-    doStartUploadNext();
-}
-
-void PropagateUploadFileNG::slotZsyncSeedFailed(const QString &errorString)
-{
-    qCCritical(lcZsyncPut) << errorString;
-
-    /* delete remote zsync file */
-    QUrl zsyncUrl = zsyncMetadataUrl(propagator(), _item->_file);
-    (new DeleteJob(propagator()->account(), zsyncUrl, this))->start();
-
-    abortWithError(SyncFileItem::NormalError, errorString);
-}
 
 /*
 State machine:
 
   +---> doStartUpload()
-        isZsyncPropagationEnabled()?  +--+ yes +---> Download and seed zsync metadata and set-up new _rangesToUpload
-           +                                                               +
-           |no                                                             |
-           |                                                               |
-           |                                                               |
-           +^--------------------------------------------------------------+
-           v
         doStartUploadNext()
-        isZsyncPropagationEnabled()?  +--+ yes +---> Generate new zsync metadata file +--------------------+
-           +                                                       +                                       |
-           |no                                                     |                                       |
-           |                                                       |                             Upload .zsync chunk
-           v                                                       |                                       |
-        Check the db: is there an entry? <-------------------------+                                       |
-           +                           +                                                                   |
-           |no                         |yes                                                                |
-           |                           v                                                                   |
-           v                        PROPFIND                                                               |
-           startNewUpload() <-+        +-------------------------------------+                             |
-              +               |        +                                     |                             |
-             MKCOL            + slotPropfindFinishedWithError()     slotPropfindFinished()                 |
-              +                                                       Is there stale files to remove?      |
-          slotMkColFinished()                                         +                      +             |
-              +                                                       no                    yes            |
-              |                                                       +                      +             |
-              |                                                       |                  DeleteJob         |
-              |                                                       |                      +             |
-        +-----+^------------------------------------------------------+^--+  slotDeleteJobFinished()       |
-        |                                                                                                  |
-        |                             +--------------------------------------------------------------------+
-        |                             v
+        Check the db: is there an entry?
+           +                           +
+           |no                         |yes
+           |                           v
+           v                        PROPFIND
+           startNewUpload() <-+        +-------------------------------------+
+              +               |        +                                     |
+             MKCOL            + slotPropfindFinishedWithError()     slotPropfindFinished()
+              +                                                       Is there stale files to remove?
+          slotMkColFinished()                                         +                      +
+              +                                                       no                    yes
+              |                                                       +                      +
+              |                                                       |                  DeleteJob
+              |                                                       |                      +
+        +-----+^------------------------------------------------------+^--+  slotDeleteJobFinished()
+        |
+        |
+        |
         +---->  startNextChunk() +-> finished?  +-
                       ^               +          |
                       +---------------+          |
@@ -206,63 +86,15 @@ void PropagateUploadFileNG::doStartUpload()
 {
     propagator()->_activeJobList.append(this);
 
-    _zsyncSupported = isZsyncPropagationEnabled(propagator(), _item);
-    if (_zsyncSupported && _item->_remotePerm.hasPermission(RemotePermissions::HasZSyncMetadata)) {
-        // Retrieve zsync metadata file from the server
-        qCInfo(lcZsyncPut) << "Retrieving zsync metadata for:" << _item->_file;
-        QNetworkRequest req;
-        req.setPriority(QNetworkRequest::LowPriority);
-        QUrl zsyncUrl = zsyncMetadataUrl(propagator(), _item->_file);
-        auto job = propagator()->account()->sendRequest("GET", zsyncUrl, req);
-        connect(job, &SimpleNetworkJob::finishedSignal, this, &PropagateUploadFileNG::slotZsyncGetMetaFinished);
-        return;
-    }
-
     UploadRangeInfo rangeinfo = { 0, _item->_size };
     _rangesToUpload.append(rangeinfo);
     _bytesToUpload = _item->_size;
     doStartUploadNext();
 }
 
-void PropagateUploadFileNG::slotZsyncGetMetaFinished(QNetworkReply *reply)
-{
-    int httpStatusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (httpStatusCode / 100 != 2) {
-        /* Fall back to full upload */
-        qCWarning(lcZsyncPut) << "Failed to retrieve zsync metadata for:" << _item->_file;
-        _rangesToUpload.clear();
-        UploadRangeInfo rangeinfo = { 0, _item->_size };
-        _rangesToUpload.append(rangeinfo);
-        _bytesToUpload = _item->_size;
-        doStartUploadNext();
-        return;
-    }
-
-    QByteArray zsyncData = reply->readAll();
-
-    qCInfo(lcZsyncPut) << "Retrieved zsync metadata for:" << _item->_file << "size:" << zsyncData.size();
-
-    ZsyncSeedRunnable *run = new ZsyncSeedRunnable(zsyncData, propagator()->getFilePath(_item->_file), ZsyncMode::upload);
-    connect(run, &ZsyncSeedRunnable::finishedSignal, this, &PropagateUploadFileNG::slotZsyncSeedFinished);
-    connect(run, &ZsyncSeedRunnable::failedSignal, this, &PropagateUploadFileNG::slotZsyncSeedFailed);
-
-    // Starts in a seperate thread
-    QThreadPool::globalInstance()->start(run);
-}
 
 void PropagateUploadFileNG::doStartUploadNext()
 {
-    if (_zsyncSupported) {
-        _isZsyncMetadataUploadRunning = true;
-
-        ZsyncGenerateRunnable *run = new ZsyncGenerateRunnable(propagator()->getFilePath(_item->_file));
-        connect(run, &ZsyncGenerateRunnable::finishedSignal, this, &PropagateUploadFileNG::slotZsyncGenerationFinished);
-        connect(run, &ZsyncGenerateRunnable::failedSignal, this, &PropagateUploadFileNG::slotZsyncGenerationFailed);
-
-        // Starts in a seperate thread
-        QThreadPool::globalInstance()->start(run);
-    }
-
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
     if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
             && progressInfo._size == _item->_size) {
@@ -422,7 +254,6 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
     }
 
     // If no more Delete jobs are running, we can continue
-    // (the zsync metadata upload might run in parallel)
     bool runningDeleteJobs = false;
     for (auto otherJob : _jobs) {
         if (qobject_cast<DeleteJob *>(otherJob))
@@ -486,10 +317,6 @@ void PropagateUploadFileNG::slotMkColFinished(QNetworkReply::NetworkError)
 
 void PropagateUploadFileNG::doFinalMove()
 {
-    // Still not finished metadata upload.
-    if (_isZsyncMetadataUploadRunning)
-        return;
-
     // Still not finished all ranges.
     if (!_rangesToUpload.isEmpty())
         return;
@@ -514,7 +341,7 @@ void PropagateUploadFileNG::doFinalMove()
     headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(_bytesToUpload);
     headers[QByteArrayLiteral("OC-Total-File-Length")] = QByteArray::number(_item->_size);
 
-    QUrl source = _zsyncSupported ? Utility::concatUrlPath(chunkUrl(), QStringLiteral("/.file.zsync")) : Utility::concatUrlPath(chunkUrl(), QStringLiteral("/.file"));
+    const QUrl source = Utility::concatUrlPath(chunkUrl(), QStringLiteral("/.file"));
 
     auto job = new MoveJob(propagator()->account(), source, destination, headers, this);
     _jobs.append(job);
@@ -576,62 +403,6 @@ void PropagateUploadFileNG::startNextChunk()
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
     propagator()->_activeJobList.append(this);
-}
-
-void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generatedFileName)
-{
-    qCDebug(lcPropagateUploadNG)
-        << "Finished generation of:" << generatedFileName
-        << "size:" << FileSystem::getSize(generatedFileName);
-
-    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
-            generatedFileName, 0, FileSystem::getSize(generatedFileName), &propagator()->_bandwidthManager));
-    if (!device->open(QIODevice::ReadOnly)) {
-        qCWarning(lcPropagateUploadNG) << "Could not prepare generated file: " << generatedFileName << device->errorString();
-        abortWithError(SyncFileItem::SoftError, device->errorString());
-        return;
-    }
-
-    QMap<QByteArray, QByteArray> headers;
-    QUrl url = Utility::concatUrlPath(chunkUrl(), ".zsync");
-
-    _sent += FileSystem::getSize(generatedFileName);
-    _bytesToUpload += FileSystem::getSize(generatedFileName);
-
-    qCDebug(lcPropagateUploadNG) << "Starting upload of .zsync";
-
-    // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    auto devicePtr = device.get(); // for connections later
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), url, std::move(device), headers, 0, this);
-    _jobs.append(job);
-    connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotZsyncMetadataUploadFinished);
-    connect(job, &PUTFileJob::uploadProgress,
-        this, &PropagateUploadFileNG::slotUploadProgress);
-    connect(job, &PUTFileJob::uploadProgress,
-        devicePtr, &UploadDevice::slotJobUploadProgress);
-    job->start();
-    propagator()->_activeJobList.append(this);
-
-    FileSystem::remove(generatedFileName);
-}
-
-void PropagateUploadFileNG::slotZsyncMetadataUploadFinished()
-{
-    qCDebug(lcPropagateUploadNG) << "Uploading of .zsync complete";
-
-    PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
-    OC_ASSERT(job);
-    slotJobDestroyed(job);
-
-    _isZsyncMetadataUploadRunning = false;
-    doFinalMove();
-}
-
-void PropagateUploadFileNG::slotZsyncGenerationFailed(const QString &errorString)
-{
-    qCWarning(lcZsyncPut) << "Failed to generate zsync metadata file:" << errorString;
-
-    abortWithError(SyncFileItem::SoftError, tr("Failed to generate zsync file."));
 }
 
 void PropagateUploadFileNG::slotPutFinished()

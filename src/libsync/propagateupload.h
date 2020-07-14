@@ -15,7 +15,6 @@
 
 #include "owncloudpropagator.h"
 #include "networkjobs.h"
-#include "propagatecommonzsync.h"
 
 #include <QBuffer>
 #include <QFile>
@@ -361,8 +360,7 @@ private:
 
     /** Amount of data that needs to be sent to the server in bytes.
      *
-     * For normal uploads this will be the file size, for zsync uploads it can
-     * be less.
+     * For normal uploads this will be the file size.
      *
      * This value is intended to be comparable to _sent: it's always the total
      * amount of data that needs to be present at the server to finish the upload -
@@ -374,8 +372,6 @@ private:
     qint64 _currentChunkOffset = 0; /// byte offset of the next chunk data that will be sent
     qint64 _currentChunkSize = 0; /// current chunk size
     bool _removeJobError = false; /// if not null, there was an error removing the job
-    bool _zsyncSupported = false; /// if zsync is supported this will be set to true
-    bool _isZsyncMetadataUploadRunning = false; // flag to ensure that zsync metadata upload is complete before job is
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
@@ -432,12 +428,6 @@ private slots:
     void slotDeleteJobFinished();
     void slotMkColFinished(QNetworkReply::NetworkError);
     void slotPutFinished();
-    void slotZsyncGetMetaFinished(QNetworkReply *reply);
-    void slotZsyncSeedFinished(void *zs);
-    void slotZsyncSeedFailed(const QString &errorString);
-    void slotZsyncGenerationFinished(const QString &fileName);
-    void slotZsyncGenerationFailed(const QString &errorString);
-    void slotZsyncMetadataUploadFinished();
     void slotMoveJobFinished();
     void slotUploadProgress(qint64, qint64);
 };

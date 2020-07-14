@@ -16,9 +16,7 @@ set(libsync_SRCS
     owncloudtheme.cpp
     progressdispatcher.cpp
     propagatorjobs.cpp
-    propagatecommonzsync.cpp
     propagatedownload.cpp
-    propagatedownloadzsync.cpp
     propagateupload.cpp
     propagateuploadv1.cpp
     propagateuploadng.cpp
@@ -44,35 +42,6 @@ if(TOKEN_AUTH_ONLY)
 else()
     set (libsync_SRCS ${libsync_SRCS} creds/httpcredentials.cpp)
 endif()
-
-## begin zsync
-
-add_library(zsync STATIC ../3rdparty/zsync/c/librcksum/hash.c
-                        ../3rdparty/zsync/c/librcksum/md4.c
-                        ../3rdparty/zsync/c/librcksum/range.c
-                        ../3rdparty/zsync/c/librcksum/rsum.c
-                        ../3rdparty/zsync/c/librcksum/state.c
-                        ../3rdparty/zsync/c/libzsync/sha1.c
-                        ../3rdparty/zsync/c/libzsync/zsync.c
-                        ../3rdparty/zsync/c/libzsync/zsyncfile.c
-                        ../3rdparty/zsync/c/progress.c
-)
-
-set_target_properties(zsync PROPERTIES C_STANDARD 11 AUTOMOC OFF)
-if (CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID MATCHES "Clang")
-    target_compile_options(zsync PRIVATE -Wno-unused-parameter -Wno-unused-function)
-endif()
-target_include_directories(zsync PUBLIC $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/3rdparty/zsync/c>)
-
-if ( WIN32 )
-    target_link_libraries(zsync PUBLIC ws2_32)
-    # ensure size_t is 64 bits
-    target_compile_definitions(zsync PRIVATE _FILE_OFFSET_BITS=64)
-endif()
-
-target_compile_definitions(zsync PRIVATE VERSION="0.6.3" SIZEOF_OFF_T=8)
-
-## end zsync
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS
@@ -105,7 +74,6 @@ add_library(${synclib_NAME} SHARED ${libsync_SRCS})
 target_link_libraries(${synclib_NAME} PUBLIC
     "${csync_NAME}"
     Qt5::Core Qt5::Network
-    zsync
 )
 
 if ( APPLE )

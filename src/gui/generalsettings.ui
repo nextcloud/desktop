@@ -164,53 +164,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="experimentalGroupBox">
-     <property name="title">
-      <string>Experimental</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QCheckBox" name="deltaSyncCheckBox">
-          <property name="text">
-           <string>Enable Delta-Synchronization for files larger than</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="deltaSyncSpinBox">
-          <property name="maximum">
-           <number>999999</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>MB</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="versionGroupBox">
      <property name="title">
       <string>Version</string>
@@ -410,8 +363,6 @@
   <tabstop>newExternalStorage</tabstop>
   <tabstop>showInExplorerNavigationPaneCheckBox</tabstop>
   <tabstop>crashreporterCheckBox</tabstop>
-  <tabstop>deltaSyncCheckBox</tabstop>
-  <tabstop>deltaSyncSpinBox</tabstop>
   <tabstop>updateChannel</tabstop>
   <tabstop>restartButton</tabstop>
  </tabstops>

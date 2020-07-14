@@ -195,8 +195,6 @@ void help()
     std::cout << "  --max-sync-retries [n] Retries maximum n times (default to 3)" << std::endl;
     std::cout << "  --uplimit [n]          Limit the upload speed of files to n KB/s" << std::endl;
     std::cout << "  --downlimit [n]        Limit the download speed of files to n KB/s" << std::endl;
-    std::cout << "  --deltasync, -ds       Enable delta sync (disabled by default)" << std::endl;
-    std::cout << "  --deltasyncmin [n]     Set delta sync minimum file size to n MB (10 MiB default)" << std::endl;
     std::cout << "  -h                     Sync hidden files,do not ignore them" << std::endl;
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "  --logdebug             More verbose logging" << std::endl;
@@ -277,10 +275,6 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
             options->uplimit = it.next().toInt() * 1000;
         } else if (option == "--downlimit" && !it.peekNext().startsWith("-")) {
             options->downlimit = it.next().toInt() * 1000;
-        } else if (option == "-ds" || option == "--deltasync") {
-            options->deltasync = true;
-        } else if (option == "--deltasyncmin" && !it.peekNext().startsWith("-")) {
-            options->deltasyncminfilesize = it.next().toLongLong() * 1024 * 1024;
         } else if (option == "--logdebug") {
             Logger::instance()->setLogFile("-");
             Logger::instance()->setLogDebug(true);
@@ -340,8 +334,6 @@ int main(int argc, char **argv)
     options.restartTimes = 3;
     options.uplimit = 0;
     options.downlimit = 0;
-    options.deltasync = false;
-    options.deltasyncminfilesize = 10 * 1024 * 1024;
 
     parseOptions(app.arguments(), &options);
 
@@ -542,8 +534,6 @@ restart_sync:
     SyncOptions opt;
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
-    opt._deltaSyncEnabled = options.deltasync;
-    opt._deltaSyncMinFileSize = options.deltasyncminfilesize;
     SyncEngine engine(account, options.source_dir, folder, &db);
     engine.setSyncOptions(opt);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);

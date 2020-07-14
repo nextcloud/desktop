@@ -865,9 +865,6 @@ void Folder::setSyncOptions()
     opt._maxChunkSize = cfgFile.maxChunkSize();
     opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
 
-    opt._deltaSyncEnabled = cfgFile.deltaSyncEnabled();
-    opt._deltaSyncMinFileSize = cfgFile.deltaSyncMinFileSize();
-
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
 

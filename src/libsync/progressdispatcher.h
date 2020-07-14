@@ -99,10 +99,6 @@ public:
      * This function is called at most once per item during propagation
      * to adjust them when its actual size has been determined.
      *
-     * Example: With delta-sync, the actual size of the download will only
-     * be known during propagation - this function adjusts the total size
-     * to account for it.
-     *
      * The value in item.size must be the same as during the call to
      * adjustTotalsForFile() while newSize is the newly determined actual
      * size.

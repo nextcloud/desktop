@@ -80,7 +80,6 @@ public:
     int defaultPermissions() const;
 
     bool chunkingNg() const;
-    QString zsyncSupportedVersion() const;
 
     /// Wheter to use chunking
     bool bigfilechunkingEnabled() const;

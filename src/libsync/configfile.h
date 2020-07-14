@@ -136,12 +136,6 @@ public:
     void setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes);
     bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
-    /** delta sync */
-    bool deltaSyncEnabled() const;
-    void setDeltaSyncEnabled(bool enabled);
-    qint64 deltaSyncMinFileSize() const; // bytes
-    void setDeltaSyncMinFileSize(qint64 bytes);
-
 
     /** If we should move the files deleted on the server in the trash  */
     bool moveToTrash() const;
