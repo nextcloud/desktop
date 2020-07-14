@@ -227,15 +227,15 @@ ecm_add_app_icon(appIcons ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SI
 target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${appIcons})
 
 if(NOT APPLE)
-    IF( WIN32 )
+    if(WIN32)
         configure_file(
           ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
           ${CMAKE_CURRENT_BINARY_DIR}/version.rc
           @ONLY)
         target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
-        IF(NOT MSVC)
+        if(NOT MSVC)
             target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/manifest-mingw.rc)
-        ENDIF()
+        endif()
     else()
         file(GLOB _icons "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
         foreach(_file ${_icons})
@@ -243,7 +243,7 @@ if(NOT APPLE)
             string(REPLACE "-${APPLICATION_ICON_NAME}-icon.png" "" _res ${_res})
             install(FILES ${_file} RENAME ${APPLICATION_ICON_NAME}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps)
         endforeach(_file)
-    endif(NOT WIN32)
+    endif()
 
     install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
 
