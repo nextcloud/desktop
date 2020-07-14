@@ -777,8 +777,8 @@ void Application::openVirtualFile(const QString &filename)
     folder->implicitlyHydrateFile(relativePath);
     QString normalName = filename.left(filename.size() - virtualFileExt.size());
     auto con = QSharedPointer<QMetaObject::Connection>::create();
-    *con = QObject::connect(folder, &Folder::syncFinished, [con, normalName] {
-        QObject::disconnect(*con);
+    *con = connect(folder, &Folder::syncFinished, folder, [folder, con, normalName] {
+        folder->disconnect(*con);
         if (QFile::exists(normalName)) {
             QDesktopServices::openUrl(QUrl::fromLocalFile(normalName));
         }
