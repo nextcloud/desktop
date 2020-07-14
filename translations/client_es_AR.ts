@@ -2082,7 +2082,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="284"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>URL invalida</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="413"/>
@@ -2100,7 +2100,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>URL invalida</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
@@ -2787,7 +2787,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Agregar otro enlace</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="406"/>
