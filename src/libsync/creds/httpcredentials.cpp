@@ -126,7 +126,7 @@ HttpCredentials::HttpCredentials(DetermineAuthTypeJob::AuthType authType, const 
     , _authType(authType)
 {
     if (!unpackClientCertBundle()) {
-        ASSERT(false, "pkcs12 client cert bundle passed to HttpCredentials must be valid");
+        OC_ASSERT_X(false, "pkcs12 client cert bundle passed to HttpCredentials must be valid");
     }
 }
 

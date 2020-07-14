@@ -222,7 +222,7 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
 void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &errorString)
 {
     // Duplicate calls to done() are a logic error
-    ENFORCE(_state != Finished);
+    OC_ENFORCE(_state != Finished);
     _state = Finished;
 
     _item->_status = statusArg;
@@ -812,7 +812,7 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
 
     // Ask all the running composite jobs if they have something new to schedule.
     for (int i = 0; i < _runningJobs.size(); ++i) {
-        ASSERT(_runningJobs.at(i)->_state == Running);
+        OC_ASSERT(_runningJobs.at(i)->_state == Running);
 
         if (possiblyRunNextJob(_runningJobs.at(i))) {
             return true;
@@ -860,12 +860,12 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
 void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 {
     PropagatorJob *subJob = static_cast<PropagatorJob *>(sender());
-    ASSERT(subJob);
+    OC_ASSERT(subJob);
 
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
     int i = _runningJobs.indexOf(subJob);
-    ENFORCE(i >= 0); // should only happen if this function is called more than once
+    OC_ENFORCE(i >= 0); // should only happen if this function is called more than once
     _runningJobs.remove(i);
 
     // Any sub job error will cause the whole composite to fail. This is important
@@ -1121,7 +1121,7 @@ void CleanupPollsJob::start()
 void CleanupPollsJob::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
     if (job->_item->_status == SyncFileItem::FatalError) {
         emit aborted(job->_item->_errorString);
         deleteLater();

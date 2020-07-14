@@ -57,7 +57,7 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
     , _path(path)
 {
     // Since we hold a QSharedPointer to the account, this makes no sense. (issue #6893)
-    ASSERT(account != parent);
+    OC_ASSERT(account != parent);
 
     _timer.setSingleShot(true);
     _timer.setInterval((httpTimeout ? httpTimeout : 300) * 1000); // default to 5 minutes.
@@ -442,7 +442,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
 
 void AbstractNetworkJob::retry()
 {
-    ENFORCE(_reply);
+    OC_ENFORCE(_reply);
     auto req = _reply->request();
     QUrl requestedUrl = req.url();
     QByteArray verb = HttpLogger::requestVerb(*_reply);

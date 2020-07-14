@@ -63,7 +63,7 @@ void ProcessDirectoryJob::start()
 
 void ProcessDirectoryJob::process()
 {
-    ASSERT(_localQueryDone && _serverQueryDone);
+    OC_ASSERT(_localQueryDone && _serverQueryDone);
 
     QString localDir;
 
@@ -434,7 +434,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             item->_modtime = serverEntry.modtime;
             item->_size = serverEntry.size;
             if (serverEntry.isDirectory) {
-                ENFORCE(dbEntry.isDirectory());
+                OC_ENFORCE(dbEntry.isDirectory());
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             } else if (!localEntry.isValid() && _queryLocal != ParentNotChanged) {
                 // Deleted locally, changed on server
@@ -821,8 +821,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     if (localEntry.isVirtualFile && !noServerEntry) {
         // Somehow there is a missing DB entry while the virtual file already exists.
         // The instruction should already be set correctly.
-        ASSERT(item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA);
-        ASSERT(item->_type == ItemTypeVirtualFile);
+        OC_ASSERT(item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA);
+        OC_ASSERT(item->_type == ItemTypeVirtualFile);
         finalize();
         return;
     } else if (serverModified) {
@@ -1113,7 +1113,7 @@ void ProcessDirectoryJob::processFileFinalize(
     }
 
     if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {
-        ASSERT(_dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME);
+        OC_ASSERT(_dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME);
         // This is because otherwise subitems are not updated!  (ideally renaming a directory could
         // update the database for all items!  See PropagateDirectory::slotSubJobsFinished)
         item->_instruction = CSYNC_INSTRUCTION_RENAME;
@@ -1306,7 +1306,7 @@ auto ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const 
 void ProcessDirectoryJob::subJobFinished()
 {
     auto job = qobject_cast<ProcessDirectoryJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
 
     _childIgnored |= job->_childIgnored;
     _childModified |= job->_childModified;
@@ -1315,7 +1315,7 @@ void ProcessDirectoryJob::subJobFinished()
         emit _discoveryData->itemDiscovered(job->_dirItem);
 
     int count = _runningJobs.removeAll(job);
-    ASSERT(count == 1);
+    OC_ASSERT(count == 1);
     job->deleteLater();
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
@@ -1385,7 +1385,7 @@ void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
     if (!isVfsWithSuffix())
         return;
     bool hasSuffix = hasVirtualFileSuffix(str);
-    ASSERT(hasSuffix);
+    OC_ASSERT(hasSuffix);
     if (hasSuffix)
         str.chop(_discoveryData->_syncOptions._vfs->fileSuffix().size());
 }

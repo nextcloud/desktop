@@ -460,7 +460,7 @@ void Application::slotCrash()
 
 void Application::slotCrashEnforce()
 {
-    ENFORCE(1==0);
+    OC_ENFORCE(1 == 0);
 }
 
 

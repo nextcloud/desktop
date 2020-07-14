@@ -195,7 +195,7 @@ QUrl Account::deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const
 void Account::clearCookieJar()
 {
     auto jar = qobject_cast<CookieJar *>(_am->cookieJar());
-    ASSERT(jar);
+    OC_ASSERT(jar);
     jar->setAllCookies(QList<QNetworkCookie>());
     emit wantsAccountSaved(this);
 }

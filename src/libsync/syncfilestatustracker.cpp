@@ -123,7 +123,7 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
 {
-    ASSERT(!relativePath.endsWith(QLatin1Char('/')));
+    OC_ASSERT(!relativePath.endsWith(QLatin1Char('/')));
 
     if (relativePath.isEmpty()) {
         // This is the root sync folder, it doesn't have an entry in the database and won't be walked by csync, so resolve manually.
@@ -161,7 +161,7 @@ void SyncFileStatusTracker::slotPathTouched(const QString &fileName)
 {
     QString folderPath = _syncEngine->localPath();
 
-    ASSERT(fileName.startsWith(folderPath));
+    OC_ASSERT(fileName.startsWith(folderPath));
     QString localPath = fileName.mid(folderPath.size());
     _dirtyPaths.insert(localPath);
 
@@ -186,7 +186,7 @@ void SyncFileStatusTracker::incSyncCountAndEmitStatusChanged(const QString &rela
 
         // We passed from OK to SYNC, increment the parent to keep it marked as
         // SYNC while we propagate ourselves and our own children.
-        ASSERT(!relativePath.endsWith('/'));
+        OC_ASSERT(!relativePath.endsWith('/'));
         int lastSlashIndex = relativePath.lastIndexOf('/');
         if (lastSlashIndex != -1)
             incSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
@@ -208,7 +208,7 @@ void SyncFileStatusTracker::decSyncCountAndEmitStatusChanged(const QString &rela
         emit fileStatusChanged(getSystemDestination(relativePath), status);
 
         // We passed from SYNC to OK, decrement our parent.
-        ASSERT(!relativePath.endsWith('/'));
+        OC_ASSERT(!relativePath.endsWith('/'));
         int lastSlashIndex = relativePath.lastIndexOf('/');
         if (lastSlashIndex != -1)
             decSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
@@ -219,7 +219,7 @@ void SyncFileStatusTracker::decSyncCountAndEmitStatusChanged(const QString &rela
 
 void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
 {
-    ASSERT(_syncCount.isEmpty());
+    OC_ASSERT(_syncCount.isEmpty());
 
     ProblemsMap oldProblems;
     std::swap(_syncProblems, oldProblems);
@@ -322,7 +322,7 @@ SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &r
             status.set(problemStatus);
     }
 
-    ASSERT(sharedFlag != UnknownShared,
+    OC_ASSERT_X(sharedFlag != UnknownShared,
         "The shared status needs to have been fetched from a SyncFileItem or the DB at this point.");
     if (sharedFlag == Shared)
         status.setShared(true);

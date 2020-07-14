@@ -101,7 +101,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
 
     // Everything in the SyncEngine expects a trailing slash for the localPath.
-    ASSERT(localPath.endsWith(QLatin1Char('/')));
+    OC_ASSERT(localPath.endsWith(QLatin1Char('/')));
 
     _excludedFiles.reset(new ExcludedFiles);
 
@@ -280,7 +280,7 @@ void SyncEngine::conflictRecordMaintenance()
     // This happens when the conflicts table is new or when conflict files
     // are downlaoded but the server doesn't send conflict headers.
     for (const auto &path : _seenConflictFiles) {
-        ASSERT(Utility::isConflictFile(path));
+        OC_ASSERT(Utility::isConflictFile(path));
 
         auto bapath = path.toUtf8();
         if (!conflictRecordPaths.contains(bapath)) {
@@ -420,7 +420,7 @@ void SyncEngine::startSync()
     }
 
     if (s_anySyncRunning || _syncRunning) {
-        ASSERT(false);
+        OC_ASSERT(false);
         return;
     }
 

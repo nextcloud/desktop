@@ -266,9 +266,9 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
         if (_errId != SQLITE_OK) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
             qCWarning(lcSql) << "Sqlite prepare statement error:" << _error << "in" << _sql;
-            ENFORCE(allow_failure, "SQLITE Prepare error");
+            OC_ENFORCE_X(allow_failure, "SQLITE Prepare error");
         } else {
-            ASSERT(_stmt);
+            OC_ASSERT(_stmt);
             _sqldb->_queries.insert(this);
         }
     }
@@ -371,7 +371,7 @@ void SqlQuery::bindValue(int pos, const QVariant &value)
 
     int res = -1;
     if (!_stmt) {
-        ASSERT(false);
+        OC_ASSERT(false);
         return;
     }
 
@@ -429,7 +429,7 @@ void SqlQuery::bindValue(int pos, const QVariant &value)
     if (res != SQLITE_OK) {
         qCWarning(lcSql) << "ERROR binding SQL value:" << value << "error:" << res;
     }
-    ASSERT(res == SQLITE_OK);
+    OC_ASSERT(res == SQLITE_OK);
 }
 
 bool SqlQuery::nullValue(int index)
@@ -499,7 +499,7 @@ void SqlQuery::reset_and_clear_bindings()
 
 bool SqlQuery::initOrReset(const QByteArray &sql, OCC::SqlDatabase &db)
 {
-    ENFORCE(!_sqldb || &db == _sqldb);
+    OC_ENFORCE(!_sqldb || &db == _sqldb);
     _sqldb = &db;
     _db = db.sqliteDb();
     if (_stmt) {

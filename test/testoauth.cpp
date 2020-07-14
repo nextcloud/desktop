@@ -135,8 +135,8 @@ public:
         fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device)  {
             if (req.url().path().endsWith(".well-known/openid-configuration"))
                 return this->wellKnownReply(op, req);
-            ASSERT(device);
-            ASSERT(device->bytesAvailable()>0); // OAuth2 always sends around POST data.
+            OC_ASSERT(device);
+            OC_ASSERT(device->bytesAvailable() > 0); // OAuth2 always sends around POST data.
             return this->tokenReply(op, req);
         });
 
@@ -180,11 +180,11 @@ public:
 
     virtual QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req)
     {
-        ASSERT(state == BrowserOpened);
+        OC_ASSERT(state == BrowserOpened);
         state = TokenAsked;
-        ASSERT(op == QNetworkAccessManager::PostOperation);
-        ASSERT(req.url().toString().startsWith(sOAuthTestServer.toString()));
-        ASSERT(req.url().path() == sOAuthTestServer.path() + "/index.php/apps/oauth2/api/v1/token");
+        OC_ASSERT(op == QNetworkAccessManager::PostOperation);
+        OC_ASSERT(req.url().toString().startsWith(sOAuthTestServer.toString()));
+        OC_ASSERT(req.url().path() == sOAuthTestServer.path() + "/index.php/apps/oauth2/api/v1/token");
         std::unique_ptr<QBuffer> payload(new QBuffer());
         payload->setData(tokenReplyPayload());
         return new FakePostReply(op, req, std::move(payload), fakeQnam);
@@ -265,14 +265,14 @@ private slots:
         struct Test : OAuthTestCase {
             QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest & req) override
             {
-                ASSERT(browserReply);
+                OC_ASSERT(browserReply);
                 // simulate the fact that the browser is closing the connection
                 browserReply->abort();
                 // don't process network events, as it messes up the execution order and
                 // causes an Qt internal crash
                 QCoreApplication::processEvents(QEventLoop::ExcludeSocketNotifiers);
 
-                ASSERT(state == BrowserOpened);
+                OC_ASSERT(state == BrowserOpened);
                 state = TokenAsked;
 
                 std::unique_ptr<QBuffer> payload(new QBuffer);
@@ -347,7 +347,7 @@ private slots:
             int redirectsDone = 0;
             QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest & request) override
             {
-                ASSERT(browserReply);
+                OC_ASSERT(browserReply);
                 // Kind of reproduces what we had in https://github.com/owncloud/enterprise/issues/2951 (not 1:1)
                 if (redirectsDone == 0) {
                     std::unique_ptr<QBuffer> payload(new QBuffer());
@@ -378,7 +378,7 @@ private slots:
         struct Test : OAuthTestCase {
             int redirectsDone = 0;
             QNetworkReply * wellKnownReply(QNetworkAccessManager::Operation op, const QNetworkRequest & req) override {
-                ASSERT(op == QNetworkAccessManager::GetOperation);
+                OC_ASSERT(op == QNetworkAccessManager::GetOperation);
                 QJsonDocument jsondata(QJsonObject{
                     { "authorization_endpoint", QJsonValue(
                             "oauthtest://openidserver" + sOAuthTestServer.path() + "/index.php/apps/oauth2/authorize") },
@@ -388,7 +388,7 @@ private slots:
             }
 
             void openBrowserHook(const QUrl & url) override {
-                ASSERT(url.host() == "openidserver");
+                OC_ASSERT(url.host() == "openidserver");
                 QUrl url2 = url;
                 url2.setHost(sOAuthTestServer.host());
                 OAuthTestCase::openBrowserHook(url2);
@@ -396,8 +396,8 @@ private slots:
 
             QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest & request) override
             {
-                ASSERT(browserReply);
-                ASSERT(request.url().toString().startsWith("oauthtest://openidserver/token_endpoint"));
+                OC_ASSERT(browserReply);
+                OC_ASSERT(request.url().toString().startsWith("oauthtest://openidserver/token_endpoint"));
                 auto req = request;
                 req.setUrl(request.url().toString().replace("oauthtest://openidserver/token_endpoint",
                         sOAuthTestServer.toString() + "/index.php/apps/oauth2/api/v1/token"));

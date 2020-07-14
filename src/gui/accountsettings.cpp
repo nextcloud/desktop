@@ -272,7 +272,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
         ac = menu->addAction(tr("Open folder in browser"));
         auto info = _model->infoForIndex(index);
-        ASSERT(info);
+        OC_ASSERT(info);
         QString path = info->_folder->remotePathTrailingSlash();
         path += info->_path;
         connect(ac, &QAction::triggered, this, [this, path]{
@@ -670,7 +670,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
 
 void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
 {
-    ASSERT(state == PinState::OnlineOnly || state == PinState::AlwaysLocal);
+    OC_ASSERT(state == PinState::OnlineOnly || state == PinState::AlwaysLocal);
 
     FolderMan *folderMan = FolderMan::instance();
     QPointer<Folder> folder = folderMan->folder(selectedFolderAlias());

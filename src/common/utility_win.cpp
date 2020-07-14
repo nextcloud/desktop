@@ -107,13 +107,13 @@ QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, cons
 
     REGSAM sam = KEY_READ | KEY_WOW64_64KEY;
     LONG result = RegOpenKeyEx(hRootKey, reinterpret_cast<LPCWSTR>(subKey.utf16()), 0, sam, &hKey);
-    ASSERT(result == ERROR_SUCCESS || result == ERROR_FILE_NOT_FOUND);
+    OC_ASSERT(result == ERROR_SUCCESS || result == ERROR_FILE_NOT_FOUND);
     if (result != ERROR_SUCCESS)
         return value;
 
     DWORD type = 0, sizeInBytes = 0;
     result = RegQueryValueEx(hKey, reinterpret_cast<LPCWSTR>(valueName.utf16()), 0, &type, nullptr, &sizeInBytes);
-    ASSERT(result == ERROR_SUCCESS || result == ERROR_FILE_NOT_FOUND);
+    OC_ASSERT(result == ERROR_SUCCESS || result == ERROR_FILE_NOT_FOUND);
     if (result == ERROR_SUCCESS) {
         switch (type) {
         case REG_DWORD:
@@ -145,7 +145,7 @@ QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, cons
             Q_UNREACHABLE();
         }
     }
-    ASSERT(result == ERROR_SUCCESS || result == ERROR_FILE_NOT_FOUND);
+    OC_ASSERT(result == ERROR_SUCCESS || result == ERROR_FILE_NOT_FOUND);
 
     RegCloseKey(hKey);
     return value;
@@ -160,7 +160,7 @@ bool Utility::registrySetKeyValue(HKEY hRootKey, const QString &subKey, const QS
     // FIXME: Not doing so at the moment means that explorer will show the cloud provider, but 32bit processes' open dialogs (like the ownCloud client itself) won't show it.
     REGSAM sam = KEY_WRITE | KEY_WOW64_64KEY;
     LONG result = RegCreateKeyEx(hRootKey, reinterpret_cast<LPCWSTR>(subKey.utf16()), 0, nullptr, 0, sam, nullptr, &hKey, nullptr);
-    ASSERT(result == ERROR_SUCCESS);
+    OC_ASSERT(result == ERROR_SUCCESS);
     if (result != ERROR_SUCCESS)
         return false;
 
@@ -180,7 +180,7 @@ bool Utility::registrySetKeyValue(HKEY hRootKey, const QString &subKey, const QS
     default:
         Q_UNREACHABLE();
     }
-    ASSERT(result == ERROR_SUCCESS);
+    OC_ASSERT(result == ERROR_SUCCESS);
 
     RegCloseKey(hKey);
     return result == ERROR_SUCCESS;
@@ -191,16 +191,16 @@ bool Utility::registryDeleteKeyTree(HKEY hRootKey, const QString &subKey)
     HKEY hKey;
     REGSAM sam = DELETE | KEY_ENUMERATE_SUB_KEYS | KEY_QUERY_VALUE | KEY_SET_VALUE | KEY_WOW64_64KEY;
     LONG result = RegOpenKeyEx(hRootKey, reinterpret_cast<LPCWSTR>(subKey.utf16()), 0, sam, &hKey);
-    ASSERT(result == ERROR_SUCCESS);
+    OC_ASSERT(result == ERROR_SUCCESS);
     if (result != ERROR_SUCCESS)
         return false;
 
     result = RegDeleteTree(hKey, nullptr);
     RegCloseKey(hKey);
-    ASSERT(result == ERROR_SUCCESS);
+    OC_ASSERT(result == ERROR_SUCCESS);
 
     result |= RegDeleteKeyEx(hRootKey, reinterpret_cast<LPCWSTR>(subKey.utf16()), sam, 0);
-    ASSERT(result == ERROR_SUCCESS);
+    OC_ASSERT(result == ERROR_SUCCESS);
 
     return result == ERROR_SUCCESS;
 }
@@ -210,12 +210,12 @@ bool Utility::registryDeleteKeyValue(HKEY hRootKey, const QString &subKey, const
     HKEY hKey;
     REGSAM sam = KEY_WRITE | KEY_WOW64_64KEY;
     LONG result = RegOpenKeyEx(hRootKey, reinterpret_cast<LPCWSTR>(subKey.utf16()), 0, sam, &hKey);
-    ASSERT(result == ERROR_SUCCESS);
+    OC_ASSERT(result == ERROR_SUCCESS);
     if (result != ERROR_SUCCESS)
         return false;
 
     result = RegDeleteValue(hKey, reinterpret_cast<LPCWSTR>(valueName.utf16()));
-    ASSERT(result == ERROR_SUCCESS);
+    OC_ASSERT(result == ERROR_SUCCESS);
 
     RegCloseKey(hKey);
     return result == ERROR_SUCCESS;
@@ -226,14 +226,14 @@ bool Utility::registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const st
     HKEY hKey;
     REGSAM sam = KEY_READ | KEY_WOW64_64KEY;
     LONG result = RegOpenKeyEx(hRootKey, reinterpret_cast<LPCWSTR>(subKey.utf16()), 0, sam, &hKey);
-    ASSERT(result == ERROR_SUCCESS);
+    OC_ASSERT(result == ERROR_SUCCESS);
     if (result != ERROR_SUCCESS)
         return false;
 
     DWORD maxSubKeyNameSize;
     // Get the largest keyname size once instead of relying each call on ERROR_MORE_DATA.
     result = RegQueryInfoKey(hKey, nullptr, nullptr, nullptr, nullptr, &maxSubKeyNameSize, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
-    ASSERT(result == ERROR_SUCCESS);
+    OC_ASSERT(result == ERROR_SUCCESS);
     if (result != ERROR_SUCCESS) {
         RegCloseKey(hKey);
         return false;
@@ -250,7 +250,7 @@ bool Utility::registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const st
         DWORD subKeyNameSize = subKeyName.size();
         retCode = RegEnumKeyEx(hKey, i, reinterpret_cast<LPWSTR>(subKeyName.data()), &subKeyNameSize, nullptr, nullptr, nullptr, nullptr);
 
-        ASSERT(result == ERROR_SUCCESS || retCode == ERROR_NO_MORE_ITEMS);
+        OC_ASSERT(result == ERROR_SUCCESS || retCode == ERROR_NO_MORE_ITEMS);
         if (retCode == ERROR_SUCCESS) {
             // subKeyNameSize excludes the trailing \0
             subKeyName.resize(subKeyNameSize);

@@ -382,7 +382,7 @@ public:
                 status = SyncFileItem::NormalError;
             } else {
                 status = SyncFileItem::FileIgnored;
-                ASSERT(_item->_instruction == CSYNC_INSTRUCTION_IGNORE);
+                OC_ASSERT(_item->_instruction == CSYNC_INSTRUCTION_IGNORE);
             }
         }
         done(status, _item->_errorString);

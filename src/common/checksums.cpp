@@ -231,9 +231,9 @@ void ComputeChecksum::start(const QString &filePath)
 
 void ComputeChecksum::start(std::unique_ptr<QIODevice> device)
 {
-    ENFORCE(device);
+    OC_ENFORCE(device);
     qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of device" << device.get() << "in a thread";
-    ASSERT(!device->parent());
+    OC_ASSERT(!device->parent());
 
     startImpl(std::move(device));
 }

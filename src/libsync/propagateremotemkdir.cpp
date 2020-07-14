@@ -79,7 +79,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 {
     propagator()->_activeJobList.removeOne(this);
 
-    ASSERT(_job);
+    OC_ASSERT(_job);
 
     QNetworkReply::NetworkError err = _job->reply()->error();
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

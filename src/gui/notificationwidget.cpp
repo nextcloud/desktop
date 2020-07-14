@@ -39,7 +39,7 @@ void NotificationWidget::setActivity(const Activity &activity)
     _myActivity = activity;
 
     _accountName = activity._accName;
-    ASSERT(!_accountName.isEmpty());
+    OC_ASSERT(!_accountName.isEmpty());
 
     // _ui._headerLabel->setText( );
     _ui._subjectLabel->setVisible(!activity._subject.isEmpty());

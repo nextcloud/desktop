@@ -101,29 +101,29 @@ public:
 
     const T &operator*() const &
     {
-        ASSERT(!_isError);
+        OC_ASSERT(!_isError);
         return _result;
     }
     T operator*() &&
     {
-        ASSERT(!_isError);
+        OC_ASSERT(!_isError);
         return std::move(_result);
     }
 
     const T *operator->() const
     {
-        ASSERT(!_isError);
+        OC_ASSERT(!_isError);
         return &_result;
     }
 
     const Error &error() const &
     {
-        ASSERT(_isError);
+        OC_ASSERT(_isError);
         return _error;
     }
     Error error() &&
     {
-        ASSERT(_isError);
+        OC_ASSERT(_isError);
         return std::move(_error);
     }
 };

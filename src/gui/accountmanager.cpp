@@ -82,7 +82,7 @@ bool AccountManager::restore()
                 acc->_id = accountId;
                 if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
                     auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
-                    ASSERT(jar);
+                    OC_ASSERT(jar);
                     if (jar)
                         jar->restore(acc->cookieJarPath());
                     addAccountState(accState);

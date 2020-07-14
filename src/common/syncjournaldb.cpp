@@ -251,7 +251,7 @@ bool SyncJournalDb::sqlFail(const QString &log, const SqlQuery &query)
     commitTransaction();
     qCWarning(lcDb) << "SQL Error" << log << query.error();
     _db.close();
-    ASSERT(false);
+    OC_ASSERT(false);
     return false;
 }
 
@@ -1752,7 +1752,7 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo &info)
 QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type, bool *ok)
 {
     QStringList result;
-    ASSERT(ok);
+    OC_ASSERT(ok);
 
     QMutexLocker locker(&_mutex);
     if (!checkConnect()) {
@@ -1991,17 +1991,17 @@ void SyncJournalDb::setConflictRecord(const ConflictRecord &record)
         return;
 
     auto &query = _setConflictRecordQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral(
-                          "INSERT OR REPLACE INTO conflicts "
-                          "(path, baseFileId, baseModtime, baseEtag, basePath) "
-                          "VALUES (?1, ?2, ?3, ?4, ?5);"),
+    OC_ASSERT(query.initOrReset(QByteArrayLiteral(
+                                    "INSERT OR REPLACE INTO conflicts "
+                                    "(path, baseFileId, baseModtime, baseEtag, basePath) "
+                                    "VALUES (?1, ?2, ?3, ?4, ?5);"),
         _db));
     query.bindValue(1, record.path);
     query.bindValue(2, record.baseFileId);
     query.bindValue(3, record.baseModtime);
     query.bindValue(4, record.baseEtag);
     query.bindValue(5, record.initialBasePath);
-    ASSERT(query.exec());
+    OC_ASSERT(query.exec());
 }
 
 ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
@@ -2012,9 +2012,9 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     if (!checkConnect())
         return entry;
     auto &query = _getConflictRecordQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag, basePath FROM conflicts WHERE path=?1;"), _db));
+    OC_ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag, basePath FROM conflicts WHERE path=?1;"), _db));
     query.bindValue(1, path);
-    ASSERT(query.exec());
+    OC_ASSERT(query.exec());
     if (!query.next().hasData)
         return entry;
 
@@ -2032,9 +2032,9 @@ void SyncJournalDb::deleteConflictRecord(const QByteArray &path)
     if (!checkConnect())
         return;
 
-    ASSERT(_deleteConflictRecordQuery.initOrReset("DELETE FROM conflicts WHERE path=?1;", _db));
+    OC_ASSERT(_deleteConflictRecordQuery.initOrReset("DELETE FROM conflicts WHERE path=?1;", _db));
     _deleteConflictRecordQuery.bindValue(1, path);
-    ASSERT(_deleteConflictRecordQuery.exec());
+    OC_ASSERT(_deleteConflictRecordQuery.exec());
 }
 
 QByteArrayList SyncJournalDb::conflictRecordPaths()
@@ -2045,7 +2045,7 @@ QByteArrayList SyncJournalDb::conflictRecordPaths()
 
     SqlQuery query(_db);
     query.prepare("SELECT path FROM conflicts");
-    ASSERT(query.exec());
+    OC_ASSERT(query.exec());
 
     QByteArrayList paths;
     while (query.next().hasData)
@@ -2107,8 +2107,8 @@ Optional<PinState> SyncJournalDb::PinStateInterface::rawForPath(const QByteArray
         return {};
 
     auto &query = _db->_getRawPinStateQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral(
-            "SELECT pinState FROM flags WHERE path == ?1;"),
+    OC_ASSERT(query.initOrReset(QByteArrayLiteral(
+                                    "SELECT pinState FROM flags WHERE path == ?1;"),
         _db->_db));
     query.bindValue(1, path);
     query.exec();
@@ -2130,13 +2130,13 @@ Optional<PinState> SyncJournalDb::PinStateInterface::effectiveForPath(const QByt
         return {};
 
     auto &query = _db->_getEffectivePinStateQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral(
-            "SELECT pinState FROM flags WHERE"
-            // explicitly allow "" to represent the root path
-            // (it'd be great if paths started with a / and "/" could be the root)
-            " (" IS_PREFIX_PATH_OR_EQUAL("path", "?1") " OR path == '')"
-            " AND pinState is not null AND pinState != 0"
-            " ORDER BY length(path) DESC LIMIT 1;"),
+    OC_ASSERT(query.initOrReset(QByteArrayLiteral(
+                                    "SELECT pinState FROM flags WHERE"
+                                    // explicitly allow "" to represent the root path
+                                    // (it'd be great if paths started with a / and "/" could be the root)
+                                    " (" IS_PREFIX_PATH_OR_EQUAL("path", "?1") " OR path == '')"
+                                                                               " AND pinState is not null AND pinState != 0"
+                                                                               " ORDER BY length(path) DESC LIMIT 1;"),
         _db->_db));
     query.bindValue(1, path);
     query.exec();
@@ -2165,10 +2165,10 @@ Optional<PinState> SyncJournalDb::PinStateInterface::effectiveForPathRecursive(c
 
     // Find all the non-inherited pin states below the item
     auto &query = _db->_getSubPinsQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral(
-            "SELECT DISTINCT pinState FROM flags WHERE"
-            " (" IS_PREFIX_PATH_OF("?1", "path") " OR ?1 == '')"
-            " AND pinState is not null and pinState != 0;"),
+    OC_ASSERT(query.initOrReset(QByteArrayLiteral(
+                                    "SELECT DISTINCT pinState FROM flags WHERE"
+                                    " (" IS_PREFIX_PATH_OF("?1", "path") " OR ?1 == '')"
+                                                                         " AND pinState is not null and pinState != 0;"),
         _db->_db));
     query.bindValue(1, path);
     query.exec();
@@ -2195,13 +2195,13 @@ void SyncJournalDb::PinStateInterface::setForPath(const QByteArray &path, PinSta
         return;
 
     auto &query = _db->_setPinStateQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral(
-            // If we had sqlite >=3.24.0 everywhere this could be an upsert,
-            // making further flags columns easy
-            //"INSERT INTO flags(path, pinState) VALUES(?1, ?2)"
-            //" ON CONFLICT(path) DO UPDATE SET pinState=?2;"),
-            // Simple version that doesn't work nicely with multiple columns:
-            "INSERT OR REPLACE INTO flags(path, pinState) VALUES(?1, ?2);"),
+    OC_ASSERT(query.initOrReset(QByteArrayLiteral(
+                                    // If we had sqlite >=3.24.0 everywhere this could be an upsert,
+                                    // making further flags columns easy
+                                    //"INSERT INTO flags(path, pinState) VALUES(?1, ?2)"
+                                    //" ON CONFLICT(path) DO UPDATE SET pinState=?2;"),
+                                    // Simple version that doesn't work nicely with multiple columns:
+                                    "INSERT OR REPLACE INTO flags(path, pinState) VALUES(?1, ?2);"),
         _db->_db));
     query.bindValue(1, path);
     query.bindValue(2, static_cast<int>(state));
@@ -2215,10 +2215,10 @@ void SyncJournalDb::PinStateInterface::wipeForPathAndBelow(const QByteArray &pat
         return;
 
     auto &query = _db->_wipePinStateQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral(
-            "DELETE FROM flags WHERE "
-            // Allow "" to delete everything
-            " (" IS_PREFIX_PATH_OR_EQUAL("?1", "path") " OR ?1 == '');"),
+    OC_ASSERT(query.initOrReset(QByteArrayLiteral(
+                                    "DELETE FROM flags WHERE "
+                                    // Allow "" to delete everything
+                                    " (" IS_PREFIX_PATH_OR_EQUAL("?1", "path") " OR ?1 == '');"),
         _db->_db));
     query.bindValue(1, path);
     query.exec();

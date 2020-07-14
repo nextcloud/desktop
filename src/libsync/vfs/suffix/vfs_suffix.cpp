@@ -79,7 +79,7 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
     // The concrete shape of the placeholder is also used in isDehydratedPlaceholder() below
     QString fn = _setupParams.filesystemPath + item._file;
     if (!fn.endsWith(fileSuffix())) {
-        ASSERT(false, "vfs file isn't ending with suffix");
+        OC_ASSERT_X(false, "vfs file isn't ending with suffix");
         return QString("vfs file isn't ending with suffix");
     }
 

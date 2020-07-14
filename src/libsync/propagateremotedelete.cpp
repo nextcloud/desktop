@@ -88,7 +88,7 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
 {
     propagator()->_activeJobList.removeOne(this);
 
-    ASSERT(_job);
+    OC_ASSERT(_job);
 
     QNetworkReply::NetworkError err = _job->reply()->error();
     const int httpStatus = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

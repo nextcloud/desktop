@@ -168,11 +168,10 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
             result = true;
             oldEtag = (*it)->_etag;
         } else {
-            ENFORCE(instruction == CSYNC_INSTRUCTION_REMOVE
+            OC_ENFORCE(instruction == CSYNC_INSTRUCTION_REMOVE
                 // re-creation of virtual files count as a delete
                 || ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
-                || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW)
-                );
+                || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW));
             (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
             result = true;
             oldEtag = (*it)->_etag;
@@ -189,9 +188,9 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
 
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
-    ENFORCE(!_currentRootJob);
+    OC_ENFORCE(!_currentRootJob);
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
-        ENFORCE(_currentRootJob == sender());
+        OC_ENFORCE(_currentRootJob == sender());
         _currentRootJob = nullptr;
         if (job->_dirItem)
             emit itemDiscovered(job->_dirItem);
@@ -271,7 +270,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
             continue;
         LocalInfo i;
         static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-        ASSERT(codec);
+        OC_ASSERT(codec);
         QTextCodec::ConverterState state;
         i.name = codec->toUnicode(dirent->path, dirent->path.size(), &state);
         if (state.invalidChars > 0 || state.remainingChars > 0) {

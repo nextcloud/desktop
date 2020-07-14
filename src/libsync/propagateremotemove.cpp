@@ -94,7 +94,7 @@ void PropagateRemoteMove::start()
 
     auto &vfs = propagator()->syncOptions()._vfs;
     auto itype = _item->_type;
-    ASSERT(itype != ItemTypeVirtualFileDownload && itype != ItemTypeVirtualFileDehydration);
+    OC_ASSERT(itype != ItemTypeVirtualFileDownload && itype != ItemTypeVirtualFileDehydration);
     if (vfs->mode() == Vfs::WithSuffix && itype != ItemTypeDirectory) {
         const auto suffix = vfs->fileSuffix();
         bool sourceHadSuffix = remoteSource.endsWith(suffix);
@@ -118,13 +118,13 @@ void PropagateRemoteMove::start()
         // name.
         QString folderTargetAlt = folderTarget;
         if (itype == ItemTypeFile) {
-            ASSERT(!sourceHadSuffix && !destinationHadSuffix);
+            OC_ASSERT(!sourceHadSuffix && !destinationHadSuffix);
 
             // If foo -> bar.owncloud, the rename target will be "bar"
             folderTargetAlt = folderTarget + suffix;
 
         } else if (itype == ItemTypeVirtualFile) {
-            ASSERT(sourceHadSuffix && destinationHadSuffix);
+            OC_ASSERT(sourceHadSuffix && destinationHadSuffix);
 
             // If foo.owncloud -> bar, the rename target will be "bar.owncloud"
             folderTargetAlt.chop(suffix.size());
@@ -169,7 +169,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
 {
     propagator()->_activeJobList.removeOne(this);
 
-    ASSERT(_job);
+    OC_ASSERT(_job);
 
     QNetworkReply::NetworkError err = _job->reply()->error();
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -256,8 +256,8 @@ bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QStr
         return false;
 
     bool changed = false;
-    ASSERT(!from_.endsWith(QLatin1String("/")));
-    ASSERT(!to_.endsWith(QLatin1String("/")));
+    OC_ASSERT(!from_.endsWith(QLatin1String("/")));
+    OC_ASSERT(!to_.endsWith(QLatin1String("/")));
     QString from = from_ + QLatin1String("/");
     QString to = to_ + QLatin1String("/");
 

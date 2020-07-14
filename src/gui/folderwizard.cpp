@@ -233,7 +233,7 @@ void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply * /*reply*/)
 {
     auto job = qobject_cast<LsColJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
     showWarn(tr("Failed to list a folder. Error: %1")
                  .arg(job->errorStringParsingBody()));
 }

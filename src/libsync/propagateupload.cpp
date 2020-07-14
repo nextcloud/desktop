@@ -382,7 +382,7 @@ void UploadDevice::close()
 
 qint64 UploadDevice::writeData(const char *, qint64)
 {
-    ASSERT(false, "write to read only device");
+    OC_ASSERT_X(false, "write to read only device");
     return 0;
 }
 
@@ -502,7 +502,7 @@ void PropagateUploadFileCommon::startPollJob(const QString &path)
 void PropagateUploadFileCommon::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
 
     propagator()->_activeJobList.removeOne(this);
 

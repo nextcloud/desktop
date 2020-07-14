@@ -196,7 +196,7 @@ void PropagateUploadFileV1::startNextChunk()
 void PropagateUploadFileV1::slotPutFinished()
 {
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
 
     slotJobDestroyed(job); // remove it from the _jobs list
 

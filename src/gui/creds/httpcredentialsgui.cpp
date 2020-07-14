@@ -86,7 +86,7 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
         break;
     }
 
-    ASSERT(_user == user); // ensured by _asyncAuth
+    OC_ASSERT(_user == user); // ensured by _asyncAuth
 
     _password = token;
     _refreshToken = refreshToken;

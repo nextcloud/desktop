@@ -149,7 +149,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
 {
     SimpleNetworkJob *job = qobject_cast<SimpleNetworkJob *>(sender());
     slotJobDestroyed(job); // remove it from the _jobs list
-    ASSERT(job);
+    OC_ASSERT(job);
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     _item->_responseTimeStamp = job->responseTimestamp();
@@ -233,7 +233,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
 
 void PropagateUploadFileTUS::finalize(const QByteArray &etag, const QByteArray &fileId)
 {
-    ASSERT(_finished);
+    OC_ASSERT(_finished);
     qCDebug(lcPropagateUploadTUS) << _item->_etag << etag << fileId;
     _item->_etag = etag;
     if (!fileId.isEmpty()) {

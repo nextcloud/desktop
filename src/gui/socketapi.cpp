@@ -280,7 +280,7 @@ SocketApi::~SocketApi()
     qCDebug(lcSocketApi) << "dtor";
     _localServer.close();
     // All remaining sockets will be destroyed with _localServer, their parent
-    ASSERT(_listeners.isEmpty() || _listeners.first().socket->parent() == &_localServer);
+    OC_ASSERT(_listeners.isEmpty() || _listeners.first().socket->parent() == &_localServer);
     _listeners.clear();
 }
 
@@ -297,7 +297,7 @@ void SocketApi::slotNewConnection()
     connect(socket, &QIODevice::readyRead, this, &SocketApi::slotReadSocket);
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     connect(socket, &QObject::destroyed, this, &SocketApi::slotSocketDestroyed);
-    ASSERT(socket->readAll().isEmpty());
+    OC_ASSERT(socket->readAll().isEmpty());
 
     _listeners.append(SocketListener(socket));
     SocketListener &listener = _listeners.last();
@@ -316,7 +316,7 @@ void SocketApi::onLostConnection()
     sender()->deleteLater();
 
     auto socket = qobject_cast<QIODevice *>(sender());
-    ASSERT(socket);
+    OC_ASSERT(socket);
     _listeners.erase(std::remove_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket)), _listeners.end());
 }
 
@@ -329,7 +329,7 @@ void SocketApi::slotSocketDestroyed(QObject *obj)
 void SocketApi::slotReadSocket()
 {
     QIODevice *socket = qobject_cast<QIODevice *>(sender());
-    ASSERT(socket);
+    OC_ASSERT(socket);
 
     // Find the SocketListener
     //
@@ -388,7 +388,7 @@ void SocketApi::slotReadSocket()
         } else {
             if (indexOfMethod != -1) {
                 // to ensure that listener is still valid we need to call it with Qt::DirectConnection
-                ASSERT(thread() == QThread::currentThread())
+                OC_ASSERT(thread() == QThread::currentThread())
                 staticMetaObject.method(indexOfMethod)
                     .invoke(this, Qt::DirectConnection, Q_ARG(QString, argument),
                             Q_ARG(SocketListener *, listener));
@@ -1030,7 +1030,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     if (folder
         && folder->supportsVirtualFiles()
         && folder->vfs().socketApiPinStateActionsShown()) {
-        ENFORCE(!files.isEmpty());
+        OC_ENFORCE(!files.isEmpty());
 
         // Determine the combined availability status of the files
         auto combined = Optional<VfsItemAvailability>();

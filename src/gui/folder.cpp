@@ -120,7 +120,7 @@ Folder::Folder(const FolderDefinition &definition,
         _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotItemCompleted);
 
     // Potentially upgrade suffix vfs to windows vfs
-    ENFORCE(_vfs);
+    OC_ENFORCE(_vfs);
     if (_definition.virtualFilesMode == Vfs::WithSuffix
         && _definition.upgradeVfsMode
         && isVfsPluginAvailable(Vfs::WindowsCfApi)) {
@@ -467,8 +467,8 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
 
 void Folder::startVfs()
 {
-    ENFORCE(_vfs);
-    ENFORCE(_vfs->mode() == _definition.virtualFilesMode);
+    OC_ENFORCE(_vfs);
+    OC_ENFORCE(_vfs->mode() == _definition.virtualFilesMode);
 
     VfsSetupParams vfsParams;
     vfsParams.filesystemPath = path();

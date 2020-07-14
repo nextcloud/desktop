@@ -203,7 +203,7 @@ void ConfigFile::setOptionalDesktopNotifications(bool show)
 void ConfigFile::saveGeometry(QWidget *w)
 {
 #ifndef TOKEN_AUTH_ONLY
-    ASSERT(!w->objectName().isNull());
+    OC_ASSERT(!w->objectName().isNull());
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(w->objectName());
     settings.setValue(QLatin1String(geometryC), w->saveGeometry());
@@ -223,7 +223,7 @@ void ConfigFile::saveGeometryHeader(QHeaderView *header)
 #ifndef TOKEN_AUTH_ONLY
     if (!header)
         return;
-    ASSERT(!header->objectName().isEmpty());
+    OC_ASSERT(!header->objectName().isEmpty());
 
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(header->objectName());
@@ -237,7 +237,7 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
 #ifndef TOKEN_AUTH_ONLY
     if (!header)
         return;
-    ASSERT(!header->objectName().isNull());
+    OC_ASSERT(!header->objectName().isNull());
 
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(header->objectName());
@@ -304,7 +304,7 @@ QString ConfigFile::excludeFile(Scope scope) const
         return ConfigFile::excludeFileFromSystem();
     }
 
-    ASSERT(false);
+    OC_ASSERT(false);
     return QString();
 }
 

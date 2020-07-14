@@ -112,7 +112,7 @@ static void actionDispatcher(GSimpleAction *action, GVariant *, gpointer userDat
     if (name == "settings")
         q->showSettings();
     else
-        ASSERT(false, "unknown action string");
+        OC_ASSERT_X(false, "unknown action string");
 }
 
 

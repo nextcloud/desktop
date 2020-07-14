@@ -77,7 +77,7 @@ void OAuth::startAuthentication()
     }
 
     _pkceCodeVerifier = generateRandomString(24);
-    ASSERT(_pkceCodeVerifier.size() == 128)
+    OC_ASSERT(_pkceCodeVerifier.size() == 128)
     _state = generateRandomString(8);
 
     connect(this, &OAuth::fetchWellKnownFinished, this, [this]{
@@ -332,7 +332,7 @@ void OAuth::fetchWellKnown()
     const QPair<QString, QString> urls = Theme::instance()->oauthOverrideAuthUrl();
     if (!urls.first.isNull())
     {
-        ASSERT(!urls.second.isNull());
+        OC_ASSERT(!urls.second.isNull());
         _authEndpoint = urls.first;
         _tokenEndpoint = urls.second;
         _wellKnownFinished = true;

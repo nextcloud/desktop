@@ -153,7 +153,7 @@ void GETFileJob::slotMetaDataChanged()
         // request. newReplyHook() will reestablish signal connections for the follow-up request.
         bool ok = disconnect(reply(), &QNetworkReply::finished, this, &GETFileJob::slotReadyRead)
             && disconnect(reply(), &QNetworkReply::readyRead, this, &GETFileJob::slotReadyRead);
-        ASSERT(ok);
+        OC_ASSERT(ok);
         return;
     }
 
@@ -618,7 +618,7 @@ void PropagateDownloadFile::slotGetFinished()
     propagator()->_activeJobList.removeOne(this);
 
     GETJob *job = _job;
-    ASSERT(job);
+    OC_ASSERT(job);
 
     SyncFileItem::Status status = job->errorStatus();
 
@@ -637,7 +637,7 @@ void PropagateDownloadFile::slotGetFinished()
             return;
         }
 
-        ASSERT(false, "Download slot finished, but there was no reply!");
+        OC_ASSERT_X(false, "Download slot finished, but there was no reply!");
         done(SyncFileItem::FatalError, tr("Download slot finished, but there was no reply!"));
         return;
     }
@@ -939,7 +939,7 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 
 void PropagateDownloadFile::downloadFinished()
 {
-    ASSERT(!_tmpFile.isOpen());
+    OC_ASSERT(!_tmpFile.isOpen());
     QString fn = propagator()->getFilePath(_item->_file);
 
     // In case of file name clash, report an error

@@ -403,7 +403,7 @@ void PropagateUploadFileNG::slotPropfindFinishedWithError()
 void PropagateUploadFileNG::slotDeleteJobFinished()
 {
     auto job = qobject_cast<DeleteJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
     _jobs.remove(_jobs.indexOf(job));
 
     QNetworkReply::NetworkError err = job->reply()->error();
@@ -442,7 +442,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
 
 void PropagateUploadFileNG::startNewUpload()
 {
-    ASSERT(propagator()->_activeJobList.count(this) == 1);
+    OC_ASSERT(propagator()->_activeJobList.count(this) == 1);
     _transferId = uint(qrand()) ^ uint(_item->_modtime) ^ (uint(_item->_size) << 16) ^ qHash(_item->_file);
     _sent = 0;
 
@@ -494,7 +494,7 @@ void PropagateUploadFileNG::doFinalMove()
     if (!_rangesToUpload.isEmpty())
         return;
 
-    ENFORCE(_jobs.isEmpty(), "MOVE for upload even though jobs are still running");
+    OC_ENFORCE_X(_jobs.isEmpty(), "MOVE for upload even though jobs are still running");
 
     _finished = true;
 
@@ -531,7 +531,7 @@ void PropagateUploadFileNG::startNextChunk()
     if (propagator()->_abortRequested)
         return;
 
-    ENFORCE(_bytesToUpload >= _sent, "Sent data exceeds file size");
+    OC_ENFORCE_X(_bytesToUpload >= _sent, "Sent data exceeds file size");
 
     // All ranges complete!
     if (_rangesToUpload.isEmpty()) {
@@ -620,7 +620,7 @@ void PropagateUploadFileNG::slotZsyncMetadataUploadFinished()
     qCDebug(lcPropagateUploadNG) << "Uploading of .zsync complete";
 
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
     slotJobDestroyed(job);
 
     _isZsyncMetadataUploadRunning = false;
@@ -637,7 +637,7 @@ void PropagateUploadFileNG::slotZsyncGenerationFailed(const QString &errorString
 void PropagateUploadFileNG::slotPutFinished()
 {
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
 
     slotJobDestroyed(job); // remove it from the _jobs list
 
@@ -661,7 +661,7 @@ void PropagateUploadFileNG::slotPutFinished()
     markRangeAsDone(_currentChunkOffset, _currentChunkSize);
     _sent += _currentChunkSize;
 
-    ENFORCE(_sent <= _bytesToUpload, "can't send more than size");
+    OC_ENFORCE_X(_sent <= _bytesToUpload, "can't send more than size");
 
     // Adjust the chunk size for the time taken.
     //

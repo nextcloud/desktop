@@ -83,7 +83,7 @@ void FolderWatcher::startNotificatonTest(const QString &path)
     return;
 #endif
 
-    ASSERT(_testNotificationPath.isEmpty());
+    OC_ASSERT(_testNotificationPath.isEmpty());
     _testNotificationPath = path;
 
     // Don't do the local file modification immediately:

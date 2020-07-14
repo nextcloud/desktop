@@ -1215,7 +1215,7 @@ public:
         // A new folder will update the local file state database on first sync.
         // To have a state matching what users will encounter, we have to a sync
         // using an identical local/remote file tree first.
-        ENFORCE(syncOnce());
+        OC_ENFORCE(syncOnce());
     }
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs, bool enableShell = false)

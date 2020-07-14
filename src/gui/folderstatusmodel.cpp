@@ -496,14 +496,14 @@ QModelIndex FolderStatusModel::parent(const QModelIndex &child) const
     }
     auto pathIdx = static_cast<SubFolderInfo *>(child.internalPointer())->_pathIdx;
     int i = 1;
-    ASSERT(pathIdx.at(0) < _folders.count());
+    OC_ASSERT(pathIdx.at(0) < _folders.count());
     if (pathIdx.count() == 1) {
         return createIndex(pathIdx.at(0), 0 /*, nullptr*/);
     }
 
     const SubFolderInfo *info = &_folders[pathIdx.at(0)];
     while (i < pathIdx.count() - 1) {
-        ASSERT(pathIdx.at(i) < info->_subs.count());
+        OC_ASSERT(pathIdx.at(i) < info->_subs.count());
         info = &info->_subs[pathIdx.at(i)];
         ++i;
     }
@@ -605,7 +605,7 @@ void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QS
     auto job = sender();
     auto permissionMap = job->property(propertyPermissionMap).toMap();
     job->setProperty(propertyPermissionMap, QVariant()); // avoid a detach of the map while it is modified
-    ASSERT(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
+    OC_ASSERT_X(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
     permissionMap[href] = *it;
     job->setProperty(propertyPermissionMap, permissionMap);
 }
@@ -613,7 +613,7 @@ void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QS
 void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 {
     auto job = qobject_cast<LsColJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
     auto parentInfo = infoForIndex(idx);
     if (!parentInfo) {
@@ -622,8 +622,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     if (!parentInfo->_folder->supportsSelectiveSync()) {
         return;
     }
-    ASSERT(parentInfo->_fetchingJob == job);
-    ASSERT(parentInfo->_subs.isEmpty());
+    OC_ASSERT(parentInfo->_fetchingJob == job);
+    OC_ASSERT(parentInfo->_subs.isEmpty());
 
     if (parentInfo->hasLabel()) {
         beginRemoveRows(idx, 0, 0);
@@ -745,7 +745,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
 {
     auto job = qobject_cast<LsColJob *>(sender());
-    ASSERT(job);
+    OC_ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
     if (!idx.isValid()) {
         return;
@@ -761,7 +761,7 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
         if (error == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
-            ASSERT(!parentInfo->hasLabel());
+            OC_ASSERT(!parentInfo->hasLabel());
             beginInsertRows(idx, 0, 0);
             parentInfo->_hasError = true;
             endInsertRows();
@@ -1194,7 +1194,7 @@ void FolderStatusModel::slotSyncNoPendingBigFolders()
 void FolderStatusModel::slotNewBigFolder()
 {
     auto f = qobject_cast<Folder *>(sender());
-    ASSERT(f);
+    OC_ASSERT(f);
 
     int folderIndex = -1;
     for (int i = 0; i < _folders.count(); ++i) {

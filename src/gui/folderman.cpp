@@ -55,7 +55,7 @@ FolderMan::FolderMan(QObject *parent)
 #endif
     , _appRestartRequired(false)
 {
-    ASSERT(!_instance);
+    OC_ASSERT(!_instance);
     _instance = this;
 
     _socketApi.reset(new SocketApi);
@@ -142,7 +142,7 @@ int FolderMan::unloadAndDeleteAllFolders()
         delete f;
         cnt++;
     }
-    ASSERT(_folderMap.isEmpty());
+    OC_ASSERT(_folderMap.isEmpty());
 
     _lastSyncFolder = nullptr;
     _currentSyncFolder = nullptr;
@@ -524,7 +524,7 @@ void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
 void FolderMan::slotFolderCanSyncChanged()
 {
     Folder *f = qobject_cast<Folder *>(sender());
-    ASSERT(f);
+    OC_ASSERT(f);
     if (f->canSync()) {
         _socketApi->slotRegisterPath(f->alias());
     } else {
@@ -929,7 +929,7 @@ bool FolderMan::isAnySyncRunning() const
 void FolderMan::slotFolderSyncStarted()
 {
     auto f = qobject_cast<Folder *>(sender());
-    ASSERT(f);
+    OC_ASSERT(f);
     if (!f)
         return;
 
@@ -948,7 +948,7 @@ void FolderMan::slotFolderSyncStarted()
 void FolderMan::slotFolderSyncFinished(const SyncResult &)
 {
     auto f = qobject_cast<Folder *>(sender());
-    ASSERT(f);
+    OC_ASSERT(f);
     if (!f)
         return;
 
