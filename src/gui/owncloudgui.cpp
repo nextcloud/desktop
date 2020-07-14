@@ -149,6 +149,8 @@ void ownCloudGui::init()
     connect(dockWatcher, &Mac::DockWatcher::keepInDockChanged, [this] {
         slotDialogVisibilityChanged(false);
     });
+    connect(dockWatcher, &Mac::DockWatcher::dockIconClicked, this,
+            &ownCloudGui::slotOpenMainDialog);
     dockWatcher->init();
 
     // Menu Bar

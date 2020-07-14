@@ -19,8 +19,22 @@
 #include "folderwatcher.h"
 
 
+@interface DockIconClickEventHandler : NSObject
+- (void)handleDockClickEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent;
+@end
+
+@implementation DockIconClickEventHandler
+- (void)handleDockClickEvent:(NSAppleEventDescriptor*)event withReplyEvent:(NSAppleEventDescriptor*)replyEvent
+{
+    OCC::Mac::DockWatcher::instance()->emitDockIconClickEvent();
+}
+@end
+
+
 namespace OCC {
 namespace Mac {
+
+DockIconClickEventHandler* dockIconClickEventHandler = nil;
 
 DockWatcher *DockWatcher::_instance = nullptr;
 
@@ -29,6 +43,8 @@ DockWatcher::DockWatcher(QObject *parent)
 {
     Q_ASSERT(!_instance);
     _instance = this;
+
+    dockIconClickEventHandler = [[DockIconClickEventHandler alloc] init];
 }
 
 DockWatcher *DockWatcher::instance(QObject *parent)
@@ -41,6 +57,10 @@ DockWatcher *DockWatcher::instance(QObject *parent)
 
 DockWatcher::~DockWatcher()
 {
+    if (dockIconClickEventHandler) {
+        [dockIconClickEventHandler release];
+    }
+
     _instance = nullptr;
 }
 
@@ -63,6 +83,13 @@ void DockWatcher::init()
 
     // Fetch initial state
     queryKeepInDock();
+
+    // Register Click Handler for Dock Icon
+    [[NSAppleEventManager sharedAppleEventManager]
+     setEventHandler:dockIconClickEventHandler
+     andSelector:@selector(handleDockClickEvent:withReplyEvent:)
+     forEventClass:kCoreEventClass
+     andEventID:kAEReopenApplication];
 }
 
 bool DockWatcher::keepInDock() const
@@ -114,6 +141,11 @@ void DockWatcher::queryKeepInDock()
     if (_keepInDock != oldState) {
         emit keepInDockChanged(_keepInDock);
     }
+}
+
+void DockWatcher::emitDockIconClickEvent()
+{
+    emit dockIconClicked();
 }
 
 } // namespace Mac

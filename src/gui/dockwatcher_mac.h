@@ -33,8 +33,11 @@ public:
 
     bool keepInDock() const;
 
+    void emitDockIconClickEvent();
+
 signals:
     void keepInDockChanged(bool keepInDock);
+    void dockIconClicked();
 
 private:
     void queryKeepInDock();
