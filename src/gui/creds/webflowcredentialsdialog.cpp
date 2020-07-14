@@ -64,6 +64,10 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
 
     connect(ownCloudGui::instance(), &ownCloudGui::isShowingSettingsDialog, this, &WebFlowCredentialsDialog::slotShowSettingsDialog);
 
+    // Delay between calls to ownCloudGui::raiseDialog, to not annoy the users while they're switching to the Settings dialog
+    _raiseDelayTimer.setInterval(1000);
+    _raiseDelayTimer.setSingleShot(true);
+
     // Dialog visibility
     connect(this, &WebFlowCredentialsDialog::onSetVisible, ownCloudGui::instance(), &ownCloudGui::slotDialogVisibilityChanged);
 
@@ -159,6 +163,11 @@ void WebFlowCredentialsDialog::setVisible(bool visible)
 
 void WebFlowCredentialsDialog::slotShowSettingsDialog()
 {
+    if (_raiseDelayTimer.isActive())
+        return;
+
+    _raiseDelayTimer.start();
+
     // bring window to top but slightly delay, to avoid being hidden behind the SettingsDialog
     QTimer::singleShot(100, this, [this] {
         ownCloudGui::raiseDialog(this);

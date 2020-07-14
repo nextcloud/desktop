@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QUrl>
+#include <QTimer>
 
 #include "accountfwd.h"
 #include "creds/flow2auth.h"
@@ -59,6 +60,8 @@ private:
     QVBoxLayout *_layout;
     QVBoxLayout *_containerLayout;
     HeaderBanner *_headerBanner;
+
+    QTimer _raiseDelayTimer;
 };
 
 } // namespace OCC
