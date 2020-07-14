@@ -45,7 +45,7 @@
 #if defined(Q_OS_X11)
 #include <QX11Info>
 #elif defined(Q_OS_MAC)
-#include "settingsdialog_mac.h"
+#include "owncloudgui_mac.h"
 #include "legalnotice.h"
 #include <QMenuBar>
 #endif
@@ -767,6 +767,15 @@ void ownCloudGui::slotDialogVisibilityChanged(bool visible)
             _visibleDialogs.removeAt(index);
         }
     }
+
+#ifdef Q_OS_MAC
+    // Dock icon visibility
+    if (!_visibleDialogs.isEmpty()) {
+        Mac::setActivationPolicy(Mac::ActivationPolicy::Regular);
+    } else {
+        Mac::setActivationPolicy(Mac::ActivationPolicy::Accessory);
+    }
+#endif
 }
 
 

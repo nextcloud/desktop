@@ -12,8 +12,18 @@
  * for more details.
  */
 
+#pragma once
+
+namespace OCC {
+namespace Mac {
+
 enum class ActivationPolicy {
     Regular,
     Accessory,
     Prohibited
 };
+
+void setActivationPolicy(ActivationPolicy policy);
+
+} // namespace Mac
+} // namespace OCC

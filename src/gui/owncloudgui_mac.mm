@@ -12,10 +12,13 @@
  * for more details.
  */
 
-#include "settingsdialog_mac.h"
+#include "owncloudgui_mac.h"
 
 #import <AppKit/AppKit.h>
 #include <QDebug>
+
+namespace OCC {
+namespace Mac {
 
 void setActivationPolicy(ActivationPolicy policy)
 {
@@ -35,3 +38,6 @@ void setActivationPolicy(ActivationPolicy policy)
         qWarning() << "setActivationPolicy" << static_cast<int>(policy) << "failed";
     }
 }
+
+} // namespace Mac
+} // namespace OCC

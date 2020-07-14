@@ -109,7 +109,7 @@ public slots:
 
     void slotRemoveDestroyedShareDialogs();
 
-    // List of visible dialogs to raise on re-focus
+    // List of visible dialogs to raise on re-focus (also used for macOS Dock icon visibility)
     void slotDialogVisibilityChanged(bool visible);
 
 private slots:
