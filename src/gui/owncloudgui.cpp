@@ -46,6 +46,7 @@
 #include <QX11Info>
 #elif defined(Q_OS_MAC)
 #include "owncloudgui_mac.h"
+#include "dockwatcher_mac.h"
 #include "legalnotice.h"
 #include <QMenuBar>
 #endif
@@ -143,8 +144,12 @@ void ownCloudGui::init()
         this, &ownCloudGui::slotShowGuiMessage);
 
 #ifdef Q_OS_MAC
-    // Initial Dock icon visibility
-    slotDialogVisibilityChanged(false);
+    // "Keep in Dock" Watcher and initial Dock icon visibility
+    auto dockWatcher = Mac::DockWatcher::instance(this);
+    connect(dockWatcher, &Mac::DockWatcher::keepInDockChanged, [this] {
+        slotDialogVisibilityChanged(false);
+    });
+    dockWatcher->init();
 
     // Menu Bar
     auto menuBar = new QMenuBar(nullptr);
@@ -770,7 +775,7 @@ void ownCloudGui::slotDialogVisibilityChanged(bool visible)
 
 #ifdef Q_OS_MAC
     // Dock icon visibility
-    if (!_visibleDialogs.isEmpty()) {
+    if (!_visibleDialogs.isEmpty() || Mac::DockWatcher::instance()->keepInDock()) {
         Mac::setActivationPolicy(Mac::ActivationPolicy::Regular);
     } else {
         Mac::setActivationPolicy(Mac::ActivationPolicy::Accessory);
