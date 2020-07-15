@@ -87,9 +87,35 @@ bool Capabilities::shareResharing() const
 bool Capabilities::clientSideEncryptionAvailable() const
 {
     auto it = _capabilities.constFind(QStringLiteral("end-to-end-encryption"));
-    if (it != _capabilities.constEnd())
-        return (*it).toMap().value(QStringLiteral("enabled"), false).toBool();
-    return false;
+    if (it == _capabilities.constEnd()) {
+        return false;
+    }
+
+    const auto properties = (*it).toMap();
+    const auto enabled = properties.value(QStringLiteral("enabled"), false).toBool();
+    if (!enabled) {
+        return false;
+    }
+
+    const auto version = properties.value(QStringLiteral("api-version"), "1.0").toByteArray();
+    qCInfo(lcServerCapabilities) << "E2EE API version:" << version;
+    const auto splittedVersion = version.split('.');
+
+    bool ok = false;
+    const auto major = !splittedVersion.isEmpty() ? splittedVersion.at(0).toInt(&ok) : 0;
+    if (!ok) {
+        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (major), E2EE disabled";
+        return false;
+    }
+
+    ok = false;
+    const auto minor = splittedVersion.size() > 1 ? splittedVersion.at(1).toInt(&ok) : 0;
+    if (!ok) {
+        qCWarning(lcServerCapabilities) << "Didn't understand version scheme (minor), E2EE disabled";
+        return false;
+    }
+
+    return major == 1 && minor >= 1;
 }
 
 bool Capabilities::notificationsAvailable() const
