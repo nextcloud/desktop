@@ -32,7 +32,13 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     : PropagateItemJob(propagator, item)
     , _deleteExisting(false)
     , _uploadEncryptedHelper(nullptr)
+    , _parallelism(FullParallelism)
 {
+}
+
+PropagatorJob::JobParallelism PropagateRemoteMkdir::parallelism()
+{
+    return _parallelism;
 }
 
 void PropagateRemoteMkdir::start()
