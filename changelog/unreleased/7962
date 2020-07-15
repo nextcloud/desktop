@@ -1,0 +1,5 @@
+Change: Reorgenize Settings
+
+We rename "General" to "Settings" and move the "Network" into "Settings"
+
+https://github.com/owncloud/client/pull/7962
