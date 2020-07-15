@@ -108,7 +108,6 @@ PropagateUploadFileTUS::PropagateUploadFileTUS(OwncloudPropagator *propagator, c
 
 void PropagateUploadFileTUS::doStartUpload()
 {
-    const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
     propagator()->reportProgress(*_item, 0);
     startNextChunk();
     propagator()->_activeJobList.append(this);
@@ -144,6 +143,11 @@ void PropagateUploadFileTUS::startNextChunk()
                                   << "\nChunk:" << chunkSize << chunkSize / _item->_size * 100;
 
     _jobs.append(job);
+    connect(job->reply(), &QNetworkReply::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
+    connect(job->reply(), &QNetworkReply::uploadProgress, this,[this](qint64 bytesSent, qint64){
+       propagator()->reportProgress(*_item, _currentOffset + bytesSent);
+
+    });
     connect(job, &SimpleNetworkJob::finishedSignal, this, &PropagateUploadFileTUS::slotChunkFinished);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
@@ -152,8 +156,8 @@ void PropagateUploadFileTUS::startNextChunk()
 void PropagateUploadFileTUS::slotChunkFinished()
 {
     SimpleNetworkJob *job = qobject_cast<SimpleNetworkJob *>(sender());
-    slotJobDestroyed(job); // remove it from the _jobs list
     OC_ASSERT(job);
+    slotJobDestroyed(job); // remove it from the _jobs list
     qCDebug(lcPropagateUploadTUS) << _item->_file << HttpLogger::requestVerb(*job->reply());
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

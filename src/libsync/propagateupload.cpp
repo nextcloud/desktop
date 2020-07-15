@@ -424,6 +424,7 @@ void UploadDevice::slotJobUploadProgress(qint64 sent, qint64 t)
     if (sent == 0 || t == 0) {
         return;
     }
+    // used by the BandwidthManager
     _readWithProgress = sent;
 }
 
