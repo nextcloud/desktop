@@ -23,13 +23,12 @@
 #include "c_string.h"
 
 #include "c_time.h"
-#include "c_utf8.h"
+
+#include <QFile>
 
 #ifdef HAVE_UTIMES
-int c_utimes(const char *uri, const struct timeval *times) {
-    mbchar_t *wuri = c_utf8_path_to_locale(uri);
-    int ret = utimes(wuri, times);
-    c_free_locale_string(wuri);
+int c_utimes(const QString &uri, const struct timeval *times) {
+    int ret = utimes(QFile::encodeName(uri).constData(), times);
     return ret;
 }
 #else // HAVE_UTIMES
@@ -51,12 +50,12 @@ static void UnixTimevalToFileTime(struct timeval t, LPFILETIME pft)
     pft->dwHighDateTime = ll >> 32;
 }
 
-int c_utimes(const char *uri, const struct timeval *times) {
+int c_utimes(const QString &uri, const struct timeval *times) {
     FILETIME LastAccessTime;
     FILETIME LastModificationTime;
     HANDLE hFile;
 
-    mbchar_t *wuri = c_utf8_path_to_locale( uri );
+    auto wuri = uri.toStdWString();
 
     if(times) {
         UnixTimevalToFileTime(times[0], &LastAccessTime);
@@ -67,7 +66,7 @@ int c_utimes(const char *uri, const struct timeval *times) {
         GetSystemTimeAsFileTime(&LastModificationTime);
     }
 
-    hFile=CreateFileW(wuri, FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
+    hFile=CreateFileW(wuri.data(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
                       NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL);
     if(hFile==INVALID_HANDLE_VALUE) {
         switch(GetLastError()) {
@@ -95,12 +94,10 @@ int c_utimes(const char *uri, const struct timeval *times) {
         //can this happen?
         errno=ENOENT;
         CloseHandle(hFile);
-        c_free_locale_string(wuri);
         return -1;
     }
 
     CloseHandle(hFile);
-    c_free_locale_string(wuri);
 
     return 0;
 }

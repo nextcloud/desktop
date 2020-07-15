@@ -29,7 +29,6 @@
 #include "c_private.h"
 #include "c_lib.h"
 #include "c_string.h"
-#include "c_utf8.h"
 #include "csync_util.h"
 
 #include "vio/csync_vio_local.h"
@@ -84,7 +83,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
 
   file_stat.reset(new csync_file_stat_t);
-  file_stat->path = c_utf8_from_locale(dirent->d_name);
+  file_stat->path = QFile::decodeName(dirent->d_name).toUtf8();
   QByteArray fullPath = handle->path % '/' % QByteArray() % const_cast<const char *>(dirent->d_name);
   if (file_stat->path.isNull()) {
       file_stat->original_path = fullPath;
@@ -131,13 +130,9 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 }
 
 
-int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf)
+int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
 {
-    mbchar_t *wuri = c_utf8_path_to_locale(uri);
-    *buf = csync_file_stat_t();
-    int rc = _csync_vio_local_stat_mb(wuri, buf);
-    c_free_locale_string(wuri);
-    return rc;
+    return _csync_vio_local_stat_mb(QFile::encodeName(uri).constData(), buf);
 }
 
 static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf)

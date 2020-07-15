@@ -28,8 +28,7 @@ set(csync_SRCS
 
   std/c_alloc.c
   std/c_string.c
-  std/c_time.c
-  std/c_utf8.cpp
+  std/c_time.cpp
 
 )
 

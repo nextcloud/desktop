@@ -25,7 +25,6 @@
 #include <stdio.h>
 
 #include "csync.h"
-#include "std/c_utf8.h"
 #include "std/c_alloc.h"
 #include "std/c_string.h"
 #include "vio/csync_vio_local.h"

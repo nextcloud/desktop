@@ -550,7 +550,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 
         if (!base.isDirectory()) {
             csync_file_stat_t buf;
-            if (csync_vio_local_stat((_discoveryData->_localDir + originalPathAdjusted).toUtf8(), &buf)) {
+            if (csync_vio_local_stat(_discoveryData->_localDir + originalPathAdjusted, &buf)) {
                 qCInfo(lcDisco) << "Local file does not exist anymore." << originalPathAdjusted;
                 return;
             }

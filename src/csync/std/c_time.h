@@ -21,11 +21,9 @@
 #ifndef _C_TIME_H
 #define _C_TIME_H
 
-#include "ocsynclib.h"
+#include <QString>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "ocsynclib.h"
 
 #ifdef _WIN32
 #include <time.h>
@@ -33,10 +31,7 @@ extern "C" {
 #include <sys/time.h>
 #endif
 
-OCSYNC_EXPORT int c_utimes(const char *uri, const struct timeval *times);
+OCSYNC_EXPORT int c_utimes(const QString &uri, const struct timeval *times);
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* _C_TIME_H */

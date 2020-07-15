@@ -29,7 +29,6 @@
 
 #include "c_private.h"
 #include "c_lib.h"
-#include "c_utf8.h"
 #include "csync_util.h"
 #include "vio/csync_vio_local.h"
 #include "common/filesystembase.h"
@@ -135,12 +134,12 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
           return nullptr;
       }
   }
-  auto path = c_utf8_from_locale(handle->ffd.cFileName);
+  auto path = QString::fromWCharArray(handle->ffd.cFileName);
   if (path == "." || path == "..")
       return csync_vio_local_readdir(handle, vfs);
 
   file_stat.reset(new csync_file_stat_t);
-  file_stat->path = path;
+  file_stat->path = path.toUtf8();
 
     if (vfs && vfs->statTypeVirtualFile(file_stat.get(), &handle->ffd)) {
       // all good
@@ -175,7 +174,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 
     std::wstring fullPath;
     fullPath.reserve(handle->path.size() + std::wcslen(handle->ffd.cFileName));
-    fullPath += reinterpret_cast<const wchar_t *>(handle->path.utf16()); // path always ends with '\', by construction
+    fullPath += handle->path.toStdWString(); // path always ends with '\', by construction
     fullPath += handle->ffd.cFileName;
 
     if (_csync_vio_local_stat_mb(fullPath.data(), file_stat.get()) < 0) {
@@ -187,11 +186,10 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 }
 
 
-int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf)
+int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
 {
-    mbchar_t *wuri = c_utf8_path_to_locale(uri);
-    int rc = _csync_vio_local_stat_mb(wuri, buf);
-    c_free_locale_string(wuri);
+    const std::wstring wuri = uri.toStdWString();
+    int rc = _csync_vio_local_stat_mb(wuri.data(), buf);
     return rc;
 }
 
