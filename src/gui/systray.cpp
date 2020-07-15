@@ -279,8 +279,8 @@ QRect Systray::taskbarGeometry() const
 QRect Systray::currentScreenRect() const
 {
     const auto screen = currentScreen();
-    const auto rect = screen->geometry();
-    return rect.translated(screen->virtualGeometry().topLeft());
+    Q_ASSERT(screen);
+    return screen->geometry();
 }
 
 QPoint Systray::computeWindowReferencePoint() const
@@ -378,7 +378,7 @@ QPoint Systray::calcTrayIconCenter() const
     return trayIconCenter;
 #else
     // On Linux, fall back to mouse position (assuming tray icon is activated by mouse click)
-    return QCursor::pos();
+    return QCursor::pos(currentScreen());
 #endif
 }
 
