@@ -28,6 +28,13 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagateRemoteMkdir, "nextcloud.sync.propagator.remotemkdir", QtInfoMsg)
 
+PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+    : PropagateItemJob(propagator, item)
+    , _deleteExisting(false)
+    , _uploadEncryptedHelper(nullptr)
+{
+}
+
 void PropagateRemoteMkdir::start()
 {
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
