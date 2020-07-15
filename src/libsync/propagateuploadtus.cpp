@@ -134,10 +134,14 @@ void PropagateUploadFileTUS::startNextChunk()
 
     SimpleNetworkJob *job;
     if (_currentOffset != 0) {
+        qCDebug(lcPropagateUploadTUS) << "Starting to patch upload:" << _item->_file;
         job = propagator()->account()->sendRequest("PATCH", _location, req, device);
     } else {
+        qCDebug(lcPropagateUploadTUS) << "Starting creation with upload:" << _item->_file;
         job = makeCreationWithUploadJob(&req, device);
     }
+    qCDebug(lcPropagateUploadTUS) << "Offset:" << _currentOffset << _currentOffset  / _item->_size * 100
+                                  << "\nChunk:" << chunkSize << chunkSize / _item->_size * 100;
 
     _jobs.append(job);
     connect(job, &SimpleNetworkJob::finishedSignal, this, &PropagateUploadFileTUS::slotChunkFinished);
@@ -150,6 +154,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
     SimpleNetworkJob *job = qobject_cast<SimpleNetworkJob *>(sender());
     slotJobDestroyed(job); // remove it from the _jobs list
     OC_ASSERT(job);
+    qCDebug(lcPropagateUploadTUS) << _item->_file << HttpLogger::requestVerb(*job->reply());
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     _item->_responseTimeStamp = job->responseTimestamp();
@@ -160,6 +165,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
         // try to get the offset if possible, only try once
         if (err == QNetworkReply::TimeoutError && !_location.isEmpty() && HttpLogger::requestVerb(*job->reply())  != "HEAD")
         {
+            qCWarning(lcPropagateUploadTUS) << _item->_file << "Encountered a timeout -> get progrss for" << _location;
             QNetworkRequest req;
             setTusVersionHeader(req);
             auto updateJob = propagator()->account()->sendRequest("HEAD", _location, req);
@@ -207,7 +213,6 @@ void PropagateUploadFileTUS::slotChunkFinished()
         }
     }
     if (!_finished) {
-        qCDebug(lcPropagateUploadTUS) << "we need to patch";
         startNextChunk();
         return;
     }
