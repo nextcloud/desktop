@@ -2770,7 +2770,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>File drop (upload only)</source>
-        <translation>Rilascia file (solo caricamento)</translation>
+        <translation>Rilascio file (solo caricamento)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
