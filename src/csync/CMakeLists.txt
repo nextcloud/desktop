@@ -50,10 +50,6 @@ else()
     )
 endif()
 
-if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
-    list(APPEND csync_SRCS std/asprintf.c)
-endif()
-
 if (USE_OUR_OWN_SQLITE3)
     list(APPEND csync_SRCS ${SQLITE3_SOURCE})
 endif()
