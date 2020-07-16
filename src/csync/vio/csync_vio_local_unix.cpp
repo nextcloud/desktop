@@ -28,7 +28,6 @@
 
 #include "c_private.h"
 #include "c_lib.h"
-#include "c_string.h"
 #include "csync_util.h"
 
 #include "vio/csync_vio_local.h"

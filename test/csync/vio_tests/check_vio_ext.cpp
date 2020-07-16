@@ -25,8 +25,6 @@
 #include <stdio.h>
 
 #include "csync.h"
-#include "std/c_alloc.h"
-#include "std/c_string.h"
 #include "vio/csync_vio_local.h"
 
 #include <QDir>
@@ -47,8 +45,8 @@ int oc_mkdir(const QString &path)
 static mbchar_t wd_buffer[WD_BUFFER_SIZE];
 
 typedef struct {
-    char  *result;
-    char *ignored_dir;
+    QByteArray result;
+    QByteArray ignored_dir;
 } statevar;
 
 /* remove the complete test dir */
@@ -82,9 +80,7 @@ static int setup_testenv(void **state) {
     assert_int_equal(rc, 0);
 
     /* --- initialize csync */
-    statevar *mystate = (statevar*)malloc( sizeof(statevar) );
-    mystate->result = NULL;
-
+    statevar *mystate = new statevar;
     *state = mystate;
     return 0;
 }
@@ -105,8 +101,7 @@ static int teardown(void **state) {
     rc = wipe_testdir();
     assert_int_equal(rc, 0);
 
-    SAFE_FREE(((statevar*)*state)->result);
-    SAFE_FREE(*state);
+    delete reinterpret_cast<statevar*>(*state);
     return 0;
 }
 
@@ -157,12 +152,10 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
     csync_vio_handle_t *dh;
     std::unique_ptr<csync_file_stat_t> dirent;
     statevar *sv = (statevar*) *state;
-    char *subdir;
-    char *subdir_out;
+    QByteArray subdir;
+    QByteArray subdir_out;
     int rc;
     int is_dir;
-
-    const char *format_str = "%s %s";
 
     dh = csync_vio_local_opendir(dir);
     assert_non_null(dh);
@@ -171,35 +164,26 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
     while( (dirent = csync_vio_local_readdir(dh, vfs)) ) {
         assert_non_null(dirent.get());
         if (!dirent->original_path.isEmpty()) {
-            sv->ignored_dir = c_strdup(dirent->original_path);
+            sv->ignored_dir = dirent->original_path;
             continue;
         }
 
         assert_false(dirent->path.isEmpty());
 
-        if( c_streq( dirent->path, "..") || c_streq( dirent->path, "." )) {
+        if( dirent->path == ".." || dirent->path == "." ) {
           continue;
         }
 
         is_dir = (dirent->type == ItemTypeDirectory) ? 1:0;
 
-        assert_int_not_equal( asprintf( &subdir, "%s/%s", dir.toUtf8().constData(), dirent->path.constData() ), -1 );
-
-        assert_int_not_equal( asprintf( &subdir_out, format_str,
-                                        is_dir ? "<DIR>":"     ",
-                                        subdir), -1 );
+        subdir = dir.toUtf8() + "/" + dirent->path;
+        subdir_out = (is_dir ? "<DIR> ":"      ") + subdir;
 
         if( is_dir ) {
-            if( !sv->result ) {
-                sv->result = c_strdup( subdir_out);
+            if( sv->result.isNull() ) {
+               sv->result = subdir_out;
             } else {
-                int newlen = 1+strlen(sv->result)+strlen(subdir_out);
-                char *tmp = sv->result;
-                sv->result = (char*)c_malloc(newlen);
-                strcpy( sv->result, tmp);
-                SAFE_FREE(tmp);
-
-                strcat( sv->result, subdir_out );
+               sv->result += subdir_out;
             }
         } else {
             *cnt = *cnt +1;
@@ -208,9 +192,6 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
         if( is_dir ) {
           traverse_dir( state, subdir, cnt);
         }
-
-        SAFE_FREE(subdir);
-        SAFE_FREE(subdir_out);
     }
 
     rc = csync_vio_local_closedir(dh);

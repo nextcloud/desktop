@@ -26,8 +26,6 @@ set(csync_SRCS
   csync_exclude.cpp
   csync_util.cpp
 
-  std/c_alloc.c
-  std/c_string.c
   std/c_time.cpp
 
 )
