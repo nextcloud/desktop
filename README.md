@@ -2,6 +2,14 @@
 
 This allows you to easily build the desktop client for 64-bit and 32-bit Windows.
 
+## Update: 2020-07-16
+
+Added new option to build the Updater (disabled by default):
+
+```
+BUILD_UPDATER=ON ./build.bat Release
+```
+
 ## Update: 2020-06-20
 
 When building from a tag it is best to set PULL_DESKTOP to 0:
