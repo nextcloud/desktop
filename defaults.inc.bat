@@ -131,7 +131,7 @@ Rem Upload build: 1 = enable (default), 0 = disable
 if "%UPLOAD_BUILD%" == ""                   set UPLOAD_BUILD=1
 
 Rem Delete build after successful upload: 1 = delete, 0 = keep (default)
-if "%UPLOAD_DELETE%" == ""                   set UPLOAD_DELETE=0
+if "%UPLOAD_DELETE%" == ""                  set UPLOAD_DELETE=0
 
 Rem: Note: Storing SFTP_PATH outside in Windows's env leads to trouble due to the preceding slash!
 if "%SFTP_PATH%" == ""                      set SFTP_PATH=/var/www/html/desktop/daily/Windows
