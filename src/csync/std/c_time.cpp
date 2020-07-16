@@ -20,8 +20,6 @@
 
 #include "config_csync.h"
 #include "c_private.h"
-#include "c_string.h"
-
 #include "c_time.h"
 
 #include <QFile>

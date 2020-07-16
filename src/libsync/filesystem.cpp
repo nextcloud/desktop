@@ -23,7 +23,6 @@
 
 #include "csync.h"
 #include "vio/csync_vio_local.h"
-#include "std/c_string.h"
 #include "std/c_time.h"
 
 namespace OCC {

@@ -21,7 +21,4 @@
 #include <stdlib.h> // NOLINT this is sometimes compiled in C mode
 #include <string.h> // NOLINT this is sometimes compiled in C mode
 
-#include "c_macro.h"
-#include "c_alloc.h"
-#include "c_string.h"
 #include "c_private.h"
