@@ -42,10 +42,6 @@ else()
     )
 endif()
 
-if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
-    list(APPEND csync_SRCS std/asprintf.c)
-endif()
-
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library("${csync_NAME}" SHARED ${common_SOURCES} ${csync_SRCS})
