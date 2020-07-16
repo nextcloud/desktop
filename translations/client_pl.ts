@@ -454,17 +454,17 @@ Poczekaj na nową synchronizację, a następnie ją zaszyfruj.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1162"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Te katalogi nie zostały zsynchronizowane ponieważ są zbyt duże:</translation>
+        <translation>Katalogi te nie zostały zsynchronizowane ponieważ są zbyt duże:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1164"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Te katalogi nie zostały zsynchronizowane, ponieważ znajdują się w magazynach zewnętrznych: </translation>
+        <translation>Katalogi te nie zostały zsynchronizowane, ponieważ znajdują się w magazynach zewnętrznych: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1165"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Te katalogi nie zostały zsynchronizowane, ponieważ są zbyt duże lub znajdują się w magazynach zewnętrznych: </translation>
+        <translation>Katalogi te nie zostały zsynchronizowane, ponieważ są zbyt duże lub znajdują się w magazynach zewnętrznych: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1211"/>
@@ -1096,7 +1096,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation>Synchronizowany z folderem lokalnym (%1)</translation>
+        <translation>Zsynchronizowany z folderem lokalnym (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
@@ -1560,7 +1560,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation>Pozwól na usuwanie</translation>
+        <translation>Zezwalaj na usuwanie</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
@@ -1584,7 +1584,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Pliki lub foldery pasujące do szablonu nie będą zsynchronizowane.
 
-Elementy, których usunięcie jest dozwolone, zostaną usunięte, jeżeli uniemożliwiają usunięcie katalogu. Jest to przydatne w przypadku metadanych.</translation>
+Elementy, dla których usunięcie jest dozwolone, zostaną usunięte, o ile umożliwia na to katalog. Jest to przydatne w przypadku metadanych.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -2740,7 +2740,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
         <source>Allow Editing</source>
-        <translation>Pozwól na edycję</translation>
+        <translation>Zezwalaj na edycję</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
@@ -2755,7 +2755,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation>Pozwól na wysyłanie i edycję</translation>
+        <translation>Zezwalaj na wysyłanie i edycję</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
@@ -2765,7 +2765,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
         <source>Allow upload and editing</source>
-        <translation>Pozwól na przesyłanie i edycję</translation>
+        <translation>Zezwalaj na przesyłanie i edycję</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>

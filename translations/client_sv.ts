@@ -3483,7 +3483,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="85"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Öppna huvuddialogen</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
@@ -3493,7 +3493,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Avsluta %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>
