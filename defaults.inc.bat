@@ -102,6 +102,9 @@ if "%USE_BRANDING%" == "1" (
     set CHECKOUT_DESKTOP=0
 )
 
+Rem Updater: ON = build, OFF = don't build (default)
+if "%BUILD_UPDATER%" == ""                  set BUILD_UPDATER=OFF
+
 Rem ************************************************************************************************************************************************************************************
 Rem Installer Options: 1 = build (default), 0 = don't build
 if "%BUILD_INSTALLER%" == ""                set BUILD_INSTALLER=1
