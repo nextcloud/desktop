@@ -365,10 +365,8 @@ auto SqlQuery::next() -> NextResult
     return result;
 }
 
-void SqlQuery::bindValue(int pos, const QVariant &value)
+void SqlQuery::bindValueInternal(int pos, const QVariant &value)
 {
-    qCDebug(lcSql) << "SQL bind" << pos << value;
-
     int res = -1;
     if (!_stmt) {
         OC_ASSERT(false);
