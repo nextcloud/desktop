@@ -2272,7 +2272,7 @@ void SyncJournalDb::PinStateInterface::setForPath(const QByteArray &path, PinSta
             "INSERT OR REPLACE INTO flags(path, pinState) VALUES(?1, ?2);"),
         _db->_db));
     query.bindValue(1, path);
-    query.bindValue(2, static_cast<int>(state));
+    query.bindValue(2, state);
     query.exec();
 }
 
