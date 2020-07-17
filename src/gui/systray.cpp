@@ -105,6 +105,11 @@ void Systray::create()
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
+    foreach (Folder *f, FolderMan::instance()->map()) {
+        if (!f->syncPaused()) {
+            _syncIsPaused = false;
+        }
+    }
 }
 
 void Systray::slotNewUserSelected()

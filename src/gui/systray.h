@@ -91,7 +91,7 @@ private:
     QPoint computeWindowPosition(int width, int height) const;
 
     bool _isOpen = false;
-    bool _syncIsPaused = false;
+    bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
 };
 
