@@ -1,0 +1,6 @@
+Bugfix: Legacy config migration reverted files to online only
+
+We fixed a legacy config migration which reverted all files to online only on
+every start.
+
+https://github.com/owncloud/client/issues/7779

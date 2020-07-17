@@ -285,12 +285,6 @@ public:
     bool supportsVirtualFiles() const;
     void setSupportsVirtualFiles(bool enabled);
 
-    /** whether new remote files shall become virtual locally
-     *
-     * This happens when the root folder pin state is OnlineOnly, but can be
-     * overridden by explicit subfolder pin states.
-     */
-    bool newFilesAreVirtual() const;
     void setRootPinState(PinState state);
 
     /** Whether user desires a switch that couldn't be executed yet, see member */
