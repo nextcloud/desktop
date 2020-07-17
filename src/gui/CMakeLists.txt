@@ -395,12 +395,19 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
 
     set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 
+    if(CMAKE_BUILD_TYPE MATCHES Debug)
+        set(NO_STRIP "-no-strip")
+    else()
+        set(NO_STRIP "")
+    endif()
+
     add_custom_command(TARGET ${APPLICATION_EXECUTABLE} POST_BUILD
         COMMAND "${MACDEPLOYQT_EXECUTABLE}"
             "$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>/../.."
             -qmldir=${CMAKE_SOURCE_DIR}/src/gui
             -always-overwrite
             -executable="$<TARGET_FILE_DIR:${APPLICATION_EXECUTABLE}>/${cmd_NAME}"
+            ${NO_STRIP}
         COMMENT "Running macdeployqt..."
     )
 endif()
