@@ -292,7 +292,7 @@
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Ezin da edukidun karpeta enkriptatu, kendu fitxategiak.
-Sinkronizazio berria itxaron, ondoren enkriptatu.</translation>
+Itxaron berriro sinkronizatu arte, ondoren enkriptatu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="589"/>
@@ -698,8 +698,8 @@ Sinkronizazio berria itxaron, ondoren enkriptatu.</translation>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation>Ezin dira metadatuak enkriptatzerako sortu, karpeta desblokeatu.
-OpenSSL liburutegiekin arazoa izan daiteke.</translation>
+        <translation>Ezin dira enkriptatze metadatuak sortu, karpeta desblokeatu behar da.
+Baliteke OpenSSL liburutegiekin arazoa egotea.</translation>
     </message>
 </context>
 <context>
@@ -3495,7 +3495,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="87"/>
         <source>Exit %1</source>
-        <translation>%1 irteera</translation>
+        <translation>Irten %1-(e)tik</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>
