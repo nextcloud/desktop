@@ -176,7 +176,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="283"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation>Okänt fel: nätverkssvaret raderades</translation>
+        <translation>Okänt fel: nätverkssvaret togs bort</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="435"/>
@@ -927,10 +927,10 @@ Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar ome
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Alla filer i den synkroniserade mappen &apos;%1&apos; raderades på servern.
-Dessa raderingar kommer att synkroniseras till din lokalt synkroniserade mapp och göra filerna otillgängliga, om du inte har möjlighet att återställa.
+        <translation>Alla filer i den synkroniserade mappen &quot;%1&quot; togs bort på servern.
+Dessa borttagningar kommer att synkroniseras till din lokalt synkroniserade mapp och göra filerna otillgängliga, om du inte har möjlighet att återställa.
 Om du återställer dessa filer kommer dom att synkroniseras till servern på nytt, om du har rättighet att göra det.
-Om du raderar filerna kommer dom att vara otillgängliga för dig, om du inte är ägaren.</translation>
+Om du tar bort filerna kommer dom att vara otillgängliga för dig, om du inte är ägaren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1093"/>
@@ -954,7 +954,7 @@ Om denna åtgärd var oavsiktlig kan du återställa förlorade data nu.</transl
     <message>
         <location filename="../src/gui/folder.cpp" line="1101"/>
         <source>Restore deleted files</source>
-        <translation>Återställ raderade filer</translation>
+        <translation>Återställ borttagna filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1118"/>
@@ -3536,7 +3536,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>You deleted</source>
-        <translation>Du raderade</translation>
+        <translation>Du tog bort</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
