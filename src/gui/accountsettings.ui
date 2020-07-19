@@ -249,6 +249,23 @@
     </layout>
    </item>
    <item row="3" column="0">
+    <layout class="QHBoxLayout" name="maskGroupBox">
+     <item>
+      <widget class="QCheckBox" name="allowMaskingWebDAV">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Allow masking WebDAV</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="4" column="0">
     <widget class="OCC::FolderStatusView" name="_folderList">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">

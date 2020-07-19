@@ -161,6 +161,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     refreshSelectiveSyncStatus();
     connect(_model, &QAbstractItemModel::rowsInserted,
         this, &AccountSettings::refreshSelectiveSyncStatus);
+    _ui->allowMaskingWebDAV->setChecked(_accountState->account()->maskWebDAVCommands());
+    connect(_ui->allowMaskingWebDAV, &QAbstractButton::toggled, this, &AccountSettings::slotToggleMaskWebDAV);
 
     QAction *syncNowAction = new QAction(this);
     syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
@@ -247,6 +249,12 @@ void AccountSettings::slotNewMnemonicGenerated()
 
     _ui->encryptionMessage->addAction(mnemonic);
     _ui->encryptionMessage->show();
+}
+
+void AccountSettings::slotToggleMaskWebDAV(bool enable)
+{
+    _accountState->account()->setMaskWebDAVCommands(enable);
+    AccountManager::instance()->save();
 }
 
 void AccountSettings::slotMenuBeforeShow() {

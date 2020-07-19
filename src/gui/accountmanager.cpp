@@ -36,6 +36,7 @@ static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
 static const char versionC[] = "version";
 static const char serverVersionC[] = "serverVersion";
+static const char maskWebDAVC[] = "maskWebDAV";
 }
 
 
@@ -179,6 +180,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
 {
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
+    settings.setValue(QLatin1String(maskWebDAVC), acc->maskWebDAVCommands());
     if (acc->_credentials) {
         if (saveCredentials) {
             // Only persist the credentials if the parameter is set, on migration from 1.8.x
@@ -266,6 +268,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
             settings.remove(key);
         }
     }
+
+    acc->setMaskWebDAVCommands(settings.value(QLatin1String(maskWebDAVC)).toBool());
 
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 

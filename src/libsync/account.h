@@ -109,6 +109,10 @@ public:
     void setUrl(const QUrl &url);
     QUrl url() const { return _url; }
 
+    // allowing masking of WebDAV commands
+    bool maskWebDAVCommands();
+    void setMaskWebDAVCommands(bool);
+
     /// Adjusts _userVisibleUrl once the host to use is discovered.
     void setUserVisibleHost(const QString &host);
 
@@ -319,6 +323,9 @@ private:
 
     /// Used in RemoteWipe
     bool _wroteAppPassword = false;
+
+    /// Attempt to mask WebDAV commands in supported servers
+    bool _maskWebDAV = false;
 
     friend class AccountManager;
 

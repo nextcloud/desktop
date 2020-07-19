@@ -283,7 +283,15 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
     } else if (verb == "DELETE" && !data) {
         return _am->deleteResource(req);
     }
-    return _am->sendCustomRequest(req, verb, data);
+
+    if(_maskWebDAV && serverVersionInt() >= makeServerVersion(20,0,0)) {
+        // mask the command by sending a regular POST with header X-WebDAV: <command>
+        req.setRawHeader(QByteArray("X-WebDAV"),verb);
+        return _am->post(req,data);
+    }
+    else {
+        return _am->sendCustomRequest(req, verb, data);
+    }
 }
 
 SimpleNetworkJob *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
@@ -608,6 +616,16 @@ void Account::deleteAppPassword(){
         _wroteAppPassword = false;
     });
     job->start();
+}
+
+bool Account::maskWebDAVCommands()
+{
+    return _maskWebDAV;
+}
+
+void Account::setMaskWebDAVCommands(bool state)
+{
+    _maskWebDAV = state;
 }
 
 } // namespace OCC
