@@ -45,6 +45,11 @@ Depends: libnextcloudsync0 (= ${binary:Version}),
          libqt5sql5-sqlite,
          nextcloud-desktop-common,
          nextcloud-desktop-l10n,
+         qml-module-qtqml-models2,
+         qml-module-qtquick-window2,
+         qml-module-qtquick-controls2,
+         qml-module-qtquick-layouts,
+         qml-module-qtgraphicaleffects,
          ${misc:Depends},
          ${shlibs:Depends}
 Replaces: nextcloud-client (<< ${binary:Version})
