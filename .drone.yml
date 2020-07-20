@@ -104,9 +104,14 @@ name: AppImage
 steps:
 - name: build
   image: nextcloudci/client-5.12:client-5.12-7
+  environment:
+    CI_UPLOAD_GIT_TOKEN:
+      from_secret: CI_UPLOAD_GIT_TOKEN
+    CI_UPLOAD_GIT_USERNAME:
+      from_secret: CI_UPLOAD_GIT_USERNAME
   commands:
     - /bin/bash -c "./admin/linux/build-appimage.sh"
-    - /bin/bash -c "./admin/linux/upload-appimage.sh"
+    - /bin/bash -c "./admin/linux/upload-appimage.sh" || echo "Upload failed, however this is an optional step."
 trigger:
   branch:
     - master
