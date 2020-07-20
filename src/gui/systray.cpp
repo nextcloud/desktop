@@ -105,8 +105,8 @@ void Systray::create()
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
-    foreach (Folder *f, FolderMan::instance()->map()) {
-        if (!f->syncPaused()) {
+    for (const auto *folderMap : FolderMan::instance()->map()) {
+        if(!folderMap->syncPaused()) {
             _syncIsPaused = false;
         }
     }
