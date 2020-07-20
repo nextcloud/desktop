@@ -168,10 +168,22 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
             result = true;
             oldEtag = (*it)->_etag;
         } else {
-            OC_ENFORCE(instruction == CSYNC_INSTRUCTION_REMOVE
-                // re-creation of virtual files count as a delete
-                || ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
-                || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW));
+            if (!(instruction == CSYNC_INSTRUCTION_REMOVE
+                    // re-creation of virtual files count as a delete
+                    || ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
+                    || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW)))
+            {
+                qCWarning(lcDiscovery) << "OC_ENFORCE(FAILING)";
+                qCWarning(lcDiscovery) << "instruction == CSYNC_INSTRUCTION_REMOVE" << (instruction == CSYNC_INSTRUCTION_REMOVE);
+                qCWarning(lcDiscovery) << "((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)"
+                                       << ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW);
+                qCWarning(lcDiscovery) << "((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW))"
+                                       << ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW);
+                qCWarning(lcDiscovery) << "instruction" << instruction;
+                qCWarning(lcDiscovery) << "(*it)->_type" << (*it)->_type;
+                qCWarning(lcDiscovery) << "(*it)->_isRestoration " << (*it)->_isRestoration;
+                OC_ENFORCE(false);
+            }
             (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
             result = true;
             oldEtag = (*it)->_etag;
