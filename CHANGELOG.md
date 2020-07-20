@@ -18,6 +18,7 @@ Summary
 * Change - The layout of serveral ui elements is broken: [#7920](https://github.com/owncloud/client/issues/7920)
 * Change - The client hides the window during the authentication process: [#7922](https://github.com/owncloud/client/pull/7922)
 * Change - The settings ui shows a prompt for a few seconds: [#7925](https://github.com/owncloud/client/pull/7925)
+* Change - Reorgenize Settings: [#7962](https://github.com/owncloud/client/pull/7962)
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
@@ -88,6 +89,12 @@ Details
    We now hide that prompt by default and only show it if needed.
 
    https://github.com/owncloud/client/pull/7925
+
+* Change - Reorgenize Settings: [#7962](https://github.com/owncloud/client/pull/7962)
+
+   We rename "General" to "Settings" and move the "Network" into "Settings"
+
+   https://github.com/owncloud/client/pull/7962
 
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 
