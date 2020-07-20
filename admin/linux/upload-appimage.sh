@@ -34,7 +34,7 @@ echo "Found AppImage: $BASENAME"
 
 apt-get -y install jq
 
-if [[ "$TAG_NAME" != *.master ]]; then
+if [ $TAG_NAME != "master" ]; then
     # Delete all old comments in desktop PR, starting with "AppImage file:"
     oldComments=$(curl 2>/dev/null -u $GIT_USERNAME:$GIT_TOKEN -X GET $DESKTOP_API_BASE_URL/issues/$PR/comments | jq '.[] | (.id |tostring) + "|" + (.user.login | test("'${GIT_USERNAME}'") | tostring) + "|" + (.body | test("AppImage file:.*") | tostring)'  | grep "true|true" | tr -d "\"" | cut -f1 -d"|")
 
@@ -128,7 +128,7 @@ if [[ "$browserDownloadUrl" == "null" ]]; then
     exit 3
 fi
 
-if [[ "$TAG_NAME" != *.master ]]; then
+if [ $TAG_NAME != "master" ]; then
     # Create comment in desktop PR
     curl 2>/dev/null -u $GIT_USERNAME:$GIT_TOKEN -X POST $DESKTOP_API_BASE_URL/issues/$PR/comments -d "{ \"body\" : \"AppImage file: [$BASENAME]($browserDownloadUrl) <br/><br/>To test this change/fix you can simply download above AppImage file and test it. <br/><br/>Please make sure to quit your existing Nextcloud app and backup your data. \" }"
 fi
