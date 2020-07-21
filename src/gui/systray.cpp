@@ -108,8 +108,9 @@ void Systray::create()
 
     const auto folderMap = FolderMan::instance()->map();
     for (const auto *folder : folderMap) {
-        if(!folder->syncPaused()) {
+        if (!folder->syncPaused()) {
             _syncIsPaused = false;
+            break;
         }
     }
 }
