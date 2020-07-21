@@ -105,6 +105,14 @@ void Systray::create()
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
+
+    const auto folderMap = FolderMan::instance()->map();
+    for (const auto *folder : folderMap) {
+        if (!folder->syncPaused()) {
+            _syncIsPaused = false;
+            break;
+        }
+    }
 }
 
 void Systray::slotNewUserSelected()

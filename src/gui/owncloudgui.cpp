@@ -79,7 +79,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::pauseSync,
         this, &ownCloudGui::slotPauseAllFolders);
 
-    connect(_tray.data(), &Systray::pauseSync,
+    connect(_tray.data(), &Systray::resumeSync,
         this, &ownCloudGui::slotUnpauseAllFolders);
 
     connect(_tray.data(), &Systray::openHelp,
