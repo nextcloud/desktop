@@ -67,7 +67,7 @@ MenuItem {
                         Layout.leftMargin: 4
                         verticalAlignment: Qt.AlignCenter
                         cache: false
-                        source: ("image://avatars/" + id)
+                        source: model.avatar != "" ? model.avatar : "image://avatars/fallbackBlack"
                         Layout.preferredHeight: (userLineLayout.height -16)
                         Layout.preferredWidth: (userLineLayout.height -16)
                         Rectangle {

@@ -21,6 +21,7 @@ class User : public QObject
     Q_PROPERTY(QString server READ server CONSTANT)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
+    Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject* parent = nullptr);
 
@@ -39,17 +40,18 @@ public:
     AccountApp *talkApp() const;
     bool hasActivities() const;
     AccountAppList appList() const;
-    QImage avatar(bool whiteBg = false) const;
-    QString id() const;
+    QImage avatar() const;
     void login() const;
     void logout() const;
     void removeAccount() const;
+    QString avatarUrl() const;
 
 signals:
     void guiLog(const QString &, const QString &);
     void nameChanged();
     void hasLocalFolderChanged();
     void serverHasTalkChanged();
+    void avatarChanged();
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
@@ -89,6 +91,7 @@ class UserModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY newUserSelected)
+    Q_PROPERTY(int currentUserId READ currentUserId NOTIFY newUserSelected)
 public:
     static UserModel *instance();
     virtual ~UserModel() = default;
@@ -108,12 +111,11 @@ public:
     Q_INVOKABLE void openCurrentAccountLocalFolder();
     Q_INVOKABLE void openCurrentAccountTalk();
     Q_INVOKABLE void openCurrentAccountServer();
-    Q_INVOKABLE QImage currentUserAvatar();
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE QString currentUserServer();
     Q_INVOKABLE bool currentUserHasActivities();
     Q_INVOKABLE bool currentUserHasLocalFolder();
-    Q_INVOKABLE int currentUserId() const;
+    int currentUserId() const;
     Q_INVOKABLE bool isUserConnected(const int &id);
     Q_INVOKABLE void switchCurrentUser(const int &id);
     Q_INVOKABLE void login(const int &id);
