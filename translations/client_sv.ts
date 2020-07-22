@@ -291,7 +291,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="289"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Du kan inte kryptera en mapp med innehåll, ta bort filerna.
+Vänta på en ny synk, sedan kryptera den.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="589"/>
@@ -697,7 +698,8 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte generera metadata för kryptering, låser upp mappen.
+Det kan vara problem med dina OpenSSL-bibliotek.</translation>
     </message>
 </context>
 <context>
