@@ -2,18 +2,18 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="393"/>
+        <location filename="../src/common/filesystembase.cpp" line="388"/>
         <source>Could not make directories in trash</source>
         <translation>Kunne ikke lage kataloger i søppelbøtten</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="407"/>
-        <location filename="../src/common/filesystembase.cpp" line="413"/>
+        <location filename="../src/common/filesystembase.cpp" line="402"/>
+        <location filename="../src/common/filesystembase.cpp" line="408"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Kunne ikke flytte &apos;%1&apos; til &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="450"/>
+        <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>Flytting til søppelbøtten er ikke støttet på denne plattformen</translation>
     </message>
@@ -36,12 +36,12 @@
         <translation>Skjema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
+        <location filename="../src/gui/folderwizardsourcepage.ui" line="20"/>
         <source>Pick a local folder on your computer to sync</source>
         <translation>Velg en lokal mappe på din maskin som skal synkroniseres</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
+        <location filename="../src/gui/folderwizardsourcepage.ui" line="29"/>
         <source>&amp;Choose...</source>
         <translation>&amp;Velg...</translation>
     </message>
@@ -54,52 +54,29 @@
         <translation>Skjema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="20"/>
         <source>Select a remote destination folder</source>
         <translation>Velg en ekstern mappe som målmappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="49"/>
         <source>Create Folder</source>
         <translation>Opprett mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="56"/>
         <source>Refresh</source>
         <translation>Oppdater</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="39"/>
         <source>Folders</source>
         <translation>Mapper</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizardtargetpage.ui" line="110"/>
+        <location filename="../src/gui/folderwizardtargetpage.ui" line="169"/>
         <source>TextLabel</source>
         <translation>Tekst-etikett</translation>
-    </message>
-</context>
-<context>
-    <name>GETFileJob</name>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
-        <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Ingen E-Tag mottatt fra server. Sjekk proxy/gateway.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
-        <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Vi mottok en forskjellig E-Tag for å fortsette. Prøver igjen neste gang.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
-        <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
-        <source>Server returned wrong content-range</source>
-        <translation>Serveren returnerte feil content-range</translation>
     </message>
 </context>
 <context>
@@ -128,17 +105,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="295"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="307"/>
         <source>Connection timed out</source>
         <translation>Forbindelsen fikk tidsavbrudd</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="297"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="309"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Ukjent feil: nettverkssvar ble slettet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="449"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="440"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Server svarte &quot;%1 %2&quot; til &quot;%3 %4&quot;</translation>
     </message>
@@ -152,44 +129,49 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
+        <source>Re-open Browser </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="65"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="79"/>
+        <location filename="../src/gui/accountsettings.ui" line="86"/>
         <source>Storage space: ...</source>
         <translation>Lagringsplass: ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="152"/>
+        <location filename="../src/gui/accountsettings.ui" line="159"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Umarkerte mapper vil bli &lt;b&gt;fjernet&lt;/b&gt; fra ditt lokale filsystem og vil ikke bli synkronisert med denne maskinen lenger</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="198"/>
+        <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Synchronize all</source>
         <translation>Synkroniser alle</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="205"/>
+        <location filename="../src/gui/accountsettings.ui" line="212"/>
         <source>Synchronize none</source>
         <translation>Synkroniser ingen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="212"/>
+        <location filename="../src/gui/accountsettings.ui" line="219"/>
         <source>Apply manual changes</source>
         <translation>Bruk manuelle endringer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="260"/>
+        <location filename="../src/gui/accountsettings.ui" line="267"/>
         <source>Apply</source>
         <translation>Bruk</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="247"/>
-        <location filename="../src/gui/accountsettings.cpp" line="507"/>
-        <location filename="../src/gui/accountsettings.cpp" line="614"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1053"/>
+        <location filename="../src/gui/accountsettings.ui" line="254"/>
+        <location filename="../src/gui/accountsettings.cpp" line="512"/>
+        <location filename="../src/gui/accountsettings.cpp" line="624"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1083"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -199,87 +181,87 @@
         <translation>Tilkoblet &lt;server&gt; som &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="180"/>
+        <location filename="../src/gui/accountsettings.cpp" line="182"/>
         <source>No account configured.</source>
         <translation>Ingen konto konfigurert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="193"/>
+        <location filename="../src/gui/accountsettings.cpp" line="200"/>
         <source>Add new</source>
         <translation>Legg til ny</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="201"/>
+        <location filename="../src/gui/accountsettings.cpp" line="209"/>
         <source>Remove</source>
         <translation>Fjern</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="205"/>
+        <location filename="../src/gui/accountsettings.cpp" line="213"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="307"/>
+        <location filename="../src/gui/accountsettings.cpp" line="310"/>
         <source>Choose what to sync</source>
         <translation>Velg hva som synkroniseres</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="313"/>
+        <location filename="../src/gui/accountsettings.cpp" line="316"/>
         <source>Force sync now</source>
         <translation>Tving synkronisering nå</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="315"/>
+        <location filename="../src/gui/accountsettings.cpp" line="318"/>
         <source>Restart sync</source>
         <translation>Prøv synkronisering igjen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="324"/>
+        <location filename="../src/gui/accountsettings.cpp" line="327"/>
         <source>Remove folder sync connection</source>
         <translation>Fjern tilkobling for mappe-synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="353"/>
+        <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Enable virtual file support %1...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="353"/>
+        <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>(tech preview)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="353"/>
+        <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>(experimental)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="442"/>
+        <location filename="../src/gui/accountsettings.cpp" line="445"/>
         <source>Folder creation failed</source>
         <translation>Oppretting av mappe feilet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="443"/>
+        <location filename="../src/gui/accountsettings.cpp" line="446"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Klarte ikke å opprette lokal mappe &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="499"/>
+        <location filename="../src/gui/accountsettings.cpp" line="504"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Bekreft fjerning av tilkobling for mappe-synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="506"/>
+        <location filename="../src/gui/accountsettings.cpp" line="511"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Fjern tilkobling for mappe-synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="605"/>
+        <location filename="../src/gui/accountsettings.cpp" line="615"/>
         <source>Disable virtual file support?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="616"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -288,168 +270,173 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="613"/>
+        <location filename="../src/gui/accountsettings.cpp" line="623"/>
         <source>Disable support</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="718"/>
+        <location filename="../src/gui/accountsettings.cpp" line="733"/>
         <source>Sync Running</source>
         <translation>Synkroniserer...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="719"/>
+        <location filename="../src/gui/accountsettings.cpp" line="734"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Synkronisering kjører.&lt;br/&gt;Vil du avbryte den?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="814"/>
+        <location filename="../src/gui/accountsettings.cpp" line="829"/>
         <source>%1 in use</source>
         <translation>%1 i bruk</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="841"/>
+        <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 som &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="849"/>
+        <location filename="../src/gui/accountsettings.cpp" line="865"/>
         <source>Connected to %1.</source>
         <translation>Tilkoblet %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="851"/>
+        <location filename="../src/gui/accountsettings.cpp" line="870"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 er midlertidig utilgjengelig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="873"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Server %1 er for øyeblikket i vedlikeholdsmodus.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="855"/>
+        <location filename="../src/gui/accountsettings.cpp" line="876"/>
         <source>Signed out from %1.</source>
         <translation>Logget ut fra %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="864"/>
-        <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Hente autorisasjon fra nettleseren. &lt;a href=&apos;%1&apos;&gt;Klikk her &lt;/a&gt; for å åpne nettleseren på nytt.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="868"/>
+        <location filename="../src/gui/accountsettings.cpp" line="886"/>
         <source>Connecting to %1...</source>
         <translation>Kobler til %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="871"/>
+        <location filename="../src/gui/accountsettings.cpp" line="891"/>
         <source>No connection to %1 at %2.</source>
         <translation>Ingen tilkobling til %1 på %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="900"/>
+        <location filename="../src/gui/accountsettings.cpp" line="930"/>
         <source>Log in</source>
         <translation>Logg inn</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="996"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1026"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Noen mapper ble ikke synkronisert fordi de er for store</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="998"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Noen mapper ble ikke synkronisert fordi de er eksterne lagringsplasser:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="999"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1029"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Noen mapper ble ikke synkronisert fordi de er for store eller de er eksterne lagringsplasser:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1075"/>
         <source>Confirm Account Removal</source>
         <translation>Bekreft fjerning av konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1076"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vil du virkelig fjerne tilkoblingen til kontoen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Merk:&lt;/b&gt; Dette vil &lt;b&gt;ikke&lt;/b&gt; slette noen filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1082"/>
         <source>Remove connection</source>
         <translation>Fjern tilkobling</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="303"/>
+        <location filename="../src/gui/accountsettings.cpp" line="306"/>
         <source>Open folder</source>
         <translation>Åpne mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="197"/>
-        <location filename="../src/gui/accountsettings.cpp" line="902"/>
+        <location filename="../src/gui/accountsettings.cpp" line="205"/>
+        <location filename="../src/gui/accountsettings.cpp" line="932"/>
         <source>Log out</source>
         <translation>Logg ut</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="262"/>
+        <location filename="../src/gui/accountsettings.cpp" line="265"/>
         <source>Open local folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="270"/>
+        <location filename="../src/gui/accountsettings.cpp" line="273"/>
         <source>Open folder in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="321"/>
+        <location filename="../src/gui/accountsettings.cpp" line="324"/>
         <source>Resume sync</source>
         <translation>Fortsett synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="321"/>
+        <location filename="../src/gui/accountsettings.cpp" line="324"/>
         <source>Pause sync</source>
         <translation>Sett synkronisering på pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="328"/>
+        <location filename="../src/gui/accountsettings.cpp" line="331"/>
         <source>Availability</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="345"/>
+        <location filename="../src/gui/accountsettings.cpp" line="348"/>
         <source>Disable virtual file support...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="500"/>
+        <location filename="../src/gui/accountsettings.cpp" line="505"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vil du virkelig stoppe synkronisering av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Merk:&lt;/b&gt; Dette vil &lt;b&gt;ikke&lt;/b&gt; slette noen filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="801"/>
+        <location filename="../src/gui/accountsettings.cpp" line="816"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) av %2 i bruk. Noen mapper, inkludert nettverkstilkoblede eller delte mapper, kan ha andre begrensninger.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="817"/>
         <source>%1 of %2 in use</source>
         <translation>%1 av %2 i bruk</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="811"/>
+        <location filename="../src/gui/accountsettings.cpp" line="826"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Ingen informasjon om bruk av lagringsplass tilgjengelig for øyeblikket.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="847"/>
+        <location filename="../src/gui/accountsettings.cpp" line="863"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="877"/>
+        <location filename="../src/gui/accountsettings.cpp" line="883"/>
+        <source>Obtaining authorization from the browser.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="896"/>
+        <source>Server configuration error: %1 at %2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="907"/>
         <source>No %1 connection configured.</source>
         <translation>Ingen %1-forbindelse konfigurert.</translation>
     </message>
@@ -641,22 +628,22 @@ This action will abort any currently running synchronization.</source>
         <translation>Denne serveren krever sannsynligvis et SSL-klientsertifikat</translation>
     </message>
     <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="33"/>
+        <location filename="../src/gui/addcertificatedialog.ui" line="53"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
         <translation>Sertifikat &amp; Nøkkel (pkcs12):</translation>
     </message>
     <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="47"/>
+        <location filename="../src/gui/addcertificatedialog.ui" line="44"/>
         <source>Browse...</source>
         <translation>Bla...</translation>
     </message>
     <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="54"/>
+        <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password :</source>
         <translation>Passord for sertifikatet :</translation>
     </message>
     <message>
-        <location filename="../src/gui/addcertificatedialog.ui" line="71"/>
+        <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
         <translation type="unfinished"/>
     </message>
@@ -674,42 +661,42 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="128"/>
+        <location filename="../src/gui/application.cpp" line="134"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Å fortsette vil&lt;b&gt; slette disse innstillingene &lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="130"/>
+        <location filename="../src/gui/application.cpp" line="136"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Å fortsette vil &lt;b&gt; ignorere disse innstillingene &lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="136"/>
+        <location filename="../src/gui/application.cpp" line="142"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="143"/>
+        <location filename="../src/gui/application.cpp" line="149"/>
         <source>Quit</source>
         <translation>Avslutt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="144"/>
+        <location filename="../src/gui/application.cpp" line="150"/>
         <source>Continue</source>
         <translation>Fortsett</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="301"/>
+        <location filename="../src/gui/application.cpp" line="299"/>
         <source>Error accessing the configuration file</source>
         <translation>Feil ved lesing av konfigurasjonsfil</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="302"/>
+        <location filename="../src/gui/application.cpp" line="300"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>En feil oppstod ved aksessering av konfigurasjonsfilen på %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="305"/>
+        <location filename="../src/gui/application.cpp" line="303"/>
         <source>Quit ownCloud</source>
         <translation>Avslutt ownCloud</translation>
     </message>
@@ -740,7 +727,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1130"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1135"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -748,32 +735,32 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="46"/>
         <source>No ownCloud account configured</source>
         <translation>Ingen ownCloud-konter konfigurert</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="288"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="281"/>
         <source>The configured server for this client is too old</source>
         <translation>Den konfigurerte serveren for denne klienten er for gammel</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="289"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="282"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Vennligst oppdatert til den nyeste serveren og start klienten på nytt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="150"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="143"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Autentiseringsfeil: Bruker navn eller passord er feil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="162"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="155"/>
         <source>timeout</source>
         <translation>tidsavbrudd</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="199"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="192"/>
         <source>The provided credentials are not correct</source>
         <translation>Oppgitt påloggingsinformasjon er feil</translation>
     </message>
@@ -781,8 +768,8 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="478"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="500"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="480"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="502"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation type="unfinished"/>
     </message>
@@ -790,27 +777,27 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleLocalDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="248"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="259"/>
         <source>Error while opening directory %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="250"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="261"/>
         <source>Directory not accessible on client, permission denied</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="254"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="265"/>
         <source>Directory not found: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="285"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="296"/>
         <source>Filename encoding is not valid</source>
         <translation>Filnavn-koding er ikke gyldig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="304"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="315"/>
         <source>Error while reading directory %1</source>
         <translation type="unfinished"/>
     </message>
@@ -818,134 +805,134 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="171"/>
+        <location filename="../src/gui/folder.cpp" line="172"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Lokal mappe %1 eksisterer ikke.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="174"/>
+        <location filename="../src/gui/folder.cpp" line="175"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 skal være en mappe men er ikke det.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="177"/>
+        <location filename="../src/gui/folder.cpp" line="178"/>
         <source>%1 is not readable.</source>
         <translation>%1 kan ikke leses.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="414"/>
+        <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har blitt fjernet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="428"/>
+        <location filename="../src/gui/folder.cpp" line="429"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har blitt oppdatert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="435"/>
+        <location filename="../src/gui/folder.cpp" line="436"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 har blitt omdøpt til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="442"/>
+        <location filename="../src/gui/folder.cpp" line="443"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 har blitt flyttet til %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="412"/>
+        <location filename="../src/gui/folder.cpp" line="413"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 og %n annen fil har blitt fjernet.</numerusform><numerusform>%1 og %n andre filer har blitt fjernet.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="419"/>
+        <location filename="../src/gui/folder.cpp" line="420"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="421"/>
+        <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="426"/>
+        <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 og %n annen fil har blitt oppdatert.</numerusform><numerusform>%1 og %n andre filer har blitt oppdatert.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="433"/>
+        <location filename="../src/gui/folder.cpp" line="434"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 er blitt omdøpt til %2 og %n annen fil har blitt omdøpt.</numerusform><numerusform>%1 er blitt omdøpt til %2 og %n andre filer har blitt omdøpt.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="440"/>
+        <location filename="../src/gui/folder.cpp" line="441"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 er blitt flyttet til %2 og %n annen fil har blitt flyttet.</numerusform><numerusform>%1 er blitt flyttet til %2 og %n andre filer har blitt flyttet.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="447"/>
+        <location filename="../src/gui/folder.cpp" line="448"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 og %n andre filer har synkroniseringskonflikter.</numerusform><numerusform>%1 og %n andre filer har synkroniseringskonflikter.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="449"/>
+        <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 har en synkroniseringskonflikt. Sjekk konflikt-filen.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="454"/>
+        <location filename="../src/gui/folder.cpp" line="455"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 og %n andre filer kunne ikke synkroniseres pga. feil. Se loggen for detaljer.</numerusform><numerusform>%1 og %n andre filer kunne ikke synkroniseres pga. feil. Se loggen for detaljer.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="456"/>
+        <location filename="../src/gui/folder.cpp" line="457"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 kunne ikke synkroniseres pga. en feil. Se loggen for detaljer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="462"/>
+        <location filename="../src/gui/folder.cpp" line="463"/>
         <source>Sync Activity</source>
         <translation>Synkroniseringsaktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="808"/>
+        <location filename="../src/gui/folder.cpp" line="810"/>
         <source>Could not read system exclude file</source>
         <translation>Klarte ikke å lese systemets ekskluderingsfil</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1056"/>
+        <location filename="../src/gui/folder.cpp" line="1055"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>En ny mappe større enn %1 MB er blitt lagt til: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1059"/>
+        <location filename="../src/gui/folder.cpp" line="1058"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>En mappe fra et eksternt lager er blitt lagt til.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1060"/>
+        <location filename="../src/gui/folder.cpp" line="1059"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Gå til Innstillinger og velg den hvis du ønsker å laste den ned.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1120"/>
+        <location filename="../src/gui/folder.cpp" line="1119"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Mappen %1  var laget, men har tidligere blitt ekskludert fra synkronisering. Data i mappen vil derfor ikke bli synkronisert. </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1123"/>
+        <location filename="../src/gui/folder.cpp" line="1122"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Filen %1 ble opprettet men har tidligere blitt ekskludert fra synkronisering. Den vil ikke bli synkronisert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1134"/>
+        <location filename="../src/gui/folder.cpp" line="1133"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -954,7 +941,7 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1209"/>
+        <location filename="../src/gui/folder.cpp" line="1208"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -965,7 +952,7 @@ Hvis du velger å beholde filene, vil de bli synkronisert tilbake til serveren h
 Hvis du velger å slette filene, blir de utilgjengelige for deg hvis du ikke er eieren av filen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1214"/>
+        <location filename="../src/gui/folder.cpp" line="1213"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -974,17 +961,17 @@ Er du sikker på at du ønsker å synkronisere denne handlingen med serveren?
 Hvis det var et uhell og du velger å beholde filene, vil de bli synkronisert tilbake fra serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1218"/>
+        <location filename="../src/gui/folder.cpp" line="1217"/>
         <source>Remove All Files?</source>
         <translation>Fjerne alle filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1221"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>Remove all files</source>
         <translation>Fjern alle filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1222"/>
+        <location filename="../src/gui/folder.cpp" line="1221"/>
         <source>Keep files</source>
         <translation>Behold filer</translation>
     </message>
@@ -992,107 +979,107 @@ Hvis det var et uhell og du velger å beholde filene, vil de bli synkronisert ti
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="353"/>
+        <location filename="../src/gui/folderman.cpp" line="355"/>
         <source>Could not reset folder state</source>
         <translation>Klarte ikke å tilbakestille mappetilstand</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="354"/>
+        <location filename="../src/gui/folderman.cpp" line="356"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>En gammel synkroniseringsjournal &apos;%1&apos; ble funnet men kunne ikke fjernes. Pass på at ingen applikasjoner bruker den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1138"/>
+        <location filename="../src/gui/folderman.cpp" line="1144"/>
         <source> (backup)</source>
         <translation> (sikkerhetskopi)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1143"/>
+        <location filename="../src/gui/folderman.cpp" line="1149"/>
         <source> (backup %1)</source>
         <translation> (sikkerhetskopi %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1321"/>
+        <location filename="../src/gui/folderman.cpp" line="1327"/>
         <source>Undefined State.</source>
         <translation>Udefinert tilstand.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1324"/>
+        <location filename="../src/gui/folderman.cpp" line="1330"/>
         <source>Waiting to start syncing.</source>
         <translation>Venter på å starte synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1327"/>
+        <location filename="../src/gui/folderman.cpp" line="1333"/>
         <source>Preparing for sync.</source>
         <translation>Forbereder synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1330"/>
+        <location filename="../src/gui/folderman.cpp" line="1336"/>
         <source>Sync is running.</source>
         <translation>Synkronisering kjører.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1335"/>
+        <location filename="../src/gui/folderman.cpp" line="1341"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Synkronisering var vellykket, uløste konflikter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1337"/>
+        <location filename="../src/gui/folderman.cpp" line="1343"/>
         <source>Last Sync was successful.</source>
         <translation>Siste synkronisering var vellykket.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1343"/>
+        <location filename="../src/gui/folderman.cpp" line="1349"/>
         <source>Setup Error.</source>
         <translation>Feil med oppsett.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1346"/>
+        <location filename="../src/gui/folderman.cpp" line="1352"/>
         <source>User Abort.</source>
         <translation>Brukeravbrudd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1349"/>
+        <location filename="../src/gui/folderman.cpp" line="1355"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering er satt på pause.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1355"/>
+        <location filename="../src/gui/folderman.cpp" line="1361"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synkronisering er satt på pause)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1363"/>
+        <location filename="../src/gui/folderman.cpp" line="1369"/>
         <source>No valid folder selected!</source>
         <translation>Ingen gyldig mappe valgt!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1372"/>
+        <location filename="../src/gui/folderman.cpp" line="1378"/>
         <source>The selected path does not exist!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1376"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>The selected path is not a folder!</source>
         <translation>Den valgte stien er ikke en mappe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1380"/>
+        <location filename="../src/gui/folderman.cpp" line="1386"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Du har ikke skrivetilgang til den valgte mappen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1445"/>
+        <location filename="../src/gui/folderman.cpp" line="1451"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Det er allerede en synkronisering fra serveren til denne lokale mappen. Velg en annen mappe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1425"/>
+        <location filename="../src/gui/folderman.cpp" line="1431"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokale mappen %1 inneholder allerede en mappe brukt i en mappe-synkronisering. Velg en annen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1431"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokale mappen %1 er allerede en undermappe av en mappe brukt i en mappe-synkronisering. Velg en annen!</translation>
     </message>
@@ -1268,7 +1255,7 @@ Hvis det var et uhell og du velger å beholde filene, vil de bli synkronisert ti
 <context>
     <name>OCC::FolderWatcher</name>
     <message>
-        <location filename="../src/gui/folderwatcher.cpp" line="115"/>
+        <location filename="../src/gui/folderwatcher.cpp" line="112"/>
         <source>The watcher did not receive a test notification.</source>
         <translation type="unfinished"/>
     </message>
@@ -1397,25 +1384,25 @@ Hvis det var et uhell og du velger å beholde filene, vil de bli synkronisert ti
     </message>
 </context>
 <context>
-    <name>OCC::GETFileZsyncJob</name>
+    <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownloadzsync.cpp" line="149"/>
-        <source>Unable to parse zsync.</source>
+        <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
+        <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownloadzsync.cpp" line="171"/>
-        <source>Failed to get zsync byte ranges.</source>
+        <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
+        <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownloadzsync.cpp" line="194"/>
-        <source>Failed to initialize zsync receive structure.</source>
+        <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
+        <source>We received an unexpected download Content-Length.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownloadzsync.cpp" line="319"/>
-        <source>We received a different E-Tag for delta. Retrying next time.</source>
+        <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
+        <source>Server returned wrong content-range</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1435,119 +1422,113 @@ Hvis det var et uhell og du velger å beholde filene, vil de bli synkronisert ti
         <translation>Skjema</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="20"/>
+        <location filename="../src/gui/generalsettings.ui" line="35"/>
         <source>General Settings</source>
         <translation>Vanlige innstillinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="40"/>
+        <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>For System Tray</source>
         <translation>For systemkurven</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="260"/>
+        <location filename="../src/gui/generalsettings.ui" line="184"/>
+        <source>Network</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="257"/>
         <source>stable</source>
         <translation>Stabil</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="265"/>
+        <location filename="../src/gui/generalsettings.ui" line="262"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="53"/>
+        <location filename="../src/gui/generalsettings.ui" line="68"/>
         <source>Advanced</source>
         <translation>Avansert</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="85"/>
+        <location filename="../src/gui/generalsettings.ui" line="100"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Be om bekreftelse før synkronisering av mapper større enn</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="105"/>
-        <location filename="../src/gui/generalsettings.ui" line="191"/>
+        <location filename="../src/gui/generalsettings.ui" line="120"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="129"/>
+        <location filename="../src/gui/generalsettings.ui" line="144"/>
         <source>Ask for confirmation before synchronizing external storages</source>
         <translation>Be om bekreftelse før synkronisering av eksterne lagre</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="26"/>
+        <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>&amp;Launch on System Startup</source>
         <translation>&amp;Start når maskinen starter</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="33"/>
+        <location filename="../src/gui/generalsettings.ui" line="48"/>
         <source>Show &amp;Desktop Notifications</source>
         <translation>Vis &amp;påminnelser på skrivebordet</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="43"/>
+        <location filename="../src/gui/generalsettings.ui" line="58"/>
         <source>Use &amp;Monochrome Icons</source>
         <translation>Bruk svart/&amp;hvite ikoner</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="169"/>
-        <source>Experimental</source>
-        <translation>Eksperimentell</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="177"/>
-        <source>Enable Delta-Synchronization for files larger than</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="216"/>
+        <location filename="../src/gui/generalsettings.ui" line="213"/>
         <source>Version</source>
         <translation>Versjon</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="243"/>
+        <location filename="../src/gui/generalsettings.ui" line="240"/>
         <source>&amp;Update Channel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="349"/>
+        <location filename="../src/gui/generalsettings.ui" line="346"/>
         <source>•</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="61"/>
+        <location filename="../src/gui/generalsettings.ui" line="76"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Rediger &amp;ignorerte filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="140"/>
+        <location filename="../src/gui/generalsettings.ui" line="155"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="157"/>
+        <location filename="../src/gui/generalsettings.ui" line="172"/>
         <source>S&amp;how crash reporter</source>
         <translation>Vis &amp;krasj-rapportering</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="292"/>
+        <location filename="../src/gui/generalsettings.ui" line="289"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Omstart &amp;&amp; Oppdater</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="282"/>
+        <location filename="../src/gui/generalsettings.cpp" line="266"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="192"/>
+        <location filename="../src/gui/generalsettings.cpp" line="176"/>
         <source>Change update channel?</source>
         <translation>Bytt oppdateringskanal? </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="193"/>
+        <location filename="../src/gui/generalsettings.cpp" line="177"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1556,12 +1537,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Vær oppmerksom på at dette bare velger hvor oppgraderinger kommer ifra, og at nedgraderinger ikke er mulig. Så å gå tilbake fra beta-kanalen til den stabile kanalen, kan ikke gjøres umiddelbart og betyr å vente på en stabil versjon som er nyere enn den nåværende installerte betaen versjon.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="206"/>
+        <location filename="../src/gui/generalsettings.cpp" line="190"/>
         <source>Change update channel</source>
         <translation>Bytt oppdateringskanal</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="207"/>
+        <location filename="../src/gui/generalsettings.cpp" line="191"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -1569,22 +1550,22 @@ Vær oppmerksom på at dette bare velger hvor oppgraderinger kommer ifra, og at 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="107"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="101"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Legg inn %1-passord:&lt;br&gt;&lt;br&gt;Bruker: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="121"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="115"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>Lesing fra nøkkelring feilet med feil: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="128"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="122"/>
         <source>Enter Password</source>
         <translation>Legg inn passord</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="167"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="161"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Klikk her&lt;/a&gt; for å be om et app-passord fra web-grensesnittet.</translation>
     </message>
@@ -1612,54 +1593,54 @@ Vær oppmerksom på at dette bare velger hvor oppgraderinger kommer ifra, og at 
         <translation>Filer som ignorerers av mønstre</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
+        <location filename="../src/gui/ignorelisteditor.ui" line="75"/>
         <source>Add</source>
         <translation>Legg til</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.ui" line="75"/>
+        <location filename="../src/gui/ignorelisteditor.ui" line="57"/>
         <source>Pattern</source>
         <translation>Mønster</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.ui" line="80"/>
+        <location filename="../src/gui/ignorelisteditor.ui" line="62"/>
         <source>Allow Deletion</source>
         <translation>Tillat sletting</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.ui" line="45"/>
+        <location filename="../src/gui/ignorelisteditor.ui" line="85"/>
         <source>Remove</source>
         <translation>Fjern</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="42"/>
+        <location filename="../src/gui/ignorelisteditor.ui" line="121"/>
         <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="125"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="119"/>
         <source>Could not open file</source>
         <translation>Klarte ikke å åpne fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="126"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="120"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Kan ikke skrive endringer til &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="152"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="146"/>
         <source>Add Ignore Pattern</source>
         <translation>Nytt mønster</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="153"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="147"/>
         <source>Add a new ignore pattern:</source>
         <translation>Legg til ignoreringsmønster:</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="49"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="43"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation>Denne oppføringen er gitt av systemet på &apos;%1&apos; og kan ikke endres i denne visningen.</translation>
     </message>
@@ -1792,12 +1773,12 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="188"/>
+        <location filename="../src/libsync/logger.cpp" line="186"/>
         <source>Error</source>
         <translation>Feil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="189"/>
+        <location filename="../src/libsync/logger.cpp" line="187"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Fil &apos;%1&apos;&lt;br/&gt;kan ikke åpnes for skriving.&lt;br/&gt;&lt;br/&gt;Loggen kan &lt;b&gt;ikke&lt;/b&gt; lagres!&lt;/nobr&gt;</translation>
     </message>
@@ -1869,77 +1850,77 @@ Note that using any logging command line options will override the settings.</so
         <translation>Proxy-innstillinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="36"/>
+        <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
         <translation>Ingen proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="49"/>
+        <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
         <translation>Bruk systemets proxy</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="59"/>
+        <location filename="../src/gui/networksettings.ui" line="54"/>
         <source>Specify proxy manually as</source>
         <translation>Spesifiser proxy manuelt som</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="80"/>
+        <location filename="../src/gui/networksettings.ui" line="84"/>
         <source>Host</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="100"/>
+        <location filename="../src/gui/networksettings.ui" line="104"/>
         <source>:</source>
         <translation>:</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="131"/>
+        <location filename="../src/gui/networksettings.ui" line="135"/>
         <source>Proxy server requires authentication</source>
         <translation>Proxy-serveren krever pålogging</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="176"/>
+        <location filename="../src/gui/networksettings.ui" line="180"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="197"/>
+        <location filename="../src/gui/networksettings.ui" line="201"/>
         <source>Download Bandwidth</source>
         <translation>Båndbredde for nedlasting</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="203"/>
-        <location filename="../src/gui/networksettings.ui" line="282"/>
+        <location filename="../src/gui/networksettings.ui" line="229"/>
+        <location filename="../src/gui/networksettings.ui" line="308"/>
         <source>Limit to</source>
         <translation>Begrens til</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="248"/>
-        <location filename="../src/gui/networksettings.ui" line="327"/>
+        <location filename="../src/gui/networksettings.ui" line="249"/>
+        <location filename="../src/gui/networksettings.ui" line="331"/>
         <source>KBytes/s</source>
         <translation>KByte/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="210"/>
-        <location filename="../src/gui/networksettings.ui" line="299"/>
+        <location filename="../src/gui/networksettings.ui" line="207"/>
+        <location filename="../src/gui/networksettings.ui" line="286"/>
         <source>No limit</source>
         <translation>Ingen begrensning</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="257"/>
-        <location filename="../src/gui/networksettings.ui" line="289"/>
+        <location filename="../src/gui/networksettings.ui" line="217"/>
+        <location filename="../src/gui/networksettings.ui" line="296"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
         <translation>Begrens til 3/4 av estimert båndbredde</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="276"/>
+        <location filename="../src/gui/networksettings.ui" line="280"/>
         <source>Upload Bandwidth</source>
         <translation>Båndbredde for opplasting</translation>
     </message>
     <message>
-        <location filename="../src/gui/networksettings.ui" line="260"/>
-        <location filename="../src/gui/networksettings.ui" line="292"/>
+        <location filename="../src/gui/networksettings.ui" line="220"/>
+        <location filename="../src/gui/networksettings.ui" line="299"/>
         <source>Limit automatically</source>
         <translation>Begrens automatisk</translation>
     </message>
@@ -1997,37 +1978,68 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="115"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="134"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Feil returnert fra serveren: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="118"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="137"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Det oppsto en feil med tilgang til &quot;token&quot; endepunktet: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="122"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="141"/>
         <source>Empty JSON from OAuth2 redirect</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="127"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="146"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Kunne ikke prosessere JSON returnert fra serveren:&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="130"/>
-        <source>The reply from the server did not contain all expected fields</source>
-        <translation>Svaret fra serveren inneholder ikke alle forventede felt</translation>
+        <location filename="../src/libsync/creds/oauth.cpp" line="149"/>
+        <source>Unsupported token type: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="134"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="151"/>
+        <source>The reply from the server did not contain all expected fields
+:%1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/creds/oauth.cpp" line="153"/>
+        <source>Unknown Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/creds/oauth.cpp" line="291"/>
+        <source>	Error: Missing field %1
+</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/creds/oauth.cpp" line="157"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Innloggingsfeil&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="140"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="202"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="205"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="209"/>
+        <source>Error while refreshing the token: %1 : %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/creds/oauth.cpp" line="214"/>
+        <source>The reply from the server did not contain all expected fields
+:%1
+Received data: %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/creds/oauth.cpp" line="235"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Feil bruker&lt;/h1&gt;&lt;p&gt;Du logget inn med bruker &lt;em&gt;%1&lt;/em&gt;, men må logge inn med bruker &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Logg ut av %3 i en annen tab, &lt;a href=&apos;%4&apos;&gt;klikk deretter her&lt;/a&gt; og logg inn som bruker %2&lt;/p&gt;</translation>
     </message>
@@ -2159,22 +2171,22 @@ kan be om flere rettigheter underveis.</translation>
         <translation>Oppkobling feilet</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="31"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Klarte ikke å koble til den spesifiserte sikre server-addressen. Hvordan vil du gå videre?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="41"/>
         <source>Select a different URL</source>
         <translation>Velg en annen URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="48"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
         <translation>Prøv igjen ukryptert over HTTP (usikret)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
+        <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Configure client-side TLS certificate</source>
         <translation>Konfigurer TLS-sertifikat på klientsiden</translation>
     </message>
@@ -2215,7 +2227,7 @@ kan be om flere rettigheter underveis.</translation>
         <translation>Logg inn i nettleseren din</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="55"/>
         <source>Copy link to clipboard</source>
         <translation>Kopier link til utklippstavlen</translation>
     </message>
@@ -2250,12 +2262,12 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>&amp;Neste &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="205"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="206"/>
         <source>Invalid URL</source>
         <translation>Ugyldig URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="317"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="318"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Kunne ikke laste inn sertifikat. Kanskje feil passord?</translation>
     </message>
@@ -2263,144 +2275,144 @@ Det er ikke tilrådelig å bruke den.</translation>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="255"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="251"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Vellykket oppkobling mot %1: %2 versjon %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="283"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Klarte ikke å koble til %1 på %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="301"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Tidsavbrudd ved oppkobling mot %1 på %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="320"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Prøver å koble til %1 på %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>Autentisert forespørsel til serveren ble omdirigert til &apos;%1&apos;. URL-en er ugyldig, serveren er feilkonfigurert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Det kom et uventet svar fra en autentisert webdav-forespørsel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="384"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Tilgang forbudt av serveren. For å sjekke om du har gyldig tilgang, &lt;a href=&quot;%1&quot;&gt;klikk her&lt;/a&gt; for å aksessere tjenesten med nettleseren din.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="281"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>Invalid URL</source>
         <translation>Ugyldig URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="434"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokal synkroniseringsmappe %1 finnes allerede. Setter den opp for synkronisering.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="441"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="437"/>
         <source>Creating local sync folder %1...</source>
         <translation>Oppretter lokal synkroniseringsmappe %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="441"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="447"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="443"/>
         <source>failed.</source>
         <translation>feilet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="449"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
         <source>Could not create local folder %1</source>
         <translation>Klarte ikke å opprette lokal mappe %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="475"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="471"/>
         <source>No remote folder specified!</source>
         <translation>Ingen ekstern mappe spesifisert!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="481"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="477"/>
         <source>Error: %1</source>
         <translation>Feil: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="494"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="490"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>oppretter mappe på ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="510"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="506"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Ekstern mappe %1 ble opprettet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="512"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Ekstern mappe %1 finnes allerede. Kobler den til for synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="514"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="516"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="510"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="512"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Oppretting av mappe resulterte i HTTP-feilkode %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="518"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="514"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Oppretting av ekstern mappe feilet fordi påloggingsinformasjonen er feil!&lt;br/&gt;Gå tilbake og sjekk brukernavnet og passordet ditt.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="522"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="518"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Oppretting av ekstern mappe feilet, sannsynligvis fordi oppgitt påloggingsinformasjon er feil.&lt;/font&gt;&lt;br/&gt;Vennligst gå tilbake og sjekk ditt brukernavn og passord.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="527"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="528"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="523"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Oppretting av ekstern mappe %1 feilet med feil &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>En synkroniseringsforbindelse fra %1 til ekstern mappe %2 ble satt opp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="550"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="546"/>
         <source>Successfully connected to %1!</source>
         <translation>Forbindelse til %1 opprettet!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="557"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="553"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Klarte ikke å etablere forbindelse til %1. Sjekk igjen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="571"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="567"/>
         <source>Folder rename failed</source>
         <translation>Omdøping av mappe feilet</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="572"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="568"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Kan ikke fjerne og sikkerhetskopiere mappen fordi mappen eller en fil i mappen er åpen i et annet program. Lukk mappen eller filen og prøv igjen, eller avbryt oppsettet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="622"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="620"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Oppretting av lokal synkroniseringsmappe %1 vellykket!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -2408,44 +2420,44 @@ Det er ikke tilrådelig å bruke den.</translation>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="76"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="78"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 Veiviser for tilkobling</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="248"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="251"/>
         <source>Enable technical preview feature?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="249"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="252"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead a virtual file will be created for each file that exists on the server. When a file is opened its contents will be downloaded automatically. Alternatively, files can be downloaded manually by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="257"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="260"/>
         <source>Enable virtual files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="258"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="261"/>
         <source>Continue to use selective sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="263"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="266"/>
         <source>Enable experimental feature?</source>
         <translation>Aktiver eksperimentelle funksjoner?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="277"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="280"/>
         <source>Enable experimental placeholder mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="264"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="267"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2456,7 +2468,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="281"/>
         <source>Stay safe</source>
         <translation>Hold deg trygg</translation>
     </message>
@@ -2482,7 +2494,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="148"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="150"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Ugyldig JSON-svar fra forespørsels-URL</translation>
     </message>
@@ -2562,7 +2574,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>størrelse</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="402"/>
@@ -2585,42 +2597,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1242"/>
+        <location filename="../src/libsync/discovery.cpp" line="1246"/>
         <source>Moved to invalid target, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1255"/>
+        <location filename="../src/libsync/discovery.cpp" line="1259"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ikke tillatt å fjerne, gjenoppretter</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1167"/>
+        <location filename="../src/libsync/discovery.cpp" line="1171"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorert på grunn av svartelisten &quot;velg hva som skal synkroniseres&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1200"/>
+        <location filename="../src/libsync/discovery.cpp" line="1204"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ikke tillatt fordi du ikke har lov til å lage undermapper i den mappen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1205"/>
+        <location filename="../src/libsync/discovery.cpp" line="1209"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ikke tillatt fordi du ikke har lov til å opprette filer i den mappen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1223"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ikke tillatt å laste opp denne filenfordi den er skrivebeskyttet på serveren, gjenoppretter</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1364"/>
+        <location filename="../src/libsync/discovery.cpp" line="1368"/>
         <source>Error while reading the database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1425"/>
+        <location filename="../src/libsync/discovery.cpp" line="1429"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation type="unfinished"/>
     </message>
@@ -2628,7 +2640,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="996"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1001"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -2651,38 +2663,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ledig plass på disk er mindre enn %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
-        <source>Download slot finished, but there was no reply!</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="630"/>
         <source>File was deleted from server</source>
         <translation>Filen ble slettet fra serveren</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="765"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="697"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Hele filen kunne ikke lastes ned.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="772"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="704"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Nedlastet fil er tom, selv om serveren annonserte at den skulle være %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="952"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="884"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Fil %1 kan ikke lagres på grunn av lokal konflikt med filnavn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="363"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="997"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="929"/>
         <source>File has changed since discovery</source>
         <translation>Filen er endret siden den ble oppdaget</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1063"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="995"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -2690,12 +2697,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="234"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="235"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Gjenoppretting feilet: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="301"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="302"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>En fil eller mappe ble fjernet fra en deling med lesetilgang, men gjenoppretting feilet: %1</translation>
     </message>
@@ -2798,33 +2805,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="196"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="198"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Fil %1 kan ikke lastes opp fordi en annen fil eksisterer med samme navn, bare med forskjellige store og små bokstaver i navnet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="303"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="305"/>
         <source>File Removed</source>
         <translation>Fil fjernet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="313"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="315"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Lokal fil endret under synkronisering. Den vil gjenopptas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="325"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="327"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil endret under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="207"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="575"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="209"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="578"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Opplasting av %1 overstiger kvoten for mappen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="660"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="663"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -2832,65 +2839,68 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="76"/>
-        <source>Failed to get zsync byte ranges.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="634"/>
-        <source>Failed to generate zsync file.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="701"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="472"/>
         <source>The local file was removed during sync.</source>
         <translation>Den lokale filen ble fjernet under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="712"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="483"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil endret under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="751"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="522"/>
         <source>Poll URL missing</source>
         <translation>Forespørsels-URL mangler</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="760"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="531"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Uventet returkode fra serveren (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="767"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="538"/>
         <source>Missing File ID from server</source>
         <translation>Mangler File ID fra server</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="781"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="552"/>
         <source>Missing ETag from server</source>
         <translation>Mangler ETag fra server</translation>
     </message>
 </context>
 <context>
+    <name>OCC::PropagateUploadFileTUS</name>
+    <message>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="202"/>
+        <source>The local file was removed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="213"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::PropagateUploadFileV1</name>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="218"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="223"/>
         <source>Poll URL missing</source>
         <translation>Forespørsels-URL mangler</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="242"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="247"/>
         <source>The local file was removed during sync.</source>
         <translation>Den lokale filen ble fjernet under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="253"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="258"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil endret under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="267"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="272"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>Serveren godtok ikke den siste deloverføringen. (Ingen e-tag var tilstede)</translation>
     </message>
@@ -2961,27 +2971,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Proxy-autentisering kreves</translation>
     </message>
     <message>
-        <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
+        <location filename="../src/gui/proxyauthdialog.ui" line="35"/>
         <source>Username:</source>
         <translation>Brukernavn:</translation>
     </message>
     <message>
-        <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
+        <location filename="../src/gui/proxyauthdialog.ui" line="59"/>
         <source>Proxy:</source>
         <translation>Proxy:</translation>
     </message>
     <message>
-        <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
+        <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>The proxy server needs a username and password.</source>
         <translation>Proxy-serveren trenger et brukernavn og et passord.</translation>
     </message>
     <message>
-        <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
+        <location filename="../src/gui/proxyauthdialog.ui" line="45"/>
         <source>Password:</source>
         <translation>Passord:</translation>
     </message>
     <message>
-        <location filename="../src/gui/proxyauthdialog.ui" line="74"/>
+        <location filename="../src/gui/proxyauthdialog.ui" line="66"/>
         <source>TextLabel</source>
         <translation>Tekst-etikett</translation>
     </message>
@@ -3039,7 +3049,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.ui" line="14"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="117"/>
         <source>Settings</source>
         <translation>Innstillinger</translation>
     </message>
@@ -3049,41 +3059,46 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Aktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="117"/>
-        <source>General</source>
-        <translation>Generelt</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="124"/>
-        <source>Network</source>
-        <translation>Nettverk</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="134"/>
-        <location filename="../src/gui/settingsdialog.cpp" line="137"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="128"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="131"/>
         <source>Quit %1</source>
         <translation>Avslutt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="138"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="132"/>
         <source>Are you sure you want to quit %1?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="249"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="254"/>
         <source>Account</source>
         <translation>Konto</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.ui" line="14"/>
+        <source>MainWindow</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.ui" line="39"/>
+        <source>Hide</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.ui" line="49"/>
+        <source>toolBar</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="60"/>
+        <location filename="../src/gui/sharedialog.ui" line="22"/>
         <source>TextLabel</source>
         <translation>Tekst-etikett</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="28"/>
+        <location filename="../src/gui/sharedialog.ui" line="37"/>
         <source>share label</source>
         <translation>Tittel for deling</translation>
     </message>
@@ -3093,47 +3108,47 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Dialog</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="50"/>
+        <location filename="../src/gui/sharedialog.ui" line="59"/>
         <source>ownCloud Path:</source>
         <translation>ownCloud-sti:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="110"/>
+        <location filename="../src/gui/sharedialog.cpp" line="108"/>
         <source>%1 Sharing</source>
         <translation>%1-deling</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="85"/>
+        <location filename="../src/gui/sharedialog.cpp" line="86"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="107"/>
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Folder: %2</source>
         <translation>Mappe: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="113"/>
+        <location filename="../src/gui/sharedialog.cpp" line="111"/>
         <source>The server does not allow sharing</source>
         <translation>Serveren tillater ikke deling</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="129"/>
+        <location filename="../src/gui/sharedialog.cpp" line="127"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
         <translation>Henter maksimalt mulige delerettigheter fra serveren...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="199"/>
+        <location filename="../src/gui/sharedialog.cpp" line="197"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Filen kan ikke deles fordi den ble delt uten adgang til å dele.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="213"/>
+        <location filename="../src/gui/sharedialog.cpp" line="211"/>
         <source>Users and Groups</source>
         <translation>Brukere og grupper</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="220"/>
+        <location filename="../src/gui/sharedialog.cpp" line="218"/>
         <source>Public Links</source>
         <translation>Offentlige lenker</translation>
     </message>
@@ -3146,67 +3161,67 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Del NewDocument.odt</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="207"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="147"/>
         <source>Upload only (File Drop)</source>
         <translation>Kun opplasting (Fil Slipp)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="160"/>
         <source>Receive files from others without revealing the contents of the folder.</source>
         <translation>Motta filer fra andre uten å avsløre innholdet i mappen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="237"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="124"/>
         <source>Download / View / Edit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="297"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="269"/>
         <source>Name:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="304"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="276"/>
         <source>Enter name of new share...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="311"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="283"/>
         <source>&amp;Create</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="364"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="336"/>
         <source>TextLabel</source>
         <translation>Tekst-etikett</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="121"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="221"/>
         <source>Set &amp;password </source>
         <translation>Sett &amp;passord </translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="87"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="235"/>
         <source>Set &amp;expiration date</source>
         <translation>Sett &amp;utløpsdato</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="138"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="181"/>
         <source>Set password</source>
         <translation>Sett passord</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="181"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="114"/>
         <source>Recipients can view or download contents.</source>
         <translation>Mottakere kan se og laste ned innhold.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="230"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="99"/>
         <source>Download / View</source>
         <translation>Last ned / Se</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="250"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="137"/>
         <source>Recipients can view, download, edit, delete and upload contents.</source>
         <translation>Mottakere kan se, laste ned, redigere og laste opp innhold.</translation>
     </message>
@@ -3353,7 +3368,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ingen resultater for &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="343"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="345"/>
         <source>I shared something with you</source>
         <translation>Jeg delte noe med deg</translation>
     </message>
@@ -3387,17 +3402,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="363"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
         <source>create</source>
         <translation>opprette</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="366"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
         <source>change</source>
         <translation>endre</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="369"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="371"/>
         <source>delete</source>
         <translation>slett</translation>
     </message>
@@ -3414,133 +3429,133 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="493"/>
+        <location filename="../src/gui/socketapi.cpp" line="558"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Del med %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="529"/>
+        <location filename="../src/gui/socketapi.cpp" line="591"/>
         <source>Context menu share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="534"/>
+        <location filename="../src/gui/socketapi.cpp" line="596"/>
         <source>Context menu share %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="723"/>
+        <location filename="../src/gui/socketapi.cpp" line="765"/>
         <source>Confirm deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="725"/>
+        <location filename="../src/gui/socketapi.cpp" line="767"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="726"/>
+        <location filename="../src/gui/socketapi.cpp" line="768"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="765"/>
+        <location filename="../src/gui/socketapi.cpp" line="807"/>
         <source>Select new location...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="775"/>
+        <location filename="../src/gui/socketapi.cpp" line="817"/>
         <source>Error</source>
         <translation>Feil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="776"/>
+        <location filename="../src/gui/socketapi.cpp" line="818"/>
         <source>Moving file failed:
 
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="783"/>
+        <location filename="../src/gui/socketapi.cpp" line="825"/>
         <source>I shared something with you</source>
         <translation>Jeg delte noe med deg</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="796"/>
-        <location filename="../src/gui/socketapi.cpp" line="827"/>
+        <location filename="../src/gui/socketapi.cpp" line="838"/>
+        <location filename="../src/gui/socketapi.cpp" line="869"/>
         <source>Share...</source>
         <translation>Del...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="798"/>
-        <location filename="../src/gui/socketapi.cpp" line="843"/>
+        <location filename="../src/gui/socketapi.cpp" line="840"/>
+        <location filename="../src/gui/socketapi.cpp" line="885"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopier privat URL til utklippstavlen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="799"/>
+        <location filename="../src/gui/socketapi.cpp" line="841"/>
         <source>Send private link by email...</source>
         <translation>Send privat link i e-post</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="825"/>
+        <location filename="../src/gui/socketapi.cpp" line="867"/>
         <source>Resharing this file is not allowed</source>
         <translation>Videre deling av denne filen er ikke tillatt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="825"/>
+        <location filename="../src/gui/socketapi.cpp" line="867"/>
         <source>Resharing this folder is not allowed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="837"/>
-        <location filename="../src/gui/socketapi.cpp" line="839"/>
+        <location filename="../src/gui/socketapi.cpp" line="879"/>
+        <location filename="../src/gui/socketapi.cpp" line="881"/>
         <source>Copy public link to clipboard</source>
         <translation>Kopier offentlig link til utklippstavlen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="930"/>
+        <location filename="../src/gui/socketapi.cpp" line="972"/>
         <source>Open in browser</source>
         <translation>Åpne i nettleser</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="938"/>
+        <location filename="../src/gui/socketapi.cpp" line="980"/>
         <source>Show file versions in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="961"/>
+        <location filename="../src/gui/socketapi.cpp" line="1003"/>
         <source>Rename...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="964"/>
+        <location filename="../src/gui/socketapi.cpp" line="1006"/>
         <source>Rename and upload...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="969"/>
+        <location filename="../src/gui/socketapi.cpp" line="1011"/>
         <source>Move and rename...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="972"/>
+        <location filename="../src/gui/socketapi.cpp" line="1014"/>
         <source>Move, rename and upload...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="975"/>
+        <location filename="../src/gui/socketapi.cpp" line="1017"/>
         <source>Delete local changes</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="980"/>
+        <location filename="../src/gui/socketapi.cpp" line="1022"/>
         <source>Move and upload...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="981"/>
+        <location filename="../src/gui/socketapi.cpp" line="1023"/>
         <source>Delete</source>
         <translation>Slett</translation>
     </message>
@@ -3680,7 +3695,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Skjema</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.ui" line="25"/>
+        <location filename="../src/gui/sslerrordialog.ui" line="32"/>
         <source>Trust this certificate anyway</source>
         <translation>Stol på dette sertifikatet likevel</translation>
     </message>
@@ -3769,12 +3784,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Kan ikke åpne eller opprette den lokale synkroniseringsdatabasen. Kontroller at du har skrivetilgang i synkroniseringsmappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1027"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Diskplass er lav: Nedlastinger som ville redusere ledig plass under% 1 ble hoppet over.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1034"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Det er ikke nok ledig plass på serveren for noen av opplastingene.</translation>
     </message>
@@ -3809,23 +3824,15 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Kan ikke åpne synkroniseringsjournalen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1010"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
 </context>
 <context>
-    <name>OCC::SyncLogDialog</name>
-    <message>
-        <location filename="../src/gui/synclogdialog.ui" line="14"/>
-        <source>Synchronisation Log</source>
-        <translation>Synkroniseringslogg</translation>
-    </message>
-</context>
-<context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="54"/>
+        <location filename="../src/gui/systray.cpp" line="59"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -3833,17 +3840,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="343"/>
+        <location filename="../src/libsync/theme.cpp" line="341"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="350"/>
+        <location filename="../src/libsync/theme.cpp" line="348"/>
         <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
         <translation>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="351"/>
+        <location filename="../src/libsync/theme.cpp" line="349"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Distribuert av %1 og lisensiert under GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 og %2-logoet er registrerte varemerker for %1 i USA, i andre land eller begge deler.&lt;/p&gt;</translation>
     </message>
@@ -3851,115 +3858,79 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="338"/>
+        <location filename="../src/common/checksums.cpp" line="335"/>
         <source>The checksum header is malformed.</source>
         <translation>Sjekksum-headeren har feil format.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="365"/>
+        <location filename="../src/common/checksums.cpp" line="362"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>Sjekksum-header inneholdt ukjent sjekksum-type &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="369"/>
+        <location filename="../src/common/checksums.cpp" line="366"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>Den nedlastede filen passer ikke med sjekksummen, den vil bli gjenopptatt.</translation>
     </message>
 </context>
 <context>
-    <name>OCC::ZsyncGenerateRunnable</name>
-    <message>
-        <location filename="../src/libsync/propagatecommonzsync.cpp" line="186"/>
-        <source>Failed to open input file %1: %2</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatecommonzsync.cpp" line="195"/>
-        <source>Failed to open input file: %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatecommonzsync.cpp" line="208"/>
-        <source>Failed to write block sums:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatecommonzsync.cpp" line="229"/>
-        <source>Failed to write zsync metadata file:</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
-    <name>OCC::ZsyncSeedRunnable</name>
-    <message>
-        <location filename="../src/libsync/propagatecommonzsync.cpp" line="115"/>
-        <source>Unable to parse zsync file.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatecommonzsync.cpp" line="132"/>
-        <source>Unable to open file: %1</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="269"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="267"/>
         <source>Please sign in</source>
         <translation>Vennligst logg inn</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="315"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
         <source>Folder %1: %2</source>
         <translation>Mappe %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="333"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>There are no sync folders configured.</source>
         <translation>Ingen synkroniseringsmapper er konfigurert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="340"/>
         <source>Open in browser</source>
         <translation>Åpne i nettleser</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="709"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="712"/>
         <location filename="../src/gui/owncloudgui.cpp" line="806"/>
         <source>Log in...</source>
         <translation>Logg inn..</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="701"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="704"/>
         <location filename="../src/gui/owncloudgui.cpp" line="808"/>
         <source>Log out</source>
         <translation>Logg ut</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
         <source>Recent Changes</source>
         <translation>Siste endringer</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="369"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <source>Managed Folders:</source>
         <translation>Administrerte mapper:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="372"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="370"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Åpne mappe &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="344"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
         <source>Open %1 in browser</source>
         <translation>Åpne %1 i nettleser</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="201"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
@@ -3989,103 +3960,103 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Avslutt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="250"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="248"/>
         <source>Disconnected from %1</source>
         <translation>Koble fra %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="200"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="198"/>
         <source>Unsupported Server Version</source>
         <translation>Server-versjonen støttes ikke</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="240"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
         <source>Disconnected</source>
         <translation>Frakoblet</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="242"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>Disconnected from some accounts</source>
         <translation>Frakoblet noen kontoer</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
         <translation>Koblet fra kontoer:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="255"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="270"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Signed out</source>
         <translation>Logget ut</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>Account synchronization is disabled</source>
         <translation>Kontosynkronisering er deaktivert</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="275"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="328"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="273"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
         <source>Synchronization is paused</source>
         <translation>Synkronisering er satt på pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Unresolved conflicts</source>
         <translation>Uløste konflikter</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="330"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="328"/>
         <source>Error during synchronization</source>
         <translation>Feil under synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="334"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="332"/>
         <source>No sync folders configured</source>
         <translation>Ingen synkronisering-mapper konfigurert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="380"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="378"/>
         <source>Unpause all folders</source>
         <translation>Fortsett alle mapper</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="385"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <source>Pause all folders</source>
         <translation>Sett alle mapper på pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="680"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="683"/>
         <source>Unpause all synchronization</source>
         <translation>Fortsett all synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="682"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="685"/>
         <source>Unpause synchronization</source>
         <translation>Fortsett synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="690"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="693"/>
         <source>Pause all synchronization</source>
         <translation>Sett all synkronisering på pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="695"/>
         <source>Pause synchronization</source>
         <translation>Sett synkronisering på pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="699"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="702"/>
         <source>Log out of all accounts</source>
         <translation>Logg ut av alle kontoer</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="707"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="710"/>
         <source>Log in to all accounts...</source>
         <translation>Logg inn på alle kontoer...</translation>
     </message>
@@ -4096,7 +4067,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="801"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1172"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1146"/>
         <source>About %1</source>
         <translation>Om %1</translation>
     </message>
@@ -4141,7 +4112,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="325"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
         <source>Up to date</source>
         <translation>Oppdatert</translation>
     </message>
@@ -4155,84 +4126,84 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="81"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="134"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="253"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="361"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="515"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="526"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="52"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="108"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="214"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="317"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="490"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="501"/>
         <source>TextLabel</source>
         <translation>Tekst-etikett</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="91"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="62"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="415"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hvis det settes kryss i denne boksen, vil eksisterende innhold i den lokale mappen bli slettet for å starte en ren synkronisering fra serveren.&lt;/p&gt;&lt;p&gt;Ikke sett kryss for dette hvis det lokale innholdet skal lastes opp til mappen på serveren.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="418"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
         <translation>Start en &amp;ren synkronisering (sletter den lokale mappen!)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="152"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>Be om bekreftelse før synkronisering av mapper større enn</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="169"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="327"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="178"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
         <translation>Be om bekreftelse før synkronisering av e&amp;ksterne lagre</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="207"/>
         <source>Choose what to sync</source>
         <translation>Velg hva som synkroniseres</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="394"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="397"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="247"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="250"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="253"/>
         <source>Manually create folder sync connections </source>
         <translation>Manuelt opprett mappesynk koblinger. </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="150"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="333"/>
         <source>&amp;Local Folder</source>
         <translation>&amp;Lokal mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="374"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="405"/>
         <source>&amp;Keep local data</source>
         <translation>&amp;Behold lokale data</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
         <translation>Synkroniser alt fra serveren (anbefalt)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="460"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="435"/>
         <source>Status message</source>
         <translation>Statusmelding</translation>
     </message>
@@ -4245,12 +4216,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Skjema</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="54"/>
         <source>&amp;Username</source>
         <translation>&amp;Brukernavn</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="64"/>
         <source>&amp;Password</source>
         <translation>&amp;Passord</translation>
     </message>
@@ -4334,37 +4305,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="452"/>
+        <location filename="../src/common/utility.cpp" line="448"/>
         <source>in the future</source>
         <translation>fram i tid</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="448"/>
+        <location filename="../src/common/utility.cpp" line="444"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>i går</numerusform><numerusform>for %n dager siden</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="456"/>
+        <location filename="../src/common/utility.cpp" line="452"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>for %n time siden</numerusform><numerusform>for %n timer siden</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="461"/>
+        <location filename="../src/common/utility.cpp" line="457"/>
         <source>now</source>
         <translation>nå</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="463"/>
+        <location filename="../src/common/utility.cpp" line="459"/>
         <source>Less than a minute ago</source>
         <translation>For mindre enn et minutt siden</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="466"/>
+        <location filename="../src/common/utility.cpp" line="462"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>for %n minutt siden</numerusform><numerusform>for %n minutter siden</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="469"/>
+        <location filename="../src/common/utility.cpp" line="465"/>
         <source>Some time ago</source>
         <translation>For en stund siden</translation>
     </message>
@@ -4398,37 +4369,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="320"/>
+        <location filename="../src/common/utility.cpp" line="316"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n år</numerusform><numerusform>%n år</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="321"/>
+        <location filename="../src/common/utility.cpp" line="317"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n måned</numerusform><numerusform>%n måneder</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="322"/>
+        <location filename="../src/common/utility.cpp" line="318"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n dag</numerusform><numerusform>%n dager</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="323"/>
+        <location filename="../src/common/utility.cpp" line="319"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n time</numerusform><numerusform>%n timer</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="324"/>
+        <location filename="../src/common/utility.cpp" line="320"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minutt</numerusform><numerusform>%n minutter</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="325"/>
+        <location filename="../src/common/utility.cpp" line="321"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n sekund</numerusform><numerusform>%n sekunder</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="349"/>
+        <location filename="../src/common/utility.cpp" line="345"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
@@ -4449,7 +4420,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="322"/>
+        <location filename="../src/libsync/theme.cpp" line="320"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Bygget fra Git-revisjon &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; %3, %4 med Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
