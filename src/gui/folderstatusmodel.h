@@ -138,7 +138,7 @@ private slots:
     void slotShowFetchProgress();
 
 private:
-    QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo *root,
+    QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
         const QStringList &oldBlackList) const;
     const AccountState *_accountState = nullptr;
     bool _dirty = false; // If the selective sync checkboxes were changed
