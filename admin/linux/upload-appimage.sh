@@ -32,8 +32,6 @@ fi
 
 echo "Found AppImage: $BASENAME"
 
-apt-get -y install jq
-
 if [ $TAG_NAME != "master" ]; then
     # Delete all old comments in desktop PR, starting with "AppImage file:"
     oldComments=$(curl 2>/dev/null -u $GIT_USERNAME:$GIT_TOKEN -X GET $DESKTOP_API_BASE_URL/issues/$PR/comments | jq '.[] | (.id |tostring) + "|" + (.user.login | test("'${GIT_USERNAME}'") | tostring) + "|" + (.body | test("AppImage file:.*") | tostring)'  | grep "true|true" | tr -d "\"" | cut -f1 -d"|")
