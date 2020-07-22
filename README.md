@@ -2,6 +2,13 @@
 
 This allows you to easily build the desktop client for 64-bit and 32-bit Windows.
 
+## Update: 2020-07-22
+
+Upgrade / new default version:
+- Qt 5.12.9
+
+The previous patch of the Qt 5.12.8 include file is not required anymore :)
+
 ## Update: 2020-07-16
 
 Added new option to build the Updater (disabled by default):
@@ -39,7 +46,9 @@ Upgrades / new default versions:
 - Visual Studio 2019 (and 2017) support
 - can build Desktop client series 2.6 and 2.7 (QML)
 
-Note: You need to patch an include file of Qt 5.12.8 for use with MSVC, see section: Install list
+Note: You need to patch an include file of Qt 5.12.8 for use with MSVC, see: https://github.com/nextcloud/client-building/blob/e7b04ac00f0cfd7f9b3b4a3651ce0adc5ca07c29/README.md#install-list
+
+Patched file: https://raw.githubusercontent.com/nextcloud/client-building/e7b04ac00f0cfd7f9b3b4a3651ce0adc5ca07c29/Windows/Qt-5.12.8-QtCore-Patch/qlinkedlist.h
 
 Also note that the Qt Maintenance tool now requires you to register an Qt Account (free).
 
@@ -110,20 +119,12 @@ Optional:
 - [ ] Git bash (it comes with Git):
       https://git-scm.com/download/win
 
-- [ ] Qt 5.12.8 (select in the wizard: MSVC 2017 64-bit AND 32-bit and all the "Qt ..." options, not required: Debug Info Files):
+- [ ] Qt 5.12.9 (select in the wizard: MSVC 2017 64-bit AND 32-bit and all the "Qt ..." options, not required: Debug Info Files):
       http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe
 
       Install to: C:\Qt
 
   Note: MSVC 2017 is binary compatible with VS 2019, so don't be confused ;-)
-
-  You need to patch an include file of Qt 5.12.8 for use with MSVC: https://github.com/nextcloud/client-building/raw/master/Windows/Qt-5.12.8-QtCore-Patch/qlinkedlist.h
-
-      After installing Qt 5.12.8 put qlinkedlist.h in the following two folders:
-      - C:\Qt\5.12.8\msvc2017\include\QtCore
-      - C:\Qt\5.12.8\msvc2017_64\include\QtCore
-
-  It was modified to solve this bug: https://bugreports.qt.io/browse/QTBUG-81727
 
 - [ ] CMake 3.14.x (choose the ZIP version, extract and rename to: C:\Nextcloud\tools\cmake):
       https://cmake.org/download/
@@ -141,7 +142,7 @@ Optional:
       - 64-bit: C:\OpenSSL\Win64
       - 32-bit: C:\OpenSSL\Win32
 
-    Note: Qt 5.12.8 also includes the option to install OpenSSL 1.1.1 libraries from the Maintenance tool wizard.
+    Note: Qt 5.12.9 also includes the option to install OpenSSL 1.1.1 libraries from the Maintenance tool wizard.
           You may also use these libraries instead of the ones above but then you have to modify the paths in defaults.inc.bat
           and be sure to check for updates on a regular basis!
 
