@@ -362,8 +362,6 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
     auto info = infoForIndex(parent);
     if (!info)
         return 0;
-    if (info->_folder && !info->_folder->supportsSelectiveSync())
-        return 0;
     if (info->hasLabel())
         return 1;
     return info->_subs.count();
