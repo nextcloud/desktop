@@ -65,20 +65,11 @@ def main(ctx):
             read_image = "rabits/qt:5.12-desktop",
             trigger = translations_trigger,
         ),
-        update_translations(
-            ctx,
-            "nsis",
-            "admin/win/nsi/l10n",
-            write_image = "python:2.7-stretch",
-            trigger = translations_trigger,
-            depends_on = ["translations-client"],  # needs to run after translations-client because drone-git-push does not rebase before pushing
-        ),
         notification(
             name = "translations",
             trigger = translations_trigger,
             depends_on = [
-                "translations-client",
-                "translations-nsis",
+                "translations-client"
             ],
         ),
     ]
