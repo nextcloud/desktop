@@ -7,7 +7,7 @@
 
 def main(ctx):
     translations_trigger = {
-        "cron": ["translations"],
+        "cron": ["translations-2-7"],
     }
     build_trigger = {
         "event": [
