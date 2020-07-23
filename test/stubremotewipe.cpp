@@ -21,7 +21,7 @@ QString OCC::FolderMan::unescapeAlias(QString const&){ return QString(); }
 QString OCC::FolderMan::escapeAlias(QString const&){ return QString(); }
 void OCC::FolderMan::scheduleFolder(OCC::Folder*){ }
 OCC::SocketApi *OCC::FolderMan::socketApi(){ return new SocketApi;  }
-OCC::Folder::Map OCC::FolderMan::map() { return OCC::Folder::Map(); }
+const OCC::Folder::Map &OCC::FolderMan::map() const { return OCC::Folder::Map(); }
 void OCC::FolderMan::setSyncEnabled(bool) { }
 void OCC::FolderMan::slotSyncOnceFileUnlocks(QString const&) { }
 void OCC::FolderMan::slotScheduleETagJob(QString const&, OCC::RequestEtagJob*){ }

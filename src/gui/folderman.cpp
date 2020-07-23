@@ -90,7 +90,7 @@ FolderMan::~FolderMan()
     _instance = nullptr;
 }
 
-OCC::Folder::Map FolderMan::map()
+const OCC::Folder::Map &FolderMan::map() const
 {
     return _folderMap;
 }
