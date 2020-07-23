@@ -141,7 +141,7 @@ QString DiscoveryPhase::adjustRenamedPath(const QString &original, SyncFileItem:
     return OCC::adjustRenamedPath(d == SyncFileItem::Down ? _renamedItemsRemote : _renamedItemsLocal, original);
 }
 
-QString adjustRenamedPath(const QMap<QString, QString> renamedItems, const QString original)
+QString adjustRenamedPath(const QMap<QString, QString> &renamedItems, const QString &original)
 {
     int slashPos = original.size();
     while ((slashPos = original.lastIndexOf('/', slashPos - 1)) > 0) {
@@ -421,7 +421,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
     }
 }
 
-void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, const QMap<QString, QString> &map)
+void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &file, const QMap<QString, QString> &map)
 {
     if (!_ignoredFirst) {
         // The first entry is for the folder itself, we should process it differently.
@@ -494,7 +494,6 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
 {
     QString contentType = r->header(QNetworkRequest::ContentTypeHeader).toString();
     int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
     qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
     if (r->error() == QNetworkReply::NoError
