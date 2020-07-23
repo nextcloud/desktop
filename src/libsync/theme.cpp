@@ -144,7 +144,8 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             return cached = QIcon::fromTheme(name);
         }
 
-        const auto sizes = QVector<int>{ 16, 32, 64, 128, 256 };
+        const auto sizes = isBranded() ? QVector<int>{ 16, 22, 32, 48, 64, 128, 256, 512, 1024 }
+                                       : QVector<int>{ 16, 32, 64, 128, 256 };
         for (int size : sizes) {
             QString svgName = QString::fromLatin1(":/client/theme/%1/%2.svg").arg(flavor).arg(name);
             QSvgRenderer renderer(svgName);
