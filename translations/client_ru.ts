@@ -84,22 +84,22 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>E-Tag от сервера не получен, проверьте настройки прокси/шлюза.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Мы получили другой E-Tag для возобновления. Повторите попытку позже.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Было получено неожиданное значение Content-Length.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation>Сервер вернул неверный диапазон содержимого</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -339,7 +339,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Получение авторизации из браузера. &lt;a href=&apos;%1&apos;&gt;Нажмите здесь&lt;/a&gt;, чтобы повторно открыть браузер.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="868"/>
@@ -1410,22 +1410,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="149"/>
         <source>Unable to parse zsync.</source>
-        <translation>Не удаётся разобрать zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="171"/>
         <source>Failed to get zsync byte ranges.</source>
-        <translation>Не удалось получить байтовые диапазоны zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="194"/>
         <source>Failed to initialize zsync receive structure.</source>
-        <translation>Не удалось инициализировать структуру получения zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="319"/>
         <source>We received a different E-Tag for delta. Retrying next time.</source>
-        <translation>Для дельты был получен другой E-tag. Повторная попытка.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1503,12 +1503,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>Experimental</source>
-        <translation>Экспериментальное</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>Enable Delta-Synchronization for files larger than</source>
-        <translation>Включить дельта-синхронизацию для файлов больше, чем</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="216"/>
@@ -2032,7 +2032,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>В ответе сервера содержатся не все ожидаемые поля</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
@@ -2674,7 +2674,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
         <source>Download slot finished, but there was no reply!</source>
-        <translation>Слот скачивания завершён, но не было ответа!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
@@ -2855,12 +2855,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="76"/>
         <source>Failed to get zsync byte ranges.</source>
-        <translation>Не удалось получить байтовые диапазоны zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="634"/>
         <source>Failed to generate zsync file.</source>
-        <translation>Не удалось сгенерировать файл zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="701"/>
@@ -3072,12 +3072,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="117"/>
         <source>General</source>
-        <translation>Основные</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="124"/>
         <source>Network</source>
-        <translation>Сеть</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="134"/>
@@ -3842,7 +3842,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>Журнал синхронизации</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3858,7 +3858,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="343"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версия %2. Для более подробной информации посетите &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;По поводу известных проблем и помощи, пожалуйста посетите: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Авторы: Клаас Фрейтаг, Дэниель Молкентен, Оливье Гоффар, Маркус Гётц, Жан-Кристоф Бошар, Томас Мюллер, Доминик Шмидт, Ханна фон Рет, и другие.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="350"/>
@@ -3894,22 +3894,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="186"/>
         <source>Failed to open input file %1: %2</source>
-        <translation>Не удалось открыть входной файл %1: %2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="195"/>
         <source>Failed to open input file: %1</source>
-        <translation>Не удалось открыть входной файл: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="208"/>
         <source>Failed to write block sums:</source>
-        <translation>Не удалось записать суммы блоков:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="229"/>
         <source>Failed to write zsync metadata file:</source>
-        <translation>Не удалось записать файл метаданных zsync:</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3917,12 +3917,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="115"/>
         <source>Unable to parse zsync file.</source>
-        <translation>Не удалось разобрать файл zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="132"/>
         <source>Unable to open file: %1</source>
-        <translation>Не удалось открыть файл: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

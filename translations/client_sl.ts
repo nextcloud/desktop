@@ -84,12 +84,12 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Ni prejete oznake s strežnika. Preveriti je treba podatke posredovalnega strežnika ali prehoda.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Prejeta je različna oznaka za nadaljevanje opravila. Ponovni poskus bo izveden kasneje.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation>Odziv strežnika kaže na neveljaven obseg vsebine</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -335,7 +335,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Poteka pridobivanje overitve brskalnika. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; za ponovno odpiranje brskalnika.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="868"/>
@@ -1495,7 +1495,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>Experimental</source>
-        <translation>Preizkusno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
@@ -3049,12 +3049,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="117"/>
         <source>General</source>
-        <translation>Splošno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="124"/>
         <source>Network</source>
-        <translation>Omrežje</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="134"/>
@@ -3817,7 +3817,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>Zapisnik usklajevanja</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

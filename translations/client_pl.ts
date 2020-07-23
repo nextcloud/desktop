@@ -84,22 +84,22 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Nie otrzymano E-Tag z serwera, sprawdź Proxy/Bramę</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Otrzymaliśmy inny E-Tag wznowienia. Spróbuje ponownie następnym razem.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Otrzymaliśmy nieoczekiwane pobranie Content-Length.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation>Serwer zwrócił błędną zakres zawartości</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -340,7 +340,7 @@ Ta czynność spowoduje przerwanie obecnie działającej synchronizacji.
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Uzyskanie autoryzacji z przeglądarki. Kliknij tutaj, aby ponownie otworzyć przeglądarkę.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="868"/>
@@ -1409,7 +1409,7 @@ Jeśli to był wypadek i zdecydujesz się zatrzymać pliki, zostaną one zsynchr
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="149"/>
         <source>Unable to parse zsync.</source>
-        <translation>Nie można przetworzyć zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="171"/>
@@ -1502,12 +1502,12 @@ Jeśli to był wypadek i zdecydujesz się zatrzymać pliki, zostaną one zsynchr
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>Experimental</source>
-        <translation>Eksperymentalny</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>Enable Delta-Synchronization for files larger than</source>
-        <translation>Włącz synchronizację Delta dla plików większych niż</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="216"/>
@@ -2026,7 +2026,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>Odpowiedź z serwera nie zawierała wszystkich oczekiwanych pól.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
@@ -2066,7 +2066,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Pobieranie %1. Proszę czekać...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
@@ -2569,12 +2569,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>rozmiar</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="402"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>uprawnienia</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="404"/>
@@ -2584,7 +2584,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>id pliku</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="410"/>
@@ -3058,12 +3058,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="117"/>
         <source>General</source>
-        <translation>Ogólne</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="124"/>
         <source>Network</source>
-        <translation>Sieć</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="134"/>
@@ -3170,7 +3170,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="297"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Nazwa:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="304"/>
@@ -3180,7 +3180,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="311"/>
         <source>&amp;Create</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Utwórz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="364"/>
@@ -3277,7 +3277,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="285"/>
         <source>Create new...</source>
-        <translation type="unfinished"/>
+        <translation>Utwórz nowy...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="574"/>
@@ -3519,7 +3519,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="961"/>
         <source>Rename...</source>
-        <translation type="unfinished"/>
+        <translation>Zmień nazwę...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="964"/>
@@ -3826,7 +3826,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>Dziennik synchronizacji</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4656,7 +4656,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Obecnie dostępne lokalnie</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="93"/>

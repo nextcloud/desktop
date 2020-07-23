@@ -84,12 +84,12 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Ingen E-Tag mottatt fra server. Sjekk proxy/gateway.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Vi mottok en forskjellig E-Tag for å fortsette. Prøver igjen neste gang.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation>Serveren returnerte feil content-range</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -335,7 +335,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Hente autorisasjon fra nettleseren. &lt;a href=&apos;%1&apos;&gt;Klikk her &lt;/a&gt; for å åpne nettleseren på nytt.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="868"/>
@@ -942,7 +942,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1123"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Filen %1 ble opprettet men har tidligere blitt ekskludert fra synkronisering. Den vil ikke bli synkronisert.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1134"/>
@@ -1494,7 +1494,7 @@ Hvis det var et uhell og du velger å beholde filene, vil de bli synkronisert ti
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>Experimental</source>
-        <translation>Eksperimentell</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
@@ -2019,7 +2019,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>Svaret fra serveren inneholder ikke alle forventede felt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
@@ -2562,7 +2562,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="400"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>størrelse</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="402"/>
@@ -3051,12 +3051,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="117"/>
         <source>General</source>
-        <translation>Generelt</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="124"/>
         <source>Network</source>
-        <translation>Nettverk</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="134"/>
@@ -3819,7 +3819,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>Synkroniseringslogg</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

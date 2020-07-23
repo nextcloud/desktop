@@ -84,22 +84,22 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Nessun e-tag ricevuto dal server, controlla il proxy/gateway</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Abbiamo ricevuto un e-tag diverso per il recupero. Riprova più tardi.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Abbiamo ricevuto un inaspettato download Content-Length.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation>Il server ha restituito un content-range errato</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -339,7 +339,7 @@ Questa azione interromperà qualsiasi sincronizzazione in corso.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Ottenimento dell&apos;autorizzazione dal browser. &lt;a href=&apos;%1&apos;&gt;Clicca qui&lt;/a&gt; per riaprirle nel browser.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="868"/>
@@ -1411,22 +1411,22 @@ Se è stato un errore e decidi di mantenere i tuoi file, verranno risincronizzat
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="149"/>
         <source>Unable to parse zsync.</source>
-        <translation>Impossibile analizzare zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="171"/>
         <source>Failed to get zsync byte ranges.</source>
-        <translation>Impossibile ottenere gli intervalli byte zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="194"/>
         <source>Failed to initialize zsync receive structure.</source>
-        <translation>Impossibile inizializzare la struttura di ricezione zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownloadzsync.cpp" line="319"/>
         <source>We received a different E-Tag for delta. Retrying next time.</source>
-        <translation>Abbiamo ricevuto un e-tag diverso per delta. Riprova più tardi.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1504,12 +1504,12 @@ Se è stato un errore e decidi di mantenere i tuoi file, verranno risincronizzat
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>Experimental</source>
-        <translation>Sperimentale</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>Enable Delta-Synchronization for files larger than</source>
-        <translation>Abilita la Sincronizzazione Delta per i file più grandi di</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="216"/>
@@ -2030,7 +2030,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>La risposta del server non contiene tutti i campi attesi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
@@ -2671,7 +2671,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
         <source>Download slot finished, but there was no reply!</source>
-        <translation>Download completato, ma non c&apos;è stata risposta!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
@@ -2852,12 +2852,12 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="76"/>
         <source>Failed to get zsync byte ranges.</source>
-        <translation>Impossibile ottenere gli intervalli byte zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="634"/>
         <source>Failed to generate zsync file.</source>
-        <translation>Creazione del file zsync non riuscita.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="701"/>
@@ -3069,12 +3069,12 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="117"/>
         <source>General</source>
-        <translation>Generale</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="124"/>
         <source>Network</source>
-        <translation>Rete</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="134"/>
@@ -3839,7 +3839,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>Registro di sincronizzazione</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3906,7 +3906,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="229"/>
         <source>Failed to write zsync metadata file:</source>
-        <translation>Scrittura metadati del file zsync non riuscita:</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3914,12 +3914,12 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="115"/>
         <source>Unable to parse zsync file.</source>
-        <translation>Impossibile analizzare il file zsync.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatecommonzsync.cpp" line="132"/>
         <source>Unable to open file: %1</source>
-        <translation>Impossibile aprire il file: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
