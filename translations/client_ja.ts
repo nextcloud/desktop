@@ -1389,12 +1389,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>サーバーからE-Tagを受信できません。プロキシ/ゲートウェイを確認してください。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>同期再開時に違う E-Tagを受信しました。次回リトライします。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
@@ -1404,7 +1404,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation>サーバーが間違ったcontent-rangeを返しました</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1435,7 +1435,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="184"/>
         <source>Network</source>
-        <translation>ネットワーク</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="257"/>
@@ -2870,12 +2870,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="202"/>
         <source>The local file was removed during sync.</source>
-        <translation>ローカルファイルを同期中に削除します。</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="213"/>
         <source>Local file changed during sync.</source>
-        <translation>ローカルのファイルが同期中に変更されました。</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3078,7 +3078,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
         <source>Hide</source>
-        <translation>非表示</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="49"/>

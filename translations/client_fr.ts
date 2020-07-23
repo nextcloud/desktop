@@ -1398,12 +1398,12 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Aucun E-Tag reçu du serveur, vérifiez le proxy / la passerelle</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Nous avons reçu un E-Tag différent pour reprendre le téléchargement. Nouvel essai la prochaine fois.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
@@ -1413,7 +1413,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation>Le serveur a retourné une gamme de contenu erronée</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1444,7 +1444,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="184"/>
         <source>Network</source>
-        <translation>Réseau</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="257"/>
@@ -2886,12 +2886,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="202"/>
         <source>The local file was removed during sync.</source>
-        <translation>Fichier local supprimé pendant la synchronisation.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="213"/>
         <source>Local file changed during sync.</source>
-        <translation>Fichier local modifié pendant la synchronisation.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3094,7 +3094,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
         <source>Hide</source>
-        <translation>Masquer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="49"/>

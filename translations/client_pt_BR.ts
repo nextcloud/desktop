@@ -437,7 +437,7 @@ Esta ação irá anular qualquer sincronização atualmente em execução.</tran
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="896"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>Erro na configuração do servidor: %1 at %2.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="907"/>
@@ -1395,22 +1395,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Nenhuma E-Tag recebida do servidor, verifique Proxy / gateway</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Recebemos um e-Tag diferente para resumir. Tente uma próxima vez.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Recebemos um download de Comprimento do Conteúdo inesperado. .</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation>O servidor retornou erro numa série-de-conteúdo</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1441,7 +1441,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="184"/>
         <source>Network</source>
-        <translation>Rede</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="257"/>
@@ -2893,12 +2893,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="202"/>
         <source>The local file was removed during sync.</source>
-        <translation>O arquivo local foi removido durante a sincronização.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="213"/>
         <source>Local file changed during sync.</source>
-        <translation>Arquivo local modificado durante a sincronização.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3101,7 +3101,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
         <source>Hide</source>
-        <translation>Ocultar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="49"/>

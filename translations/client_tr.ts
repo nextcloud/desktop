@@ -1397,22 +1397,22 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Sunucudan E-Tag alınamadı, Vekil Sunucu/Ağ Geçidi&apos;ni denetleyin.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Devam etmek üzere farklı bir E-Etiket aldık. Sonraki işlemde yeniden denenecek.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation>Beklenmeyen bir içerik veya uzunlukta indirme alındı.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation>Sunucu yanlış içerik aralığı döndürdü</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1443,7 +1443,7 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
     <message>
         <location filename="../src/gui/generalsettings.ui" line="184"/>
         <source>Network</source>
-        <translation>Ağ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="257"/>
@@ -2894,12 +2894,12 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="202"/>
         <source>The local file was removed during sync.</source>
-        <translation>Eşitleme sırasında yerel dosya kaldırıldı.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="213"/>
         <source>Local file changed during sync.</source>
-        <translation>Eşitleme sırasında yerel dosya değişti.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3102,7 +3102,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
         <source>Hide</source>
-        <translation>Gizle</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="49"/>
