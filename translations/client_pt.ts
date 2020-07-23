@@ -84,12 +84,12 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Nenhum E-Tag recebida do servidor, verifique Proxy / Acesso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Nós recebemos uma E-Tag diferente para retomar. Tentar da próxima vez.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>O servidor devolveu o alcance-conteúdo errado</translation>
     </message>
 </context>
 <context>
@@ -1495,7 +1495,7 @@ Se foi acidental e decidir manter os seus ficheiros, eles serão sincronizados n
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>Experimental</source>
-        <translation type="unfinished"/>
+        <translation>Experimental</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="177"/>
@@ -3049,12 +3049,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="117"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Geral</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="124"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Rede</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="134"/>
@@ -3817,7 +3817,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Log de Sincronização</translation>
     </message>
 </context>
 <context>
@@ -4212,7 +4212,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="150"/>
         <source>&amp;Local Folder</source>
-        <translation>Pasta &amp;Local</translation>
+        <translation>Pasta Local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
@@ -4250,7 +4250,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation>&amp;Palavra-passe</translation>
+        <translation>&amp;Senha</translation>
     </message>
 </context>
 <context>
@@ -4302,7 +4302,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="160"/>
         <source>Error Label</source>
-        <translation>Erro Etiqueta</translation>
+        <translation>Error Label</translation>
     </message>
 </context>
 <context>
@@ -4482,7 +4482,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Deleted</source>
-        <translation>Eliminado</translation>
+        <translation>Apagado</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
@@ -4492,7 +4492,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Ignored</source>
-        <translation>Ignorado</translation>
+        <translation>Ignorado.</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
@@ -4528,7 +4528,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
         <source>deleting</source>
-        <translation>a eliminar</translation>
+        <translation>a apagar</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
@@ -4538,7 +4538,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>ignoring</source>
-        <translation>a ignorar</translation>
+        <translation>ignorado</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
@@ -4572,22 +4572,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="73"/>
         <source>Sync Success</source>
-        <translation>Sincronização bem sucedida</translation>
+        <translation>A sincronização foi efectuada com sucesso</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="76"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>Sincronizado bem sucedida, foram ignorados alguns ficheiros.</translation>
+        <translation>Sincronizado com suceso, alguns ficheiros foram ignorados.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="79"/>
         <source>Sync Error</source>
-        <translation>Erro de Sincronização</translation>
+        <translation>Erro de sincronização</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="82"/>
         <source>Setup Error</source>
-        <translation>Erro de Configuração</translation>
+        <translation>Erro na configuração</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="85"/>
@@ -4597,12 +4597,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="88"/>
         <source>Aborting...</source>
-        <translation>A abortar...</translation>
+        <translation>A cancelar...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="91"/>
         <source>Sync is paused</source>
-        <translation>A sincronização está pausada</translation>
+        <translation>Sincronização em pausa</translation>
     </message>
 </context>
 <context>
