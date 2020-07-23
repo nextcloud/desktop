@@ -808,12 +808,12 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
 
 void FolderStatusModel::slotApplySelectiveSync()
 {
-    for (int i = 0; i < _folders.count(); ++i) {
-        if (!_folders[i]._fetched) {
-            _folders[i]._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+    for (const auto &folderInfo : qAsConst(_folders)) {
+        if (!folderInfo._fetched) {
+            folderInfo._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
             continue;
         }
-        auto folder = _folders.at(i)._folder;
+        const auto folder = folderInfo._folder;
 
         bool ok;
         auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
@@ -821,7 +821,7 @@ void FolderStatusModel::slotApplySelectiveSync()
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             continue;
         }
-        QStringList blackList = createBlackList(_folders.at(i), oldBlackList);
+        QStringList blackList = createBlackList(folderInfo, oldBlackList);
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
         auto blackListSet = blackList.toSet();

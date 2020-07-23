@@ -570,7 +570,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
 
             // Wipe selective sync blacklist
             bool ok = false;
-            auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+            const auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
             // Change the folder vfs mode and load the plugin
@@ -841,7 +841,7 @@ void AccountSettings::slotAccountStateChanged()
         QUrl safeUrl(account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
         FolderMan *folderMan = FolderMan::instance();
-        foreach (Folder *folder, folderMan->map().values()) {
+        for (Folder *folder : folderMan->map().values()) {
             _model->slotUpdateFolderState(folder);
         }
 
@@ -979,15 +979,14 @@ void AccountSettings::refreshSelectiveSyncStatus()
 {
     QString msg;
     int cnt = 0;
-    foreach (Folder *folder, FolderMan::instance()->map().values()) {
+    for (Folder *folder : FolderMan::instance()->map().values()) {
         if (folder->accountState() != _accountState) {
             continue;
         }
 
         bool ok;
-        auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
-        QString p;
-        foreach (const auto &it, undecidedList) {
+        const auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
+        for (const auto &it : undecidedList) {
             // FIXME: add the folder alias in a hoover hint.
             // folder->alias() + QLatin1String("/")
             if (cnt++) {
@@ -1046,7 +1045,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
         auto anim = new QPropertyAnimation(ui->selectiveSyncStatus, "maximumHeight", ui->selectiveSyncStatus);
         anim->setEndValue(shouldBeVisible ? hint.height() : 0);
         anim->start(QAbstractAnimation::DeleteWhenStopped);
-        connect(anim, &QPropertyAnimation::finished, [this, shouldBeVisible]() {
+        connect(anim, &QPropertyAnimation::finished, this, [this, shouldBeVisible]() {
             ui->selectiveSyncStatus->setMaximumHeight(QWIDGETSIZE_MAX);
             if (!shouldBeVisible) {
                 ui->selectiveSyncStatus->hide();
