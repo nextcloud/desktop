@@ -3483,17 +3483,22 @@ Ez da gomendagarria erabiltzea.</translation>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="85"/>
+        <location filename="../src/gui/systray.cpp" line="86"/>
+        <source>Add account</source>
+        <translation>Gehitu kontua</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
         <translation>Ireki elkarrizketa nagusia</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="86"/>
+        <location filename="../src/gui/systray.cpp" line="89"/>
         <source>Settings</source>
         <translation>Ezarpenak</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="87"/>
+        <location filename="../src/gui/systray.cpp" line="91"/>
         <source>Exit %1</source>
         <translation>Irten %1-(e)tik</translation>
     </message>
