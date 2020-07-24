@@ -349,7 +349,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     // probably temporary one.
     _item->_modtime = FileSystem::getModTime(filePath);
 
-    QByteArray checksumType = contentChecksumType();
+    const QByteArray checksumType = propagator()->account()->capabilities().preferredUploadChecksumType();
 
     // Maybe the discovery already computed the checksum?
     // Should I compute the checksum of the original (_item->_file)

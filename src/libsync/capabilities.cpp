@@ -150,7 +150,9 @@ QList<QByteArray> Capabilities::supportedChecksumTypes() const
 
 QByteArray Capabilities::preferredUploadChecksumType() const
 {
-    return _capabilities["checksums"].toMap()["preferredUploadType"].toByteArray();
+    return qEnvironmentVariable("OWNCLOUD_CONTENT_CHECKSUM_TYPE",
+                                _capabilities.value(QStringLiteral("checksums")).toMap()
+                                .value(QStringLiteral("preferredUploadType"), QStringLiteral("SHA1")).toString()).toUtf8();
 }
 
 QByteArray Capabilities::uploadChecksumType() const
