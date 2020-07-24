@@ -291,7 +291,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="289"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>אין אפשרות להצפין תיקייה עם תכנים, נא להסיר את הקבצים.
+לאחר מכן להמתין לסנכרון החדש ואז להצפין אותה.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="589"/>
@@ -3466,17 +3467,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="85"/>
+        <location filename="../src/gui/systray.cpp" line="86"/>
+        <source>Add account</source>
+        <translation>הוספת חשבון</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="86"/>
+        <location filename="../src/gui/systray.cpp" line="89"/>
         <source>Settings</source>
         <translation>הגדרות</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="87"/>
+        <location filename="../src/gui/systray.cpp" line="91"/>
         <source>Exit %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4113,7 +4119,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>הגרסה מהשרת התקבלה, והקובץ המקומי שהשתנה הועתק לקובץ סתירה</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -4251,7 +4257,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>אירעה שגיאה בהפעלת הדפדפן כדי לגשת לכתובת %1. אולי לא מוגדר דפדפן בררת מחדל?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>

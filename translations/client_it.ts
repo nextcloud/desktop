@@ -3483,17 +3483,22 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="85"/>
+        <location filename="../src/gui/systray.cpp" line="86"/>
+        <source>Add account</source>
+        <translation>Aggiungi account</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
         <translation>Apri finestra principale</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="86"/>
+        <location filename="../src/gui/systray.cpp" line="89"/>
         <source>Settings</source>
         <translation>Impostazioni</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="87"/>
+        <location filename="../src/gui/systray.cpp" line="91"/>
         <source>Exit %1</source>
         <translation>Esci da %1</translation>
     </message>
