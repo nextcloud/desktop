@@ -139,8 +139,8 @@ void PropagateUploadFileTUS::startNextChunk()
         qCDebug(lcPropagateUploadTUS) << "Starting creation with upload:" << _item->_file;
         job = makeCreationWithUploadJob(&req, device);
     }
-    qCDebug(lcPropagateUploadTUS) << "Offset:" << _currentOffset << _currentOffset  / _item->_size * 100
-                                  << "\nChunk:" << chunkSize << chunkSize / _item->_size * 100;
+    qCDebug(lcPropagateUploadTUS) << "Offset:" << _currentOffset << _currentOffset  / (_item->_size + 1) * 100
+                                  << "Chunk:" << chunkSize << chunkSize / (_item->_size + 1) * 100;
 
     _jobs.append(job);
     connect(job->reply(), &QNetworkReply::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
