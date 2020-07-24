@@ -65,9 +65,6 @@ OCSYNC_EXPORT QByteArray parseChecksumHeaderType(const QByteArray &header);
 /// Checks OWNCLOUD_DISABLE_CHECKSUM_UPLOAD
 OCSYNC_EXPORT bool uploadChecksumEnabled();
 
-/// Checks OWNCLOUD_CONTENT_CHECKSUM_TYPE (default: SHA1)
-OCSYNC_EXPORT QByteArray contentChecksumType();
-
 // Exported functions for the tests.
 QByteArray OCSYNC_EXPORT calcMd5(QIODevice *device);
 QByteArray OCSYNC_EXPORT calcSha1(QIODevice *device);
