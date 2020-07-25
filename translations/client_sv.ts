@@ -3485,7 +3485,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till konto</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>

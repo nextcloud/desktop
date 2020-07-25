@@ -3464,7 +3464,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Lisää tili</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>

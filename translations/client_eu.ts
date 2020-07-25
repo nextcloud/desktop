@@ -3485,7 +3485,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Gehitu kontua</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>

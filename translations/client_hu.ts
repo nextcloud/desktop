@@ -3482,7 +3482,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="86"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Fiók hozzáadása</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>
