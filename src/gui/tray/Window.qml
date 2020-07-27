@@ -75,6 +75,19 @@ Window {
         }
     }
 
+    OpacityMask {
+        anchors.fill: parent
+        source: ShaderEffectSource {
+            sourceItem: trayWindowBackground
+            hideSource: true
+        }
+        maskSource: Rectangle {
+            width: trayWindowBackground.width
+            height: trayWindowBackground.height
+            radius: trayWindowBackground.radius
+        }
+    }
+
     Rectangle {
         id: trayWindowBackground
 
@@ -90,7 +103,6 @@ Window {
             anchors.top:    trayWindowBackground.top
             height:         Style.trayWindowHeaderHeight
             width:          Style.trayWindowWidth
-            radius:         (Style.trayWindowRadius > 0) ? (Style.trayWindowRadius - 1) : 0
             color:          Style.ncBlue
 
             // The overlay rectangle below eliminates the rounded corners from the bottom of the header
@@ -271,51 +283,9 @@ Window {
                         }
                     }
 
-                    background:
-                        Item {
-                        id: leftHoverContainer
-
-                        height: Style.trayWindowHeaderHeight
-                        width:  Style.currentAccountButtonWidth
-                        Rectangle {
-                            width: Style.currentAccountButtonWidth / 2
-                            height: Style.trayWindowHeaderHeight / 2
-                            color: "transparent"
-                            clip: true
-                            Rectangle {
-                                width: Style.currentAccountButtonWidth
-                                height: Style.trayWindowHeaderHeight
-                                radius: Style.trayWindowRadius
-                                color: "white"
-                                opacity: 0.2
-                                visible: accountBtnMouseArea.containsMouse
-                            }
-                        }
-                        Rectangle {
-                            width: Style.currentAccountButtonWidth / 2
-                            height: Style.trayWindowHeaderHeight / 2
-                            anchors.bottom: leftHoverContainer.bottom
-                            color: "white"
-                            opacity: 0.2
-                            visible: accountBtnMouseArea.containsMouse
-                        }
-                        Rectangle {
-                            width: Style.currentAccountButtonWidth / 2
-                            height: Style.trayWindowHeaderHeight / 2
-                            anchors.right: leftHoverContainer.right
-                            color: "white"
-                            opacity: 0.2
-                            visible: accountBtnMouseArea.containsMouse
-                        }
-                        Rectangle {
-                            width: Style.currentAccountButtonWidth / 2
-                            height: Style.trayWindowHeaderHeight / 2
-                            anchors.right: leftHoverContainer.right
-                            anchors.bottom: leftHoverContainer.bottom
-                            color: "white"
-                            opacity: 0.2
-                            visible: accountBtnMouseArea.containsMouse
-                        }
+                    background: Rectangle {
+                        color: accountBtnMouseArea.containsMouse ? "white" : "transparent"
+                        opacity: 0.2
                     }
 
                     RowLayout {
