@@ -49,6 +49,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     , _linkShare(nullptr)
     , _passwordRequired(false)
     , _noteRequired(false)
+	, _useDirectDownload(false)
     , _expiryRequired(false)
     , _namesSupported(true)
     , _linkContextMenu(nullptr)
@@ -231,6 +232,10 @@ void ShareLinkWidget::setupUiOptions()
         _expiryRequired = true;
     }
 
+	// Add action to return the direct download link when copying the share link
+    _directDownloadLinkAction = _linkContextMenu->addAction(tr("Use direct download link"));
+    _directDownloadLinkAction->setCheckable(true);
+	
     // Adds action to unshare widget (check box)
     _unshareLinkAction = _linkContextMenu->addAction(QIcon(":/client/theme/delete.svg"),
         tr("Delete share link"));
@@ -283,8 +288,11 @@ void ShareLinkWidget::slotNoteSet()
 void ShareLinkWidget::slotCopyLinkShare(bool clicked)
 {
     Q_UNUSED(clicked);
+	
+	QUrl link = _linkShare->getLink();
+	if (_useDirectDownload) link = _linkShare->getDirectDownloadLink();
 
-    QApplication::clipboard()->setText(_linkShare->getLink().toString());
+    QApplication::clipboard()->setText(link.toString());
 }
 
 void ShareLinkWidget::slotExpireDateSet()
@@ -527,6 +535,9 @@ void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
 
     } else if (action == _noteLinkAction) {
         toggleNoteOptions(state);
+
+    } else if (action == _directDownloadLinkAction) {
+		_useDirectDownload = state;
 
     } else if (action == _unshareLinkAction) {
         confirmAndDeleteShare();

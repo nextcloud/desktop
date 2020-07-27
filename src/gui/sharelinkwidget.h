@@ -103,7 +103,7 @@ private:
 
     void showExpireDateOptions(bool show);
     void toggleExpireDateOptions(bool enable);
-
+	
     void slotCopyLinkShare(bool clicked);
 
     /** Confirm with the user and then delete the share */
@@ -129,6 +129,7 @@ private:
     bool _expiryRequired;
     bool _namesSupported;
     bool _noteRequired;
+	bool _useDirectDownload;
 
     QMenu *_linkContextMenu;
     QAction *_readOnlyLinkAction;
@@ -137,6 +138,7 @@ private:
     QAction *_allowUploadLinkAction;
     QAction *_passwordProtectLinkAction;
     QAction *_expirationDateLinkAction;
+	QAction *_directDownloadLinkAction;
     QAction *_unshareLinkAction;
     QAction *_addAnotherLinkAction;
     QAction *_noteLinkAction;
