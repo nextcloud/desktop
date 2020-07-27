@@ -54,25 +54,25 @@ QString SyncFileStatus::toSocketAPIString() const
 
     switch (_tag) {
     case StatusNone:
-        statusString = QLatin1String("NOP");
+        statusString = QStringLiteral("NOP");
         canBeShared = false;
         break;
     case StatusSync:
-        statusString = QLatin1String("SYNC");
+        statusString = QStringLiteral("SYNC");
         break;
     case StatusWarning:
         // The protocol says IGNORE, but all implementations show a yellow warning sign.
-        statusString = QLatin1String("IGNORE");
+        statusString = QStringLiteral("IGNORE");
         break;
     case StatusUpToDate:
-        statusString = QLatin1String("OK");
+        statusString = QStringLiteral("OK");
         break;
     case StatusError:
-        statusString = QLatin1String("ERROR");
+        statusString = QStringLiteral("ERROR");
         break;
     case StatusExcluded:
         // The protocol says IGNORE, but all implementations show a yellow warning sign.
-        statusString = QLatin1String("IGNORE");
+        statusString = QStringLiteral("IGNORE");
         break;
     }
     if (canBeShared && _shared) {

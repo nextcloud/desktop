@@ -32,56 +32,56 @@ static void check_long_win_path(void **state)
     (void) state; /* unused */
 
     {
-        const char *path = "C://DATA/FILES/MUSIC/MY_MUSIC.mp3"; // check a short path
-        const char *exp_path = "\\\\?\\C:\\\\DATA\\FILES\\MUSIC\\MY_MUSIC.mp3";
-        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
-        assert_string_equal(new_short, exp_path);
+        const auto path = QStringLiteral("C://DATA/FILES/MUSIC/MY_MUSIC.mp3"); // check a short path
+        const auto exp_path = QStringLiteral("\\\\?\\C:\\\\DATA\\FILES\\MUSIC\\MY_MUSIC.mp3");
+        QString new_short = OCC::FileSystem::pathtoUNC(path);
+        assert_string_equal(new_short.constData(), exp_path.constData());
     }
 
     {
-        const char *path = "\\\\foo\\bar/MY_MUSIC.mp3";
-        const char *exp_path = "\\\\foo\\bar\\MY_MUSIC.mp3";
-        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
-        assert_string_equal(new_short, exp_path);
+        const auto path = QStringLiteral("\\\\foo\\bar/MY_MUSIC.mp3");
+        const auto exp_path = QStringLiteral("\\\\foo\\bar\\MY_MUSIC.mp3");
+        QString new_short = OCC::FileSystem::pathtoUNC(path);
+        assert_string_equal(new_short.constData(), exp_path.constData());
     }
 
     {
-        const char *path = "//foo\\bar/MY_MUSIC.mp3";
-        const char *exp_path = "\\\\foo\\bar\\MY_MUSIC.mp3";
-        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
-        assert_string_equal(new_short, exp_path);
+        const auto path = QStringLiteral("//foo\\bar/MY_MUSIC.mp3");
+        const auto exp_path = QStringLiteral("\\\\foo\\bar\\MY_MUSIC.mp3");
+        QString new_short = OCC::FileSystem::pathtoUNC(path);
+        assert_string_equal(new_short.constData(), exp_path.constData());
     }
 
     {
-        const char *path = "\\foo\\bar";
-        const char *exp_path = "\\\\?\\foo\\bar";
-        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
-        assert_string_equal(new_short, exp_path);
+        const auto path = QStringLiteral("\\foo\\bar");
+        const auto exp_path = QStringLiteral("\\\\?\\foo\\bar");
+        QString new_short = OCC::FileSystem::pathtoUNC(path);
+        assert_string_equal(new_short.constData(), exp_path.constData());
     }
 
     {
-        const char *path = "/foo/bar";
-        const char *exp_path = "\\\\?\\foo\\bar";
-        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
-        assert_string_equal(new_short, exp_path);
+        const auto path = QStringLiteral("/foo/bar");
+        const auto exp_path = QStringLiteral("\\\\?\\foo\\bar");
+        QString new_short = OCC::FileSystem::pathtoUNC(path);
+        assert_string_equal(new_short.constData(), exp_path.constData());
     }
 
-    const char *longPath = "D://alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
-            "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
-            "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
-            "olonglonglonglong/file.txt";
-    const char *longPathConv = "\\\\?\\D:\\\\alonglonglonglong\\blonglonglonglong\\clonglonglonglong\\dlonglonglonglong\\"
-            "elonglonglonglong\\flonglonglonglong\\glonglonglonglong\\hlonglonglonglong\\ilonglonglonglong\\"
-            "jlonglonglonglong\\klonglonglonglong\\llonglonglonglong\\mlonglonglonglong\\nlonglonglonglong\\"
-            "olonglonglonglong\\file.txt";
+    const auto longPath = QStringLiteral("D://alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
+                                         "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
+                                         "jlonglonglonglong/klonglonglonglong/llonglonglonglong/mlonglonglonglong/nlonglonglonglong/"
+                                         "olonglonglonglong/file.txt");
+    const auto longPathConv = QStringLiteral("\\\\?\\D:\\\\alonglonglonglong\\blonglonglonglong\\clonglonglonglong\\dlonglonglonglong\\"
+                                             "elonglonglonglong\\flonglonglonglong\\glonglonglonglong\\hlonglonglonglong\\ilonglonglonglong\\"
+                                             "jlonglonglonglong\\klonglonglonglong\\llonglonglonglong\\mlonglonglonglong\\nlonglonglonglong\\"
+                                             "olonglonglonglong\\file.txt");
 
-    QByteArray new_long = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(longPath, strlen(longPath)));
+    QString new_long = OCC::FileSystem::pathtoUNC(longPath);
     // printf( "XXXXXXXXXXXX %s %d\n", new_long, mem_reserved);
 
-    assert_string_equal(new_long, longPathConv);
+    assert_string_equal(new_long.constData(), longPathConv.constData());
 
     // printf( "YYYYYYYYYYYY %ld\n", strlen(new_long));
-    assert_int_equal( strlen(new_long), 286);
+    assert_int_equal(new_long.length(), 286);
 }
 
 int torture_run_tests(void)

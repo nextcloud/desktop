@@ -67,7 +67,7 @@ public:
     QByteArray toDbValue() const;
 
     /// output for display purposes, no defined format (same as toDbValue in practice)
-    QByteArray toString() const;
+    QString toString() const;
 
     /// read value that was written with toDbValue()
     static RemotePermissions fromDbValue(const QByteArray &);

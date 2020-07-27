@@ -92,7 +92,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     QString runPath = QLatin1String(runPathC);
     QSettings settings(runPath, QSettings::NativeFormat);
     if (enable) {
-        settings.setValue(appName, QCoreApplication::applicationFilePath().replace('/', '\\'));
+        settings.setValue(appName, QCoreApplication::applicationFilePath().replace(QLatin1Char('/'), QLatin1Char('\\')));
     } else {
         settings.remove(appName);
     }
@@ -139,7 +139,7 @@ QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, cons
                 // If the data has the REG_SZ, REG_MULTI_SZ or REG_EXPAND_SZ type, the string may not have been stored with
                 // the proper terminating null characters. Therefore, even if the function returns ERROR_SUCCESS,
                 // the application should ensure that the string is properly terminated before using it; otherwise, it may overwrite a buffer.
-                if (string.at(newCharSize - 1) == QChar('\0'))
+                if (string.at(newCharSize - 1) == QLatin1Char('\0'))
                     string.resize(newCharSize - 1);
                 value = string;
             }

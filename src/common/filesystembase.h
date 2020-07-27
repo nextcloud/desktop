@@ -156,35 +156,7 @@ namespace FileSystem {
      *  - A conversion is only done if the path len is larger than 245. Otherwise
      *    the windows API functions work with the normal "unixoid" representation too.
      */
-    template<typename S>
-    S pathtoUNC(const S &str)
-    {
-        int len = 0;
-        S longStr;
-
-        len = str.length();
-        longStr.reserve(len+4);
-
-        // prepend \\?\ and convert '/' => '\' to support long names
-        if( str[0] == '/' || str[0] == '\\' ) {
-            // Don't prepend if already UNC
-            if( !(len > 1 && (str[1] == '/' || str[1] == '\\')) ) {
-                longStr.append("\\\\?");
-            }
-        } else {
-            longStr.append("\\\\?\\"); // prepend string by this four magic chars.
-        }
-        longStr += str;
-
-        /* replace all occurences of / with the windows native \ */
-        
-        for (auto it = longStr.begin(); it != longStr.end(); ++it) {
-            if(*it == '/') {
-                *it = '\\';
-            }
-        }
-        return longStr;
-    }
+    QString OCSYNC_EXPORT pathtoUNC(const QString &str);
 }
 
 /** @} */
