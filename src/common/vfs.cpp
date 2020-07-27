@@ -50,11 +50,11 @@ QString Vfs::modeToString(Mode mode)
 Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
 {
     // Note: Strings are used for config and must be stable
-    if (str == "off") {
+    if (str == QLatin1String("off")) {
         return Off;
-    } else if (str == "suffix") {
+    } else if (str == QLatin1String("suffix")) {
         return WithSuffix;
-    } else if (str == "wincfapi") {
+    } else if (str == QLatin1String("wincfapi")) {
         return WindowsCfApi;
     }
     return {};
@@ -116,9 +116,9 @@ VfsOff::~VfsOff() = default;
 static QString modeToPluginName(Vfs::Mode mode)
 {
     if (mode == Vfs::WithSuffix)
-        return "suffix";
+        return QStringLiteral("suffix");
     if (mode == Vfs::WindowsCfApi)
-        return "win";
+        return QStringLiteral("win");
     return QString();
 }
 
@@ -131,26 +131,26 @@ bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return false;
-    auto pluginPath = pluginFileName("vfs", name);
+    auto pluginPath = pluginFileName(QStringLiteral("vfs"), name);
     QPluginLoader loader(pluginPath);
 
     auto basemeta = loader.metaData();
-    if (basemeta.isEmpty() || !basemeta.contains("IID")) {
+    if (basemeta.isEmpty() || !basemeta.contains(QStringLiteral("IID"))) {
         qCDebug(lcPlugin) << "Plugin doesn't exist" << loader.fileName();
         return false;
     }
-    if (basemeta["IID"].toString() != "org.owncloud.PluginFactory") {
-        qCWarning(lcPlugin) << "Plugin has wrong IID" << loader.fileName() << basemeta["IID"];
+    if (basemeta[QStringLiteral("IID")].toString() != QLatin1String("org.owncloud.PluginFactory")) {
+        qCWarning(lcPlugin) << "Plugin has wrong IID" << loader.fileName() << basemeta[QStringLiteral("IID")];
         return false;
     }
 
-    auto metadata = basemeta["MetaData"].toObject();
-    if (metadata["type"].toString() != "vfs") {
-        qCWarning(lcPlugin) << "Plugin has wrong type" << loader.fileName() << metadata["type"];
+    auto metadata = basemeta[QStringLiteral("MetaData")].toObject();
+    if (metadata[QStringLiteral("type")].toString() != QLatin1String("vfs")) {
+        qCWarning(lcPlugin) << "Plugin has wrong type" << loader.fileName() << metadata[QStringLiteral("type")];
         return false;
     }
-    if (metadata["version"].toString() != MIRALL_VERSION_STRING) {
-        qCWarning(lcPlugin) << "Plugin has wrong version" << loader.fileName() << metadata["version"];
+    if (metadata[QStringLiteral("version")].toString() != QStringLiteral(MIRALL_VERSION_STRING)) {
+        qCWarning(lcPlugin) << "Plugin has wrong version" << loader.fileName() << metadata[QStringLiteral("version")];
         return false;
     }
 
@@ -182,7 +182,7 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return nullptr;
-    auto pluginPath = pluginFileName("vfs", name);
+    auto pluginPath = pluginFileName(QStringLiteral("vfs"), name);
 
     if (!isVfsPluginAvailable(mode)) {
         qCCritical(lcPlugin) << "Could not load plugin: not existant or bad metadata" << pluginPath;

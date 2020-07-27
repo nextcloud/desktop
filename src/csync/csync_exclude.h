@@ -185,13 +185,13 @@ private:
         BasePathString(QString &&other)
             : QString(std::move(other))
         {
-            Q_ASSERT(endsWith('/'));
+            Q_ASSERT(endsWith(QLatin1Char('/')));
         }
 
         BasePathString(const QString &other)
             : QString(other)
         {
-            Q_ASSERT(endsWith('/'));
+            Q_ASSERT(endsWith(QLatin1Char('/')));
         }
     };
 

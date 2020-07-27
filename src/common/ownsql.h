@@ -152,7 +152,7 @@ public:
         bindValueInternal(pos, value);
     }
 
-    QString lastQuery() const;
+    const QByteArray &lastQuery() const;
     int numRowsAffected();
     void reset_and_clear_bindings();
     void finish();

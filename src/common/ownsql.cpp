@@ -108,7 +108,7 @@ SqlDatabase::CheckDbResult SqlDatabase::checkDb()
 
     quick_check.next();
     QString result = quick_check.stringValue(0);
-    if (result != "ok") {
+    if (result != QLatin1String("ok")) {
         qCWarning(lcSql) << "quick_check returned failure:" << result;
         return CheckDbResult::NotOk;
     }
@@ -384,14 +384,14 @@ void SqlQuery::bindValueInternal(int pos, const QVariant &value)
         break;
     case QVariant::DateTime: {
         const QDateTime dateTime = value.toDateTime();
-        const QString str = dateTime.toString(QLatin1String("yyyy-MM-ddThh:mm:ss.zzz"));
+        const QString str = dateTime.toString(QStringLiteral("yyyy-MM-ddThh:mm:ss.zzz"));
         res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
             str.size() * static_cast<int>(sizeof(ushort)), SQLITE_TRANSIENT);
         break;
     }
     case QVariant::Time: {
         const QTime time = value.toTime();
-        const QString str = time.toString(QLatin1String("hh:mm:ss.zzz"));
+        const QString str = time.toString(QStringLiteral("hh:mm:ss.zzz"));
         res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
             str.size() * static_cast<int>(sizeof(ushort)), SQLITE_TRANSIENT);
         break;
@@ -462,7 +462,7 @@ int SqlQuery::errorId() const
     return _errId;
 }
 
-QString SqlQuery::lastQuery() const
+const QByteArray &SqlQuery::lastQuery() const
 {
     return _sql;
 }

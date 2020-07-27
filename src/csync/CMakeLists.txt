@@ -1,5 +1,10 @@
 project(libcsync)
 set(CMAKE_AUTOMOC TRUE)
+add_definitions(-DQT_NO_CAST_TO_ASCII
+                -DQT_NO_CAST_FROM_ASCII
+                -DQT_NO_URL_CAST_FROM_STRING
+                -DQT_NO_CAST_FROM_BYTEARRAY)
+
 # global needed variables
 set(APPLICATION_NAME "ocsync")
 

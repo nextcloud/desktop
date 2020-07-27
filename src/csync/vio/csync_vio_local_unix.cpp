@@ -56,7 +56,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
 
     auto dirname = QFile::encodeName(name);
 
-    handle->dh = _topendir( dirname );
+    handle->dh = _topendir(dirname.constData());
     if (!handle->dh) {
         return nullptr;
     }
