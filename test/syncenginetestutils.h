@@ -1017,7 +1017,6 @@ public:
         vfsParams.journal = _journalDb.get();
         vfsParams.providerName = "OC-TEST";
         vfsParams.providerVersion = "0.1";
-        vfsParams.enableShellIntegration = false;
         QObject::connect(_syncEngine.get(), &QObject::destroyed, vfs.data(), [vfs]() {
             vfs->stop();
             vfs->unregisterFolder();
