@@ -154,10 +154,18 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             return QPixmap::fromImage(img);
         };
 
+        const auto loadPixmap = [flavor, name] (int size) {
+            const auto pixmapName = QString::fromLatin1(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
+            return QPixmap(pixmapName);
+        };
+
         const auto sizes = isBranded() ? QVector<int>{ 16, 22, 32, 48, 64, 128, 256, 512, 1024 }
                                        : QVector<int>{ 16, 32, 64, 128, 256 };
         for (int size : sizes) {
-            auto px = createPixmapFromSvg(size);
+            auto px = isBranded() ? loadPixmap(size) : createPixmapFromSvg(size);
+            if (px.isNull()) {
+                continue;
+            }
             // HACK, get rid of it by supporting FDO icon themes, this is really just emulating ubuntu-mono
             if (qgetenv("DESKTOP_SESSION") == "ubuntu") {
                 QBitmap mask = px.createMaskFromColor(Qt::white, Qt::MaskOutColor);
