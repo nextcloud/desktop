@@ -1106,7 +1106,7 @@ public:
         OC_ENFORCE(syncOnce());
     }
 
-    void switchToVfs(QSharedPointer<OCC::Vfs> vfs, bool enableShell = false)
+    void switchToVfs(QSharedPointer<OCC::Vfs> vfs)
     {
         auto opts = _syncEngine->syncOptions();
 
@@ -1123,7 +1123,6 @@ public:
         vfsParams.journal = _journalDb.get();
         vfsParams.providerName = "OC-TEST";
         vfsParams.providerVersion = "0.1";
-        vfsParams.enableShellIntegration = enableShell;
         QObject::connect(_syncEngine.get(), &QObject::destroyed, vfs.data(), [vfs]() {
             vfs->stop();
             vfs->unregisterFolder();
