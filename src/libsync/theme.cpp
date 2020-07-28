@@ -91,6 +91,11 @@ QString Theme::statusHeaderText(SyncResult::Status status) const
     return resultStr;
 }
 
+bool Theme::isBranded() const
+{
+    return appNameGUI() != QStringLiteral("Nextcloud");
+}
+
 QString Theme::appNameGUI() const
 {
     return APPLICATION_NAME;
@@ -139,16 +144,28 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             return cached = QIcon::fromTheme(name);
         }
 
-        QList<int> sizes;
-        sizes << 16 << 32 << 64 << 128 << 256;
-        foreach (int size, sizes) {
-            QString svgName = QString::fromLatin1(":/client/theme/%1/%2.svg").arg(flavor).arg(name);
-            QSvgRenderer renderer(svgName);
+        const auto svgName = QString::fromLatin1(":/client/theme/%1/%2.svg").arg(flavor).arg(name);
+        QSvgRenderer renderer(svgName);
+        const auto createPixmapFromSvg = [&renderer] (int size) {
             QImage img(size, size, QImage::Format_ARGB32);
             img.fill(Qt::GlobalColor::transparent);
             QPainter imgPainter(&img);
             renderer.render(&imgPainter);
-            auto px = QPixmap::fromImage(img);
+            return QPixmap::fromImage(img);
+        };
+
+        const auto loadPixmap = [flavor, name] (int size) {
+            const auto pixmapName = QString::fromLatin1(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
+            return QPixmap(pixmapName);
+        };
+
+        const auto sizes = isBranded() ? QVector<int>{ 16, 22, 32, 48, 64, 128, 256, 512, 1024 }
+                                       : QVector<int>{ 16, 32, 64, 128, 256 };
+        for (int size : sizes) {
+            auto px = isBranded() ? loadPixmap(size) : createPixmapFromSvg(size);
+            if (px.isNull()) {
+                continue;
+            }
             // HACK, get rid of it by supporting FDO icon themes, this is really just emulating ubuntu-mono
             if (qgetenv("DESKTOP_SESSION") == "ubuntu") {
                 QBitmap mask = px.createMaskFromColor(Qt::white, Qt::MaskOutColor);

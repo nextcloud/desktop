@@ -51,6 +51,16 @@ public:
     ~Theme();
 
     /**
+     * @brief isBranded indicates if the current application is branded
+     *
+     * By default, it is considered branded if the APPLICATION_NAME is
+     * different from "Nextcloud".
+     *
+     * @return true if branded, false otherwise
+     */
+    virtual bool isBranded() const;
+
+    /**
      * @brief appNameGUI - Human readable application name.
      *
      * Use and redefine this if the human readable name contains spaces,
