@@ -189,15 +189,6 @@ bool uploadChecksumEnabled()
     return enabled;
 }
 
-QByteArray contentChecksumType()
-{
-    static QByteArray type = qgetenv("OWNCLOUD_CONTENT_CHECKSUM_TYPE");
-    if (type.isNull()) { // can set to "" to disable checksumming
-        type = "SHA1";
-    }
-    return type;
-}
-
 static bool checksumComputationEnabled()
 {
     static bool enabled = qgetenv("OWNCLOUD_DISABLE_CHECKSUM_COMPUTATIONS").isEmpty();

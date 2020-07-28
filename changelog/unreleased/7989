@@ -1,0 +1,7 @@
+Change: Use the checksum type specified by the server by default
+
+The default type for computation of the checksum was sha1 independent
+of the type specified by the server.
+Under certain conditions that caused multiple computations of the checksum.
+
+https://github.com/owncloud/client/pull/7989

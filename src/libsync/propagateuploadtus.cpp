@@ -136,11 +136,12 @@ void PropagateUploadFileTUS::startNextChunk()
         qCDebug(lcPropagateUploadTUS) << "Starting to patch upload:" << _item->_file;
         job = propagator()->account()->sendRequest("PATCH", _location, req, device);
     } else {
+        OC_ASSERT(_location.isEmpty());
         qCDebug(lcPropagateUploadTUS) << "Starting creation with upload:" << _item->_file;
         job = makeCreationWithUploadJob(&req, device);
     }
-    qCDebug(lcPropagateUploadTUS) << "Offset:" << _currentOffset << _currentOffset  / _item->_size * 100
-                                  << "\nChunk:" << chunkSize << chunkSize / _item->_size * 100;
+    qCDebug(lcPropagateUploadTUS) << "Offset:" << _currentOffset << _currentOffset  / (_item->_size + 1) * 100
+                                  << "Chunk:" << chunkSize << chunkSize / (_item->_size + 1) * 100;
 
     _jobs.append(job);
     connect(job->reply(), &QNetworkReply::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
@@ -184,7 +185,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
         return;
     }
 
-    const int offset = job->reply()->rawHeader(uploadOffset()).toInt();
+    const qint64 offset = job->reply()->rawHeader(uploadOffset()).toLongLong();
     propagator()->reportProgress(*_item, offset);
     _currentOffset = offset;
     // first response after a POST request

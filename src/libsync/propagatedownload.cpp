@@ -847,7 +847,7 @@ namespace { // Anonymous namespace for the recall feature
 
 void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum)
 {
-    const auto theContentChecksumType = contentChecksumType();
+    const QByteArray theContentChecksumType = propagator()->account()->capabilities().preferredUploadChecksumType();
 
     // Reuse transmission checksum as content checksum.
     //
