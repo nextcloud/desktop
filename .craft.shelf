@@ -90,9 +90,6 @@ version = master
 [libs/gettext]
 version = 0.19.8.1
 
-[libs/iconv]
-version = 0.0.8
-
 [libs/liblzma]
 version = 5.2.3
 
