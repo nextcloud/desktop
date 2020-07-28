@@ -1055,11 +1055,16 @@ void ownCloudGui::slotHelp()
 
 void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 {
-    auto window = raiseWidget->window();
-    Q_ASSERT(window);
+    auto window = ocApp()->gui()->settingsDialog();
+    OC_ASSERT(window);
+    if (!window) {
+        return;
+    }
     window->showNormal();
     window->raise();
+    raiseWidget->raise();
     window->activateWindow();
+    raiseWidget->activateWindow();
 
 #if defined(Q_OS_WIN)
     // Windows disallows raising a Window when you're not the active application.

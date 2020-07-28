@@ -148,6 +148,13 @@ private:
     QScopedPointer<FolderMan> _folderManager;
 };
 
+inline Application *ocApp()
+{
+    auto instance = qobject_cast<Application *>(qApp);
+    OC_ENFORCE(instance);
+    return instance;
+}
+
 } // namespace OCC
 
 #endif // APPLICATION_H
