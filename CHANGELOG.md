@@ -19,6 +19,7 @@ Summary
 * Change - The client hides the window during the authentication process: [#7922](https://github.com/owncloud/client/pull/7922)
 * Change - The settings ui shows a prompt for a few seconds: [#7925](https://github.com/owncloud/client/pull/7925)
 * Change - Reorgenize Settings: [#7962](https://github.com/owncloud/client/pull/7962)
+* Change - Use the checksum type specified by the server by default: [#7989](https://github.com/owncloud/client/pull/7989)
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
@@ -95,6 +96,13 @@ Details
    We rename "General" to "Settings" and move the "Network" into "Settings"
 
    https://github.com/owncloud/client/pull/7962
+
+* Change - Use the checksum type specified by the server by default: [#7989](https://github.com/owncloud/client/pull/7989)
+
+   The default type for computation of the checksum was sha1 independent of the type specified by
+   the server. Under certain conditions that caused multiple computations of the checksum.
+
+   https://github.com/owncloud/client/pull/7989
 
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 
