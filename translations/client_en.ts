@@ -2893,12 +2893,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileTUS</name>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="202"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="203"/>
         <source>The local file was removed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="213"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="214"/>
         <source>Local file changed during sync.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3877,17 +3877,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="335"/>
+        <location filename="../src/common/checksums.cpp" line="326"/>
         <source>The checksum header is malformed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="362"/>
+        <location filename="../src/common/checksums.cpp" line="353"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="366"/>
+        <location filename="../src/common/checksums.cpp" line="357"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation type="unfinished"></translation>
     </message>
