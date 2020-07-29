@@ -1375,7 +1375,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
-        <translation>バージョン情報</translation>
+        <translation>Nextcloud について</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
