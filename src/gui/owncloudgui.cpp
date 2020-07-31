@@ -175,7 +175,7 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
             // brought wizard to front
         } else if (_shareDialogs.size() > 0) {
             // Share dialog(s) be hidden by other apps, bring them back
-            Q_FOREACH (const QPointer<ShareDialog> &shareDialog, _shareDialogs) {
+            for (const QPointer<ShareDialog> &shareDialog : _shareDialogs) {
                 Q_ASSERT(shareDialog.data());
                 raiseDialog(shareDialog);
             }
@@ -254,7 +254,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         //_actionStatus->setText(text);
     };
 
-    foreach (auto a, AccountManager::instance()->accounts()) {
+    for (auto a : AccountManager::instance()->accounts()) {
         if (!a->isSignedOut()) {
             allSignedOut = false;
         }
@@ -264,7 +264,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             allDisconnected = false;
         }
     }
-    foreach (Folder *f, FolderMan::instance()->map()) {
+    for (Folder *f : FolderMan::instance()->map()) {
         if (!f->syncPaused()) {
             allPaused = false;
         }
@@ -280,14 +280,14 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
         QStringList accountNames;
-        foreach (AccountStatePtr a, problemAccounts) {
+        for (AccountStatePtr a : problemAccounts) {
             accountNames.append(a->account()->displayName());
         }
         _tray->setToolTip(tr("Disconnected from %1").arg(accountNames.join(QLatin1String(", "))));
 #else
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
-        foreach (AccountStatePtr a, problemAccounts) {
+        for (AccountStatePtr a : problemAccounts) {
             QString message = tr("Account %1: %2").arg(a->account()->displayName(), a->stateString(a->state()));
             if (!a->connectionErrors().empty()) {
                 message += QLatin1String("\n");
@@ -343,7 +343,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         trayMessage = folderMan->trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false);
 #else
         QStringList allStatusStrings;
-        foreach (Folder *folder, map.values()) {
+        for (Folder *folder : map.values()) {
             QString folderMessage = FolderMan::trayTooltipStatusString(
                 folder->syncResult().status(),
                 folder->syncResult().hasUnresolvedConflicts(),
@@ -483,7 +483,7 @@ void ownCloudGui::slotLogin()
         account->signIn();
     } else {
         auto list = AccountManager::instance()->accounts();
-        foreach (const auto &a, list) {
+        for (const auto &a : list) {
             a->signIn();
         }
     }
@@ -497,7 +497,7 @@ void ownCloudGui::slotLogout()
         list.append(account);
     }
 
-    foreach (const auto &ai, list) {
+    for (const auto &ai : list) {
         ai->signOutByUi();
     }
 }
@@ -523,11 +523,11 @@ void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
     if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
         accounts.append(account.data());
     } else {
-        foreach (auto a, AccountManager::instance()->accounts()) {
+        for (auto a : AccountManager::instance()->accounts()) {
             accounts.append(a.data());
         }
     }
-    foreach (Folder *f, FolderMan::instance()->map()) {
+    for (Folder *f : FolderMan::instance()->map()) {
         if (accounts.contains(f->accountState())) {
             f->setSyncPaused(pause);
             if (pause) {

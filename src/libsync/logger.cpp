@@ -289,7 +289,7 @@ void Logger::enterNextLogFile()
             QDir::Files, QDir::Name);
         QRegExp rx(R"(.*owncloud\.log\.(\d+).*)");
         int maxNumber = -1;
-        foreach (const QString &s, files) {
+        for (const QString &s : files) {
             if (_logExpire > 0) {
                 QFileInfo fileInfo(dir.absoluteFilePath(s));
                 if (fileInfo.lastModified().addSecs(60 * 60 * _logExpire) < now) {

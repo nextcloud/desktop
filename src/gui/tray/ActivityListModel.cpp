@@ -128,7 +128,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     }
     case ActionsLinksRole: {
         QList<QVariant> customList;
-        foreach (ActivityLink customItem, a._links) {
+        for (ActivityLink customItem : a._links) {
             QVariant customVariant;
             customVariant.setValue(customItem);
             customList << customVariant;
@@ -273,7 +273,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     QDateTime oldestDate = QDateTime::currentDateTime();
     oldestDate = oldestDate.addDays(_maxActivitiesDays * -1);
 
-    foreach (auto activ, activities) {
+    for (auto activ : activities) {
         auto json = activ.toObject();
 
         Activity a;
@@ -343,7 +343,7 @@ void ActivityListModel::addIgnoredFileToList(Activity newActivity)
         return;
     }
 
-    foreach (Activity activity, _listOfIgnoredFiles) {
+    for (Activity activity : _listOfIgnoredFiles) {
         if (activity._file == newActivity._file) {
             duplicate = true;
             break;

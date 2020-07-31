@@ -87,7 +87,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
     ActivityList list;
 
-    foreach (auto element, notifies) {
+    for (auto element : notifies) {
         Activity a;
         auto json = element.toObject();
         a._type = Activity::NotificationType;
@@ -122,7 +122,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
 
         auto actions = json.value("actions").toArray();
-        foreach (auto action, actions) {
+        for (auto action : actions) {
             auto actionJson = action.toObject();
             ActivityLink al;
             al._label = QUrl::fromPercentEncoding(actionJson.value("label").toString().toUtf8());

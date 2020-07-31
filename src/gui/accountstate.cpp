@@ -451,7 +451,7 @@ void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int sta
                 auto navLinks = element.toArray();
 
                 if(navLinks.size() > 0){
-                    foreach (const QJsonValue &value, navLinks) {
+                    for (const QJsonValue &value : navLinks) {
                         auto navLink = value.toObject();
 
                         auto *app = new AccountApp(navLink.value("name").toString(), QUrl(navLink.value("href").toString()),
@@ -478,7 +478,7 @@ AccountAppList AccountState::appList() const
 AccountApp* AccountState::findApp(const QString &appId) const
 {
     if(!appId.isEmpty()) {
-        foreach(AccountApp *app, appList()) {
+        for (AccountApp *app : appList()) {
             if(app->id() == appId)
                 return app;
         }

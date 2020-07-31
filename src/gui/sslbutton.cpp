@@ -217,7 +217,7 @@ void SslButton::slotUpdateMenu()
         const auto systemCerts = QSslConfiguration::systemCaCertificates();
 
         QList<QSslCertificate> tmpChain;
-        foreach (QSslCertificate cert, chain) {
+        for (QSslCertificate cert : chain) {
             tmpChain << cert;
             if (systemCerts.contains(cert))
                 break;

@@ -399,7 +399,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items,
     QVector<PropagatorJob *> directoriesToRemove;
     QString removedDirectory;
     QString maybeConflictDirectory;
-    foreach (const SyncFileItemPtr &item, items) {
+    for (const SyncFileItemPtr &item : items) {
         if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
             auto *delDirJob = qobject_cast<PropagateDirectory *>(directoriesToRemove.first());
@@ -460,7 +460,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items,
                 // checkForPermissions() has already run and used the permissions
                 // of the file we're about to delete to decide whether uploading
                 // to the new dir is ok...
-                foreach (const SyncFileItemPtr &item2, items) {
+                for (const SyncFileItemPtr &item2 : items) {
                     if (item2->destination().startsWith(item->destination() + "/")) {
                         item2->_instruction = CSYNC_INSTRUCTION_NONE;
                         _anotherSyncNeeded = true;
@@ -504,7 +504,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items,
         }
     }
 
-    foreach (PropagatorJob *it, directoriesToRemove) {
+    for (PropagatorJob *it : directoriesToRemove) {
         _rootJob->appendJob(it);
     }
 
@@ -884,7 +884,7 @@ void PropagatorCompositeJob::finalize()
 qint64 PropagatorCompositeJob::committedDiskSpace() const
 {
     qint64 needed = 0;
-    foreach (PropagatorJob *job, _runningJobs) {
+    for (PropagatorJob *job : _runningJobs) {
         needed += job->committedDiskSpace();
     }
     return needed;

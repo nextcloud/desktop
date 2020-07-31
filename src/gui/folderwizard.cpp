@@ -48,7 +48,7 @@ QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) co
         ret = tr("<b>Warning:</b> %1").arg(warnings.first());
     } else if (warnings.count() > 1) {
         ret = tr("<b>Warning:</b>") + " <ul>";
-        Q_FOREACH (QString warning, warnings) {
+        for (QString warning : warnings) {
             ret += QString::fromLatin1("<li>%1</li>").arg(warning);
         }
         ret += "</ul>";
@@ -287,7 +287,7 @@ bool FolderWizardRemotePath::selectByPath(QString path)
     QTreeWidgetItem *it = _ui.folderTreeWidget->topLevelItem(0);
     if (!path.isEmpty()) {
         const QStringList pathTrail = path.split(QLatin1Char('/'));
-        foreach (const QString &path, pathTrail) {
+        for (const QString &path : pathTrail) {
             if (!it) {
                 return false;
             }
@@ -317,7 +317,7 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
     }
     QStringList sortedList = list;
     Utility::sortFilenames(sortedList);
-    foreach (QString path, sortedList) {
+    for (QString path : sortedList) {
         path.remove(webdavFolder);
 
         // Don't allow to select subfolders of encrypted subfolders

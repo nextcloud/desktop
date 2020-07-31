@@ -82,7 +82,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         }
         if (success && !ok) {
             // We need to delete the entries from the database now from the deleted vector
-            foreach (const auto &it, deleted) {
+            for (const auto &it : deleted) {
                 propagator()->_journal->deleteFileRecord(_item->_originalFile + path + QLatin1Char('/') + it.first,
                     it.second);
             }

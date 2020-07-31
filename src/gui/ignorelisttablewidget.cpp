@@ -100,7 +100,7 @@ void IgnoreListTableWidget::slotWriteIgnoreFile(const QString & file)
     // We need to force a remote discovery after a change of the ignore list.
     // Otherwise we would not download the files/directories that are no longer
     // ignored (because the remote etag did not change)   (issue #3172)
-    foreach (Folder *folder, folderMan->map()) {
+    for (Folder *folder : folderMan->map()) {
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->scheduleFolder(folder);
     }

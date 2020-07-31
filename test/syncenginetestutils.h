@@ -375,7 +375,7 @@ public:
         };
 
         writeFileResponse(*fileInfo);
-        foreach(const FileInfo &childFileInfo, fileInfo->children)
+        for (const FileInfo &childFileInfo : fileInfo->children)
            writeFileResponse(childFileInfo);
         xml.writeEndElement(); // multistatus
         xml.writeEndDocument();
@@ -734,7 +734,7 @@ public:
         // finishing can come strictly after readyRead was called
         QTimer::singleShot(5, this, &FakeErrorReply::slotSetFinished);
     }
-    
+
     // make public to give tests easy interface
     using QNetworkReply::setError;
     using QNetworkReply::setAttribute;
@@ -978,7 +978,7 @@ public:
 
 private:
     static void toDisk(QDir &dir, const FileInfo &templateFi) {
-        foreach (const FileInfo &child, templateFi.children) {
+        for (const FileInfo &child : templateFi.children) {
             if (child.isDir) {
                 QDir subDir(dir);
                 dir.mkdir(child.name);
@@ -995,7 +995,7 @@ private:
     }
 
     static void fromDisk(QDir &dir, FileInfo &templateFi) {
-        foreach (const QFileInfo &diskChild, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+        for (const QFileInfo &diskChild : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
             if (diskChild.isDir()) {
                 QDir subDir = dir;
                 subDir.cd(diskChild.fileName());
@@ -1044,7 +1044,7 @@ inline void addFiles(QStringList &dest, const FileInfo &fi)
 {
     if (fi.isDir) {
         dest += QString("%1 - dir").arg(fi.name);
-        foreach (const FileInfo &fi, fi.children)
+        for (const FileInfo &fi : fi.children)
             addFiles(dest, fi);
     } else {
         dest += QString("%1 - %2 %3-bytes").arg(fi.name).arg(fi.size).arg(fi.contentChar);
@@ -1054,7 +1054,7 @@ inline void addFiles(QStringList &dest, const FileInfo &fi)
 inline char *toString(const FileInfo &fi)
 {
     QStringList files;
-    foreach (const FileInfo &fi, fi.children)
+    for (const FileInfo &fi : fi.children)
         addFiles(files, fi);
     return QTest::toString(QString("FileInfo with %1 files(%2)").arg(files.size()).arg(files.join(", ")));
 }

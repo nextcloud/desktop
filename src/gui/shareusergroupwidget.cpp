@@ -174,7 +174,7 @@ void ShareUserGroupWidget::searchForSharees()
     QSharedPointer<Sharee> currentUser(new Sharee(_account->credentials()->user(), "", Sharee::Type::User));
     blacklist << currentUser;
 
-    foreach (auto sw, _parentScrollArea->findChildren<ShareUserLine *>()) {
+    for (auto sw : _parentScrollArea->findChildren<ShareUserLine *>()) {
         blacklist << sw->share()->getShareWith();
     }
     _ui->errorLabel->hide();
@@ -197,7 +197,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     int height = 0;
     QList<QString> linkOwners({});
 
-    foreach (const auto &share, shares) {
+    for (const auto &share : shares) {
         // We don't handle link shares, only TypeUser or TypeGroup
         if (share->getShareType() == Share::TypeLink) {
             if(!share->getUidOwner().isEmpty() &&
@@ -229,7 +229,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
     }
 
-    foreach (const QString &owner, linkOwners) {
+    for (const QString &owner : linkOwners) {
         auto ownerLabel = new QLabel(QString(owner + " shared via link"));
         layout->addWidget(ownerLabel);
         ownerLabel->setVisible(true);
@@ -342,7 +342,7 @@ void ShareUserGroupWidget::displayError(int code, const QString &message)
     _pi_sharee.stopAnimation();
 
     // Also remove the spinner in the widget list, if any
-    foreach (auto pi, _parentScrollArea->findChildren<QProgressIndicator *>()) {
+    for (auto pi : _parentScrollArea->findChildren<QProgressIndicator *>()) {
         delete pi;
     }
 
@@ -384,7 +384,7 @@ void ShareUserGroupWidget::customizeStyle()
 
     _pi_sharee.setColor(QGuiApplication::palette().color(QPalette::Text));
 
-    foreach (auto pi, _parentScrollArea->findChildren<QProgressIndicator *>()) {
+    for (auto pi : _parentScrollArea->findChildren<QProgressIndicator *>()) {
         pi->setColor(QGuiApplication::palette().color(QPalette::Text));;
     }
 }

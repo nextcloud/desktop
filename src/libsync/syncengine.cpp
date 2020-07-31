@@ -269,7 +269,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all downloadinfo paths that we want to preserve.
     QSet<QString> download_file_paths;
-    foreach (const SyncFileItemPtr &it, syncItems) {
+    for (const SyncFileItemPtr &it : syncItems) {
         if (it->_direction == SyncFileItem::Down
             && it->_type == ItemTypeFile
             && isFileTransferInstruction(it->_instruction)) {
@@ -280,7 +280,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
     // Delete from journal and from filesystem.
     const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
         _journal->getAndDeleteStaleDownloadInfos(download_file_paths);
-    foreach (const SyncJournalDb::DownloadInfo &deleted_info, deleted_infos) {
+    for (const SyncJournalDb::DownloadInfo &deleted_info : deleted_infos) {
         const QString tmppath = _propagator->getFilePath(deleted_info._tmpfile);
         qCInfo(lcEngine) << "Deleting stale temporary file: " << tmppath;
         FileSystem::remove(tmppath);
@@ -291,7 +291,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> upload_file_paths;
-    foreach (const SyncFileItemPtr &it, syncItems) {
+    for (const SyncFileItemPtr &it : syncItems) {
         if (it->_direction == SyncFileItem::Up
             && it->_type == ItemTypeFile
             && isFileTransferInstruction(it->_instruction)) {
@@ -304,7 +304,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
 
     // Delete the stales chunk on the server.
     if (account()->capabilities().chunkingNg()) {
-        foreach (uint transferId, ids) {
+        for (uint transferId : ids) {
             if (!transferId)
                 continue; // Was not a chunked upload
             QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
@@ -317,7 +317,7 @@ void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &sync
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> blacklist_file_paths;
-    foreach (const SyncFileItemPtr &it, syncItems) {
+    for (const SyncFileItemPtr &it : syncItems) {
         if (it->_hasBlacklistEntry)
             blacklist_file_paths.insert(it->_file);
     }
@@ -497,7 +497,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
             item->_errorString = tr("File names ending with a period are not supported on this file system.");
         } else {
             char invalid = '\0';
-            foreach (char x, QByteArray("\\:?*\"<>|")) {
+            for (char x : QByteArray("\\:?*\"<>|")) {
                 if (item->_file.contains(x)) {
                     invalid = x;
                     break;

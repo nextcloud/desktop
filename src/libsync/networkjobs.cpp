@@ -327,7 +327,7 @@ void LsColJob::start()
         qCWarning(lcLsColJob) << "Propfind with no properties!";
     }
     QByteArray propStr;
-    foreach (const QByteArray &prop, properties) {
+    for (const QByteArray &prop : properties) {
         if (prop.contains(':')) {
             int colIdx = prop.lastIndexOf(":");
             auto ns = prop.left(colIdx);
@@ -556,7 +556,7 @@ void PropfindJob::start()
     req.setPriority(QNetworkRequest::HighPriority);
     req.setRawHeader("Depth", "0");
     QByteArray propStr;
-    foreach (const QByteArray &prop, properties) {
+    for (const QByteArray &prop : properties) {
         if (prop.contains(':')) {
             int colIdx = prop.lastIndexOf(":");
             propStr += "    <" + prop.mid(colIdx + 1) + " xmlns=\"" + prop.left(colIdx) + "\" />\n";

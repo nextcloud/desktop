@@ -289,7 +289,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             rect.width() - 2 * margin,
             subFm.height());
 
-        foreach (QString eText, texts) {
+        for (QString eText : texts) {
             painter->drawText(QStyle::visualRect(option.direction, option.rect, textRect), textAlign,
                 subFm.elidedText(eText, Qt::ElideLeft, textRect.width()));
             textRect.translate(0, textRect.height());

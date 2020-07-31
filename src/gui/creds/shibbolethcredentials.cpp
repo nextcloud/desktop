@@ -346,7 +346,7 @@ QNetworkCookie ShibbolethCredentials::findShibCookie(Account *account, QList<QNe
         cookies = accountCookies(account);
     }
 
-    Q_FOREACH (QNetworkCookie cookie, cookies) {
+    for (QNetworkCookie cookie : cookies) {
         if (cookie.name().startsWith(shibCookieNameC)) {
             return cookie;
         }

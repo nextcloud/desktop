@@ -54,7 +54,7 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
 
     _activityModel->clearNotifications();
 
-    foreach (auto activity, list) {
+    for (auto activity : list) {
         if (_blacklistedNotifications.contains(activity)) {
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
@@ -242,7 +242,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
             return;
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
-        foreach (Activity activity, _activityModel->errorsList()) {
+        for (Activity activity : _activityModel->errorsList()) {
             if (activity._folder != folder) {
                 continue;
             }
@@ -287,7 +287,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         // We keep track very well of pending conflicts.
         // Inform other components about them.
         QStringList conflicts;
-        foreach (Activity activity, _activityModel->errorsList()) {
+        for (Activity activity : _activityModel->errorsList()) {
             if (activity._folder == folder
                 && activity._status == SyncFileItem::Conflict) {
                 conflicts.append(activity._file);
@@ -405,7 +405,7 @@ void User::setCurrentUser(const bool &isCurrent)
 
 Folder *User::getFolder() const
 {
-    foreach (Folder *folder, FolderMan::instance()->map()) {
+    for (Folder *folder : FolderMan::instance()->map()) {
         if (folder->accountState() == _account.data()) {
             return folder;
         }
@@ -864,7 +864,7 @@ void UserAppsModel::buildAppList()
     }
 
     if (UserModel::instance()->appList().count() > 0) {
-        foreach (AccountApp *app, UserModel::instance()->appList()) {
+        for (AccountApp *app : UserModel::instance()->appList()) {
             // Filter out Talk because we have a dedicated button for it
             if (app->id() == QLatin1String("spreed"))
                 continue;

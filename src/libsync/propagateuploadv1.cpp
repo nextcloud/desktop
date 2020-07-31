@@ -275,7 +275,7 @@ void PropagateUploadFileV1::slotPutFinished()
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
         auto currentChunk = job->_chunk;
-        foreach (auto *job, _jobs) {
+        for (auto *job : _jobs) {
             // Take the minimum finished one
             if (auto putJob = qobject_cast<PUTFileJob *>(job)) {
                 currentChunk = qMin(currentChunk, putJob->_chunk - 1);
@@ -342,7 +342,7 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
     sender()->setProperty("byteWritten", sent);
     if (_jobs.count() > 1) {
         amount -= (_jobs.count() - 1) * chunkSize();
-        foreach (QObject *j, _jobs) {
+        for (QObject *j : _jobs) {
             amount += j->property("byteWritten").toULongLong();
         }
     } else {

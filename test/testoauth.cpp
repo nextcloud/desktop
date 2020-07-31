@@ -243,7 +243,7 @@ private slots:
                         QByteArray("GET /?code=éléphant\xa5 HTTP\n"),
                         QByteArray("\n\n\n\n"),
                     };
-                    foreach (const auto &x, payloads) {
+                    for (const auto &x : payloads) {
                         auto socket = new QTcpSocket(this);
                         socket->connectToHost("localhost", port);
                         QVERIFY(socket->waitForConnected());

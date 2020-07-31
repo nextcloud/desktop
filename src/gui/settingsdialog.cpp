@@ -115,7 +115,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
-    foreach(auto ai, AccountManager::instance()->accounts()) {
+    for (auto ai : AccountManager::instance()->accounts()) {
         accountAdded(ai.data());
     }
 
@@ -305,7 +305,7 @@ void SettingsDialog::customizeStyle()
     QString background(palette().base().color().name());
     _toolBar->setStyleSheet(QString::fromLatin1(TOOLBAR_CSS).arg(background, dark, highlightColor, highlightTextColor));
 
-    Q_FOREACH (QAction *a, _actionGroup->actions()) {
+    for (QAction *a : _actionGroup->actions()) {
         QIcon icon = Theme::createColorAwareIcon(a->property("iconPath").toString(), palette());
         a->setIcon(icon);
         auto *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));

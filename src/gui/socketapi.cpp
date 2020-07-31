@@ -255,7 +255,7 @@ void SocketApi::slotNewConnection()
     _listeners.append(SocketListener(socket));
     SocketListener &listener = _listeners.last();
 
-    foreach (Folder *f, FolderMan::instance()->map()) {
+    for (Folder *f : FolderMan::instance()->map()) {
         if (f->canSync()) {
             QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
             listener.sendMessage(message);
@@ -315,7 +315,7 @@ void SocketApi::slotRegisterPath(const QString &alias)
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-        foreach (auto &listener, _listeners) {
+        for (auto &listener : _listeners) {
             listener.sendMessage(message);
         }
     }
@@ -361,7 +361,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
 
 void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 {
-    foreach (auto &listener, _listeners) {
+    for (auto &listener : _listeners) {
         listener.sendMessage(msg, doWait);
     }
 }
@@ -412,7 +412,7 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
     Q_ASSERT(!systemPath.endsWith('/'));
     uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
-    foreach (auto &listener, _listeners) {
+    for (auto &listener : _listeners) {
         listener.sendMessageIfDirectoryMonitored(msg, directoryHash);
     }
 }
