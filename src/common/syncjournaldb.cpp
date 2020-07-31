@@ -79,7 +79,7 @@ static QByteArray defaultJournalMode(const QString &dbPath)
         return "DELETE";
     }
 #elif defined(Q_OS_MAC)
-    if (dbPath.startsWith("/Volumes/")) {
+    if (dbPath.startsWith(QLatin1String("/Volumes/"))) {
         qCInfo(lcDb) << "Mounted sync dir, do not use WAL for" << dbPath;
         return "DELETE";
     }
