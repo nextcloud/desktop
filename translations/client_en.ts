@@ -3105,11 +3105,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Hide</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../src/gui/settingsdialog.ui" line="49"/>
-        <source>toolBar</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>OCC::ShareDialog</name>
