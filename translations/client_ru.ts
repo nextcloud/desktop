@@ -3484,7 +3484,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Открыть главный диалог</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="89"/>
@@ -3494,7 +3494,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="91"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Выход %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>
