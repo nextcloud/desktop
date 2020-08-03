@@ -945,6 +945,11 @@ Folder *FolderMan::addFolderInternal(FolderDefinition folderDefinition,
 
     auto folder = new Folder(folderDefinition, accountState, this);
 
+    if (_navigationPaneHelper.showInExplorerNavigationPane() && folderDefinition.navigationPaneClsid.isNull()) {
+        folder->setNavigationPaneClsid(QUuid::createUuid());
+        folder->saveToSettings();
+    }
+
     qCInfo(lcFolderMan) << "Adding folder to Folder Map " << folder << folder->alias();
     _folderMap[folder->alias()] = folder;
     if (folder->syncPaused()) {
