@@ -483,7 +483,7 @@ bool User::hasLocalFolder() const
 
 bool User::serverHasTalk() const
 {
-    return _account->hasTalk();
+    return talkApp() != nullptr;
 }
 
 AccountApp *User::talkApp() const
@@ -600,14 +600,6 @@ Q_INVOKABLE QString UserModel::currentUserServer()
         return {};
 
     return _users[_currentUserId]->server();
-}
-
-Q_INVOKABLE bool UserModel::currentServerHasTalk()
-{
-    if (_users.isEmpty())
-        return false;
-
-    return _users[_currentUserId]->serverHasTalk();
 }
 
 void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
@@ -870,9 +862,10 @@ void UserAppsModel::buildAppList()
     }
 
     if (UserModel::instance()->appList().count() > 0) {
+        const auto talkApp = UserModel::instance()->currentUser()->talkApp();
         foreach (AccountApp *app, UserModel::instance()->appList()) {
             // Filter out Talk because we have a dedicated button for it
-            if (app->id() == QLatin1String("spreed"))
+            if (talkApp && app->id() == talkApp->id())
                 continue;
 
             beginInsertRows(QModelIndex(), rowCount(), rowCount());

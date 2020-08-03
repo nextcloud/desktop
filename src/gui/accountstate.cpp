@@ -44,7 +44,6 @@ AccountState::AccountState(AccountPtr account)
     , _waitingForNewCredentials(false)
     , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
     , _remoteWipe(new RemoteWipe(_account))
-    , _hasTalk(false)
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
@@ -72,11 +71,6 @@ void AccountState::writeToSettings(QSettings & /*settings*/)
 AccountPtr AccountState::account() const
 {
     return _account;
-}
-
-bool AccountState::hasTalk() const
-{
-    return _hasTalk;
 }
 
 AccountState::ConnectionStatus AccountState::connectionStatus() const
@@ -444,7 +438,6 @@ void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int sta
             qCWarning(lcAccountState) << "Status code " << statusCode << " Not Modified - No new navigation apps.";
         } else {
             _apps.clear();
-            _hasTalk = false;
 
             if(!reply.isEmpty()){
                 auto element = reply.object().value("ocs").toObject().value("data");
@@ -458,9 +451,6 @@ void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int sta
                             navLink.value("id").toString(), QUrl(navLink.value("icon").toString()));
 
                         _apps << app;
-
-                        if(app->id() == QLatin1String("spreed"))
-                            _hasTalk = true;
                     }
                 }
             }

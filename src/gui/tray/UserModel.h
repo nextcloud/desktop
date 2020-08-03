@@ -113,7 +113,6 @@ public:
     Q_INVOKABLE QString currentUserServer();
     Q_INVOKABLE bool currentUserHasActivities();
     Q_INVOKABLE bool currentUserHasLocalFolder();
-    Q_INVOKABLE bool currentServerHasTalk();
     Q_INVOKABLE int currentUserId() const;
     Q_INVOKABLE bool isUserConnected(const int &id);
     Q_INVOKABLE void switchCurrentUser(const int &id);
