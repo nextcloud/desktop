@@ -486,6 +486,11 @@ bool User::serverHasTalk() const
     return _account->hasTalk();
 }
 
+AccountApp *User::talkApp() const
+{
+    return _account->findApp(QStringLiteral("spreed"));
+}
+
 bool User::hasActivities() const
 {
     return _account->account()->capabilities().hasActivities();
@@ -643,14 +648,15 @@ Q_INVOKABLE void UserModel::openCurrentAccountLocalFolder()
 
 Q_INVOKABLE void UserModel::openCurrentAccountTalk()
 {
-    if (_users.isEmpty())
+    if (!currentUser())
         return;
 
-    QString url = _users[_currentUserId]->server(false) + "/apps/spreed";
-    if (!(url.contains("http://") || url.contains("https://"))) {
-        url = "https://" + _users[_currentUserId]->server(false) + "/apps/spreed";
+    const auto talkApp = currentUser()->talkApp();
+    if (talkApp) {
+        QDesktopServices::openUrl(talkApp->url());
+    } else {
+        qCWarning(lcActivity) << "The Talk app is not enabled on" << currentUser()->server();
     }
-    QDesktopServices::openUrl(QUrl(url));
 }
 
 Q_INVOKABLE void UserModel::openCurrentAccountServer()

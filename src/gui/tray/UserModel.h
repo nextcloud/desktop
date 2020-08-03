@@ -36,6 +36,7 @@ public:
     QString server(bool shortened = true) const;
     bool hasLocalFolder() const;
     bool serverHasTalk() const;
+    AccountApp *talkApp() const;
     bool hasActivities() const;
     AccountAppList appList() const;
     QImage avatar(bool whiteBg = false) const;
