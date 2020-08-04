@@ -36,6 +36,7 @@ public:
     QString server(bool shortened = true) const;
     bool hasLocalFolder() const;
     bool serverHasTalk() const;
+    AccountApp *talkApp() const;
     bool hasActivities() const;
     AccountAppList appList() const;
     QImage avatar(bool whiteBg = false) const;
@@ -112,7 +113,6 @@ public:
     Q_INVOKABLE QString currentUserServer();
     Q_INVOKABLE bool currentUserHasActivities();
     Q_INVOKABLE bool currentUserHasLocalFolder();
-    Q_INVOKABLE bool currentServerHasTalk();
     Q_INVOKABLE int currentUserId() const;
     Q_INVOKABLE bool isUserConnected(const int &id);
     Q_INVOKABLE void switchCurrentUser(const int &id);

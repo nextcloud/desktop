@@ -483,7 +483,12 @@ bool User::hasLocalFolder() const
 
 bool User::serverHasTalk() const
 {
-    return _account->hasTalk();
+    return talkApp() != nullptr;
+}
+
+AccountApp *User::talkApp() const
+{
+    return _account->findApp(QStringLiteral("spreed"));
 }
 
 bool User::hasActivities() const
@@ -597,14 +602,6 @@ Q_INVOKABLE QString UserModel::currentUserServer()
     return _users[_currentUserId]->server();
 }
 
-Q_INVOKABLE bool UserModel::currentServerHasTalk()
-{
-    if (_users.isEmpty())
-        return false;
-
-    return _users[_currentUserId]->serverHasTalk();
-}
-
 void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 {
     bool containsUser = false;
@@ -643,14 +640,15 @@ Q_INVOKABLE void UserModel::openCurrentAccountLocalFolder()
 
 Q_INVOKABLE void UserModel::openCurrentAccountTalk()
 {
-    if (_users.isEmpty())
+    if (!currentUser())
         return;
 
-    QString url = _users[_currentUserId]->server(false) + "/apps/spreed";
-    if (!(url.contains("http://") || url.contains("https://"))) {
-        url = "https://" + _users[_currentUserId]->server(false) + "/apps/spreed";
+    const auto talkApp = currentUser()->talkApp();
+    if (talkApp) {
+        QDesktopServices::openUrl(talkApp->url());
+    } else {
+        qCWarning(lcActivity) << "The Talk app is not enabled on" << currentUser()->server();
     }
-    QDesktopServices::openUrl(QUrl(url));
 }
 
 Q_INVOKABLE void UserModel::openCurrentAccountServer()
@@ -864,9 +862,10 @@ void UserAppsModel::buildAppList()
     }
 
     if (UserModel::instance()->appList().count() > 0) {
+        const auto talkApp = UserModel::instance()->currentUser()->talkApp();
         foreach (AccountApp *app, UserModel::instance()->appList()) {
             // Filter out Talk because we have a dedicated button for it
-            if (app->id() == QLatin1String("spreed"))
+            if (talkApp && app->id() == talkApp->id())
                 continue;
 
             beginInsertRows(QModelIndex(), rowCount(), rowCount());

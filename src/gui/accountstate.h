@@ -103,8 +103,6 @@ public:
 
     bool isSignedOut() const;
 
-    bool hasTalk() const;
-
     AccountAppList appList() const;
     AccountApp* findApp(const QString &appId) const;
 
@@ -195,7 +193,6 @@ private:
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;
     bool _waitingForNewCredentials;
-    bool _hasTalk;
     QElapsedTimer _timeSinceLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
     QByteArray _notificationsEtagResponseHeader;
