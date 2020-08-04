@@ -3493,7 +3493,7 @@ It is not advisable to use it.</source>
         <translation>Отвори главни дијалог</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Поставке</translation>
     </message>

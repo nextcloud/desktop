@@ -3493,7 +3493,7 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Apri finestra principale</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Impostazioni</translation>
     </message>

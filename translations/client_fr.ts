@@ -3495,7 +3495,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Ouvrir la fenêtre principale</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>

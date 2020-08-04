@@ -3493,7 +3493,7 @@ Det är inte lämpligt att använda den.</translation>
         <translation>Öppna huvuddialogen</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Inställnigar</translation>
     </message>

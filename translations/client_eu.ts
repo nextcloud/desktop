@@ -3493,7 +3493,7 @@ Ez da gomendagarria erabiltzea.</translation>
         <translation>Ireki elkarrizketa nagusia</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Ezarpenak</translation>
     </message>

@@ -3492,7 +3492,7 @@ It is not advisable to use it.</source>
         <translation>Otvorte hlavné dialógové okno</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Nastavenia</translation>
     </message>

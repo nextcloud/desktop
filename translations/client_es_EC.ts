@@ -2793,7 +2793,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Agregar otro enlace</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="406"/>
@@ -3476,7 +3476,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Configuraciones </translation>
     </message>

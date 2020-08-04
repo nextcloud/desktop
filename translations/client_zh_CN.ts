@@ -3492,7 +3492,7 @@ It is not advisable to use it.</source>
         <translation>打开主对话框</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>

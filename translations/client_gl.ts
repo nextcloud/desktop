@@ -3493,7 +3493,7 @@ Recomendámoslle que non o use.</translation>
         <translation>Abrir o diálogo principal</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Axustes</translation>
     </message>
