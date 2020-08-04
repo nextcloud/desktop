@@ -3475,7 +3475,7 @@ It is not advisable to use it.</source>
         <translation>Відкрити основне вікно діалогу</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Налаштування</translation>
     </message>

@@ -3492,7 +3492,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <translation>Hauptfenster öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="89"/>
+        <location filename="../src/gui/systray.cpp" line="90"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
