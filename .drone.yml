@@ -3,30 +3,12 @@ name: qt-5.12
 
 steps:
 - name: build and test
-  image: nextcloudci/client-5.12:client-5.12-9
+  image: nextcloudci/client-5.12:client-5.12-10
   commands:
-    # Install QtKeyChain
-    - /bin/bash -c "
-      export CC=gcc-7 &&
-      export CXX=g++-7 &&
-      export QT_BASE_DIR=/opt/qt5.12.9 &&
-      export QTDIR=\$QT_BASE_DIR &&
-      export PATH=\$QT_BASE_DIR/bin:\$PATH &&
-      export LD_LIBRARY_PATH=\$QT_BASE_DIR/lib/x86_64-linux-gnu:\$QT_BASE_DIR/lib:/usr/local/lib:\$LD_LIBRARY_PATH &&
-      export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
-      cd /tmp &&
-      git clone https://github.com/frankosterfeld/qtkeychain.git &&
-      cd qtkeychain &&
-      git checkout v0.9.1 &&
-      mkdir build &&
-      cd build &&
-      cmake ../ &&
-      make -j$(nproc) &&
-      make install"
     # Build client
     - /bin/bash -c "
-      export CC=gcc-7 &&
-      export CXX=g++-7 &&
+      export CC=gcc-10 &&
+      export CXX=g++-10 &&
       export QT_BASE_DIR=/opt/qt5.12.9 &&
       export QTDIR=\$QT_BASE_DIR &&
       export PATH=\$QT_BASE_DIR/bin:\$PATH &&
@@ -52,30 +34,12 @@ name: qt-5.12-clang
 
 steps:
 - name: build and test
-  image: nextcloudci/client-5.12:client-5.12-9
+  image: nextcloudci/client-5.12:client-5.12-10
   commands:
-    # Install QtKeyChain
-    - /bin/bash -c "
-      export CC=clang-6.0 &&
-      export CXX=clang++-6.0 &&
-      export QT_BASE_DIR=/opt/qt5.12.9 &&
-      export QTDIR=\$QT_BASE_DIR &&
-      export PATH=\$QT_BASE_DIR/bin:\$PATH &&
-      export LD_LIBRARY_PATH=\$QT_BASE_DIR/lib/x86_64-linux-gnu:\$QT_BASE_DIR/lib:/usr/local/lib:\$LD_LIBRARY_PATH &&
-      export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
-      cd /tmp &&
-      git clone https://github.com/frankosterfeld/qtkeychain.git &&
-      cd qtkeychain &&
-      git checkout v0.9.1 &&
-      mkdir build &&
-      cd build &&
-      cmake ../ &&
-      make -j$(nproc) &&
-      make install"
     # Build client
     - /bin/bash -c "
-      export CC=clang-6.0 &&
-      export CXX=clang++-6.0 &&
+      export CC=clang-10 &&
+      export CXX=clang++-10 &&
       export QT_BASE_DIR=/opt/qt5.12.9 &&
       export QTDIR=\$QT_BASE_DIR &&
       export PATH=\$QT_BASE_DIR/bin:\$PATH &&
@@ -89,7 +53,7 @@ steps:
       chown -R test:test . &&
       su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test"
     # Static analysis with clang-tidy
-    - "! run-clang-tidy-6.0 -p build -quiet | grep -A 5 ': error:'"
+    - "! run-clang-tidy-10 -p build -quiet | grep -A 5 ': error:'"
 trigger:
   branch:
     - master
