@@ -9,11 +9,6 @@ steps:
     - /bin/bash -c "
       export CC=gcc-10 &&
       export CXX=g++-10 &&
-      export QT_BASE_DIR=/opt/qt5.12.9 &&
-      export QTDIR=\$QT_BASE_DIR &&
-      export PATH=\$QT_BASE_DIR/bin:\$PATH &&
-      export LD_LIBRARY_PATH=\$QT_BASE_DIR/lib/x86_64-linux-gnu:\$QT_BASE_DIR/lib:/usr/local/lib:\$LD_LIBRARY_PATH &&
-      export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
       mkdir build &&
       cd build &&
       cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
@@ -40,11 +35,6 @@ steps:
     - /bin/bash -c "
       export CC=clang-10 &&
       export CXX=clang++-10 &&
-      export QT_BASE_DIR=/opt/qt5.12.9 &&
-      export QTDIR=\$QT_BASE_DIR &&
-      export PATH=\$QT_BASE_DIR/bin:\$PATH &&
-      export LD_LIBRARY_PATH=\$QT_BASE_DIR/lib/x86_64-linux-gnu:\$QT_BASE_DIR/lib:/usr/local/lib:\$LD_LIBRARY_PATH &&
-      export PKG_CONFIG_PATH=\$QT_BASE_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH &&
       mkdir build &&
       cd build &&
       cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
