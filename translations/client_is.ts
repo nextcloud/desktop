@@ -4024,12 +4024,12 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Skrá út</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Skrá inn</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
@@ -4128,17 +4128,17 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Bæta við notandaaðgangi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="251"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Stillingar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="268"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Fara út</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>

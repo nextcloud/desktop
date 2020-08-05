@@ -4011,12 +4011,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Logg ut</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logg inn</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
@@ -4115,17 +4115,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Legg til en konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="251"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Innstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="268"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Avslutt</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>

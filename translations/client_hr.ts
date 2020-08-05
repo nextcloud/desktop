@@ -4026,12 +4026,12 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Odjava</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Prijava</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
@@ -4130,12 +4130,12 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj račun</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="251"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Postavke</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="268"/>

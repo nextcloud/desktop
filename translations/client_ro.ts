@@ -4003,12 +4003,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Ieșire</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Autentificare</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
@@ -4107,12 +4107,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă cont</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="251"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Setări</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="268"/>

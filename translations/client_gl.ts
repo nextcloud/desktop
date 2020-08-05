@@ -4028,12 +4028,12 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Saír</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Acceder</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
@@ -4132,17 +4132,17 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
         <source>Add account</source>
-        <translation type="unfinished"/>
+        <translation>Engadir unha conta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="251"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Axustes</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="268"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Saír</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
