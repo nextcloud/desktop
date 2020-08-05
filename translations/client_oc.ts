@@ -3536,22 +3536,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="705"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmatz la supression del compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="708"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="711"/>
         <source>Remove connection</source>
         <translation>Suprimir la connexion</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="714"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Cancel</source>
         <translation>Anullar</translation>
     </message>

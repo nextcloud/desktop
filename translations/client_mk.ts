@@ -3534,22 +3534,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="705"/>
         <source>Confirm Account Removal</source>
         <translation>Потврди одстранување на сметка</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="708"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Дали сте сигурни дека сакате да ја одстраните врската со сметката &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Забелешка:&lt;/b&gt; Ова &lt;b&gt;нема&lt;/b&gt; да избрише ниту една датотека.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="711"/>
         <source>Remove connection</source>
         <translation>Одстрани врска</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="714"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Cancel</source>
         <translation>Откажи</translation>
     </message>
