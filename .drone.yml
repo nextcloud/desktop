@@ -21,7 +21,7 @@ steps:
       mkdir build &&
       cd build &&
       cmake ../ &&
-      make &&
+      make -j$(nproc) &&
       make install"
     # Build client
     - /bin/bash -c "
@@ -35,7 +35,7 @@ steps:
       mkdir build &&
       cd build &&
       cmake -D NO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
-      make &&
+      make -j$(nproc) &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&
       su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test"
@@ -70,7 +70,7 @@ steps:
       mkdir build &&
       cd build &&
       cmake ../ &&
-      make &&
+      make -j$(nproc) &&
       make install"
     # Build client
     - /bin/bash -c "
@@ -84,7 +84,7 @@ steps:
       mkdir build &&
       cd build &&
       cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../ &&
-      make &&
+      make -j$(nproc) &&
       useradd -m -s /bin/bash test &&
       chown -R test:test . &&
       su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test"
