@@ -52,7 +52,7 @@ steps:
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../src
+    - cmake -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../src
 - name: compile
   image: nextcloudci/client-5.12:client-5.12-10
   volumes:
@@ -60,7 +60,7 @@ steps:
       path: /drone/build
   commands:
     - cd /drone/build
-    - make -j$(nproc)
+    - ninja
 - name: test
   image: nextcloudci/client-5.12:client-5.12-10
   volumes:
