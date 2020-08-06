@@ -2,7 +2,7 @@ kind: pipeline
 name: qt-5.12
 
 steps:
-- name: build
+- name: cmake
   image: nextcloudci/client-5.12:client-5.12-10
   volumes:
     - name: build
@@ -10,6 +10,13 @@ steps:
   commands:
     - cd /drone/build
     - cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../src
+- name: compile
+  image: nextcloudci/client-5.12:client-5.12-10
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
     - make -j$(nproc)
 - name: test
   image: nextcloudci/client-5.12:client-5.12-10
@@ -38,7 +45,7 @@ kind: pipeline
 name: qt-5.12-clang
 
 steps:
-- name: build
+- name: cmake
   image: nextcloudci/client-5.12:client-5.12-10
   volumes:
     - name: build
@@ -46,6 +53,13 @@ steps:
   commands:
     - cd /drone/build
     - cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../src
+- name: compile
+  image: nextcloudci/client-5.12:client-5.12-10
+  volumes:
+    - name: build
+      path: /drone/build
+  commands:
+    - cd /drone/build
     - make -j$(nproc)
 - name: test
   image: nextcloudci/client-5.12:client-5.12-10
