@@ -77,7 +77,7 @@ steps:
     - name: build
       path: /drone/build
   commands:
-    - "! run-clang-tidy-10 -p /drone/build -header-filter $PWD -quiet | grep -A 5 ': error:'"
+    - "! run-clang-tidy-10 -j$(nproc) -p /drone/build -header-filter $PWD -quiet | grep -A 5 ': error:'"
 
 volumes:
 - name: build
