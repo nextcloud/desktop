@@ -8,23 +8,19 @@ steps:
     - name: build
       path: /drone/build
   commands:
-    - /bin/bash -c "
-      export CC=gcc-10 &&
-      export CXX=g++-10 &&
-      cd /drone/build &&
-      cmake -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../src &&
-      make -j$(nproc)"
+    - cd /drone/build
+    - cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../src
+    - make -j$(nproc)
 - name: test
   image: nextcloudci/client-5.12:client-5.12-10
   volumes:
     - name: build
       path: /drone/build
   commands:
-    - /bin/bash -c "
-      cd /drone/build &&
-      useradd -m -s /bin/bash test &&
-      chown -R test:test . &&
-      su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test"
+    - cd /drone/build
+    - useradd -m -s /bin/bash test
+    - chown -R test:test .
+    - su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test
 
 volumes:
 - name: build
@@ -48,23 +44,19 @@ steps:
     - name: build
       path: /drone/build
   commands:
-    - /bin/bash -c "
-      export CC=clang-10 &&
-      export CXX=clang++-10 &&
-      cd /drone/build &&
-      cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../src &&
-      make -j$(nproc)"
+    - cd /drone/build
+    - cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON DCMAKE_C_COMPILER=clang-10 -DCMAKE_CXX_COMPILER=clang++-10 -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1 -DBUILD_UPDATER=ON -DUNIT_TESTING=1 -DSANITIZE_ADDRESS=ON ../src
+    - make -j$(nproc)
 - name: test
   image: nextcloudci/client-5.12:client-5.12-10
   volumes:
     - name: build
       path: /drone/build
   commands:
-    - /bin/bash -c "
-      cd /drone/build &&
-      useradd -m -s /bin/bash test &&
-      chown -R test:test . &&
-      su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test"
+    - cd /drone/build
+    - useradd -m -s /bin/bash test
+    - chown -R test:test .
+    - su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test
 - name: clang-tidy
   image: nextcloudci/client-5.12:client-5.12-10
   volumes:
