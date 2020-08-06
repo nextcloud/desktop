@@ -52,7 +52,7 @@ steps:
       chown -R test:test . &&
       su -c 'ASAN_OPTIONS=detect_leaks=0 ctest --output-on-failure' test"
     # Static analysis with clang-tidy
-    - "! run-clang-tidy-10 -p /drone/build -quiet | grep -A 5 ': error:'"
+    - "! run-clang-tidy-10 -p /drone/build -header-filter $PWD -quiet | grep -A 5 ': error:'"
 
 volumes:
 - name: build
