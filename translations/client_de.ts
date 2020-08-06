@@ -4037,7 +4037,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Konto entfernen</translation>
     </message>
 </context>
 <context>
@@ -4121,12 +4121,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierung für alle fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierung für alle pausieren</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
@@ -4146,17 +4146,17 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open sync item locally</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierungselement lokal öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation type="unfinished"/>
+        <translation>ZRL öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Teilen-Dialog öffnen</translation>
     </message>
 </context>
 <context>
