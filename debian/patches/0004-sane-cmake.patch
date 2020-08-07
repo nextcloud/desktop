@@ -21,7 +21,7 @@ Last-Update: 2019-11-17
 +# We don't want VERSION.cmake anymore
 +# include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 +set( MIRALL_VERSION_MAJOR 3 )
-+set( MIRALL_VERSION_MINOR 0 )
++set( MIRALL_VERSION_MINOR 1 )
 +set( MIRALL_VERSION_PATCH 0 )
 +set( MIRALL_VERSION_YEAR  2020 )
 +set( MIRALL_SOVERSION 0 )
@@ -242,7 +242,7 @@ Last-Update: 2019-11-17
 +++ /dev/null
 @@ -1,26 +0,0 @@
 -set( MIRALL_VERSION_MAJOR 3 )
--set( MIRALL_VERSION_MINOR 0 )
+-set( MIRALL_VERSION_MINOR 1 )
 -set( MIRALL_VERSION_PATCH 0 )
 -set( MIRALL_VERSION_YEAR  2020 )
 -set( MIRALL_SOVERSION 0 )
