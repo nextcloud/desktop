@@ -54,6 +54,7 @@ Depends: libnextcloudsync0 (= ${binary:Version}),
          ${shlibs:Depends}
 Replaces: nextcloud-client (<< ${binary:Version})
 Recommends: nextcloud-desktop-doc
+Suggests: dolphin-nextcloud, nautilus-nextcloud, nemo-nextcloud, caja-nextcloud
 Description: Nextcloud folder synchronization tool
  The Nextcloud desktop app lets you always have your latest files wherever
  you are. Just specify one or more folders on the local machine to and a server
