@@ -2,83 +2,83 @@
 <context>
     <name>CloudProviderWrapper</name>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="106"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="123"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Kontrolo de ŝanĝoj en „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="128"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Sinkronigo de %1 el %2 (%3 restas)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="133"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
         <translation>Sinkronigo de %1 el %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="140"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sinkronigo de %1 (%2 restas)</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="143"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
         <translation>Sinkronigo de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="164"/>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="226"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
         <translation>Neniu dosiero antaŭ nelonge ŝanĝita </translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="180"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
         <source>Sync paused</source>
         <translation>Sinkronigo paŭzas</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="183"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="184"/>
         <source>Syncing</source>
         <translation>Sinkronigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="219"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="220"/>
         <source>Open website</source>
         <translation>Malfermi retejon</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="231"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
         <translation>Ŝanĝitaj antaŭ nelonge</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="238"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
         <source>Pause synchronization</source>
         <translation>Paŭzigi sinkronigon</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="245"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="246"/>
         <source>Help</source>
         <translation>Helpo</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="248"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="249"/>
         <source>Settings</source>
         <translation>Agordoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="251"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="252"/>
         <source>Log out</source>
         <translation>Elsaluti</translation>
     </message>
     <message>
-        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="254"/>
+        <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="255"/>
         <source>Quit sync client</source>
         <translation>Fini sinkronigan klienton</translation>
     </message>
@@ -221,8 +221,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
-        <location filename="../src/gui/accountsettings.cpp" line="803"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1219"/>
+        <location filename="../src/gui/accountsettings.cpp" line="573"/>
+        <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>Cancel</source>
         <translation>Nuligi</translation>
     </message>
@@ -237,22 +237,22 @@
         <translation>Konektita kun servilo &lt;server&gt; kiel uzanto &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="211"/>
+        <location filename="../src/gui/accountsettings.ui" line="204"/>
         <source>Storage space: …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="190"/>
+        <location filename="../src/gui/accountsettings.cpp" line="187"/>
         <source>No account configured.</source>
         <translation>Neniu konto agordita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="242"/>
+        <location filename="../src/gui/accountsettings.cpp" line="216"/>
         <source>This account supports end-to-end encryption</source>
         <translation>Tiu konto subtenas tutvojan ĉifradon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="244"/>
+        <location filename="../src/gui/accountsettings.cpp" line="218"/>
         <source>Enable encryption</source>
         <translation>Ebligi ĉifradon</translation>
     </message>
@@ -294,154 +294,154 @@ Wait for the new sync, then encrypt it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="589"/>
-        <location filename="../src/gui/accountsettings.cpp" line="646"/>
+        <location filename="../src/gui/accountsettings.cpp" line="358"/>
+        <location filename="../src/gui/accountsettings.cpp" line="416"/>
         <source>Open folder</source>
         <translation>Malfermi dosierujon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="605"/>
+        <location filename="../src/gui/accountsettings.cpp" line="375"/>
         <source>Encrypt</source>
         <translation>Ĉifri</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="613"/>
-        <location filename="../src/gui/accountsettings.cpp" line="649"/>
+        <location filename="../src/gui/accountsettings.cpp" line="383"/>
+        <location filename="../src/gui/accountsettings.cpp" line="419"/>
         <source>Edit Ignored Files</source>
         <translation>Redakti ignoritajn dosierojn</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="653"/>
+        <location filename="../src/gui/accountsettings.cpp" line="423"/>
         <source>Choose what to sync</source>
         <translation>Elekti tion, kion sinkronigi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="659"/>
+        <location filename="../src/gui/accountsettings.cpp" line="429"/>
         <source>Force sync now</source>
         <translation>Sinkronigi nun</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="661"/>
+        <location filename="../src/gui/accountsettings.cpp" line="431"/>
         <source>Restart sync</source>
         <translation>Rekomenci sinkronigon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="667"/>
+        <location filename="../src/gui/accountsettings.cpp" line="437"/>
         <source>Resume sync</source>
         <translation>Daŭrigi sinkronigon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="667"/>
+        <location filename="../src/gui/accountsettings.cpp" line="437"/>
         <source>Pause sync</source>
         <translation>Paŭzigi sinkronigon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="670"/>
+        <location filename="../src/gui/accountsettings.cpp" line="440"/>
         <source>Remove folder sync connection</source>
         <translation>Ne plu sinkronigi tiun dosierujon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="741"/>
+        <location filename="../src/gui/accountsettings.cpp" line="511"/>
         <source>Folder creation failed</source>
         <translation>Kreo de dosierujo malsukcesis</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="742"/>
+        <location filename="../src/gui/accountsettings.cpp" line="512"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="795"/>
+        <location filename="../src/gui/accountsettings.cpp" line="565"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Konfirmu la forigadon de la sinkronigo de tiu dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="796"/>
+        <location filename="../src/gui/accountsettings.cpp" line="566"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ĉu vi vere volas ĉesi sinkronigi la dosierujon &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notu:&lt;/b&gt; Tio &lt;b&gt;ne&lt;/b&gt; forigos la dosierojn.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="572"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Ne plu sinkronigi tiun dosierujon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="887"/>
+        <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>Sync Running</source>
         <translation>Sinkronigo ruliĝanta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="888"/>
+        <location filename="../src/gui/accountsettings.cpp" line="658"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sinkronigo estas ruliĝanta.&lt;br/&gt;Ĉu vi volas fini ĝin?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="964"/>
+        <location filename="../src/gui/accountsettings.cpp" line="734"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) el %2 uzataj. Certaj dosierujoj, inkluzive de rete muntitaj aŭ kunhavigitaj dosierujoj, eble havas aliajn limigojn.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="965"/>
+        <location filename="../src/gui/accountsettings.cpp" line="735"/>
         <source>%1 of %2 in use</source>
         <translation>%1 el %2 uzitaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="974"/>
+        <location filename="../src/gui/accountsettings.cpp" line="744"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Ĉi-momente estas neniu informo pri konservejospaco.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <location filename="../src/gui/accountsettings.cpp" line="747"/>
         <source>%1 in use</source>
         <translation>%1 uzata(j)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1004"/>
+        <location filename="../src/gui/accountsettings.cpp" line="774"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 per la konto &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
+        <location filename="../src/gui/accountsettings.cpp" line="780"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
         <translation>La servilo je versio %1 estas malnova kaj nesubtenata. Daŭrigu je via risko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
+        <location filename="../src/gui/accountsettings.cpp" line="782"/>
         <source>Connected to %1.</source>
         <translation>Konektita al %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1014"/>
+        <location filename="../src/gui/accountsettings.cpp" line="784"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Servilo %1 dumtempe ne disponeblas</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
+        <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>La servilo %1 estas en reĝimo de prizorgado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1018"/>
+        <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>Signed out from %1.</source>
         <translation>Elsalutita de %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
+        <location filename="../src/gui/accountsettings.cpp" line="797"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Atendante rajtigon el la retumilo. &lt;a href=&apos;%1&apos;&gt;Alklaku ĉi tie&lt;/a&gt; por remalfermi la retumilon.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1031"/>
+        <location filename="../src/gui/accountsettings.cpp" line="801"/>
         <source>Connecting to %1 …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1034"/>
+        <location filename="../src/gui/accountsettings.cpp" line="804"/>
         <source>No connection to %1 at %2.</source>
         <translation>Neniu konekto al servilo %1 je la adreso %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1040"/>
+        <location filename="../src/gui/accountsettings.cpp" line="810"/>
         <source>No %1 connection configured.</source>
         <translation>Neniu konekto al %1 agordita.</translation>
     </message>
@@ -451,32 +451,32 @@ Wait for the new sync, then encrypt it.</source>
         <translation>Ensaluti</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1162"/>
+        <location filename="../src/gui/accountsettings.cpp" line="923"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas tro grandaj:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1164"/>
+        <location filename="../src/gui/accountsettings.cpp" line="925"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas konservataj en ekstera konservejo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1165"/>
+        <location filename="../src/gui/accountsettings.cpp" line="926"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas tro grandaj âù konservataj en ekstera konservejo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1211"/>
+        <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>Confirm Account Removal</source>
         <translation>Konfirmi forigadon de la konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1212"/>
+        <location filename="../src/gui/accountsettings.cpp" line="961"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ĉu vi vere volas forigi konekton al la konto &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notu:&lt;/b&gt; Tio &lt;b&gt;ne&lt;/b&gt; forigos la dosierojn.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1218"/>
+        <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>Remove connection</source>
         <translation>Forigi konekton</translation>
     </message>
@@ -484,47 +484,47 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="125"/>
+        <location filename="../src/gui/accountstate.cpp" line="126"/>
         <source>Signed out</source>
         <translation>Elsalutita</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="127"/>
+        <location filename="../src/gui/accountstate.cpp" line="128"/>
         <source>Disconnected</source>
         <translation>Malkonektita</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="129"/>
+        <location filename="../src/gui/accountstate.cpp" line="130"/>
         <source>Connected</source>
         <translation>Konektita</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="131"/>
+        <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Service unavailable</source>
         <translation>Servo nedisponebla</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="133"/>
+        <location filename="../src/gui/accountstate.cpp" line="134"/>
         <source>Maintenance mode</source>
         <translation>Reĝimo de prizorgado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="135"/>
+        <location filename="../src/gui/accountstate.cpp" line="136"/>
         <source>Network error</source>
         <translation>Reta eraro</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="137"/>
+        <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Configuration error</source>
         <translation>Agorda eraro</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="139"/>
+        <location filename="../src/gui/accountstate.cpp" line="140"/>
         <source>Asking Credentials</source>
         <translation>Akreditiloj petitaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="141"/>
+        <location filename="../src/gui/accountstate.cpp" line="142"/>
         <source>Unknown account state</source>
         <translation>Konto-stato nekonita</translation>
     </message>
@@ -532,7 +532,7 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="341"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Dosieroj el la listo de ignoritaj dosieroj kaj ankaŭ simbolaj ligiloj ne sinkroniĝas. Tio entenas:</translation>
     </message>
@@ -583,17 +583,17 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="208"/>
+        <location filename="../src/gui/application.cpp" line="207"/>
         <source>Error accessing the configuration file</source>
         <translation>Eraro dum aliro al la dosiero de agordoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="209"/>
+        <location filename="../src/gui/application.cpp" line="208"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
         <translation>Okazis eraro dum aliro al la agorda dosiero en %1. Bv. certigi, ke la dosiero estas alirebla de via uzanto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="212"/>
+        <location filename="../src/gui/application.cpp" line="211"/>
         <source>Quit %1</source>
         <translation>Fini %1</translation>
     </message>
@@ -624,7 +624,7 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1037"/>
         <source>Error writing metadata to the database</source>
         <translation>Eraro dum konservado de pridatumoj en la datumbazo</translation>
     </message>
@@ -632,12 +632,12 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="998"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1105"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Bv. entajpi vian pasfrazon de tutvoja ĉifrado:&lt;br&gt;&lt;br&gt;Uzanto: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1006"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1113"/>
         <source>Enter E2E passphrase</source>
         <translation>Entajpu E2E (tutvoja) pasfrazon</translation>
     </message>
@@ -665,12 +665,12 @@ Wait for the new sync, then encrypt it.</source>
         <translation>La akreditiloj provizitaj ne ĝustas</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="284"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="289"/>
         <source>The configured server for this client is too old</source>
         <translation>La servilo agordita por tiu ĉi kliento estas tro malnova</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="285"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="290"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Bv. ĝisdatigi la servilon, kaj remalfermi la klienton.</translation>
     </message>
@@ -730,12 +730,12 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Flow2AuthCredsPage</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
+        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="36"/>
         <source>Connect to %1</source>
         <translation>Konekti al %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="38"/>
+        <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Login in your browser (Login Flow v2)</source>
         <translation>Ensaluti pere de via retumilo (Login Flow v2)</translation>
     </message>
@@ -743,27 +743,27 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Flow2AuthWidget</name>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="80"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="77"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
         <translation>La retumilo ne malfermeblis; kopiu la ligilon mane en vian retumilon.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="143"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="140"/>
         <source>Waiting for authorization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="148"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="145"/>
         <source>Polling for authorization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="153"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="150"/>
         <source>Starting authorization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="157"/>
+        <location filename="../src/gui/wizard/flow2authwidget.cpp" line="154"/>
         <source>Link copied to clipboard.</source>
         <translation type="unfinished"/>
     </message>
@@ -880,36 +880,36 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>Ne eblis legi la sisteman dosieron pri esceptoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="970"/>
+        <location filename="../src/gui/folder.cpp" line="973"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Nova dosierujo pli granda ol %1 MB estis aldonita: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="973"/>
+        <location filename="../src/gui/folder.cpp" line="976"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Dosierujo el ekstera konservejo estis aldonita.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="974"/>
+        <location filename="../src/gui/folder.cpp" line="977"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Bv. iri al la agordoj por elekti, ĉu vi volas elŝuti ĝin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1029"/>
+        <location filename="../src/gui/folder.cpp" line="1032"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>La dosierujo %1 estis kreita sed estis eksigita el sinkronigo antaŭe. Datumoj ene de ĝi ne estos sinkronigitaj.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1032"/>
+        <location filename="../src/gui/folder.cpp" line="1035"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>La dosiero %1 estis kreita sed estis eksigita el sinkronigo antaŭe. Ĝi ne estos sinkronigita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1043"/>
+        <location filename="../src/gui/folder.cpp" line="1046"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -922,7 +922,7 @@ Tio signifas, ke la sinkroniga kliento eble ne alŝutas tuj lokajn ŝanĝojn kaj
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1088"/>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>All files in the sync folder '%1' were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -933,7 +933,7 @@ Se vi decidas restaŭri la dosierojn, ili estos resinkronigitaj al la servilo, s
 Se vi decidas forigi la dosierojn, ili ne plu estos haveblaj al vi, krom se vi estas la posedanto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1093"/>
+        <location filename="../src/gui/folder.cpp" line="1096"/>
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
@@ -942,22 +942,22 @@ Tiuj dosieroj estos forigitaj el la servilo kaj ne plu disponeblos en viaj aliaj
 Se tiu ago ne estis dezirata, vi povas restaŭri la perditajn datumojn nun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1097"/>
+        <location filename="../src/gui/folder.cpp" line="1100"/>
         <source>Delete all files?</source>
         <translation>Forigi ĉiujn dosierojn?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1100"/>
+        <location filename="../src/gui/folder.cpp" line="1103"/>
         <source>Delete all files</source>
         <translation>Forigi ĉiujn dosierojn</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1101"/>
+        <location filename="../src/gui/folder.cpp" line="1104"/>
         <source>Restore deleted files</source>
         <translation>Restaŭri forigitajn dosierojn</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1118"/>
+        <location filename="../src/gui/folder.cpp" line="1121"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -966,17 +966,17 @@ Tio estas eble kaŭzita de restaŭro de savkopio ĉe la servilo.
 Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per antaŭaj versioj el viaj dosieroj. Ĉu vi volas gardi la plej freŝajn dosierojn kiel konfliktajn dosierojn?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1123"/>
+        <location filename="../src/gui/folder.cpp" line="1126"/>
         <source>Backup detected</source>
         <translation>Savkopio eltrovita</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1126"/>
+        <location filename="../src/gui/folder.cpp" line="1129"/>
         <source>Normal Synchronisation</source>
         <translation>Kutima sinkronigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1127"/>
+        <location filename="../src/gui/folder.cpp" line="1130"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Konservi la lokajn dosierojn kiel konfliktojn</translation>
     </message>
@@ -984,102 +984,102 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="274"/>
+        <location filename="../src/gui/folderman.cpp" line="306"/>
         <source>Could not reset folder state</source>
         <translation>Ne eblis restarigi la staton de la dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="275"/>
+        <location filename="../src/gui/folderman.cpp" line="307"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Malnova protokoldosiero „%1“ estis trovita, se ĝi ne estas forigebla. Bv. certigi, ke neniu aplikaĵo estas nuntempe uzanta ĝin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1023"/>
+        <location filename="../src/gui/folderman.cpp" line="1060"/>
         <source> (backup)</source>
         <translation>(savkopio)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1028"/>
+        <location filename="../src/gui/folderman.cpp" line="1065"/>
         <source> (backup %1)</source>
         <translation>(savkopio %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1273"/>
+        <location filename="../src/gui/folderman.cpp" line="1310"/>
         <source>Undefined State.</source>
         <translation>Nedifinita stato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1276"/>
+        <location filename="../src/gui/folderman.cpp" line="1313"/>
         <source>Waiting to start syncing.</source>
         <translation>Atendo de eksinkronigo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1279"/>
+        <location filename="../src/gui/folderman.cpp" line="1316"/>
         <source>Preparing for sync.</source>
         <translation>Pretigado de la sinkronigo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1282"/>
+        <location filename="../src/gui/folderman.cpp" line="1319"/>
         <source>Sync is running.</source>
         <translation>Sinkronigo ruliĝanta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1287"/>
+        <location filename="../src/gui/folderman.cpp" line="1324"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Sinkronigo sukcesis, estas nesolvitaj konfliktoj.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1289"/>
+        <location filename="../src/gui/folderman.cpp" line="1326"/>
         <source>Last Sync was successful.</source>
         <translation>La lasta sinkronigo sukcesis.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1295"/>
+        <location filename="../src/gui/folderman.cpp" line="1332"/>
         <source>Setup Error.</source>
         <translation>Eraro de instalaĵo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1298"/>
+        <location filename="../src/gui/folderman.cpp" line="1335"/>
         <source>User Abort.</source>
         <translation>Haltigita de la uzanto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1301"/>
+        <location filename="../src/gui/folderman.cpp" line="1338"/>
         <source>Sync is paused.</source>
         <translation>Sinkronigo estas paŭzigita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1307"/>
+        <location filename="../src/gui/folderman.cpp" line="1344"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronigo estas paŭzigita)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1315"/>
+        <location filename="../src/gui/folderman.cpp" line="1352"/>
         <source>No valid folder selected!</source>
         <translation>Nevalida dosierujo elektita!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1325"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>The selected path is not a folder!</source>
         <translation>La elektita vojo ne estas dosierujo!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1329"/>
+        <location filename="../src/gui/folderman.cpp" line="1366"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Vi ne rajtas skribi en la elektitan dosierujon!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1365"/>
+        <location filename="../src/gui/folderman.cpp" line="1402"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>La loka dosierujo %1 jam enhavas dosierujon uzitan en alia dosieruja sinkronigo. Bv. elekti alian dosierujon!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1371"/>
+        <location filename="../src/gui/folderman.cpp" line="1408"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>La loka dosierujo %1 jam troviĝas en dosierujo uzita en alia dosieruja sinkronigo. Bv. elekti alian dosierujon!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1385"/>
+        <location filename="../src/gui/folderman.cpp" line="1422"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Jam ekzistas sinkronigo el la servilo al tiu ĉi loka dosierujo. Bv. elekti alian lokan dosierujon!</translation>
     </message>
@@ -1105,144 +1105,144 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="142"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="140"/>
         <source>You need to be connected to add a folder</source>
         <translation>Vi devas esti konektita por aldoni dosierujon</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="144"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="142"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Alklaku tiun butonon por aldoni dosierujon sinkronigotan</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="153"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="155"/>
         <source>%1 (%2)</source>
         <extracomment>Example text: &quot;File.txt (23KB)&quot;</extracomment>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="184"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="188"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Eraro dum ŝargado de la listo de dosierujoj el la servilo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="187"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="191"/>
         <source>Fetching folder list from server …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="213"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
         <source>There are unresolved conflicts. Click for details.</source>
         <translation>Estas nesolvitaj konfliktoj. Alklaku por detaloj.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="237"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
         <source>Signed out</source>
         <translation>Elsalutita</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="924"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Kontrolo de ŝanĝoj en fora „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="928"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Kontrolo de ŝanĝoj en loka „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="935"/>
         <source>Reconciling changes</source>
         <translation>Komparo de ŝanĝoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>„%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sinkronigo de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>elŝuto %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1008"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1013"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>alŝuto %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1015"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 el %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1025"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1044"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 restas, %1 el %2, dosiero %3 el %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 el %2, dosiero %3 el %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
         <source>file %1 of %2</source>
         <translation>dosiero %1 el %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1100"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1105"/>
         <source>Waiting …</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1107"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1108"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1113"/>
         <source>Preparing to sync …</source>
         <translation type="unfinished"/>
     </message>
@@ -1258,12 +1258,12 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="544"/>
+        <location filename="../src/gui/folderwizard.cpp" line="557"/>
         <source>Add Folder Sync Connection</source>
         <translation>Aldoni dosierujan sinkronigon</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="546"/>
+        <location filename="../src/gui/folderwizard.cpp" line="559"/>
         <source>Add Sync Connection</source>
         <translation>Aldoni sinkronigon</translation>
     </message>
@@ -1324,12 +1324,12 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
         <translation>Elektu tion ĉi por sinkronigi la tutan konton</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="443"/>
+        <location filename="../src/gui/folderwizard.cpp" line="456"/>
         <source>This folder is already being synced.</source>
         <translation>Tiu ĉi dosierujo jam estas sinkroniganta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="445"/>
+        <location filename="../src/gui/folderwizard.cpp" line="458"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Vi jam estas sinkroniganta &lt;i&gt;%1&lt;/i&gt;, kio estas patra dosierujo de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
@@ -1465,7 +1465,7 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
         <translation>Montri &amp;kraŝraportilon</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="59"/>
+        <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>Server notifications that require attention.</source>
         <translation>Servilaj sciigoj, kiu bezonas atenton.</translation>
     </message>
@@ -1473,22 +1473,22 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="528"/>
+        <location filename="../src/gui/socketapi.cpp" line="563"/>
         <source>Password for share required</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="529"/>
+        <location filename="../src/gui/socketapi.cpp" line="564"/>
         <source>Please enter a password for your link share:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="548"/>
+        <location filename="../src/gui/socketapi.cpp" line="583"/>
         <source>Sharing error</source>
         <translation>Eraro de kunhavigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="549"/>
+        <location filename="../src/gui/socketapi.cpp" line="584"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -1704,12 +1704,12 @@ Protokoloj estos skribataj al %1.</translation>
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="197"/>
+        <location filename="../src/libsync/logger.cpp" line="192"/>
         <source>Error</source>
         <translation>Eraro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="198"/>
+        <location filename="../src/libsync/logger.cpp" line="193"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Dosiero „%1“&lt;br/&gt;ne eblis malfermiĝi.&lt;br/&gt;&lt;br/&gt;La eligo de la protokolo &lt;b&gt;ne&lt;/b&gt; povas esti konservita!&lt;/nobr&gt;</translation>
     </message>
@@ -1935,53 +1935,53 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="44"/>
         <source>Connect to %1</source>
         <translation>Konekto al %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="52"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="45"/>
         <source>Setup local folder options</source>
         <translation>Agordi opciojn de la loka dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="61"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
         <source>Connect …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>Dosierujo %1 „%2“ sinkronigas al loka dosierujo „%3“</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="157"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>Sinkronigi la dosierujon „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="167"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Averto:&lt;/strong&gt; la loka dosierujo ne malplenas. Elekti tion, kion vi volas fari!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="176"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="171"/>
         <source>Free space: %1</source>
         <translation>Libera spaco: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="299"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>Local Sync Folder</source>
         <translation>Loka sinkroniga dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="342"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="372"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="337"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="367"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="389"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="384"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Ne estas sufiĉe da libera spaco en la loka dosierujo!</translation>
     </message>
@@ -2053,58 +2053,58 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="54"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="48"/>
         <source>Connect to %1</source>
         <translation>Konekti al %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="55"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="49"/>
         <source>Setup %1 server</source>
         <translation>Agordi la servilon %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="77"/>
         <source>Keep your data secure and under your control</source>
         <translation>Konservu viajn datumojn sekuraj kaj sub via kontrolo</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="78"/>
         <source>Secure collaboration &amp; file exchange</source>
         <translation>Sekura kunlaborado kaj dosiera interŝanĝo</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="79"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
         <translation>Faciluza enreta retpoŝtilo, kalendaro kaj kontaktaro</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
         <translation>Ekrandividado, retkunsidoj kaj reta konferencoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="181"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
         <source>This URL is secure. You can use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="224"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="219"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Sekva &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="284"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="279"/>
         <source>Invalid URL</source>
         <translation>Nevalida retadreso</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="413"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="408"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Ne eblis ŝargi atestilon. Ĉu neĝusta pasvorto?</translation>
     </message>
@@ -2239,17 +2239,17 @@ It is not advisable to use it.</source>
         <translation>Konekto al %1 ne eblis. Bv. rekontroli.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="602"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="601"/>
         <source>Folder rename failed</source>
         <translation>Dosieruja alinomado malsukcesis.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="603"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="602"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Ne eblas forigi kaj savkopii la dosierujon, ĉar tiu dosierujo aŭ iu dosiero ene de ĝi estas malfermita en alia programo. Bv. malfermi la dosierujon aŭ dosieron kaj reprovi, aŭ nuligu la agordojn.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="650"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="649"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Loka sinkroniga dosierujo %1 sukcese kreita!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -2257,12 +2257,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="94"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
         <source>%1 Connection Wizard</source>
         <translation>Asistilo pri konekto %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="103"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
         <source>Skip folders configuration</source>
         <translation>Preterpasi agordon de dosierujoj</translation>
     </message>
@@ -2270,17 +2270,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudWizardResultPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="36"/>
+        <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="32"/>
         <source>Everything set up!</source>
         <translation>Ĉio estas agordita!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="40"/>
+        <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="36"/>
         <source>Open Local Folder</source>
         <translation>Malfermi lokan dosierujon</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="48"/>
+        <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="45"/>
         <source>Open %1 in Browser</source>
         <translation>Malfermi %1 per la retumilo</translation>
     </message>
@@ -2296,7 +2296,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="971"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="991"/>
         <source>Error writing metadata to the database</source>
         <translation>Eraro dum skribo de pridatumoj en la datumbazo</translation>
     </message>
@@ -2304,52 +2304,52 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="357"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="380"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
         <translation>Dosiero %1 ne elŝuteblis, ĉar ĉifra informo mankas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="427"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Dosiero %1 ne elŝuteblis, ĉar estas konflikto kun loka dosiernomo!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="498"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Tiu elŝuto malpligrandigus la liberan lokan diskospacon.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="481"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="502"/>
         <source>Free space on disk is less than %1</source>
         <translation>Libera diskospaco estas malpli ol %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="601"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="622"/>
         <source>File was deleted from server</source>
         <translation>Dosiero estis forigita el la servilo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="654"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="675"/>
         <source>The file could not be downloaded completely.</source>
         <translation>La dosiero ne estis elŝutita plene.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="661"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="682"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
         <translation>La elŝutita dosiero malplenas, kvankam la servilo anoncis, ke ĝi estos %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="850"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="871"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Dosiero %1 ne eblis esti konservita pro konflikto kun loka dosiernomo!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="885"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="906"/>
         <source>File has changed since discovery</source>
         <translation>Dosiero ŝanĝiĝis ekde sia malkovro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="941"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="962"/>
         <source>Error writing metadata to the database</source>
         <translation>Eraro dum konservado de pridatumoj en la datumbazo</translation>
     </message>
@@ -2370,22 +2370,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="170"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="206"/>
         <source>could not delete file %1, error: %2</source>
         <translation>ne eblis forigi dosieron %1, eraro: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="221"/>
         <source>Attention, possible case sensitivity clash with %1</source>
         <translation>Atentu: ebla usklecodistinga konflikto kun %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="191"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="227"/>
         <source>could not create folder %1</source>
         <translation>ne eblis krei dosierujon %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="203"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
         <source>Error writing metadata to the database</source>
         <translation>Eraro dum konservado de pridatumoj en la datumbazo</translation>
     </message>
@@ -2393,17 +2393,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="77"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
         <translation>Eraro dum forigo de „%1“: %2;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="102"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>Ne eblis forigi dosierujon „%1“</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="123"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>Ne eblis forigi %1 pro konflikto kun loka dosiernomo</translation>
     </message>
@@ -2411,13 +2411,13 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="241"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="290"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Dosiero %1 ne eblis esti alinomita al %2 pro konflikto kun loka dosiernomo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="326"/>
         <source>Error writing metadata to the database</source>
         <translation>Eraro dum skribo de pridatumoj en la datumbazo</translation>
     </message>
@@ -2425,7 +2425,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="130"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="152"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Neĝusta HTTP-kodo ricevita de servilo. Atendita: 204, ricevita: „%1 %2“.</translation>
     </message>
@@ -2433,12 +2433,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="99"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="209"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Neĝusta HTTP-kodo ricevita de servilo. Atendita: 201, ricevita: „%1 %2“.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="284"/>
         <source>Error writing metadata to the database</source>
         <translation>Eraro dum skribo de pridatumoj en la datumbazo</translation>
     </message>
@@ -2460,33 +2460,33 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="214"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="281"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Dosiero %1 ne elŝuteblis, ĉar alia samnoma dosiero, kiu malsamas nur usklece, ekzistas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="225"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="603"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Alŝuto de %1 transpasas la dosierujan kvoton</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="334"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="401"/>
         <source>File Removed (start upload) %1</source>
         <translation>Forigita dosiero (ekalŝuti) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="348"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="415"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Loka dosiero ŝanĝiĝis dum sinkronigo. Ĝi rekomenciĝos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="363"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="430"/>
         <source>Local file changed during sync.</source>
         <translation>Loka dosiero ŝanĝiĝis dum sinkronigo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="685"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="756"/>
         <source>Error writing metadata to the database</source>
         <translation>Eraro dum skribo de pridatumoj en la datumbazo</translation>
     </message>
@@ -2573,7 +2573,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="459"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="466"/>
         <source>Choose What to Sync</source>
         <translation>Elekti tion, kion sinkronigi</translation>
     </message>
@@ -2602,12 +2602,12 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="227"/>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="277"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="284"/>
         <source>No subfolders currently on the server.</source>
         <translation>Ne estas subdosierujo nun en la servilo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="279"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="286"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>Eraro okazis dum ŝarĝado de la listo de subdosierujoj.</translation>
     </message>
@@ -2615,7 +2615,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ServerNotificationHandler</name>
     <message>
-        <location filename="../src/gui/servernotificationhandler.cpp" line="153"/>
+        <location filename="../src/gui/tray/NotificationHandler.cpp" line="139"/>
         <source>Dismiss</source>
         <translation>Ignori</translation>
     </message>
@@ -2628,17 +2628,17 @@ It is not advisable to use it.</source>
         <translation>Agordoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="101"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="100"/>
         <source>General</source>
         <translation>Ĝenerala</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="110"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="109"/>
         <source>Network</source>
         <translation>Reto</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="242"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="207"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
@@ -2671,32 +2671,32 @@ It is not advisable to use it.</source>
         <translation>Piktogramo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="81"/>
+        <location filename="../src/gui/sharedialog.cpp" line="77"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="102"/>
+        <location filename="../src/gui/sharedialog.cpp" line="98"/>
         <source>Folder: %2</source>
         <translation>Dosierujo: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="105"/>
+        <location filename="../src/gui/sharedialog.cpp" line="101"/>
         <source>%1 Sharing</source>
         <translation>Kunhavigo %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="277"/>
+        <location filename="../src/gui/sharedialog.cpp" line="275"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>La dosiero ne eblis esti kunhavigita, ĉar ĝi estis kunhavigita sen permeso de re-kunhavigo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="312"/>
+        <location filename="../src/gui/sharedialog.cpp" line="314"/>
         <source>Password for share required</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="313"/>
+        <location filename="../src/gui/sharedialog.cpp" line="315"/>
         <source>Please enter a password for your link share:</source>
         <translation type="unfinished"/>
     </message>
@@ -2714,7 +2714,7 @@ It is not advisable to use it.</source>
         <translation>Noto:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="51"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
         <source>Password:</source>
         <translation>Pasvorto:</translation>
     </message>
@@ -2744,7 +2744,7 @@ It is not advisable to use it.</source>
         <translation>Permesi modifon</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="156"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Read only</source>
         <translation>Nurlega</translation>
     </message>
@@ -2804,32 +2804,32 @@ It is not advisable to use it.</source>
         <translation>Forigi kunhavo-ligilon</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
         <source>Add another link</source>
         <translation>Aldoni plian ligilon</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="406"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Konfirmi forigon de kunhava ligilo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="407"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ĉu vi ja volas forigi la kunhavigon per publika ligilo &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Notu: tio ne  povas esti malfarita.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="413"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
         <source>Delete</source>
         <translation>Forigi</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="472"/>
         <source>Cancel</source>
         <translation>Nuligi</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="432"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <source>Public link</source>
         <translation>Publika ligilo</translation>
     </message>
@@ -2842,17 +2842,17 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="268"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation>Kopii ligilon</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="278"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="280"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>Neniu rezulto por „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="366"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
         <source>I shared something with you</source>
         <translation>Mi kunhavigis ion kun vi</translation>
     </message>
@@ -2860,37 +2860,37 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShareUserLine</name>
     <message>
-        <location filename="../src/gui/shareuserline.ui" line="66"/>
+        <location filename="../src/gui/shareuserline.ui" line="57"/>
         <source>Username</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareuserline.ui" line="82"/>
+        <location filename="../src/gui/shareuserline.ui" line="89"/>
         <source>can edit</source>
         <translation>povas redakti</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="414"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="416"/>
         <source>Can reshare</source>
         <translation>Eblas rekunhavigi</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="424"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="426"/>
         <source>Unshare</source>
         <translation>Malkunhavigi</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="433"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="435"/>
         <source>Can create</source>
         <translation>Povas krei</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="439"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="441"/>
         <source>Can change</source>
         <translation>Eblas ŝanĝi</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="445"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="447"/>
         <source>Can delete</source>
         <translation>Povas forigi</translation>
     </message>
@@ -2898,12 +2898,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
         <source>Login Error</source>
         <translation>Ensaluta eraro</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
         <source>You must sign in as user %1</source>
         <translation>Vi devas ensaluti kiel uzanto %1</translation>
     </message>
@@ -2940,18 +2940,18 @@ It is not advisable to use it.</source>
         <translation>Kunhavigi kun %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="501"/>
+        <location filename="../src/gui/socketapi.cpp" line="536"/>
         <source>Context menu share</source>
         <translation>Menuo pri kunhavigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="658"/>
+        <location filename="../src/gui/socketapi.cpp" line="693"/>
         <source>I shared something with you</source>
         <translation>Mi kunhavigis ion kun vi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="671"/>
-        <location filename="../src/gui/socketapi.cpp" line="702"/>
+        <location filename="../src/gui/socketapi.cpp" line="706"/>
+        <location filename="../src/gui/socketapi.cpp" line="737"/>
         <source>Share options</source>
         <translation>Opcioj pri kunhavigo</translation>
     </message>
@@ -2961,28 +2961,28 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="673"/>
+        <location filename="../src/gui/socketapi.cpp" line="708"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopii privatan ligilon al tondujo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="674"/>
+        <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Send private link by email …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="700"/>
+        <location filename="../src/gui/socketapi.cpp" line="735"/>
         <source>Resharing this file is not allowed</source>
         <translation>Re-kunhavigi ne estas permesata</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="713"/>
-        <location filename="../src/gui/socketapi.cpp" line="715"/>
+        <location filename="../src/gui/socketapi.cpp" line="748"/>
+        <location filename="../src/gui/socketapi.cpp" line="750"/>
         <source>Copy public link</source>
         <translation>Kopii publikan ligilon</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="719"/>
+        <location filename="../src/gui/socketapi.cpp" line="754"/>
         <source>Copy internal link</source>
         <translation>Kopii internan ligilon</translation>
     </message>
@@ -2992,7 +2992,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="769"/>
+        <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Open in browser</source>
         <translation>Malfermi per retumilo</translation>
     </message>
@@ -3294,175 +3294,175 @@ It is not advisable to use it.</source>
         <translation>%1 (preterpasita pro antaŭa eraro, reprovo je %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="485"/>
+        <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Simbolajn ligilojn ne subtenas la sinkronigo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="488"/>
+        <location filename="../src/libsync/syncengine.cpp" line="493"/>
         <source>File is listed on the ignore list.</source>
         <translation>Dosiero estas en la listo de ignoritaj dosieroj.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="492"/>
+        <location filename="../src/libsync/syncengine.cpp" line="497"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Dosieroj finantaj per punkto ne eblas en tiu ĉi dosiersistemo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="502"/>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>Dosieroj enhavantaj la signon „%1“ ne eblas en tiu ĉi dosiersistemo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="505"/>
+        <location filename="../src/libsync/syncengine.cpp" line="510"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Tiu ĉi dosiernomo ne estas permesata en tiu ĉi dosiersistemo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="510"/>
+        <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Dosiernomo enhavas spacojn je sia fino.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="513"/>
+        <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>Dosiernomo tro longas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="516"/>
+        <location filename="../src/libsync/syncengine.cpp" line="521"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Dosiero aŭ dosierujo estas ignorita, ĉar ĝi estas kaŝita.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="519"/>
+        <location filename="../src/libsync/syncengine.cpp" line="524"/>
         <source>Folder hierarchy is too deep</source>
         <translation>Hierarĥio de dosierujoj tro profundas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="522"/>
+        <location filename="../src/libsync/syncengine.cpp" line="527"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Tiu ĉi dosiernomo ne estas kodebla en tiu ĉi dosiersistemo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="531"/>
+        <location filename="../src/libsync/syncengine.cpp" line="536"/>
         <source>Unresolved conflict.</source>
         <translation>Nesolvita konflikto.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Konflikto: la versio ĉe la servilo estis elŝutita, le loka kopio estis alinomita kaj ne alŝutita.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="539"/>
+        <location filename="../src/libsync/syncengine.cpp" line="544"/>
         <source>Stat failed.</source>
         <translation>Statinformo malsukcesis.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="566"/>
+        <location filename="../src/libsync/syncengine.cpp" line="571"/>
         <source>Filename encoding is not valid</source>
         <translation>Kodigi de dosiernomo ne validas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="731"/>
+        <location filename="../src/libsync/syncengine.cpp" line="735"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Nevalidaj signoj, bv. alinomi „%1“</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="801"/>
+        <location filename="../src/libsync/syncengine.cpp" line="805"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Nur disponeblas %1, bezono de almenaŭ %2 por eki</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="836"/>
+        <location filename="../src/libsync/syncengine.cpp" line="840"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Ne eblas malfermi aŭ krei lokan sinkronigan datumbazon. Certigu, ke vi rajtas aliri al la sinkroniga dosierujo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="864"/>
+        <location filename="../src/libsync/syncengine.cpp" line="931"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Ne eblas legi la nigran liston el la loka datumbazo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="905"/>
+        <location filename="../src/libsync/syncengine.cpp" line="972"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Ne eblas legi el la sinkroniga protokolo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="968"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1035"/>
         <source>Cannot open the sync journal</source>
         <translation>Ne eblas malfermi la sinkronigan protokolon</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1044"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
         <source>File name contains at least one invalid character</source>
         <translation>La dosiernomo enhavas almenaŭ unu nevalidan signon.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1286"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1326"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1397"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1437"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorita pro la listo nigra „Elekti tion, kion sinkronigi“</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1456"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ne permesita, ĉar vi ne rajtas aldoni subdosierojn en tiu dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1360"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1471"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Ne permesita, ĉar vi ne rajtas aldoni patran dosierujon</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1367"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1478"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ne permesita, ĉar vi ne rajtas aldoni dosierojn en tiu ĉi dosierujo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1392"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1503"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Alŝuto de tiu ĉi dosiero ne estas permesata, ĉar ĝi estas nur lega; restaŭrado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1408"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1427"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1519"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1538"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Forigo ne permesata; restaŭrado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1441"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1552"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokaj dosieroj kaj kunhaviga dosierujo forigitaj.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1495"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1606"/>
         <source>Move not allowed, item restored</source>
         <translation>Movado ne permesata, elemento restaŭrita.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1506"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1617"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Movado ne permesata, ĉar %1 estas nur legebla</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1506"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1617"/>
         <source>the destination</source>
         <translation>la celo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1506"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1617"/>
         <source>the source</source>
         <translation>la fonto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1700"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1811"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Diskospaco ne sufiĉas: elŝutoj, kiuj reduktos liberan spacon sub %1, ne okazis.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1707"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1818"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>La servilo ne plu havas sufiĉan spacon por iuj alŝutoj.</translation>
     </message>
@@ -3498,7 +3498,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="55"/>
+        <location filename="../src/gui/systray.cpp" line="172"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -3506,19 +3506,19 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="355"/>
+        <location filename="../src/libsync/theme.cpp" line="360"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="358"/>
-        <location filename="../src/libsync/theme.cpp" line="368"/>
+        <location filename="../src/libsync/theme.cpp" line="363"/>
+        <location filename="../src/libsync/theme.cpp" line="373"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Versio %1. Por pli da informoj, alklaku &lt;a href=&apos;%2&apos;&gt;ĉi tie&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="372"/>
+        <location filename="../src/libsync/theme.cpp" line="377"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Tiu eldono estis liverita de %1&lt;/p&gt;</translation>
     </message>
@@ -3611,88 +3611,88 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="224"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>Unsupported Server Version</source>
         <translation>Nesubtenata versio de servilo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="225"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="237"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>La servilo el la konto %1 uzas malnovan kaj nesubtenatan version. La uzado de tiu ĉi kliento kun nesubtenataj servil-versioj estas ne elprovita kaj eble danĝera. Daŭrigu je via risko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="264"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="276"/>
         <source>Disconnected</source>
         <translation>Malkonektita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="266"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="278"/>
         <source>Disconnected from some accounts</source>
         <translation>Malkonektita el kelkaj kontoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="286"/>
         <source>Disconnected from %1</source>
         <translation>Malkonektita el %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="289"/>
         <source>Disconnected from accounts:</source>
         <translation>Malkonektita el la jenaj kontoj:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="279"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="305"/>
         <source>Please sign in</source>
         <translation>Bv. ensaluti</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Signed out</source>
         <translation>Elsalutita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="310"/>
         <source>Account synchronization is disabled</source>
         <translation>Konta sinkronigo estas malebligita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="364"/>
         <source>Synchronization is paused</source>
         <translation>Sinkronigo estas paŭzigita</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="339"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="351"/>
         <source>Folder %1: %2</source>
         <translation>Dosierujo %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="347"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="359"/>
         <source>Unresolved conflicts</source>
         <translation>Nesolvitaj konfliktoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="349"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Up to date</source>
         <translation>Ĝisdata</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="354"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Error during synchronization</source>
         <translation>Eraro dum sinkronigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="369"/>
         <source>There are no sync folders configured.</source>
         <translation>Neniu sinkroniga dosiero agordita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="358"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="370"/>
         <source>No sync folders configured</source>
         <translation>Neniu sinkroniga dosiero agordita</translation>
     </message>
@@ -3737,27 +3737,27 @@ It is not advisable to use it.</source>
         <translation>Elsaluti</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="942"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>Syncing %1 of %2</source>
         <translation>Sinkronigo de %1 el %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="951"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="448"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sinkronigo de %1 (%2 restas)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="954"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="451"/>
         <source>Syncing %1</source>
         <translation>Sinkronigo de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="972"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="461"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -4012,7 +4012,7 @@ It is not advisable to use it.</source>
         <translation>Antaŭ nelonge</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncresult.cpp" line="153"/>
+        <location filename="../src/libsync/syncresult.cpp" line="141"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
@@ -4158,12 +4158,12 @@ It is not advisable to use it.</source>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="41"/>
+        <location filename="../src/gui/main.cpp" line="42"/>
         <source>System Tray not available</source>
         <translation>Taskopleto ne disponeblas</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="42"/>
+        <location filename="../src/gui/main.cpp" line="43"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 bezonas funkciantan taskopleton. Si vi uzas XFCE-on, bv. sekvi la &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;instrukcion&lt;/a&gt;. Alimaniere, bv. instali alian taskopleton kiel „trayer“, kaj reprovi.</translation>
     </message>
@@ -4171,7 +4171,7 @@ It is not advisable to use it.</source>
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="334"/>
+        <location filename="../src/libsync/theme.cpp" line="339"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Konstruita el Git-a revizio &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; je %3, %4, uzante Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -4269,52 +4269,52 @@ It is not advisable to use it.</source>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="60"/>
+        <location filename="../src/libsync/theme.cpp" line="61"/>
         <source>Status undefined</source>
         <translation>Nedifinita stato</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="63"/>
+        <location filename="../src/libsync/theme.cpp" line="64"/>
         <source>Waiting to start sync</source>
         <translation>Atendo de eksinkronigo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="66"/>
+        <location filename="../src/libsync/theme.cpp" line="67"/>
         <source>Sync is running</source>
         <translation>Sinkronigo ruliĝanta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="69"/>
+        <location filename="../src/libsync/theme.cpp" line="70"/>
         <source>Sync Success</source>
         <translation>Sukcesa sinkronigo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="72"/>
+        <location filename="../src/libsync/theme.cpp" line="73"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Sukcesa sinkronigo, kelkaj dosieroj ignoritaj.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="75"/>
+        <location filename="../src/libsync/theme.cpp" line="76"/>
         <source>Sync Error</source>
         <translation>Sinkroniga eraro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="78"/>
+        <location filename="../src/libsync/theme.cpp" line="79"/>
         <source>Setup Error</source>
         <translation>Agorda eraro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="81"/>
+        <location filename="../src/libsync/theme.cpp" line="82"/>
         <source>Preparing to sync</source>
         <translation>Pretigado de sinkronigo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="84"/>
+        <location filename="../src/libsync/theme.cpp" line="85"/>
         <source>Aborting …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="87"/>
+        <location filename="../src/libsync/theme.cpp" line="88"/>
         <source>Sync is paused</source>
         <translation>Sinkronigo estas paŭzigita</translation>
     </message>
