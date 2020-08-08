@@ -1126,17 +1126,17 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="188"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi a zo bet en ur c&apos;hargañ roll teuliadoù ar servijour.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="191"/>
         <source>Fetching folder list from server …</source>
-        <translation type="unfinished"/>
+        <translation>Ho pakañ roll teuliadoù ar servijour ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Stourmoù diziskoulmet ez eus. Pouezit evit ar munudoù.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
@@ -1146,29 +1146,29 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="924"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Gwiriañ ma ez eus cheñchoù e &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="928"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Gwiriañ ma ez eus cheñchoù e &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="935"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Adkompezañ ar cheñchoù</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
@@ -1180,73 +1180,73 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
         <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>pellkargañ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1013"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>Pellkas %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1015"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 diwar %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1025"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1044"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>choma ra %5, %1 diwar %2, %3 restr diwar %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 diwar %2, %3 restr diwar %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 restr diwar %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1105"/>
         <source>Waiting …</source>
-        <translation type="unfinished"/>
+        <translation>O gortoz ...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1107"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>O gortoz %n teuliad all ...</numerusform><numerusform>O gortoz %n teuliad all ...</numerusform><numerusform>O gortoz %n teuliad all ...</numerusform><numerusform>O gortoz %n teuliad all ...</numerusform><numerusform>O gortoz %n teuliad all ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1113"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>O prientiñ ar gemprenn ...</translation>
     </message>
 </context>
 <context>
@@ -1254,7 +1254,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="85"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ar gudenn-mañ a c&apos;hoarvez pa ez eo aet skuizh ar sellerienn inotify. Sellit ouzh an FAQ evit ar munudoù.</translation>
     </message>
 </context>
 <context>
@@ -1267,7 +1267,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="559"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Ouzhpennañ ur Genstagadenn Kemprennet</translation>
     </message>
 </context>
 <context>
@@ -1275,17 +1275,17 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Click to select a local folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Pouezit evit choaz an teuliad diabarzh da gemprenn.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
-        <translation type="unfinished"/>
+        <translation>Lakait n hent d&apos;an teuliad diabarzh.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="133"/>
         <source>Select the source folder</source>
-        <translation type="unfinished"/>
+        <translation>Choazit an teuliad orin</translation>
     </message>
 </context>
 <context>
@@ -1293,47 +1293,47 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="181"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Krouiñ un Teuliad Pell</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="182"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Lakait anv an teuliad nevez evit krouiñ anzhañ dindan&apos;%1&apos; :</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="212"/>
         <source>Folder was successfully created on %1.</source>
-        <translation type="unfinished"/>
+        <translation>Krouet mat eo bet an teuliad wat %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitet an dilessa evit tizhout %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitet da grouiñ an teuliad war %1. Gwiriit gant an dorn.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="234"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitet d&apos;ober roll an teuliadoù Fazi : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="315"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>Choazit a dra mañ evit kemprenn tout ar c&apos;hont</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="456"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>An teuliad a zo dija bet kemprennet.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="458"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ho kemprenn emaoc&apos;h dija &lt;i&gt;%1&lt;/i&gt;, ag a zo un teuliad kar eus &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1341,12 +1341,12 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="48"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Diwallit :&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Diwallit : &lt;/b&gt; </translation>
     </message>
 </context>
 <context>
@@ -1354,22 +1354,22 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>E-klav ebet resevet eus ar servijour, gwiriit ar Proxy/Gateway</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="188"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>Resevet hon eus E-klavoù disheñvel. Klaskit en dro ar wech da zont.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Ur ment-danvez fall a zo bet responted gant ar servijour</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="325"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Kenstagadenn aet da dermenn</translation>
     </message>
 </context>
 <context>
@@ -1383,32 +1383,32 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Meneg lezenn</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
         <source>General Settings</source>
-        <translation type="unfinished"/>
+        <translation>Arventennoù hollek</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="72"/>
         <source>For System Tray</source>
-        <translation type="unfinished"/>
+        <translation>Evit an Tray sistem</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Skeudennigoù Implij &amp;Monochrome</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>%Launch war arSistem Kregiñ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Diskouez &amp;Notifications ar servijour</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
@@ -1418,58 +1418,58 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/generalsettings.ui" line="107"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>Gwiriañ en un doare &amp;otomatek an Adnevesadennoù</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="123"/>
         <source>&amp;Check for Update now</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Gwiriañ evit Adnevesadennoù bremañ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Adloc&apos;hañ &amp;&amp; Adnevesadennoù</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="210"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Araokadennet</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Embann Restroù &amp;Ignored</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Goulenn asant a raok kemprennañ teuliadoù brasoc&apos;h eget</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="262"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="286"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Goulenn an asant a-raok kemprenna lec&apos;hioù renkañ diavaez</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="297"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Diskouez an teuliadoù kemprennet e &amp;Explorer&apos;s Navigation Pane</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="314"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;how crash reporter</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Kemenadennoù servijour ho deus ezhomm ho hevez.</translation>
     </message>
 </context>
 <context>
@@ -1477,24 +1477,26 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/socketapi.cpp" line="563"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Ezhomm ez eus eus ar ger-tremenn  evit ar rannadenn</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="564"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Lakait ur ger-tremenn evit ho liamm rannet :</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="583"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Fazi rannañ</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="584"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl tapout pe krouiñ al liamm rannadenn publik. Fazi : 
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1502,22 +1504,22 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Lakait ger-tremen %1 : &lt;br&gt; &lt;br&gt; Implijer : %2 &lt;br&gt; Kont : %3 &lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitet lenn ar chadenn-alc&apos;hwez gant ar fazi : &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>Lakaat ar ger-tremenn</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Pouezit amañ&lt;/a&gt; evit goulenn ur ger-tremenn meziant evit an etrefas web.</translation>
     </message>
 </context>
 <context>
@@ -1525,27 +1527,27 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>Dianaveziñ an Embener Restroù</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation type="unfinished"/>
+        <translation>Dianveziñ Arventennoù Hollek</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation type="unfinished"/>
+        <translation>Kemprenn ar restroù kouachet</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation type="unfinished"/>
+        <translation>Restroù dianvezet gant Patterns</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>An dra-mañ a zo roet gant ar sistem da &apos;%1&apos; ha ne c&apos;hell ket bezhañ kemmet er gweller-mañ</translation>
     </message>
 </context>
 <context>
@@ -1553,17 +1555,17 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="33"/>
         <source>Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Pattern</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Aotreañ al lemel</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
         <source>Add</source>
-        <translation type="unfinished"/>
+        <translation>Ouzhpennañ</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="59"/>
@@ -1573,34 +1575,36 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="66"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Lemel pep tra</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="24"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Restroù pe teuliadoù a glot gant an tress ne vo ket kemprennet.
+
+Traoù lec&apos;h m&apos;eo aotreet al lemel a vo lamet ma ampechont lamadur an teuliad. Sikour a ra evit ar meta roadennoù.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl eo digeriñ ar restr</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl skrivañ cheñchoù da &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Ouzhpennañ Tressoù da dianvavezhañ</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>Ouhzpennañ un tres da dianvezhañ nevez :</translation>
     </message>
 </context>
 <context>
@@ -1609,22 +1613,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <location filename="../src/gui/legalnotice.ui" line="25"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Meneg lezenn</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Seriñ</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH &lt;br /&gt; Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1632,59 +1636,61 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="58"/>
         <source>Log Output</source>
-        <translation type="unfinished"/>
+        <translation>Enrollañ ar mont kuit</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>&amp;Search:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Klask :</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>&amp;Find</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kavout</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tapout ar gemennadenn devugañ</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Enreollañ ar gazetenn de vikenn</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Pa ez eo dibabet an dibab-mañ ha n&apos;eo ker arventennet mont-tre all ebet, ar pennadoù kazetenn a vo skrivet en un teuliad amzeraet ha termennaet goude un neubeut heurvezhoù. Chom a ra an arventenn etrezek adloc&apos;hadennoù ar c&apos;hliant.
+
+Skrivet e vo ar gazetenn e %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Netaat</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="116"/>
         <source>Clear the log display.</source>
-        <translation type="unfinished"/>
+        <translation>Netaat an diskouelaer kazetenn</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="122"/>
         <source>S&amp;ave</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;ave</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation type="unfinished"/>
+        <translation>Enrollañ ar restr kazetenn en ur restr war ul lenner evit divugañ.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="210"/>
         <source>Save log file</source>
-        <translation type="unfinished"/>
+        <translation>Erollañ ar restr kazetenn</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="220"/>
@@ -1694,7 +1700,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="220"/>
         <source>Could not write to log file %1</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl skrivañ er restr gazetenn %1</translation>
     </message>
 </context>
 <context>
@@ -1707,7 +1713,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/libsync/logger.cpp" line="193"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Ar restr &apos;%1&apos;&lt;br/&gt; na c&apos;hell ket bezhañ digoret evit skrivañ.&lt;br/&gt; &lt;br/&gt;Ar gazetenn disoc&apos;h ne c&apos;hell ket&lt;b&gt;c&apos;hell&lt;/b&gt; ket bezhañ enrollet !&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1715,27 +1721,27 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="334"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Ur Stumm Nevez a zo posupl kaout</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="340"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ur stumm nevez eus kliant %1 ez eus.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; a zo posupl pellkargañ. ar stumm staliet a zo %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Tremenn e-biou ar stumm-mañ</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="355"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Tremenn e-biou evit ar wech-mañ</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="356"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Kaout an adnevesadenn</translation>
     </message>
 </context>
 <context>
@@ -1743,22 +1749,22 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Arventennoù Proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy ebet</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Implij proxy ar sistem</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>Choaz gant an dorn ar froxy evel</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -1768,72 +1774,72 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Proxy ar serivjour en deus edhom eus un dilesa</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Ledandet ar vandenn pellkargañ</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="275"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>Bevennañ da</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
         <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Bevenn ebet</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="241"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>Koktet/e</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Bevennañ da 3/4 ledander ar vandenn ragjedet</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>Bevennañ en un doare otomatek</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Ledannder ar vandenn pellkas</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Anv oster ar servijour proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Anv implijer proxy ar servijour</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Ger-tremenn proxy ar servijour</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy HTTP(S)</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="42"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>Proxy SOCKS5</translation>
     </message>
 </context>
 <context>
@@ -1861,12 +1867,12 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="123"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Fazi mont-tre&lt;/h1&gt; &lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="129"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Implijour fall&lt;/h1&gt; &lt;p&gt;Deuet oc&apos;h tre gant implijer &lt;em&gt;%1&lt;/em&gt;, mes ret eo deoc&apos;h mont tre gant implijer &lt;em&gt;%2&lt;/em&gt;. &lt;br&gt;Kit kuit eus %3 en ur bajenn all, ha &lt;a href=&apos;%4&apos;&gt;pouezit amañ&lt;/a&gt; ha deuit tre evel implijer %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1874,58 +1880,59 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="103"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Adnevesadenn nevez prest evit %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Un adnevesadenn nevez evit %1 a vo staliet. An adnevesaer a goulenno marteze
+evit aotreoù ouzhpenn e pad an oberenn.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Pellkargañ stumm %1. Gortozit ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 stumm %2 a zo posupl kaout. Adlansit ar meziant evit gregiñ an adnevesadenn.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl pellkargañ an adnevesadenn. Pouezit &lt;a href=&apos;%1&apos;&gt;amañ&lt;/a&gt; evit pellkargañ diouzhtu gant an dorn.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl gwiriañ an adnevesadennoù nevez.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 stumm %2 nevez a zo posupl kaout. Pouezit &lt;a href=&apos;%3&apos;&gt;amañ&lt;/a&gt; evit pellkargañ an adnevesadenn.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server …</source>
-        <translation type="unfinished"/>
+        <translation>O gwiriañ adnevesadennoù ar serviljour ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Ar stad adnevesañ a zo dian : N&apos;eo ket bet gwiriet an adnevesadennoù nevez.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Adnevesadenn nevz ebet. Ho staliadur he deus ar stumm divezhañ.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="178"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>Adnevesadenn gwiriet</translation>
     </message>
 </context>
 <context>
@@ -1938,48 +1945,48 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="45"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>Staliañ an dibaboù teuliadoù diabarzh</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>O kenstagañ ...</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>%1 teuliad &apos;%2&apos; a zo kemprnenet d&apos;an teuliad diabarzh &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="157"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kempren d&apos;an teuliad &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="162"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Diwal : &lt;/strong&gt; An teuliad diabarzh a zo goulo. Choazit un diarunusted !&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="171"/>
         <source>Free space: %1</source>
-        <translation type="unfinished"/>
+        <translation>Lec&apos;h dieub : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Teuliad diabarzh kemprennet</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="337"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="367"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="384"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;ez eus ket traouac&apos;h a blas dieub en teuliad diabarzh !</translation>
     </message>
 </context>
 <context>
@@ -1987,32 +1994,32 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Kenstagadenn c&apos;hwitet</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;C&apos;hwitet ar genstagadenn d&apos;ar servijour chom-lec&apos;h sur lakaet. Penaos ho peus c&apos;hoant kendec&apos;hel ?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Choaz un URL disheñvel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Klask en dr disifrañ war HTTP (n&apos;eo ket sur)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Arventennañ kostez kliant ar sertifikat TLS</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; C&apos;hwitet da genstagañ d&apos;ar chom-lec&apos;h sur ar servijour&lt;em&gt;%1&lt;/em&gt;. Penaos ho peus c&apos;hoant kendec&apos;hel ?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -2020,7 +2027,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Postel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
@@ -2030,7 +2037,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Lakaat titouroù identitelez an implijer</translation>
     </message>
 </context>
 <context>
@@ -2043,7 +2050,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Mont-tre gant ho vrowser</translation>
     </message>
 </context>
 <context>
@@ -2056,7 +2063,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="49"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Stalian %1 servijour</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="77"/>
@@ -2066,33 +2073,33 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="78"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Kenlabour &amp; eskemm restroù sur</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="79"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Postel web, deizataer ha darempredoù eas da implij</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Rannañ skramm, emvodoù war an neudenn ha prezegennoù web</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket sur an URL evel n&apos;eo ket sifret.N&apos;eo ket aliet implij anezhi.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
         <source>This URL is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Sur eo an URL-mañ. Gallout a rit implij anezhi.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="219"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp; Da heul &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="279"/>
@@ -2102,7 +2109,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="408"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Dibosuple kargañ ar sertifikat. Fall eo ar ger-tremenn ?</translation>
     </message>
 </context>
 <context>
@@ -2110,7 +2117,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="250"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Kenstaget mar da %1 : %2 stumm %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
@@ -2120,134 +2127,134 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitet d&apos;en em genstagañ da %1 da %2 : &lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Deuet eo an termenn pa glaskemp genstagaén da %1 da %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation type="unfinished"/>
+        <translation>Ho klask en em genstagañ da %1 da %2 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Goulenn dilesa d&apos;ar servijour a zo bet adhentet da &apos;%1&apos;. An URL a zo fall, mikro&apos;arventennaet eo ar servijour.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>An tremenn a zo difennet d&apos;ar servijour. Evit gwiriañ a peus an aotre tizhout, &lt;a href=&quot;%1&quot;&gt;pouezit amañ&lt;/a&gt; evit kaout  sikour gant ho browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation>Ur respont fall d&apos;ar goulenn dilesa WabDAV a zo bet</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="435"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Bez ez eus dija eus an teuliad kemprennet diabarzh %1, ho arventennañ anezhañ evit ar gemprenn. &lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
         <source>Creating local sync folder %1 …</source>
-        <translation type="unfinished"/>
+        <translation>O krouiñ an teuliat kemrpennañ diabarzh %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="442"/>
         <source>ok</source>
-        <translation type="unfinished"/>
+        <translation>ok</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="444"/>
         <source>failed.</source>
-        <translation type="unfinished"/>
+        <translation>c&apos;hwitet.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl krouiñ an teuliad diabarzh %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="506"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Teuliat pell lakaet ebet !</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="512"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fazi : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="525"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>krouiñ teuliadoù war Nextcloud %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Teuliat pell %1 krouiet mat.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Pez ez eus dija eus ar restr pell %1. Ar genstagañ anezhañ evit e kemprenn.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="547"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Krouadenn an teuliad en deus roet ar c&apos;hod fazi HTTP %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="549"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitet da grouiñ ar restr pell abalamour an titouroù identitelez roet a zo fall ! &lt;br/&gt;Gwiriit ho titouroù identitelezh.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="553"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;C&apos;hwitet da grouiñ an teuliad pell abalamour da titouroù identitelezh fall roet sur walc&apos;h.&lt;/font&gt;&lt;br/&gt;Gwiriit anezho&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="558"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="559"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitat da grouiñ an teuliad pell %1 gant ar fazi &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="576"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>Ur genstagadenn kemprenet eus %1 d&apos;an teuliad pell %2 a zo bet staliet.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="581"/>
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>Kenstaget mat da %1 !</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="588"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>Ar genstagaden da %1 n&apos;eo ket bet graet. Klaskit en dro.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="601"/>
         <source>Folder rename failed</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitet da adenvel an teuliad</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="602"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Dibospul eo lemel hag enrollañ an teuliad peogwir en digor an teuliad pe ar rest en ur program all. Serit an teuliat pe ar restr ha pouerzit war klask en dro pe arestit ar staliadur.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="649"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;An teuliad kempren diabarzh %1  a zo bet krouet mat !&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -2255,12 +2262,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
         <source>%1 Connection Wizard</source>
-        <translation type="unfinished"/>
+        <translation>%1 Kemprennadenn Wizard</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Tremenn e-bioù an teuliadoù arventennoù</translation>
     </message>
 </context>
 <context>
@@ -2268,17 +2275,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="32"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>Staliet eo pep-tra !</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="36"/>
         <source>Open Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ an Teuliad Diabarzh</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="45"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ %1 er Vrowser</translation>
     </message>
 </context>
 <context>
@@ -2286,7 +2293,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="140"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>Respont JSON fal eus ar sontadeg URL</translation>
     </message>
 </context>
 <context>
@@ -2302,47 +2309,47 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="380"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Ar restr %1 n&apos;eo ket posupl bezhaén pellkarget peogwir e vank titouroù sifrañ.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="448"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket posupl pellkargañ ar restr %1 abalamour d&apos;ur stourm anv restr diabarzh !</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="498"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Ar pellkargañ a lamo plas dieub el lenner dindan ar bevenn</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="502"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Al lec&apos;h dieub war al lenner a zo dindan %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="622"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>Lamet eo bet ar rest eus ar servijour</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="675"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Ne oa ket posupl pellkargañ ar restr penn-da-benn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="682"/>
         <source>The downloaded file is empty despite that the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ar restr pellkarget a zo goulo memes m&apos;en doa laret ar servijour e kemerfe %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="871"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Ar restr %1 ne c&apos;hell ket bezhañ enrollet abalamour d&apos;ur stourm anv diabarzh !</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="906"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Cheñchet eo bet ar restr abaoe m&apos;ema bet disoloet</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="962"/>
@@ -2355,12 +2362,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="232"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; Adtapour ar restr c&apos;hwitet : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="300"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ur restr pe teuliad a zo bet lamet eus ar rannadenn lenn-nemetken, mes c&apos;hwitet eo bete adtapout : %1</translation>
     </message>
 </context>
 <context>
@@ -2368,17 +2375,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="206"/>
         <source>could not delete file %1, error: %2</source>
-        <translation type="unfinished"/>
+        <translation>dibosupl lemel ar restr %1, fazi : %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="221"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Diwallit, stourmoù a vo marteze gant %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="227"/>
         <source>could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>dibosupl krouiñ an teuliad %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="239"/>
@@ -2391,17 +2398,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi a zo bet en ul lemel &apos;%1&apos; : %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl lemel an teuliad &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl lemel %1 peogwir d&apos;ur stourm anv restr diabarzh</translation>
     </message>
 </context>
 <context>
@@ -2409,7 +2416,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="290"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>Ar restr %1 n&apos;eo ket posupl bezhañ adanvet da %2 abalamour d&apos;ur stourm anv restr diabarzh</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="321"/>
@@ -2423,7 +2430,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="152"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kod HTTP fall roet gant ar servijour. O gortoz e oa 204, met resevet a zo ber &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -2431,7 +2438,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="209"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kod HTTP fall roet gant ar servijour. O gortoz e oa 201, met resevet a zo ber &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="284"/>
@@ -2444,7 +2451,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Kod HTTP fall roet gant ar servijour. O gortoz e oa 201, met resevet a zo ber &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
@@ -2458,28 +2465,28 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="281"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Ar restr %1 ne c&apos;hell ket behañ pellkaset abalamour m&apos;ez eus ur restr al memes anv, disheñvel nemet gant ar benlizerennoù/lizerennoù-bihañ</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="292"/>
         <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Pellkargañ %1 a za en tu all ar vevenn quota an teuliad</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="401"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Restr lamet (kregiñ ar pellkas) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="415"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Restr diabarzh cheñchet e pad ar gemprenn. Adkemeret e vo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="430"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Rest diabarzh cheñchet e pad ar gemprenn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="756"/>
@@ -2492,27 +2499,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="404"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Ar restr diabarzh a zo bet lamet e pad ar gemprennadenn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="415"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Rest diabarzh cheñchet e pad ar gemprenn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="449"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Kod distro dic&apos;hortoz eus ar servijour (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Un ID restr a vant er servijour</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="470"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>Un eKlav a vank evit ar servijour</translation>
     </message>
 </context>
 <context>
@@ -2520,22 +2527,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="213"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Ur sontadeg URL a vank</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="240"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Ar restr diabarzh a zo bet lamet e pad ar gemprennadenn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="251"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Rest diabarzh cheñchet e pad ar gemprenn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;en deus ket taolet pled ar servijour eus an tamm diveahñ. (E-klav ebet kavet)</translation>
     </message>
 </context>
 <context>
@@ -2543,22 +2550,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Ret eo kaout un dilesa proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>Username:</source>
-        <translation type="unfinished"/>
+        <translation>Anv-implijer :</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation type="unfinished"/>
+        <translation>Proxy :</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>Ar servijour proxy en deus ezhom eus un anv-implijer hag ur ger-tremenn.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2571,7 +2578,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="466"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Choazit petra kemprennañ</translation>
     </message>
 </context>
 <context>
@@ -2579,17 +2586,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading …</source>
-        <translation type="unfinished"/>
+        <translation>O Kargañ ...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Choazit peseurt teuliadoù pell n&apos;ho peus ket c&apos;hoant kemrpennañ.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Anv</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="96"/>
@@ -2600,12 +2607,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="227"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="284"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Izteuiadoù ebet er servijour evit ar poent.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="286"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi a zo bet e pad kargadenn ar roll an iz-teuliadoù.</translation>
     </message>
 </context>
 <context>
@@ -2631,7 +2638,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="109"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Rouedad</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="207"/>
@@ -2689,12 +2696,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="314"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Ezhomm ez eus eus ar ger-tremenn  evit ar rannadenn</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="315"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Lakait ur ger-tremenn evit ho liamm rannet :</translation>
     </message>
 </context>
 <context>
@@ -3830,12 +3837,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Gwiriañ ma ez eus cheñchoù e &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Gwiriañ ma ez eus cheñchoù e &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -3854,7 +3861,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
@@ -4086,7 +4093,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>
