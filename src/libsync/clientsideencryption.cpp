@@ -61,6 +61,31 @@ namespace {
     const char e2e_cert[] = "_e2e-certificate";
     const char e2e_private[] = "_e2e-private";
     const char e2e_mnemonic[] = "_e2e-mnemonic";
+
+    QList<QByteArray> oldCipherFormatSplit(const QByteArray &cipher)
+    {
+        const auto separator = QByteArrayLiteral("fA=="); // BASE64 encoded '|'
+        auto result = QList<QByteArray>();
+
+        auto data = cipher;
+        auto index = data.indexOf(separator);
+        while (index >=0) {
+            result.append(data.left(index));
+            data = data.mid(index + separator.size());
+            index = data.indexOf(separator);
+        }
+
+        result.append(data);
+        return result;
+    }
+
+    QList<QByteArray> splitCipherParts(const QByteArray &data)
+    {
+        const auto isOldFormat = !data.contains('|');
+        const auto parts = isOldFormat ? oldCipherFormatSplit(data) : data.split('|');
+        qCInfo(lcCse()) << "found parts:" << parts << "old format?" << isOldFormat;
+        return parts;
+    }
 } // ns
 
 namespace {
@@ -371,11 +396,14 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
-    int sep = data.indexOf('|');
-    qCInfo(lcCse()) << "sep at" << sep;
+    const auto parts = splitCipherParts(data);
+    if (parts.size() < 2) {
+        qCInfo(lcCse()) << "Not enough parts found";
+        return QByteArray();
+    }
 
-    QByteArray cipherTXT64 = data.left(sep);
-    QByteArray ivB64 = data.right(data.size() - sep - 1);
+    QByteArray cipherTXT64 = parts.at(0);
+    QByteArray ivB64 = parts.at(1);
 
     qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
     qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;
@@ -443,15 +471,29 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     return QByteArray::fromBase64(result);
 }
 
+QByteArray extractPrivateKeySalt(const QByteArray &data)
+{
+    const auto parts = splitCipherParts(data);
+    if (parts.size() < 3) {
+        qCInfo(lcCse()) << "Not enough parts found";
+        return QByteArray();
+    }
+
+    return QByteArray::fromBase64(parts.at(2));
+}
+
 QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
-    int sep = data.indexOf('|');
-    qCInfo(lcCse()) << "sep at" << sep;
+    const auto parts = splitCipherParts(data);
+    if (parts.size() < 2) {
+        qCInfo(lcCse()) << "Not enough parts found";
+        return QByteArray();
+    }
 
-    QByteArray cipherTXT64 = data.left(sep);
-    QByteArray ivB64 = data.right(data.size() - sep - 1);
+    QByteArray cipherTXT64 = parts.at(0);
+    QByteArray ivB64 = parts.at(1);
 
     qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
     qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;
@@ -515,7 +557,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         return QByteArray();
     }
 
-    return QByteArray(ptext, plen);
+    return QByteArray::fromBase64(QByteArray(ptext, plen));
 }
 
 QByteArray privateKeyToPem(const QByteArray key) {
@@ -1130,15 +1172,12 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
             qCInfo(lcCse()) << "mnemonic:" << mnemonic;
 
             // split off salt
-            // Todo better place?
-            auto pos = key.lastIndexOf('|');
-            QByteArray salt = QByteArray::fromBase64(key.mid(pos + 1));
-            auto key2 = key.left(pos);
+            const auto salt = EncryptionHelper::extractPrivateKeySalt(key);
 
             auto pass = EncryptionHelper::generatePassword(mnemonic, salt);
             qCInfo(lcCse()) << "Generated key:" << pass;
 
-            QByteArray privateKey = EncryptionHelper::decryptPrivateKey(pass, key2);
+            QByteArray privateKey = EncryptionHelper::decryptPrivateKey(pass, key);
             //_privateKey = QSslKey(privateKey, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
             _privateKey = privateKey;
 
@@ -1288,7 +1327,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
   // Cool, We actually have the key, we can decrypt the rest of the metadata.
   qCDebug(lcCse) << "Sharing: " << sharing;
   if (sharing.size()) {
-      auto sharingDecrypted = QByteArray::fromBase64(decryptJsonObject(sharing, _metadataKeys.last()));
+      auto sharingDecrypted = decryptJsonObject(sharing, _metadataKeys.last());
       qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
 
       //Sharing is also a JSON object, so extract it and populate.
@@ -1313,7 +1352,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         //Decrypt encrypted part
         QByteArray key = _metadataKeys[file.metadataKey];
         auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
-        auto decryptedFile = QByteArray::fromBase64(decryptJsonObject(encryptedFile, key));
+        auto decryptedFile = decryptJsonObject(encryptedFile, key);
         auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
         auto decryptedFileObj = decryptedFileDoc.object();
 
