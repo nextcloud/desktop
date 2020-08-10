@@ -88,8 +88,8 @@ private slots:
         const auto originalData = QByteArrayLiteral("bar");
         const auto cipher = EncryptionHelper::encryptStringSymmetric(encryptionKey, originalData);
 
-        // WHEN (not it is still in base64 when returned)
-        const auto data = QByteArray::fromBase64(EncryptionHelper::decryptStringSymmetric(encryptionKey, cipher));
+        // WHEN
+        const auto data = EncryptionHelper::decryptStringSymmetric(encryptionKey, cipher);
 
         // THEN
         QCOMPARE(data, originalData);
