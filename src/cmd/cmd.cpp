@@ -57,10 +57,7 @@
 
 using namespace OCC;
 
-
-static void nullMessageHandler(QtMsgType, const QMessageLogContext &, const QString &)
-{
-}
+namespace {
 
 struct CmdOptions
 {
@@ -85,9 +82,124 @@ struct CmdOptions
     qint64 deltasyncminfilesize;
 };
 
-// we can't use csync_set_userdata because the SyncEngine sets it already.
-// So we have to use a global variable
-CmdOptions *opts = nullptr;
+struct SyncCTX
+{
+    const CmdOptions &options;
+    const QUrl url;
+    const QString folder;
+    const AccountPtr account;
+    const QString user;
+};
+
+
+/* If the selective sync list is different from before, we need to disable the read from db
+  (The normal client does it in SelectiveSyncDialog::accept*)
+ */
+void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
+{
+    SqlDatabase db;
+    if (!db.openOrCreateReadWrite(journal->databaseFilePath())) {
+        return;
+    }
+
+    bool ok;
+
+    auto oldBlackListSet = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
+    if (ok) {
+        auto blackListSet = newList.toSet();
+        auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        foreach (const auto &it, changes) {
+            journal->schedulePathForRemoteDiscovery(it);
+        }
+
+        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);
+    }
+}
+
+
+int sync(const SyncCTX &ctx, int restartCount)
+{
+    QStringList selectiveSyncList;
+    if (!ctx.options.unsyncedfolders.isEmpty()) {
+        QFile f(ctx.options.unsyncedfolders);
+        if (!f.open(QFile::ReadOnly)) {
+            qCritical() << "Could not open file containing the list of unsynced folders: " << ctx.options.unsyncedfolders;
+        } else {
+            // filter out empty lines and comments
+            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n').filter(QRegExp("\\S+")).filter(QRegExp("^[^#]"));
+
+            for (int i = 0; i < selectiveSyncList.count(); ++i) {
+                if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
+                    selectiveSyncList[i].append(QLatin1Char('/'));
+                }
+            }
+        }
+    }
+
+    Cmd cmd;
+    QString dbPath = ctx.options.source_dir + SyncJournalDb::makeDbName(ctx.options.source_dir, ctx.url, ctx.folder, ctx.user);
+    SyncJournalDb db(dbPath);
+
+    if (!selectiveSyncList.empty()) {
+        selectiveSyncFixup(&db, selectiveSyncList);
+    }
+
+    SyncOptions opt;
+    opt.fillFromEnvironmentVariables();
+    opt.verifyChunkSizes();
+    SyncEngine engine(ctx.account, ctx.options.source_dir, ctx.folder, &db);
+    engine.setSyncOptions(opt);
+    engine.setIgnoreHiddenFiles(ctx.options.ignoreHiddenFiles);
+    engine.setNetworkLimits(ctx.options.uplimit, ctx.options.downlimit);
+    QObject::connect(&engine, &SyncEngine::finished,
+        [](bool result) { qApp->exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
+    QObject::connect(&engine, &SyncEngine::transmissionProgress, &cmd, &Cmd::transmissionProgressSlot);
+    QObject::connect(&engine, &SyncEngine::syncError,
+        [](const QString &error) { qWarning() << "Sync error:" << error; });
+
+
+    // Exclude lists
+
+    bool hasUserExcludeFile = !ctx.options.exclude.isEmpty();
+    QString systemExcludeFile = ConfigFile::excludeFileFromSystem();
+
+    // Always try to load the user-provided exclude list if one is specified
+    if (hasUserExcludeFile) {
+        engine.excludedFiles().addExcludeFilePath(ctx.options.exclude);
+    }
+    // Load the system list if available, or if there's no user-provided list
+    if (!hasUserExcludeFile || QFile::exists(systemExcludeFile)) {
+        engine.excludedFiles().addExcludeFilePath(systemExcludeFile);
+    }
+
+    if (!engine.excludedFiles().reloadExcludeFiles()) {
+        qFatal("Cannot load system exclude list or list supplied via --exclude");
+        return EXIT_FAILURE;
+    }
+
+
+    // Have to be done async, else, an error before exec() does not terminate the event loop.
+    QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);
+
+    const int resultCode = qApp->exec();
+    if (engine.isAnotherSyncNeeded() != NoFollowUpSync) {
+        if (restartCount < ctx.options.restartTimes) {
+            restartCount++;
+            qDebug() << "Restarting Sync, because another sync is needed" << restartCount;
+            return sync(ctx, restartCount);
+        }
+        qWarning() << "Another sync is needed, but not done because restart count is exceeded" << restartCount;
+    }
+    return resultCode;
+}
+
+}
+
+
+static void nullMessageHandler(QtMsgType, const QMessageLogContext &, const QString &)
+{
+}
+
 
 class EchoDisabler
 {
@@ -284,30 +396,6 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
     }
 }
 
-/* If the selective sync list is different from before, we need to disable the read from db
-  (The normal client does it in SelectiveSyncDialog::accept*)
- */
-void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
-{
-    SqlDatabase db;
-    if (!db.openOrCreateReadWrite(journal->databaseFilePath())) {
-        return;
-    }
-
-    bool ok;
-
-    auto oldBlackListSet = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
-    if (ok) {
-        auto blackListSet = newList.toSet();
-        auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
-        foreach (const auto &it, changes) {
-            journal->schedulePathForRemoteDiscovery(it);
-        }
-
-        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);
-    }
-}
-
 int main(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
@@ -483,84 +571,5 @@ int main(int argc, char **argv)
     loop.exec();
     // much lower age than the default since this utility is usually made to be run right after a change in the tests
     SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
-
-    int restartCount = 0;
-restart_sync:
-
-    opts = &options;
-
-    QStringList selectiveSyncList;
-    if (!options.unsyncedfolders.isEmpty()) {
-        QFile f(options.unsyncedfolders);
-        if (!f.open(QFile::ReadOnly)) {
-            qCritical() << "Could not open file containing the list of unsynced folders: " << options.unsyncedfolders;
-        } else {
-            // filter out empty lines and comments
-            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n').filter(QRegExp("\\S+")).filter(QRegExp("^[^#]"));
-
-            for (int i = 0; i < selectiveSyncList.count(); ++i) {
-                if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
-                    selectiveSyncList[i].append(QLatin1Char('/'));
-                }
-            }
-        }
-    }
-
-    Cmd cmd;
-    QString dbPath = options.source_dir + SyncJournalDb::makeDbName(options.source_dir, credentialFreeUrl, folder, user);
-    SyncJournalDb db(dbPath);
-
-    if (!selectiveSyncList.empty()) {
-        selectiveSyncFixup(&db, selectiveSyncList);
-    }
-
-    SyncOptions opt;
-    opt.fillFromEnvironmentVariables();
-    opt.verifyChunkSizes();
-    SyncEngine engine(account, options.source_dir, folder, &db);
-    engine.setSyncOptions(opt);
-    engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
-    engine.setNetworkLimits(options.uplimit, options.downlimit);
-    QObject::connect(&engine, &SyncEngine::finished,
-        [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
-    QObject::connect(&engine, &SyncEngine::transmissionProgress, &cmd, &Cmd::transmissionProgressSlot);
-    QObject::connect(&engine, &SyncEngine::syncError,
-        [](const QString &error) { qWarning() << "Sync error:" << error; });
-
-
-    // Exclude lists
-
-    bool hasUserExcludeFile = !options.exclude.isEmpty();
-    QString systemExcludeFile = ConfigFile::excludeFileFromSystem();
-
-    // Always try to load the user-provided exclude list if one is specified
-    if (hasUserExcludeFile) {
-        engine.excludedFiles().addExcludeFilePath(options.exclude);
-    }
-    // Load the system list if available, or if there's no user-provided list
-    if (!hasUserExcludeFile || QFile::exists(systemExcludeFile)) {
-        engine.excludedFiles().addExcludeFilePath(systemExcludeFile);
-    }
-
-    if (!engine.excludedFiles().reloadExcludeFiles()) {
-        qFatal("Cannot load system exclude list or list supplied via --exclude");
-        return EXIT_FAILURE;
-    }
-
-
-    // Have to be done async, else, an error before exec() does not terminate the event loop.
-    QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);
-
-    int resultCode = app.exec();
-
-    if (engine.isAnotherSyncNeeded() != NoFollowUpSync) {
-        if (restartCount < options.restartTimes) {
-            restartCount++;
-            qDebug() << "Restarting Sync, because another sync is needed" << restartCount;
-            goto restart_sync;
-        }
-        qWarning() << "Another sync is needed, but not done because restart count is exceeded" << restartCount;
-    }
-
-    return resultCode;
+    return sync({ options, credentialFreeUrl, folder, account, user }, 0);
 }
