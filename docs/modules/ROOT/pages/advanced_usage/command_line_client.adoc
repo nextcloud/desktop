@@ -29,7 +29,6 @@ Other command line switches supported by `owncloudcmd` include the following:
 | `--silent`, `--s`|  Inhibits verbose log output.
 | `--trust`|  Trust any SSL certificate, including invalid ones.
 | `--httpproxy  http://[user@pass:]<server>:<port>`|  Uses `server` as HTTP proxy.
-| `--nonshib`|  Uses Non Shibboleth WebDAV Authentication.
 | `--davpath [path]`|  Overrides the WebDAV Path with `path`
 | `--exclude [file]`|  Exclude list file.
 | `--unsyncedfolders [file]`|  File containing the list of un-synced remote folders (selective sync)
