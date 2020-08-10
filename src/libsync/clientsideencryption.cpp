@@ -61,6 +61,31 @@ namespace {
     const char e2e_cert[] = "_e2e-certificate";
     const char e2e_private[] = "_e2e-private";
     const char e2e_mnemonic[] = "_e2e-mnemonic";
+
+    QList<QByteArray> oldCipherFormatSplit(const QByteArray &cipher)
+    {
+        const auto separator = QByteArrayLiteral("fA=="); // BASE64 encoded '|'
+        auto result = QList<QByteArray>();
+
+        auto data = cipher;
+        auto index = data.indexOf(separator);
+        while (index >=0) {
+            result.append(data.left(index));
+            data = data.mid(index + separator.size());
+            index = data.indexOf(separator);
+        }
+
+        result.append(data);
+        return result;
+    }
+
+    QList<QByteArray> splitCipherParts(const QByteArray &data)
+    {
+        const auto isOldFormat = !data.contains('|');
+        const auto parts = isOldFormat ? oldCipherFormatSplit(data) : data.split('|');
+        qCInfo(lcCse()) << "found parts:" << parts << "old format?" << isOldFormat;
+        return parts;
+    }
 } // ns
 
 namespace {
@@ -371,9 +396,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
-    const auto parts = data.split('|');
-    qCInfo(lcCse()) << "found parts:" << parts;
-
+    const auto parts = splitCipherParts(data);
     if (parts.size() < 2) {
         qCInfo(lcCse()) << "Not enough parts found";
         return QByteArray();
@@ -450,9 +473,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
 
 QByteArray extractPrivateKeySalt(const QByteArray &data)
 {
-    const auto parts = data.split('|');
-    qCInfo(lcCse()) << "found parts:" << parts;
-
+    const auto parts = splitCipherParts(data);
     if (parts.size() < 3) {
         qCInfo(lcCse()) << "Not enough parts found";
         return QByteArray();
@@ -465,11 +486,14 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
-    int sep = data.indexOf('|');
-    qCInfo(lcCse()) << "sep at" << sep;
+    const auto parts = splitCipherParts(data);
+    if (parts.size() < 2) {
+        qCInfo(lcCse()) << "Not enough parts found";
+        return QByteArray();
+    }
 
-    QByteArray cipherTXT64 = data.left(sep);
-    QByteArray ivB64 = data.right(data.size() - sep - 1);
+    QByteArray cipherTXT64 = parts.at(0);
+    QByteArray ivB64 = parts.at(1);
 
     qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
     qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;

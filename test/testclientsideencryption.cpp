@@ -14,6 +14,11 @@ class TestClientSideEncryption : public QObject
 {
     Q_OBJECT
 
+    QByteArray convertToOldStorageFormat(const QByteArray &data)
+    {
+        return data.split('|').join("fA==");
+    }
+
 private slots:
     void shouldEncryptPrivateKeys()
     {
@@ -59,6 +64,23 @@ private slots:
         QCOMPARE(salt, originalSalt);
     }
 
+    void shouldDecryptPrivateKeysInOldStorageFormat()
+    {
+        // GIVEN
+        const auto encryptionKey = QByteArrayLiteral("foo");
+        const auto originalPrivateKey = QByteArrayLiteral("bar");
+        const auto originalSalt = QByteArrayLiteral("baz");
+        const auto cipher = convertToOldStorageFormat(EncryptionHelper::encryptPrivateKey(encryptionKey, originalPrivateKey, originalSalt));
+
+        // WHEN
+        const auto privateKey = EncryptionHelper::decryptPrivateKey(encryptionKey, cipher);
+        const auto salt = EncryptionHelper::extractPrivateKeySalt(cipher);
+
+        // THEN
+        QCOMPARE(privateKey, originalPrivateKey);
+        QCOMPARE(salt, originalSalt);
+    }
+
     void shouldSymmetricEncryptStrings()
     {
         // GIVEN
@@ -89,6 +111,20 @@ private slots:
         const auto encryptionKey = QByteArrayLiteral("foo");
         const auto originalData = QByteArrayLiteral("bar");
         const auto cipher = EncryptionHelper::encryptStringSymmetric(encryptionKey, originalData);
+
+        // WHEN
+        const auto data = EncryptionHelper::decryptStringSymmetric(encryptionKey, cipher);
+
+        // THEN
+        QCOMPARE(data, originalData);
+    }
+
+    void shouldSymmetricDecryptStringsInOldStorageFormat()
+    {
+        // GIVEN
+        const auto encryptionKey = QByteArrayLiteral("foo");
+        const auto originalData = QByteArrayLiteral("bar");
+        const auto cipher = convertToOldStorageFormat(EncryptionHelper::encryptStringSymmetric(encryptionKey, originalData));
 
         // WHEN
         const auto data = EncryptionHelper::decryptStringSymmetric(encryptionKey, cipher);
