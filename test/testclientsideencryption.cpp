@@ -50,8 +50,8 @@ private slots:
         const auto originalSalt = QByteArrayLiteral("baz");
         const auto cipher = EncryptionHelper::encryptPrivateKey(encryptionKey, originalPrivateKey, originalSalt);
 
-        // WHEN (note the salt is not passed, so had to extract by hand)
-        const auto privateKey = EncryptionHelper::decryptPrivateKey(encryptionKey, cipher.left(cipher.lastIndexOf('|')));
+        // WHEN
+        const auto privateKey = EncryptionHelper::decryptPrivateKey(encryptionKey, cipher);
 
         // THEN
         QCOMPARE(privateKey, originalPrivateKey);

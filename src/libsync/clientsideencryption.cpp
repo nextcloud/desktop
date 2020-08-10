@@ -371,11 +371,16 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
-    int sep = data.indexOf('|');
-    qCInfo(lcCse()) << "sep at" << sep;
+    const auto parts = data.split('|');
+    qCInfo(lcCse()) << "found parts:" << parts;
 
-    QByteArray cipherTXT64 = data.left(sep);
-    QByteArray ivB64 = data.right(data.size() - sep - 1);
+    if (parts.size() < 2) {
+        qCInfo(lcCse()) << "Not enough parts found";
+        return QByteArray();
+    }
+
+    QByteArray cipherTXT64 = parts.at(0);
+    QByteArray ivB64 = parts.at(1);
 
     qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
     qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;
@@ -1133,12 +1138,11 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
             // Todo better place?
             auto pos = key.lastIndexOf('|');
             QByteArray salt = QByteArray::fromBase64(key.mid(pos + 1));
-            auto key2 = key.left(pos);
 
             auto pass = EncryptionHelper::generatePassword(mnemonic, salt);
             qCInfo(lcCse()) << "Generated key:" << pass;
 
-            QByteArray privateKey = EncryptionHelper::decryptPrivateKey(pass, key2);
+            QByteArray privateKey = EncryptionHelper::decryptPrivateKey(pass, key);
             //_privateKey = QSslKey(privateKey, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
             _privateKey = privateKey;
 
