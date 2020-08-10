@@ -619,9 +619,9 @@ private slots:
 
     void testNoLocalEncoding()
     {
-        auto utf8Locale = QTextCodec::codecForLocale();
+        const auto utf8Locale = QTextCodec::codecForLocale();
         if (utf8Locale->mibEnum() != 106) {
-            QSKIP("Test only works for UTF8 locale");
+            QSKIP(qPrintable(QStringLiteral("Test only works for UTF8 locale, but current locale is %1").arg(QString::fromUtf8(utf8Locale->name()))));
         }
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
@@ -637,8 +637,10 @@ private slots:
 
 #if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
         // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
-        QTextCodec::setCodecForLocale(QTextCodec::codecForName("ISO-8859-15"));
-        QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 111);
+        auto codec = QTextCodec::codecForName("ISO-8859-15");
+        QVERIFY(codec);
+        QTextCodec::setCodecForLocale(codec);
+        QCOMPARE(QTextCodec::codecForLocale()->mibEnum(), 111);
 
         fakeFolder.remoteModifier().insert("B/tößt");
         fakeFolder.remoteModifier().insert("B/t𠜎t");
@@ -654,16 +656,21 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("B/t𠜎t"));
 
         // Try again with plain ascii
-        QTextCodec::setCodecForLocale(QTextCodec::codecForName("ASCII"));
-        QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 3);
+        codec = QTextCodec::codecForName("ASCII");
+        if (codec) {
+            QTextCodec::setCodecForLocale(codec);
+            QCOMPARE(QTextCodec::codecForLocale()->mibEnum(), 3);
 
-        fakeFolder.remoteModifier().insert("C/tößt");
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentLocalState().find("C/tößt"));
-        QVERIFY(!fakeFolder.currentLocalState().find("C/t??t"));
-        QVERIFY(!fakeFolder.currentLocalState().find("C/t????t"));
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
+            fakeFolder.remoteModifier().insert("C/tößt");
+            QVERIFY(fakeFolder.syncOnce());
+            QVERIFY(!fakeFolder.currentLocalState().find("C/tößt"));
+            QVERIFY(!fakeFolder.currentLocalState().find("C/t??t"));
+            QVERIFY(!fakeFolder.currentLocalState().find("C/t????t"));
+            QVERIFY(fakeFolder.syncOnce());
+            QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
+        } else {
+            qDebug() << "Skipping test for ASCII, ASCII is not available, available encodings are:" << QTextCodec::availableCodecs();
+        }
 
         QTextCodec::setCodecForLocale(utf8Locale);
 #endif
