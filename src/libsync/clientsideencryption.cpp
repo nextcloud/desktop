@@ -515,7 +515,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         return QByteArray();
     }
 
-    return QByteArray(ptext, plen);
+    return QByteArray::fromBase64(QByteArray(ptext, plen));
 }
 
 QByteArray privateKeyToPem(const QByteArray key) {
@@ -1288,7 +1288,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
   // Cool, We actually have the key, we can decrypt the rest of the metadata.
   qCDebug(lcCse) << "Sharing: " << sharing;
   if (sharing.size()) {
-      auto sharingDecrypted = QByteArray::fromBase64(decryptJsonObject(sharing, _metadataKeys.last()));
+      auto sharingDecrypted = decryptJsonObject(sharing, _metadataKeys.last());
       qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
 
       //Sharing is also a JSON object, so extract it and populate.
@@ -1313,7 +1313,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         //Decrypt encrypted part
         QByteArray key = _metadataKeys[file.metadataKey];
         auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
-        auto decryptedFile = QByteArray::fromBase64(decryptJsonObject(encryptedFile, key));
+        auto decryptedFile = decryptJsonObject(encryptedFile, key);
         auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
         auto decryptedFileObj = decryptedFileDoc.object();
 
