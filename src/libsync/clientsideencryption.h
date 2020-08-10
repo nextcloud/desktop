@@ -38,6 +38,7 @@ namespace EncryptionHelper {
             const QByteArray& key,
             const QByteArray& data
     );
+    OWNCLOUDSYNC_EXPORT QByteArray extractPrivateKeySalt(const QByteArray &data);
     OWNCLOUDSYNC_EXPORT QByteArray encryptStringSymmetric(
             const QByteArray& key,
             const QByteArray& data

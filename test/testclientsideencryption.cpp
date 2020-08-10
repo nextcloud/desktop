@@ -52,9 +52,11 @@ private slots:
 
         // WHEN
         const auto privateKey = EncryptionHelper::decryptPrivateKey(encryptionKey, cipher);
+        const auto salt = EncryptionHelper::extractPrivateKeySalt(cipher);
 
         // THEN
         QCOMPARE(privateKey, originalPrivateKey);
+        QCOMPARE(salt, originalSalt);
     }
 
     void shouldSymmetricEncryptStrings()
