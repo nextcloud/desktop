@@ -448,6 +448,19 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     return QByteArray::fromBase64(result);
 }
 
+QByteArray extractPrivateKeySalt(const QByteArray &data)
+{
+    const auto parts = data.split('|');
+    qCInfo(lcCse()) << "found parts:" << parts;
+
+    if (parts.size() < 3) {
+        qCInfo(lcCse()) << "Not enough parts found";
+        return QByteArray();
+    }
+
+    return QByteArray::fromBase64(parts.at(2));
+}
+
 QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
@@ -1135,9 +1148,7 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
             qCInfo(lcCse()) << "mnemonic:" << mnemonic;
 
             // split off salt
-            // Todo better place?
-            auto pos = key.lastIndexOf('|');
-            QByteArray salt = QByteArray::fromBase64(key.mid(pos + 1));
+            const auto salt = EncryptionHelper::extractPrivateKeySalt(key);
 
             auto pass = EncryptionHelper::generatePassword(mnemonic, salt);
             qCInfo(lcCse()) << "Generated key:" << pass;
