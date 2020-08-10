@@ -29,20 +29,20 @@ namespace EncryptionHelper {
     QByteArray generateRandomFilename();
     QByteArray generateRandom(int size);
     QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
-    QByteArray encryptPrivateKey(
+    OWNCLOUDSYNC_EXPORT QByteArray encryptPrivateKey(
             const QByteArray& key,
             const QByteArray& privateKey,
             const QByteArray &salt
     );
-    QByteArray decryptPrivateKey(
+    OWNCLOUDSYNC_EXPORT QByteArray decryptPrivateKey(
             const QByteArray& key,
             const QByteArray& data
     );
-    QByteArray encryptStringSymmetric(
+    OWNCLOUDSYNC_EXPORT QByteArray encryptStringSymmetric(
             const QByteArray& key,
             const QByteArray& data
     );
-    QByteArray decryptStringSymmetric(
+    OWNCLOUDSYNC_EXPORT QByteArray decryptStringSymmetric(
             const QByteArray& key,
             const QByteArray& data
     );

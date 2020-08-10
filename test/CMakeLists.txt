@@ -40,6 +40,7 @@ nextcloud_add_test(ConcatUrl "")
 nextcloud_add_test(XmlParse "")
 nextcloud_add_test(ChecksumValidator "")
 
+nextcloud_add_test(ClientSideEncryption "")
 nextcloud_add_test(ExcludedFiles "")
 
 nextcloud_add_test(FileSystem "")
