@@ -61,14 +61,15 @@ static void check_c_jhash_trials(void **state)
                     e[0], f[0], g[0], h[0], x[0], y[0]);
              print_error("i %d j %d m %d len %d\n",i,j,m,hlen);
           }
-          if (z==MAXPAIR) goto done;
+          if (z == MAXPAIR) {
+              if (z < MAXPAIR) {
+                  assert_true(z < MAXPAIR);
+                  // print_error("%u trials needed, should be less than 40\n", z/2);
+                  return;
+              }
+          }
         }
       }
-    }
-   done:
-    if (z < MAXPAIR) {
-        assert_true(z < MAXPAIR);
-        // print_error("%u trials needed, should be less than 40\n", z/2);
     }
   }
 }
@@ -184,16 +185,17 @@ static void check_c_jhash64_trials(void **state)
                          (uint32_t)i,(uint32_t)j,(uint32_t)m,(uint32_t)hlen);
 #endif
           }
-          if (z==MAXPAIR) goto done;
+          if (z == MAXPAIR) {
+              if (z < MAXPAIR) {
+#if 0
+                  print_error("%lu trials needed, should be less than 40", z/2);
+#endif
+                  assert_true(z < MAXPAIR);
+              }
+              return;
+          }
         }
       }
-    }
-   done:
-    if (z < MAXPAIR) {
-#if 0
-        print_error("%lu trials needed, should be less than 40", z/2);
-#endif
-        assert_true(z < MAXPAIR);
     }
   }
 }
