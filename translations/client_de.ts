@@ -633,12 +633,12 @@ Warten Sie auf die neue Synchronisierung und verschlüsseln Sie sie dann.</trans
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1105"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Geben Sie Ihre Passphrase für Ende-zu-Ende-Verschlüsselung ein:&lt;br&gt;&lt;br&gt;Benutzer: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1113"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1155"/>
         <source>Enter E2E passphrase</source>
         <translation>E2E-Passphrase eingeben</translation>
     </message>

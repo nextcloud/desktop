@@ -633,12 +633,12 @@ Itxaron berriro sinkronizatu arte, ondoren enkriptatu.</translation>
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1105"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Sartu zure muturretik muturrerako zifratzeko pasahitza:&lt;br&gt;&lt;br&gt;Erabiltzailea: %2&lt;br&gt;Kontua: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1113"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1155"/>
         <source>Enter E2E passphrase</source>
         <translation>Sartu muturretik muturrerako (E2E) pasahitza</translation>
     </message>
@@ -4038,7 +4038,7 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Kendu kontua</translation>
     </message>
 </context>
 <context>
@@ -4122,12 +4122,12 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Berrekin sinkronizazioa guztientzat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pausatu sinkronizazioa guztientzat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
@@ -4147,17 +4147,17 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open sync item locally</source>
-        <translation type="unfinished"/>
+        <translation>Ireki sinkronizazio elementua lokalki</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation type="unfinished"/>
+        <translation>Ireki URLa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Ireki partekatzeko elkarrizketa-koadroa</translation>
     </message>
 </context>
 <context>

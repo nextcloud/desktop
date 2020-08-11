@@ -633,12 +633,12 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1105"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Lütfen uçtan uca şifreleme parolasını yazın:&lt;br&gt;&lt;br&gt;Kullanıcı:%2&lt;br&gt;Hesap:%3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1113"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1155"/>
         <source>Enter E2E passphrase</source>
         <translation>Uçtan uca şifreleme parolasını yazın</translation>
     </message>
@@ -4031,12 +4031,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log in</source>
-        <translation>Oturum Aç</translation>
+        <translation>Oturum aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Hesabı Sil</translation>
     </message>
 </context>
 <context>
@@ -4120,12 +4120,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Tümünü eşitlemeyi sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Tümünü eşitlemeyi duraklat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
@@ -4145,17 +4145,17 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open sync item locally</source>
-        <translation type="unfinished"/>
+        <translation>Yerel eşitlenen ögeyi aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation type="unfinished"/>
+        <translation>Adresi aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşma penceresini aç</translation>
     </message>
 </context>
 <context>
