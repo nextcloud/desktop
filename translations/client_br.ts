@@ -633,12 +633,12 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1105"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Lakait frazenn-tremenn ar sifrañ pen-kil-ha-troad : &lt;br&gt;&lt;br&gt;Implijer : %2&lt;br&gt;Kont : %3&lt;br&gt; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1113"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1155"/>
         <source>Enter E2E passphrase</source>
         <translation>Lakait ar frazenn-tremenn E2E</translation>
     </message>
