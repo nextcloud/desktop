@@ -474,7 +474,7 @@ bool SyncJournalDb::checkConnect()
                         "name TEXT UNIQUE"
                         ");");
     if (!createQuery.exec()) {
-        return sqlFail(QStringLiteral("Create table version"), createQuery);
+        return sqlFail(QStringLiteral("Create table checksumtype"), createQuery);
     }
 
     // create the datafingerprint table.
@@ -519,8 +519,6 @@ bool SyncJournalDb::checkConnect()
 
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
     if (!versionQuery.next().hasData) {
-        // If there was no entry in the table, it means we are likely upgrading from 1.5
-        qCInfo(lcDb) << "possibleUpgradeFromMirall_1_5 detected!";
         forceRemoteDiscovery = true;
 
         createQuery.prepare("INSERT INTO version VALUES (?1, ?2, ?3, ?4);");
