@@ -197,11 +197,15 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     connect(_accountState->account()->e2e(), &ClientSideEncryption::showMnemonic, this, &AccountSettings::slotShowMnemonic);
 
     connect(_accountState->account()->e2e(), &ClientSideEncryption::mnemonicGenerated, this, &AccountSettings::slotNewMnemonicGenerated);
-    if (_accountState->account()->e2e()->newMnemonicGenerated())
-    {
+    if (_accountState->account()->e2e()->newMnemonicGenerated()) {
         slotNewMnemonicGenerated();
     } else {
-        _ui->encryptionMessage->hide();
+        _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
+
+        auto *mnemonic = new QAction(tr("Display mnemonic"), this);
+        connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
+        _ui->encryptionMessage->addAction(mnemonic);
+        _ui->encryptionMessage->show();
     }
 
     connect(UserModel::instance(), &UserModel::addAccount,
