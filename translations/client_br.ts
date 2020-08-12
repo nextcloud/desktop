@@ -221,8 +221,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
-        <location filename="../src/gui/accountsettings.cpp" line="573"/>
-        <location filename="../src/gui/accountsettings.cpp" line="968"/>
+        <location filename="../src/gui/accountsettings.cpp" line="577"/>
+        <location filename="../src/gui/accountsettings.cpp" line="972"/>
         <source>Cancel</source>
         <translation>Arrest</translation>
     </message>
@@ -247,19 +247,25 @@
         <translation>Kont arventet ebet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="216"/>
+        <location filename="../src/gui/accountsettings.cpp" line="203"/>
+        <location filename="../src/gui/accountsettings.cpp" line="220"/>
         <source>This account supports end-to-end encryption</source>
         <translation>Douget e vez gant ar c&apos;hont ar sifrañ  penn-kil-ha-troad</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="218"/>
-        <source>Enable encryption</source>
-        <translation>Aotre</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="205"/>
+        <source>Display mnemonic</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
         <source>Add new</source>
         <translation>Ouzhpennañ nevez</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="222"/>
+        <source>Enable encryption</source>
+        <translation>Aotre</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="224"/>
@@ -274,13 +280,13 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
-        <source>Warning</source>
-        <translation>Kemenadenn</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>Account</source>
         <translation>Kont</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="236"/>
+        <source>Warning</source>
+        <translation>Kemenadenn</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
@@ -288,161 +294,161 @@
         <translation>Diskouez E2E mnemonic</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="289"/>
+        <location filename="../src/gui/accountsettings.cpp" line="293"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Ne c&apos;hellit ket sifrañ ur restr gant danvez e barzh, lamit ar restroù.
 Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="358"/>
-        <location filename="../src/gui/accountsettings.cpp" line="416"/>
+        <location filename="../src/gui/accountsettings.cpp" line="362"/>
+        <location filename="../src/gui/accountsettings.cpp" line="420"/>
         <source>Open folder</source>
         <translation>Digor an teuliad</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="375"/>
+        <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>Encrypt</source>
         <translation>Sifrañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="383"/>
-        <location filename="../src/gui/accountsettings.cpp" line="419"/>
+        <location filename="../src/gui/accountsettings.cpp" line="387"/>
+        <location filename="../src/gui/accountsettings.cpp" line="423"/>
         <source>Edit Ignored Files</source>
         <translation>Embann ar Restroù Disoursiet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="423"/>
+        <location filename="../src/gui/accountsettings.cpp" line="427"/>
         <source>Choose what to sync</source>
         <translation>Choazit petra kemprennañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="429"/>
+        <location filename="../src/gui/accountsettings.cpp" line="433"/>
         <source>Force sync now</source>
         <translation>Rediañ ar gemprenn bremañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="431"/>
+        <location filename="../src/gui/accountsettings.cpp" line="435"/>
         <source>Restart sync</source>
         <translation>Adloc&apos;hañ ar gemprenn</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="437"/>
+        <location filename="../src/gui/accountsettings.cpp" line="441"/>
         <source>Resume sync</source>
         <translation>Kendec&apos;hel ar gemprenn</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="437"/>
+        <location filename="../src/gui/accountsettings.cpp" line="441"/>
         <source>Pause sync</source>
         <translation>Ehaniñ ar gemprenn</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="440"/>
+        <location filename="../src/gui/accountsettings.cpp" line="444"/>
         <source>Remove folder sync connection</source>
         <translation>Lemel an teuliad eus ar genstagadenn kemprenn</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="511"/>
+        <location filename="../src/gui/accountsettings.cpp" line="515"/>
         <source>Folder creation failed</source>
         <translation>C&apos;hwitat krouadenn an teuliad</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="512"/>
+        <location filename="../src/gui/accountsettings.cpp" line="516"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;N&apos;eo ke posupl krouiñ an teuliad diabarzh &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="565"/>
+        <location filename="../src/gui/accountsettings.cpp" line="569"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Gwiriañ Lamadenn ar Genstagadenn Kemprenn Teuliad</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="566"/>
+        <location filename="../src/gui/accountsettings.cpp" line="570"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Sur oc&apos;h lemel kemprenn an teuliad &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt; &lt;p&gt;&lt;b&gt;Notenn :&lt;/b&gt; Ne lamo&lt;b&gt;ket&lt;/b&gt; restr ebet.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="572"/>
+        <location filename="../src/gui/accountsettings.cpp" line="576"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Lemel ar Genstagadenn Kemprenn Teuliad</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="657"/>
+        <location filename="../src/gui/accountsettings.cpp" line="661"/>
         <source>Sync Running</source>
         <translation>Kemprenn ho treiñ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="658"/>
+        <location filename="../src/gui/accountsettings.cpp" line="662"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Ar gemprenn a zo o treiñ. &lt;br/&gt; C&apos;hoant ho peus arest anezhi ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="734"/>
+        <location filename="../src/gui/accountsettings.cpp" line="738"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) eus %2 implijet. Teuliadoù-so, an teuliadoù rannet hag ar rouedad staliat eus oute, e c&apos;hell kaout bevennoù diheñvel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="735"/>
+        <location filename="../src/gui/accountsettings.cpp" line="739"/>
         <source>%1 of %2 in use</source>
         <translation>%1 eus %2 implijet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="744"/>
+        <location filename="../src/gui/accountsettings.cpp" line="748"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Titour implij al lec&apos;h renkañ ebet evit ar poent. </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="747"/>
+        <location filename="../src/gui/accountsettings.cpp" line="751"/>
         <source>%1 in use</source>
         <translation>%1 implijet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="774"/>
+        <location filename="../src/gui/accountsettings.cpp" line="778"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 evel &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="780"/>
+        <location filename="../src/gui/accountsettings.cpp" line="784"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
         <translation>Ar servijour stumm %1 a zo kozh ha ne vez ket douget ! Implijit anezhañ a zo arvarus.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="782"/>
+        <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Connected to %1.</source>
         <translation>Kenstaget da %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="784"/>
+        <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>N&apos;eo ket implijapl ar servijour %1 evit ar poent.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="786"/>
+        <location filename="../src/gui/accountsettings.cpp" line="790"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Adnevesaet e vez ar servijour %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="788"/>
+        <location filename="../src/gui/accountsettings.cpp" line="792"/>
         <source>Signed out from %1.</source>
         <translation>Aet maez eus %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="797"/>
+        <location filename="../src/gui/accountsettings.cpp" line="801"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Kaout an aotre gant ar vrowser. &lt;a href=&apos;%1&apos;&gt;Pouezit amañ&lt;/a&gt; evit adloc&apos;hañ ar vrowser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="801"/>
+        <location filename="../src/gui/accountsettings.cpp" line="805"/>
         <source>Connecting to %1 …</source>
         <translation>O kenstagañ da %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="804"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>No connection to %1 at %2.</source>
         <translation>Kestagadenn ebet da %1 da %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
+        <location filename="../src/gui/accountsettings.cpp" line="814"/>
         <source>No %1 connection configured.</source>
         <translation>Kesntagadenn %1 ebet lakaet.</translation>
     </message>
@@ -452,32 +458,32 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
         <translation>Mon-tre</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="923"/>
+        <location filename="../src/gui/accountsettings.cpp" line="927"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Teuliadoù so n&apos;int ket bet kemprennet peogwir e oant re vras :</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="925"/>
+        <location filename="../src/gui/accountsettings.cpp" line="929"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Teuliadoù so n&apos;int ket bet kemprenet peogwir in lec&apos;hioù klenkañ diavaez :</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="926"/>
+        <location filename="../src/gui/accountsettings.cpp" line="930"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Teuliadoù so n&apos;int ke bet kemrennet peogwir e oant pe re vra pe lec&apos;hioù klenkañ diavaez :</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="960"/>
+        <location filename="../src/gui/accountsettings.cpp" line="964"/>
         <source>Confirm Account Removal</source>
         <translation>Gwiriañ Lamaden ar C&apos;hont</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="961"/>
+        <location filename="../src/gui/accountsettings.cpp" line="965"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Sur oc&apos;h o peus c&apos;hoant lemel ar genstagadenn d&apos;ar c&apos;hont %1&lt;i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notenn :&lt;/b&gt; Ne lamo &lt;b&gt;ket&lt;/b&gt; restr ebet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="967"/>
+        <location filename="../src/gui/accountsettings.cpp" line="971"/>
         <source>Remove connection</source>
         <translation>Lemel kenstagdenn</translation>
     </message>
