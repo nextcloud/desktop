@@ -35,6 +35,7 @@
 #include "filesystem.h"
 #include "encryptfolderjob.h"
 #include "syncresult.h"
+#include "ignorelisttablewidget.h"
 #include "vfs_windows.h"
 
 #include <cmath>

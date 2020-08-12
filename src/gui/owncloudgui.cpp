@@ -109,13 +109,6 @@ ownCloudGui::ownCloudGui(Application *parent)
                 slotShowShareDialog(sharePath, localPath, ShareDialogStartPage::UsersAndGroups);
             });
 
-    /* use a signal mapper to map the open requests to the alias names */
-    connect(_folderOpenActionMapper, SIGNAL(mapped(QString)),
-            this, SLOT(slotFolderOpenAction(QString)));
-
-    connect(_recentItemsMapper, SIGNAL(mapped(QString)),
-            this, SLOT(slotOpenPath(QString)));
-
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,
         &ownCloudGui::slotUpdateProgress);
