@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Some check boxes in the sharing dialog are disabled: [#7877](https://github.com/owncloud/client/issues/7877)
+* Bugfix - Selective sync dialog is displayed when virtual files are enabled: [#7976](https://github.com/owncloud/client/issues/7976)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
 * Change - The password dialog is hidden behind a window: [#7833](https://github.com/owncloud/client/issues/7833)
@@ -33,6 +34,13 @@ Details
    instead of a defualt selection.
 
    https://github.com/owncloud/client/issues/7877
+
+* Bugfix - Selective sync dialog is displayed when virtual files are enabled: [#7976](https://github.com/owncloud/client/issues/7976)
+
+   We hide that dialog now so that it is no longer possible to remove files from synchronisation
+   when virtual files are enabled.
+
+   https://github.com/owncloud/client/issues/7976
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
