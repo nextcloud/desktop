@@ -44,7 +44,7 @@ std::wstring getUserName() {
 
 std::wstring CommunicationSocket::DefaultPipePath()
 {
-    auto pipename = std::wstring(L"\\\\.\\pipe\\");
+    auto pipename = std::wstring(LR"(\\.\pipe\)");
     pipename += L"ownCloud-";
     pipename += getUserName();
     return pipename;

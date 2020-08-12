@@ -68,7 +68,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
 #ifdef Q_OS_WIN
     Utility::registryWalkSubKeys(
         HKEY_CURRENT_USER,
-        QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace"),
+        QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace)"),
         [&entriesToRemove](HKEY key, const QString &subKey) {
             QVariant appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
             if (appName.toString() == QLatin1String(APPLICATION_NAME)) {
@@ -138,7 +138,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
                 // Step 11: Register your extension in the namespace root
                 Utility::registrySetKeyValue(HKEY_CURRENT_USER, namespacePath, QString(), REG_SZ, title);
                 // Step 12: Hide your extension from the Desktop
-                Utility::registrySetKeyValue(HKEY_CURRENT_USER, QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\HideDesktopIcons\\NewStartPanel"), clsidStr, REG_DWORD, 0x1);
+                Utility::registrySetKeyValue(HKEY_CURRENT_USER, QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel)"), clsidStr, REG_DWORD, 0x1);
 
                 // For us, to later be able to iterate and find our own namespace entries and associated CLSID.
                 // Use the macro instead of the theme to make sure it matches with the uninstaller.
