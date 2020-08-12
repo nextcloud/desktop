@@ -54,7 +54,7 @@ private:
     struct PathComparator {
         bool operator()( const QString& lhs, const QString& rhs ) const;
     };
-    typedef std::map<QString, SyncFileStatus::SyncFileStatusTag, PathComparator> ProblemsMap;
+    using ProblemsMap = std::map<QString, SyncFileStatus::SyncFileStatusTag, PathComparator>;
     SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatch, const ProblemsMap &problemMap);
 
     enum SharedFlag { UnknownShared,

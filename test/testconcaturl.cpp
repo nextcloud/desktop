@@ -14,7 +14,7 @@
 
 using namespace OCC;
 
-typedef QList< QPair<QString,QString> > QueryItems;
+using QueryItems = QList<QPair<QString, QString>>;
 
 Q_DECLARE_METATYPE(QueryItems)
 

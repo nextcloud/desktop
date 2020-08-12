@@ -20,17 +20,17 @@
 
 /* Forward declaration required since gio header files interfere with QObject headers */
 struct _CloudProvidersProviderExporter;
-typedef _CloudProvidersProviderExporter CloudProvidersProviderExporter;
+using CloudProvidersProviderExporter = _CloudProvidersProviderExporter;
 struct _CloudProvidersAccountExporter;
-typedef _CloudProvidersAccountExporter CloudProvidersAccountExporter;
+using CloudProvidersAccountExporter = _CloudProvidersAccountExporter;
 struct _GMenuModel;
-typedef _GMenuModel GMenuModel;
+using GMenuModel = _GMenuModel;
 struct _GMenu;
-typedef _GMenu GMenu;
+using GMenu = _GMenu;
 struct _GActionGroup;
-typedef _GActionGroup GActionGroup;
-typedef char gchar;
-typedef void* gpointer;
+using GActionGroup = _GActionGroup;
+using gchar = char;
+using gpointer = void*;
 
 using namespace OCC;
 

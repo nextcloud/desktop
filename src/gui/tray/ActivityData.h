@@ -45,7 +45,7 @@ public:
 class Activity
 {
 public:
-    typedef QPair<qlonglong, QString> Identifier;
+    using Identifier = QPair<qlonglong, QString>;
 
     enum Type {
         ActivityType,
@@ -92,8 +92,7 @@ bool operator<(const Activity &rhs, const Activity &lhs);
  *
  * A QList based list of Activities
  */
-
-typedef QList<Activity> ActivityList;
+using ActivityList = QList<Activity>;
 }
 
 Q_DECLARE_METATYPE(OCC::Activity::Type)

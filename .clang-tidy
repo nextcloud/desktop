@@ -20,6 +20,7 @@ Checks: '-*,
     modernize-user-override,
     modernize-use-transparent-functors,
     modernize-use-uncaught-exceptions,
+    modernize-use-using,
 '
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'

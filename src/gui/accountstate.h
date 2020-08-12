@@ -32,8 +32,8 @@ class Account;
 class AccountApp;
 class RemoteWipe;
 
-typedef QExplicitlySharedDataPointer<AccountState> AccountStatePtr;
-typedef QList<AccountApp*> AccountAppList;
+using AccountStatePtr = QExplicitlySharedDataPointer<AccountState>;
+using AccountAppList = QList<AccountApp *>;
 
 /**
  * @brief Extra info about an ownCloud server account.
@@ -75,7 +75,7 @@ public:
     };
 
     /// The actual current connectivity status.
-    typedef ConnectionValidator::Status ConnectionStatus;
+    using ConnectionStatus = ConnectionValidator::Status;
 
     /// Use the account as parent
     explicit AccountState(AccountPtr account);

@@ -50,7 +50,7 @@ QT_BEGIN_NAMESPACE
 
 template <class T, class const_iterator>
 struct QTokenizerPrivate {
-    typedef typename T::value_type char_type;
+    using char_type = typename T::value_type;
 
     struct State {
         bool inQuote = false;
@@ -113,7 +113,7 @@ struct QTokenizerPrivate {
 template <class T, class const_iterator>
 class QTokenizer {
 public:
-    typedef typename T::value_type char_type;
+    using char_type = typename T::value_type;
 
     /*!
        \class QTokenizer
@@ -253,9 +253,9 @@ public:
     }
 };
 
-typedef QTokenizer<QByteArray, QByteArray::const_iterator> QByteArrayTokenizer;
-typedef QTokenizer<std::string, std::string::const_iterator> StringTokenizer;
-typedef QTokenizer<std::wstring, std::wstring::const_iterator> WStringTokenizer;
+using QByteArrayTokenizer = QTokenizer<QByteArray, QByteArray::const_iterator>;
+using StringTokenizer = QTokenizer<std::string, std::string::const_iterator>;
+using WStringTokenizer = QTokenizer<std::wstring, std::wstring::const_iterator>;
 
 QT_END_NAMESPACE
 

@@ -51,7 +51,7 @@ namespace OCC {
 
 class AbstractCredentials;
 class Account;
-typedef QSharedPointer<Account> AccountPtr;
+using AccountPtr = QSharedPointer<Account>;
 class AccessManager;
 class SimpleNetworkJob;
 

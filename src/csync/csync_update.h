@@ -37,7 +37,7 @@
  * @{
  */
 
-typedef int (*csync_walker_fn) (CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs);
+using csync_walker_fn = int (*)(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs);
 
 /**
  * @brief The walker function to use in the file tree walker.

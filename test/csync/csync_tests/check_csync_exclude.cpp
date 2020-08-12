@@ -698,7 +698,7 @@ static void check_csync_exclude_expand_escapes(void **state)
 
 int torture_run_tests(void)
 {
-    typedef ExcludedFilesTest T;
+    using T = ExcludedFilesTest;
 
     const struct CMUnitTest tests[] = {
         cmocka_unit_test_setup_teardown(T::check_csync_exclude_add, T::setup, T::teardown),

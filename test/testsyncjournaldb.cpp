@@ -130,7 +130,7 @@ private slots:
 
     void testDownloadInfo()
     {
-        typedef SyncJournalDb::DownloadInfo Info;
+        using Info = SyncJournalDb::DownloadInfo;
         Info record = _db.getDownloadInfo("nonexistant");
         QVERIFY(!record._valid);
 

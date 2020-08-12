@@ -37,10 +37,10 @@
 Q_LOGGING_CATEGORY(lcCSyncUtils, "nextcloud.sync.csync.utils", QtInfoMsg)
 
 
-typedef struct {
+using _instr_code_struct = struct {
   const char *instr_str;
   enum csync_instructions_e instr_code;
-} _instr_code_struct;
+};
 
 static const _instr_code_struct _instr[] =
 {

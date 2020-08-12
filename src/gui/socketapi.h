@@ -25,7 +25,7 @@
 #include "socketapisocket_mac.h"
 #else
 #include <QLocalServer>
-typedef QLocalServer SocketApiServer;
+using SocketApiServer = QLocalServer;
 #endif
 
 class QUrl;

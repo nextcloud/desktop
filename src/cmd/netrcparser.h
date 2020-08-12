@@ -27,7 +27,7 @@ namespace OCC {
 class NetrcParser
 {
 public:
-    typedef QPair<QString, QString> LoginPair;
+    using LoginPair = QPair<QString, QString>;
 
     NetrcParser(const QString &file = QString());
     bool parse();

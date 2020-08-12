@@ -30,7 +30,7 @@ class OwncloudDolphinPlugin : public KOverlayIconPlugin
     Q_PLUGIN_METADATA(IID "com.owncloud.ovarlayiconplugin" FILE "ownclouddolphinoverlayplugin.json")
     Q_OBJECT
 
-    typedef QHash<QByteArray, QByteArray> StatusMap;
+    using StatusMap = QHash<QByteArray, QByteArray>;
     StatusMap m_status;
 
 public:

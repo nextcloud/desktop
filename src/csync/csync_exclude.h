@@ -45,7 +45,7 @@ enum csync_exclude_type_e {
   CSYNC_FILE_EXCLUDE_CONFLICT,
   CSYNC_FILE_EXCLUDE_CANNOT_ENCODE
 };
-typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
+using CSYNC_EXCLUDE_TYPE = enum csync_exclude_type_e;
 
 class ExcludedFilesTest;
 

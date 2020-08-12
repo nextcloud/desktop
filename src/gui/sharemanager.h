@@ -48,7 +48,7 @@ public:
         TypeCircle = Sharee::Circle
     };
 
-    typedef SharePermissions Permissions;
+    using Permissions = SharePermissions;
 
     /*
      * Constructor for shares
