@@ -111,12 +111,15 @@ set(client_SRCS
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
+    creds/flow2auth.cpp
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     wizard/owncloudconnectionmethoddialog.cpp
     wizard/owncloudhttpcredspage.cpp
     wizard/owncloudoauthcredspage.cpp
+    wizard/flow2authcredspage.cpp
+    wizard/flow2authwidget.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
@@ -143,11 +146,8 @@ endif()
 
 IF(NOT NO_WEBENGINE)
     list(APPEND client_SRCS
-        creds/flow2auth.cpp
         creds/webflowcredentials.cpp
         creds/webflowcredentialsdialog.cpp
-        wizard/flow2authcredspage.cpp
-        wizard/flow2authwidget.cpp
         wizard/webviewpage.cpp
         wizard/webview.cpp
     )
