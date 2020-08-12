@@ -110,7 +110,7 @@ struct QTokenizerPrivate {
     bool returnQuotes;
 };
 
-template <class T, class const_iterator>
+template <class T, class const_iterator = typename T::const_iterator>
 class QTokenizer {
 public:
     using char_type = typename T::value_type;
@@ -234,7 +234,7 @@ private:
     QSharedPointer<QTokenizerPrivate<T, const_iterator> > d;
 };
 
-class QStringTokenizer : public QTokenizer<QString, QString::const_iterator> {
+class QStringTokenizer : public QTokenizer<QString> {
 public:
     QStringTokenizer(const QString &string, const QString &delim) :
         QTokenizer<QString, QString::const_iterator>(string, delim) {}
@@ -253,9 +253,9 @@ public:
     }
 };
 
-using QByteArrayTokenizer = QTokenizer<QByteArray, QByteArray::const_iterator>;
-using StringTokenizer = QTokenizer<std::string, std::string::const_iterator>;
-using WStringTokenizer = QTokenizer<std::wstring, std::wstring::const_iterator>;
+using QByteArrayTokenizer = QTokenizer<QByteArray>;
+using StringTokenizer = QTokenizer<std::string>;
+using WStringTokenizer = QTokenizer<std::wstring>;
 
 QT_END_NAMESPACE
 
