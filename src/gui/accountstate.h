@@ -229,7 +229,7 @@ class AccountApp : public QObject
 public:
     AccountApp(const QString &name, const QUrl &url,
         const QString &id, const QUrl &iconUrl,
-        QObject* parent = 0);
+        QObject* parent = nullptr);
 
     QString name() const;
     QUrl url() const;

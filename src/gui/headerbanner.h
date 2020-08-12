@@ -73,7 +73,7 @@ class HeaderBanner : public QWidget
 {
     Q_OBJECT
 public:
-    HeaderBanner(QWidget *parent = 0);
+    HeaderBanner(QWidget *parent = nullptr);
 
     void setup(const QString &title, const QPixmap &logo, const QPixmap &banner,
                const Qt::TextFormat titleFormat, const QString &styleSheet);

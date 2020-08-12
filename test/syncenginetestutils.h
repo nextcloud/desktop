@@ -238,7 +238,7 @@ public:
                 etag = file->etag;
             return file;
         }
-        return 0;
+        return nullptr;
     }
 
     FileInfo *createDir(const QString &relativePath) {
@@ -816,7 +816,7 @@ public:
 
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
-                                         QIODevice *outgoingData = 0) {
+                                         QIODevice *outgoingData = nullptr) {
         if (_override) {
             if (auto reply = _override(op, request, outgoingData))
                 return reply;
