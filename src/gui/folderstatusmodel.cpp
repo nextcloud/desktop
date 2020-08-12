@@ -147,7 +147,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
     case SubFolder: {
-        const auto &x = static_cast<SubFolderInfo *>(index.internalPointer())->_subs[index.row()];
+        const auto &x = static_cast<SubFolderInfo *>(index.internalPointer())->_subs.at(index.row());
         switch (role) {
         case Qt::DisplayRole:
             //: Example text: "File.txt (23KB)"
@@ -307,7 +307,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
                 }
                 // also check all the children
                 for (int i = 0; i < info->_subs.count(); ++i) {
-                    if (info->_subs[i]._checked != Qt::Checked) {
+                    if (info->_subs.at(i)._checked != Qt::Checked) {
                         setData(this->index(i, 0, index), Qt::Checked, Qt::CheckStateRole);
                     }
                 }
@@ -322,7 +322,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
 
                 // Uncheck all the children
                 for (int i = 0; i < info->_subs.count(); ++i) {
-                    if (info->_subs[i]._checked != Qt::Unchecked) {
+                    if (info->_subs.at(i)._checked != Qt::Unchecked) {
                         setData(this->index(i, 0, index), Qt::Unchecked, Qt::CheckStateRole);
                     }
                 }
@@ -361,8 +361,6 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
     }
     auto info = infoForIndex(parent);
     if (!info)
-        return 0;
-    if (info->_folder && !info->_folder->supportsSelectiveSync())
         return 0;
     if (info->hasLabel())
         return 1;
@@ -504,7 +502,7 @@ QModelIndex FolderStatusModel::parent(const QModelIndex &child) const
     const SubFolderInfo *info = &_folders[pathIdx.at(0)];
     while (i < pathIdx.count() - 1) {
         OC_ASSERT(pathIdx.at(i) < info->_subs.count());
-        info = &info->_subs[pathIdx.at(i)];
+        info = &info->_subs.at(pathIdx.at(i));
         ++i;
     }
     return createIndex(pathIdx.at(i), 0, const_cast<SubFolderInfo *>(info));
@@ -769,15 +767,12 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
     }
 }
 
-QStringList FolderStatusModel::createBlackList(FolderStatusModel::SubFolderInfo *root,
+QStringList FolderStatusModel::createBlackList(const FolderStatusModel::SubFolderInfo &root,
     const QStringList &oldBlackList) const
 {
-    if (!root)
-        return QStringList();
-
-    switch (root->_checked) {
+    switch (root._checked) {
     case Qt::Unchecked:
-        return QStringList(root->_path);
+        return QStringList(root._path);
     case Qt::Checked:
         return QStringList();
     case Qt::PartiallyChecked:
@@ -785,13 +780,13 @@ QStringList FolderStatusModel::createBlackList(FolderStatusModel::SubFolderInfo 
     }
 
     QStringList result;
-    if (root->_fetched) {
-        for (int i = 0; i < root->_subs.count(); ++i) {
-            result += createBlackList(&root->_subs[i], oldBlackList);
+    if (root._fetched) {
+        for (int i = 0; i < root._subs.count(); ++i) {
+            result += createBlackList(root._subs.at(i), oldBlackList);
         }
     } else {
         // We did not load from the server so we re-use the one from the old black list
-        QString path = root->_path;
+        const QString path = root._path;
         foreach (const QString &it, oldBlackList) {
             if (it.startsWith(path))
                 result += it;
@@ -813,12 +808,12 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
 
 void FolderStatusModel::slotApplySelectiveSync()
 {
-    for (int i = 0; i < _folders.count(); ++i) {
-        if (!_folders[i]._fetched) {
-            _folders[i]._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+    for (const auto &folderInfo : qAsConst(_folders)) {
+        if (!folderInfo._fetched) {
+            folderInfo._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
             continue;
         }
-        auto folder = _folders.at(i)._folder;
+        const auto folder = folderInfo._folder;
 
         bool ok;
         auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
@@ -826,7 +821,7 @@ void FolderStatusModel::slotApplySelectiveSync()
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             continue;
         }
-        QStringList blackList = createBlackList(&_folders[i], oldBlackList);
+        QStringList blackList = createBlackList(folderInfo, oldBlackList);
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
         auto blackListSet = blackList.toSet();

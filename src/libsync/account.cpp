@@ -489,14 +489,4 @@ void Account::setServerVersion(const QString &version)
     emit serverVersionChanged(this, oldServerVersion, version);
 }
 
-void Account::setNonShib(bool nonShib)
-{
-    if (nonShib) {
-        _davPath = Theme::instance()->webDavPathNonShib();
-    } else {
-        _davPath = Theme::instance()->webDavPath();
-    }
-}
-
-
 } // namespace OCC

@@ -135,7 +135,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
       }
   }
   auto path = QString::fromWCharArray(handle->ffd.cFileName);
-  if (path == "." || path == "..")
+  if (path == QLatin1String(".") || path == QLatin1String(".."))
       return csync_vio_local_readdir(handle, vfs);
 
   file_stat.reset(new csync_file_stat_t);

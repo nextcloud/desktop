@@ -50,9 +50,6 @@ OPTIONS
 ``—httpproxy  http://[user@pass:]<server>:<port>``
       Uses ``server`` as HTTP proxy.
 
-``—nonshib``
-      Uses Non Shibboleth WebDAV Authentication
-
 ``—davpath [path]``
       Overrides the WebDAV Path with ``path``
 

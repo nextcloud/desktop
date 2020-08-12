@@ -1,0 +1,6 @@
+Bugfix: Selective sync dialog is displayed when virtual files are enabled
+
+We hide that dialog now so that it is no longer possible to remove files
+from synchronisation when virtual files are enabled.
+
+https://github.com/owncloud/client/issues/7976

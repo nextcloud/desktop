@@ -96,16 +96,16 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
     size_t len_filename = filename.size();
 
     // Drive letters
-    if (len_filename == 2 && filename.at(1) == ':') {
-        if (filename.at(0) >= 'a' && filename.at(0) <= 'z') {
+    if (len_filename == 2 && filename.at(1) == QLatin1Char(':')) {
+        if (filename.at(0) >= QLatin1Char('a') && filename.at(0) <= QLatin1Char('z')) {
             return true;
         }
-        if (filename.at(0) >= 'A' && filename.at(0) <= 'Z') {
+        if (filename.at(0) >= QLatin1Char('A') && filename.at(0) <= QLatin1Char('Z')) {
             return true;
         }
     }
 
-    if (len_filename == 3 || (len_filename > 3 && filename.at(3) == '.')) {
+    if (len_filename == 3 || (len_filename > 3 && filename.at(3) == QLatin1Char('.'))) {
         for (const char *word : win_reserved_words_3) {
             if (filename.left(3).compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
                 return true;
@@ -113,7 +113,7 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
         }
     }
 
-    if (len_filename == 4 || (len_filename > 4 && filename.at(4) == '.')) {
+    if (len_filename == 4 || (len_filename > 4 && filename.at(4) == QLatin1Char('.'))) {
         for (const char *word : win_reserved_words_4) {
             if (filename.left(4).compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
                 return true;
@@ -137,14 +137,14 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
 
     /* split up the path */
     QStringRef bname(&path);
-    int lastSlash = path.lastIndexOf('/');
+    int lastSlash = path.lastIndexOf(QLatin1Char('/'));
     if (lastSlash >= 0) {
         bname = path.midRef(lastSlash + 1);
     }
 
     size_t blen = bname.size();
     // 9 = strlen(".sync_.db")
-    if (blen >= 9 && bname.at(0) == '.') {
+    if (blen >= 9 && bname.at(0) == QLatin1Char('.')) {
         if (bname.contains(QLatin1String(".db"))) {
             if (bname.startsWith(QLatin1String("._sync_"), Qt::CaseInsensitive)  // "._sync_*.db*"
                 || bname.startsWith(QLatin1String(".sync_"), Qt::CaseInsensitive) // ".sync_*.db*"
@@ -170,10 +170,10 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     // as '.' is a separator that is not stored internally, so let's
     // not allow to sync those to avoid file loss/ambiguities (#416)
     if (blen > 1) {
-        if (bname.at(blen-1) == ' ') {
+        if (bname.at(blen - 1) == QLatin1Char(' ')) {
             match = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
             goto out;
-        } else if (bname.at(blen-1) == '.' ) {
+        } else if (bname.at(blen - 1) == QLatin1Char('.')) {
             match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
             goto out;
         }
@@ -379,7 +379,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
     // Check the bname part of the path to see whether the full
     // regex should be run.
     QStringRef bnameStr(&path);
-    int lastSlash = path.lastIndexOf('/');
+    int lastSlash = path.lastIndexOf(QLatin1Char('/'));
     if (lastSlash >= 0) {
         bnameStr = path.midRef(lastSlash + 1);
     }
@@ -470,17 +470,17 @@ QString ExcludedFiles::convertToRegexpSyntax(QString exclude, bool wildcardsMatc
         case '*':
             flush();
             if (wildcardsMatchSlash) {
-                regex.append(".*");
+                regex.append(QLatin1String(".*"));
             } else {
-                regex.append("[^/]*");
+                regex.append(QLatin1String("[^/]*"));
             }
             break;
         case '?':
             flush();
             if (wildcardsMatchSlash) {
-                regex.append(".");
+                regex.append(QLatin1Char('.'));
             } else {
-                regex.append("[^/]");
+                regex.append(QStringLiteral("[^/]"));
             }
             break;
         case '[': {
@@ -488,19 +488,19 @@ QString ExcludedFiles::convertToRegexpSyntax(QString exclude, bool wildcardsMatc
             // Find the end of the bracket expression
             auto j = i + 1;
             for (; j < len; ++j) {
-                if (exclude[j] == ']')
+                if (exclude[j] == QLatin1Char(']'))
                     break;
-                if (j != len - 1 && exclude[j] == '\\' && exclude[j + 1] == ']')
+                if (j != len - 1 && exclude[j] == QLatin1Char('\\') && exclude[j + 1] == QLatin1Char(']'))
                     ++j;
             }
             if (j == len) {
                 // no matching ], just insert the escaped [
-                regex.append("\\[");
+                regex.append(QStringLiteral("\\["));
                 break;
             }
             // Translate [! to [^
             QString bracketExpr = exclude.mid(i, j - i + 1);
-            if (bracketExpr.startsWith("[!"))
+            if (bracketExpr.startsWith(QLatin1String("[!")))
                 bracketExpr[1] = '^';
             regex.append(bracketExpr);
             i = j;
@@ -509,7 +509,7 @@ QString ExcludedFiles::convertToRegexpSyntax(QString exclude, bool wildcardsMatc
         case '\\':
             flush();
             if (i == len - 1) {
-                regex.append("\\\\");
+                regex.append(QStringLiteral("\\\\"));
                 break;
             }
             // '\*' -> '\*', but '\z' -> '\\z'
@@ -539,7 +539,7 @@ QString ExcludedFiles::extractBnameTrigger(const QString &exclude, bool wildcard
 {
     // We can definitely drop everything to the left of a / - that will never match
     // any bname.
-    QString pattern = exclude.mid(exclude.lastIndexOf('/') + 1);
+    QString pattern = exclude.mid(exclude.lastIndexOf(QLatin1Char('/')) + 1);
 
     // Easy case, nothing else can match a slash, so that's it.
     if (!wildcardsMatchSlash)
@@ -566,7 +566,7 @@ QString ExcludedFiles::extractBnameTrigger(const QString &exclude, bool wildcard
 
     // And if there was a wildcard, it starts with a *
     if (i >= 0)
-        pattern.prepend('*');
+        pattern.prepend(QLatin1Char('*'));
 
     return pattern;
 }
@@ -610,25 +610,25 @@ void ExcludedFiles::prepare()
     auto regexAppend = [](QString &fileDirPattern, QString &dirPattern, const QString &appendMe, bool dirOnly) {
         QString &pattern = dirOnly ? dirPattern : fileDirPattern;
         if (!pattern.isEmpty())
-            pattern.append("|");
+            pattern.append(QLatin1Char('|'));
         pattern.append(appendMe);
     };
 
     for (auto exclude : _allExcludes) {
-        if (exclude[0] == '\n')
+        if (exclude[0] == QLatin1Char('\n'))
             continue; // empty line
-        if (exclude[0] == '\r')
+        if (exclude[0] == QLatin1Char('\r'))
             continue; // empty line
 
-        bool matchDirOnly = exclude.endsWith('/');
+        bool matchDirOnly = exclude.endsWith(QLatin1Char('/'));
         if (matchDirOnly)
             exclude = exclude.left(exclude.size() - 1);
 
-        bool removeExcluded = (exclude[0] == ']');
+        bool removeExcluded = (exclude[0] == QLatin1Char(']'));
         if (removeExcluded)
             exclude = exclude.mid(1);
 
-        bool fullPath = exclude.contains('/');
+        bool fullPath = exclude.contains(QLatin1Char('/'));
 
         /* Use QRegularExpression, append to the right pattern */
         auto &bnameFileDir = removeExcluded ? bnameFileDirRemove : bnameFileDirKeep;
@@ -652,7 +652,7 @@ void ExcludedFiles::prepare()
     // The empty pattern would match everything - change it to match-nothing
     auto emptyMatchNothing = [](QString &pattern) {
         if (pattern.isEmpty())
-            pattern = "a^";
+            pattern = QStringLiteral("a^");
     };
     emptyMatchNothing(fullFileDirKeep);
     emptyMatchNothing(fullFileDirRemove);
@@ -673,58 +673,58 @@ void ExcludedFiles::prepare()
     // If the third group matches, the fullActivatedRegex needs to be applied
     // to the full path.
     _bnameTraversalRegexFile.setPattern(
-        "^(?P<exclude>" + bnameFileDirKeep + ")$|"
-        + "^(?P<excluderemove>" + bnameFileDirRemove + ")$|"
-        + "^(?P<trigger>" + bnameTriggerFileDir + ")$");
+        QStringLiteral("^(?P<exclude>%1)$|"
+                       "^(?P<excluderemove>%2)$|"
+                       "^(?P<trigger>%3)$")
+            .arg(bnameFileDirKeep, bnameFileDirRemove, bnameTriggerFileDir));
     _bnameTraversalRegexDir.setPattern(
-        "^(?P<exclude>" + bnameFileDirKeep + "|" + bnameDirKeep + ")$|"
-        + "^(?P<excluderemove>" + bnameFileDirRemove + "|" + bnameDirRemove + ")$|"
-        + "^(?P<trigger>" + bnameTriggerFileDir + "|" + bnameTriggerDir + ")$");
+        QStringLiteral("^(?P<exclude>%1|%2)$|"
+                       "^(?P<excluderemove>%3|%4)$|"
+                       "^(?P<trigger>%5|%6)$")
+            .arg(bnameFileDirKeep, bnameDirKeep, bnameFileDirRemove, bnameDirRemove, bnameTriggerFileDir, bnameTriggerDir));
 
     // The full traveral regex is applied to the full path if the trigger capture of
     // the bname regex matches. Its basic form is (exclude)|(excluderemove)".
     // This pattern can be much simpler than fullRegex since we can assume a traversal
     // situation and doesn't need to look for bname patterns in parent paths.
     _fullTraversalRegexFile.setPattern(
-        QLatin1String("")
         // Full patterns are anchored to the beginning
-        + "^(?P<exclude>" + fullFileDirKeep + ")(?:$|/)"
-        + "|"
-        + "^(?P<excluderemove>" + fullFileDirRemove + ")(?:$|/)");
+        QStringLiteral("^(?P<exclude>%1)(?:$|/)"
+                       "|"
+                       "^(?P<excluderemove>%2)(?:$|/)")
+            .arg(fullFileDirKeep, fullFileDirRemove));
     _fullTraversalRegexDir.setPattern(
-        QLatin1String("")
-        + "^(?P<exclude>" + fullFileDirKeep + "|" + fullDirKeep + ")(?:$|/)"
-        + "|"
-        + "^(?P<excluderemove>" + fullFileDirRemove + "|" + fullDirRemove + ")(?:$|/)");
+        QStringLiteral("^(?P<exclude>%1|%2)(?:$|/)"
+                       "|"
+                       "^(?P<excluderemove>%3|%4)(?:$|/)")
+            .arg(fullFileDirKeep, fullDirKeep, fullFileDirRemove, fullDirRemove));
 
     // The full regex is applied to the full path and incorporates both bname and
     // full-path patterns. It has the form "(exclude)|(excluderemove)".
     _fullRegexFile.setPattern(
-        QLatin1String("(?P<exclude>")
-        // Full patterns are anchored to the beginning
-        + "^(?:" + fullFileDirKeep + ")(?:$|/)" + "|"
-        // Simple bname patterns can be any path component
-        + "(?:^|/)(?:" + bnameFileDirKeep + ")(?:$|/)" + "|"
-        // When checking a file for exclusion we must check all parent paths
-        // against the dir-only patterns as well.
-        + "(?:^|/)(?:" + bnameDirKeep + ")/"
-        + ")"
-        + "|"
-        + "(?P<excluderemove>"
-        + "^(?:" + fullFileDirRemove + ")(?:$|/)" + "|"
-        + "(?:^|/)(?:" + bnameFileDirRemove + ")(?:$|/)" + "|"
-        + "(?:^|/)(?:" + bnameDirRemove + ")/"
-        + ")");
+        QStringLiteral("(?P<exclude>"
+                       // Full patterns are anchored to the beginning
+                       "^(?:%1)(?:$|/)|"
+                       // Simple bname patterns can be any path component
+                       "(?:^|/)(?:%2)(?:$|/)|"
+                       // When checking a file for exclusion we must check all parent paths
+                       // against the dir-only patterns as well.
+                       "(?:^|/)(?:%3)/)"
+                       "|"
+                       "(?P<excluderemove>"
+                       "^(?:%4)(?:$|/)|"
+                       "(?:^|/)(?:%5)(?:$|/)|"
+                       "(?:^|/)(?:%6)/)")
+            .arg(fullFileDirKeep, bnameFileDirKeep, bnameDirKeep, fullFileDirRemove, bnameFileDirRemove, bnameDirRemove));
     _fullRegexDir.setPattern(
-        QLatin1String("(?P<exclude>")
-        + "^(?:" + fullFileDirKeep + "|" + fullDirKeep + ")(?:$|/)" + "|"
-        + "(?:^|/)(?:" + bnameFileDirKeep + "|" + bnameDirKeep + ")(?:$|/)"
-        + ")"
-        + "|"
-        + "(?P<excluderemove>"
-        + "^(?:" + fullFileDirRemove + "|" + fullDirRemove + ")(?:$|/)" + "|"
-        + "(?:^|/)(?:" + bnameFileDirRemove + "|" + bnameDirRemove + ")(?:$|/)"
-        + ")");
+        QStringLiteral("(?P<exclude>"
+                       "^(?:%1|%2)(?:$|/)|"
+                       "(?:^|/)(?:%3|%4)(?:$|/))"
+                       "|"
+                       "(?P<excluderemove>"
+                       "^(?:%5|%6)(?:$|/)|"
+                       "(?:^|/)(?:%7|%8)(?:$|/))")
+            .arg(fullFileDirKeep, fullDirKeep, bnameFileDirKeep, bnameDirKeep, fullFileDirRemove, fullDirRemove, bnameFileDirRemove, bnameDirRemove));
 
     QRegularExpression::PatternOptions patternOptions = QRegularExpression::NoPatternOption;
     if (OCC::Utility::fsCasePreserving())

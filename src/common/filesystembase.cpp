@@ -261,7 +261,7 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
     // the fd the handle will be closed too.
     int fd = _open_osfhandle((intptr_t)fileHandle, _O_RDONLY);
     if (fd == -1) {
-        error = "could not make fd from handle";
+        error = QStringLiteral("could not make fd from handle");
         CloseHandle(fileHandle);
         return false;
     }
@@ -333,9 +333,9 @@ QString FileSystem::fileSystemForPath(const QString &path)
 {
     // See also QStorageInfo (Qt >=5.4) and GetVolumeInformationByHandleW (>= Vista)
     QString drive = path.left(2);
-    if (!drive.endsWith(":"))
+    if (!drive.endsWith(QLatin1Char(':')))
         return QString();
-    drive.append('\\');
+    drive.append(QLatin1Char('\\'));
 
     const size_t fileSystemBufferSize = 4096;
     TCHAR fileSystemBuffer[fileSystemBufferSize];
@@ -376,13 +376,13 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
     QString trashPath, trashFilePath, trashInfoPath;
     QString xdgDataHome = QFile::decodeName(qgetenv("XDG_DATA_HOME"));
     if (xdgDataHome.isEmpty()) {
-        trashPath = QDir::homePath() + "/.local/share/Trash/"; // trash path that should exist
+        trashPath = QDir::homePath() + QStringLiteral("/.local/share/Trash/"); // trash path that should exist
     } else {
-        trashPath = xdgDataHome + "/Trash/";
+        trashPath = xdgDataHome + QStringLiteral("/Trash/");
     }
 
-    trashFilePath = trashPath + "files/"; // trash file path contain delete files
-    trashInfoPath = trashPath + "info/"; // trash info path contain delete files information
+    trashFilePath = trashPath + QStringLiteral("files/"); // trash file path contain delete files
+    trashInfoPath = trashPath + QStringLiteral("info/"); // trash info path contain delete files information
 
     if (!(QDir().mkpath(trashFilePath) && QDir().mkpath(trashInfoPath))) {
         *errorString = QCoreApplication::translate("FileSystem", "Could not make directories in trash");
@@ -394,7 +394,7 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
     QDir file;
     int suffix_number = 1;
     if (file.exists(trashFilePath + f.fileName())) { //file in trash already exists, move to "filename.1"
-        QString path = trashFilePath + f.fileName() + ".";
+        QString path = trashFilePath + f.fileName() + QLatin1Char('.');
         while (file.exists(path + QString::number(suffix_number))) { //or to "filename.2" if "filename.1" exists, etc
             suffix_number++;
         }
@@ -413,11 +413,11 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 
     // create file format for trash info file----- START
     QFile infoFile;
-    if (file.exists(trashInfoPath + f.fileName() + ".trashinfo")) { //TrashInfo file already exists, create "filename.1.trashinfo"
-        QString filename = trashInfoPath + f.fileName() + "." + QString::number(suffix_number) + ".trashinfo";
+    if (file.exists(trashInfoPath + f.fileName() + QStringLiteral(".trashinfo"))) { //TrashInfo file already exists, create "filename.1.trashinfo"
+        QString filename = trashInfoPath + f.fileName() + QLatin1Char('.') + QString::number(suffix_number) + QStringLiteral(".trashinfo");
         infoFile.setFileName(filename); //filename+.trashinfo //  create file information file in /.local/share/Trash/info/ folder
     } else {
-        QString filename = trashInfoPath + f.fileName() + ".trashinfo";
+        QString filename = trashInfoPath + f.fileName() + QStringLiteral(".trashinfo");
         infoFile.setFileName(filename); //filename+.trashinfo //  create file information file in /.local/share/Trash/info/ folder
     }
 
@@ -425,16 +425,13 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 
     QTextStream stream(&infoFile); // for write data on open file
 
-    QByteArray info = "[Trash Info]\n";
-    info += "Path=";
-    info += QUrl::toPercentEncoding(f.absoluteFilePath(), "~_-./");
-    info += '\n';
-    info += "DeletionDate=";
-    info += QDateTime::currentDateTime().toString(Qt::ISODate).toLatin1();
-    info += '\n';
-
-    stream << info;
-
+    stream << "[Trash Info]\n"
+           << "Path="
+           << QUrl::toPercentEncoding(f.absoluteFilePath(), "~_-./")
+           << "\n"
+           << "DeletionDate="
+           << QDateTime::currentDateTime().toString(Qt::ISODate)
+           << '\n';
     infoFile.close();
 
     // create info file format of trash file----- END
@@ -479,7 +476,7 @@ bool FileSystem::isFileLocked(const QString &fileName)
 
 bool FileSystem::isLnkFile(const QString &filename)
 {
-    return filename.endsWith(".lnk");
+    return filename.endsWith(QLatin1String(".lnk"));
 }
 
 bool FileSystem::isJunction(const QString &filename)
@@ -498,6 +495,35 @@ bool FileSystem::isJunction(const QString &filename)
     Q_UNUSED(filename);
     return false;
 #endif
+}
+
+QString FileSystem::pathtoUNC(const QString &str)
+{
+    int len = 0;
+    QString longStr;
+
+    len = str.length();
+    longStr.reserve(len + 4);
+
+    // prepend \\?\ and convert '/' => '\' to support long names
+    if (str[0] == QLatin1Char('/') || str[0] == QLatin1Char('\\')) {
+        // Don't prepend if already UNC
+        if (!(len > 1 && (str[1] == QLatin1Char('/') || str[1] == QLatin1Char('\\')))) {
+            longStr.append(QStringLiteral("\\\\?"));
+        }
+    } else {
+        longStr.append(QStringLiteral("\\\\?\\")); // prepend string by this four magic chars.
+    }
+    longStr += str;
+
+    /* replace all occurences of / with the windows native \ */
+
+    for (auto it = longStr.begin(); it != longStr.end(); ++it) {
+        if (*it == QLatin1Char('/')) {
+            *it = QLatin1Char('\\');
+        }
+    }
+    return longStr;
 }
 
 } // namespace OCC

@@ -54,9 +54,9 @@ QByteArray RemotePermissions::toDbValue() const
     return result;
 }
 
-QByteArray RemotePermissions::toString() const
+QString RemotePermissions::toString() const
 {
-    return toDbValue();
+    return QString::fromUtf8(toDbValue());
 }
 
 RemotePermissions RemotePermissions::fromDbValue(const QByteArray &value)

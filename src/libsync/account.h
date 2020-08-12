@@ -119,7 +119,6 @@ public:
      */
     QString davPath() const;
     void setDavPath(const QString &s) { _davPath = s; }
-    void setNonShib(bool nonShib);
 
     /** Returns webdav entry URL, based on url() */
     QUrl davUrl() const;

@@ -111,7 +111,7 @@ static int teardown(void **state) {
 static void create_dirs( const char *path )
 {
   int rc;
-  auto _mypath = QStringLiteral("%1/%2").arg(CSYNC_TEST_DIR, path).toUtf8();
+  auto _mypath = QStringLiteral("%1/%2").arg(CSYNC_TEST_DIR, QString::fromUtf8(path)).toUtf8();
   char *mypath = _mypath.data();
 
   char *p = mypath + CSYNC_TEST_DIR.size() + 1; /* start behind the offset */
@@ -188,9 +188,9 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
         } else {
             *cnt = *cnt +1;
         }
-        output(subdir_out);
+        output(subdir_out.constData());
         if( is_dir ) {
-          traverse_dir( state, subdir, cnt);
+            traverse_dir(state, QString::fromUtf8(subdir), cnt);
         }
     }
 
@@ -201,9 +201,9 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
 
 static void create_file( const char *path, const char *name, const char *content)
 {
-   QFile file(QStringLiteral("%1/%2%3").arg(CSYNC_TEST_DIR, path, name));
-   assert_int_equal(1, file.open(QIODevice::WriteOnly | QIODevice::NewOnly));
-   file.write(content);
+    QFile file(QStringLiteral("%1/%2%3").arg(CSYNC_TEST_DIR, QString::fromUtf8(path), QString::fromUtf8(name)));
+    assert_int_equal(1, file.open(QIODevice::WriteOnly | QIODevice::NewOnly));
+    file.write(content);
 }
 
 static void check_readdir_shorttree(void **state)
@@ -216,12 +216,15 @@ static void check_readdir_shorttree(void **state)
     
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
 
-    assert_string_equal( sv->result,
-                         QString::fromUtf8("<DIR> %1/alibaba"
-                                        "<DIR> %1/alibaba/und"
-                                        "<DIR> %1/alibaba/und/die"
-                                        "<DIR> %1/alibaba/und/die/vierzig"
-                                        "<DIR> %1/alibaba/und/die/vierzig/räuber").arg(CSYNC_TEST_DIR).toUtf8().constData() );
+    assert_string_equal(sv->result.constData(),
+        QString::fromUtf8("<DIR> %1/alibaba"
+                          "<DIR> %1/alibaba/und"
+                          "<DIR> %1/alibaba/und/die"
+                          "<DIR> %1/alibaba/und/die/vierzig"
+                          "<DIR> %1/alibaba/und/die/vierzig/räuber")
+            .arg(CSYNC_TEST_DIR)
+            .toUtf8()
+            .constData());
     assert_int_equal(files_cnt, 0);
 }
 
@@ -239,11 +242,14 @@ static void check_readdir_with_content(void **state)
 
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
 
-    assert_string_equal( sv->result,
-                         QString::fromUtf8("<DIR> %1/warum"
-                         "<DIR> %1/warum/nur"
-                         "<DIR> %1/warum/nur/40"
-                         "<DIR> %1/warum/nur/40/Räuber").arg(CSYNC_TEST_DIR).toUtf8().constData());
+    assert_string_equal(sv->result.constData(),
+        QString::fromUtf8("<DIR> %1/warum"
+                          "<DIR> %1/warum/nur"
+                          "<DIR> %1/warum/nur/40"
+                          "<DIR> %1/warum/nur/40/Räuber")
+            .arg(CSYNC_TEST_DIR)
+            .toUtf8()
+            .constData());
     /*                   "      %1/warum/nur/40/Räuber/Räuber Max.txt"
                          "      %1/warum/nur/40/Räuber/пя́тница.txt"; */
     assert_int_equal(files_cnt, 2); /* Two files in the sub dir */
@@ -315,9 +321,7 @@ static void check_readdir_longtree(void **state)
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
     assert_int_equal(files_cnt, 0);
     /* and compare. */
-    assert_string_equal( sv->result, result);
-
-
+    assert_string_equal(sv->result.constData(), result.constData());
 }
 
 // https://github.com/owncloud/client/issues/3128 https://github.com/owncloud/client/issues/2777
@@ -329,11 +333,11 @@ static void check_readdir_bigunicode(void **state)
 //    3: ? ASCII: 191 - BF
 //    4: ASCII: 32    - 20
 
-    QString p = QStringLiteral("%1/%2").arg(CSYNC_TEST_DIR, "goodone/" );
+    QString p = QStringLiteral("%1/%2").arg(CSYNC_TEST_DIR, QStringLiteral("goodone/"));
     int rc = oc_mkdir(p);
     assert_int_equal(rc, 0);
 
-    p = QStringLiteral("%1/%2").arg(CSYNC_TEST_DIR, "goodone/ugly\xEF\xBB\xBF\x32" ".txt" ); // file with encoding error
+    p = QStringLiteral("%1/goodone/ugly\xEF\xBB\xBF\x32.txt").arg(CSYNC_TEST_DIR); // file with encoding error
 
     rc = oc_mkdir(p);
 
@@ -341,10 +345,10 @@ static void check_readdir_bigunicode(void **state)
 
     int files_cnt = 0;
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
-    const auto expected_result =  QString::fromUtf8("<DIR> %1/goodone"
-                                   "<DIR> %1/goodone/ugly\xEF\xBB\xBF\x32" ".txt").arg(CSYNC_TEST_DIR)
-                                   ;
-    assert_string_equal( sv->result, expected_result.toUtf8().constData());
+    const auto expected_result = QStringLiteral("<DIR> %1/goodone"
+                                                "<DIR> %1/goodone/ugly\xEF\xBB\xBF\x32.txt")
+                                     .arg(CSYNC_TEST_DIR);
+    assert_string_equal(sv->result.constData(), expected_result.toUtf8().constData());
 
     assert_int_equal(files_cnt, 0);
 }
