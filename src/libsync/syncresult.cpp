@@ -17,9 +17,7 @@
 
 namespace OCC {
 
-SyncResult::SyncResult()
-{
-}
+SyncResult::SyncResult() = default;
 
 SyncResult::Status SyncResult::status() const
 {

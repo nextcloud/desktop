@@ -85,10 +85,7 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 }
 #endif
 
-WebFlowCredentials::WebFlowCredentials()
-{
-
-}
+WebFlowCredentials::WebFlowCredentials() = default;
 
 WebFlowCredentials::WebFlowCredentials(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key, const QList<QSslCertificate> &caCertificates)
     : _user(user)

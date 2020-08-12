@@ -225,12 +225,10 @@ public:
     {
     }
 
-    virtual ~PropagatorCompositeJob()
-    {
-        // Don't delete jobs in _jobsToDo and _runningJobs: they have parents
-        // that will be responsible for cleanup. Deleting them here would risk
-        // deleting something that has already been deleted by a shared parent.
-    }
+    // Don't delete jobs in _jobsToDo and _runningJobs: they have parents
+    // that will be responsible for cleanup. Deleting them here would risk
+    // deleting something that has already been deleted by a shared parent.
+    virtual ~PropagatorCompositeJob() = default;
 
     void appendJob(PropagatorJob *job);
     void appendTask(const SyncFileItemPtr &item)

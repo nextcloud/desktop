@@ -66,7 +66,7 @@ public:
 class FileModifier
 {
 public:
-    virtual ~FileModifier() { }
+    virtual ~FileModifier() = default;
     virtual void remove(const QString &relativePath) = 0;
     virtual void insert(const QString &relativePath, qint64 size = 64, char contentChar = 'W') = 0;
     virtual void setContents(const QString &relativePath, char contentChar) = 0;

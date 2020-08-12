@@ -62,7 +62,7 @@ class SimpleNetworkJob;
 class AbstractSslErrorHandler
 {
 public:
-    virtual ~AbstractSslErrorHandler() {}
+    virtual ~AbstractSslErrorHandler() = default;
     virtual bool handleErrors(QList<QSslError>, const QSslConfiguration &conf, QList<QSslCertificate> *, AccountPtr) = 0;
 };
 

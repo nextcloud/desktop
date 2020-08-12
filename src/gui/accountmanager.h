@@ -28,7 +28,7 @@ class AccountManager : public QObject
     Q_OBJECT
 public:
     static AccountManager *instance();
-    ~AccountManager() {}
+    ~AccountManager() = default;
 
     /**
      * Saves the accounts to a given settings file
@@ -89,7 +89,7 @@ private:
     // Adds an account to the tracked list, emitting accountAdded()
     void addAccountState(AccountState *accountState);
 
-    AccountManager() {}
+    AccountManager() = default;
     QList<AccountStatePtr> _accounts;
 
 public slots:
