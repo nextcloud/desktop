@@ -116,7 +116,7 @@ private slots:
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
-        const int size = 150 * 1000 * 1000; // 30 MB
+        const int size = 30 * 1000 * 1000; // 30 MB
         partialUpload(fakeFolder, "A/a0", size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
@@ -215,7 +215,7 @@ private slots:
     void testResume4() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
-        const int size = 30 * 1000 * 1000; // 300 MB
+        const int size = 30 * 1000 * 1000; // 30 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
         partialUpload(fakeFolder, "A/a0", size);
@@ -244,7 +244,7 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "chunking", "1.0" } } }, { "checksums", QVariantMap{ { "supportedTypes", QStringList() << "SHA1" } } } });
-        const int size = 15 * 1000 * 1000;
+        const int size = 15 * 1000 * 1000; // 15 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
@@ -328,7 +328,7 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "chunking", "1.0" } } }, { "checksums", QVariantMap{ { "supportedTypes", QStringList() << "SHA1" } } } });
-        const int size = 15 * 1000 * 1000;
+        const int size = 15 * 1000 * 1000; // 15 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
@@ -455,7 +455,7 @@ private slots:
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
-        const int size = 10 * 1000 * 1000; // 100 MB
+        const int size = 10 * 1000 * 1000; // 10 MB
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
         fakeFolder.localModifier().insert("A/a0", size);
