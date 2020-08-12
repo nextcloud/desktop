@@ -32,7 +32,7 @@
 
 #include <functional>
 
-enum csync_exclude_type_e {
+enum CSYNC_EXCLUDE_TYPE {
   CSYNC_NOT_EXCLUDED   = 0,
   CSYNC_FILE_SILENTLY_EXCLUDED,
   CSYNC_FILE_EXCLUDE_AND_REMOVE,
@@ -45,7 +45,6 @@ enum csync_exclude_type_e {
   CSYNC_FILE_EXCLUDE_CONFLICT,
   CSYNC_FILE_EXCLUDE_CANNOT_ENCODE
 };
-typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 
 class ExcludedFilesTest;
 

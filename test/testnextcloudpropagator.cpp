@@ -65,7 +65,7 @@ private slots:
 
     void testParseEtag()
     {
-        typedef QPair<const char*, const char*> Test;
+        using Test = QPair<const char*, const char*>;
         QList<Test> tests;
         tests.append(Test("\"abcd\"", "abcd"));
         tests.append(Test("\"\"", ""));

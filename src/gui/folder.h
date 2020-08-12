@@ -95,8 +95,8 @@ public:
 
     ~Folder();
 
-    typedef QMap<QString, Folder *> Map;
-    typedef QMapIterator<QString, Folder *> MapIterator;
+    using Map = QMap<QString, Folder *>;
+    using MapIterator = QMapIterator<QString, Folder *>;
 
     /**
      * The account the folder is configured on.

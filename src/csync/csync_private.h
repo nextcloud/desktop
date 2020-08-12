@@ -189,7 +189,7 @@ struct OCSYNC_EXPORT csync_s {
   csync_file_stat_t *current_fs = nullptr;
 
   /* csync error code */
-  enum csync_status_codes_e status_code = CSYNC_STATUS_OK;
+  enum CSYNC_STATUS status_code = CSYNC_STATUS_OK;
 
   char *error_string = nullptr;
 

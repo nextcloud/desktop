@@ -27,7 +27,7 @@ namespace OCC {
 
 class SyncFileItem;
 class SyncJournalFileRecord;
-typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
+using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
 
 /**
  * @brief The SyncFileItem class
@@ -254,7 +254,7 @@ inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2
     return *item1 < *item2;
 }
 
-typedef QVector<SyncFileItemPtr> SyncFileItemVector;
+using SyncFileItemVector = QVector<SyncFileItemPtr>;
 }
 
 Q_DECLARE_METATYPE(OCC::SyncFileItem)

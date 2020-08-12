@@ -43,12 +43,12 @@ Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "nextcloud.sync.csync.vio_local", QtInfoMsg)
  * directory functions
  */
 
-typedef struct dhandle_s {
+struct dhandle_t {
   WIN32_FIND_DATA ffd;
   HANDLE hFind;
   int firstFind;
   mbchar_t *path; // Always ends with '\'
-} dhandle_t;
+};
 
 static int _csync_vio_local_stat_mb(const mbchar_t *uri, csync_file_stat_t *buf);
 

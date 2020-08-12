@@ -80,10 +80,10 @@
 
 
 #ifdef _WIN32
-typedef struct stat64 csync_stat_t;
+typedef struct stat64 csync_stat_t; // NOLINT this is sometimes compiled in C mode
 #define _FILE_OFFSET_BITS 64
 #else
-typedef struct stat csync_stat_t;
+typedef struct stat csync_stat_t; // NOLINT this is sometimes compiled in C mode
 #endif
 
 #ifndef O_NOATIME
@@ -112,7 +112,7 @@ typedef struct stat csync_stat_t;
 #endif
 
 #if defined _WIN32 && defined _UNICODE
-typedef  wchar_t         mbchar_t;
+typedef  wchar_t         mbchar_t; // NOLINT this is sometimes compiled in C mode
 #define _topen           _wopen
 #define _tdirent         _wdirent
 #define _topendir        _wopendir
@@ -133,7 +133,7 @@ typedef  wchar_t         mbchar_t;
 #define _tchdir          _wchdir
 #define _tgetcwd         _wgetcwd
 #else
-typedef char           mbchar_t;
+typedef char           mbchar_t; // NOLINT this is sometimes compiled in C mode
 #define _tdirent       dirent
 #define _topen         open
 #define _topendir      opendir

@@ -28,9 +28,9 @@
 #include "csync.h"
 #include "csync_private.h"
 
-typedef struct fhandle_s {
+struct fhandle_t {
   int fd;
-} fhandle_t;
+};
 
 csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name);
 int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle);

@@ -43,11 +43,11 @@
 
 static mbchar_t wd_buffer[WD_BUFFER_SIZE];
 
-typedef struct {
+struct statevar {
     CSYNC *csync;
     char  *result;
     char *ignored_dir;
-} statevar;
+};
 
 /* remove the complete test dir */
 static int wipe_testdir()

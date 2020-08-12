@@ -59,7 +59,7 @@ class SyncJournalFileRecord;
 #define BITFIELD(size) :size
 #endif
 
-enum csync_status_codes_e {
+enum CSYNC_STATUS {
   CSYNC_STATUS_OK         = 0,
 
   CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
@@ -94,8 +94,6 @@ enum csync_status_codes_e {
     CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE,
     CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE
 };
-
-typedef enum csync_status_codes_e CSYNC_STATUS;
 
 #ifndef likely
 # define likely(x) (x)
@@ -146,9 +144,7 @@ enum ItemType {
 // currently specified at https://github.com/owncloud/core/issues/8322 are 9 to 10
 #define REMOTE_PERM_BUF_SIZE 15
 
-typedef struct csync_file_stat_s csync_file_stat_t;
-
-struct OCSYNC_EXPORT csync_file_stat_s {
+struct OCSYNC_EXPORT csync_file_stat_t {
   time_t modtime = 0;
   int64_t size = 0;
   uint64_t inode = 0;
@@ -179,7 +175,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
 
   enum csync_instructions_e instruction = CSYNC_INSTRUCTION_NONE; /* u32 */
 
-  csync_file_stat_s()
+  csync_file_stat_t()
     : type(ItemTypeSkip)
     , child_modified(false)
     , has_ignored_files(false)
@@ -193,26 +189,19 @@ struct OCSYNC_EXPORT csync_file_stat_s {
 /**
  * csync handle
  */
-typedef struct csync_s CSYNC;
+using CSYNC = struct csync_s;
 
-typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
-    int echo, int verify, void *userdata);
+using csync_auth_callback = int (*)(const char *prompt, char *buf, size_t len, int echo, int verify, void *userdata);
 
-typedef void (*csync_update_callback) (bool local,
-                                    const char *dirUrl,
-                                    void *userdata);
+using csync_update_callback = void (*)(bool local, const char *dirUrl, void *userdata);
 
-typedef void csync_vio_handle_t;
-typedef csync_vio_handle_t* (*csync_vio_opendir_hook) (const char *url,
-                                    void *userdata);
-typedef std::unique_ptr<csync_file_stat_t> (*csync_vio_readdir_hook) (csync_vio_handle_t *dhhandle,
-                                                              void *userdata);
-typedef void (*csync_vio_closedir_hook) (csync_vio_handle_t *dhhandle,
-                                                              void *userdata);
+using csync_vio_handle_t = void;
+using csync_vio_opendir_hook = csync_vio_handle_t *(*)(const char *url, void *userdata);
+using csync_vio_readdir_hook = std::unique_ptr<csync_file_stat_t> (*)(csync_vio_handle_t *dhandle, void *userdata);
+using csync_vio_closedir_hook = void (*)(csync_vio_handle_t *dhandle, void *userdata);
 
 /* Compute the checksum of the given \a checksumTypeId for \a path. */
-typedef QByteArray (*csync_checksum_hook)(
-    const QByteArray &path, const QByteArray &otherChecksumHeader, void *userdata);
+using csync_checksum_hook = QByteArray (*)(const QByteArray &path, const QByteArray &otherChecksumHeader, void *userdata);
 
 /**
  * @brief Update detection

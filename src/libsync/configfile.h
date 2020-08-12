@@ -201,7 +201,7 @@ private:
     QString keychainProxyPasswordKey() const;
 
 private:
-    typedef QSharedPointer<AbstractCredentials> SharedCreds;
+    using SharedCreds = QSharedPointer<AbstractCredentials>;
 
     static bool _askedUser;
     static QString _oCVersion;
