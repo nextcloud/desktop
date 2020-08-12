@@ -22,7 +22,7 @@ class User : public QObject
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
 public:
-    User(AccountStatePtr &account, const bool &isCurrent = false, QObject* parent = 0);
+    User(AccountStatePtr &account, const bool &isCurrent = false, QObject* parent = nullptr);
 
     AccountPtr account() const;
 
@@ -143,7 +143,7 @@ protected:
 
 private:
     static UserModel *_instance;
-    UserModel(QObject *parent = 0);
+    UserModel(QObject *parent = nullptr);
     QList<User*> _users;
     int _currentUserId = 0;
     bool _init = true;
@@ -185,7 +185,7 @@ protected:
 
 private:
     static UserAppsModel *_instance;
-    UserAppsModel(QObject *parent = 0);
+    UserAppsModel(QObject *parent = nullptr);
 
     AccountAppList _apps;
 };

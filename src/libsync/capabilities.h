@@ -147,7 +147,7 @@ class OWNCLOUDSYNC_EXPORT DirectEditor : public QObject
 {
     Q_OBJECT
 public:
-    DirectEditor(const QString &id, const QString &name, QObject* parent = 0);
+    DirectEditor(const QString &id, const QString &name, QObject* parent = nullptr);
 
     void addMimetype(const QByteArray &mimeType);
     void addOptionalMimetype(const QByteArray &mimeType);
