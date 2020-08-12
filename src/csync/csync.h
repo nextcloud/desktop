@@ -59,7 +59,7 @@ class SyncJournalFileRecord;
 #define BITFIELD(size) :size
 #endif
 
-enum csync_status_codes_e {
+enum CSYNC_STATUS {
   CSYNC_STATUS_OK         = 0,
 
   CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
@@ -94,8 +94,6 @@ enum csync_status_codes_e {
     CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE,
     CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE
 };
-
-using CSYNC_STATUS = enum csync_status_codes_e;
 
 #ifndef likely
 # define likely(x) (x)
@@ -146,9 +144,7 @@ enum ItemType {
 // currently specified at https://github.com/owncloud/core/issues/8322 are 9 to 10
 #define REMOTE_PERM_BUF_SIZE 15
 
-using csync_file_stat_t = struct csync_file_stat_s;
-
-struct OCSYNC_EXPORT csync_file_stat_s {
+struct OCSYNC_EXPORT csync_file_stat_t {
   time_t modtime = 0;
   int64_t size = 0;
   uint64_t inode = 0;
@@ -179,7 +175,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
 
   enum csync_instructions_e instruction = CSYNC_INSTRUCTION_NONE; /* u32 */
 
-  csync_file_stat_s()
+  csync_file_stat_t()
     : type(ItemTypeSkip)
     , child_modified(false)
     , has_ignored_files(false)

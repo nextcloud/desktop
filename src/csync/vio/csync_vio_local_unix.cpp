@@ -43,7 +43,7 @@ Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "nextcloud.sync.csync.vio_local", QtInfoMsg)
  * directory functions
  */
 
-using dhandle_t = struct dhandle_s {
+struct dhandle_t {
   DIR *dh;
   char *path;
 };

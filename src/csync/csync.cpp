@@ -326,7 +326,7 @@ int  csync_abort_requested(CSYNC *ctx)
   }
 }
 
-std::unique_ptr<csync_file_stat_t> csync_file_stat_s::fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec)
+std::unique_ptr<csync_file_stat_t> csync_file_stat_t::fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec)
 {
     std::unique_ptr<csync_file_stat_t> st(new csync_file_stat_t);
     st->path = rec._path;

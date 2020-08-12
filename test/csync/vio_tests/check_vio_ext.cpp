@@ -43,7 +43,7 @@
 
 static mbchar_t wd_buffer[WD_BUFFER_SIZE];
 
-using statevar = struct {
+struct statevar {
     CSYNC *csync;
     char  *result;
     char *ignored_dir;

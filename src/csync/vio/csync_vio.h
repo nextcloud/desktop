@@ -28,10 +28,8 @@
 #include "csync.h"
 #include "csync_private.h"
 
-using fhandle_t = struct fhandle_s {
-
+struct fhandle_t {
   int fd;
-
 };
 
 csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name);
