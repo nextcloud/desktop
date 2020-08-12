@@ -15,9 +15,7 @@
 #include "syncfilestatus.h"
 
 namespace OCC {
-SyncFileStatus::SyncFileStatus()
-{
-}
+SyncFileStatus::SyncFileStatus() = default;
 
 SyncFileStatus::SyncFileStatus(SyncFileStatusTag tag)
     : _tag(tag)

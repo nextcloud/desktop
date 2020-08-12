@@ -33,7 +33,7 @@ class FolderWatcherPrivate : public QObject
 {
     Q_OBJECT
 public:
-    FolderWatcherPrivate() {}
+    FolderWatcherPrivate() = default;
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate();
 

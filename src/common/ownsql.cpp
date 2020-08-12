@@ -43,9 +43,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSql, "nextcloud.sync.database.sql", QtInfoMsg)
 
-SqlDatabase::SqlDatabase()
-{
-}
+SqlDatabase::SqlDatabase() = default;
 
 SqlDatabase::~SqlDatabase()
 {

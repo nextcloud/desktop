@@ -32,9 +32,10 @@ WebViewPage::WebViewPage(QWidget *parent)
     //_useSystemProxy = QNetworkProxyFactory::usesSystemConfiguration();
 }
 
-WebViewPage::~WebViewPage() {
-    //QNetworkProxyFactory::setUseSystemConfiguration(_useSystemProxy);
-}
+WebViewPage::~WebViewPage() = default;
+//{
+//    QNetworkProxyFactory::setUseSystemConfiguration(_useSystemProxy);
+//}
 
 void WebViewPage::initializePage() {
     //QNetworkProxy::setApplicationProxy(QNetworkProxy::applicationProxy());

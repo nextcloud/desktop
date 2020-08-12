@@ -91,7 +91,7 @@ class UserModel : public QAbstractListModel
     Q_PROPERTY(User* currentUser READ currentUser NOTIFY newUserSelected)
 public:
     static UserModel *instance();
-    virtual ~UserModel() {};
+    virtual ~UserModel() = default;
 
     void addUser(AccountStatePtr &user, const bool &isCurrent = false);
     int currentUserIndex();
@@ -163,7 +163,7 @@ class UserAppsModel : public QAbstractListModel
     Q_OBJECT
 public:
     static UserAppsModel *instance();
-    virtual ~UserAppsModel() {};
+    virtual ~UserAppsModel() = default;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
