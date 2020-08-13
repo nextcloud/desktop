@@ -39,7 +39,7 @@
 #include <unistd.h>
 #endif
 
-#include <errno.h>
+#include <errno.h>  // NOLINT this is sometimes compiled in C mode
 
 #ifdef __MINGW32__
 #define EDQUOT 0

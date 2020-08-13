@@ -39,7 +39,7 @@ extern "C" {
 #include "c_private.h"
 #include "c_macro.h"
 
-#include <stdlib.h>
+#include <stdlib.h> // NOLINT this is sometimes compiled in C mode
 
 /**
  * @brief Compare to strings case insensitively.

@@ -24,7 +24,7 @@
 #ifndef _C_JHASH_H
 #define _C_JHASH_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #define c_hashsize(n) ((uint8_t) 1 << (n))
 #define c_hashmask(n) (xhashsize(n) - 1)

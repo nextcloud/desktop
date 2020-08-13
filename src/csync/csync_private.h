@@ -34,8 +34,8 @@
 
 #include <unordered_map>
 #include <QHash>
-#include <stdint.h>
-#include <stdbool.h>
+#include <cstdint>
+
 #include <map>
 #include <set>
 #include <functional>

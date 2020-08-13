@@ -35,7 +35,7 @@
 #include <QtCore>
 #include <QtGui>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 namespace OCC {
 

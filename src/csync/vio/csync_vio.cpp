@@ -22,8 +22,8 @@
 #define _GNU_SOURCE
 #endif
 
-#include <errno.h>
-#include <stdio.h>
+#include <cerrno>
+#include <cstdio>
 #include "common/asserts.h"
 
 #include "csync_private.h"

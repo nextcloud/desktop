@@ -36,8 +36,8 @@
 #include "ocsynclib.h"
 
 #include <sys/stat.h>
-#include <stdbool.h>
-#include <stdint.h>
+
+#include <cstdint>
 #include <sys/types.h>
 #include <config_csync.h>
 #include <functional>

@@ -20,7 +20,7 @@
 
 #include "config_csync.h"
 
-#include <assert.h>
+#include <cassert>
 #include "csync_private.h"
 #include "csync_reconcile.h"
 #include "csync_util.h"
@@ -34,7 +34,7 @@ Q_LOGGING_CATEGORY(lcReconcile, "nextcloud.sync.csync.reconciler", QtInfoMsg)
 
 // Needed for PRIu64 on MinGW in C++ mode.
 #define __STDC_FORMAT_MACROS
-#include "inttypes.h"
+#include <cinttypes>
 
 /* Check if a file is ignored because one parent is ignored.
  * return the node of the ignored directoy if it's the case, or \c nullptr if it is not ignored */

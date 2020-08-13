@@ -25,7 +25,7 @@
 #include <QtGui>
 #include <QtWidgets>
 
-#include <stdio.h>
+#include <cstdio>
 
 namespace OCC {
 

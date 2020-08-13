@@ -44,8 +44,8 @@
 #include <unistd.h>
 #endif
 
-#include <math.h>
-#include <stdarg.h>
+#include <cmath>
+#include <cstdarg>
 #include <cstring>
 
 #if defined(Q_OS_WIN)

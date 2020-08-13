@@ -25,12 +25,12 @@
 #define _GNU_SOURCE
 #endif
 
-#include <limits.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
 #include <sys/types.h>
-#include <errno.h>
+#include <cerrno>
 
 #if _WIN32
 # ifndef _WIN32_IE

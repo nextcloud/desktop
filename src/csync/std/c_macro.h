@@ -31,8 +31,8 @@
 #ifndef _C_MACRO_H
 #define _C_MACRO_H
 
-#include <stdint.h>
-#include <string.h>
+#include <stdint.h> // NOLINT this is sometimes compiled in C mode
+#include <string.h> // NOLINT this is sometimes compiled in C mode
 
 #define INT_TO_POINTER(i) (void *) i
 #define POINTER_TO_INT(p) *((int *) (p))
