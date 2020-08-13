@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Wyświetl mnemonik</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
