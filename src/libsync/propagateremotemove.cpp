@@ -193,9 +193,9 @@ bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QStr
     QString from = from_ + QLatin1String("/");
     QString to = to_ + QLatin1String("/");
 
-    for (auto it = list.begin(); it != list.end(); ++it) {
-        if (it->startsWith(from)) {
-            *it = it->replace(0, from.size(), to);
+    for (auto &s : list) {
+        if (s.startsWith(from)) {
+            s = s.replace(0, from.size(), to);
             changed = true;
         }
     }

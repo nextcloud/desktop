@@ -730,8 +730,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         endInsertRows();
     }
 
-    for (auto it = undecidedIndexes.begin(); it != undecidedIndexes.end(); ++it) {
-        suggestExpand(index(*it, 0, idx));
+    for (int undecidedIndex : qAsConst(undecidedIndexes)) {
+        suggestExpand(index(undecidedIndex, 0, idx));
     }
 
 /* We need lambda function for the following code.

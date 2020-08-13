@@ -796,16 +796,16 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
     }
 
     // Ask all the running composite jobs if they have something new to schedule.
-    for (int i = 0; i < _runningJobs.size(); ++i) {
-        ASSERT(_runningJobs.at(i)->_state == Running);
+    for (auto runningJob : qAsConst(_runningJobs)) {
+        ASSERT(runningJob->_state == Running);
 
-        if (possiblyRunNextJob(_runningJobs.at(i))) {
+        if (possiblyRunNextJob(runningJob)) {
             return true;
         }
 
         // If any of the running sub jobs is not parallel, we have to cancel the scheduling
         // of the rest of the list and wait for the blocking job to finish and schedule the next one.
-        auto paral = _runningJobs.at(i)->parallelism();
+        auto paral = runningJob->parallelism();
         if (paral == WaitForFinished) {
             return false;
         }

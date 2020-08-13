@@ -1086,9 +1086,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _syncItemMap.clear(); // free memory
 
     // Adjust the paths for the renames.
-    for (SyncFileItemVector::iterator it = syncItems.begin();
-         it != syncItems.end(); ++it) {
-        (*it)->_file = adjustRenamedPath((*it)->_file);
+    for (const auto &syncItem : qAsConst(syncItems)) {
+        syncItem->_file = adjustRenamedPath(syncItem->_file);
     }
 
     // Check for invalid character in old server version
@@ -1104,12 +1103,12 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
     if (!invalidFilenamePattern.isEmpty()) {
         const QRegExp invalidFilenameRx(invalidFilenamePattern);
-        for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
-            if ((*it)->_direction == SyncFileItem::Up
-                && isFileModifyingInstruction((*it)->_instruction)
-                && (*it)->destination().contains(invalidFilenameRx)) {
-                (*it)->_errorString = tr("File name contains at least one invalid character");
-                (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
+        for (const auto &syncItem : qAsConst(syncItems)) {
+            if (syncItem->_direction == SyncFileItem::Up
+                && isFileModifyingInstruction(syncItem->_instruction)
+                && syncItem->destination().contains(invalidFilenameRx)) {
+                syncItem->_errorString = tr("File name contains at least one invalid character");
+                syncItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }
         }
     }
@@ -1677,19 +1676,19 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
        upload the client file. But we still downloaded the old file in a conflict file just in case
     */
 
-    for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
-        if ((*it)->_direction != SyncFileItem::Down)
+    for (const auto &syncItem : qAsConst(syncItems)) {
+        if (syncItem->_direction != SyncFileItem::Down)
             continue;
 
-        switch ((*it)->_instruction) {
+        switch (syncItem->_instruction) {
         case CSYNC_INSTRUCTION_SYNC:
-            qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << (*it)->_file;
-            (*it)->_instruction = CSYNC_INSTRUCTION_CONFLICT;
+            qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << syncItem->_file;
+            syncItem->_instruction = CSYNC_INSTRUCTION_CONFLICT;
             break;
         case CSYNC_INSTRUCTION_REMOVE:
-            qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << (*it)->_file;
-            (*it)->_instruction = CSYNC_INSTRUCTION_NEW;
-            (*it)->_direction = SyncFileItem::Up;
+            qCWarning(lcEngine) << "restoreOldFiles: RESTORING" << syncItem->_file;
+            syncItem->_instruction = CSYNC_INSTRUCTION_NEW;
+            syncItem->_direction = SyncFileItem::Up;
             break;
         case CSYNC_INSTRUCTION_RENAME:
         case CSYNC_INSTRUCTION_NEW:

@@ -34,8 +34,8 @@ QDataStream &operator<<(QDataStream &stream, const QList<QNetworkCookie> &list)
 {
     stream << JAR_VERSION;
     stream << quint32(list.size());
-    for (int i = 0; i < list.size(); ++i)
-        stream << list.at(i).toRawForm();
+    for (const auto &cookie : list)
+        stream << cookie.toRawForm();
     return stream;
 }
 

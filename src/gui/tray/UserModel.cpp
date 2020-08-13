@@ -605,8 +605,8 @@ Q_INVOKABLE QString UserModel::currentUserServer()
 void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 {
     bool containsUser = false;
-    for (int i = 0; i < _users.size(); i++) {
-        if (_users[i]->account() == user->account()) {
+    for (const auto &u : qAsConst(_users)) {
+        if (u->account() == user->account()) {
             containsUser = true;
             continue;
         }
