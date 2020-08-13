@@ -83,7 +83,8 @@ void PropagateUploadFileNG::doStartUpload()
     propagator()->_activeJobList.append(this);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
-    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime) {
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
+            && progressInfo._size == qint64(_item->_size)) {
         _transferId = progressInfo._transferid;
         auto url = chunkUrl();
         auto job = new LsColJob(propagator()->account(), url, this);
@@ -143,6 +144,12 @@ void PropagateUploadFileNG::slotPropfindFinished()
         qCCritical(lcPropagateUpload) << "Inconsistency while resuming " << _item->_file
                                       << ": the size on the server (" << _sent << ") is bigger than the size of the file ("
                                       << _fileToUpload._size << ")";
+
+        // Wipe the old chunking data.
+        // Fire and forget. Any error will be ignored.
+        (new DeleteJob(propagator()->account(), chunkUrl(), this))->start();
+
+        propagator()->_activeJobList.append(this);
         startNewUpload();
         return;
     }
@@ -231,6 +238,7 @@ void PropagateUploadFileNG::startNewUpload()
     pi._transferid = _transferId;
     pi._modtime = _item->_modtime;
     pi._contentChecksum = _item->_checksumHeader;
+    pi._size = _item->_size;
     propagator()->_journal->setUploadInfo(_item->_file, pi);
     propagator()->_journal->commit("Upload info");
     QMap<QByteArray, QByteArray> headers;
