@@ -32,7 +32,7 @@
 #include <qstack.h>
 #include <QCoreApplication>
 
-#include <time.h>
+#include <ctime>
 
 
 namespace OCC {

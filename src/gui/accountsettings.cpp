@@ -37,7 +37,7 @@
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
 
-#include <math.h>
+#include <cmath>
 
 #include <QDesktopServices>
 #include <QDialogButtonBox>

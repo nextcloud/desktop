@@ -14,7 +14,7 @@
 
 #include "logbrowser.h"
 
-#include "stdio.h"
+#include <cstdio>
 #include <iostream>
 
 #include <QDialogButtonBox>

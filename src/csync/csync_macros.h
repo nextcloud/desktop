@@ -22,8 +22,8 @@
 #ifndef _CSYNC_MACROS_H
 #define _CSYNC_MACROS_H
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 /* How many elements there are in a static array */
 #define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))

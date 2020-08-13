@@ -25,13 +25,13 @@
 #define _GNU_SOURCE
 #endif
 
-#include <assert.h>
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
+#include <cassert>
+#include <cerrno>
+#include <cstdio>
+#include <cstring>
+#include <ctime>
 #include <sys/types.h>
-#include <stdbool.h>
+
 
 #include "c_lib.h"
 #include "csync_private.h"

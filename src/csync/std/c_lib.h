@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include <stdlib.h>
-#include <string.h>
+#include <stdlib.h> // NOLINT this is sometimes compiled in C mode
+#include <string.h> // NOLINT this is sometimes compiled in C mode
 
 #include "c_macro.h"
 #include "c_alloc.h"

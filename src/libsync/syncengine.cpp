@@ -36,7 +36,7 @@
 #endif
 
 #include <climits>
-#include <assert.h>
+#include <cassert>
 
 #include <QCoreApplication>
 #include <QSslSocket>

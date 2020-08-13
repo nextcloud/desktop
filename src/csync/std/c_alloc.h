@@ -38,7 +38,7 @@
 extern "C" {
 #endif
 
-#include <stdlib.h>
+#include <stdlib.h> // NOLINT this is sometimes compiled in C mode
 
 #include "c_macro.h"
 

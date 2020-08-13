@@ -16,7 +16,7 @@
 #ifndef CSYNCTHREAD_H
 #define CSYNCTHREAD_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #include <QMutex>
 #include <QThread>

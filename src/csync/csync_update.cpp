@@ -25,11 +25,11 @@
 #define _GNU_SOURCE
 #endif
 
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
+#include <cerrno>
+#include <cstdio>
+#include <cstring>
+#include <ctime>
+#include <cmath>
 
 #include "c_lib.h"
 
@@ -50,7 +50,7 @@
 
 // Needed for PRIu64 on MinGW in C++ mode.
 #define __STDC_FORMAT_MACROS
-#include <inttypes.h>
+#include <cinttypes>
 
 Q_LOGGING_CATEGORY(lcUpdate, "nextcloud.sync.csync.updater", QtInfoMsg)
 

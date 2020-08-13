@@ -46,7 +46,7 @@
 #include <QPainter>
 #include <QListWidget>
 
-#include <string.h>
+#include <cstring>
 
 namespace OCC {
 

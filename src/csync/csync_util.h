@@ -22,7 +22,7 @@
 #ifndef _CSYNC_UTIL_H
 #define _CSYNC_UTIL_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "csync_private.h"
 

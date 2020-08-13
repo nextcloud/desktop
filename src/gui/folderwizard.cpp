@@ -37,7 +37,7 @@
 #include <QVBoxLayout>
 #include <QEvent>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 namespace OCC {
 
