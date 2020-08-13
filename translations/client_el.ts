@@ -4042,7 +4042,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Αφαίρεση λογαριασμού</translation>
     </message>
 </context>
 <context>
@@ -4156,7 +4156,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation type="unfinished"/>
+        <translation>Άνοιγμα URL</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>

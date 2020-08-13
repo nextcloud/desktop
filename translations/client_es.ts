@@ -194,7 +194,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Para proteger tu identidad criptográfica, la ciframos con una regla nemotécnica de 12 palabras del diccionario. Por favor, anótalas y mantenlas a salvo. Estas palabras serán necesarias para añadir otros dispositivos a su cuenta (como un teléfono móvil o un portátil). </translation>
+        <translation>Para proteger tu identidad criptográfica, la ciframos con una regla mnemotécnica de 12 palabras del diccionario. Por favor, anótalas y mantenlas a salvo. Estas palabras serán necesarias para añadir otros dispositivos a su cuenta (como un teléfono móvil o un portátil). </translation>
     </message>
 </context>
 <context>
@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar regla mnemotécnica</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -291,7 +291,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
         <source>Show E2E mnemonic</source>
-        <translation>Mostrar mnemotécnica E2E</translation>
+        <translation>Mostrar regla mnemotécnica E2E</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="293"/>
@@ -3066,7 +3066,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Expires on:</source>
-        <translation>Expira en:</translation>
+        <translation>Caduca el:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
