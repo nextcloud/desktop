@@ -67,6 +67,9 @@ THE SOFTWARE.
 
 #include <shlobj_core.h>
 
+#include <networkjobs.h>
+#include "socketapi.h"
+
 namespace OCC {
 
 	QMutex _mutexMirrorFindFiles;
@@ -2487,11 +2490,6 @@ void ShowUsage() {
 	// clang-format on
 }
 
-//void Vfs_windows::openFileAtPath(QString path, QVariantMap& error)
-//{
-//	qDebug() << " path: " << path;
-//}
-
 void CleanIgnoredTask::run() {
 	Sleep(3500);
 
@@ -2524,6 +2522,29 @@ void VfsWindows::writeFileAtPath(QString path, QVariantMap &error)
 	qDebug() << " drive FS finish synchronization: " << path;
 	qDebug() << " drive FS writeFile: " << path;
 }
+
+QString VfsWindows::getRelativePath(const QString &path) const
+{
+    QString localPath = QDir::cleanPath(path);
+    if (localPath.endsWith('/'))
+        localPath.chop(1);
+
+    if (localPath.startsWith('/'))
+        localPath.remove(0, 1);
+
+    Folder *folderForPath = FolderMan::instance()->folderForPath(localPath);
+
+    QString folderRelativePath("");
+    if (folderForPath)
+        folderRelativePath = localPath.mid(folderForPath->cleanPath().length() + 1);
+
+    qDebug() << "Path: " << path;
+    qDebug() << "Local Path: " << localPath;
+    qDebug() << "Folder Relative Path: " << folderRelativePath;
+
+    return folderRelativePath;
+}
+
 
 void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
 {
@@ -2573,6 +2594,62 @@ void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
  //       SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.toStdWString().data(), NULL);
  //       SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, name.left(pos).toStdWString().data(), NULL);
         //	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
+
+	auto job = new SearchJob(_accountState->account(), getRelativePath(path));
+    job->setProperties(
+        QList<QByteArray>()
+        << "fileid"
+		<< "getetag");
+	job->setFileId("307");
+    job->setTimeout(10 * 1000);
+	connect(job, &SearchJob::result, this, [=](const QVariantMap &result) {
+		qDebug() << Q_FUNC_INFO << "Props received";
+		const QVariant fileid = result["fileid"];
+		const QVariant getetag = result["getetag"];
+
+		// now check
+		auto instruction = CSYNC_INSTRUCTION_NEW;
+
+		QString fileUtf8;
+		QString renameTarget;
+		bool utf8DecodeError = false;
+		{
+			const auto toUnicode = [](QByteArray utf8, QString *result) {
+				static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+				//ASSERT(codec);
+
+				QTextCodec::ConverterState state;
+				*result = codec->toUnicode(utf8, utf8.size(), &state);
+				return !(state.invalidChars > 0 || state.remainingChars > 0);
+			};
+
+			if (!toUnicode(path.toLatin1(), &fileUtf8)) {
+				qDebug() << Q_FUNC_INFO << "File ignored because of invalid utf-8 sequence: " << path;
+				instruction = CSYNC_INSTRUCTION_IGNORE;
+				utf8DecodeError = true;
+			}
+			//if (!toUnicode(file->rename_path, &renameTarget)) {
+			//	qCWarning(lcSyncWrapper) << "File ignored because of invalid utf-8 sequence in the rename_path: " << file->path << file->rename_path;
+			//	instruction = CSYNC_INSTRUCTION_IGNORE;
+			//	utf8DecodeError = true;
+			//}
+		}
+
+		// key is the handle that the SyncFileItem will have in the map.
+		QString key = fileUtf8;
+		if (instruction == CSYNC_INSTRUCTION_RENAME) {
+			key = renameTarget;
+		}
+		SyncFileItemPtr item = _syncItemMap.value(key);
+		if (!item)
+			item = SyncFileItemPtr(new SyncFileItem);
+		// now propagate
+
+	});
+    connect(job, &SearchJob::finishedWithError, this, [](QNetworkReply *reply) {
+		qDebug() << Q_FUNC_INFO << "SearchJob finished with error: " << reply->errorString();
+	});
+    job->start();
 }
 
 void VfsWindows::deleteFileAtPath(QString path, QVariantMap &error)
@@ -2688,6 +2765,7 @@ void VfsWindows::initialize(QString rootPath, WCHAR mountLetter, AccountState* a
 {
 	this->rootPath = rootPath;
 	this->mountLetter = mountLetter;
+	this->_accountState = accountState_;
 
 	ConfigFile cfg;
 	QDir path_mirror(cfg.defaultFileStreamMirrorPath());

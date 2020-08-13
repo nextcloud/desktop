@@ -469,6 +469,47 @@ private slots:
 };
 
 /**
+ * @brief The SearchJob class
+ *
+ * Setting the desired properties with setProperties() is mandatory.
+ *
+ * Note that this job is only for querying one item.
+ * There is also the LsColJob which can be used to list collections
+ *
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT SearchJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit SearchJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
+    void start() override;
+
+    /**
+     * Used to specify which properties shall be retrieved.
+     *
+     * The properties can
+     *  - contain no colon: they refer to a property in the DAV: namespace
+     *  - contain a colon: and thus specify an explicit namespace,
+     *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
+     */
+    void setProperties(QList<QByteArray> properties);
+	void setFileId(const QByteArray id);
+    QList<QByteArray> properties() const;
+
+signals:
+    void result(const QVariantMap &values);
+    void finishedWithError(QNetworkReply *reply = nullptr);
+
+private slots:
+    bool finished() override;
+
+private:
+    QList<QByteArray> _properties;
+	QByteArray _fileId;
+};
+
+/**
  * @brief Runs a PROPFIND to figure out the private link url
  *
  * The numericFileId is used only to build the deprecatedPrivateLinkUrl

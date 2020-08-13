@@ -52,6 +52,7 @@ Q_LOGGING_CATEGORY(lcMkColJob, "nextcloud.sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcProppatchJob, "nextcloud.sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "nextcloud.sync.networkjob.jsonapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSearchJob, "nextcloud.sync.networkjob.search", QtInfoMsg)
 const int notModifiedStatusCode = 304;
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
@@ -1067,6 +1068,134 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
         targetFun(oldUrl);
     });
     job->start();
+}
+
+/*********************************************************************************************/
+
+SearchJob::SearchJob(AccountPtr account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+}
+
+void SearchJob::start()
+{
+    QList<QByteArray> properties = _properties;
+
+    if (properties.isEmpty()) {
+        qCWarning(lcSearchJob) << "Propfind with no properties!";
+    }
+    QNetworkRequest req;
+    // Always have a higher priority than the propagator because we use this from the UI
+    // and really want this to be done first (no matter what internal scheduling QNAM uses).
+    // Also possibly useful for avoiding false timeouts.
+    req.setPriority(QNetworkRequest::HighPriority);
+	req.setRawHeader("Content-Type", "text/xml");
+    req.setRawHeader("Depth", "infinity");
+    QByteArray propStr;
+    //foreach (const QByteArray &prop, properties) {
+    //    if (prop.contains(':')) {
+    //        int colIdx = prop.lastIndexOf(":");
+    //        propStr += "    <" + prop.mid(colIdx + 1) + " xmlns=\"" + prop.left(colIdx) + "\" />\n";
+    //    } else {
+    //        propStr += "    <d:" + prop + " />\n";
+    //    }
+    //}
+
+	propStr += "        <oc:fileid />\n";
+	propStr += "        <oc:size />\n";
+	propStr += "        <d:getetag />\n";
+	QByteArray hrefStr(_account->davUser().toLatin1());
+    QByteArray xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                     "<d:searchrequest xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\">\n"
+                     "  <d:basicsearch>\n"
+					 "    <d:select>\n"
+					 "      <d:prop>\n"
+		 + propStr + "      </d:prop>\n"
+					 "    </d:select>\n"
+					 "    <d:from>\n"
+					 "      <d:scope>\n"
+					 "        <d:href>/files/" + hrefStr + "</d:href>\n"
+					 "      </d:scope>\n"
+					 "    </d:from>\n"
+					 "    <d:where>\n"
+					 "      <d:eq>\n"
+					 "        <d:prop>\n"
+					 "          <oc:fileid />\n"
+					 "        </d:prop>\n"
+					 "        <d:literal>"+ _fileId + "</d:literal>\n"
+					 "      </d:eq>\n"
+					 "    </d:where>\n"
+					 "    <d:orderby/>\n"
+					 "  </d:basicsearch>\n"
+                     "</d:searchrequest>\n";
+
+	qCWarning(lcSearchJob) << "xml: " << xml;
+    QBuffer *buf = new QBuffer(this);
+    buf->setData(xml);
+    buf->open(QIODevice::ReadOnly);
+    sendRequest("SEARCH", Utility::concatUrlPath(_account->url(), QLatin1String("/remote.php/dav/")), req, buf);
+
+    AbstractNetworkJob::start();
+}
+
+void SearchJob::setProperties(QList<QByteArray> properties)
+{
+    _properties = properties;
+}
+
+void SearchJob::setFileId(const QByteArray id)
+{
+	_fileId = id;
+}
+
+QList<QByteArray> SearchJob::properties() const
+{
+    return _properties;
+}
+
+bool SearchJob::finished()
+{
+    qCInfo(lcPropfindJob) << "SEARCH of" << reply()->request().url() << "FINISHED WITH STATUS"
+                          << replyStatusString();
+
+    int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (http_result_code == 207) {
+        // Parse DAV response
+        QXmlStreamReader reader(reply());
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+
+        QVariantMap items;
+        // introduced to nesting is ignored
+        QStack<QString> curElement;
+
+        while (!reader.atEnd()) {
+            QXmlStreamReader::TokenType type = reader.readNext();
+            if (type == QXmlStreamReader::StartElement) {
+                if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
+                    items.insert(reader.name().toString(), reader.readElementText(QXmlStreamReader::SkipChildElements));
+                } else {
+                    curElement.push(reader.name().toString());
+                }
+            }
+            if (type == QXmlStreamReader::EndElement) {
+                if (curElement.top() == reader.name()) {
+                    curElement.pop();
+                }
+            }
+        }
+        if (reader.hasError()) {
+            qCWarning(lcSearchJob) << "XML parser error: " << reader.errorString();
+            emit finishedWithError(reply());
+        } else {
+            emit result(items);
+        }
+    } else {
+        qCWarning(lcSearchJob) << "*not* successful, http result code is" << http_result_code
+                                 << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
+        emit finishedWithError(reply());
+    }
+    return true;
 }
 
 } // namespace OCC

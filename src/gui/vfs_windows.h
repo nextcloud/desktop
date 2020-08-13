@@ -30,6 +30,8 @@
 #include <QThreadPool>
 #include <QStorageInfo>
 
+#include "syncfileitem.h"
+
 namespace OCC {
 
 class CleanIgnoredTask : public QObject, public QRunnable
@@ -89,6 +91,10 @@ private:
     // @Free space
     //*FreeBytesAvailable = (ULONGLONG)(*TotalNumberOfBytes - *TotalNumberOfFreeBytes); / *1024 * 1024 * 10;
     unsigned long long freeBytesAvailable = 0;
+
+	QMap<QString, SyncFileItemPtr> _syncItemMap;
+	AccountState* _accountState;
+	QString getRelativePath(const QString& path) const;
 
 signals:
 	void startRemoteFileListJob(QString path);
