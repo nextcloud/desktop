@@ -105,7 +105,6 @@ public:
         FetchLabel };
     ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
-    SubFolderInfo *infoForFileId(const QByteArray &fileId, SubFolderInfo *info = nullptr) const;
     // If the selective sync check boxes were changed
     bool isDirty() { return _dirty; }
 

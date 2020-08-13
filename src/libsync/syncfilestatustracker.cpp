@@ -244,16 +244,16 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
     // Swap into a copy since fileStatus() reads _dirtyPaths to determine the status
     QSet<QString> oldDirtyPaths;
     std::swap(_dirtyPaths, oldDirtyPaths);
-    for (auto it = oldDirtyPaths.constBegin(); it != oldDirtyPaths.constEnd(); ++it)
-        emit fileStatusChanged(getSystemDestination(*it), fileStatus(*it));
+    for (const auto &oldDirtyPath : qAsConst(oldDirtyPaths))
+        emit fileStatusChanged(getSystemDestination(oldDirtyPath), fileStatus(oldDirtyPath));
 
     // Make sure to push any status that might have been resolved indirectly since the last sync
     // (like an error file being deleted from disk)
-    for (auto it = _syncProblems.begin(); it != _syncProblems.end(); ++it)
-        oldProblems.erase(it->first);
-    for (auto it = oldProblems.begin(); it != oldProblems.end(); ++it) {
-        const QString &path = it->first;
-        SyncFileStatus::SyncFileStatusTag severity = it->second;
+    for (const auto &syncProblem : _syncProblems)
+        oldProblems.erase(syncProblem.first);
+    for (const auto &oldProblem : oldProblems) {
+        const QString &path = oldProblem.first;
+        SyncFileStatus::SyncFileStatusTag severity = oldProblem.second;
         if (severity == SyncFileStatus::StatusError)
             invalidateParentPaths(path);
         emit fileStatusChanged(getSystemDestination(path), fileStatus(path));

@@ -409,24 +409,6 @@ FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIn
     }
 }
 
-/* Recursivelly traverse the file info looking for the id */
-FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForFileId(const QByteArray& fileId, SubFolderInfo* info) const
-{
-  const QVector<SubFolderInfo>& infoVec = info ? info->_subs : _folders;
-  for(int i = 0, end = infoVec.size(); i < end; i++) {
-    auto *info = const_cast<SubFolderInfo *>(&infoVec[i]);
-    if (info->_fileId == fileId) {
-      return info;
-    } else if (info->_subs.size()) {
-      if (auto *subInfo = infoForFileId(fileId, info)) {
-        return subInfo;
-      }
-    }
-  }
-
-  return nullptr;
-}
-
 QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) const
 {
     if (!f) {
@@ -748,8 +730,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         endInsertRows();
     }
 
-    for (auto it = undecidedIndexes.begin(); it != undecidedIndexes.end(); ++it) {
-        suggestExpand(index(*it, 0, idx));
+    for (int undecidedIndex : qAsConst(undecidedIndexes)) {
+        suggestExpand(index(undecidedIndex, 0, idx));
     }
 
 /* We need lambda function for the following code.

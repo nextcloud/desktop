@@ -13,9 +13,9 @@ int getRandomNumber(int max) {
 
     unsigned int num = 0;
 
-    for (int i = 0; i < 8; i++) {
+    for (unsigned char c : d) {
         num = num << 8;
-        num += d[i];
+        num += c;
     }
 
     return num % max;

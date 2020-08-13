@@ -18,8 +18,8 @@ static void changeAllFileId(FileInfo &info) {
     if (!info.isDir)
         return;
     info.etag = generateEtag();
-    for (auto it = info.children.begin(); it != info.children.end(); ++it) {
-        changeAllFileId(*it);
+    for (auto &child : info.children) {
+        changeAllFileId(child);
     }
 }
 
