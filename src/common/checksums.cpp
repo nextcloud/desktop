@@ -114,6 +114,10 @@ QByteArray calcSha1(QIODevice *device)
 #ifdef ZLIB_FOUND
 QByteArray calcAdler32(QIODevice *device)
 {
+    if (device->size() == 0)
+    {
+        return QByteArray();
+    }
     QByteArray buf(BUFSIZE, Qt::Uninitialized);
 
     unsigned int adler = adler32(0L, Z_NULL, 0);
