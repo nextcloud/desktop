@@ -242,7 +242,7 @@ void PropagateRemoteMove::finalize()
         }
     }
 
-    propagator()->_journal->commit("Remote Rename");
+    propagator()->_journal->commit(QStringLiteral("Remote Rename"));
     done(SyncFileItem::Success);
 }
 

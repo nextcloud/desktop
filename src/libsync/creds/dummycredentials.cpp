@@ -19,7 +19,7 @@ namespace OCC {
 
 QString DummyCredentials::authType() const
 {
-    return QString::fromLatin1("dummy");
+    return QStringLiteral("dummy");
 }
 
 QString DummyCredentials::user() const

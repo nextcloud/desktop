@@ -44,7 +44,7 @@ QUrl PropagateUploadFileNG::chunkUrl(qint64 chunkOffset)
         + QLatin1Char('/') + QString::number(_transferId);
     if (chunkOffset != -1) {
         // We need to do add leading 0 because the server orders the chunk alphabetically
-        path += QLatin1Char('/') + QString::number(chunkOffset).rightJustified(16, '0'); // 1e16 is 10 petabyte
+        path += QLatin1Char('/') + QString::number(chunkOffset).rightJustified(16, QLatin1Char('0')); // 1e16 is 10 petabyte
     }
     return Utility::concatUrlPath(propagator()->account()->url(), path);
 }
@@ -129,10 +129,10 @@ void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<
         return; // skip the info about the path itself
     }
     bool ok = false;
-    QString chunkName = name.mid(name.lastIndexOf('/') + 1);
+    QString chunkName = name.mid(name.lastIndexOf(QLatin1Char('/')) + 1);
     qint64 chunkOffset = chunkName.toLongLong(&ok);
     if (ok) {
-        ServerChunkInfo chunkinfo = { properties["getcontentlength"].toLongLong(), chunkName };
+        ServerChunkInfo chunkinfo = { properties[QStringLiteral("getcontentlength")].toLongLong(), chunkName };
         _serverChunks[chunkOffset] = chunkinfo;
     }
 }
@@ -286,7 +286,7 @@ void PropagateUploadFileNG::startNewUpload()
     pi._contentChecksum = _item->_checksumHeader;
     pi._size = _item->_size;
     propagator()->_journal->setUploadInfo(_item->_file, pi);
-    propagator()->_journal->commit("Upload info");
+    propagator()->_journal->commit(QStringLiteral("Upload info"));
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Total-Length"] = QByteArray::number(_item->_size);
     auto job = new MkColJob(propagator()->account(), chunkUrl(), headers, this);
@@ -496,7 +496,7 @@ void PropagateUploadFileNG::slotPutFinished()
         auto uploadInfo = propagator()->_journal->getUploadInfo(_item->_file);
         uploadInfo._errorCount = 0;
         propagator()->_journal->setUploadInfo(_item->_file, uploadInfo);
-        propagator()->_journal->commit("Upload info");
+        propagator()->_journal->commit(QStringLiteral("Upload info"));
     }
     startNextChunk();
 }

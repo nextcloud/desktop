@@ -71,12 +71,12 @@ void LocalDiscoveryTracker::slotItemCompleted(const SyncFileItemPtr &item)
         || (item->_status == SyncFileItem::NoStatus
                && (item->_instruction == CSYNC_INSTRUCTION_NONE
                       || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA))) {
-        if (_previousLocalDiscoveryPaths.erase(item->_file.toUtf8()))
+        if (_previousLocalDiscoveryPaths.erase(item->_file))
             qCDebug(lcLocalDiscoveryTracker) << "wiped successful item" << item->_file;
-        if (!item->_renameTarget.isEmpty() && _previousLocalDiscoveryPaths.erase(item->_renameTarget.toUtf8()))
+        if (!item->_renameTarget.isEmpty() && _previousLocalDiscoveryPaths.erase(item->_renameTarget))
             qCDebug(lcLocalDiscoveryTracker) << "wiped successful item" << item->_renameTarget;
     } else {
-        _localDiscoveryPaths.insert(item->_file.toUtf8());
+        _localDiscoveryPaths.insert(item->_file);
         qCDebug(lcLocalDiscoveryTracker) << "inserted error item" << item->_file;
     }
 }

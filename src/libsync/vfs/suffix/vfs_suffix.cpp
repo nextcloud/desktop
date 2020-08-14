@@ -52,7 +52,7 @@ void VfsSuffix::startImpl(const VfsSetupParams &params)
             toWipe.append(rec._path);
     });
     for (const auto &path : toWipe)
-        params.journal->deleteFileRecord(path);
+        params.journal->deleteFileRecord(QString::fromUtf8(path));
 }
 
 void VfsSuffix::stop()
@@ -80,13 +80,13 @@ Result<void, QString> VfsSuffix::createPlaceholder(const SyncFileItem &item)
     QString fn = _setupParams.filesystemPath + item._file;
     if (!fn.endsWith(fileSuffix())) {
         OC_ASSERT_X(false, "vfs file isn't ending with suffix");
-        return QString("vfs file isn't ending with suffix");
+        return QStringLiteral("vfs file isn't ending with suffix");
     }
 
     QFile file(fn);
     if (file.exists() && file.size() > 1
         && !FileSystem::verifyFileUnchanged(fn, item._size, item._modtime)) {
-        return QString("Cannot create a placeholder because a file with the placeholder name already exist");
+        return QStringLiteral("Cannot create a placeholder because a file with the placeholder name already exist");
     }
 
     if (!file.open(QFile::ReadWrite | QFile::Truncate))

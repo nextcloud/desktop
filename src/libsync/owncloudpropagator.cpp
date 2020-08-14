@@ -447,7 +447,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
                 // of the file we're about to delete to decide whether uploading
                 // to the new dir is ok...
                 foreach (const SyncFileItemPtr &item2, items) {
-                    if (item2->destination().startsWith(item->destination() + "/")) {
+                    if (item2->destination().startsWith(item->destination() + QLatin1Char('/'))) {
                         item2->_instruction = CSYNC_INSTRUCTION_NONE;
                         _anotherSyncNeeded = true;
                     }
@@ -458,7 +458,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
                 // We do the removal of directories at the end, because there might be moves from
                 // these directories that will happen later.
                 directoriesToRemove.prepend(dir);
-                removedDirectory = item->_file + "/";
+                removedDirectory = item->_file + QLatin1Char('/');
 
                 // We should not update the etag of parent directories of the removed directory
                 // since it would be done before the actual remove (issue #1845)
@@ -472,12 +472,12 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
                 PropagateDirectory *currentDirJob = directories.top().second;
                 currentDirJob->appendJob(dir);
             }
-            directories.push(qMakePair(item->destination() + "/", dir));
+            directories.push(qMakePair(item->destination() + QLatin1Char('/'), dir));
         } else {
             if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
                 // will delete directories, so defer execution
                 directoriesToRemove.prepend(createJob(item));
-                removedDirectory = item->_file + "/";
+                removedDirectory = item->_file + QLatin1Char('/');
             } else {
                 directories.top().second->appendTask(item);
             }
@@ -485,7 +485,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
             if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
                 // This might be a file or a directory on the local side. If it's a
                 // directory we want to skip processing items inside it.
-                maybeConflictDirectory = item->_file + "/";
+                maybeConflictDirectory = item->_file + QLatin1Char('/');
             }
         }
     }

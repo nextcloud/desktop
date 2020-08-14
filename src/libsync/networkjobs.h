@@ -27,7 +27,7 @@ class QJsonObject;
 namespace OCC {
 
 /** Strips quotes and gzip annotations */
-OWNCLOUDSYNC_EXPORT QByteArray parseEtag(const char *header);
+OWNCLOUDSYNC_EXPORT QByteArray parseEtag(const QByteArray &header);
 
 struct HttpError
 {

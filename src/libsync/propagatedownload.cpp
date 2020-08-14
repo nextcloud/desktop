@@ -48,7 +48,7 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
 {
     QString tmpFileName;
     QString tmpPath;
-    int slashPos = previous.lastIndexOf('/');
+    int slashPos = previous.lastIndexOf(QLatin1Char('/'));
     // work with both pathed filenames and only filenames
     if (slashPos == -1) {
         tmpFileName = previous;
@@ -60,9 +60,9 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
     int overhead = 1 + 1 + 2 + 8; // slash dot dot-tilde ffffffff"
     int spaceForFileName = qMin(254, tmpFileName.length() + overhead) - overhead;
     if (tmpPath.length() > 0) {
-        return tmpPath + '/' + '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+        return QStringLiteral("%1/.%2.~%3").arg(tmpPath, tmpFileName.left(spaceForFileName), QString::number(uint(qrand() % 0xFFFFFFFF), 16));
     } else {
-        return '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+        return QStringLiteral(".%1.~%2").arg(tmpFileName.left(spaceForFileName), QString::number(uint(qrand() % 0xFFFFFFFF), 16));
     }
 }
 
@@ -84,7 +84,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
 GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     qint64 resumeStart, QObject *parent)
-    : GETJob(account, url.toEncoded(), parent)
+    : GETJob(account, url.toString(QUrl::FullyEncoded), parent)
     , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
@@ -201,9 +201,9 @@ void GETFileJob::slotMetaDataChanged()
     }
 
     qint64 start = 0;
-    QByteArray ranges = reply()->rawHeader("Content-Range");
+    QString ranges = QString::fromUtf8(reply()->rawHeader("Content-Range"));
     if (!ranges.isEmpty()) {
-        QRegExp rx("bytes (\\d+)-");
+        QRegExp rx(QStringLiteral("bytes (\\d+)-"));
         if (rx.indexIn(ranges) >= 0) {
             start = rx.cap(1).toLongLong();
         }
@@ -328,7 +328,7 @@ void GETFileJob::slotReadyRead()
 
 void GETJob::onTimedOut()
 {
-    qCWarning(lcGetJob) << "Timeout" << (reply() ? reply()->request().url() : path());
+    qCWarning(lcGetJob) << "Timeout" << (reply() ? reply()->request().url().path() : path());
     if (!reply())
         return;
     _errorString = tr("Connection Timeout");
@@ -521,7 +521,7 @@ void PropagateDownloadFile::startDownload()
         pi._tmpfile = tmpFileName;
         pi._valid = true;
         propagator()->_journal->setDownloadInfo(_item->_file, pi);
-        propagator()->_journal->commit("download file start");
+        propagator()->_journal->commit(QStringLiteral("download file start"));
     }
 
     startFullDownload();
@@ -687,7 +687,7 @@ void PropagateDownloadFile::slotGetFinished()
         // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
         qCDebug(lcPropagateDownload) << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();
         FileSystem::remove(_tmpFile.fileName());
-        done(SyncFileItem::SoftError, QLatin1String("Broken webserver returning empty content length for non-empty file on resume"));
+        done(SyncFileItem::SoftError, QStringLiteral("Broken webserver returning empty content length for non-empty file on resume"));
         return;
     }
 
@@ -776,14 +776,14 @@ namespace { // Anonymous namespace for the recall feature
     {
         QString recallFileName(fn);
         // Add _recall-XXXX  before the extension.
-        int dotLocation = recallFileName.lastIndexOf('.');
+        int dotLocation = recallFileName.lastIndexOf(QLatin1Char('.'));
         // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-        if (dotLocation <= recallFileName.lastIndexOf('/') + 1) {
+        if (dotLocation <= recallFileName.lastIndexOf(QLatin1Char('/')) + 1) {
             dotLocation = recallFileName.size();
         }
 
-        QString timeString = QDateTime::currentDateTimeUtc().toString("yyyyMMdd-hhmmss");
-        recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
+        QString timeString = QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyyMMdd-hhmmss"));
+        recallFileName.insert(dotLocation, QStringLiteral("_.sys.admin#recall#-") + timeString);
 
         return recallFileName;
     }
@@ -806,7 +806,7 @@ namespace { // Anonymous namespace for the recall feature
             QByteArray line = file.readLine();
             line.chop(1); // remove trailing \n
 
-            QString recalledFile = QDir::cleanPath(baseDir.filePath(line));
+            QString recalledFile = QDir::cleanPath(baseDir.filePath(QString::fromUtf8(line)));
             if (!recalledFile.startsWith(folderPath) || !recalledFile.startsWith(baseDir.path())) {
                 qCWarning(lcPropagateDownload) << "Ignoring recall of " << recalledFile;
                 continue;
@@ -935,7 +935,7 @@ void PropagateDownloadFile::downloadFinished()
     emit propagator()->touchedFile(fn);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
-        qCWarning(lcPropagateDownload) << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
+        qCWarning(lcPropagateDownload) << QStringLiteral("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly
         if (FileSystem::isFileLocked(fn)) {
@@ -996,14 +996,14 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         return;
     }
     propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
-    propagator()->_journal->commit("download file start2");
+    propagator()->_journal->commit(QStringLiteral("download file start2"));
 
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 
     // handle the special recall file
     if (!_item->_remotePerm.hasPermission(RemotePermissions::IsShared)
         && (_item->_file == QLatin1String(".sys.admin#recall#")
-               || _item->_file.endsWith("/.sys.admin#recall#"))) {
+               || _item->_file.endsWith(QLatin1String("/.sys.admin#recall#")))) {
         handleRecallFile(fn, propagator()->_localDir, *propagator()->_journal);
     }
 

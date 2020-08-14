@@ -65,9 +65,9 @@ QString Account::davPath() const
     }
 
     // make sure to have a trailing slash
-    if (!_davPath.endsWith('/')) {
+    if (!_davPath.endsWith(QLatin1Char('/'))) {
         QString dp(_davPath);
-        dp.append('/');
+        dp.append(QLatin1Char('/'));
         return dp;
     }
     return _davPath;
@@ -119,7 +119,7 @@ QString Account::displayName() const
         host.append(QLatin1Char(':'));
         host.append(QString::number(port));
     }
-    QString dn = QString("%1 (%2)").arg(host, user);
+    QString dn = QStringLiteral("%1 (%2)").arg(host, user);
     return dn;
 }
 
@@ -186,7 +186,7 @@ QUrl Account::davUrl() const
 QUrl Account::deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const
 {
     return Utility::concatUrlPath(_userVisibleUrl,
-        QLatin1String("/index.php/f/") + QUrl::toPercentEncoding(QString::fromLatin1(numericFileId)));
+        QStringLiteral("/index.php/f/") + QString::fromLatin1(QUrl::toPercentEncoding(QString::fromLatin1(numericFileId))));
 }
 
 /**
@@ -213,7 +213,7 @@ void Account::lendCookieJarTo(QNetworkAccessManager *guest)
 
 QString Account::cookieJarPath()
 {
-    return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/cookies" + id() + ".db";
+    return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QStringLiteral("/cookies") + id() + QStringLiteral(".db");
 }
 
 void Account::resetNetworkAccessManager()
@@ -332,7 +332,7 @@ QVariant Account::credentialSetting(const QString &key) const
 {
     if (_credentials) {
         QString prefix = _credentials->authType();
-        QVariant value = _settingsMap.value(prefix + "_" + key);
+        QVariant value = _settingsMap.value(prefix + QLatin1Char('_') + key);
         if (value.isNull()) {
             value = _settingsMap.value(key);
         }
@@ -345,7 +345,7 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
 {
     if (_credentials) {
         QString prefix = _credentials->authType();
-        _settingsMap.insert(prefix + "_" + key, value);
+        _settingsMap.insert(prefix + QLatin1Char('_') + key, value);
     }
 }
 
@@ -457,7 +457,7 @@ QString Account::serverVersion() const
 int Account::serverVersionInt() const
 {
     // FIXME: Use Qt 5.5 QVersionNumber
-    auto components = serverVersion().split('.');
+    auto components = serverVersion().split(QLatin1Char('.'));
     return makeServerVersion(components.value(0).toInt(),
         components.value(1).toInt(),
         components.value(2).toInt());
@@ -475,7 +475,7 @@ bool Account::serverVersionUnsupported() const
         return false;
     }
     // Older version which is not "end of life" according to https://github.com/owncloud/core/wiki/Maintenance-and-Release-Schedule
-    return serverVersionInt() < makeServerVersion(10, 0, 0) || serverVersion().endsWith("Nextcloud");
+    return serverVersionInt() < makeServerVersion(10, 0, 0) || serverVersion().endsWith(QLatin1String("Nextcloud"));
 }
 
 void Account::setServerVersion(const QString &version)

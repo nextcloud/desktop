@@ -115,7 +115,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     QObject::connect(propfindJob, &PropfindJob::finishedWithError,
         this, [=] { return callback(false); });
     QObject::connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
-        auto result = values.value(QLatin1String("size")).toLongLong();
+        auto result = values.value(QStringLiteral("size")).toLongLong();
         if (result >= limit) {
             // we tell the UI there is a new folder
             emit newBigFolder(path, false);
@@ -144,7 +144,7 @@ QString DiscoveryPhase::adjustRenamedPath(const QString &original, SyncFileItem:
 QString adjustRenamedPath(const QMap<QString, QString> &renamedItems, const QString &original)
 {
     int slashPos = original.size();
-    while ((slashPos = original.lastIndexOf('/', slashPos - 1)) > 0) {
+    while ((slashPos = original.lastIndexOf(QLatin1Char('/'), slashPos - 1)) > 0) {
         auto it = renamedItems.constFind(original.left(slashPos));
         if (it != renamedItems.constEnd()) {
             return *it + original.mid(slashPos);
@@ -250,7 +250,7 @@ DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const Account
 // Use as QRunnable
 void DiscoverySingleLocalDirectoryJob::run() {
     QString localPath = _localPath;
-    if (localPath.endsWith('/')) // Happens if _currentFolder._local.isEmpty()
+    if (localPath.endsWith(QLatin1Char('/'))) // Happens if _currentFolder._local.isEmpty()
         localPath.chop(1);
 
     auto dh = csync_vio_local_opendir(localPath);
@@ -284,7 +284,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
         OC_ASSERT(codec);
         QTextCodec::ConverterState state;
-        i.name = codec->toUnicode(dirent->path, dirent->path.size(), &state);
+        i.name = codec->toUnicode(dirent->path.constData(), dirent->path.size(), &state);
         if (state.invalidChars > 0 || state.remainingChars > 0) {
             emit childIgnored(true);
             auto item = SyncFileItemPtr::create();
@@ -380,11 +380,11 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
         QString property = it.key();
         QString value = it.value();
-        if (property == "resourcetype") {
-            result.isDirectory = value.contains("collection");
-        } else if (property == "getlastmodified") {
-            result.modtime = oc_httpdate_parse(value.toUtf8());
-        } else if (property == "getcontentlength") {
+        if (property == QLatin1String("resourcetype")) {
+            result.isDirectory = value.contains(QLatin1String("collection"));
+        } else if (property == QLatin1String("getlastmodified")) {
+            result.modtime = oc_httpdate_parse(value.toUtf8().constData());
+        } else if (property == QLatin1String("getcontentlength")) {
             // See #4573, sometimes negative size values are returned
             bool ok = false;
             qlonglong ll = value.toLongLong(&ok);
@@ -393,19 +393,19 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
             } else {
                 result.size = 0;
             }
-        } else if (property == "getetag") {
+        } else if (property == QLatin1String("getetag")) {
             result.etag = Utility::normalizeEtag(value.toUtf8());
-        } else if (property == "id") {
+        } else if (property == QLatin1String("id")) {
             result.fileId = value.toUtf8();
-        } else if (property == "downloadURL") {
+        } else if (property == QLatin1String("downloadURL")) {
             result.directDownloadUrl = value;
-        } else if (property == "dDC") {
+        } else if (property == QLatin1String("dDC")) {
             result.directDownloadCookies = value;
-        } else if (property == "permissions") {
+        } else if (property == QLatin1String("permissions")) {
             result.remotePerm = RemotePermissions::fromServerString(value);
-        } else if (property == "checksums") {
+        } else if (property == QLatin1String("checksums")) {
             result.checksumHeader = findBestChecksum(value.toUtf8());
-        } else if (property == "share-types" && !value.isEmpty()) {
+        } else if (property == QLatin1String("share-types") && !value.isEmpty()) {
             // Since QMap is sorted, "share-types" is always after "permissions".
             if (result.remotePerm.isNull()) {
                 qWarning() << "Server returned a share type, but no permissions?";
@@ -426,13 +426,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
     if (!_ignoredFirst) {
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
-        if (map.contains("permissions")) {
-            auto perm = RemotePermissions::fromServerString(map.value("permissions"));
+        if (map.contains(QStringLiteral("permissions"))) {
+            auto perm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
             emit firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
-        if (map.contains("data-fingerprint")) {
-            _dataFingerprint = map.value("data-fingerprint").toUtf8();
+        if (map.contains(QStringLiteral("data-fingerprint"))) {
+            _dataFingerprint = map.value(QStringLiteral("data-fingerprint")).toUtf8();
             if (_dataFingerprint.isEmpty()) {
                 // Placeholder that means that the server supports the feature even if it did not set one.
                 _dataFingerprint = "[empty]";
@@ -441,7 +441,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
     } else {
 
         RemoteInfo result;
-        int slash = file.lastIndexOf('/');
+        int slash = file.lastIndexOf(QLatin1Char('/'));
         result.name = file.mid(slash + 1);
         result.size = -1;
         propertyMapToRemoteInfo(map, result);
@@ -465,9 +465,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
     }
 
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
-    if (map.contains("getetag")) {
+    if (map.contains(QStringLiteral("getetag"))) {
         if (_firstEtag.isEmpty()) {
-            _firstEtag = parseEtag(map.value("getetag").toUtf8()); // for directory itself
+            _firstEtag = QString::fromUtf8(parseEtag(map.value(QStringLiteral("getetag")).toUtf8())); // for directory itself
         }
     }
 }
@@ -497,7 +497,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     QString msg = r->errorString();
     qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
     if (r->error() == QNetworkReply::NoError
-        && !contentType.contains("application/xml; charset=utf-8")) {
+        && !contentType.contains(QLatin1String("application/xml; charset=utf-8"))) {
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
 
     }

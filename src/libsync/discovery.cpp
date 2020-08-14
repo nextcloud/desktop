@@ -88,7 +88,7 @@ void ProcessDirectoryJob::process()
     // fetch all the name from the DB
     auto pathU8 = _currentFolder._original.toUtf8();
     if (!_discoveryData->_statedb->listFilesInPath(pathU8, [&](const SyncJournalFileRecord &rec) {
-            auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.constData() + (pathU8.size() + 1));
+            auto name = pathU8.isEmpty() ? QString::fromUtf8(rec._path) : QString::fromUtf8(rec._path.constData() + (pathU8.size() + 1));
             if (rec.isVirtualFile() && isVfsWithSuffix())
                 chopVirtualFileSuffix(name);
             auto &dbEntry = entries[name].dbEntry;
@@ -148,7 +148,7 @@ void ProcessDirectoryJob::process()
             // corresponding _original and _local paths are right.
 
             if (e.dbEntry.isValid()) {
-                path._original = e.dbEntry._path;
+                path._original = QString::fromUtf8(e.dbEntry._path);
             } else if (e.localEntry.isVirtualFile) {
                 // We don't have a db entry - but it should be at this path
                 path._original = PathTuple::pathAppend(_currentFolder._original,  e.localEntry.name);
@@ -165,7 +165,7 @@ void ProcessDirectoryJob::process()
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
         // Recall file shall not be ignored (#4420)
-        bool isHidden = e.localEntry.isHidden || (f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
+        bool isHidden = e.localEntry.isHidden || (f.first[0] == QLatin1Char('.') && f.first != QLatin1String(".sys.admin#recall#"));
         if (handleExcluded(path._target, e.localEntry.name,
                 e.localEntry.isDirectory || e.serverEntry.isDirectory, isHidden,
                 e.localEntry.isSymLink))
@@ -241,12 +241,12 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             item->_errorString = tr("File is listed on the ignore list.");
             break;
         case CSYNC_FILE_EXCLUDE_INVALID_CHAR:
-            if (item->_file.endsWith('.')) {
+            if (item->_file.endsWith(QLatin1Char('.'))) {
                 item->_errorString = tr("File names ending with a period are not supported on this file system.");
             } else {
                 char invalid = '\0';
-                foreach (char x, QByteArray("\\:?*\"<>|")) {
-                    if (item->_file.contains(x)) {
+                for (const char x : QByteArrayLiteral("\\:?*\"<>|")) {
+                    if (item->_file.contains(QLatin1Char(x))) {
                         invalid = x;
                         break;
                     }
@@ -333,7 +333,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // VFS suffixed files on the server are ignored
     if (isVfsWithSuffix()) {
         if (hasVirtualFileSuffix(serverEntry.name)
-            || (localEntry.isVirtualFile && !dbEntry.isVirtualFile() && hasVirtualFileSuffix(dbEntry._path))) {
+            || (localEntry.isVirtualFile && !dbEntry.isVirtualFile() && hasVirtualFileSuffix(QString::fromUtf8(dbEntry._path)))) {
             item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             item->_errorString = tr("File has extension reserved for virtual files.");
             _childIgnored = true;
@@ -845,7 +845,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // Remove the spurious file if it looks like a placeholder file
             // (we know placeholder files contain " ")
             if (localEntry.size <= 1) {
-                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << _currentFolder._local + "/" + localEntry.name;
+                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << _currentFolder._local + QLatin1Char('/') + localEntry.name;
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
             } else {
@@ -951,7 +951,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         } else {
             // Signal to future checkPermissions() to forbid the REMOVE and set to restore instead
             qCInfo(lcDisco) << "Preventing future remove on source" << originalPath;
-            _discoveryData->_forbiddenDeletes[originalPath + '/'] = true;
+            _discoveryData->_forbiddenDeletes[originalPath + QLatin1Char('/')] = true;
         }
         return;
     }
@@ -998,7 +998,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) {
             auto tmp_path = path;
             auto tmp_recurseQueryServer = recurseQueryServer;
-            if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
+            if (!etag || (etag->toUtf8() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
                 qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                 // Can't be a rename, leave it as a new.
                 postProcessLocalNew();
@@ -1006,7 +1006,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 // In case the deleted item was discovered in parallel
                 _discoveryData->findAndCancelDeletedJob(originalPath);
                 processRename(tmp_path);
-                tmp_recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
+                tmp_recurseQueryServer = etag->toUtf8() == base._etag ? ParentNotChanged : NormalQuery;
             }
             processFileFinalize(item, tmp_path, item->isDirectory(), NormalQuery, tmp_recurseQueryServer);
             _pendingAsyncJobs--;
@@ -1232,7 +1232,7 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
         break;
     }
     case CSYNC_INSTRUCTION_REMOVE: {
-        QString fileSlash = item->_file + '/';
+        QString fileSlash = item->_file + QLatin1Char('/');
         auto forbiddenIt = _discoveryData->_forbiddenDeletes.upperBound(fileSlash);
         if (forbiddenIt != _discoveryData->_forbiddenDeletes.begin())
             forbiddenIt -= 1;
@@ -1276,7 +1276,7 @@ auto ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const 
     auto filePerms = srcPerm;
     //true when it is just a rename in the same directory. (not a move)
     bool isRename = srcPath.startsWith(_currentFolder._original)
-        && srcPath.lastIndexOf('/') == _currentFolder._original.size();
+        && srcPath.lastIndexOf(QLatin1Char('/')) == _currentFolder._original.size();
     // Check if we are allowed to move to the destination.
     bool destinationOK = true;
     bool destinationNewOK = true;
