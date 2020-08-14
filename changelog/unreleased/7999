@@ -1,0 +1,7 @@
+Bugfix: Fix support of adler32 checksums with Windows virtual files support
+
+The validation device reported a size of 0 and thus the computations of the 
+checksums was aborted.
+
+https://github.com/owncloud/client/issues/7999
+https://github.com/owncloud/client/pull/8015
