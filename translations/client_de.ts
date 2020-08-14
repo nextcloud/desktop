@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Display mnemonic</source>
-        <translation>Mnemonic anzeigen</translation>
+        <translation>Mnemonik anzeigen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -4157,7 +4157,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation>ZRL öffnen</translation>
+        <translation>URL öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>
