@@ -3492,7 +3492,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Atverti pagrindinį dialogą</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="90"/>
@@ -3502,7 +3502,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="91"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Išeiti iš %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="172"/>
@@ -4040,7 +4040,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Šalinti paskyrą</translation>
     </message>
 </context>
 <context>
@@ -4154,12 +4154,12 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation type="unfinished"/>
+        <translation>Atverti URL</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Atverti bendrinimo dialogą</translation>
     </message>
 </context>
 <context>
