@@ -43,7 +43,7 @@ using namespace OCC::Utility;
     }
 
     void slotDownError( const QString& errMsg ) {
-         QVERIFY(_expectedError == errMsg );
+         QCOMPARE(_expectedError, errMsg);
          _errorSeen = true;
     }
 
@@ -196,7 +196,7 @@ using namespace OCC::Utility;
 
         QTRY_VERIFY(_successDown);
 
-        _expectedError = QLatin1String("The downloaded file does not match the checksum, it will be resumed.");
+        _expectedError = QStringLiteral("The downloaded file does not match the checksum, it will be resumed. '543345' != '%1'").arg(QString::fromUtf8(_expected));
         _errorSeen = false;
         file->seek(0);
         vali->start(_testfile, "Adler32:543345");
