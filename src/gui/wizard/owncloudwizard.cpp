@@ -246,20 +246,8 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
     switch (bestVfsMode)
     {
     case Vfs::WindowsCfApi:
-        msgBox = new QMessageBox(
-            QMessageBox::Warning,
-            tr("Enable technical preview feature?"),
-            tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
-               "Instead a virtual file will be created for each file that exists on the server. "
-               "When a file is opened its contents will be downloaded automatically. "
-               "Alternatively, files can be downloaded manually by using their context menu."
-               "\n\n"
-               "The virtual files mode is mutually exclusive with selective sync. "
-               "Currently unselected folders will be translated to online-only folders "
-               "and your selective sync settings will be reset."), QMessageBox::NoButton, receiver);
-        acceptButton = msgBox->addButton(tr("Enable virtual files"), QMessageBox::AcceptRole);
-        msgBox->addButton(tr("Continue to use selective sync"), QMessageBox::RejectRole);
-        break;
+        callback(true);
+        return;
     case Vfs::WithSuffix:
         msgBox = new QMessageBox(
             QMessageBox::Warning,

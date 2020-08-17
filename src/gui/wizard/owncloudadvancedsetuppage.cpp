@@ -61,6 +61,12 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
+    connect(_ui.rVirtualFileSync, &QRadioButton::toggled, this, [this](bool checked) {
+        if (checked) {
+            _ui.lSelectiveSyncSizeLabel->clear();
+            _selectiveSyncBlacklist.clear();
+        }
+    });
     connect(_ui.bSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     connect(_ui.rManualFolder, &QAbstractButton::clicked, this, [this] { setRadioChecked(_ui.rManualFolder); });
 
@@ -82,8 +88,14 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
         _ui.confTraillingSizeLabel->hide();
     }
 
-    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately %1").arg(
-                                      bestAvailableVfsMode() == Vfs::WindowsCfApi ? tr("(tech preview)") : tr("(experimental)")));
+    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
+
+#ifdef Q_OS_WIN
+    if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
+        qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
+        setRadioChecked(_ui.rVirtualFileSync);
+    }
+#endif
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -365,9 +377,6 @@ void OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked()
         OwncloudWizard::askExperimentalVirtualFilesFeature(this, [this](bool enable) {
             if (!enable)
                 return;
-
-            _ui.lSelectiveSyncSizeLabel->setText(QString());
-            _selectiveSyncBlacklist.clear();
             setRadioChecked(_ui.rVirtualFileSync);
         });
     }
