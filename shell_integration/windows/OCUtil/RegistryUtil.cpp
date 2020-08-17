@@ -12,7 +12,7 @@
  * details.
  */
 
-#include "stdafx.h"
+#include <windows.h>
 
 #include "RegistryUtil.h"
 

@@ -12,8 +12,6 @@
 * details.
 */
 
-#include "stdafx.h"
-
 #include "OCContextMenu.h"
 #include "OCClientInterface.h"
 
@@ -21,6 +19,7 @@
 #include <shlwapi.h>
 #include <shellapi.h>
 #include <StringUtil.h>
+#include <strsafe.h>
 
 extern long g_cDllRef;
 

@@ -12,10 +12,10 @@
  * details.
  */
 
-#include "stdafx.h"
-
 #include "OCOverlayRegistrationHandler.h"
+#include "OverlayConstants.h"
 
+#include <windows.h>
 #include <iostream>
 #include <fstream>
 

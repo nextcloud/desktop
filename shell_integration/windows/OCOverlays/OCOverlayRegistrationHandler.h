@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <windows.h>
+
 class __declspec(dllexport) OCOverlayRegistrationHandler 
 {
     public:

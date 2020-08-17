@@ -12,7 +12,8 @@
  * details.
  */
 
-#include "stdafx.h"
+#include <windows.h>
+#include <new>
 
 #include "OCOverlayFactory.h"
 #include "OCOverlay.h"

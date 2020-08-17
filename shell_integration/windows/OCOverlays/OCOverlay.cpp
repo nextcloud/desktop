@@ -12,8 +12,6 @@
  * details.
  */
 
-#include "stdafx.h"
-
 #include "OCOverlay.h"
 
 #include "OCOverlayFactory.h"
@@ -22,8 +20,6 @@
 
 #include "UtilConstants.h"
 #include "RemotePathChecker.h"
-
-#include "resource.h"
 
 #include <algorithm>
 #include <iostream>

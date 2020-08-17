@@ -12,8 +12,6 @@
 * details.
 */
 
-#include "stdafx.h"
-
 #include "OCContextMenuFactory.h"
 #include "OCContextMenu.h"
 #include <new>
