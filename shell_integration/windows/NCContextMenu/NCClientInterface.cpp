@@ -49,29 +49,23 @@ NCClientInterface::ContextMenuInfo NCClientInterface::FetchInfo(const std::wstri
     int sleptCount = 0;
     while (sleptCount < 5) {
         if (socket.ReadLine(&response)) {
-			if (StringUtil::begins_with(response, wstring(L"REGISTER_DRIVEFS:"))) {
-				wstring responsePath = response.substr(17); // length of REGISTER_DRIVEFS:
-				info._defaultFileStreamLetterDrive = responsePath;
-				//setLetterDrive(responsePath);
-			}
-			else if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+            if (StringUtil::begins_with(response, wstring(L"REGISTER_DRIVEFS:"))) {
+                wstring responsePath = response.substr(17); // length of REGISTER_DRIVEFS:
+                info._defaultFileStreamLetterDrive = responsePath;
+                //setLetterDrive(responsePath);
+            } else if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH
                 info.watchedDirectories.push_back(responsePath);
-            }
-            else if (StringUtil::begins_with(response, wstring(L"SHARE_MENU_TITLE:"))) {
+            } else if (StringUtil::begins_with(response, wstring(L"SHARE_MENU_TITLE:"))) {
                 info.shareMenuTitle = response.substr(17); // length of SHARE_MENU_TITLE:
-            }
-            else if (StringUtil::begins_with(response, wstring(L"STREAM_SUBMENU_TITLE:"))) {
+            } else if (StringUtil::begins_with(response, wstring(L"STREAM_SUBMENU_TITLE:"))) {
                 info.streamSubMenuTitle = response.substr(21);
-            }
-            else if (StringUtil::begins_with(response, wstring(L"STREAM_OFFLINE_ITEM_TITLE:"))) {
+            } else if (StringUtil::begins_with(response, wstring(L"STREAM_OFFLINE_ITEM_TITLE:"))) {
                 info.streamOfflineItemTitle = response.substr(26);
-            }
-            else if (StringUtil::begins_with(response, wstring(L"STREAM_ONLINE_ITEM_TITLE:"))) {
+            } else if (StringUtil::begins_with(response, wstring(L"STREAM_ONLINE_ITEM_TITLE:"))) {
                 info.streamOnlineItemTitle = response.substr(25);
                 break; // Stop once we received the last sent request
             }
-
         }
         else {
             Sleep(50);

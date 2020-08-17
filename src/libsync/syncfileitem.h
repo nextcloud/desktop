@@ -109,7 +109,7 @@ public:
         , _inode(0)
         , _previousSize(0)
         , _previousModtime(0)
-		, _virtualfile(1)
+        , _virtualfile(1)
     {
     }
 
@@ -256,8 +256,8 @@ public:
 
     QString _directDownloadUrl;
     QString _directDownloadCookies;
-	// virtual drive
-	quint64 _virtualfile;
+    // virtual drive
+    quint64 _virtualfile;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

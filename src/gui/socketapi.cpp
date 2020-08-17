@@ -345,16 +345,15 @@ void SocketApi::slotUnregisterPath(const QString &alias)
         return;
 
     Folder *f = FolderMan::instance()->folder(alias);
-	if (f)
-	{
+    if (f) {
 #if defined(Q_OS_WIN)
-		ConfigFile Cfg;
-		QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append(":/");
-		broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), FileStreamLetterDrive, QString()), true);
+        ConfigFile Cfg;
+        QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append(":/");
+        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), FileStreamLetterDrive, QString()), true);
 #elif defined(Q_OS_MAC)
-		broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
+        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
 #endif
-	}
+    }
 
     _registeredAliases.remove(alias);
 }
@@ -376,13 +375,13 @@ void SocketApi::slotUpdateFolderView(Folder *f)
             QString rootPath = removeTrailingSlash(f->path());
 
 #if defined(Q_OS_WIN)
-			ConfigFile Cfg;
-			QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append(":");
-			broadcastStatusPushMessage(FileStreamLetterDrive, f->syncEngine().syncFileStatusTracker().fileStatus(""));
-			broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), FileStreamLetterDrive.append("/")));
+            ConfigFile Cfg;
+            QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append(":");
+            broadcastStatusPushMessage(FileStreamLetterDrive, f->syncEngine().syncFileStatusTracker().fileStatus(""));
+            broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), FileStreamLetterDrive.append("/")));
 #elif defined(Q_OS_MAC)
-			broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
-			broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
+            broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
+            broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
 #endif
         } else {
             qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
@@ -455,8 +454,8 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
     Q_ASSERT(!systemPath.endsWith('/'));
 #if defined(Q_OS_WIN)
-	ConfigFile Cfg;
-	QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append("://");
+    ConfigFile Cfg;
+    QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append("://");
     uint directoryHash = qHash(systemPath.left(FileStreamLetterDrive.lastIndexOf('/')));
 #elif defined(Q_OS_MAC)
     uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
@@ -467,9 +466,9 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
         QString systemPath2 = systemPath;
         systemPath2.replace(0, relative_prefix.length(), Cfg.defaultFileStreamLetterDrive().toUpper().append(":"));
         QString msg2 = buildMessage(QLatin1String("STATUS"), systemPath2, fileStatus.toSocketAPIString());
-		listener.sendMessageIfDirectoryMonitored(msg2, directoryHash);
+        listener.sendMessageIfDirectoryMonitored(msg2, directoryHash);
 #elif defined(Q_OS_MAC)
-		listener.sendMessageIfDirectoryMonitored(msg, directoryHash);
+        listener.sendMessageIfDirectoryMonitored(msg, directoryHash);
 #endif
     }
 }
@@ -482,11 +481,11 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketLi
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argumentC, SocketListener *listener)
 {
-	QString argument = argumentC;
-	QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-	argument.replace(0, 3, relative_prefix);
+    QString argument = argumentC;
+    QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+    argument.replace(0, 3, relative_prefix);
 
-	QString statusString;
+    QString statusString;
 
     auto fileData = FileData::get(argument);
     if (!fileData.folder) {
@@ -502,19 +501,19 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argumentC, SocketLis
         // Let the listener know that it should now send status pushes for sibblings of this file.
         QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf('/'));
 #if defined(Q_OS_WIN)
-		ConfigFile Cfg;
-		QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append("://");
-		listener->registerMonitoredDirectory(qHash(FileStreamLetterDrive));
+        ConfigFile Cfg;
+        QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append("://");
+        listener->registerMonitoredDirectory(qHash(FileStreamLetterDrive));
 #elif defined(Q_OS_MAC)
-		listener->registerMonitoredDirectory(qHash(directory));
+        listener->registerMonitoredDirectory(qHash(directory));
 #endif
         SyncFileStatus fileStatus = fileData.syncFileStatus();
         statusString = fileStatus.toSocketAPIString();
     }
 
-	//QString message2 = message;
-	//QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-	argument.replace(0, relative_prefix.length(), QString("X:\\"));
+    //QString message2 = message;
+    //QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+    argument.replace(0, relative_prefix.length(), QString("X:\\"));
 
     const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') % QDir::toNativeSeparators(argument);
 

@@ -77,7 +77,7 @@ public slots:
     void slotownCloudWizardDone(int);
     void slotDeleteOnlineFiles();
     void slotCrash();
-	void slotMountVirtualDrive(AccountState *accountState);
+    void slotMountVirtualDrive(AccountState *accountState);
 
 protected:
     void parseOptions(const QStringList &);
@@ -129,7 +129,7 @@ private:
 
     QNetworkConfigurationManager _networkConfigurationManager;
     QTimer _checkConnectionTimer;
-	QTimer *_cronDeleteOnlineFiles; //< Variable for cron delete online files task
+    QTimer *_cronDeleteOnlineFiles; //< Variable for cron delete online files task
 
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;

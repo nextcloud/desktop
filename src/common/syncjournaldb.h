@@ -66,7 +66,7 @@ public:
 
     /// Like setFileRecord, but preserves checksums
     bool setFileRecordMetadata(const SyncJournalFileRecord &record);
-	/// Like setFileRecord, but only changes virtualfile value
+    /// Like setFileRecord, but only changes virtualfile value
     bool setFileRecordVirtualFile(const SyncJournalFileRecord &record);
 
     bool deleteFileRecord(const QString &filename, bool recursively = false);
@@ -237,86 +237,86 @@ public:
     void clearFileTable();
 
 	enum SyncMode {
-		SYNCMODE_NONE = '\0',
-		SYNCMODE_ONLINE = 'O',
-		SYNCMODE_OFFLINE = 'S',
-	};
+        SYNCMODE_NONE = '\0',
+        SYNCMODE_ONLINE = 'O',
+        SYNCMODE_OFFLINE = 'S',
+    };
 
-	enum SyncModeDownload {
-		SYNCMODE_DOWNLOADED_NONE = '\0',
-		SYNCMODE_DOWNLOADED_NO = 'N',
-		SYNCMODE_DOWNLOADED_YES = 'Y',
-	};
+    enum SyncModeDownload {
+        SYNCMODE_DOWNLOADED_NONE = '\0',
+        SYNCMODE_DOWNLOADED_NO = 'N',
+        SYNCMODE_DOWNLOADED_YES = 'Y',
+    };
 
-	/**
+    /**
 	* Retrieves the sync mode of the provided path
 	*
 	* @path File path
 	* @return integer representing if file has been donwloaded.
 	*/
-	SyncModeDownload getSyncModeDownload(QString const & path);
+    SyncModeDownload getSyncModeDownload(QString const &path);
 
-	/**
+    /**
 	* Sets or registers the sync downloaded boolean
 	*
 	* @path File path
 	* @N, Y : download option
 	* @return Number of modified records on success. -1 on failure.
 	*/
-	int setSyncModeDownload(QString const & path, SyncModeDownload down);
+    int setSyncModeDownload(QString const &path, SyncModeDownload down);
 
-	/**
+    /**
 	* Retrieves the sync mode of the provided path
 	*
 	* @path File path
 	* @return integer representing the download mode in case of success, -1 on failure. If multiple paths match the @path parameter, the first result will be returned
 	*/
-	SyncMode getSyncMode(QString const & path);
+    SyncMode getSyncMode(QString const &path);
 
-	/**
+    /**
 	* Retrieves the sync mode of the provided path
 	*
 	* @return the list of paths in the
 	*/
-	QList<QString> getSyncModePaths();
+    QList<QString> getSyncModePaths();
 
-	/**
+    /**
 	* Sets or registers the sync mode
 	*
 	* @path File path
 	* @mode New download mode
 	* @return Number of modified records on success. -1 on failure.
 	*/
-	int setSyncMode(QString const & path, SyncMode mode);
+    int setSyncMode(QString const &path, SyncMode mode);
 
-	/**
+    /**
 	* Deletes syncmode register matching the provided path
 	*
 	* @path File path
 	* @return Number of affected records on success. -1 on failure.
 	*/
-	int deleteSyncMode(QString const & path);
+    int deleteSyncMode(QString const &path);
 
-	/**
+    /**
 	* @brief  Retrieves the last access local datetime of the given path
 	* @path File path
 	* @return On success, QDateTime representing the last access time. On failure, an invalid QDateTime object with null date and time.
 	*/
-	QDateTime getLastAccess(QString const & path);
+    QDateTime getLastAccess(QString const &path);
 
-	/**
+    /**
 	* @brief  Sets the last access time to the current local time in format yyyy-MM-dd HH:mm:ss
 	* @path File path
 	* @return Number of modified records on success. -1 on failure.
 	*/
-	int updateLastAccess(QString const & path);
+    int updateLastAccess(QString const &path);
 
-	/**
+    /**
 	* @brief  Returns the difference in seconds between the current datetime and the record lastAccessDateTime
 	* @path File path
 	* @return Seconds since last accesson success. -1 on failure.
 	*/
-	qint64 secondsSinceLastAccess(QString const & path);
+    qint64 secondsSinceLastAccess(QString const &path);
 
 private:
     int getFileRecordCount();
@@ -344,8 +344,8 @@ private:
     int _transaction;
     bool _metadataTableIsEmpty;
 
-	SqlQuery _getFileRecordQuery;
-	SqlQuery _setFileRecordQuery;
+    SqlQuery _getFileRecordQuery;
+    SqlQuery _setFileRecordQuery;
     SqlQuery _getFileRecordQueryByMangledName;
     SqlQuery _getFileRecordQueryByInode;
     SqlQuery _getFileRecordQueryByFileId;
@@ -370,18 +370,18 @@ private:
     SqlQuery _getDataFingerprintQuery;
     SqlQuery _setDataFingerprintQuery1;
     SqlQuery _setDataFingerprintQuery2;
-	SqlQuery _getSyncModeDownloadQuery;
-	SqlQuery _setSyncModeDownloadQuery;
+    SqlQuery _getSyncModeDownloadQuery;
+    SqlQuery _setSyncModeDownloadQuery;
     SqlQuery _getConflictRecordQuery;
     SqlQuery _setConflictRecordQuery;
     SqlQuery _deleteConflictRecordQuery;
 
-		SqlQuery _getSyncModeQuery;
-		SqlQuery _setSyncModeQuery;
-		SqlQuery _deleteSyncModeQuery;
-		SqlQuery _getSyncModePathsQuery;
-		SqlQuery _getLastAccessQuery;
-		SqlQuery _setLastAccessQuery;
+    SqlQuery _getSyncModeQuery;
+    SqlQuery _setSyncModeQuery;
+    SqlQuery _deleteSyncModeQuery;
+    SqlQuery _getSyncModePathsQuery;
+    SqlQuery _getLastAccessQuery;
+    SqlQuery _setLastAccessQuery;
 
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *
@@ -393,7 +393,7 @@ private:
      *
      * The list is cleared on close() (end of sync run) and explicitly with
      * clearEtagStorageFilter() (start of sync run).
-	 * This is the list of paths we called avoidReadFromDbOnNextSync on.
+    * This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing
      * that would write the etag and would void the purpose of avoidReadFromDbOnNextSync
      *
@@ -401,7 +401,7 @@ private:
      */
     QList<QByteArray> _etagStorageFilter;
 
-	static SyncJournalDb *_instance;
+    static SyncJournalDb *_instance;
 
     /** The journal mode to use for the db.
      *

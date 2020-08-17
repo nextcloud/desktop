@@ -70,14 +70,14 @@ void RemotePathChecker::workerThreadLoop()
 
         std::wstring response;
         while (!_stop && socket.ReadLine(&response)) {
-			if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+            if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH:
 
                 auto sharedPtrCopy = atomic_load(&_watchedDirectories);
                 auto vectorCopy = make_shared<vector<wstring>>(*sharedPtrCopy);
                 vectorCopy->push_back(responsePath);
 
-				atomic_store(&_watchedDirectories, shared_ptr<const vector<wstring>>(vectorCopy));
+                atomic_store(&_watchedDirectories, shared_ptr<const vector<wstring>>(vectorCopy));
 
                 // We don't keep track of all files and can't know which file is currently visible
                 // to the user, but at least reload the root dir so that any shortcut to the root
@@ -94,9 +94,10 @@ void RemotePathChecker::workerThreadLoop()
                 atomic_store(&_watchedDirectories, shared_ptr<const vector<wstring>>(vectorCopy));
 
                 vector<wstring> removedPaths;
-                {   std::unique_lock<std::mutex> lock(_mutex);
+                {
+                    std::unique_lock<std::mutex> lock(_mutex);
                     // Remove any item from the cache
-                    for (auto it = _cache.begin(); it != _cache.end() ; ) {
+                    for (auto it = _cache.begin(); it != _cache.end();) {
                         if (StringUtil::isDescendantOf(it->first, responsePath)) {
                             removedPaths.emplace_back(move(it->first));
                             it = _cache.erase(it);
@@ -105,11 +106,9 @@ void RemotePathChecker::workerThreadLoop()
                         }
                     }
                 }
-                for (auto& path : removedPaths)
+                for (auto &path : removedPaths)
                     SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.data(), NULL);
-            } else if (StringUtil::begins_with(response, wstring(L"STATUS:")) ||
-                    StringUtil::begins_with(response, wstring(L"BROADCAST:"))) {
-
+            } else if (StringUtil::begins_with(response, wstring(L"STATUS:")) || StringUtil::begins_with(response, wstring(L"BROADCAST:"))) {
                 wstring responseStatus, responsePath;
                 if (!StringUtil::extractChunks(response, responseStatus, responsePath))
                     continue;
@@ -118,7 +117,8 @@ void RemotePathChecker::workerThreadLoop()
                 bool wasAsked = asked.erase(responsePath) > 0;
 
                 bool updateView = false;
-                {   std::unique_lock<std::mutex> lock(_mutex);
+                {
+                    std::unique_lock<std::mutex> lock(_mutex);
                     auto it = _cache.find(responsePath);
                     if (it == _cache.end()) {
                         // The client only approximates requested files, if the bloom

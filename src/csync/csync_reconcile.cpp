@@ -141,9 +141,8 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             /* file has been removed on the opposite replica */
         case CSYNC_INSTRUCTION_NONE:
         case CSYNC_INSTRUCTION_UPDATE_METADATA:
-			// First sync situation, we don't have the file locally, only remote
-			if (ctx->virtualDriveEnabled && 
-				cur->virtualfile) {
+            // First sync situation, we don't have the file locally, only remote
+            if (ctx->virtualDriveEnabled && cur->virtualfile) {
                 /* */
                 break;
             }
@@ -320,21 +319,19 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_EVAL:
-		// First time user opened the file
-		if (ctx->virtualDriveEnabled) {
-		    if (cur->virtualfile) {
-		        if (ctx->statedb->getSyncMode(cur->path) == 
-			    OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
-			    if (ctx->current == LOCAL_REPLICA) {
-			        cur->instruction = CSYNC_INSTRUCTION_NONE;
-			        other->instruction = CSYNC_INSTRUCTION_SYNC;
-			        break;
-			    }
-		        }
-		    }
-		}
-                if (other->type == ItemTypeDirectory &&
-                        cur->type == ItemTypeDirectory) {
+                // First time user opened the file
+                if (ctx->virtualDriveEnabled) {
+                    if (cur->virtualfile) {
+                        if (ctx->statedb->getSyncMode(cur->path) == OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+                            if (ctx->current == LOCAL_REPLICA) {
+                                cur->instruction = CSYNC_INSTRUCTION_NONE;
+                                other->instruction = CSYNC_INSTRUCTION_SYNC;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (other->type == ItemTypeDirectory && cur->type == ItemTypeDirectory) {
                     // Folders of the same path are always considered equals
                     is_conflict = false;
                 } else {
@@ -363,8 +360,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                             auto remoteNode = ctx->current == REMOTE_REPLICA ? cur : other;
                             auto localNode = ctx->current == REMOTE_REPLICA ? other : cur;
                             remoteNode->instruction = CSYNC_INSTRUCTION_NONE;
-                            localNode->instruction = up._modtime == localNode->modtime && up._size == localNode->size ?
-                                CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
+                            localNode->instruction = up._modtime == localNode->modtime && up._size == localNode->size ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
 
                             // Update the etag and other server metadata in the journal already
                             // (We can't use a typical CSYNC_INSTRUCTION_UPDATE_METADATA because

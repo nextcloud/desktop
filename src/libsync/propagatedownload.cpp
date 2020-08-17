@@ -901,12 +901,12 @@ void PropagateDownloadFile::downloadFinished()
         // the discovery phase and now.
         const qint64 expectedSize = _item->_previousSize;
         const time_t expectedMtime = _item->_previousModtime;
-		
- 		SyncJournalFileRecord rec;
-		bool vf = false;
-		if (propagator()->_journal->getFileRecord(_item->_file, &rec)) {
-			vf = rec._virtualfile;
-		}
+
+        SyncJournalFileRecord rec;
+        bool vf = false;
+        if (propagator()->_journal->getFileRecord(_item->_file, &rec)) {
+            vf = rec._virtualfile;
+        }
         if (!FileSystem::verifyFileUnchanged(fn, expectedSize, expectedMtime) && !vf) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));

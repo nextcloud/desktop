@@ -149,7 +149,7 @@ void PropagateRemoteMove::finalize()
     // The db is only queried to transfer the content checksum from the old
     // to the new record. It is not a problem to skip it here.
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
-	propagator()->_journal->deleteSyncMode(_item->_originalFile);
+    propagator()->_journal->deleteSyncMode(_item->_originalFile);
 
     SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->getFilePath(_item->_renameTarget));
     record._path = _item->_renameTarget.toUtf8();

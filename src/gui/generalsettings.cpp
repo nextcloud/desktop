@@ -65,14 +65,14 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
 
-	// TODO: show checkbox once the virtual drive is NOT a experimental feature
-    #ifndef defined(Q_OS_UNIX)
-	_ui->virtualFileSystemCheckbox->hide();
+    // TODO: show checkbox once the virtual drive is NOT a experimental feature
+#ifndef defined(Q_OS_UNIX)
+    _ui->virtualFileSystemCheckbox->hide();
     connect(_ui->virtualFileSystemCheckbox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalVirtualFileSystem);
-	connect(this, &GeneralSettings::mountVirtualDrive, AccountManager::instance(), &AccountManager::mountVirtualDriveForAccount);
+    connect(this, &GeneralSettings::mountVirtualDrive, AccountManager::instance(), &AccountManager::mountVirtualDriveForAccount);
     _ui->virtualFileSystemCheckbox->setToolTip(tr("Sync files on demand."));
-    #endif
+#endif
 
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
@@ -173,7 +173,7 @@ void GeneralSettings::loadMiscSettings()
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
-	_ui->virtualFileSystemCheckbox->setChecked(cfgFile.enableVirtualFileSystem());
+    _ui->virtualFileSystemCheckbox->setChecked(cfgFile.enableVirtualFileSystem());
 }
 
 #if defined(BUILD_UPDATER)
@@ -264,54 +264,53 @@ void GeneralSettings::slotToggleOptionalVirtualFileSystem(bool enable)
     ConfigFile cfgFile;
     cfgFile.setEnableVirtualFileSystem(enable);
 
-    #if defined(Q_OS_MAC)
-	if (enable) {
-		QString defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
-		QString defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+#if defined(Q_OS_MAC)
+    if (enable) {
+        QString defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+        QString defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
 
-		if (defaultFileStreamSyncPath.isEmpty() || defaultFileStreamSyncPath.compare(QString("")) == 0)
-			cfgFile.setDefaultFileStreamSyncPath(QString("/Volumes/" + Theme::instance()->appName() + "fs"));
+        if (defaultFileStreamSyncPath.isEmpty() || defaultFileStreamSyncPath.compare(QString("")) == 0)
+            cfgFile.setDefaultFileStreamSyncPath(QString("/Volumes/" + Theme::instance()->appName() + "fs"));
 
-		if (defaultFileStreamMirrorPath.isEmpty() || defaultFileStreamMirrorPath.compare(QString("")) == 0)
-			cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles");
-		
-		//FIXME this doesnt work for multiple accounts...
-		foreach (auto ai, AccountManager::instance()->accounts()) {
-			emit mountVirtualDrive(ai.data());
-		}	
-	} else {
-		VfsMac::instance()->unmount();
-	}
-    #endif
+        if (defaultFileStreamMirrorPath.isEmpty() || defaultFileStreamMirrorPath.compare(QString("")) == 0)
+            cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles");
+
+        //FIXME this doesnt work for multiple accounts...
+        foreach (auto ai, AccountManager::instance()->accounts()) {
+            emit mountVirtualDrive(ai.data());
+        }
+    } else {
+        VfsMac::instance()->unmount();
+    }
+#endif
 
 #ifdef Q_OS_WIN
-	if (enable) {
-		//< Set configuration paths.
-		QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
-		QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
-		QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
-		QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
+    if (enable) {
+        //< Set configuration paths.
+        QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+        QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+        QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
+        QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
 
-		if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
-			cfgFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/") 
-				+ Theme::instance()->appName());
+        if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
+            cfgFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/")
+                + Theme::instance()->appName());
 
-		if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
-			cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
+        if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
+            cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
 
-		if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
-			cfgFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
+        if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
+            cfgFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
 
-		//FIXME this doesnt work for multiple accounts...
-		foreach (auto ai, AccountManager::instance()->accounts()) {
-			emit mountVirtualDrive(ai.data());
-		}	
-	} else {
-		VfsWindows::instance()->unmount();
-	}
+        //FIXME this doesnt work for multiple accounts...
+        foreach (auto ai, AccountManager::instance()->accounts()) {
+            emit mountVirtualDrive(ai.data());
+        }
+    } else {
+        VfsWindows::instance()->unmount();
+    }
 #endif
 }
-
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 {

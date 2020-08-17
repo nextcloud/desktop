@@ -494,7 +494,7 @@ public:
      *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
      */
     void setProperties(QList<QByteArray> properties);
-	void setFileId(const QByteArray id);
+    void setFileId(const QByteArray id);
     QList<QByteArray> properties() const;
 
 signals:
@@ -506,7 +506,7 @@ private slots:
 
 private:
     QList<QByteArray> _properties;
-	QByteArray _fileId;
+    QByteArray _fileId;
 };
 
 /**

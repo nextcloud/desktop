@@ -25,20 +25,20 @@
 void VfsMacController::mountFailed(QVariantMap userInfo)
 {
     qDebug() << "Got mountFailed notification.";
-    
+
     qDebug() << "kGMUserFileSystem Error code: " << userInfo.value("code") << ", userInfo=" << userInfo.value("localizedDescription");
-    
+
     QMessageBox alert;
-    alert.setText(userInfo.contains("localizedDescription")?userInfo.value("localizedDescription").toString() : "Unknown error");
+    alert.setText(userInfo.contains("localizedDescription") ? userInfo.value("localizedDescription").toString() : "Unknown error");
     alert.exec();
-    
+
     QApplication::quit();
 }
 
 void VfsMacController::didMount(QVariantMap userInfo)
 {
     qDebug() << "Got didMount notification.";
-    
+
     QString mountPath = userInfo.value(kGMUserFileSystemMountPathKey).toString();
     /*QMessageBox alert;
     alert.setText(tr(QString("Mounted at: %1").arg(mountPath).toLatin1().data()));
@@ -46,9 +46,10 @@ void VfsMacController::didMount(QVariantMap userInfo)
      */
 }
 
-void VfsMacController::didUnmount(QVariantMap userInfo) {
+void VfsMacController::didUnmount(QVariantMap userInfo)
+{
     qDebug() << "Got didUnmount notification.";
-    
+
     QApplication::quit();
 }
 
@@ -63,33 +64,33 @@ void VfsMacController::slotquotaUpdated(qint64 total, qint64 used)
     fs_->setUsedQuota(used);
 }
 
-VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent):QObject(parent), fs_(new VfsMac(rootPath, false, accountState, this))
+VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent)
+    : QObject(parent)
+    , fs_(new VfsMac(rootPath, false, accountState, this))
 {
     QFileInfo root(rootPath);
-    if(root.exists() && !root.isDir())
-    {
+    if (root.exists() && !root.isDir()) {
         QFile().remove(rootPath);
     }
-    if(!root.exists())
-    {
+    if (!root.exists()) {
         QDir().mkdir(rootPath);
     }
     qi_ = new OCC::QuotaInfo(accountState, this);
-    
+
     connect(qi_, &OCC::QuotaInfo::quotaUpdated, this, &VfsMacController::slotquotaUpdated);
     connect(fs_.data(), &VfsMac::FuseFileSystemDidMount, this, didMount);
     connect(fs_.data(), &VfsMac::FuseFileSystemMountFailed, this, mountFailed);
     connect(fs_.data(), &VfsMac::FuseFileSystemDidUnmount, this, didUnmount);
-    
+
     qi_->setActive(true);
-    
+
     QStringList options;
-    
+
     QFileInfo icons(QCoreApplication::applicationDirPath() + "/../Resources/Nextcloud.icns");
     QString volArg = QString("volicon=%1").arg(icons.canonicalFilePath());
-    
+
     options.append(volArg);
-    
+
     // Do not use the 'native_xattr' mount-time option unless the underlying
     // file system supports native extended attributes. Typically, the user
     // would be mounting an HFS+ directory through VfsMac, so we do want
@@ -97,7 +98,7 @@ VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::Acc
     options.append("native_xattr");
     options.append("kill_on_unmount");
     options.append("local");
-    
+
     options.append("volname=" + QApplication::applicationName() + "FS");
     fs_->mountAtPath(mountPath, options);
 }

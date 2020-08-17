@@ -56,7 +56,7 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
-#include <Qprocess>
+#include <QProcess>
 #include <QDesktopServices>
 #include <QGuiApplication>
 #include <QTimer>
@@ -66,346 +66,346 @@ class QSocket;
 
 namespace OCC {
 
-	Q_LOGGING_CATEGORY(lcApplication, "nextcloud.gui.application", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcApplication, "nextcloud.gui.application", QtInfoMsg)
 
-		namespace {
+namespace {
 
-		static const char optionsC[] =
-			"Options:\n"
-			"  --help, -h           : show this help screen.\n"
-			"  --version, -v        : show version information.\n"
-			"  --logwindow, -l      : open a window to show log output.\n"
-			"  --logfile <filename> : write log output to file <filename>.\n"
-			"  --logdir <name>      : write each sync log output in a new file\n"
-			"                         in folder <name>.\n"
-			"  --logexpire <hours>  : removes logs older than <hours> hours.\n"
-			"                         (to be used with --logdir)\n"
-			"  --logflush           : flush the log file after every write.\n"
-			"  --logdebug           : also output debug-level messages in the log.\n"
-			"  --confdir <dirname>  : Use the given configuration folder.\n"
-			"  --background         : launch the application in the background.\n";
+    static const char optionsC[] =
+        "Options:\n"
+        "  --help, -h           : show this help screen.\n"
+        "  --version, -v        : show version information.\n"
+        "  --logwindow, -l      : open a window to show log output.\n"
+        "  --logfile <filename> : write log output to file <filename>.\n"
+        "  --logdir <name>      : write each sync log output in a new file\n"
+        "                         in folder <name>.\n"
+        "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
+        "                         (to be used with --logdir)\n"
+        "  --logflush           : flush the log file after every write.\n"
+        "  --logdebug           : also output debug-level messages in the log.\n"
+        "  --confdir <dirname>  : Use the given configuration folder.\n"
+        "  --background         : launch the application in the background.\n";
 
-		QString applicationTrPath()
-		{
-			QString devTrPath = qApp->applicationDirPath() + QString::fromLatin1("/../src/gui/");
-			if (QDir(devTrPath).exists()) {
-				// might miss Qt, QtKeyChain, etc.
-				qCWarning(lcApplication) << "Running from build location! Translations may be incomplete!";
-				return devTrPath;
-			}
+    QString applicationTrPath()
+    {
+        QString devTrPath = qApp->applicationDirPath() + QString::fromLatin1("/../src/gui/");
+        if (QDir(devTrPath).exists()) {
+            // might miss Qt, QtKeyChain, etc.
+            qCWarning(lcApplication) << "Running from build location! Translations may be incomplete!";
+            return devTrPath;
+        }
 #if defined(Q_OS_WIN)
-			return QApplication::applicationDirPath() + QLatin1String("/i18n/");
+        return QApplication::applicationDirPath() + QLatin1String("/i18n/");
 #elif defined(Q_OS_MAC)
-			return QApplication::applicationDirPath() + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
+        return QApplication::applicationDirPath() + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
 #elif defined(Q_OS_UNIX)
-			return QString::fromLatin1(SHAREDIR "/" APPLICATION_EXECUTABLE "/i18n/");
+        return QString::fromLatin1(SHAREDIR "/" APPLICATION_EXECUTABLE "/i18n/");
 #endif
-		}
-	}
+    }
+}
 
-	// ----------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 
-	Application::Application(int& argc, char** argv)
-		: SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
-		, _gui(nullptr)
-		, _theme(Theme::instance())
-		, _helpOnly(false)
-		, _versionOnly(false)
-		, _showLogWindow(false)
-		, _logExpire(0)
-		, _logFlush(false)
-		, _logDebug(false)
-		, _userTriggeredConnect(false)
-		, _debugMode(false)
-		, _backgroundMode(false)
-	{
-		_startedAt.start();
+Application::Application(int &argc, char **argv)
+    : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
+    , _gui(nullptr)
+    , _theme(Theme::instance())
+    , _helpOnly(false)
+    , _versionOnly(false)
+    , _showLogWindow(false)
+    , _logExpire(0)
+    , _logFlush(false)
+    , _logDebug(false)
+    , _userTriggeredConnect(false)
+    , _debugMode(false)
+    , _backgroundMode(false)
+{
+    _startedAt.start();
 
-		qsrand(std::random_device()());
+    qsrand(std::random_device()());
 
 #ifdef Q_OS_WIN
-		// Ensure OpenSSL config file is only loaded from app directory
-		QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
-		qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
+    // Ensure OpenSSL config file is only loaded from app directory
+    QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
+    qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 #endif
 
-		// TODO: Can't set this without breaking current config paths
-		//    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
-		setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
+    // TODO: Can't set this without breaking current config paths
+    //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
+    setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
 
-		// setDesktopFilename to provide wayland compatibility (in general: conformance with naming standards)
-		// but only on Qt >= 5.7, where setDesktopFilename was introduced
+    // setDesktopFilename to provide wayland compatibility (in general: conformance with naming standards)
+    // but only on Qt >= 5.7, where setDesktopFilename was introduced
 #if (QT_VERSION >= 0x050700)
-		QString desktopFileName = QString(QLatin1String(LINUX_APPLICATION_ID)
-			+ QLatin1String(".desktop"));
-		setDesktopFileName(desktopFileName);
+    QString desktopFileName = QString(QLatin1String(LINUX_APPLICATION_ID) + QLatin1String(".desktop"));
+    setDesktopFileName(desktopFileName);
 #endif
 
-		setApplicationName(_theme->appName());
-		setWindowIcon(_theme->applicationIcon());
-		setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+    setApplicationName(_theme->appName());
+    setWindowIcon(_theme->applicationIcon());
+    setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
-		auto confDir = ConfigFile().configPath();
-		if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
-		if (!QFileInfo(confDir).isDir()) {
-			// Migrate from version <= 2.4
-			setApplicationName(_theme->appNameGUI());
+    auto confDir = ConfigFile().configPath();
+    if (confDir.endsWith('/'))
+        confDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+    if (!QFileInfo(confDir).isDir()) {
+        // Migrate from version <= 2.4
+        setApplicationName(_theme->appNameGUI());
 #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
 #define QT_WARNING_DISABLE_DEPRECATED QT_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
 #endif
-			QT_WARNING_PUSH
-				QT_WARNING_DISABLE_DEPRECATED
-				// We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
-				// behavior of adding "data" to the path
-				QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-			if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
-			QT_WARNING_POP
-				setApplicationName(_theme->appName());
-			if (QFileInfo(oldDir).isDir()) {
-				qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
-				if (!QFile::rename(oldDir, confDir)) {
-					qCWarning(lcApplication) << "Failed to move the old config file to its new location (" << oldDir << "to" << confDir << ")";
-				}
-				else {
+        QT_WARNING_PUSH
+        QT_WARNING_DISABLE_DEPRECATED
+        // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
+        // behavior of adding "data" to the path
+        QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        if (oldDir.endsWith('/'))
+            oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        QT_WARNING_POP
+        setApplicationName(_theme->appName());
+        if (QFileInfo(oldDir).isDir()) {
+            qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+            if (!QFile::rename(oldDir, confDir)) {
+                qCWarning(lcApplication) << "Failed to move the old config file to its new location (" << oldDir << "to" << confDir << ")";
+            } else {
 #ifndef Q_OS_WIN
-					// Create a symbolic link so a downgrade of the client would still find the config.
-					QFile::link(confDir, oldDir);
+                // Create a symbolic link so a downgrade of the client would still find the config.
+                QFile::link(confDir, oldDir);
 #endif
-				}
-			}
-		}
+            }
+        }
+    }
 
-		parseOptions(arguments());
-		//no need to waste time;
-		if (_helpOnly || _versionOnly)
-			return;
+    parseOptions(arguments());
+    //no need to waste time;
+    if (_helpOnly || _versionOnly)
+        return;
 
-		if (isRunning())
-			return;
+    if (isRunning())
+        return;
 
 #if defined(WITH_CRASHREPORTER)
-		if (ConfigFile().crashReporter())
-			_crashHandler.reset(new CrashReporter::Handler(QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE));
+    if (ConfigFile().crashReporter())
+        _crashHandler.reset(new CrashReporter::Handler(QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE));
 #endif
 
-		setupLogging();
-		setupTranslations();
+    setupLogging();
+    setupTranslations();
 
-		// The timeout is initialized with an environment variable, if not, override with the value from the config
-		ConfigFile cfg;
-		if (!AbstractNetworkJob::httpTimeout)
-			AbstractNetworkJob::httpTimeout = cfg.timeout();
+    // The timeout is initialized with an environment variable, if not, override with the value from the config
+    ConfigFile cfg;
+    if (!AbstractNetworkJob::httpTimeout)
+        AbstractNetworkJob::httpTimeout = cfg.timeout();
 
-		_folderManager.reset(new FolderMan);
+    _folderManager.reset(new FolderMan);
 
-		connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
+    connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-		if (!AccountManager::instance()->restore()) {
-			// If there is an error reading the account settings, try again
-			// after a couple of seconds, if that fails, give up.
-			// (non-existence is not an error)
-			Utility::sleep(5);
-			if (!AccountManager::instance()->restore()) {
-				qCCritical(lcApplication) << "Could not read the account settings, quitting";
-				QMessageBox::critical(
-					nullptr,
-					tr("Error accessing the configuration file"),
-					tr("There was an error while accessing the configuration "
-						"file at %1. Please make sure the file can be accessed by your user.")
-					.arg(ConfigFile().configFile()),
-					tr("Quit %1").arg(Theme::instance()->appNameGUI()));
-				QTimer::singleShot(0, qApp, SLOT(quit()));
-				return;
-			}
-		}
+    if (!AccountManager::instance()->restore()) {
+        // If there is an error reading the account settings, try again
+        // after a couple of seconds, if that fails, give up.
+        // (non-existence is not an error)
+        Utility::sleep(5);
+        if (!AccountManager::instance()->restore()) {
+            qCCritical(lcApplication) << "Could not read the account settings, quitting";
+            QMessageBox::critical(
+                nullptr,
+                tr("Error accessing the configuration file"),
+                tr("There was an error while accessing the configuration "
+                   "file at %1. Please make sure the file can be accessed by your user.")
+                    .arg(ConfigFile().configFile()),
+                tr("Quit %1").arg(Theme::instance()->appNameGUI()));
+            QTimer::singleShot(0, qApp, SLOT(quit()));
+            return;
+        }
+    }
 
-		FolderMan::instance()->setSyncEnabled(true);
+    FolderMan::instance()->setSyncEnabled(true);
 
-		setQuitOnLastWindowClosed(false);
+    setQuitOnLastWindowClosed(false);
 
-		_theme->setSystrayUseMonoIcons(cfg.monoIcons());
-		connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
+    _theme->setSystrayUseMonoIcons(cfg.monoIcons());
+    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 
-		// Setting up the gui class will allow tray notifications for the
-		// setup that follows, like folder setup
-		_gui = new ownCloudGui(this);
-		if (_showLogWindow) {
-			_gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
-		}
+    // Setting up the gui class will allow tray notifications for the
+    // setup that follows, like folder setup
+    _gui = new ownCloudGui(this);
+    if (_showLogWindow) {
+        _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+    }
 #if WITH_LIBCLOUDPROVIDERS
-		_gui->setupCloudProviders();
+    _gui->setupCloudProviders();
 #endif
 
-		FolderMan::instance()->setupFolders();
-		_proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
+    FolderMan::instance()->setupFolders();
+    _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
-		// Enable word wrapping of QInputDialog (#4197)
-		setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");
+    // Enable word wrapping of QInputDialog (#4197)
+    setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");
 
-		connect(AccountManager::instance(), &AccountManager::accountAdded,
-			this, &Application::slotAccountStateAdded);
-		connect(AccountManager::instance(), &AccountManager::accountRemoved,
-			this, &Application::slotAccountStateRemoved);
-		connect(AccountManager::instance(), &AccountManager::mountVirtualDriveForAccount,
-			this, &Application::slotMountVirtualDrive);
-		foreach(auto ai, AccountManager::instance()->accounts()) {
-			slotAccountStateAdded(ai.data());
-			slotMountVirtualDrive(ai.data());
-		}
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &Application::slotAccountStateAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &Application::slotAccountStateRemoved);
+    connect(AccountManager::instance(), &AccountManager::mountVirtualDriveForAccount,
+        this, &Application::slotMountVirtualDrive);
+    foreach (auto ai, AccountManager::instance()->accounts()) {
+        slotAccountStateAdded(ai.data());
+        slotMountVirtualDrive(ai.data());
+    }
 
-		connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
-			_gui.data(), &ownCloudGui::slotShowShareDialog);
+    connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
+        _gui.data(), &ownCloudGui::slotShowShareDialog);
 
-		// startup procedure.
-		connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
-		_checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.
-		_checkConnectionTimer.start();
-		// Also check immediately
-		QTimer::singleShot(0, this, &Application::slotCheckConnection);
+    // startup procedure.
+    connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
+    _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.
+    _checkConnectionTimer.start();
+    // Also check immediately
+    QTimer::singleShot(0, this, &Application::slotCheckConnection);
 
-		// Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
-		connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
-			this, &Application::slotSystemOnlineConfigurationChanged);
+    // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
+    connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
+        this, &Application::slotSystemOnlineConfigurationChanged);
 
 #if defined(BUILD_UPDATER)
-		// Update checks
-		auto* updaterScheduler = new UpdaterScheduler(this);
-		connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
-			_gui.data(), &ownCloudGui::slotShowTrayMessage);
-		connect(updaterScheduler, &UpdaterScheduler::requestRestart,
-			_folderManager.data(), &FolderMan::slotScheduleAppRestart);
+    // Update checks
+    auto *updaterScheduler = new UpdaterScheduler(this);
+    connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
+        _gui.data(), &ownCloudGui::slotShowTrayMessage);
+    connect(updaterScheduler, &UpdaterScheduler::requestRestart,
+        _folderManager.data(), &FolderMan::slotScheduleAppRestart);
 #endif
 
-		// Cleanup at Quit.
-		connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
+    // Cleanup at Quit.
+    connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
 
-		// Allow other classes to hook into isShowingSettingsDialog() signals (re-auth widgets, for example)
-		connect(_gui.data(), &ownCloudGui::isShowingSettingsDialog, this, &Application::slotGuiIsShowingSettings);
+    // Allow other classes to hook into isShowingSettingsDialog() signals (re-auth widgets, for example)
+    connect(_gui.data(), &ownCloudGui::isShowingSettingsDialog, this, &Application::slotGuiIsShowingSettings);
 
-		_gui->createTray();
-	}
+    _gui->createTray();
+}
 
 Application::~Application()
 {
-	// Make sure all folders are gone, otherwise removing the
-	// accounts will remove the associated folders from the settings.
-	if (_folderManager) {
-		_folderManager->unloadAndDeleteAllFolders();
-	}
+    // Make sure all folders are gone, otherwise removing the
+    // accounts will remove the associated folders from the settings.
+    if (_folderManager) {
+        _folderManager->unloadAndDeleteAllFolders();
+    }
 
-	// Remove the account from the account manager so it can be deleted.
-	disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
-		this, &Application::slotAccountStateRemoved);
-	AccountManager::instance()->shutdown();
+    // Remove the account from the account manager so it can be deleted.
+    disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &Application::slotAccountStateRemoved);
+    AccountManager::instance()->shutdown();
 
 #if defined(Q_OS_WIN)
-	ConfigFile configFile;
-	if (configFile.enableVirtualFileSystem()) {
-		VfsWindows::instance()->unmount();
-	}
+    ConfigFile configFile;
+    if (configFile.enableVirtualFileSystem()) {
+        VfsWindows::instance()->unmount();
+    }
 #endif
 
 #if defined(Q_OS_MAC)
-	ConfigFile configFile;
-	if (configFile.enableVirtualFileSystem()) {
-		VfsMacController::instance()->unmount();
-	}
+    ConfigFile configFile;
+    if (configFile.enableVirtualFileSystem()) {
+        VfsMacController::instance()->unmount();
+    }
 #endif
 }
 
-void Application::slotAccountStateRemoved(AccountState* accountState)
+void Application::slotAccountStateRemoved(AccountState *accountState)
 {
-	/*
-	if (_cronDeleteOnlineFiles)
-	{
-		disconnect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
-		_cronDeleteOnlineFiles->stop();
-		delete _cronDeleteOnlineFiles;
-		_cronDeleteOnlineFiles = NULL;
-	}
-	*/
+    /*
+    if (_cronDeleteOnlineFiles)
+    {
+        disconnect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
+        _cronDeleteOnlineFiles->stop();
+        delete _cronDeleteOnlineFiles;
+        _cronDeleteOnlineFiles = NULL;
+    }
+    */
 
-	if (_gui) {
-		disconnect(accountState, &AccountState::stateChanged,
-			_gui.data(), &ownCloudGui::slotAccountStateChanged);
-		disconnect(accountState->account().data(), &Account::serverVersionChanged,
-			_gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
-	}
+    if (_gui) {
+        disconnect(accountState, &AccountState::stateChanged,
+            _gui.data(), &ownCloudGui::slotAccountStateChanged);
+        disconnect(accountState->account().data(), &Account::serverVersionChanged,
+            _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
+    }
 
-	if (_folderManager) {
-		disconnect(accountState, &AccountState::stateChanged,
-			_folderManager.data(), &FolderMan::slotAccountStateChanged);
-		disconnect(accountState->account().data(), &Account::serverVersionChanged,
-			_folderManager.data(), &FolderMan::slotServerVersionChanged);
-	}
+    if (_folderManager) {
+        disconnect(accountState, &AccountState::stateChanged,
+            _folderManager.data(), &FolderMan::slotAccountStateChanged);
+        disconnect(accountState->account().data(), &Account::serverVersionChanged,
+            _folderManager.data(), &FolderMan::slotServerVersionChanged);
+    }
 
-	// if there is no more account, show the wizard.
-	if (AccountManager::instance()->accounts().isEmpty()) {
-		// allow to add a new account if there is non any more. Always think
-		// about single account theming!
-		OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
-	}
+    // if there is no more account, show the wizard.
+    if (AccountManager::instance()->accounts().isEmpty()) {
+        // allow to add a new account if there is non any more. Always think
+        // about single account theming!
+        OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
+    }
 }
 
-void Application::slotAccountStateAdded(AccountState* accountState)
+void Application::slotAccountStateAdded(AccountState *accountState)
 {
-	connect(accountState, &AccountState::stateChanged,
-		_gui.data(), &ownCloudGui::slotAccountStateChanged);
-	connect(accountState->account().data(), &Account::serverVersionChanged,
-		_gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
-	connect(accountState, &AccountState::stateChanged,
-		_folderManager.data(), &FolderMan::slotAccountStateChanged);
-	connect(accountState->account().data(), &Account::serverVersionChanged,
-		_folderManager.data(), &FolderMan::slotServerVersionChanged);
+    connect(accountState, &AccountState::stateChanged,
+        _gui.data(), &ownCloudGui::slotAccountStateChanged);
+    connect(accountState->account().data(), &Account::serverVersionChanged,
+        _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
+    connect(accountState, &AccountState::stateChanged,
+        _folderManager.data(), &FolderMan::slotAccountStateChanged);
+    connect(accountState->account().data(), &Account::serverVersionChanged,
+        _folderManager.data(), &FolderMan::slotServerVersionChanged);
 
-	_gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
+    _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 
-	slotMountVirtualDrive(accountState);
+    slotMountVirtualDrive(accountState);
 }
 
-void Application::slotMountVirtualDrive(AccountState* accountState) {
-
-	// Mount the virtual FileSystem.
+void Application::slotMountVirtualDrive(AccountState *accountState)
+{
+    // Mount the virtual FileSystem.
 #if defined(Q_OS_MAC)
-	ConfigFile configFile;
-	if (configFile.enableVirtualFileSystem()) {
-		QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";
-		QString mountPath = "/Volumes/" + _theme->appName() + "fs";
-		VfsMacController::instance()->initialize(rootPath, mountPath, accountState);
-		VfsMacController::instance()->mount();
-	}
+    ConfigFile configFile;
+    if (configFile.enableVirtualFileSystem()) {
+        QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";
+        QString mountPath = "/Volumes/" + _theme->appName() + "fs";
+        VfsMacController::instance()->initialize(rootPath, mountPath, accountState);
+        VfsMacController::instance()->mount();
+    }
 #endif
 
 #if defined(Q_OS_WIN)
-	ConfigFile configFile;
-	if (configFile.enableVirtualFileSystem()) {
-		QString m_defaultFileStreamSyncPath = configFile.defaultFileStreamSyncPath();
-		QString m_defaultFileStreamMirrorPath = configFile.defaultFileStreamMirrorPath();
-		QString m_defaultFileStreamLetterDrive = configFile.defaultFileStreamLetterDrive();
-		QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
+    ConfigFile configFile;
+    if (configFile.enableVirtualFileSystem()) {
+        QString m_defaultFileStreamSyncPath = configFile.defaultFileStreamSyncPath();
+        QString m_defaultFileStreamMirrorPath = configFile.defaultFileStreamMirrorPath();
+        QString m_defaultFileStreamLetterDrive = configFile.defaultFileStreamLetterDrive();
+        QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
 
-		if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
-			configFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/")
-				+ Theme::instance()->appName());
+        if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
+            configFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/")
+                + Theme::instance()->appName());
 
-		if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
-			configFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
+        if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
+            configFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
 
-		if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
-			configFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
+        if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
+            configFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
 
-		//FIXME
-		WCHAR mountLetter[260] = L"X:\\";
-		wcscpy(mountLetter, availableLogicalDrive.toStdWString().c_str());
-		VfsWindows::instance()->initialize(m_defaultFileStreamMirrorPath, *mountLetter, accountState);
-		VfsWindows::instance()->mount();
-	}
+        //FIXME
+        WCHAR mountLetter[260] = L"X:\\";
+        wcscpy(mountLetter, availableLogicalDrive.toStdWString().c_str());
+        VfsWindows::instance()->initialize(m_defaultFileStreamMirrorPath, *mountLetter, accountState);
+        VfsWindows::instance()->mount();
+    }
 #endif
 
     //< For cron delete dir/files online. Execute each 60000 msec
 
-	//< Uncomment for test "Clean local folder" case.
- 	/*_cronDeleteOnlineFiles = new QTimer(this);
+    //< Uncomment for test "Clean local folder" case.
+    /*_cronDeleteOnlineFiles = new QTimer(this);
 	connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
 	_cronDeleteOnlineFiles->start(60000);
 	*/
@@ -735,33 +735,32 @@ void Application::setupTranslations()
     }
 }
 
-bool removeDirs(const QString & dirName)
+bool removeDirs(const QString &dirName)
 {
-	bool result = true;
-	QDir dir(dirName);
+    bool result = true;
+    QDir dir(dirName);
 
-	if (dir.exists(dirName)) {
-		Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
-			if (info.isDir()) {
-				result = removeDirs(info.absoluteFilePath());
-			}
-			else {
-				result = QFile::remove(info.absoluteFilePath());
-				if (!result) {
-					const QFile::Permissions permissions = QFile::permissions(info.absoluteFilePath());
-					if (!(permissions & QFile::WriteUser)) {
-						result = QFile::setPermissions(info.absoluteFilePath(), permissions | QFile::WriteUser) && QFile::remove(info.absoluteFilePath());
-					}
-				}
-			}
+    if (dir.exists(dirName)) {
+        Q_FOREACH (QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isDir()) {
+                result = removeDirs(info.absoluteFilePath());
+            } else {
+                result = QFile::remove(info.absoluteFilePath());
+                if (!result) {
+                    const QFile::Permissions permissions = QFile::permissions(info.absoluteFilePath());
+                    if (!(permissions & QFile::WriteUser)) {
+                        result = QFile::setPermissions(info.absoluteFilePath(), permissions | QFile::WriteUser) && QFile::remove(info.absoluteFilePath());
+                    }
+                }
+            }
 
-			if (!result) {
-				return result;
-			}
-		}
-		result = true;
-	}
-	return result;
+            if (!result) {
+                return result;
+            }
+        }
+        result = true;
+    }
+    return result;
 }
 
 void Application::slotDeleteOnlineFiles()
@@ -774,13 +773,11 @@ void Application::slotDeleteOnlineFiles()
     //< Get paths SyncMode table.
     QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
 
-    if (!list.empty())
-    {
+    if (!list.empty()) {
         qDebug() << Q_FUNC_INFO << " clfCase 02";
 
         QString item;
-        foreach(item, list)
-        {
+        foreach (item, list) {
             qDebug() << Q_FUNC_INFO << " 03";
             qint64 m_secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
             SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
@@ -791,54 +788,54 @@ void Application::slotDeleteOnlineFiles()
 
             qDebug() << Q_FUNC_INFO << " 05";
 
-			if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NONE" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+            if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
+                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NONE"
+                         << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NONE" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NONE"
+                         << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NO" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NO"
+                         << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_YES" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_YES"
+                         << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NO" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NO"
+                         << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
             else if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES)
-                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_YES" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_YES"
+                         << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
 
             //< After 10' and assumption SYNCMODE_ONLINE = Online, SYNCMODE_ALWAYS = Offline.
-            if (m_secondsSinceLastAccess > 65 &&
-                (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE)
-                )
-            {
+            if (m_secondsSinceLastAccess > 65 && (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE)) {
                 QString relative_prefix;
 
-				#if defined(Q_OS_WIN)
-					relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-				#elif defined(Q_OS_MAC)
-					relative_prefix = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/cachedFiles/";
-				#endif
+#if defined(Q_OS_WIN)
+                relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+#elif defined(Q_OS_MAC)
+                relative_prefix = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/cachedFiles/";
+#endif
 
                 QString realPathItem = relative_prefix.append(item);
                 qDebug() << " clfCase Prepare to delete file or dir ..." << item;
 
                 QDir dir(realPathItem);
                 //< if is dir
-                if (dir.exists())
-                {
+                if (dir.exists()) {
                     qDebug() << " clfCase remove dir ..." << realPathItem;
                     removeDirs(realPathItem); //< Auxiliary function to remove folder contents
                     SyncJournalDb::instance()->deleteFileRecord(item, true);
-                }
-                else
-                {
+                } else {
                     qDebug() << " clfCase remove file ..." << realPathItem;
 
-                //< if is file
+                    //< if is file
                     QFile file(realPathItem);
                     while (file.exists()) {
                         QFile::remove(realPathItem); //< Remove
                         QThread::msleep(100);
                     }
-                SyncJournalDb::instance()->deleteFileRecord(item, false);
+                    SyncJournalDb::instance()->deleteFileRecord(item, false);
                 }
                 SyncJournalDb::instance()->deleteSyncMode(item);
             }
@@ -867,4 +864,3 @@ void Application::slotGuiIsShowingSettings()
 }
 
 } // namespace OCC
-

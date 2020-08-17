@@ -23,7 +23,7 @@
 #include <QTimer>
 
 #if defined(Q_OS_WIN)
-	#include "vfs_windows.h"
+#include "vfs_windows.h"
 #endif
 
 namespace OCC {

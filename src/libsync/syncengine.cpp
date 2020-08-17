@@ -100,7 +100,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     _clearTouchedFilesTimer.setInterval(30 * 1000);
     connect(&_clearTouchedFilesTimer, &QTimer::timeout, this, &SyncEngine::slotClearTouchedFiles);
 
-	_csync_ctx->virtualDriveEnabled = ConfigFile().enableVirtualFileSystem();
+    _csync_ctx->virtualDriveEnabled = ConfigFile().enableVirtualFileSystem();
 
     _thread.setObjectName("SyncEngine_Thread");
 }

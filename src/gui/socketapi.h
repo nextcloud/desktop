@@ -59,7 +59,7 @@ public slots:
 
 signals:
     void shareCommandReceived(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
-	void shareUserGroupCommandReceived(const QString &sharePath, const QString &localPath, bool resharingAllowed);
+    void shareUserGroupCommandReceived(const QString &sharePath, const QString &localPath, bool resharingAllowed);
 
 private slots:
     void slotNewConnection();
@@ -99,7 +99,7 @@ private:
 
     Q_INVOKABLE void command_SHARE_STATUS(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString &argument, SocketListener *listener);
-	
+
     // The context menu actions
     Q_INVOKABLE void command_SHARE(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener);
@@ -141,10 +141,9 @@ private:
     DirectEditor* getDirectEditorForLocalFile(const QString &localFile);
 
     QString buildRegisterPathMessage(const QString &path);
-	QString buildRegisterFsMessage();
+    QString buildRegisterFsMessage();
     Q_INVOKABLE void command_SET_DOWNLOAD_MODE(const QString& argument, SocketListener* listener);
     Q_INVOKABLE void command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener);
-
 
     QSet<QString> _registeredAliases;
     QList<SocketListener> _listeners;
