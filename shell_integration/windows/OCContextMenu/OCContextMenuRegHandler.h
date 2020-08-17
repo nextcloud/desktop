@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "stdafx.h"
+#include <windows.h>
 
 class __declspec(dllexport) OCContextMenuRegHandler
 {

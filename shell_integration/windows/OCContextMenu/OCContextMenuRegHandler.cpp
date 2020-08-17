@@ -12,8 +12,6 @@
 * details.
 */
 
-#include "stdafx.h"
-
 #include "OCContextMenuRegHandler.h"
 #include "RegDelnode.h"
 #include <strsafe.h>

@@ -12,8 +12,6 @@
 * details.
 */
 
-#include "stdafx.h"
-
 #include <windows.h>
 #include <Guiddef.h>
 #include "OCContextMenuRegHandler.h"

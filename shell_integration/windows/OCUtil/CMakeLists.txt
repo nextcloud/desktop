@@ -3,7 +3,6 @@ add_library(OCUtil STATIC
     FileUtil.cpp
     RegistryUtil.cpp
     RemotePathChecker.cpp
-    stdafx.cpp
     StringUtil.cpp
     OCUtil.rc
 )

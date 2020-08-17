@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <shlobj.h>
+
 class OCOverlay : public IShellIconOverlayIdentifier
 
 {
