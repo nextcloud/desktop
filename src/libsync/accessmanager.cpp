@@ -36,13 +36,6 @@ Q_LOGGING_CATEGORY(lcAccessManager, "sync.accessmanager", QtInfoMsg)
 AccessManager::AccessManager(QObject *parent)
     : QNetworkAccessManager(parent)
 {
-#if defined(Q_OS_MAC)
-    // FIXME Workaround http://stackoverflow.com/a/15707366/2941 https://bugreports.qt-project.org/browse/QTBUG-30434
-    QNetworkProxy proxy = this->proxy();
-    proxy.setHostName(" ");
-    setProxy(proxy);
-#endif
-
 #ifndef Q_OS_LINUX
     // Atempt to workaround for https://github.com/owncloud/client/issues/3969
     setConfiguration(QNetworkConfiguration());
