@@ -1,7 +1,5 @@
 add_library(OCUtil STATIC
     CommunicationSocket.cpp
-    FileUtil.cpp
-    RegistryUtil.cpp
     RemotePathChecker.cpp
     StringUtil.cpp
     OCUtil.rc
