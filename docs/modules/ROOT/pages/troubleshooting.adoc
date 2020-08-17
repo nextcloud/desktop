@@ -110,15 +110,17 @@ When using the `--logdir` command, each sync run creates a new file.
 To limit the amount of data that accumulates over time, you can specify the `--logexpire <hours>` command.
 When combined with the `--logdir` command, the client automatically erases saved log data in the directory that is older than the specified number of hours.
 
-Adding the `--logdebug` flag increases the verbosity of the generated log files.
-
 As an example, to define a test where you keep log data for two days, you can issue the following command:
 
-`\` owncloud --logdir /tmp/owncloud_logs --logexpire 48``
+```
+owncloud --logdir /tmp/owncloud_logs --logexpire 48
+```
+
+Adding the `--logdebug` flag increases the verbosity of the generated log files.
 
 ==== Control Log Content
 
-Thanks to the Qt framework, logging can be controlled at run-time through the QT_LOGGING_RULES environment variable.
+Thanks to the Qt framework, logging can be controlled at run-time through the `QT_LOGGING_RULES` environment variable.
 
 *Exclude log item categories*
 
