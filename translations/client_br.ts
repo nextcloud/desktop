@@ -455,7 +455,7 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1066"/>
         <source>Log in</source>
-        <translation>Mon-tre</translation>
+        <translation>Kennaskañ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="927"/>
@@ -3613,7 +3613,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentialsdialog.cpp" line="34"/>
         <source>Log in</source>
-        <translation>Mon-tre</translation>
+        <translation>Kennaskañ</translation>
     </message>
 </context>
 <context>
@@ -3956,7 +3956,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
-        <translation>Mon-tre</translation>
+        <translation>Kennaskañ</translation>
     </message>
 </context>
 <context>
@@ -4036,7 +4036,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="149"/>
         <source>Log in</source>
-        <translation>Mon-tre</translation>
+        <translation>Kennaskañ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
