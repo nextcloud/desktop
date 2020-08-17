@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <unknwn.h>
+
 enum State {
     State_Error = 0,
     State_OK, State_OKShared,

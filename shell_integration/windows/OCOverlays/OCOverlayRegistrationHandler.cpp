@@ -16,6 +16,7 @@
 #include "OverlayConstants.h"
 
 #include <windows.h>
+#include <objbase.h>
 #include <iostream>
 #include <fstream>
 
