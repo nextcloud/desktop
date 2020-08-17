@@ -60,10 +60,12 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     setButtonText(QWizard::NextButton, tr("Connect..."));
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
-    connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
     connect(_ui.bSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     connect(_ui.rManualFolder, &QAbstractButton::clicked, this, [this] { setRadioChecked(_ui.rManualFolder); });
+
+    connect(_ui.rSyncEverything, &QRadioButton::toggled, _ui.syncEverythingWidget, &QWidget::setEnabled);
+    connect(_ui.rManualFolder, &QRadioButton::toggled, _ui.whereToSyncWidget, &QWidget::setDisabled);
 
     QIcon appIcon = theme->applicationIcon();
     _ui.lServerIcon->setText(QString());
@@ -146,7 +148,6 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
         _selectiveSyncBlacklist = QStringList("/");
-        setRadioChecked(_ui.rSelectiveSync);
         QTimer::singleShot(0, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     }
 
@@ -344,9 +345,6 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 
     if (updateBlacklist) {
         if (!_selectiveSyncBlacklist.isEmpty()) {
-            _ui.rSelectiveSync->blockSignals(true);
-            setRadioChecked(_ui.rSelectiveSync);
-            _ui.rSelectiveSync->blockSignals(false);
             auto s = dlg->estimatedSize();
             if (s > 0) {
                 _ui.lSelectiveSyncSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(s)));
@@ -395,8 +393,6 @@ void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
     radio->setCheckable(true);
     radio->setChecked(true);
 
-    if (radio != _ui.rSelectiveSync)
-        _ui.rSelectiveSync->setCheckable(false);
     if (radio != _ui.rVirtualFileSync)
         _ui.rVirtualFileSync->setCheckable(false);
 

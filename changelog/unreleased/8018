@@ -1,0 +1,7 @@
+Change: Move "Choose what to sync" to sync everything settings
+
+While selective sync is a feature only available when everything is synced,
+the the option had its own radio button.
+We now moved the button to the other sync everything related settings.
+
+https://github.com/owncloud/client/pull/8018
