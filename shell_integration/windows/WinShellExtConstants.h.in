@@ -14,7 +14,7 @@
 
 #pragma once
 
-// IMPORTANT: Keep this file in sync with WinShellExtConstants.wxi.in
+// IMPORTANT: Keep these constants in sync with WinShellExtConstants.wxi.in
 
 // Context Menu
 #define CONTEXT_MENU_GUID           L"@WIN_SHELLEXT_CONTEXT_MENU_GUID@"
