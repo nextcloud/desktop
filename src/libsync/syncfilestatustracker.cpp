@@ -290,8 +290,14 @@ void SyncFileStatusTracker::slotSyncFinished()
     // Clear the sync counts to reduce the impact of unsymetrical inc/dec calls (e.g. when directory job abort)
     QHash<QString, int> oldSyncCount;
     std::swap(_syncCount, oldSyncCount);
-    for (auto it = oldSyncCount.begin(); it != oldSyncCount.end(); ++it)
+    for (auto it = oldSyncCount.begin(); it != oldSyncCount.end(); ++it) {
+        // Don't announce folders, fileStatus expect only paths without '/', otherwise it asserts
+        if (it.key().endsWith('/')) {
+            continue;
+        }
+
         emit fileStatusChanged(getSystemDestination(it.key()), fileStatus(it.key()));
+    }
 }
 
 void SyncFileStatusTracker::slotSyncEngineRunningChanged()
