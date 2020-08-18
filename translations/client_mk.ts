@@ -805,13 +805,13 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>Датотеката %1 и %n друга датотека е превземена.</numerusform><numerusform>датотеката %1 и %n други датотеки се превземени.</numerusform></translation>
+        <translation><numerusform>Датотеката %1 и %n друга датотека е преземена.</numerusform><numerusform>датотеката %1 и %n други датотеки се преземени.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation>датотеката %1 е превземена.</translation>
+        <translation>датотеката %1 е преземена.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
@@ -1122,7 +1122,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="191"/>
         <source>Fetching folder list from server …</source>
-        <translation>Превземање на листата со папки од серверот ...</translation>
+        <translation>Преземање на листата со папки од серверот ...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
@@ -1177,7 +1177,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>превземање %1/s</translation>
+        <translation>преземање %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
@@ -1764,7 +1764,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Проток за превземање</translation>
+        <translation>Проток за преземање</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
@@ -1886,7 +1886,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Неможе да се превземе ажурирањето. Кликнете &lt;a href=&apos;%1&apos;&gt;овде&lt;/a&gt; за да го превземете ажурирањето.</translation>
+        <translation>Неможе да се преземе ажурирањето. Кликнете &lt;a href=&apos;%1&apos;&gt;овде&lt;/a&gt; за да го преземете ажурирањето.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
