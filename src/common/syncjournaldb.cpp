@@ -1447,7 +1447,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
         if (_getUploadInfoQuery.next()) {
             bool ok = true;
             res._chunk = _getUploadInfoQuery.intValue(0);
-            res._transferid = _getUploadInfoQuery.intValue(1);
+            res._transferid = _getUploadInfoQuery.int64Value(1);
             res._errorCount = _getUploadInfoQuery.intValue(2);
             res._size = _getUploadInfoQuery.int64Value(3);
             res._modtime = _getUploadInfoQuery.int64Value(4);

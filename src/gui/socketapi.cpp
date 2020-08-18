@@ -105,16 +105,25 @@ public:
 
     void storeHash(uint hash)
     {
-        hashBits.setBit((hash & 0xFFFF) % NumBits);
-        hashBits.setBit((hash >> 16) % NumBits);
+        int bits = bit_cast(hash);
+        hashBits.setBit((bits & 0xFFFF) % NumBits);
+        hashBits.setBit((bits >> 16) % NumBits);
     }
     bool isHashMaybeStored(uint hash) const
     {
-        return hashBits.testBit((hash & 0xFFFF) % NumBits)
-            && hashBits.testBit((hash >> 16) % NumBits);
+        int bits = bit_cast(hash);
+        return hashBits.testBit((bits & 0xFFFF) % NumBits)
+            && hashBits.testBit((bits >> 16) % NumBits);
     }
 
 private:
+    static int bit_cast(uint input)
+    {
+        int output = 0;
+        std::memcpy(&output, &input, sizeof(int));
+        return output;
+    }
+
     QBitArray hashBits;
 };
 

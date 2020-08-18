@@ -197,9 +197,9 @@ void KMessageWidgetPrivate::applyStyleSheet()
     const QColor border = bgBaseColor;
 
     // Generate a final background color from overlaying bgBaseColor over windowColor
-    const int newRed = (bgBaseColor.red() * bgBaseColorAlpha) + (windowColor.red() * (1 - bgBaseColorAlpha));
-    const int newGreen = (bgBaseColor.green() * bgBaseColorAlpha) + (windowColor.green() * (1 - bgBaseColorAlpha));
-    const int newBlue = (bgBaseColor.blue() * bgBaseColorAlpha) + (windowColor.blue() * (1 - bgBaseColorAlpha));
+    const int newRed = qRound(bgBaseColor.red() * bgBaseColorAlpha) + qRound(windowColor.red() * (1 - bgBaseColorAlpha));
+    const int newGreen = qRound(bgBaseColor.green() * bgBaseColorAlpha) + qRound(windowColor.green() * (1 - bgBaseColorAlpha));
+    const int newBlue = qRound(bgBaseColor.blue() * bgBaseColorAlpha) + qRound(windowColor.blue() * (1 - bgBaseColorAlpha));
 
     const QColor bgFinalColor = QColor(newRed, newGreen, newBlue);
 
@@ -241,7 +241,7 @@ void KMessageWidgetPrivate::updateSnapShot()
 
 void KMessageWidgetPrivate::slotTimeLineChanged(qreal value)
 {
-    q->setFixedHeight(qMin(value * 2, qreal(1.0)) * content->height());
+    q->setFixedHeight(qMin(qRound(value * 2.0), 1) * content->height());
     q->update();
 }
 

@@ -57,7 +57,9 @@ void UserInfo::setActive(bool active)
 void UserInfo::slotAccountStateChanged()
 {
     if (canGetInfo()) {
-        auto elapsed = _lastInfoReceived.msecsTo(QDateTime::currentDateTime());
+        // Obviously assumes there will never be more than thousand of hours between last info
+        // received and now, hence why we static_cast
+        auto elapsed = static_cast<int>(_lastInfoReceived.msecsTo(QDateTime::currentDateTime()));
         if (_lastInfoReceived.isNull() || elapsed >= defaultIntervalT) {
             slotFetchInfo();
         } else {

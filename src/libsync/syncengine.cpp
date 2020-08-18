@@ -228,7 +228,7 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
         }
     }
 
-    int waitSeconds = entry._lastTryTime + entry._ignoreDuration - now;
+    qint64 waitSeconds = entry._lastTryTime + entry._ignoreDuration - now;
     qCInfo(lcEngine) << "Item is on blacklist: " << entry._file
                      << "retries:" << entry._retryCount
                      << "for another" << waitSeconds << "s";

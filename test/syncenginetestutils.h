@@ -633,7 +633,7 @@ public:
         QString source = getFilePathFromUrl(request.url());
         Q_ASSERT(!source.isEmpty());
         Q_ASSERT(source.endsWith("/.file"));
-        source = source.left(source.length() - qstrlen("/.file"));
+        source = source.left(source.length() - static_cast<int>(qstrlen("/.file")));
         auto sourceFolder = uploadsFileInfo.find(source);
         Q_ASSERT(sourceFolder);
         Q_ASSERT(sourceFolder->isDir);

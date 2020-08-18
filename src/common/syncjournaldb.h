@@ -94,7 +94,7 @@ public:
     struct UploadInfo
     {
         int _chunk = 0;
-        int _transferid = 0;
+        quint64 _transferid = 0;
         quint64 _size = 0; //currently unused
         qint64 _modtime = 0;
         int _errorCount = 0;

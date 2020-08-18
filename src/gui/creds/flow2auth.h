@@ -77,8 +77,8 @@ private:
     QString _pollToken;
     QString _pollEndpoint;
     QTimer _pollTimer;
-    int _secondsLeft;
-    int _secondsInterval;
+    qint64 _secondsLeft;
+    qint64 _secondsInterval;
     bool _isBusy;
     bool _hasToken;
 };

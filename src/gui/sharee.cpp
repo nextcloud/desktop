@@ -205,7 +205,7 @@ void ShareeModel::setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharee
         if (it == _sharees.constEnd()) {
             newPersistant << QModelIndex();
         } else {
-            newPersistant << index(it - _sharees.constBegin());
+            newPersistant << index(std::distance(_sharees.constBegin(), it));
         }
     }
 

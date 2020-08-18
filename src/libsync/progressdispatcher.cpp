@@ -362,7 +362,7 @@ ProgressInfo::Estimates ProgressInfo::Progress::estimates() const
     Estimates est;
     est.estimatedBandwidth = _progressPerSec;
     if (_progressPerSec != 0) {
-        est.estimatedEta = (_total - _completed) / _progressPerSec * 1000.0;
+        est.estimatedEta = qRound64(static_cast<double>(_total - _completed) / _progressPerSec) * 1000;
     } else {
         est.estimatedEta = 0; // looks better than quint64 max
     }
@@ -391,7 +391,7 @@ void ProgressInfo::Progress::update()
     // Therefore, smoothing starts at 0 and ramps up to its final value over time.
     const double smoothing = 0.9 * (1.0 - _initialSmoothing);
     _initialSmoothing *= 0.7; // goes from 1 to 0.03 in 10s
-    _progressPerSec = smoothing * _progressPerSec + (1.0 - smoothing) * (_completed - _prevCompleted);
+    _progressPerSec = smoothing * _progressPerSec + (1.0 - smoothing) * static_cast<double>(_completed - _prevCompleted);
     _prevCompleted = _completed;
 }
 

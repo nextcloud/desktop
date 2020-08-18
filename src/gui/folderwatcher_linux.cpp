@@ -128,7 +128,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
 {
     int len = 0;
     struct inotify_event *event = nullptr;
-    int i = 0;
+    size_t i = 0;
     int error = 0;
     QVarLengthArray<char, 2048> buffer(2048);
 
