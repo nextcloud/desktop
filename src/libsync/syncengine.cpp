@@ -1567,17 +1567,17 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
             const auto filePerms = getPermissions((*it)->_file);
 
             //true when it is just a rename in the same directory. (not a move)
-            bool isRename = (*it)->_file.startsWith(parentDir) && (*it)->_file.lastIndexOf('/') == slashPos;
+            const bool isRename = (*it)->_file.startsWith(parentDir) && (*it)->_file.lastIndexOf('/') == slashPos;
 
+            const bool isForbiddenSubDirectoryCreation = (*it)->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories);
+            const bool isForbiddenFileCreation = !(*it)->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddFile);
 
             // Check if we are allowed to move to the destination.
             bool destinationOK = true;
             if (isRename || destPerms.isNull()) {
                 // no need to check for the destination dir permission
                 destinationOK = true;
-            } else if ((*it)->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
-                destinationOK = false;
-            } else if (!(*it)->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddFile)) {
+            } else if (isForbiddenSubDirectoryCreation || isForbiddenFileCreation) {
                 destinationOK = false;
             }
 
@@ -1694,7 +1694,6 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
         case CSYNC_INSTRUCTION_NEW:
             // Ideally we should try to revert the rename or remove, but this would be dangerous
             // without re-doing the reconcile phase.  So just let it happen.
-            break;
         default:
             break;
         }

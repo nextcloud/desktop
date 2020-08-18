@@ -250,9 +250,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             if (f->syncPaused()) {
                 return theme->folderDisabledIcon();
             } else {
-                if (status == SyncResult::SyncPrepare) {
-                    return theme->syncStateIcon(SyncResult::SyncRunning);
-                } else if (status == SyncResult::Undefined) {
+                if (status == SyncResult::SyncPrepare || status == SyncResult::Undefined) {
                     return theme->syncStateIcon(SyncResult::SyncRunning);
                 } else {
                     // The "Problem" *result* just means some files weren't
@@ -1072,7 +1070,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     auto &pi = _folders[folderIndex]._progress;
 
     SyncResult::Status state = f->syncResult().status();
-    if (!f->canSync()) {
+    if (!f->canSync() || state == SyncResult::Problem || state == SyncResult::Success || state == SyncResult::Error) {
         // Reset progress info.
         pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::NotYetStarted) {
@@ -1093,11 +1091,6 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     } else if (state == SyncResult::SyncPrepare) {
         pi = SubFolderInfo::Progress();
         pi._overallSyncString = tr("Preparing to sync …");
-    } else if (state == SyncResult::Problem || state == SyncResult::Success) {
-        // Reset the progress info after a sync.
-        pi = SubFolderInfo::Progress();
-    } else if (state == SyncResult::Error) {
-        pi = SubFolderInfo::Progress();
     }
 
     // update the icon etc. now

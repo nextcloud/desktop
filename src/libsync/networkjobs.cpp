@@ -385,11 +385,8 @@ bool LsColJob::finished()
             // XML parse error
             emit finishedWithError(reply());
         }
-    } else if (httpCode == 207) {
-        // wrong content type
-        emit finishedWithError(reply());
     } else {
-        // wrong HTTP code or any other network error
+        // wrong content type, wrong HTTP code or any other network error
         emit finishedWithError(reply());
     }
 

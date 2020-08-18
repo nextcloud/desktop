@@ -74,7 +74,6 @@ QString Progress::asActionString(const SyncFileItem &item)
     case CSYNC_INSTRUCTION_IGNORE:
         return QCoreApplication::translate("progress", "ignoring");
     case CSYNC_INSTRUCTION_STAT_ERROR:
-        return QCoreApplication::translate("progress", "error");
     case CSYNC_INSTRUCTION_ERROR:
         return QCoreApplication::translate("progress", "error");
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
