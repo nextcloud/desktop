@@ -42,3 +42,6 @@
 #define OVERLAY_NAME_WARNING        L"  @APPLICATION_SHORTNAME@Warning"
 
 #define OVERLAY_DESCRIPTION         L"@APPLICATION_SHORTNAME@ overlay handler"
+
+// NCUtil
+#define UTIL_PIPE_APP_NAME          L"@APPLICATION_EXECUTABLE@"
