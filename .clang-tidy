@@ -1,4 +1,5 @@
 Checks: '-*,
+    bugprone-argument-comment,
     cppcoreguidelines-init-variables,
     misc-*,
     -misc-non-private-member-variables-in-classes,

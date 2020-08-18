@@ -439,7 +439,7 @@ public:
             return;
         }
         fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-        remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
+        remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
 
@@ -680,7 +680,7 @@ public:
             return;
         }
         fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-        remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
+        remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
 
         QTimer::singleShot(0, this, &FakeChunkMoveReply::respond);
     }
