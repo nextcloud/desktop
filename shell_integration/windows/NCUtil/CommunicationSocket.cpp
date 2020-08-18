@@ -14,6 +14,7 @@
 
 #include "CommunicationSocket.h"
 #include "StringUtil.h"
+#include "WinShellExtConstants.h"
 
 #include <iostream>
 #include <vector>
@@ -41,8 +42,9 @@ std::wstring getUserName() {
 
 std::wstring CommunicationSocket::DefaultPipePath()
 {
-    auto pipename = std::wstring(L"\\\\.\\pipe\\");
-    pipename += L"ownCloud-";
+    auto pipename = std::wstring(LR"(\\.\pipe\)");
+    pipename += std::wstring(UTIL_PIPE_APP_NAME);
+    pipename += L"-";
     pipename += getUserName();
     return pipename;
 }
