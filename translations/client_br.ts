@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Diskouez an niver-memor</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -2654,7 +2654,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="219"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Oberenn</translation>
     </message>
 </context>
 <context>
@@ -2662,42 +2662,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="51"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>rannañ tikedenn</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="67"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Hent ownCloud :</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Hent Nextcloud :</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Skeudennig</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="77"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="98"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>Teuliad : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="101"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1 O rannañ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="275"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket rannapl ar restr peogwir eo bet rannet hep aotre rannañ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="314"/>
@@ -2720,7 +2720,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Notenn :</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="192"/>
@@ -2730,22 +2730,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Liamm rannañ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="239"/>
         <source>Expiration date:</source>
-        <translation type="unfinished"/>
+        <translation>Deizat termenn :</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Termenn :</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
         <source>Allow Editing</source>
-        <translation type="unfinished"/>
+        <translation>Aotreañ Embann</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="158"/>
@@ -2760,12 +2760,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation type="unfinished"/>
+        <translation>Aotreañ Pelkargañ &amp;&amp; Embann</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>Lezel Restr (Pellkas Nemetken)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
@@ -2780,7 +2780,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Password Protect</source>
-        <translation type="unfinished"/>
+        <translation>Gwarez Ger-tremen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
@@ -2795,7 +2795,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
         <source>Expiration Date</source>
-        <translation type="unfinished"/>
+        <translation>Deizat Termen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="217"/>
@@ -2820,12 +2820,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="464"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Gwiriañ Lamadenn al Liamm Rannañ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Sur oc&apos;h ho peus c&apos;hoant lemel al liamm rannañ publik &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;Notenn : Ne vo ket posupl hen disober.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
@@ -2840,7 +2840,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Liamm publik</translation>
     </message>
 </context>
 <context>
@@ -2848,7 +2848,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
-        <translation type="unfinished"/>
+        <translation>Rannañ gant implijourienn pe strolladoù ...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
@@ -2858,12 +2858,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="280"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Disoc&apos;h ebet evit &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Rannet am eus un dra bennak ganeoc&apos;h</translation>
     </message>
 </context>
 <context>
@@ -2909,12 +2909,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Fazi Mont-tre</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Ret eo deoc&apos;h mont-tre evel an implijer %1</translation>
     </message>
 </context>
 <context>
@@ -2922,22 +2922,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Dilesa</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
         <source>SSL Cipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>Gwellet Devug SSL Cipher</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Addilesa rediet</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>Termennet eo ho prantad. Ret eo deoc&apos;h mont-tre en dro evit kendec&apos;hel da implij ar c&apos;hliant.</translation>
     </message>
 </context>
 <context>
@@ -2946,54 +2946,54 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="465"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation type="unfinished"/>
+        <translation>Rannañ gant %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="536"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Roll kenaroud rannañ</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="693"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Rannet am eus un dra bennak ganeoc&apos;h</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="706"/>
         <location filename="../src/gui/socketapi.cpp" line="737"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Dibaboù rannañ</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Share via %1</source>
-        <translation type="unfinished"/>
+        <translation>Rannañ dre %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="708"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Eila al liamm prevez d&apos;ar golver</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Kas al liamm prevez dre bostel ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="735"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket aotret adrannañ ar restr</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="748"/>
         <location filename="../src/gui/socketapi.cpp" line="750"/>
         <source>Copy public link</source>
-        <translation type="unfinished"/>
+        <translation>Eilañ al liamm publik</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="754"/>
         <source>Copy internal link</source>
-        <translation type="unfinished"/>
+        <translation>Eilañ al liammm diabarzh</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="807"/>
@@ -3003,7 +3003,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ er furcher</translation>
     </message>
 </context>
 <context>
@@ -3011,32 +3011,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="88"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Munnudoù ar Sertifikat&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="91"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Anv Boutiñ (CN):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="92"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>Anvioù all ar sujet :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Aozadur (O) :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="94"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Unanenn Aozadur (OU) :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="95"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Stad/Rannvro :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="96"/>
@@ -3046,89 +3046,91 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="97"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Niverenn :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="100"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Roer&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="103"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Roer :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="104"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Roet d&apos;an :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Termenn d&apos;an :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Roudennoù bizh&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256 :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="113"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1 :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Notenn :&lt;/b&gt; aotreet eo bet ar sertifikat gant an dorn&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (sinet e unan)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="139"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Ar c&apos;henstagadenn a zo sifret en ur implijour %1 bit %2
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo KET sur ar genstagadenn abalamour n&apos;eo ket sifret.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>Server version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Stumm servijour : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="205"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation type="unfinished"/>
+        <translation>Dougadenn ebet evit an anavzerien/tikedennoù prantad SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>Titouroù sertifikat :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket sur ar genstagadenn</translation>
     </message>
 </context>
 <context>
@@ -3136,77 +3138,77 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation type="unfinished"/>
+        <translation>Kaout fiziañs er sertifikat memestra</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikat difiziet</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Na genstag ket e surentez da &lt;i&gt;%1&lt;/i&gt; :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
-        <translation type="unfinished"/>
+        <translation>gant ar Sertfikat %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="175"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;not specified&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="205"/>
         <source>Organization: %1</source>
-        <translation type="unfinished"/>
+        <translation>Aozadur : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Unit: %1</source>
-        <translation type="unfinished"/>
+        <translation>Unanenn : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="207"/>
         <source>Country: %1</source>
-        <translation type="unfinished"/>
+        <translation>Bro : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Roudenn bizh (SHA1) : &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Roudenn bizh (SHA-256) : &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Roudenn bizh (SHA-512) :&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Effective Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Deizat ober : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Deizat termenn : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
         <source>Issuer: %1</source>
-        <translation type="unfinished"/>
+        <translation>Roer : %1</translation>
     </message>
 </context>
 <context>
@@ -3214,52 +3216,52 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="122"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>Graet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitet da gargañ pe da grouiñ ar restr kazetenn. Bezit sur ho peus an aotreoù lenn ha embann en teuliad kemprenn diabarzh.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>Pazenn dizoloiñ c&apos;hwitet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="132"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>Tizet eo bet amzer termenn ar genstagadenn rouedad.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="135"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi treuskas HTTP a zo bet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;oc&apos;h ket aotreet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket bet kavet ar restr pe an teuliad :</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Klasket krouiñ un teuliad e oa outañ dija.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>Blas dieub ebet war ar servijour %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi CSync bennak.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="153"/>
@@ -3269,210 +3271,210 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket tizapl ar servij evit ar poent</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>An teuliad staliet n&apos;eo ket tizapl war ar servijour evit ar poent</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Tremenn diasotreet</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi a zo bet en ur digeriñ an teuliad</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi a zo bet en ul lenn an teuliad.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="173"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Ar fazi diabarzh niverenn %1 a zo bet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="244"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (tremennet e-biou abalamour d&apos;ar fazi a-raok, klasket vo en dro a benn %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Al liammoù simbolek  n&apos;int ket douget er gemprennadenn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Ar restr a zo er roll restroù dianvezet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="497"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>An anv restr a achu gant ur prantad n&apos;int ket douget ar sistem restr.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>An anv restr gant an arouez &apos;%1&apos; n&apos;int ket douget gant ar sistem trestr-mañ.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>An anv restr a zo un anv restr miret ar sistem restr.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Un hed fin ez eus an anv restr.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Re hir eo an anv restr.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Restr/Teuliad a zo dianvezet peogwir eo koachet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="524"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Re doñ eo renkadurezh an teuliadoù</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>An anv restr ne c&apos;hell ket bezhañ sifret war ho sistem restr.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="536"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Stroum diziskoulmet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Stourm : Stumm servijour pelkarget, eiladenn diabarzh andanvet ha n&apos;eo ket bet pellkaset.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>C&apos;hwitet ar kregiñ.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="571"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket mat sifradur an anv restr</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="735"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Arouez fall, andanvit &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="805"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Nez eus nemet %1 dieub, ret eo kaout %2 d&apos;an neubeutañ evit kregiñ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="840"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl digeriñ pe krouiñ ar rouadenn-diaz kemprennet diabarzh. Bezit sur ho peus an aotre embann en teuliad kemprenn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="931"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl lenn ar roll-du eus ar roadenn-diaz diabarzh</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="972"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl eo lenn ar gazetenn kemprenn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1035"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl eo digeriñ ar gazetenn kemprenn</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1111"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Un arouez fall ez eus d&apos;an neubeutañ en anv restr</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1397"/>
         <location filename="../src/libsync/syncengine.cpp" line="1437"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Dianvezet abalamour d&apos;ar roll-du &quot;choaz petra kemprenn&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1456"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Disaotret peogwir n&apos;ho peu ket an aotre da ouzhpennañ izteuliadoù en teuliad-mañ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1471"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation type="unfinished"/>
+        <translation>Diaotreet peogwir n&apos;ho peus ket an aotre da ouzhpennañ un teuliad kerent</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1478"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Disaotreet peogwir n&apos;ho peus ket an aotre da ouzhpennañ restroù en teuliad</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1503"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Disoatreet da bellkas peogwir n&apos;eo ar restr da lenn nemetkenn war ar servijour, ho adkrouiñ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1519"/>
         <location filename="../src/libsync/syncengine.cpp" line="1538"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Disaotreet da diblasañ, ho adkrouiñ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1552"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Restroù diabarzh ha rannadennoù teuliad lamet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1606"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Diblasañ disaotreet, ho adkruiñ an dra</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1617"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>diblasañ disaotreet abalamour ez eu %1 da lenn-nemetken</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1617"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>ar pall</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1617"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>an orin</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1811"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Plas el lenner re vihan : ar bellgargadennoù a lako ar plas dieub da mont dindan %1 a vo ankouaet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1818"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;ez eus ket trawalc&apos;h a blas war ar servijour evit pelgasadennoù zo.</translation>
     </message>
 </context>
 <context>
@@ -3480,7 +3482,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Kazetenn Kemprenn</translation>
     </message>
 </context>
 <context>
@@ -3493,7 +3495,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ an diviz pennañ</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="90"/>
@@ -3503,12 +3505,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="91"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Kuitaat %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="172"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 : %2</translation>
     </message>
 </context>
 <context>
@@ -3517,18 +3519,18 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/theme.cpp" line="360"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;%1 Kliant Burev&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="363"/>
         <location filename="../src/libsync/theme.cpp" line="373"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Stumm %1. Evit muioc&apos;h a ditouroù, pouezit &lt;a href=&apos;%2&apos;&gt;amañ&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="377"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;An digoradenn-mañ a zo bet roet gant %1&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3536,27 +3538,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="323"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Klask en dro pep pellkasadenn</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
         <source>You renamed</source>
-        <translation type="unfinished"/>
+        <translation>Adanvet ho peus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>You deleted</source>
-        <translation type="unfinished"/>
+        <translation>Lamet ho peus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You created</source>
-        <translation type="unfinished"/>
+        <translation>Krouet ho peus</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You changed</source>
-        <translation type="unfinished"/>
+        <translation>Cheñchet ho peus</translation>
     </message>
 </context>
 <context>
@@ -3587,12 +3589,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="210"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikat fall kavet</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="211"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>An ost &quot;%1&quot; en deus roet ur sertifikat fall. Kendec&apos;hel memstra ?</translation>
     </message>
 </context>
 <context>
@@ -3600,12 +3602,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>Kaset oc&apos;h bet kuit eus %1 evel an implijer %2. Deuit-tre en dro.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="186"/>
         <source>Please login with the user: %1</source>
-        <translation type="unfinished"/>
+        <translation>Deuit tre gant an implijet : %1</translation>
     </message>
 </context>
 <context>
@@ -3621,12 +3623,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Ar stumm servijour n&apos;eo ket douget</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="237"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Ar servijour war ar c&apos;hont %1 a lak da dreiñ ur stumm kozh %2 n&apos;eo ket douget. Implij ar c&apos;hliant-mañ gant ur stumm servijour n&apos;eo ket douget n&apos;eo ket bet amprouet ha danjerus e c&apos;hell bezhañ. Diwallit ma kendalc&apos;hit.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="276"/>
@@ -3636,27 +3638,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="278"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Digemprennet eus kontoù</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Digemprennet eus %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="289"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Digemprennet eus ar c&apos;hontoù :</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="291"/>
         <source>Account %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Lont %1 : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="305"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>Inskrivit ac&apos;honoc&apos;h</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
@@ -3666,23 +3668,23 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="310"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Kemprenn kont disaotreet</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="311"/>
         <location filename="../src/gui/owncloudgui.cpp" line="364"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Kemprennadenn ehanaet</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="351"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Teuliad %1 : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="359"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Stourmoù diziskoulmet</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
@@ -3707,7 +3709,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ er furcher</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="368"/>
@@ -4023,7 +4025,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/syncresult.cpp" line="141"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 : %2</translation>
     </message>
 </context>
 <context>
@@ -4388,7 +4390,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="231"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Klask en dro pep pellkasadenn</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="346"/>
