@@ -132,25 +132,25 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
     int error = 0;
     QVarLengthArray<char, 2048> buffer(2048);
 
-    do {
+    len = read(fd, buffer.data(), buffer.size());
+    error = errno;
+    /**
+      * From inotify documentation:
+      *
+      * The behavior when the buffer given to read(2) is too
+      * small to return information about the next event
+      * depends on the kernel version: in kernels  before 2.6.21,
+      * read(2) returns 0; since kernel 2.6.21, read(2) fails with
+      * the error EINVAL.
+      */
+    while (len < 0 && error == EINVAL) {
+        // double the buffer size
+        buffer.resize(buffer.size() * 2);
+
+        /* and try again ... */
         len = read(fd, buffer.data(), buffer.size());
         error = errno;
-        /**
-          * From inotify documentation:
-          *
-          * The behavior when the buffer given to read(2) is too
-          * small to return information about the next event
-          * depends on the kernel version: in kernels  before 2.6.21,
-          * read(2) returns 0; since kernel 2.6.21, read(2) fails with
-          * the error EINVAL.
-          */
-        if (len < 0 && error == EINVAL) {
-            // double the buffer size
-            buffer.resize(buffer.size() * 2);
-            /* and try again ... */
-            continue;
-        }
-    } while (false);
+    }
 
     // reset counter
     i = 0;
