@@ -13,7 +13,6 @@
  */
 
 #include "CommunicationSocket.h"
-#include "UtilConstants.h"
 #include "StringUtil.h"
 
 #include <iostream>

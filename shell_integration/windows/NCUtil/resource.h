@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by OCContextMenu.rc
+// Used by NCContextMenu.rc
 
 // Next default values for new objects
 // 

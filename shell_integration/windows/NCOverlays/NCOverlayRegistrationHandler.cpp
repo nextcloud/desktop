@@ -12,17 +12,24 @@
  * details.
  */
 
-#include "OCOverlayRegistrationHandler.h"
-#include "OverlayConstants.h"
+#include "NCOverlayRegistrationHandler.h"
 
 #include <windows.h>
 #include <objbase.h>
 #include <iostream>
 #include <fstream>
 
+#define REGISTRY_OVERLAY_KEY        LR"(SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers)"
+#define REGISTRY_CLSID              L"CLSID"
+#define REGISTRY_IN_PROCESS         L"InprocServer32"
+#define REGISTRY_THREADING          L"ThreadingModel"
+#define REGISTRY_APARTMENT          L"Apartment"
+#define REGISTRY_VERSION            L"Version"
+#define REGISTRY_VERSION_NUMBER     L"1.0"
+
 using namespace std;
 
-HRESULT OCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PCWSTR friendlyName)
+HRESULT NCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PCWSTR friendlyName)
 {
     HRESULT hResult;
     HKEY shellOverlayKey = nullptr;
@@ -53,7 +60,7 @@ HRESULT OCOverlayRegistrationHandler::MakeRegistryEntries(const CLSID& clsid, PC
     return hResult;
 }
 
-HRESULT OCOverlayRegistrationHandler::RemoveRegistryEntries(PCWSTR friendlyName)
+HRESULT NCOverlayRegistrationHandler::RemoveRegistryEntries(PCWSTR friendlyName)
 {
     HRESULT hResult;
     HKEY shellOverlayKey = nullptr;
@@ -72,7 +79,7 @@ HRESULT OCOverlayRegistrationHandler::RemoveRegistryEntries(PCWSTR friendlyName)
     return hResult;
 }
 
-HRESULT OCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, PCWSTR friendlyName, const CLSID& clsid)
+HRESULT NCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, PCWSTR friendlyName, const CLSID& clsid)
 {
     if (!modulePath) {
         return E_FAIL;
@@ -90,7 +97,7 @@ HRESULT OCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, PCWST
 
     HKEY clsidKey = nullptr;
     hResult = HRESULT_FROM_WIN32(RegCreateKeyEx(hKey, stringCLSID, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &clsidKey, nullptr));
-    if(!SUCCEEDED(hResult)) {
+    if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 
@@ -98,30 +105,36 @@ HRESULT OCOverlayRegistrationHandler::RegisterCOMObject(PCWSTR modulePath, PCWST
 
     HKEY inprocessKey = nullptr;
     hResult = HRESULT_FROM_WIN32(RegCreateKeyEx(clsidKey, REGISTRY_IN_PROCESS, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &inprocessKey, nullptr));
-    if(!SUCCEEDED(hResult)) {
+    if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 
     hResult = HRESULT_FROM_WIN32(RegSetValue(inprocessKey, nullptr, REG_SZ, modulePath, (DWORD) wcslen(modulePath)));
 
-    if(!SUCCEEDED(hResult)) {
+    if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 
     hResult = HRESULT_FROM_WIN32(RegSetValueEx(inprocessKey, REGISTRY_THREADING, 0, REG_SZ, (LPBYTE)REGISTRY_APARTMENT, (DWORD)((wcslen(REGISTRY_APARTMENT)+1) * sizeof(TCHAR))));
-    if(!SUCCEEDED(hResult)) {
+    if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 
-    hResult = HRESULT_FROM_WIN32(RegSetValueEx(inprocessKey, REGISTRY_VERSION, 0, REG_SZ, (LPBYTE)REGISTRY_VERSION_NUMBER, (DWORD)(wcslen(REGISTRY_VERSION_NUMBER)+1) * sizeof(TCHAR)));
-    if(!SUCCEEDED(hResult)) {
+    HKEY versionKey = nullptr;
+    hResult = HRESULT_FROM_WIN32(RegCreateKeyEx(clsidKey, REGISTRY_VERSION, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &versionKey, nullptr));
+    if (!SUCCEEDED(hResult)) {
+        return hResult;
+    }
+
+    hResult = HRESULT_FROM_WIN32(RegSetValueEx(versionKey, nullptr, 0, REG_SZ, (LPBYTE)REGISTRY_VERSION_NUMBER, (DWORD)(wcslen(REGISTRY_VERSION_NUMBER)+1) * sizeof(TCHAR)));
+    if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 
     return S_OK;
 }
 
-HRESULT OCOverlayRegistrationHandler::UnregisterCOMObject(const CLSID& clsid)
+HRESULT NCOverlayRegistrationHandler::UnregisterCOMObject(const CLSID& clsid)
 {
     wchar_t stringCLSID[MAX_PATH];
 
@@ -135,17 +148,22 @@ HRESULT OCOverlayRegistrationHandler::UnregisterCOMObject(const CLSID& clsid)
 
     HKEY clsidKey = nullptr;
     hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(hKey, stringCLSID, 0, DELETE, &clsidKey));
-    if(!SUCCEEDED(hResult)) {
+    if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 
     hResult = HRESULT_FROM_WIN32(RegDeleteKey(clsidKey, REGISTRY_IN_PROCESS));
-    if(!SUCCEEDED(hResult)) {
+    if (!SUCCEEDED(hResult)) {
+        return hResult;
+    }
+
+    hResult = HRESULT_FROM_WIN32(RegDeleteKey(clsidKey, REGISTRY_VERSION));
+    if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 
     hResult = HRESULT_FROM_WIN32(RegDeleteKey(hKey, stringCLSID));
-    if(!SUCCEEDED(hResult)) {
+    if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 

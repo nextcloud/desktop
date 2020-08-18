@@ -12,8 +12,8 @@
 * details.
 */
 
-#include "OCContextMenuFactory.h"
-#include "OCContextMenu.h"
+#include "NCContextMenuFactory.h"
+#include "NCContextMenu.h"
 #include <new>
 #include <Shlwapi.h>
 #pragma comment(lib, "shlwapi.lib")
@@ -22,12 +22,12 @@
 extern long g_cDllRef;
 
 
-OCContextMenuFactory::OCContextMenuFactory() : m_cRef(1)
+NCContextMenuFactory::NCContextMenuFactory() : m_cRef(1)
 {
     InterlockedIncrement(&g_cDllRef);
 }
 
-OCContextMenuFactory::~OCContextMenuFactory()
+NCContextMenuFactory::~NCContextMenuFactory()
 {
     InterlockedDecrement(&g_cDllRef);
 }
@@ -35,18 +35,18 @@ OCContextMenuFactory::~OCContextMenuFactory()
 
 // IUnknown methods
 
-IFACEMETHODIMP OCContextMenuFactory::QueryInterface(REFIID riid, void **ppv)
+IFACEMETHODIMP NCContextMenuFactory::QueryInterface(REFIID riid, void **ppv)
 {
-    static const QITAB qit[] =  { QITABENT(OCContextMenuFactory, IClassFactory), { 0 }, };
+    static const QITAB qit[] =  { QITABENT(NCContextMenuFactory, IClassFactory), { 0 }, };
     return QISearch(this, qit, riid, ppv);
 }
 
-IFACEMETHODIMP_(ULONG) OCContextMenuFactory::AddRef()
+IFACEMETHODIMP_(ULONG) NCContextMenuFactory::AddRef()
 {
     return InterlockedIncrement(&m_cRef);
 }
 
-IFACEMETHODIMP_(ULONG) OCContextMenuFactory::Release()
+IFACEMETHODIMP_(ULONG) NCContextMenuFactory::Release()
 {
     ULONG cRef = InterlockedDecrement(&m_cRef);
     if (0 == cRef) {
@@ -58,7 +58,7 @@ IFACEMETHODIMP_(ULONG) OCContextMenuFactory::Release()
 
 // IClassFactory methods
 
-IFACEMETHODIMP OCContextMenuFactory::CreateInstance(IUnknown *pUnkOuter, REFIID riid, void **ppv)
+IFACEMETHODIMP NCContextMenuFactory::CreateInstance(IUnknown *pUnkOuter, REFIID riid, void **ppv)
 {
     HRESULT hr = CLASS_E_NOAGGREGATION;
 
@@ -67,7 +67,7 @@ IFACEMETHODIMP OCContextMenuFactory::CreateInstance(IUnknown *pUnkOuter, REFIID 
         hr = E_OUTOFMEMORY;
 
         // Create the COM component.
-        OCContextMenu *pExt = new (std::nothrow) OCContextMenu();
+        NCContextMenu *pExt = new (std::nothrow) NCContextMenu();
         if (pExt) {
             // Query the specified interface.
             hr = pExt->QueryInterface(riid, ppv);
@@ -78,7 +78,7 @@ IFACEMETHODIMP OCContextMenuFactory::CreateInstance(IUnknown *pUnkOuter, REFIID 
     return hr;
 }
 
-IFACEMETHODIMP OCContextMenuFactory::LockServer(BOOL fLock)
+IFACEMETHODIMP NCContextMenuFactory::LockServer(BOOL fLock)
 {
     if (fLock)  {
         InterlockedIncrement(&g_cDllRef);

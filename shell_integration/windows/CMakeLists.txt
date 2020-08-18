@@ -9,7 +9,7 @@ include_directories(
 configure_file(WinShellExtConstants.h.in ${CMAKE_CURRENT_BINARY_DIR}/WinShellExtConstants.h)
 configure_file(WinShellExtConstants.wxi.in ${CMAKE_CURRENT_BINARY_DIR}/WinShellExtConstants.wxi)
 
-add_subdirectory(OCContextMenu)
-add_subdirectory(OCOverlays)
-add_subdirectory(OCUtil)
+add_subdirectory(NCContextMenu)
+add_subdirectory(NCOverlays)
+add_subdirectory(NCUtil)
 

@@ -16,6 +16,10 @@
 -->
 <Include>
 
+    <!--
+        IMPORTANT: Keep this file in sync with WinShellExtConstants.h.in
+    -->
+
     <!-- Context Menu -->
     <?define ContextMenuGuid        = "@WIN_SHELLEXT_CONTEXT_MENU_GUID@" ?>
     <?define ContextMenuRegKeyName  = "@APPLICATION_SHORTNAME@ContextMenuHandler" ?>
@@ -29,7 +33,12 @@
     <?define OverlayGuidSync        = "@WIN_SHELLEXT_OVERLAY_GUID_SYNC@" ?>
     <?define OverlayGuidWarning     = "@WIN_SHELLEXT_OVERLAY_GUID_WARNING@" ?>
 
-    <!-- Preceeding spaces are intended, two spaces to put us ahead of the competition :/ -->
+    <!--
+        Preceeding spaces are intended, two spaces to put us ahead of the competition :/
+
+        There is a limit in Windows (oh wonder^^) so that only the first 15 extensions get invoked, this is why to use that dirty little trick to get ahead ;)
+        See: https://docs.microsoft.com/en-us/windows/win32/shell/context-menu-handlers?redirectedfrom=MSDN#employing-the-verb-selection-model
+    -->
     <?define OverlayNameError       = "  @APPLICATION_SHORTNAME@Error" ?>
     <?define OverlayNameOK          = "  @APPLICATION_SHORTNAME@OK" ?>
     <?define OverlayNameOKShared    = "  @APPLICATION_SHORTNAME@OKShared" ?>

@@ -1,11 +1,11 @@
-add_library(OCUtil STATIC
+add_library(NCUtil STATIC
     CommunicationSocket.cpp
     RemotePathChecker.cpp
     StringUtil.cpp
-    OCUtil.rc
+    NCUtil.rc
 )
 
-target_include_directories(OCUtil
+target_include_directories(NCUtil
     PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}"
 )

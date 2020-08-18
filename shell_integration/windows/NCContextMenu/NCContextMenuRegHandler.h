@@ -13,14 +13,14 @@
 */
 
 
-#ifndef OCCONTEXTMENUREGHANDLER_H
-#define OCCONTEXTMENUREGHANDLER_H
+#ifndef NCCONTEXTMENUREGHANDLER_H
+#define NCCONTEXTMENUREGHANDLER_H
 
 #pragma once
 
 #include <windows.h>
 
-class __declspec(dllexport) OCContextMenuRegHandler
+class __declspec(dllexport) NCContextMenuRegHandler
 {
 public:
     static HRESULT MakeRegistryEntries(const CLSID& clsid, PCWSTR fileType);
@@ -35,4 +35,4 @@ public:
     static HRESULT UnregisterShellExtContextMenuHandler(PCWSTR pszFileType, PCWSTR pszFriendlyName);
 };
 
-#endif //OCCONTEXTMENUREGHANDLER_H
+#endif //NCCONTEXTMENUREGHANDLER_H

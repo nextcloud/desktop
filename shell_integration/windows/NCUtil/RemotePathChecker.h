@@ -29,7 +29,7 @@
 class __declspec(dllexport) RemotePathChecker {
 public:
     enum FileState {
-        // Order synced with OCOverlay
+        // Order synced with NCOverlay
         StateError = 0,
         StateOk, StateOkSWM,
         StateSync,
@@ -53,7 +53,7 @@ private:
     std::queue<std::wstring> _pending;
 
     std::unordered_map<std::wstring, FileState> _cache;
-    // The vector is const since it will be accessed from multiple threads through OCOverlay::IsMemberOf.
+    // The vector is const since it will be accessed from multiple threads through NCOverlay::IsMemberOf.
     // Each modification needs to be made onto a copy and then atomically replaced in the shared_ptr.
     std::shared_ptr<const std::vector<std::wstring>> _watchedDirectories;
     bool _connected;
