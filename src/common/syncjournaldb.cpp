@@ -729,10 +729,10 @@ bool SyncJournalDb::updateMetadataTableStructure()
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN isE2eEncrypted INTEGER;");
         if (!query.exec()) {
-            sqlFail("updateMetadataTableStructure: add e2eMangledName column", query);
+            sqlFail("updateMetadataTableStructure: add isE2eEncrypted column", query);
             re = false;
         }
-        commitInternal("update database structure: add e2eMangledName col");
+        commitInternal("update database structure: add isE2eEncrypted col");
     }
 
     if (!tableColumns("uploadinfo").contains("contentChecksum")) {
