@@ -12,8 +12,8 @@
  * details.
  */
 
-#include "OCOverlayRegistrationHandler.h"
-#include "OCOverlayFactory.h"
+#include "NCOverlayRegistrationHandler.h"
+#include "NCOverlayFactory.h"
 #include "WinShellExtConstants.h"
 
 HINSTANCE instanceHandle = nullptr;
@@ -41,11 +41,11 @@ HRESULT CreateFactory(REFIID riid, void **ppv, int state)
 {
     HRESULT hResult = E_OUTOFMEMORY;
 
-    OCOverlayFactory* ocOverlayFactory = new OCOverlayFactory(state);
+    NCOverlayFactory* ncOverlayFactory = new NCOverlayFactory(state);
 
-    if (ocOverlayFactory) {
-        hResult = ocOverlayFactory->QueryInterface(riid, ppv);
-        ocOverlayFactory->Release();
+    if (ncOverlayFactory) {
+        hResult = ncOverlayFactory->QueryInterface(riid, ppv);
+        ncOverlayFactory->Release();
     }
     return hResult;
 }
@@ -94,13 +94,13 @@ HRESULT RegisterCLSID(LPCOLESTR guidStr, PCWSTR overlayStr, PCWSTR szModule)
         return hResult;
     }
 
-    hResult = OCOverlayRegistrationHandler::RegisterCOMObject(szModule, OVERLAY_GENERIC_NAME, guid);
+    hResult = NCOverlayRegistrationHandler::RegisterCOMObject(szModule, OVERLAY_DESCRIPTION, guid);
 
     if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 
-    hResult = OCOverlayRegistrationHandler::MakeRegistryEntries(guid, overlayStr);
+    hResult = NCOverlayRegistrationHandler::MakeRegistryEntries(guid, overlayStr);
 
     return hResult;
 }
@@ -116,13 +116,13 @@ HRESULT UnregisterCLSID(LPCOLESTR guidStr, PCWSTR overlayStr)
         return hResult;
     }
 
-    hResult = OCOverlayRegistrationHandler::UnregisterCOMObject(guid);
+    hResult = NCOverlayRegistrationHandler::UnregisterCOMObject(guid);
 
     if (!SUCCEEDED(hResult)) {
         return hResult;
     }
 
-    hResult = OCOverlayRegistrationHandler::RemoveRegistryEntries(overlayStr);
+    hResult = NCOverlayRegistrationHandler::RemoveRegistryEntries(overlayStr);
 
     return hResult;
 }
@@ -137,13 +137,6 @@ HRESULT _stdcall DllRegisterServer(void)
         hResult = HRESULT_FROM_WIN32(GetLastError());
         return hResult;
     }
-
-    // Unregister any obsolete CLSID when we register here
-    // Those CLSID were removed in 2.1, but we need to make sure to prevent any previous version
-    // of the extension on the system from loading at the same time as a new version to avoid crashing explorer.
-    UnregisterCLSID(OVERLAY_GUID_ERROR_SHARED, OVERLAY_NAME_ERROR_SHARED);
-    UnregisterCLSID(OVERLAY_GUID_SYNC_SHARED, OVERLAY_NAME_SYNC_SHARED);
-    UnregisterCLSID(OVERLAY_GUID_WARNING_SHARED, OVERLAY_NAME_WARNING_SHARED);
 
     hResult = RegisterCLSID(OVERLAY_GUID_ERROR, OVERLAY_NAME_ERROR, szModule);
     if (!SUCCEEDED(hResult)) { return hResult; }

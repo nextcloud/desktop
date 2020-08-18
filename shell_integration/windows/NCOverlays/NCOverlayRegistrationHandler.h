@@ -12,14 +12,14 @@
  * details.
  */
 
-#ifndef OCOVERLAYREGISTRATIONHANDLER_H
-#define OCOVERLAYREGISTRATIONHANDLER_H
+#ifndef NCOVERLAYREGISTRATIONHANDLER_H
+#define NCOVERLAYREGISTRATIONHANDLER_H
 
 #pragma once
 
 #include <windows.h>
 
-class __declspec(dllexport) OCOverlayRegistrationHandler 
+class __declspec(dllexport) NCOverlayRegistrationHandler 
 {
     public:
         static HRESULT MakeRegistryEntries(const CLSID& clsid, PCWSTR fileType);

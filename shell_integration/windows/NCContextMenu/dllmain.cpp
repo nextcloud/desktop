@@ -14,8 +14,8 @@
 
 #include <windows.h>
 #include <Guiddef.h>
-#include "OCContextMenuRegHandler.h"
-#include "OCContextMenuFactory.h"
+#include "NCContextMenuRegHandler.h"
+#include "NCContextMenuFactory.h"
 #include "WinShellExtConstants.h"
 
 HINSTANCE   g_hInst = nullptr;
@@ -41,7 +41,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
 {
-	HRESULT hr = CLASS_E_CLASSNOTAVAILABLE;
+	HRESULT hr;
     GUID guid;
 
     hr = CLSIDFromString(CONTEXT_MENU_GUID, (LPCLSID)&guid);
@@ -49,10 +49,12 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
         return hr;
     }
 
+	hr = CLASS_E_CLASSNOTAVAILABLE;
+
 	if (IsEqualCLSID(guid, rclsid))	{
 		hr = E_OUTOFMEMORY;
 
-		OCContextMenuFactory *pClassFactory = new OCContextMenuFactory();
+		NCContextMenuFactory *pClassFactory = new NCContextMenuFactory();
 		if (pClassFactory) {
 			hr = pClassFactory->QueryInterface(riid, ppv);
 			pClassFactory->Release();
@@ -70,6 +72,12 @@ STDAPI DllCanUnloadNow(void)
 STDAPI DllRegisterServer(void)
 {
 	HRESULT hr;
+    GUID guid;
+
+    hr = CLSIDFromString(CONTEXT_MENU_GUID, (LPCLSID)&guid);
+    if (!SUCCEEDED(hr)) {
+        return hr;
+    }
 
 	wchar_t szModule[MAX_PATH];
 	if (GetModuleFileName(g_hInst, szModule, ARRAYSIZE(szModule)) == 0)	{
@@ -78,12 +86,12 @@ STDAPI DllRegisterServer(void)
 	}
 
 	// Register the component.
-	hr = OCContextMenuRegHandler::RegisterInprocServer(szModule, CLSID_FileContextMenuExt,
-		L"OCContextMenuHandler Class",	L"Apartment");
+	hr = NCContextMenuRegHandler::RegisterInprocServer(szModule, guid,
+		CONTEXT_MENU_DESCRIPTION, L"Apartment");
 	if (SUCCEEDED(hr))	{
 		// Register the context menu handler. The context menu handler is 
 		// associated with the .cpp file class.
-		hr = OCContextMenuRegHandler::RegisterShellExtContextMenuHandler(L"AllFileSystemObjects", CLSID_FileContextMenuExt, L"OCContextMenuHandler");
+		hr = NCContextMenuRegHandler::RegisterShellExtContextMenuHandler(L"AllFileSystemObjects", guid, CONTEXT_MENU_REGKEY_NAME);
 	}
 
 	return hr;
@@ -92,6 +100,12 @@ STDAPI DllRegisterServer(void)
 STDAPI DllUnregisterServer(void)
 {
 	HRESULT hr = S_OK;
+    GUID guid;
+
+    hr = CLSIDFromString(CONTEXT_MENU_GUID, (LPCLSID)&guid);
+    if (!SUCCEEDED(hr)) {
+        return hr;
+    }
 
 	wchar_t szModule[MAX_PATH];
 	if (GetModuleFileName(g_hInst, szModule, ARRAYSIZE(szModule)) == 0)	{
@@ -100,10 +114,10 @@ STDAPI DllUnregisterServer(void)
 	}
 
 	// Unregister the component.
-	hr = OCContextMenuRegHandler::UnregisterInprocServer(CLSID_FileContextMenuExt);
+	hr = NCContextMenuRegHandler::UnregisterInprocServer(guid);
 	if (SUCCEEDED(hr))	{
 		// Unregister the context menu handler.
-		hr = OCContextMenuRegHandler::UnregisterShellExtContextMenuHandler(L"AllFileSystemObjects", L"OCContextMenuHandler");
+		hr = NCContextMenuRegHandler::UnregisterShellExtContextMenuHandler(L"AllFileSystemObjects", CONTEXT_MENU_REGKEY_NAME);
 	}
 
 	return hr;

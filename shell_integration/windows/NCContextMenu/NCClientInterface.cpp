@@ -12,7 +12,7 @@
 * details.
 */
 
-#include "OCClientInterface.h"
+#include "NCClientInterface.h"
 
 #include "CommunicationSocket.h"
 #include "StringUtil.h"
@@ -31,7 +31,7 @@ using namespace std;
 
 #define PIPE_TIMEOUT  5*1000 //ms
 
-OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstring &files)
+NCClientInterface::ContextMenuInfo NCClientInterface::FetchInfo(const std::wstring &files)
 {
     auto pipename = CommunicationSocket::DefaultPipePath();
 
@@ -77,7 +77,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
     return info;
 }
 
-void OCClientInterface::SendRequest(const wchar_t *verb, const std::wstring &path)
+void NCClientInterface::SendRequest(const wchar_t *verb, const std::wstring &path)
 {
     auto pipename = CommunicationSocket::DefaultPipePath();
 

@@ -40,7 +40,7 @@
 
 class CommunicationSocket;
 
-class OCClientInterface
+class NCClientInterface
 {
 public:
     struct ContextMenuInfo {
