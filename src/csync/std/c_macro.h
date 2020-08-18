@@ -44,7 +44,7 @@
 #define ZERO_STRUCTP(x) do { if ((x) != NULL) memset((char *)(x), 0, sizeof(*(x))); } while(0)
 
 /** Free memory and zero the pointer */
-#define SAFE_FREE(x) do { if ((x) != NULL) {free((void*)x); x=NULL;} } while(0)
+#define SAFE_FREE(x) do { if ((x) != NULL) {free((void*)(x)); (x)=NULL;} } while(0)
 
 /** Get the smaller value */
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
@@ -53,7 +53,7 @@
 #define MAX(a,b) ((a) < (b) ? (b) : (a))
 
 /** Get the size of an array */
-#define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
+#define ARRAY_SIZE(a) (sizeof(a)/sizeof((a)[0]))
 
 /**
  * This is a hack to fix warnings. The idea is to use this everywhere that we
