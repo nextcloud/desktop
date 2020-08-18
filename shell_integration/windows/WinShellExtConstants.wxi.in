@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *
+ * Copyright (C) by Michael Schuster <michael.schuster@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+-->
+<Include>
+
+    <!-- Context Menu -->
+    <?define ContextMenuGuid        = "@WIN_SHELLEXT_CONTEXT_MENU_GUID@" ?>
+    <?define ContextMenuRegKeyName  = "@APPLICATION_SHORTNAME@ContextMenuHandler" ?>
+
+    <?define ContextMenuDescription = "@APPLICATION_SHORTNAME@ context menu handler" ?>
+
+    <!-- Overlays -->
+    <?define OverlayGuidError       = "@WIN_SHELLEXT_OVERLAY_GUID_ERROR@" ?>
+    <?define OverlayGuidOK          = "@WIN_SHELLEXT_OVERLAY_GUID_OK@" ?>
+    <?define OverlayGuidOKShared    = "@WIN_SHELLEXT_OVERLAY_GUID_OK_SHARED@" ?>
+    <?define OverlayGuidSync        = "@WIN_SHELLEXT_OVERLAY_GUID_SYNC@" ?>
+    <?define OverlayGuidWarning     = "@WIN_SHELLEXT_OVERLAY_GUID_WARNING@" ?>
+
+    <!-- Preceeding spaces are intended, two spaces to put us ahead of the competition :/ -->
+    <?define OverlayNameError       = "  @APPLICATION_SHORTNAME@Error" ?>
+    <?define OverlayNameOK          = "  @APPLICATION_SHORTNAME@OK" ?>
+    <?define OverlayNameOKShared    = "  @APPLICATION_SHORTNAME@OKShared" ?>
+    <?define OverlayNameSync        = "  @APPLICATION_SHORTNAME@Sync" ?>
+    <?define OverlayNameWarning     = "  @APPLICATION_SHORTNAME@Warning" ?>
+
+    <?define OverlayDescription     = "@APPLICATION_SHORTNAME@ overlay handler" ?>
+
+</Include>
