@@ -31,10 +31,6 @@ bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 #endif
 
-namespace Ui {
-    class Systray;
-}
-
 /**
  * @brief The Systray class
  * @ingroup gui

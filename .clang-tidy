@@ -1,6 +1,7 @@
 Checks: '-*,
     bugprone-argument-comment,
     bugprone-branch-clone,
+    bugprone-forward-declaration-namespace,
     cppcoreguidelines-init-variables,
     misc-*,
     -misc-non-private-member-variables-in-classes,

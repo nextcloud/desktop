@@ -17,7 +17,6 @@
 #include "testhelper.h"
 
 using namespace OCC;
-class HttpCredentials;
 
 class TestFolderMan: public QObject
 {
