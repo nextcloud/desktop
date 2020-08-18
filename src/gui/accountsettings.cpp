@@ -205,7 +205,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         auto *mnemonic = new QAction(tr("Display mnemonic"), this);
         connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
         _ui->encryptionMessage->addAction(mnemonic);
-        _ui->encryptionMessage->show();
+        _ui->encryptionMessage->hide();
     }
 
     connect(UserModel::instance(), &UserModel::addAccount,
@@ -841,6 +841,10 @@ void AccountSettings::slotAccountStateChanged()
          */
         qCInfo(lcAccountSettings) << "Account" << accountsState()->account()->displayName()
             << "Client Side Encryption" << accountsState()->account()->capabilities().clientSideEncryptionAvailable();
+
+        if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
+            _ui->encryptionMessage->show();
+        }
     }
 }
 
