@@ -1,11 +1,5 @@
 Checks: '-*,
-    bugprone-argument-comment,
-    bugprone-branch-clone,
-    bugprone-forward-declaration-namespace,
-    bugprone-macro-parentheses,
-    bugprone-narrowing-conversions,
-    bugprone-too-small-loop-variable,
-    bugprone-terminating-continue,
+    bugprone-*,
     cppcoreguidelines-init-variables,
     misc-*,
     -misc-non-private-member-variables-in-classes,
@@ -40,5 +34,11 @@ HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
 CheckOptions:
+  - key: bugprone-assert-side-effect.AssertMacros
+    value: 'assert;Q_ASSERT'
+  - key: bugprone-dangling-handle.HandleClasses
+    value: 'std::basic_string_view;std::experimental::basic_string_view;QStringView'
+  - key: bugprone-sizeof-expression.WarnOnSizeOfIntegerExpression
+    value: 1
   - key: modernize-use-default-member-init.UseAssignment
     value: 1
