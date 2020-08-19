@@ -139,8 +139,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     ui->selectiveSyncStatus->hide();
 
     createAccountToolbox();
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &AccountSettings::slotAccountAdded);
     connect(ui->_folderList, &QWidget::customContextMenuRequested,
         this, &AccountSettings::slotCustomContextMenuRequested);
     connect(ui->_folderList, &QAbstractItemView::clicked,
@@ -197,10 +195,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 void AccountSettings::createAccountToolbox()
 {
     QMenu *menu = new QMenu(ui->_accountToolbox);
-    _addAccountAction = new QAction(tr("Add new"), this);
-    _addAccountAction->setObjectName("addAccountAction");
-    menu->addAction(_addAccountAction);
-    connect(_addAccountAction, &QAction::triggered, this, &AccountSettings::slotOpenAccountWizard);
 
     _toggleSignInOutAction = new QAction(tr("Log out"), this);
     connect(_toggleSignInOutAction, &QAction::triggered, this, &AccountSettings::slotToggleSignInState);
@@ -213,8 +207,6 @@ void AccountSettings::createAccountToolbox()
     ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
     ui->_accountToolbox->setMenu(menu);
     ui->_accountToolbox->setPopupMode(QToolButton::InstantPopup);
-
-    slotAccountAdded(_accountState);
 }
 
 QString AccountSettings::selectedFolderAlias() const
@@ -223,11 +215,6 @@ QString AccountSettings::selectedFolderAlias() const
     if (!selected.isValid())
         return "";
     return _model->data(selected, FolderStatusDelegate::FolderAliasRole).toString();
-}
-
-void AccountSettings::slotOpenAccountWizard()
-{
-    ocApp()->gui()->runNewAccountWizard();
 }
 
 void AccountSettings::slotToggleSignInState()
@@ -1051,18 +1038,6 @@ void AccountSettings::refreshSelectiveSyncStatus()
                 ui->selectiveSyncStatus->hide();
             }
         });
-    }
-}
-
-void AccountSettings::slotAccountAdded(AccountState *)
-{
-    // if the theme is limited to single account, the button must hide if
-    // there is already one account.
-    int s = AccountManager::instance()->accounts().size();
-    if (s > 0 && !Theme::instance()->multiAccount()) {
-        _addAccountAction->setVisible(false);
-    } else {
-        _addAccountAction->setVisible(true);
     }
 }
 

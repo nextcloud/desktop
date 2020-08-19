@@ -93,6 +93,7 @@ private:
     ActivitySettings *_activitySettings;
 
     QAction *_activityAction;
+    QAction *_addAccountAction = nullptr;
     ownCloudGui *_gui;
 
 };

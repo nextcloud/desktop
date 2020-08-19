@@ -15,6 +15,7 @@
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 
+#include "application.h"
 #include "folderman.h"
 #include "theme.h"
 #include "generalsettings.h"
@@ -27,6 +28,7 @@
 #include "activitywidget.h"
 #include "accountmanager.h"
 #include "protocolwidget.h"
+#include "owncloudsetupwizard.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -102,6 +104,17 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
+
+
+    if (Theme::instance()->multiAccount()) {
+        _addAccountAction = createColorAwareAction(QStringLiteral(":/client/resources/plus-solid.svg"), tr("Add account"));
+        _addAccountAction->setCheckable(false);
+        connect(_addAccountAction, &QAction::triggered, this, []{
+            // don't directly connect here, ocApp might not be defined yet
+            ocApp()->gui()->runNewAccountWizard();
+        });
+        _ui->toolBar->addAction(_addAccountAction);
+    }
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
@@ -233,9 +246,9 @@ void SettingsDialog::slotSwitchPage(QAction *action)
 
 void SettingsDialog::showFirstPage()
 {
-    QList<QAction *> actions = _ui->toolBar->actions();
+    const QList<QAction *> &actions = _ui->toolBar->actions();
     if (!actions.empty()) {
-        actions.first()->trigger();
+        actions.at(_addAccountAction ? 1 : 0)->trigger();
     }
 }
 
@@ -273,7 +286,7 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data()));
     }
-    _ui->toolBar->insertAction(_ui->toolBar->actions().at(0), accountAction);
+    _ui->toolBar->insertAction(_addAccountAction ? _ui->toolBar->actions().at(1) : _ui->toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
