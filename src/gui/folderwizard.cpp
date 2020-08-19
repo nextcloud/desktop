@@ -573,6 +573,7 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     setWindowTitle(tr("Add Folder Sync Connection"));
     setOptions(QWizard::CancelButtonOnLeft);
     setButtonText(QWizard::FinishButton, tr("Add Sync Connection"));
+    setWizardStyle(QWizard::ModernStyle);
 }
 
 FolderWizard::~FolderWizard()
