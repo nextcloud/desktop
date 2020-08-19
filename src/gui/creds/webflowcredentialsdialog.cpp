@@ -159,6 +159,7 @@ void WebFlowCredentialsDialog::slotShowSettingsDialog()
 
 void WebFlowCredentialsDialog::slotFlow2AuthResult(Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
 {
+    Q_UNUSED(errorString)
     if(r == Flow2Auth::LoggedIn) {
         emit urlCatched(user, appPassword, QString());
     } else {

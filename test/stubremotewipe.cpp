@@ -14,7 +14,7 @@ const QMetaObject OCC::AccountManager::staticMetaObject = QObject::staticMetaObj
 
 OCC::FolderMan *OCC::FolderMan::instance() { return static_cast<FolderMan *>(new QObject); }
 void OCC::FolderMan::wipeDone(OCC::AccountState*, bool) { }
-OCC::Folder* OCC::FolderMan::addFolder(OCC::AccountState* as, OCC::FolderDefinition const &f) { return nullptr; }
+OCC::Folder* OCC::FolderMan::addFolder(OCC::AccountState*, OCC::FolderDefinition const &) { return nullptr; }
 void OCC::FolderMan::slotWipeFolderForAccount(OCC::AccountState*) { }
 QString OCC::FolderMan::unescapeAlias(QString const&){ return QString(); }
 QString OCC::FolderMan::escapeAlias(QString const&){ return QString(); }

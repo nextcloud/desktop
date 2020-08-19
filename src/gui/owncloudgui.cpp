@@ -248,6 +248,8 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     bool allDisconnected = true;
     QVector<AccountStatePtr> problemAccounts;
     auto setStatusText = [&](const QString &text) {
+        // FIXME: So this doesn't do anything? Needs to be revisited
+        Q_UNUSED(text)
         // Don't overwrite the status if we're currently syncing
         if (FolderMan::instance()->currentSyncFolder())
             return;

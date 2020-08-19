@@ -1,5 +1,7 @@
 Checks: '-*,
     cppcoreguidelines-init-variables,
+    misc-*,
+    -misc-non-private-member-variables-in-classes,
     modernize-avoid-bind,
     modernize-concat-nested-namespaces,
     modernize-deprecated-headers,

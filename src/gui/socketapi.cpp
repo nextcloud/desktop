@@ -469,6 +469,7 @@ void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listen
 
 void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
 {
+    Q_UNUSED(listener)
     auto fileData = FileData::get(localFile);
     if (!fileData.folder) {
         qCWarning(lcSocketApi) << "Unknown path" << localFile;
