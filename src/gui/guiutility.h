@@ -49,9 +49,6 @@ namespace Utility {
     /** Translated text for "free up local space" (and unpinning the item) */
     QString vfsFreeSpaceActionText();
 
-    /** Create bw icon with matching contrast for the current theme */
-    QPixmap createColorAwareIcon(const QString &name, const QPalette &palette = QPalette());
-
 } // namespace Utility
 } // namespace OCC
 

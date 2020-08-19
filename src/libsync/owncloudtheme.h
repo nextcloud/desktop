@@ -33,7 +33,7 @@ public:
 
     QColor wizardHeaderBackgroundColor() const override;
     QColor wizardHeaderTitleColor() const override;
-    QPixmap wizardHeaderLogo() const override;
+    QIcon wizardHeaderLogo() const override;
 #endif
 
     // For owncloud-brandings *do* show the virtual files option.

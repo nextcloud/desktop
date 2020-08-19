@@ -383,7 +383,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     _ui->permissionToolButton->setMenu(menu);
     _ui->permissionToolButton->setPopupMode(QToolButton::InstantPopup);
 
-    QIcon icon = Utility::createColorAwareIcon(QLatin1String(":/client/resources/more.svg"));
+    QIcon icon = QIcon(QStringLiteral(":/client/resources/more.svg"));
     _ui->permissionToolButton->setIcon(icon);
 
     // If there's only a single entry in the detailed permission menu, hide it
@@ -419,7 +419,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     connect(share.data(), &Share::shareDeleted, this, &ShareUserLine::slotShareDeleted);
 
     _ui->deleteShareButton->setIcon(QIcon::fromTheme(QLatin1String("user-trash"),
-        Utility::createColorAwareIcon(QLatin1String(":/client/resources/delete.png"))));
+        QIcon(QStringLiteral(":/client/resources/delete.png"))));
 
     if (!share->account()->capabilities().shareResharing()) {
         _ui->permissionShare->hide();

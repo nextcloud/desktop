@@ -228,7 +228,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
     connect(table, &QTableWidget::itemSelectionChanged, this, &ShareLinkWidget::slotShareSelectionChanged);
 
     auto deleteIcon = QIcon::fromTheme(QLatin1String("user-trash"),
-        Utility::createColorAwareIcon(QLatin1String(":/client/resources/delete.png")));
+        QIcon(QStringLiteral(":/client/resources/delete.png")));
 
     foreach (auto share, shares) {
         if (share->getShareType() != Share::TypeLink) {

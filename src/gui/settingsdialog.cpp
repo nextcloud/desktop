@@ -352,7 +352,7 @@ void SettingsDialog::customizeStyle()
     _ui->toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
 
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
-        QIcon icon = Utility::createColorAwareIcon(a->property("iconPath").toString(), palette());
+        QIcon icon = QIcon(a->property("iconPath").toString());
         a->setIcon(icon);
         QToolButton *btn = qobject_cast<QToolButton *>(_ui->toolBar->widgetForAction(a));
         if (btn) {
@@ -407,7 +407,7 @@ QAction *SettingsDialog::createActionWithIcon(const QIcon &icon, const QString &
 QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const QString &text)
 {
     // all buttons must have the same size in order to keep a good layout
-    QIcon coloredIcon = Utility::createColorAwareIcon(iconPath, palette());
+    QIcon coloredIcon = QIcon(iconPath);
     return createActionWithIcon(coloredIcon, text, iconPath);
 }
 

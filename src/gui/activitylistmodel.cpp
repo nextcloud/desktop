@@ -69,7 +69,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant(); // FIXME once the action can be quantified, display on Icon
         break;
     case ActivityItemDelegate::UserIconRole:
-        return Utility::createColorAwareIcon(QLatin1String(":/client/resources/account.png"));
+        return QIcon(QStringLiteral(":/client/resources/account.png"));
         break;
     case Qt::ToolTipRole:
         return tr("%1 %2 on %3").arg(a._subject, Utility::timeAgoInWords(a._dateTime), a._accName);

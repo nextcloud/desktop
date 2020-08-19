@@ -77,7 +77,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _ui.lServerIcon->setText(QString());
     _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
     _ui.lLocalIcon->setText(QString());
-    _ui.lLocalIcon->setPixmap(Utility::createColorAwareIcon(":/client/resources/folder-sync.png"));
+    _ui.lLocalIcon->setPixmap(QIcon(QStringLiteral(":/client/resources/folder-sync.png")).pixmap(48));
 
     if (theme->wizardHideExternalStorageConfirmationCheckbox()) {
         _ui.confCheckBoxExternal->hide();

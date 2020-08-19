@@ -39,7 +39,7 @@ namespace OCC {
 FolderStatusDelegate::FolderStatusDelegate()
     : QStyledItemDelegate()
 {
-    m_moreIcon = Utility::createColorAwareIcon(QLatin1String(":/client/resources/more.svg"));
+    m_moreIcon = QIcon(QStringLiteral(":/client/resources/more.svg"));
 }
 
 QString FolderStatusDelegate::addFolderText()

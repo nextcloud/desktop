@@ -51,9 +51,9 @@ QColor ownCloudTheme::wizardHeaderTitleColor() const
     return QColor("#ffffff");
 }
 
-QPixmap ownCloudTheme::wizardHeaderLogo() const
+QIcon ownCloudTheme::wizardHeaderLogo() const
 {
-    return QPixmap(hidpiFileName(":/client/theme/colored/wizard_logo.png"));
+    return QIcon(QStringLiteral(":/client/theme/colored/wizard_logo.png"));
 }
 
 #endif

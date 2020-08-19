@@ -57,7 +57,7 @@ void NotificationWidget::setActivity(const Activity &activity)
 
     _ui._messageLabel->setText(activity._message);
 
-    const auto icon = Utility::createColorAwareIcon(":/client/resources/bell.png").scaled(64, 64, Qt::KeepAspectRatio);
+    const auto icon = QIcon(QStringLiteral(":/client/resources/bell.png")).pixmap(64);
     _ui._notifIcon->setPixmap(icon);
     _ui._notifIcon->setFixedSize(icon.size());
     _ui._notifIcon->show();
