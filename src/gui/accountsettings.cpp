@@ -227,7 +227,7 @@ QString AccountSettings::selectedFolderAlias() const
 
 void AccountSettings::slotOpenAccountWizard()
 {
-    OwncloudSetupWizard::runWizard(qApp,  SLOT(slotownCloudWizardDone(int)), this);
+    ocApp()->gui()->runNewAccountWizard();
 }
 
 void AccountSettings::slotToggleSignInState()

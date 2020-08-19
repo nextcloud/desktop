@@ -41,9 +41,6 @@ class OwncloudSetupWizard : public QObject
 {
     Q_OBJECT
 public:
-    /** Run the wizard */
-    static void runWizard(QObject *obj, const char *amember, QWidget *parent);
-    static bool bringWizardToFrontIfVisible();
 signals:
     // overall dialog close signal.
     void ownCloudWizardDone(int);
@@ -82,6 +79,8 @@ private:
     OwncloudWizard *_ocWizard;
     QString _initLocalFolder;
     QString _remoteFolder;
+
+    friend class ownCloudGui;
 };
 }
 
