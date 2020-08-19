@@ -47,6 +47,7 @@ QString getUserAutostartDir_private()
 
 bool hasLaunchOnStartup_private(const QString &appName)
 {
+    Q_UNUSED(appName)
     QString desktopFileLocation = getUserAutostartDir_private()
                                     + QLatin1String(LINUX_APPLICATION_ID)
                                     + QLatin1String(".desktop");
@@ -55,6 +56,7 @@ bool hasLaunchOnStartup_private(const QString &appName)
 
 void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
 {
+    Q_UNUSED(appName)
     QString userAutoStartPath = getUserAutostartDir_private();
     QString desktopFileLocation = userAutoStartPath
                                     + QLatin1String(LINUX_APPLICATION_ID)

@@ -75,6 +75,7 @@ void OCC::Flow2AuthCredsPage::cleanupPage()
 
 void Flow2AuthCredsPage::slotFlow2AuthResult(Flow2Auth::Result r, const QString &errorString, const QString &user, const QString &appPassword)
 {
+    Q_UNUSED(errorString)
     switch (r) {
     case Flow2Auth::NotSupported: {
         /* Flow2Auth not supported (can't open browser) */

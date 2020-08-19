@@ -35,7 +35,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
 
 ActivityListModel::ActivityListModel(AccountState *accountState, QObject *parent)
-    : QAbstractListModel()
+    : QAbstractListModel(parent)
     , _accountState(accountState)
 {
 }

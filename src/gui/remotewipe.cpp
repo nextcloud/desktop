@@ -25,7 +25,8 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcRemoteWipe, "nextcloud.gui.remotewipe", QtInfoMsg)
 
 RemoteWipe::RemoteWipe(AccountPtr account, QObject *parent)
-    : _account(account),
+    : QObject(parent),
+      _account(account),
       _appPassword(QString()),
       _accountRemoved(false),
       _networkManager(nullptr),
