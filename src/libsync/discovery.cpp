@@ -1218,11 +1218,11 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
             return true;
         }
         if (!perms.hasPermission(RemotePermissions::CanWrite)) {
-            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_CONFLICT;
             item->_errorString = tr("Not allowed to upload this file because it is read-only on the server, restoring");
             item->_direction = SyncFileItem::Down;
             item->_isRestoration = true;
+            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file << item->_errorString;
             // Take the things to write to the db from the "other" node (i.e: info from server).
             // Do a lookup into the csync remote tree to get the metadata we need to restore.
             qSwap(item->_size, item->_previousSize);
@@ -1238,12 +1238,11 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
             forbiddenIt -= 1;
         if (forbiddenIt != _discoveryData->_forbiddenDeletes.end()
             && fileSlash.startsWith(forbiddenIt.key())) {
-
-            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;
             item->_isRestoration = true;
             item->_errorString = tr("Moved to invalid target, restoring");
+            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file << item->_errorString;
             return true; // restore sub items
         }
         const auto perms = item->_remotePerm;
@@ -1252,11 +1251,11 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
             return true;
         }
         if (!perms.hasPermission(RemotePermissions::CanDelete)) {
-            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;
             item->_isRestoration = true;
             item->_errorString = tr("Not allowed to remove, restoring");
+            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file << item->_errorString;
             return true; // (we need to recurse to restore sub items)
         }
         break;

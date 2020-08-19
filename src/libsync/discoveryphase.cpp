@@ -173,7 +173,7 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
                     || ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)
                     || ((*it)->_isRestoration && instruction == CSYNC_INSTRUCTION_NEW)))
             {
-                qCWarning(lcDiscovery) << "OC_ENFORCE(FAILING)";
+                qCWarning(lcDiscovery) << "OC_ENFORCE(FAILING)" << originalPath;
                 qCWarning(lcDiscovery) << "instruction == CSYNC_INSTRUCTION_REMOVE" << (instruction == CSYNC_INSTRUCTION_REMOVE);
                 qCWarning(lcDiscovery) << "((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW)"
                                        << ((*it)->_type == ItemTypeVirtualFile && instruction == CSYNC_INSTRUCTION_NEW);
