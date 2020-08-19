@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
         <location filename="../src/gui/accountsettings.cpp" line="577"/>
-        <location filename="../src/gui/accountsettings.cpp" line="972"/>
+        <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Cancel</source>
         <translation>Arrest</translation>
     </message>
@@ -458,32 +458,32 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
         <translation>Kennaskañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="927"/>
+        <location filename="../src/gui/accountsettings.cpp" line="931"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Teuliadoù so n&apos;int ket bet kemprennet peogwir e oant re vras :</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="929"/>
+        <location filename="../src/gui/accountsettings.cpp" line="933"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Teuliadoù so n&apos;int ket bet kemprenet peogwir in lec&apos;hioù klenkañ diavaez :</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="930"/>
+        <location filename="../src/gui/accountsettings.cpp" line="934"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Teuliadoù so n&apos;int ke bet kemrennet peogwir e oant pe re vra pe lec&apos;hioù klenkañ diavaez :</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="964"/>
+        <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>Confirm Account Removal</source>
         <translation>Gwiriañ Lamaden ar C&apos;hont</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="965"/>
+        <location filename="../src/gui/accountsettings.cpp" line="969"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Sur oc&apos;h o peus c&apos;hoant lemel ar genstagadenn d&apos;ar c&apos;hont %1&lt;i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notenn :&lt;/b&gt; Ne lamo &lt;b&gt;ket&lt;/b&gt; restr ebet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="971"/>
+        <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Remove connection</source>
         <translation>Lemel kenstagdenn</translation>
     </message>
