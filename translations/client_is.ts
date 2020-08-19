@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
         <location filename="../src/gui/accountsettings.cpp" line="577"/>
-        <location filename="../src/gui/accountsettings.cpp" line="972"/>
+        <location filename="../src/gui/accountsettings.cpp" line="976"/>
         <source>Cancel</source>
         <translation>Hætta við</translation>
     </message>
@@ -461,34 +461,34 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
         <translation>Skrá inn</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="927"/>
+        <location filename="../src/gui/accountsettings.cpp" line="931"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Það eru möppur sem ekki eru samstilltar því þær eru of stórar: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="929"/>
+        <location filename="../src/gui/accountsettings.cpp" line="933"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Það eru möppur sem ekki eru samstilltar því þær ytri eru gagnageymslur: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="930"/>
+        <location filename="../src/gui/accountsettings.cpp" line="934"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Það eru möppur sem ekki eru samstilltar því þær eru of stórar eða eru ytri 
 gagnageymslur: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="964"/>
+        <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>Confirm Account Removal</source>
         <translation>Staðfesta fjarlægingu aðgangs</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="965"/>
+        <location filename="../src/gui/accountsettings.cpp" line="969"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Viltu í alvörunni fjarlægja tenginguna við aðganginn 
 &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Athugið:&lt;/b&gt; Þetta mun &lt;b&gt;ekki&lt;/b&gt; eyða neinum skrám.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="971"/>
+        <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Remove connection</source>
         <translation>Fjarlægja tengingu</translation>
     </message>
