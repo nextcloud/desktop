@@ -56,12 +56,23 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     loadMiscSettings();
     slotUpdateInfo();
 
+    _ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());
+
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->crashreporterCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+
+    /* handle the hidden file checkbox */
+
+    /* the ignoreHiddenFiles flag is a folder specific setting, but for now, it is
+     * handled globally. Save it to every folder that is defined.
+     */
+    connect(_ui->syncHiddenFilesCheckBox, &QCheckBox::toggled, this,[](bool checked){
+        FolderMan::instance()->setIgnoreHiddenFiles(!checked);
+    });
 
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);

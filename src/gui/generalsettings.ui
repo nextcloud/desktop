@@ -69,30 +69,6 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QPushButton" name="ignoredFilesButton">
-              <property name="text">
-               <string>Edit &amp;Ignored Files</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="spacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>555</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QCheckBox" name="newFolderLimitCheckBox">
@@ -137,41 +113,60 @@
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <widget class="QCheckBox" name="newExternalStorage">
+            <property name="text">
+             <string>Ask for confirmation before synchronizing external storages</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
+            <property name="text">
+             <string>Show sync folders in &amp;Explorer's Navigation Pane</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="crashreporterCheckBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>S&amp;how crash reporter</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="syncHiddenFilesCheckBox">
+            <property name="text">
+             <string>Sync hidden files</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="QCheckBox" name="newExternalStorage">
+             <widget class="QPushButton" name="ignoredFilesButton">
               <property name="text">
-               <string>Ask for confirmation before synchronizing external storages</string>
+               <string>Edit &amp;Ignored Files</string>
               </property>
              </widget>
             </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_10">
             <item>
-             <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
-              <property name="text">
-               <string>Show sync folders in &amp;Explorer's Navigation Pane</string>
+             <spacer name="spacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <item>
-             <widget class="QCheckBox" name="crashreporterCheckBox">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>555</width>
+                <height>20</height>
+               </size>
               </property>
-              <property name="text">
-               <string>S&amp;how crash reporter</string>
-              </property>
-             </widget>
+             </spacer>
             </item>
            </layout>
           </item>
@@ -396,14 +391,16 @@
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>desktopNotificationsCheckBox</tabstop>
   <tabstop>monoIconsCheckBox</tabstop>
-  <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>
   <tabstop>newExternalStorage</tabstop>
   <tabstop>showInExplorerNavigationPaneCheckBox</tabstop>
   <tabstop>crashreporterCheckBox</tabstop>
+  <tabstop>syncHiddenFilesCheckBox</tabstop>
+  <tabstop>ignoredFilesButton</tabstop>
   <tabstop>updateChannel</tabstop>
   <tabstop>restartButton</tabstop>
+  <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -414,12 +411,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>225</x>
-     <y>231</y>
+     <x>245</x>
+     <y>139</y>
     </hint>
     <hint type="destinationlabel">
-     <x>587</x>
-     <y>230</y>
+     <x>412</x>
+     <y>141</y>
     </hint>
    </hints>
   </connection>

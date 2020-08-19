@@ -37,8 +37,6 @@ public:
     explicit IgnoreListEditor(QWidget *parent = nullptr);
     ~IgnoreListEditor() override;
 
-    bool ignoreHiddenFiles();
-
 private slots:
     void slotItemSelectionChanged();
     void slotRemoveCurrentItem();
