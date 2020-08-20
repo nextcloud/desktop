@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *
+ * Copyright (C) by Michael Schuster <michael.schuster@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+-->
+<?include $(var.ProjectPath)Platform.wxi?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+
+        <!--
+            IMPORTANT: Keep these constants in sync with WinShellExtConstants.h.in
+        -->
+
+        <!-- Context Menu -->
+        <?define ContextMenuGuid        = "@WIN_SHELLEXT_CONTEXT_MENU_GUID@" ?>
+        <?define ContextMenuRegKeyName  = "@APPLICATION_SHORTNAME@ContextMenuHandler" ?>
+
+        <?define ContextMenuDescription = "@APPLICATION_SHORTNAME@ context menu handler" ?>
+
+        <!-- Overlays -->
+        <?define OverlayGuidError       = "@WIN_SHELLEXT_OVERLAY_GUID_ERROR@" ?>
+        <?define OverlayGuidOK          = "@WIN_SHELLEXT_OVERLAY_GUID_OK@" ?>
+        <?define OverlayGuidOKShared    = "@WIN_SHELLEXT_OVERLAY_GUID_OK_SHARED@" ?>
+        <?define OverlayGuidSync        = "@WIN_SHELLEXT_OVERLAY_GUID_SYNC@" ?>
+        <?define OverlayGuidWarning     = "@WIN_SHELLEXT_OVERLAY_GUID_WARNING@" ?>
+
+        <!--
+            Preceeding spaces are intended, two spaces to put us ahead of the competition :/
+
+            There is a limit in Windows (oh wonder^^) so that only the first 15 extensions get invoked, this is why to use that dirty little trick to get ahead ;)
+            See: https://docs.microsoft.com/en-us/windows/win32/shell/context-menu-handlers?redirectedfrom=MSDN#employing-the-verb-selection-model
+        -->
+        <?define OverlayNameError       = "  @APPLICATION_SHORTNAME@Error" ?>
+        <?define OverlayNameOK          = "  @APPLICATION_SHORTNAME@OK" ?>
+        <?define OverlayNameOKShared    = "  @APPLICATION_SHORTNAME@OKShared" ?>
+        <?define OverlayNameSync        = "  @APPLICATION_SHORTNAME@Sync" ?>
+        <?define OverlayNameWarning     = "  @APPLICATION_SHORTNAME@Warning" ?>
+
+        <?define OverlayDescription     = "@APPLICATION_SHORTNAME@ overlay handler" ?>
+
+        <!--
+            Integration for Windows Explorer
+
+            Avoid SelfReg by the DLLs, see:
+            https://stackoverflow.com/questions/364187/how-do-you-register-a-win32-com-dll-file-in-wix-3#364210
+            https://docs.microsoft.com/en-us/windows/win32/msi/selfreg-table#remarks
+        -->
+
+        <DirectoryRef Id="ShellExtDir">
+            <Component Id="NCContextMenu" Guid="*" Win64="$(var.PlatformWin64)">
+                <File Id="NCContextMenu.dll" KeyPath="yes" Source="$(var.HarvestAppDir)\shellext\NCContextMenu.dll">
+                    <Class Id="$(var.ContextMenuGuid)" Context="InprocServer32" Description="$(var.ContextMenuDescription)" ThreadingModel="apartment" />
+                </File>
+                <RegistryValue Root="HKCR" Key="AllFileSystemObjects\shellex\ContextMenuHandlers\$(var.ContextMenuRegKeyName)" Value="$(var.ContextMenuGuid)" Type="string" Action="write" />
+            </Component>
+
+            <Component Id="NCOverlays" Guid="*" Win64="$(var.PlatformWin64)">
+                <File Id="NCOverlays.dll" KeyPath="yes" Source="$(var.HarvestAppDir)\shellext\NCOverlays.dll">
+                    <Class Id="$(var.OverlayGuidError)" Context="InprocServer32" Description="$(var.OverlayDescription)" ThreadingModel="apartment" Version="1.0" />
+                    <Class Id="$(var.OverlayGuidOK)" Context="InprocServer32" Description="$(var.OverlayDescription)" ThreadingModel="apartment" Version="1.0" />
+                    <Class Id="$(var.OverlayGuidOKShared)" Context="InprocServer32" Description="$(var.OverlayDescription)" ThreadingModel="apartment" Version="1.0" />
+                    <Class Id="$(var.OverlayGuidSync)" Context="InprocServer32" Description="$(var.OverlayDescription)" ThreadingModel="apartment" Version="1.0" />
+                    <Class Id="$(var.OverlayGuidWarning)" Context="InprocServer32" Description="$(var.OverlayDescription)" ThreadingModel="apartment" Version="1.0" />
+                </File>
+                <RegistryKey Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers">
+                    <RegistryValue Key="$(var.OverlayNameError)" Value="$(var.OverlayGuidError)" Type="string" Action="write" />
+                    <RegistryValue Key="$(var.OverlayNameOK)" Value="$(var.OverlayGuidOK)" Type="string" Action="write" />
+                    <RegistryValue Key="$(var.OverlayNameOKShared)" Value="$(var.OverlayGuidOKShared)" Type="string" Action="write" />
+                    <RegistryValue Key="$(var.OverlayNameSync)" Value="$(var.OverlayGuidSync)" Type="string" Action="write" />
+                    <RegistryValue Key="$(var.OverlayNameWarning)" Value="$(var.OverlayGuidWarning)" Type="string" Action="write" />
+                </RegistryKey>
+            </Component>
+        </DirectoryRef>
+
+        <ComponentGroup Id="ShellExtensions">
+            <ComponentRef Id="NCContextMenu" />
+            <ComponentRef Id="NCOverlays" />
+        </ComponentGroup>
+
+    </Fragment>
+</Wix>

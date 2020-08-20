@@ -1,0 +1,47 @@
+/*
+ * Copyright (C) by Michael Schuster <michael.schuster@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
+#pragma once
+
+// IMPORTANT: Keep these constants in sync with WinShellExtConstants.wxi.in
+
+// Context Menu
+#define CONTEXT_MENU_GUID           L"@WIN_SHELLEXT_CONTEXT_MENU_GUID@"
+#define CONTEXT_MENU_REGKEY_NAME    L"@APPLICATION_SHORTNAME@ContextMenuHandler"
+
+#define CONTEXT_MENU_DESCRIPTION    L"@APPLICATION_SHORTNAME@ context menu handler"
+
+// Overlays
+#define OVERLAY_GUID_ERROR          L"@WIN_SHELLEXT_OVERLAY_GUID_ERROR@"
+#define OVERLAY_GUID_OK             L"@WIN_SHELLEXT_OVERLAY_GUID_OK@"
+#define OVERLAY_GUID_OK_SHARED      L"@WIN_SHELLEXT_OVERLAY_GUID_OK_SHARED@"
+#define OVERLAY_GUID_SYNC           L"@WIN_SHELLEXT_OVERLAY_GUID_SYNC@"
+#define OVERLAY_GUID_WARNING        L"@WIN_SHELLEXT_OVERLAY_GUID_WARNING@"
+
+//
+// Preceeding spaces are intended, two spaces to put us ahead of the competition :/
+//
+// There is a limit in Windows (oh wonder^^) so that only the first 15 extensions get invoked, this is why to use that dirty little trick to get ahead ;)
+// See: https://docs.microsoft.com/en-us/windows/win32/shell/context-menu-handlers?redirectedfrom=MSDN#employing-the-verb-selection-model
+//
+#define OVERLAY_NAME_ERROR          L"  @APPLICATION_SHORTNAME@Error"
+#define OVERLAY_NAME_OK             L"  @APPLICATION_SHORTNAME@OK"
+#define OVERLAY_NAME_OK_SHARED      L"  @APPLICATION_SHORTNAME@OKShared"
+#define OVERLAY_NAME_SYNC           L"  @APPLICATION_SHORTNAME@Sync"
+#define OVERLAY_NAME_WARNING        L"  @APPLICATION_SHORTNAME@Warning"
+
+#define OVERLAY_DESCRIPTION         L"@APPLICATION_SHORTNAME@ overlay handler"
+
+// NCUtil
+#define UTIL_PIPE_APP_NAME          L"@APPLICATION_EXECUTABLE@"
