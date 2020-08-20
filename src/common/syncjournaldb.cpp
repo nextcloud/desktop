@@ -2198,7 +2198,7 @@ bool operator==(const SyncJournalDb::UploadInfo &lhs,
         && lhs._contentChecksum == rhs._contentChecksum;
 }
 
-SyncJournalDb::SyncModeDownload SyncJournalDb::getSyncModeDownload(QString const & path)
+SyncJournalDb::SyncModeDownload SyncJournalDb::getSyncModeDownload(const QString &path)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
@@ -2219,7 +2219,7 @@ SyncJournalDb::SyncModeDownload SyncJournalDb::getSyncModeDownload(QString const
     return static_cast<SyncModeDownload>(modeStr.begin()->toLatin1());
 }
 
-int SyncJournalDb::setSyncModeDownload(QString const & path, SyncModeDownload mode)
+int SyncJournalDb::setSyncModeDownload(const QString &path, SyncModeDownload mode)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
@@ -2238,7 +2238,7 @@ int SyncJournalDb::setSyncModeDownload(QString const & path, SyncModeDownload mo
 }
 
 
-SyncJournalDb::SyncMode SyncJournalDb::getSyncMode(QString const & path)
+SyncJournalDb::SyncMode SyncJournalDb::getSyncMode(const QString &path)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
@@ -2259,7 +2259,7 @@ SyncJournalDb::SyncMode SyncJournalDb::getSyncMode(QString const & path)
     return static_cast<SyncMode>(modeStr.begin()->toLatin1());
 }
 
-int SyncJournalDb::setSyncMode(QString const & path, SyncMode mode)
+int SyncJournalDb::setSyncMode(const QString &path, SyncMode mode)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
@@ -2293,7 +2293,7 @@ int SyncJournalDb::deleteSyncMode(QString const & path)
     return _deleteSyncModeQuery.numRowsAffected();
 }
 
-QDateTime SyncJournalDb::getLastAccess(QString const & path)
+QDateTime SyncJournalDb::getLastAccess(const QString &path)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
@@ -2320,7 +2320,7 @@ QDateTime SyncJournalDb::getLastAccess(QString const & path)
     return lastAccessDateTime;
 }
 
-int SyncJournalDb::updateLastAccess(QString const & path)
+int SyncJournalDb::updateLastAccess(const QString &path)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
