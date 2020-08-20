@@ -1260,7 +1260,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="85"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation>Este problema xeralmente acontece cando os reloxos inotify están esgotados. Comprobe as FAQ para obter máis detalles.</translation>
+        <translation>Este problema xeralmente acontece cando os reloxos inotify están esgotados. Comprobe as preguntas frecuentes (FAQ) para obter máis detalles.</translation>
     </message>
 </context>
 <context>
