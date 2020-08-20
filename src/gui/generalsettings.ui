@@ -289,6 +289,19 @@
        <number>0</number>
       </property>
       <item>
+       <spacer name="spacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QLabel" name="versionLabel">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -326,19 +339,6 @@
          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
         </property>
        </widget>
-      </item>
-      <item>
-       <spacer name="spacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>
