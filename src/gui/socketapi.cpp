@@ -718,11 +718,11 @@ void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *lis
     listener->sendMessage(QString("GET_STRINGS:END"));
 }
 
-void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener)
+void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener, bool enabled)
 {
     auto record = fileData.journalRecord();
     bool isOnTheServer = record.isValid();
-    auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+    auto flagString = isOnTheServer && enabled ? QLatin1String("::") : QLatin1String(":d:");
 
     auto capabilities = fileData.folder->accountState()->account()->capabilities();
     auto theme = Theme::instance();
@@ -798,7 +798,8 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
     FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
     bool isOnTheServer = fileData.journalRecord().isValid();
-    auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+    const auto isE2eEncryptedPath = fileData.journalRecord()._isE2eEncrypted || !fileData.journalRecord()._e2eMangledName.isEmpty();
+    auto flagString = isOnTheServer && !isE2eEncryptedPath ? QLatin1String("::") : QLatin1String(":d:");
 
     if (fileData.folder && fileData.folder->accountState()->isConnected()) {
         DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
@@ -809,7 +810,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
         }
 
-        sendSharingContextMenuOptions(fileData, listener);
+        sendSharingContextMenuOptions(fileData, listener, !isE2eEncryptedPath);
     }
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }

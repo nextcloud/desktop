@@ -90,21 +90,36 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QString();
     case PathRole:
         if (!a._file.isEmpty()) {
-            auto folder = FolderMan::instance()->folder(a._folder);
+            auto folder = FolderMan::instance()->folderForPath(a._folder);
+
             QString relPath(a._file);
             if (folder)
                 relPath.prepend(folder->remotePath());
             list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
-            if (list.count() > 0) {
-                return QUrl::fromLocalFile(list.at(0));
-            }
+
             // File does not exist anymore? Let's try to open its path
-            if (QFileInfo(relPath).exists()) {
+            if (list.isEmpty() && QFileInfo(relPath).exists()) {
                 list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(relPath).path(), ast->account());
-                if (list.count() > 0) {
-                    return QVariant(list.at(0));
+            }
+
+            if (list.isEmpty()) {
+                return QString();
+            }
+
+            const auto path = list.at(0);
+            folder = FolderMan::instance()->folderForPath(path);
+
+            // If this is an E2EE file or folder, pretend we got no path, this leads to
+            // hiding the share button which is what we want
+            if (folder) {
+                SyncJournalFileRecord rec;
+                folder->journalDb()->getFileRecord(a._file.mid(1), &rec);
+                if (rec.isValid() && (rec._isE2eEncrypted || !rec._e2eMangledName.isEmpty())) {
+                    return QString();
                 }
             }
+
+            return QUrl::fromLocalFile(path);
         }
         return QString();
     case AbsolutePathRole: {
