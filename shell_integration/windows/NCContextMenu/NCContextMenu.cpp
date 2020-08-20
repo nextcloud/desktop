@@ -26,13 +26,6 @@
 extern HINSTANCE g_hInst;
 extern long g_cDllRef;
 
-#define IDM_FIRST             0
-#define IDM_SHARE             0
-#define IDM_DRIVEMENU         1
-#define IDM_DRIVEMENU_OFFLINE 2
-#define IDM_DRIVEMENU_ONLINE  3
-#define IDM_LAST              4
-
 NCContextMenu::NCContextMenu(void) 
     : m_cRef(1)
     , m_pszMenuText(L"&Share")
@@ -165,7 +158,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 
     bool skip = true;
     size_t selectedFileLength = wcslen(m_szSelectedFile);
-    for (const std::wstring path : info.watchedDirectories) {
+    for (const std::wstring &path : info.watchedDirectories) {
         if (StringUtil::isDescendantOf(m_szSelectedFile, selectedFileLength, path)) {
             skip = false;
             break;
@@ -196,16 +189,19 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         menuInfoDriveOnline.fMask = MIIM_STRING;
         menuInfoDriveOnline.dwTypeData = &info.streamOnlineItemTitle[0];
         menuInfoDriveOnline.fMask |= MIIM_ID;
-        menuInfoDriveOnline.wID = idCmdFirst + IDM_DRIVEMENU_ONLINE;
+        menuInfoDriveOnline.wID = idCmdFirst + MenuCommand::DriveOnline;
         menuInfoDriveOnline.fMask |= MIIM_STATE;
         menuInfoDriveOnline.fState = MFS_ENABLED;
         if (checkOnlineItem)
             menuInfoDriveOnline.fState |= MFS_CHECKED;
+
         // Insert it into the submenu
-        if (!InsertMenuItem(hDriveSubMenu,
-                0, // At position zero
-                TRUE, //  indicates the existing item by using its zero-based position. (For example, the first item in the menu has a position of 0.)
-                &menuInfoDriveOnline)) {
+        const bool driveOnlineMenuItemInserted = InsertMenuItem(hDriveSubMenu,
+            0, // At position zero
+            TRUE, //  indicates the existing item by using its zero-based position. (For example, the first item in the menu has a position of 0.)
+            &menuInfoDriveOnline);
+
+        if (!driveOnlineMenuItemInserted) {
             return HRESULT_FROM_WIN32(GetLastError());
         }
 
@@ -215,17 +211,21 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         menuInfoDriveOffline.fMask = MIIM_STRING;
         menuInfoDriveOffline.dwTypeData = &info.streamOfflineItemTitle[0];
         menuInfoDriveOffline.fMask |= MIIM_ID;
-        menuInfoDriveOffline.wID = idCmdFirst + IDM_DRIVEMENU_OFFLINE;
+        menuInfoDriveOffline.wID = idCmdFirst + MenuCommand::DriveOffline;
         menuInfoDriveOffline.fMask |= MIIM_STATE;
         menuInfoDriveOffline.fState = MFS_ENABLED;
         if (checkOfflineItem)
             menuInfoDriveOffline.fState |= MFS_CHECKED;
+
         // Insert it into the submenu
-        if (!InsertMenuItem(hDriveSubMenu,
-                1, // At position one
-                TRUE, //  indicates the existing item by using its zero-based position. (For example, the first item in the menu has a position of 0.)
-                &menuInfoDriveOffline))
+        const bool driveOfflineMenuItemInserted = InsertMenuItem(hDriveSubMenu,
+            1, // At position one
+            TRUE, //  indicates the existing item by using its zero-based position. (For example, the first item in the menu has a position of 0.)
+            &menuInfoDriveOffline);
+
+        if (!driveOfflineMenuItemInserted) {
             return HRESULT_FROM_WIN32(GetLastError());
+        }
 
         // Setup the "Share" item
         MENUITEMINFO menuInfoDriveShare { 0 };
@@ -233,7 +233,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         menuInfoDriveShare.fMask = MIIM_STRING;
         menuInfoDriveShare.dwTypeData = &info.shareMenuTitle[0];
         menuInfoDriveShare.fMask |= MIIM_ID;
-        menuInfoDriveShare.wID = idCmdFirst + IDM_SHARE;
+        menuInfoDriveShare.wID = idCmdFirst + MenuCommand::Share;
         menuInfoDriveShare.fMask |= MIIM_STATE;
         menuInfoDriveShare.fState = MFS_ENABLED;
 
@@ -241,26 +241,30 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         //menuInfoDriveShare.fState |= MFS_CHECKED;
 
         // Insert it into the submenu
-        if (!InsertMenuItem(hDriveSubMenu,
-                2, // At position one
-                TRUE, //  indicates the existing item by using its zero-based position. (For example, the first item in the menu has a position of 0.)
-                &menuInfoDriveShare))
+        const bool driveShareMenuItemInserted = InsertMenuItem(hDriveSubMenu,
+            2, // At position one
+            TRUE, //  indicates the existing item by using its zero-based position. (For example, the first item in the menu has a position of 0.)
+            &menuInfoDriveShare);
+
+        if (!driveShareMenuItemInserted) {
             return HRESULT_FROM_WIN32(GetLastError());
+        }
 
         // Insert the submenu below the "share" item
         MENUITEMINFO hDriveSubMenuInfo;
         hDriveSubMenuInfo.cbSize = sizeof(MENUITEMINFO);
         hDriveSubMenuInfo.fMask = MIIM_SUBMENU | MIIM_STATE | MIIM_STRING;
         hDriveSubMenuInfo.fState = MFS_ENABLED;
-        // TODO: obtener el texto del cliente/gui
+        // TODO: get text from cliente/gui
         hDriveSubMenuInfo.dwTypeData = &info.streamSubMenuTitle[0];
         hDriveSubMenuInfo.hSubMenu = hDriveSubMenu;
 
         // Insert the subitem into the
-        if (!InsertMenuItem(hMenu,
-                indexMenu++,
-                TRUE,
-                &hDriveSubMenuInfo))
+        const bool driveSubMenuItemInserted = InsertMenuItem(hMenu,
+            indexMenu++,
+            TRUE,
+            &hDriveSubMenuInfo);
+        if (!driveSubMenuItemInserted)
             return HRESULT_FROM_WIN32(GetLastError());
     }
 
@@ -272,10 +276,10 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
     // that was assigned, plus one (1).
 
     //< Comment for file streaming test.
-    //return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(IDM_SHARE + 1));
+    //return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(share + 1));
 
     //< Append for file streaming test.
-    return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(IDM_LAST));
+    return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(MenuCommand::Last));
 }
 
 IFACEMETHODIMP NCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
@@ -305,15 +309,15 @@ IFACEMETHODIMP NCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
     {
         // Is the command identifier offset supported by this context menu 
         // extension?
-        if (LOWORD(pici->lpVerb) == IDM_SHARE)
+        if (LOWORD(pici->lpVerb) == MenuCommand::Share)
         {
             OnVerbDisplayFileName(pici->hwnd);
         }
-        else if (LOWORD(pici->lpVerb) == IDM_DRIVEMENU_ONLINE)
+        else if (LOWORD(pici->lpVerb) == MenuCommand::DriveOnline)
         {
             OnDriveMenuOnline(pici->hwnd);
         }
-        else if (LOWORD(pici->lpVerb) == IDM_DRIVEMENU_OFFLINE)
+        else if (LOWORD(pici->lpVerb) == MenuCommand::DriveOffline)
         {
             OnDriveMenuOffline(pici->hwnd);
         }
@@ -336,7 +340,7 @@ IFACEMETHODIMP NCContextMenu::GetCommandString(UINT_PTR idCommand,
 {
     HRESULT hr = E_INVALIDARG;
 
-    if (idCommand == IDM_SHARE)
+    if (idCommand == MenuCommand::Share)
     {
         switch (uFlags)
         {

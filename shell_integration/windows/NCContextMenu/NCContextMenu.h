@@ -73,6 +73,15 @@ private:
 	PCWSTR m_pwszVerbCanonicalName;
 	PCSTR m_pszVerbHelpText;
 	PCWSTR m_pwszVerbHelpText;
+
+        enum MenuCommand {
+            First = 0,
+            Share = 0,
+            Drive = 1,
+            DriveOffline = 2,
+            DriveOnline = 3,
+            Last = 4
+        };
 };
 	
 #endif //NCCONTEXTMENU_H
