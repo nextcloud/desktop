@@ -74,11 +74,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     connect(_ui.rManualFolder, &QRadioButton::toggled, _ui.whereToSyncWidget, &QWidget::setDisabled);
 
     QIcon appIcon = theme->applicationIcon();
-    _ui.lServerIcon->setText(QString());
-    _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
-    _ui.lLocalIcon->setText(QString());
-    _ui.lLocalIcon->setPixmap(QIcon(QStringLiteral(":/client/resources/folder-sync.png")).pixmap(48));
-
+    _ui.lServerIcon->setPixmap(appIcon.pixmap(_ui.lServerIcon->size()));
     if (theme->wizardHideExternalStorageConfirmationCheckbox()) {
         _ui.confCheckBoxExternal->hide();
     }

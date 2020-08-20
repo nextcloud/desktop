@@ -105,7 +105,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
-    _activityAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
+    _activityAction = createColorAwareAction(QStringLiteral(":/client/resources/activity.svg"), tr("Activity"));
     _actionGroup->addAction(_activityAction);
     _ui->toolBar->addAction(_activityAction);
     _activitySettings = new ActivitySettings;
@@ -114,7 +114,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         &ownCloudGui::slotShowOptionalTrayMessage);
     _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 
-    QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("Settings"));
+    QAction *generalAction = createColorAwareAction(QStringLiteral(":/client/resources/settings.svg"), tr("Settings"));
     _actionGroup->addAction(generalAction);
     _ui->toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
@@ -125,7 +125,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _ui->toolBar->addWidget(spacer);
 
-    QAction *quitAction = createColorAwareAction(QLatin1String(":/client/resources/quit.png"), tr("Quit %1").arg(qApp->applicationName()));
+    QAction *quitAction = createColorAwareAction(QStringLiteral(":/client/resources/quit.svg"), tr("Quit %1").arg(qApp->applicationName()));
     quitAction->setCheckable(false);
     connect(quitAction, &QAction::triggered, this, [this] {
         const auto reply = QMessageBox::question(this, tr("Quit %1").arg(qApp->applicationName()),
@@ -253,7 +253,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     QImage avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     if (avatar.isNull()) {
-        accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
+        accountAction = createColorAwareAction(QStringLiteral(":/client/resources/account.svg"),
             actionText);
     } else {
         QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));

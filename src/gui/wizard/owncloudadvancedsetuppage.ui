@@ -49,7 +49,13 @@
        <item>
         <widget class="QLabel" name="lServerIcon">
          <property name="text">
-          <string>TextLabel</string>
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="../../../theme.qrc">:/client/theme/colored/owncloud-icon-48.png</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -60,6 +66,9 @@
         <widget class="QLabel" name="lServer">
          <property name="text">
           <string>Server</string>
+         </property>
+         <property name="scaledContents">
+          <bool>false</bool>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -308,12 +317,36 @@
    <item>
     <widget class="QWidget" name="whereToSyncWidget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <widget class="QLabel" name="lLocalIcon">
+          <property name="maximumSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
           <property name="text">
-           <string>TextLabel</string>
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../../../client.qrc">:/client/resources/folder-sync.svg</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -515,6 +548,9 @@
   <tabstop>rManualFolder</tabstop>
   <tabstop>rVirtualFileSync</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../../../client.qrc"/>
+  <include location="../../../theme.qrc"/>
+ </resources>
  <connections/>
 </ui>

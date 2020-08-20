@@ -1,29 +1,14 @@
 <RCC>
     <qresource prefix="/client">
-        <file>resources/dialog-close.png</file>
-        <file>resources/dialog-ok.png</file>
-        <file>resources/dialog-cancel.png</file>
-        <file>resources/folder-sync.png</file>
-        <file>resources/folder-sync@2x.png</file>
-        <file>resources/task-ongoing.png</file>
-        <file>resources/view-refresh.png</file>
-        <file>resources/warning.png</file>
-        <file>resources/warning@2x.png</file>
-        <file>resources/settings.png</file>
-        <file>resources/settings@2x.png</file>
-        <file>resources/activity.png</file>
-        <file>resources/activity@2x.png</file>
-        <file>resources/network.png</file>
-        <file>resources/network@2x.png</file>
-        <file>resources/lock-http.png</file>
-        <file>resources/lock-http@2x.png</file>
-        <file>resources/lock-https.png</file>
-        <file>resources/lock-https@2x.png</file>
-        <file>resources/account.png</file>
-        <file>resources/more.svg</file>
-        <file>resources/delete.png</file>
-        <file>resources/bell.png</file>
-        <file alias="resources/quit.png">resources/font-awesome/power-off.png</file>
-        <file alias="resources/quit@2x.png">resources/font-awesome/power-off@2x.png</file>
+        <file alias="resources/folder-sync.svg">resources/font-awesome/folder-solid.svg</file>
+        <file alias="resources/settings.svg">resources/font-awesome/cog-solid.svg</file>
+        <file alias="resources/activity.svg">resources/font-awesome/bolt-solid.svg</file>
+        <file alias="resources/lock-https.svg">resources/font-awesome/lock-solid.svg</file>
+        <file alias="resources/lock-http.svg">resources/font-awesome/lock-open-solid.svg</file>
+        <file alias="resources/account.svg">resources/font-awesome/user-solid.svg</file>
+        <file alias="resources/more.svg">resources/font-awesome/ellipsis-h-solid.svg</file>
+        <file alias="resources/delete.svg">resources/font-awesome/trash-solid.svg</file>
+        <file alias="resources/bell.svg">resources/font-awesome/bell-solid.svg</file>
+        <file alias="resources/quit.svg">resources/font-awesome/power-off-solid.svg</file>
     </qresource>
 </RCC>

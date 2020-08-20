@@ -36,11 +36,17 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="maximumSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
+       </property>
        <property name="text">
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../../../resources/bell.png</pixmap>
+        <pixmap resource="../../client.qrc">:/client/resources/bell.svg</pixmap>
        </property>
       </widget>
      </item>
@@ -113,6 +119,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../client.qrc"/>
+ </resources>
  <connections/>
 </ui>

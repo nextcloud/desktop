@@ -56,12 +56,6 @@ void NotificationWidget::setActivity(const Activity &activity)
     }
 
     _ui._messageLabel->setText(activity._message);
-
-    const auto icon = QIcon(QStringLiteral(":/client/resources/bell.png")).pixmap(64);
-    _ui._notifIcon->setPixmap(icon);
-    _ui._notifIcon->setFixedSize(icon.size());
-    _ui._notifIcon->show();
-
     QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity._dateTime));
     _ui._timeLabel->setText(tText);
 
