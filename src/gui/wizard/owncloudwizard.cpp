@@ -18,6 +18,9 @@
 #include "configfile.h"
 #include "theme.h"
 
+#include "application.h"
+#include "settingsdialog.h"
+
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
@@ -36,10 +39,6 @@
 
 #include <stdlib.h>
 
-namespace {
-// just a bit smaller than the default size of the settings dialog
-const QSize WizardSize(750, 450);
-}
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcWizard, "gui.wizard", QtInfoMsg)
@@ -56,7 +55,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _setupLog()
 {
     setObjectName("owncloudWizard");
-    setFixedSize(WizardSize);
+    auto size = ocApp()->gui()->settingsDialog()->minimumSizeHint();
+    resize(size.width() - 50, size.height() - 50);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);

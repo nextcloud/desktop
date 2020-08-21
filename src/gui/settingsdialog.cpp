@@ -167,6 +167,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     customizeStyle();
 
     cfg.restoreGeometry(this);
+    if (size().width() < minimumSizeHint().width() || size().height() < minimumSizeHint().height())
+    {
+        resize(minimumSizeHint());
+    }
 
 #ifdef Q_OS_MAC
     setActivationPolicy(ActivationPolicy::Accessory);
@@ -176,6 +180,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 SettingsDialog::~SettingsDialog()
 {
     delete _ui;
+}
+
+QSize SettingsDialog::minimumSizeHint() const
+{
+    return {800, 500};
 }
 
 QWidget* SettingsDialog::currentPage()

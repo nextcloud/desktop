@@ -51,7 +51,8 @@ class SettingsDialog : public QMainWindow
 
 public:
     explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
-    ~SettingsDialog() override;
+    ~SettingsDialog() override;    
+    QSize minimumSizeHint() const override;
 
     QWidget* currentPage();
 
@@ -93,6 +94,7 @@ private:
 
     QAction *_activityAction;
     ownCloudGui *_gui;
+
 };
 }
 
