@@ -36,6 +36,10 @@
 
 #include <stdlib.h>
 
+namespace {
+// just a bit smaller than the default size of the settings dialog
+const QSize WizardSize(750, 450);
+}
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcWizard, "gui.wizard", QtInfoMsg)
@@ -52,6 +56,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _setupLog()
 {
     setObjectName("owncloudWizard");
+    setFixedSize(WizardSize);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
@@ -77,7 +82,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     Theme *theme = Theme::instance();
     setWindowTitle(tr("%1 Connection Wizard").arg(theme->appNameGUI()));
     setWizardStyle(QWizard::ModernStyle);
-    setPixmap(QWizard::BannerPixmap, theme->wizardHeaderBanner());
+    setPixmap(QWizard::BannerPixmap, theme->wizardHeaderBanner({ width(), 78 }));
     setPixmap(QWizard::LogoPixmap, theme->wizardHeaderLogo().pixmap(132, 63));
     setOption(QWizard::NoBackButtonOnStartPage);
     setOption(QWizard::NoBackButtonOnLastPage);

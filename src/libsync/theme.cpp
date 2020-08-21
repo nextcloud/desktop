@@ -435,22 +435,13 @@ QIcon Theme::wizardHeaderLogo() const
     return applicationIcon();
 }
 
-QPixmap Theme::wizardHeaderBanner() const
+QPixmap Theme::wizardHeaderBanner(const QSize &size) const
 {
-    QColor c = wizardHeaderBackgroundColor();
+    const QColor c = wizardHeaderBackgroundColor();
     if (!c.isValid())
         return QPixmap();
-
-    QSize size(750, 78);
-    if (auto screen = qApp->primaryScreen()) {
-        // Adjust the the size if there is a different DPI. (Issue #6156)
-        // Indeed, this size need to be big enough to for the banner height, and the wizard's width
-        auto ratio = screen->logicalDotsPerInch() / 96.;
-        if (ratio > 1.)
-            size *= ratio;
-    }
     QPixmap pix(size);
-    pix.fill(wizardHeaderBackgroundColor());
+    pix.fill(c);
     return pix;
 }
 #endif

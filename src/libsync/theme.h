@@ -189,7 +189,7 @@ public:
      *
      * @return banner for the setup wizard.
      */
-    virtual QPixmap wizardHeaderBanner() const;
+    virtual QPixmap wizardHeaderBanner(const QSize &size) const;
 #endif
 
     /**
