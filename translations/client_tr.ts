@@ -539,12 +539,12 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="341"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Yok sayma listesindeki dosyalar ve sembolik bağlantılar eşitlenmez. Şunlar bulunur:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="443"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Diğer işlemler için lütfen İşlemler uygulamasını açın.</translation>
     </message>
@@ -1479,22 +1479,22 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="564"/>
         <source>Password for share required</source>
         <translation>Paylaşım parolası zorunludur</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="564"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Please enter a password for your link share:</source>
         <translation>Lütfen bağlantı paylaşımınız için bir parola yazın:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi.cpp" line="584"/>
         <source>Sharing error</source>
         <translation>Paylaşım sorunu</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="584"/>
+        <location filename="../src/gui/socketapi.cpp" line="585"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -2948,18 +2948,18 @@ Kullanmanız önerilmez.</translation>
         <translation>%1 ile paylaş</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="536"/>
+        <location filename="../src/gui/socketapi.cpp" line="537"/>
         <source>Context menu share</source>
         <translation>Sağ tık menüsü paylaşımı</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="693"/>
+        <location filename="../src/gui/socketapi.cpp" line="694"/>
         <source>I shared something with you</source>
         <translation>Sizinle bir şey paylaştım</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="706"/>
-        <location filename="../src/gui/socketapi.cpp" line="737"/>
+        <location filename="../src/gui/socketapi.cpp" line="707"/>
+        <location filename="../src/gui/socketapi.cpp" line="738"/>
         <source>Share options</source>
         <translation>Paylaşım seçenekleri</translation>
     </message>
@@ -2969,38 +2969,38 @@ Kullanmanız önerilmez.</translation>
         <translation>%1 ile paylaş</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="708"/>
+        <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Copy private link to clipboard</source>
         <translation>Özel bağlantıyı panoya kopyala</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="709"/>
+        <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Send private link by email …</source>
         <translation>Kişisel bağlantıyı e-posta ile paylaş …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="735"/>
+        <location filename="../src/gui/socketapi.cpp" line="736"/>
         <source>Resharing this file is not allowed</source>
         <translation>Bu dosya yeniden paylaşılamaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="748"/>
-        <location filename="../src/gui/socketapi.cpp" line="750"/>
+        <location filename="../src/gui/socketapi.cpp" line="749"/>
+        <location filename="../src/gui/socketapi.cpp" line="751"/>
         <source>Copy public link</source>
         <translation>Herkese açık bağlantıyı kopyala</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="754"/>
+        <location filename="../src/gui/socketapi.cpp" line="755"/>
         <source>Copy internal link</source>
         <translation>İç bağlantıyı kopyala</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Edit</source>
         <translation>Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="811"/>
         <source>Open in browser</source>
         <translation>Tarayıcıda aç</translation>
     </message>

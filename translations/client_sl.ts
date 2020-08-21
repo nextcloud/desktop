@@ -538,12 +538,12 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="341"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Datoteke, ki so na seznamu, in simbolne povezave se ne usklajujejo. Te vključujejo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="443"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Za izpis več dejavnosti odprite program Dejavnost</translation>
     </message>
@@ -1470,22 +1470,22 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="564"/>
         <source>Password for share required</source>
         <translation>Zahtevano je geslo za souporabo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="564"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Please enter a password for your link share:</source>
         <translation>Vpisati je treba geslo za mesto souporabe prek povezave:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi.cpp" line="584"/>
         <source>Sharing error</source>
         <translation>Napaka souporabe</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="584"/>
+        <location filename="../src/gui/socketapi.cpp" line="585"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -2937,18 +2937,18 @@ Uporaba možnosti ni priporočljiva.</translation>
         <translation>Omogoči souporabo z %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="536"/>
+        <location filename="../src/gui/socketapi.cpp" line="537"/>
         <source>Context menu share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="693"/>
+        <location filename="../src/gui/socketapi.cpp" line="694"/>
         <source>I shared something with you</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="706"/>
-        <location filename="../src/gui/socketapi.cpp" line="737"/>
+        <location filename="../src/gui/socketapi.cpp" line="707"/>
+        <location filename="../src/gui/socketapi.cpp" line="738"/>
         <source>Share options</source>
         <translation>Možnosti souporabe</translation>
     </message>
@@ -2958,38 +2958,38 @@ Uporaba možnosti ni priporočljiva.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="708"/>
+        <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Copy private link to clipboard</source>
         <translation>Kopiraj zasebno povezavo v odložišče</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="709"/>
+        <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Send private link by email …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="735"/>
+        <location filename="../src/gui/socketapi.cpp" line="736"/>
         <source>Resharing this file is not allowed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="748"/>
-        <location filename="../src/gui/socketapi.cpp" line="750"/>
+        <location filename="../src/gui/socketapi.cpp" line="749"/>
+        <location filename="../src/gui/socketapi.cpp" line="751"/>
         <source>Copy public link</source>
         <translation>Kopiraj javno povezavo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="754"/>
+        <location filename="../src/gui/socketapi.cpp" line="755"/>
         <source>Copy internal link</source>
         <translation>Kopiraj krajevno povezavo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Edit</source>
         <translation>Uredi</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="811"/>
         <source>Open in browser</source>
         <translation>Odpri v brskalniku</translation>
     </message>

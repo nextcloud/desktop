@@ -538,12 +538,12 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="341"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>A kizárási listán lévő fájlok és a szimbolikus linkek nem lesznek szinkronizálva. Ez ezeket tartalmazza:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="443"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
         <source>For more activities please open the Activity app.</source>
         <translation>További tevékenységekhez nyissa meg a Tevékenységek alkalmazást.</translation>
     </message>
@@ -1479,22 +1479,22 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="564"/>
         <source>Password for share required</source>
         <translation>A megosztáshoz jelszó szükséges</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="564"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Please enter a password for your link share:</source>
         <translation>Adjon meg egy jelszót a megosztási hivatkozásához:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi.cpp" line="584"/>
         <source>Sharing error</source>
         <translation>Megosztási hiba</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="584"/>
+        <location filename="../src/gui/socketapi.cpp" line="585"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -2947,18 +2947,18 @@ Használata nem ajánlott.</translation>
         <translation>Megosztás vele: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="536"/>
+        <location filename="../src/gui/socketapi.cpp" line="537"/>
         <source>Context menu share</source>
         <translation>Megosztás a helyi menüből</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="693"/>
+        <location filename="../src/gui/socketapi.cpp" line="694"/>
         <source>I shared something with you</source>
         <translation>Megosztottam Önnel valamit</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="706"/>
-        <location filename="../src/gui/socketapi.cpp" line="737"/>
+        <location filename="../src/gui/socketapi.cpp" line="707"/>
+        <location filename="../src/gui/socketapi.cpp" line="738"/>
         <source>Share options</source>
         <translation>Megosztási beállítások</translation>
     </message>
@@ -2968,38 +2968,38 @@ Használata nem ajánlott.</translation>
         <translation>Megosztás ezzel: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="708"/>
+        <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Copy private link to clipboard</source>
         <translation>Személyes hivatkozás másolása a vágólapra</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="709"/>
+        <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Send private link by email …</source>
         <translation>Személyes hivatkozás küldése e-mailben…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="735"/>
+        <location filename="../src/gui/socketapi.cpp" line="736"/>
         <source>Resharing this file is not allowed</source>
         <translation>Ezt a fájlt nem lehet újra megosztani</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="748"/>
-        <location filename="../src/gui/socketapi.cpp" line="750"/>
+        <location filename="../src/gui/socketapi.cpp" line="749"/>
+        <location filename="../src/gui/socketapi.cpp" line="751"/>
         <source>Copy public link</source>
         <translation>Nyilvános hivatkozás másolása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="754"/>
+        <location filename="../src/gui/socketapi.cpp" line="755"/>
         <source>Copy internal link</source>
         <translation>Belső hivatkozás másolása</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Edit</source>
         <translation>Szerkesztés</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="811"/>
         <source>Open in browser</source>
         <translation>Megnyitás böngészőben</translation>
     </message>

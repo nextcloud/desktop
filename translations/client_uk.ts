@@ -538,12 +538,12 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="341"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Файли зі списку ігнорування, а також символічні посилання не синхронізовано, включно:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="443"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Для докладного перегляду змін, будь ласка, відкрийте застосунок Події.</translation>
     </message>
@@ -1468,22 +1468,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="564"/>
         <source>Password for share required</source>
         <translation>Потрібний пароль на спільний ресурс</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="564"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Please enter a password for your link share:</source>
         <translation>Будь ласка, зазначте пароль на спільний ресурс</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi.cpp" line="584"/>
         <source>Sharing error</source>
         <translation>Помилка під час надання доступу</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="584"/>
+        <location filename="../src/gui/socketapi.cpp" line="585"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -2932,18 +2932,18 @@ It is not advisable to use it.</source>
         <translation>Поділитися з %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="536"/>
+        <location filename="../src/gui/socketapi.cpp" line="537"/>
         <source>Context menu share</source>
         <translation>Контекстне мені спільного доступу</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="693"/>
+        <location filename="../src/gui/socketapi.cpp" line="694"/>
         <source>I shared something with you</source>
         <translation>Я чимось поділив(ла)ся з вами</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="706"/>
-        <location filename="../src/gui/socketapi.cpp" line="737"/>
+        <location filename="../src/gui/socketapi.cpp" line="707"/>
+        <location filename="../src/gui/socketapi.cpp" line="738"/>
         <source>Share options</source>
         <translation>Параметри спільного доступу</translation>
     </message>
@@ -2953,38 +2953,38 @@ It is not advisable to use it.</source>
         <translation>Поділитися за допомогою %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="708"/>
+        <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Copy private link to clipboard</source>
         <translation>Копіювати приватне посилання</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="709"/>
+        <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Send private link by email …</source>
         <translation>Надіслати приватне посилання електронною поштою</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="735"/>
+        <location filename="../src/gui/socketapi.cpp" line="736"/>
         <source>Resharing this file is not allowed</source>
         <translation>Надання цього файлу у спільний доступ іншим не дозволено</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="748"/>
-        <location filename="../src/gui/socketapi.cpp" line="750"/>
+        <location filename="../src/gui/socketapi.cpp" line="749"/>
+        <location filename="../src/gui/socketapi.cpp" line="751"/>
         <source>Copy public link</source>
         <translation>Копіювати публічне посилання</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="754"/>
+        <location filename="../src/gui/socketapi.cpp" line="755"/>
         <source>Copy internal link</source>
         <translation>Копіювати внутрішнє посилання</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Edit</source>
         <translation>Редагувати</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="811"/>
         <source>Open in browser</source>
         <translation>Відкрити у бравзері</translation>
     </message>
