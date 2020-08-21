@@ -10,6 +10,8 @@ Summary
 
 * Bugfix - Some check boxes in the sharing dialog are disabled: [#7877](https://github.com/owncloud/client/issues/7877)
 * Bugfix - Selective sync dialog is displayed when virtual files are enabled: [#7976](https://github.com/owncloud/client/issues/7976)
+* Bugfix - Fix support of adler32 checksums with Windows virtual files support: [#7999](https://github.com/owncloud/client/issues/7999)
+* Bugfix - Use the correct style for the folder wizard: [#8027](https://github.com/owncloud/client/pull/8027)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
 * Change - The password dialog is hidden behind a window: [#7833](https://github.com/owncloud/client/issues/7833)
@@ -21,6 +23,10 @@ Summary
 * Change - The settings ui shows a prompt for a few seconds: [#7925](https://github.com/owncloud/client/pull/7925)
 * Change - Reorgenize Settings: [#7962](https://github.com/owncloud/client/pull/7962)
 * Change - Use the checksum type specified by the server by default: [#7989](https://github.com/owncloud/client/pull/7989)
+* Change - Move "Choose what to sync" to sync everything settings: [#8018](https://github.com/owncloud/client/pull/8018)
+* Change - Enable Windows Virtual files by default: [#8019](https://github.com/owncloud/client/pull/8019)
+* Change - Move sync hidden files to advanced settings: [#8020](https://github.com/owncloud/client/issues/8020)
+* Change - Replace the old icons with a unified look: [#8038](https://github.com/owncloud/client/pull/8038)
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
@@ -41,6 +47,20 @@ Details
    when virtual files are enabled.
 
    https://github.com/owncloud/client/issues/7976
+
+* Bugfix - Fix support of adler32 checksums with Windows virtual files support: [#7999](https://github.com/owncloud/client/issues/7999)
+
+   The validation device reported a size of 0 and thus the computations of the checksums was
+   aborted.
+
+   https://github.com/owncloud/client/issues/7999
+   https://github.com/owncloud/client/pull/8015
+
+* Bugfix - Use the correct style for the folder wizard: [#8027](https://github.com/owncloud/client/pull/8027)
+
+   We now use the same style for the wizard on all platforms
+
+   https://github.com/owncloud/client/pull/8027
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
@@ -111,6 +131,32 @@ Details
    the server. Under certain conditions that caused multiple computations of the checksum.
 
    https://github.com/owncloud/client/pull/7989
+
+* Change - Move "Choose what to sync" to sync everything settings: [#8018](https://github.com/owncloud/client/pull/8018)
+
+   While selective sync is a feature only available when everything is synced, the the option had
+   its own radio button. We now moved the button to the other sync everything related settings.
+
+   https://github.com/owncloud/client/pull/8018
+
+* Change - Enable Windows Virtual files by default: [#8019](https://github.com/owncloud/client/pull/8019)
+
+   We now enable the Windows Virtual file support by default.
+
+   https://github.com/owncloud/client/pull/8019
+
+* Change - Move sync hidden files to advanced settings: [#8020](https://github.com/owncloud/client/issues/8020)
+
+   We moved the option to sync hidden files from the "Edit ignored Files" dialog into the advanced
+   settings.
+
+   https://github.com/owncloud/client/issues/8020
+
+* Change - Replace the old icons with a unified look: [#8038](https://github.com/owncloud/client/pull/8038)
+
+   We replaced the different styles and colors of the icons with a new unified look.
+
+   https://github.com/owncloud/client/pull/8038
 
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 
