@@ -539,12 +539,12 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="341"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Restroù ar roll dianvet hag al liammoù simbolek n&apos;int ket kemprennet. Bez ez eus :</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="443"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Evit muioc&apos;h a oberniantiz digorit ar meziant oberiantiz.</translation>
     </message>
@@ -574,7 +574,7 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation>Ger-tremenn sertifikat :</translation>
+        <translation>Ger-tremen testeni:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -615,7 +615,7 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation>Lakaat an anv-implijer hag ar ger-tremenn evit &apos;%1&apos; e %2.</translation>
+        <translation>Ebarzhiñ an anv-implijader hag ar ger-tremen evit &apos;%1&apos; e %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -625,7 +625,7 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
         <source>&amp;Password:</source>
-        <translation>&amp;Ger-tremenn :</translation>
+        <translation>&amp;Ger-tremen:</translation>
     </message>
 </context>
 <context>
@@ -641,12 +641,12 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1147"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Lakait frazenn-tremenn ar sifrañ pen-kil-ha-troad : &lt;br&gt;&lt;br&gt;Implijer : %2&lt;br&gt;Kont : %3&lt;br&gt; </translation>
+        <translation>Ebarzhit ho frazenn-tremen klok: &lt;br&gt;&lt;br&gt;Implijader: %2&lt;br&gt;Kont: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1155"/>
         <source>Enter E2E passphrase</source>
-        <translation>Lakait ar frazenn-tremenn E2E</translation>
+        <translation>Ebarzhit ar frazenn-tremen E2E</translation>
     </message>
 </context>
 <context>
@@ -659,7 +659,7 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Fazi dilesa : Fall eo an anv-implijer pe ar ger-tremenn.</translation>
+        <translation>Fazi anaouadur: Fall eo an anv-implijader pe ar ger-tremen.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -1481,22 +1481,22 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
-        <source>Password for share required</source>
-        <translation>Ezhomm ez eus eus ar ger-tremenn  evit ar rannadenn</translation>
-    </message>
-    <message>
         <location filename="../src/gui/socketapi.cpp" line="564"/>
-        <source>Please enter a password for your link share:</source>
-        <translation>Lakait ur ger-tremenn evit ho liamm rannet :</translation>
+        <source>Password for share required</source>
+        <translation>Ger-tremen ret evit gellout rannañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Ebarzhit ur ger-tremen d&apos;ho liamm rannet:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="584"/>
         <source>Sharing error</source>
         <translation>Fazi rannañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="584"/>
+        <location filename="../src/gui/socketapi.cpp" line="585"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -1520,12 +1520,12 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Enter Password</source>
-        <translation>Lakaat ar ger-tremenn</translation>
+        <translation>Lakaat ar ger-tremen</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Pouezit amañ&lt;/a&gt; evit goulenn ur ger-tremenn meziant evit an etrefas web.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Pouezit amañ&lt;/a&gt; evit goulenn ur ger-tremen arload ouzh an etrefas web.</translation>
     </message>
 </context>
 <context>
@@ -1737,12 +1737,12 @@ Skrivet e vo ar gazetenn e %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
         <source>Skip this version</source>
-        <translation>Tremenn e-biou ar stumm-mañ</translation>
+        <translation>Lezel hebiou ar stumm-mañ</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="355"/>
         <source>Skip this time</source>
-        <translation>Tremenn e-biou evit ar wech-mañ</translation>
+        <translation>Lezel hebiou evit ar wech-mañ</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="356"/>
@@ -1835,7 +1835,7 @@ Skrivet e vo ar gazetenn e %1</translation>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>Password for proxy server</source>
-        <translation>Ger-tremenn proxy ar servijour</translation>
+        <translation>Ger-tremen proksi ar servijour</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
@@ -2115,7 +2115,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="408"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>Dibosuple kargañ ar sertifikat. Fall eo ar ger-tremenn ?</translation>
+        <translation>N&apos;heller ket kargañ an testeni. Ha mat eo ar ger-tremen?</translation>
     </message>
 </context>
 <context>
@@ -2153,7 +2153,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>An tremenn a zo difennet d&apos;ar servijour. Evit gwiriañ a peus an aotre tizhout, &lt;a href=&quot;%1&quot;&gt;pouezit amañ&lt;/a&gt; evit kaout  sikour gant ho browser.</translation>
+        <translation>An aksed a zo difennet d&apos;ar servijour. Evit gouzout hag-eñ e c&apos;hallit tizhout ar servijer, &lt;a href=&quot;%1&quot;&gt;pouezit amañ&lt;/a&gt; evit tizhout servijoù ho merdeer.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
@@ -2273,7 +2273,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="100"/>
         <source>Skip folders configuration</source>
-        <translation>Tremenn e-bioù an teuliadoù arventennoù</translation>
+        <translation>Lezeel hebiou kefluniadur an doserioù</translation>
     </message>
 </context>
 <context>
@@ -2571,7 +2571,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>Ar servijour proxy en deus ezhom eus un anv-implijer hag ur ger-tremenn.</translation>
+        <translation>Ar servijour proksi a c&apos;houlenn un anv-implijader hag ur ger-tremen.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2702,12 +2702,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="314"/>
         <source>Password for share required</source>
-        <translation>Ezhomm ez eus eus ar ger-tremenn  evit ar rannadenn</translation>
+        <translation>Ger-tremen ret evit gellout rannañ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="315"/>
         <source>Please enter a password for your link share:</source>
-        <translation>Lakait ur ger-tremenn evit ho liamm rannet :</translation>
+        <translation>Ebarzhit ur ger-tremen d&apos;ho liamm rannet:</translation>
     </message>
 </context>
 <context>
@@ -2949,18 +2949,18 @@ It is not advisable to use it.</source>
         <translation>Rannañ gant %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="536"/>
+        <location filename="../src/gui/socketapi.cpp" line="537"/>
         <source>Context menu share</source>
         <translation>Roll kenaroud rannañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="693"/>
+        <location filename="../src/gui/socketapi.cpp" line="694"/>
         <source>I shared something with you</source>
         <translation>Rannet am eus un dra bennak ganeoc&apos;h</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="706"/>
-        <location filename="../src/gui/socketapi.cpp" line="737"/>
+        <location filename="../src/gui/socketapi.cpp" line="707"/>
+        <location filename="../src/gui/socketapi.cpp" line="738"/>
         <source>Share options</source>
         <translation>Dibaboù rannañ</translation>
     </message>
@@ -2970,38 +2970,38 @@ It is not advisable to use it.</source>
         <translation>Rannañ dre %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="708"/>
+        <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Copy private link to clipboard</source>
         <translation>Eila al liamm prevez d&apos;ar golver</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="709"/>
+        <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Send private link by email …</source>
         <translation>Kas al liamm prevez dre bostel ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="735"/>
+        <location filename="../src/gui/socketapi.cpp" line="736"/>
         <source>Resharing this file is not allowed</source>
         <translation>N&apos;eo ket aotret adrannañ ar restr</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="748"/>
-        <location filename="../src/gui/socketapi.cpp" line="750"/>
+        <location filename="../src/gui/socketapi.cpp" line="749"/>
+        <location filename="../src/gui/socketapi.cpp" line="751"/>
         <source>Copy public link</source>
         <translation>Eilañ al liamm publik</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="754"/>
+        <location filename="../src/gui/socketapi.cpp" line="755"/>
         <source>Copy internal link</source>
         <translation>Eilañ al liammm diabarzh</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Edit</source>
         <translation>Cheñch</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="811"/>
         <source>Open in browser</source>
         <translation>Digeriñ er furcher</translation>
     </message>
@@ -3281,7 +3281,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="162"/>
         <source>Access is forbidden</source>
-        <translation>Tremenn diasotreet</translation>
+        <translation>Aksed difennet</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
@@ -3301,7 +3301,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="244"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (tremennet e-biou abalamour d&apos;ar fazi a-raok, klasket vo en dro a benn %2)</translation>
+        <translation>%1 (lezet hebiou abalamour d&apos;ar fazi kent, klasket e vo en-dro a benn %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
@@ -3689,22 +3689,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Up to date</source>
-        <translation type="unfinished"/>
+        <translation>Izhivaet</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi a zo bet en ur gemprennañ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="369"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;ez eus teuliad kemprenn ebet.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="370"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>Teuliad kemprenn ebet</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
@@ -3714,32 +3714,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="368"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ %1 er furcher</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
         <source>Managed Folders:</source>
-        <translation type="unfinished"/>
+        <translation>Melestrañ an teuliadoù :</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ an teuliad &apos;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="404"/>
         <source>Resume all folders</source>
-        <translation type="unfinished"/>
+        <translation>Kendec&apos;hel gant pep teuliad</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Pause all folders</source>
-        <translation type="unfinished"/>
+        <translation>Ehanañ pep teuliad</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
-        <translation type="unfinished"/>
+        <translation>Mont tre ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -3749,7 +3749,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>O kemprenn %1 eus %2 (chom a ra %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="439"/>
@@ -3774,22 +3774,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>Cheñchoù nevez</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="692"/>
         <source>Resume all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Kendec&apos;hel pep kemprennadenn.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="694"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Kendec&apos;hel ar c&apos;hemprennañ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="702"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Ehanañ ar gemprenn</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="704"/>
@@ -3799,7 +3799,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="776"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>Stad dianv</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
@@ -3809,17 +3809,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Arventennoù ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Kont nevez ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
-        <translation type="unfinished"/>
+        <translation>Gwellet muioc&apos;h a oberennoù ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
@@ -3835,12 +3835,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
-        <translation type="unfinished"/>
+        <translation>Distrujañ bremañ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>Tra kemprennet ebet nevez-zo</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="919"/>
@@ -3858,12 +3858,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>K&amp;emprenn pep tra eus ar servijour</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Goulenn ur wiriadenn a raok kemprenn teuliadoù brasoc&apos;h eget</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
@@ -3874,7 +3874,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>Goulenn ur wiriadenn a raok kemprennañ lec&apos;hioù renkañ diavaez</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
@@ -3884,27 +3884,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Teuliad diabarzh</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Server</source>
-        <translation type="unfinished"/>
+        <translation>Servijour</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Gwarn ar roadennoù diabarzh</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ma ez eo choazet ar voest-mañ, pez ez eus en teuliad diabarzh a vo lamet evit kregiñ ur gemprennadenn sklaer eus ar servijour.&lt;/p&gt;&lt;p&gt;Na gwiriit ket an dra-mañ ma e vefe ret pelgaset pez ez eus en teuliad d&apos;ar servijour.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>Kregiñ ur gemprennadenn sklaer (Lamet e vo pep tra en teuliad diabarzh !)</translation>
     </message>
 </context>
 <context>
@@ -3912,12 +3912,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Anv implijer</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ger-tremen</translation>
     </message>
 </context>
 <context>
@@ -3948,12 +3948,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
         <source>Server Address</source>
-        <translation type="unfinished"/>
+        <translation>Chom-lec&apos;&apos;h ar servijour</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Enrolla gant ur roer</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -3966,7 +3966,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation type="unfinished"/>
+        <translation>Ho c&apos;jont a zo kemprennet d&apos;an teuliad diabarzh</translation>
     </message>
 </context>
 <context>
@@ -3974,52 +3974,52 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="457"/>
         <source>%n day ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n deiz-zo</numerusform><numerusform>%n deiz-zo</numerusform><numerusform>%n deiz-zo</numerusform><numerusform>%n deiz-zo</numerusform><numerusform>%n deiz-zo</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="459"/>
         <source>%n days ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n deiz-zo</numerusform><numerusform>%n deiz-zo</numerusform><numerusform>%n deiz-zo</numerusform><numerusform>%n deiz-zo</numerusform><numerusform>%n deiz-zo</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="463"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>en dazont</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="469"/>
         <source>%n hour ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n heurvez-zo</numerusform><numerusform>%n heurvez-zo</numerusform><numerusform>%n heurvez-zo</numerusform><numerusform>%n heurvez-zo</numerusform><numerusform>%n heurvez-zo</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="471"/>
         <source>%n hours ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n heurvez-zo</numerusform><numerusform>%n heurvez-zo</numerusform><numerusform>%n heurvez-zo</numerusform><numerusform>%n heurvez-zo</numerusform><numerusform>%n heurvez-zo</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="478"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>bremañ</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="480"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>Er munudenn divezhañ</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="484"/>
         <source>%n minute ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n munudenn-zo</numerusform><numerusform>%n munudenn-zo</numerusform><numerusform>%n munudenn-zo</numerusform><numerusform>%n munudenn-zo</numerusform><numerusform>%n munudenn-zo</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="486"/>
         <source>%n minutes ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n munudenn-zo</numerusform><numerusform>%n munudenn-zo</numerusform><numerusform>%n munudenn-zo</numerusform><numerusform>%n munudenn-zo</numerusform><numerusform>%n munudenn-zo</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="490"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Neubeut amzer-zo</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="141"/>
@@ -4043,7 +4043,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Lemel ar c&apos;hont</translation>
     </message>
 </context>
 <context>
@@ -4051,52 +4051,52 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="130"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="134"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="138"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KM</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="141"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n bloaz</numerusform><numerusform>%n bloaz</numerusform><numerusform>%n bloaz</numerusform><numerusform>%n bloaz</numerusform><numerusform>%n bloaz</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n miz</numerusform><numerusform>%n miz</numerusform><numerusform>%n miz</numerusform><numerusform>%n miz</numerusform><numerusform>%n miz</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n deiz</numerusform><numerusform>%n deiz</numerusform><numerusform>%n deiz</numerusform><numerusform>%n deiz</numerusform><numerusform>%n deiz</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n heurvez</numerusform><numerusform>%n heurvez</numerusform><numerusform>%n heurvez</numerusform><numerusform>%n heurvez</numerusform><numerusform>%n heurvez</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n munudenn</numerusform><numerusform>%n munudenn</numerusform><numerusform>%n munudenn</numerusform><numerusform>%n munudenn</numerusform><numerusform>%n munudenn</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n eilenn</numerusform><numerusform>%n eilenn</numerusform><numerusform>%n eilenn</numerusform><numerusform>%n eilenn</numerusform><numerusform>%n eilenn</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>
@@ -4109,17 +4109,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket mat niverenn kevetalder ar penn.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Niverenn kevetalder ar penn en deus ur stumm dianv &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Ar restr pellkarget n&apos;en deus ket an niverenn kevetalder mat, adkroget e vo ar bellgargadenn.</translation>
     </message>
 </context>
 <context>
@@ -4127,12 +4127,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Kendec&apos;hel ar gemprenn evit pep tra</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Ehanañ pep kemprennadenn</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
@@ -4147,22 +4147,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="268"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Kuitaat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open sync item locally</source>
-        <translation type="unfinished"/>
+        <translation>Digerin an dra kemprennet en diabarzh</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ URL</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ an diviz rannañ</translation>
     </message>
 </context>
 <context>
@@ -4170,12 +4170,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="42"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>N&apos;eo ket aotreet ar varenn sistem</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="43"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 en deus ezhomm eus ur varenn sistem a gerzh. Ma lakait da dreiñ XFCE, heuliit &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ar pazennoù-mañ&lt;/a&gt;. Mod all, staliit ur meziant varenn sistem avel &apos;trayer&apos; ha klaskit en dro.</translation>
     </message>
 </context>
 <context>
@@ -4183,7 +4183,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="339"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Krouet gant Git stumm&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; war %3, %4 en ur implij Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -4201,7 +4201,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Stumm servijour pellkarget, eilet eo bet ar restroù cheñchet er restr stourm</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -4211,17 +4211,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Diblaset da %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>dianavezout</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi tizhout ar restr-sistem</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
@@ -4231,7 +4231,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Adnevesaat ar roadennoù meta diabarzh</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
@@ -4242,38 +4242,38 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="66"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>o pelkargañ</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>o pellkas</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="70"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>o lemel</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>o diblasañ</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>do dianavezout</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>fazi</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>o adnevesaat ar roadennoù meta diabarzh</translation>
     </message>
 </context>
 <context>
@@ -4281,52 +4281,52 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="61"/>
         <source>Status undefined</source>
-        <translation type="unfinished"/>
+        <translation>Stad dianav</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="64"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Ho gortoz evit kregiñ ar gemprennadenn</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="67"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>O treiñ emañ ar gemprennadenn</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="70"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Graet eo bet ar gemprennadenn</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="73"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Graet eo bet ar gemprennadenn, dianavezet eo bet restroù-zo</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="76"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Fazi kemprenn</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="79"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Fazi staliañ</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="82"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Ho prientiñ ur gemprennadenn</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="85"/>
         <source>Aborting …</source>
-        <translation type="unfinished"/>
+        <translation>O arest ...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="88"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Ehanet ar gemprenn</translation>
     </message>
 </context>
 <context>
@@ -4334,22 +4334,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl digeriñ ar furcher</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi a zo bet en ur loc&apos;hañ ar furcher evit mont d&apos;an URL %1. N&apos;ez eus ket bet lakaet ur furcher dre ziouer marteze ?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Dibosupl digeriñ ar c&apos;hliant postel</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Ur fazi a zo bet en ur loc&apos;hañ ar c&apos;hliant postel evit krouiñ ur gemenadenn nevez. N&apos;ez eus marteze kliant postel dre ziouer ebet ?</translation>
     </message>
 </context>
 <context>
@@ -4357,7 +4357,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="229"/>
         <source>More information</source>
-        <translation type="unfinished"/>
+        <translation>Muioc&apos;h a ditouroù</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="230"/>
@@ -4367,12 +4367,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="231"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Kejañ</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="252"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Digeriñ ar furcher</translation>
     </message>
 </context>
 <context>
@@ -4395,7 +4395,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="346"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Ar c&apos;hont %1 n&apos;en deus oberenn evet aotreet.</translation>
     </message>
 </context>
 </TS>
