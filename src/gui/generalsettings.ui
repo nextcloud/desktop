@@ -51,11 +51,8 @@
           </item>
           <item row="1" column="0">
            <widget class="QCheckBox" name="monoIconsCheckBox">
-            <property name="toolTip">
-             <string>For System Tray</string>
-            </property>
             <property name="text">
-             <string>Use &amp;Monochrome Icons</string>
+             <string>Use &amp;Monochrome Icons in the system tray</string>
             </property>
            </widget>
           </item>
