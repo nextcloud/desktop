@@ -1,0 +1,5 @@
+Bugfix: Use the correct style for the folder wizard
+
+We now use the same style for the wizard on all platforms
+
+https://github.com/owncloud/client/pull/8027

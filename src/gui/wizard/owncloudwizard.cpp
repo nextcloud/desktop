@@ -18,6 +18,9 @@
 #include "configfile.h"
 #include "theme.h"
 
+#include "application.h"
+#include "settingsdialog.h"
+
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
@@ -52,6 +55,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _setupLog()
 {
     setObjectName("owncloudWizard");
+    auto size = ocApp()->gui()->settingsDialog()->minimumSizeHint();
+    resize(size.width() - 50, size.height() - 50);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
@@ -77,8 +82,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     Theme *theme = Theme::instance();
     setWindowTitle(tr("%1 Connection Wizard").arg(theme->appNameGUI()));
     setWizardStyle(QWizard::ModernStyle);
-    setPixmap(QWizard::BannerPixmap, theme->wizardHeaderBanner());
-    setPixmap(QWizard::LogoPixmap, theme->wizardHeaderLogo());
+    setPixmap(QWizard::BannerPixmap, theme->wizardHeaderBanner({ width(), 78 }));
+    setPixmap(QWizard::LogoPixmap, theme->wizardHeaderLogo().pixmap(132, 63));
     setOption(QWizard::NoBackButtonOnStartPage);
     setOption(QWizard::NoBackButtonOnLastPage);
     setOption(QWizard::NoCancelButton, false);
@@ -246,20 +251,8 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
     switch (bestVfsMode)
     {
     case Vfs::WindowsCfApi:
-        msgBox = new QMessageBox(
-            QMessageBox::Warning,
-            tr("Enable technical preview feature?"),
-            tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
-               "Instead a virtual file will be created for each file that exists on the server. "
-               "When a file is opened its contents will be downloaded automatically. "
-               "Alternatively, files can be downloaded manually by using their context menu."
-               "\n\n"
-               "The virtual files mode is mutually exclusive with selective sync. "
-               "Currently unselected folders will be translated to online-only folders "
-               "and your selective sync settings will be reset."), QMessageBox::NoButton, receiver);
-        acceptButton = msgBox->addButton(tr("Enable virtual files"), QMessageBox::AcceptRole);
-        msgBox->addButton(tr("Continue to use selective sync"), QMessageBox::RejectRole);
-        break;
+        callback(true);
+        return;
     case Vfs::WithSuffix:
         msgBox = new QMessageBox(
             QMessageBox::Warning,

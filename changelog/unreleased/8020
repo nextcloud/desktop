@@ -1,0 +1,6 @@
+Change: Move sync hidden files to advanced settings
+
+We moved the option to sync hidden files from the "Edit ignored Files" dialog
+into the advanced settings.
+
+https://github.com/owncloud/client/issues/8020

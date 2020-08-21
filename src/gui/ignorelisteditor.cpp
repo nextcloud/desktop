@@ -59,18 +59,11 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(patternCol, QHeaderView::Stretch);
     ui->tableWidget->verticalHeader()->setVisible(false);
-
-    ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());
 }
 
 IgnoreListEditor::~IgnoreListEditor()
 {
     delete ui;
-}
-
-bool IgnoreListEditor::ignoreHiddenFiles()
-{
-    return !ui->syncHiddenFilesCheckBox->isChecked();
 }
 
 void IgnoreListEditor::slotItemSelectionChanged()
@@ -122,13 +115,6 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
     ignores.close(); //close the file before reloading stuff.
 
     FolderMan *folderMan = FolderMan::instance();
-
-    /* handle the hidden file checkbox */
-
-    /* the ignoreHiddenFiles flag is a folder specific setting, but for now, it is
-     * handled globally. Save it to every folder that is defined.
-     */
-    folderMan->setIgnoreHiddenFiles(ignoreHiddenFiles());
 
     // We need to force a remote discovery after a change of the ignore list.
     // Otherwise we would not download the files/directories that are no longer

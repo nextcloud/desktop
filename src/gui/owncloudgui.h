@@ -35,6 +35,7 @@ class ShareDialog;
 class Application;
 class LogBrowser;
 class AccountState;
+class OwncloudSetupWizard;
 
 enum class ShareDialogStartPage {
     UsersAndGroups,
@@ -63,6 +64,8 @@ public:
     void hideAndShowTray();
 
     SettingsDialog *settingsDialog() const;
+
+    void runNewAccountWizard();
 
 signals:
     void setupProxy();
@@ -111,7 +114,6 @@ private slots:
     void slotLogout();
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
-    void slotNewAccountWizard();
 
 private:
     void setPauseOnAllFoldersHelper(bool pause);
@@ -157,6 +159,7 @@ private:
 
     QList<QAction *> _recentItemsActions;
     Application *_app;
+    QPointer<OwncloudSetupWizard> _wizard;
 };
 
 } // namespace OCC

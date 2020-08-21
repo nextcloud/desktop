@@ -16,10 +16,12 @@
 #include <QMenu>
 #include <QClipboard>
 
+#include "application.h"
 #include "wizard/owncloudoauthcredspage.h"
 #include "theme.h"
 #include "account.h"
 #include "cookiejar.h"
+#include "settingsdialog.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
 #include "creds/httpcredentialsgui.h"
@@ -72,7 +74,7 @@ void OwncloudOAuthCredsPage::initializePage()
     _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
     _asyncAuth->startAuthentication();
-    wizard()->showMinimized();
+    ocApp()->gui()->settingsDialog()->showMinimized();
 }
 
 void OCC::OwncloudOAuthCredsPage::cleanupPage()

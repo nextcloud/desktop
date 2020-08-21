@@ -176,28 +176,6 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
 
     return cached;
 }
-
-QString Theme::hidpiFileName(const QString &fileName, QPaintDevice *dev)
-{
-    qreal devicePixelRatio = dev ? dev->devicePixelRatio() : qApp->primaryScreen()->devicePixelRatio();
-    if (devicePixelRatio <= 1.0) {
-        return fileName;
-    }
-    // try to find a 2x version
-
-
-    const int dotIndex = fileName.lastIndexOf(QLatin1Char('.'));
-    if (dotIndex != -1) {
-        QString at2xfileName = fileName;
-        at2xfileName.insert(dotIndex, QStringLiteral("@2x"));
-        if (QFile::exists(at2xfileName)) {
-            return at2xfileName;
-        }
-    }
-    return fileName;
-}
-
-
 #endif
 
 Theme::Theme()
@@ -452,27 +430,18 @@ QColor Theme::wizardHeaderBackgroundColor() const
     return QColor();
 }
 
-QPixmap Theme::wizardHeaderLogo() const
+QIcon Theme::wizardHeaderLogo() const
 {
-    return applicationIcon().pixmap(64);
+    return applicationIcon();
 }
 
-QPixmap Theme::wizardHeaderBanner() const
+QPixmap Theme::wizardHeaderBanner(const QSize &size) const
 {
-    QColor c = wizardHeaderBackgroundColor();
+    const QColor c = wizardHeaderBackgroundColor();
     if (!c.isValid())
         return QPixmap();
-
-    QSize size(750, 78);
-    if (auto screen = qApp->primaryScreen()) {
-        // Adjust the the size if there is a different DPI. (Issue #6156)
-        // Indeed, this size need to be big enough to for the banner height, and the wizard's width
-        auto ratio = screen->logicalDotsPerInch() / 96.;
-        if (ratio > 1.)
-            size *= ratio;
-    }
     QPixmap pix(size);
-    pix.fill(wizardHeaderBackgroundColor());
+    pix.fill(c);
     return pix;
 }
 #endif

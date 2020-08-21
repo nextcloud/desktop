@@ -128,7 +128,7 @@ signals:
     void finished(const HttpResult<QVector<RemoteInfo>> &result);
 
 private slots:
-    void directoryListingIteratedSlot(QString, const QMap<QString, QString> &);
+    void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
     void lsJobFinishedWithErrorSlot(QNetworkReply *);
 
@@ -274,5 +274,5 @@ signals:
 };
 
 /// Implementation of DiscoveryPhase::adjustRenamedPath
-QString adjustRenamedPath(const QMap<QString, QString> renamedItems, const QString original);
+QString adjustRenamedPath(const QMap<QString, QString> &renamedItems, const QString &original);
 }

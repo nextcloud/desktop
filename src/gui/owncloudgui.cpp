@@ -108,7 +108,7 @@ void ownCloudGui::slotOpenSettingsDialog()
         }
     } else {
         qCInfo(lcApplication) << "No configured folders yet, starting setup wizard";
-        slotNewAccountWizard();
+        runNewAccountWizard();
     }
 }
 
@@ -124,26 +124,16 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
 
     // Left click
     if (reason == QSystemTrayIcon::Trigger) {
-        if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
-            // brought wizard to front
-        } else if (_shareDialogs.size() > 0) {
-            // Share dialog(s) be hidden by other apps, bring them back
-            Q_FOREACH (const QPointer<ShareDialog> &shareDialog, _shareDialogs) {
-                Q_ASSERT(shareDialog.data());
-                raiseDialog(shareDialog);
-            }
-        } else {
 #ifdef Q_OS_MAC
-            // on macOS, a left click always opens menu.
-            // However if the settings dialog is already visible but hidden
-            // by other applications, this will bring it to the front.
-            if (_settingsDialog->isVisible()) {
-                raiseDialog(_settingsDialog);
-            }
-#else
-            slotOpenSettingsDialog();
-#endif
+        // on macOS, a left click always opens menu.
+        // However if the settings dialog is already visible but hidden
+        // by other applications, this will bring it to the front.
+        if (_settingsDialog->isVisible()) {
+            raiseDialog(_settingsDialog);
         }
+#else
+        slotOpenSettingsDialog();
+#endif
     }
     // FIXME: Also make sure that any auto updater dialogue https://github.com/owncloud/client/issues/5613
     // or SSL error dialog also comes to front.
@@ -795,7 +785,7 @@ void ownCloudGui::setupActions()
 
     QObject::connect(_actionRecent, &QAction::triggered, this, &ownCloudGui::slotShowSyncProtocol);
     QObject::connect(_actionSettings, &QAction::triggered, this, &ownCloudGui::slotShowSettings);
-    QObject::connect(_actionNewAccountWizard, &QAction::triggered, this, &ownCloudGui::slotNewAccountWizard);
+    QObject::connect(_actionNewAccountWizard, &QAction::triggered, this, &ownCloudGui::runNewAccountWizard);
     _actionHelp = new QAction(tr("Help"), this);
     QObject::connect(_actionHelp, &QAction::triggered, this, &ownCloudGui::slotHelp);
     _actionAbout = new QAction(tr("About %1").arg(Theme::instance()->appNameGUI()), this);
@@ -966,9 +956,17 @@ void ownCloudGui::slotPauseAllFolders()
     setPauseOnAllFoldersHelper(true);
 }
 
-void ownCloudGui::slotNewAccountWizard()
+void ownCloudGui::runNewAccountWizard()
 {
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), _settingsDialog);
+    if (!_wizard) {
+        _wizard = new OwncloudSetupWizard(settingsDialog());
+        connect(_wizard, &OwncloudSetupWizard::ownCloudWizardDone, _wizard, &OwncloudSetupWizard::deleteLater);
+        connect(_wizard, &OwncloudSetupWizard::ownCloudWizardDone, ocApp(), &Application::slotownCloudWizardDone);
+        FolderMan::instance()->setSyncEnabled(false);
+        _wizard->startWizard();
+    } else {
+        raiseDialog(settingsDialog());
+    }
 }
 
 void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
@@ -1055,11 +1053,16 @@ void ownCloudGui::slotHelp()
 
 void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 {
-    auto window = raiseWidget->window();
-    Q_ASSERT(window);
+    auto window = ocApp()->gui()->settingsDialog();
+    OC_ASSERT(window);
+    if (!window) {
+        return;
+    }
     window->showNormal();
     window->raise();
+    raiseWidget->raise();
     window->activateWindow();
+    raiseWidget->activateWindow();
 
 #if defined(Q_OS_WIN)
     // Windows disallows raising a Window when you're not the active application.

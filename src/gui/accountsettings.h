@@ -84,8 +84,6 @@ protected slots:
     void slotFolderWizardRejected();
     void slotDeleteAccount();
     void slotToggleSignInState();
-    void slotOpenAccountWizard();
-    void slotAccountAdded(AccountState *);
     void refreshSelectiveSyncStatus();
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);

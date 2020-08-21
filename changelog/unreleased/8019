@@ -1,0 +1,5 @@
+Change: Enable Windows Virtual files by default
+
+We now enable the Windows Virtual file support by default.
+
+https://github.com/owncloud/client/pull/8019

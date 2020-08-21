@@ -37,6 +37,7 @@
 #include <QLoggingCategory>
 #include <QSettings>
 #include <QNetworkProxy>
+#include <QOperatingSystemVersion>
 #include <QStandardPaths>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
@@ -142,15 +143,8 @@ bool ConfigFile::optionalDesktopNotifications() const
 
 bool ConfigFile::showInExplorerNavigationPane() const
 {
-    const bool defaultValue =
-#ifdef Q_OS_WIN
-        QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10
-#else
-        false
-#endif
-        ;
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(showInExplorerNavigationPaneC), defaultValue).toBool();
+    return settings.value(QLatin1String(showInExplorerNavigationPaneC), QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows10).toBool();
 }
 
 void ConfigFile::setShowInExplorerNavigationPane(bool show)

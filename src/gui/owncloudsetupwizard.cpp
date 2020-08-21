@@ -63,31 +63,6 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
     _ocWizard->deleteLater();
 }
 
-static QPointer<OwncloudSetupWizard> wiz = nullptr;
-
-void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
-{
-    if (!wiz.isNull()) {
-        bringWizardToFrontIfVisible();
-        return;
-    }
-
-    wiz = new OwncloudSetupWizard(parent);
-    connect(wiz, SIGNAL(ownCloudWizardDone(int)), obj, amember);
-    FolderMan::instance()->setSyncEnabled(false);
-    wiz->startWizard();
-}
-
-bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
-{
-    if (wiz.isNull()) {
-        return false;
-    }
-
-    ownCloudGui::raiseDialog(wiz->_ocWizard);
-    return true;
-}
-
 void OwncloudSetupWizard::startWizard()
 {
     AccountPtr account = AccountManager::createAccount();

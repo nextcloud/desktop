@@ -87,8 +87,6 @@ public:
     virtual QString configFileName() const;
 
 #ifndef TOKEN_AUTH_ONLY
-    static QString hidpiFileName(const QString &fileName, QPaintDevice *dev = nullptr);
-
     /**
       * get an sync state icon
       */
@@ -182,7 +180,7 @@ public:
     virtual QColor wizardHeaderBackgroundColor() const;
 
     /** @return logo for the setup wizard. */
-    virtual QPixmap wizardHeaderLogo() const;
+    virtual QIcon wizardHeaderLogo() const;
 
     /**
      * The default implementation creates a
@@ -191,7 +189,7 @@ public:
      *
      * @return banner for the setup wizard.
      */
-    virtual QPixmap wizardHeaderBanner() const;
+    virtual QPixmap wizardHeaderBanner(const QSize &size) const;
 #endif
 
     /**
