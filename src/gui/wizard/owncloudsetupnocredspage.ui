@@ -105,6 +105,18 @@
          </item>
          <item>
           <widget class="QLabel" name="urlLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>16</width>
@@ -116,6 +128,9 @@
            </property>
            <property name="pixmap">
             <pixmap resource="../../../client.qrc">:/client/resources/lock-https.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
