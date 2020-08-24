@@ -202,7 +202,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Pastas não marcadas serão &lt;b&gt;removidas&lt;/b&gt; de seu sistema de arquivos local e não serão mais sincronizadas com este computador</translation>
+        <translation>Pastas não marcadas serão &lt;b&gt;removidas&lt;/b&gt; do seu sistema de arquivos local e não serão mais sincronizadas com este computador</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="77"/>
@@ -885,7 +885,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="643"/>
         <source>Could not read system exclude file</source>
-        <translation>Não foi possível ler o sistema de arquivo de exclusão</translation>
+        <translation>Não foi possível ler o arquivo de exclusão do sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="973"/>
