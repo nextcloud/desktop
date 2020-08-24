@@ -176,7 +176,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="283"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation>Produciuse un error descoñecido: a resposta de rede foi eliminada</translation>
+        <translation>Produciuse un error descoñecido: a resposta da rede foi eliminada</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="435"/>
@@ -518,7 +518,7 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="136"/>
         <source>Network error</source>
-        <translation>Produciuse un erro de rede</translation>
+        <translation>Produciuse un erro na rede</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
