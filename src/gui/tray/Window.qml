@@ -21,7 +21,7 @@ Window {
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
-    Accessible.role: Accessible.Window
+    Accessible.role: Accessible.Application
     Accessible.name: "Nextcloud client tray window"
 
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
@@ -36,7 +36,7 @@ Window {
         currentAccountAvatar.source = ""
         currentAccountAvatar.source = "image://avatars/currentUser"
         currentAccountStateIndicator.source = ""
-        currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+        currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId()) ? "qrc:///client/theme/colored/astate-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
 
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
         // see also id:accountMenu below
@@ -98,6 +98,9 @@ Window {
         radius:         Style.trayWindowRadius
         border.width:   Style.trayWindowBorderWidth
         border.color:   Style.menuBorder
+
+        Accessible.role: Accessible.Grouping
+        Accessible.name: "Nextcloud client tray window"
 
         Rectangle {
             id: trayWindowHeaderBackground
@@ -240,6 +243,13 @@ Window {
                                     }
                                 }
                                 onClicked: UserModel.addAccount()
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: qsTr("Add new account")
+                                Accessible.description: qsTr("Opens setup window to add a new account connection")
+                                Accessible.onPressAction: {
+                                    Systray.pauseResumeSync()
+                                }
                             }
 
                             MenuSeparator {
@@ -267,7 +277,7 @@ Window {
 
                                 Accessible.role: Accessible.MenuItem
                                 Accessible.name: Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
-                                Accessible.description: qsTr("Button that pause or resumes sync activity")
+                                Accessible.description: qsTr("Button that pauses or resumes sync activity")
                                 Accessible.onPressAction: {
                                     Systray.pauseResumeSync()
                                 }
@@ -531,6 +541,8 @@ Window {
             ScrollBar.vertical: ScrollBar {
                 id: listViewScrollbar
             }
+
+            keyNavigationEnabled: true
 
             Accessible.role: Accessible.List
             Accessible.name: qsTr("Activity list")
