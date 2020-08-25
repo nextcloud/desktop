@@ -36,7 +36,7 @@ Window {
         currentAccountAvatar.source = ""
         currentAccountAvatar.source = "image://avatars/currentUser"
         currentAccountStateIndicator.source = ""
-        currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId()) ? "qrc:///client/theme/colored/astate-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+        currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId()) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
 
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
         // see also id:accountMenu below
