@@ -21,6 +21,9 @@ Window {
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
+    Accessible.role: Accessible.Window
+    Accessible.name: "Nextcloud client tray window"
+
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
         if(!active) {
@@ -131,6 +134,14 @@ Window {
                     display:                AbstractButton.IconOnly
                     flat:                   true
 
+                    Accessible.role: Accessible.ButtonMenu
+                    Accessible.name: "Current account"
+                    Accessible.description: "Shows the currently selected account and opens a dropdown list for all accounts when clicked"
+                    Accessible.onPressAction: {
+                        syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                        accountMenu.open()
+                    }
+
                     MouseArea {
                         id: accountBtnMouseArea
 
@@ -170,6 +181,10 @@ Window {
                                 border.color: Style.menuBorder
                                 radius: Style.currentAccountButtonRadius
                             }
+
+                            Accessible.role: PopupMenu
+                            Accessible.name: qsTr("Account menu")
+                            Accessible.description: qsTr("Popup menu showing a list of accounts and general client actions")
 
                             onClosed: {
                                 // HACK: reload account Instantiator immediately by restting it - could be done better I guess
@@ -249,6 +264,13 @@ Window {
                                         color: parent.parent.hovered ? Style.lightHover : "transparent"
                                     }
                                 }
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                                Accessible.description: qsTr("Button that pause or resumes sync activity")
+                                Accessible.onPressAction: {
+                                    Systray.pauseResumeSync()
+                                }
                             }
 
                             MenuItem {
@@ -265,6 +287,13 @@ Window {
                                         anchors.margins: 1
                                         color: parent.parent.hovered ? Style.lightHover : "transparent"
                                     }
+                                }
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: text
+                                Accessible.description: qsTr("Button that opens the client settings window")
+                                Accessible.onPressAction: {
+                                    Systray.openSettings()
                                 }
                             }
 
@@ -283,6 +312,13 @@ Window {
                                         color: parent.parent.hovered ? Style.lightHover : "transparent"
                                     }
                                 }
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: text
+                                Accessible.description: qsTr("Quits the nextcloud client application")
+                                Accessible.onPressAction: {
+                                    Systray.shutdown()
+                                }
                             }
                         }
                     }
@@ -298,6 +334,7 @@ Window {
                         height: Style.trayWindowHeaderHeight
                         width:  Style.currentAccountButtonWidth
                         spacing: 0
+
                         Image {
                             id: currentAccountAvatar
 
@@ -307,6 +344,9 @@ Window {
                             source: "image://avatars/currentUser"
                             Layout.preferredHeight: Style.accountAvatarSize
                             Layout.preferredWidth: Style.accountAvatarSize
+
+                            Accessible.role: Accessible.Graphic
+                            Accessible.name: qsTr("Current user avatar")
 
                             Rectangle {
                                 id: currentAccountStateIndicatorBackground
@@ -326,6 +366,10 @@ Window {
                                 y: currentAccountStateIndicatorBackground.y + 1
                                 sourceSize.width: Style.accountAvatarStateIndicatorSize
                                 sourceSize.height: Style.accountAvatarStateIndicatorSize
+
+                                Accessible.role: Accessible.Indicator
+                                Accessible.name: UserModel.isUserConnected(UserModel.currentUserId()) ? qsTr("Connected") : qsTr("Disconnected")
+                                Accessible.description: qsTr("Icon that indicates connection state for the currently selected account")
                             }
                         }
 
@@ -377,6 +421,13 @@ Window {
                     visible: UserModel.currentUser.hasLocalFolder
                     icon.source: "qrc:///client/theme/white/folder.svg"
                     onClicked: UserModel.openCurrentAccountLocalFolder()
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: qsTr("Local folder button")
+                    Accessible.description: qsTr("Opens the local folder corresponding to the currently selected account")
+                    Accessible.onPressAction: {
+                        UserModel.openCurrentAccountLocalFolder()
+                    }
                 }
 
                 HeaderButton {
@@ -385,6 +436,13 @@ Window {
                     visible: UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     onClicked: UserModel.openCurrentAccountTalk()
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: qsTr("Open Nextcloud Talk")
+                    Accessible.description: qsTr("Opens Nextcloud Talk corresponding the currently sdelected users server in a new browser window")
+                    Accessible.onPressAction: {
+                        UserModel.openCurrentAccountTalk()
+                    }
                 }
 
                 HeaderButton {
@@ -400,6 +458,14 @@ Window {
                         }
                     }
 
+                    Accessible.role: Accessible.ButtonMenu
+                    Accessible.name: qsTr("Show other apps")
+                    Accessible.description: qsTr("Opens a popup menu with all other supported Nextcloud apps from the currently selected users server")
+                    Accessible.onPressAction: {
+                        appsMenu.open();
+                        UserModel.openCurrentAccountServer();
+                    }
+
                     Menu {
                         id: appsMenu
                         y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
@@ -412,6 +478,9 @@ Window {
                             border.color: Style.menuBorder
                             radius: 2
                         }
+
+                        Accessible.role: Accessible.PopupMenu
+                        Accessible.name: qsTr("Apps menu")
 
                         Instantiator {
                             id: appsMenuInstantiator
@@ -437,6 +506,13 @@ Window {
                                         color: appEntry.hovered ? Style.lightHover : "transparent"
                                     }
                                 }
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: appName
+                                Accessible.description: qsTr("Opens the corresponding Nextcloud app in a new browser window")
+                                Accessible.onPressAction: {
+                                    UserAppsModel.openAppUrl(appUrl)
+                                }
                             }
                         }
                     }
@@ -456,6 +532,10 @@ Window {
                 id: listViewScrollbar
             }
 
+            Accessible.role: Accessible.List
+            Accessible.name: qsTr("Activity list")
+            Accessible.description: qsTr("A list of activities for the currently selected user account")
+
             model: activityModel
 
             delegate: RowLayout {
@@ -464,6 +544,17 @@ Window {
                 width: parent.width
                 height: Style.trayWindowHeaderHeight
                 spacing: 0
+
+                Accessible.role: Accessible.ListItem
+                Accessible.name: activityTextColumn.text
+                Accessible.description: qsTr("Activity item - if applicable opens local folder containing the corresponding sync object when clicked")
+                Accessible.onPressAction: {
+                    if (path !== "") {
+                        Qt.openUrlExternally(path)
+                    } else {
+                        Qt.openUrlExternally(link)
+                    }
+                }
 
                 MouseArea {
                     id: activityMouseArea
@@ -474,11 +565,7 @@ Window {
                     anchors.margins: 2
                     hoverEnabled: true
                     onClicked: {
-                        if (path !== "") {
-                            Qt.openUrlExternally(path)
-                        } else {
-                            Qt.openUrlExternally(link)
-                        }
+
                     }
 
                     Rectangle {
@@ -573,6 +660,13 @@ Window {
                     ToolTip.delay: 1000
                     ToolTip.text: qsTr("Open share dialog")
                     onClicked: Systray.openShareDialog(displayPath,absolutePath)
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: qsTr("Share button")
+                    Accessible.description: qsTr("Opens share window for the corresponding sync object")
+                    Accessible.onPressAction: {
+                        Systray.openShareDialog(displayPath,absolutePath)
+                    }
                 }
             }
 

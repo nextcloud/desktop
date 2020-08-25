@@ -11,6 +11,10 @@ MenuItem {
     id: userLine
     height: Style.trayWindowHeaderHeight
 
+    Accessible.role: Accessible.MenuItem
+    Accessible.name: qsTr("Account entry")
+    Accessible.description: qsTr("Menu entry corresponding to a specific account")
+
         RowLayout {
             id: userLineLayout
             spacing: 0
@@ -24,6 +28,10 @@ MenuItem {
                 display: AbstractButton.IconOnly
                 hoverEnabled: true
                 flat: true
+
+                Accessible.role: Accessible.Button
+                Accessible.name: name
+                Accessible.description: qsTr("Account button, selecting the corresponding account as active when clicked")
 
                 MouseArea {
                     anchors.fill: parent
@@ -81,6 +89,10 @@ MenuItem {
                             y: accountStateIndicatorBackground.y + 1
                             sourceSize.width: Style.accountAvatarStateIndicatorSize
                             sourceSize.height: Style.accountAvatarStateIndicatorSize
+
+                            Accessible.role: Accessible.Indicator
+                            Accessible.name: isConnected ? qsTr("Connected") : qsTr("Disconnected")
+                            Accessible.description: qsTr("Icon that indicates current connection state for the corresponding account")
                         }
                     }
 
@@ -118,6 +130,13 @@ MenuItem {
 
                 icon.source: "qrc:///client/theme/more.svg"
                 icon.color: "transparent"
+
+                Accessible.role: Accessible.ButtonMenu
+                Accessible.name: "More"
+                Accessible.description: qsTr("Menu button providing more account actions when clicked")
+                Accessible.onPressAction: {
+                    userMoreButtonMenu.popup()
+                }
 
                 MouseArea {
                     id: userMoreButtonMouseArea
@@ -167,6 +186,15 @@ MenuItem {
                                 color: parent.parent.hovered ? Style.lightHover : "transparent"
                             }
                         }
+
+                        Accessible.role: Accessible.Button
+                        Accessible.name: isConnected ? qsTr("Log out") : qsTr("Log in")
+                        Accessible.description: qsTr("Logs user account in or out depending on current connection state")
+
+                        onPressed: {
+                            isConnected ? UserModel.logout(index) : UserModel.login(index)
+                            accountMenu.close()
+                        }
                     }
 
                     MenuItem {
@@ -186,6 +214,15 @@ MenuItem {
                                 anchors.margins: 1
                                 color: parent.parent.hovered ? Style.lightHover : "transparent"
                             }
+                        }
+
+                        Accessible.role: Accessible.Button
+                        Accessible.name: qsTr("Remove Account")
+                        Accessible.description: qsTr("Permanently removes account from Nextcloud client configuration")
+
+                        Accessible.onPressAction: {
+                            UserModel.removeAccount(index)
+                            accountMenu.close()
                         }
                     }
                 }
