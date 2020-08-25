@@ -344,7 +344,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="444"/>
         <source>Remove folder sync connection</source>
-        <translation>Одстрани папка од синхронизација</translation>
+        <translation>Отстрани папка од синхронизација</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="515"/>
@@ -359,7 +359,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="569"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Потврди одстранување на папка за синхронизација</translation>
+        <translation>Потврди отстранување на папка за синхронизација</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="570"/>
@@ -369,7 +369,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="576"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Одстрани папка од синхронизација</translation>
+        <translation>Отстрани папка од синхронизација</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="661"/>
@@ -474,17 +474,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="968"/>
         <source>Confirm Account Removal</source>
-        <translation>Потврди одстранување на сметка</translation>
+        <translation>Потврди отстранување на сметка</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="969"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Дали сте сигурни дека сакате да ја одстраните врската со сметката &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Забелешка:&lt;/b&gt; Ова &lt;b&gt;нема&lt;/b&gt; да избрише ниту една датотека.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Дали сте сигурни дека сакате да ја отстраните врската со сметката &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Забелешка:&lt;/b&gt; Ова &lt;b&gt;нема&lt;/b&gt; да избрише ниту една датотека.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Remove connection</source>
-        <translation>Одстрани врска</translation>
+        <translation>Отстрани врска</translation>
     </message>
 </context>
 <context>
@@ -3542,17 +3542,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="705"/>
         <source>Confirm Account Removal</source>
-        <translation>Потврди одстранување на сметка</translation>
+        <translation>Потврди отстранување на сметка</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Дали сте сигурни дека сакате да ја одстраните врската со сметката &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Забелешка:&lt;/b&gt; Ова &lt;b&gt;нема&lt;/b&gt; да избрише ниту една датотека.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Дали сте сигурни дека сакате да ја отстраните врската со сметката &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Забелешка:&lt;/b&gt; Ова &lt;b&gt;нема&lt;/b&gt; да избрише ниту една датотека.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="711"/>
         <source>Remove connection</source>
-        <translation>Одстрани врска</translation>
+        <translation>Отстрани врска</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
