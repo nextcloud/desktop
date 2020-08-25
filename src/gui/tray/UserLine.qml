@@ -13,7 +13,6 @@ MenuItem {
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: qsTr("Account entry")
-    Accessible.description: qsTr("Menu entry corresponding to a specific account")
 
         RowLayout {
             id: userLineLayout
@@ -30,8 +29,7 @@ MenuItem {
                 flat: true
 
                 Accessible.role: Accessible.Button
-                Accessible.name: name
-                Accessible.description: qsTr("Account button, selecting the corresponding account as active when clicked")
+                Accessible.name: qsTr("Switch to account") + " " + name
 
                 MouseArea {
                     anchors.fill: parent
@@ -91,8 +89,7 @@ MenuItem {
                             sourceSize.height: Style.accountAvatarStateIndicatorSize
 
                             Accessible.role: Accessible.Indicator
-                            Accessible.name: isConnected ? qsTr("Connected") : qsTr("Disconnected")
-                            Accessible.description: qsTr("Icon that indicates current connection state for the corresponding account")
+                            Accessible.name: isConnected ? qsTr("Account connected") : qsTr("Account not connected")
                         }
                     }
 
@@ -132,8 +129,7 @@ MenuItem {
                 icon.color: "transparent"
 
                 Accessible.role: Accessible.ButtonMenu
-                Accessible.name: qsTr("More")
-                Accessible.description: qsTr("Menu button providing more account actions when clicked")
+                Accessible.name: qsTr("Account actions")
                 Accessible.onPressAction: {
                     userMoreButtonMenu.popup()
                 }
@@ -189,7 +185,6 @@ MenuItem {
 
                         Accessible.role: Accessible.Button
                         Accessible.name: isConnected ? qsTr("Log out") : qsTr("Log in")
-                        Accessible.description: qsTr("Logs user account in or out depending on current connection state")
 
                         onPressed: {
                             isConnected ? UserModel.logout(index) : UserModel.login(index)
@@ -198,7 +193,7 @@ MenuItem {
                     }
 
                     MenuItem {
-                        text: qsTr("Remove Account")
+                        text: qsTr("Remove account")
                         font.pixelSize: Style.topLinePixelSize
                         hoverEnabled: true
                         onClicked: {
@@ -217,8 +212,7 @@ MenuItem {
                         }
 
                         Accessible.role: Accessible.Button
-                        Accessible.name: qsTr("Remove Account")
-                        Accessible.description: qsTr("Permanently removes account from Nextcloud client configuration")
+                        Accessible.name: text
 
                         Accessible.onPressAction: {
                             UserModel.removeAccount(index)
