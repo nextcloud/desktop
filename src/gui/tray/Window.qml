@@ -100,7 +100,7 @@ Window {
         border.color:   Style.menuBorder
 
         Accessible.role: Accessible.Grouping
-        Accessible.name: "Nextcloud client tray window"
+        Accessible.name: qsTr("Nextcloud client tray window")
 
         Rectangle {
             id: trayWindowHeaderBackground
