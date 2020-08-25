@@ -22,7 +22,7 @@ Window {
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
     Accessible.role: Accessible.Application
-    Accessible.name: "Nextcloud client tray window"
+    Accessible.name: qsTr("Nextcloud client tray window")
 
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
@@ -138,8 +138,8 @@ Window {
                     flat:                   true
 
                     Accessible.role: Accessible.ButtonMenu
-                    Accessible.name: "Current account"
-                    Accessible.description: "Shows the currently selected account and opens a dropdown list for all accounts when clicked"
+                    Accessible.name: qsTr("Current account")
+                    Accessible.description: qsTr("Shows the currently selected account and opens a dropdown list for all accounts when clicked")
                     Accessible.onPressAction: {
                         syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                         accountMenu.open()

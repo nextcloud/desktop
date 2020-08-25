@@ -132,7 +132,7 @@ MenuItem {
                 icon.color: "transparent"
 
                 Accessible.role: Accessible.ButtonMenu
-                Accessible.name: "More"
+                Accessible.name: qsTr("More")
                 Accessible.description: qsTr("Menu button providing more account actions when clicked")
                 Accessible.onPressAction: {
                     userMoreButtonMenu.popup()
