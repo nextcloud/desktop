@@ -565,7 +565,11 @@ Window {
                     anchors.margins: 2
                     hoverEnabled: true
                     onClicked: {
-
+                        if (path !== "") {
+                            Qt.openUrlExternally(path)
+                        } else {
+                            Qt.openUrlExternally(link)
+                        }
                     }
 
                     Rectangle {
