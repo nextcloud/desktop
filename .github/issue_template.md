@@ -53,7 +53,7 @@ Storage backend (external storage):
 Please use Gist (https://gist.github.com/) or a similar code paster for longer
 logs.
 
-1. Client logfile: Output of `nextcloud --logwindow` or `nextcloud --logfile log.txt`
+1. Client logfile: Output of `nextcloud --logdebug --logwindow` or `nextcloud --logdebug --logfile log.txt`
 (On Windows using `cmd.exe`, you might need to first `cd` into the Nextcloud directory)
 (See also https://docs.nextcloud.com/desktop/2.3/troubleshooting.html#log-files)
 
