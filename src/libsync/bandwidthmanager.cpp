@@ -147,7 +147,7 @@ void BandwidthManager::unregisterDownloadJob(QObject *o)
 
 void BandwidthManager::relativeUploadMeasuringTimerExpired()
 {
-    if (!usingRelativeUploadLimit() || _relativeUploadDeviceList.size() == 0) {
+    if (!usingRelativeUploadLimit() || _relativeUploadDeviceList.empty()) {
         // Not in this limiting mode, just wait 1 sec to continue the cycle
         _relativeUploadDelayTimer.setInterval(1000);
         _relativeUploadDelayTimer.start();
@@ -191,7 +191,7 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
     _relativeUploadDelayTimer.setInterval(realWaitTimeMsec);
     _relativeUploadDelayTimer.start();
 
-    size_t deviceCount = _relativeUploadDeviceList.size();
+    auto deviceCount = _relativeUploadDeviceList.size();
     qint64 quotaPerDevice = relativeLimitProgressDifference * (uploadLimitPercent / 100.0) / deviceCount + 1.0;
     Q_FOREACH (UploadDevice *ud, _relativeUploadDeviceList) {
         ud->setBandwidthLimited(true);
@@ -242,7 +242,7 @@ void BandwidthManager::relativeUploadDelayTimerExpired()
 // for downloads:
 void BandwidthManager::relativeDownloadMeasuringTimerExpired()
 {
-    if (!usingRelativeDownloadLimit() || _downloadJobList.size() == 0) {
+    if (!usingRelativeDownloadLimit() || _downloadJobList.empty()) {
         // Not in this limiting mode, just wait 1 sec to continue the cycle
         _relativeDownloadDelayTimer.setInterval(1000);
         _relativeDownloadDelayTimer.start();
@@ -281,7 +281,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     _relativeDownloadDelayTimer.setInterval(realWaitTimeMsec);
     _relativeDownloadDelayTimer.start();
 
-    size_t jobCount = _downloadJobList.size();
+    auto jobCount = _downloadJobList.size();
     qint64 quota = relativeLimitProgressDifference * (downloadLimitPercent / 100.0);
     if (quota > 20 * 1024) {
         qCInfo(lcBandwidthManager) << "ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20 * 1024;
@@ -375,7 +375,7 @@ void BandwidthManager::switchingTimerExpired()
 
 void BandwidthManager::absoluteLimitTimerExpired()
 {
-    if (usingAbsoluteUploadLimit() && _absoluteUploadDeviceList.size() > 0) {
+    if (usingAbsoluteUploadLimit() && !_absoluteUploadDeviceList.empty()) {
         qint64 quotaPerDevice = _currentUploadLimit / qMax((std::list<UploadDevice *>::size_type)1, _absoluteUploadDeviceList.size());
         qCDebug(lcBandwidthManager) << quotaPerDevice << _absoluteUploadDeviceList.size() << _currentUploadLimit;
         Q_FOREACH (UploadDevice *device, _absoluteUploadDeviceList) {
