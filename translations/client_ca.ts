@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Obriu el navegador per continuar.</translation>
+        <translation>Obriu el navegador per a continuar.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Trieu una carpeta local del vostre ordinador per sincronitzar-la</translation>
+        <translation>Trieu una carpeta local del vostre ordinador per a sincronitzar-la</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -194,7 +194,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="354"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Per protegir la vostra identitat criptogràfica, la xifrarem amb una clau mnemotècnica de 12 paraules del diccionari. Anoteu-les i deseu-les en un lloc segur. Les necessitareu per a afegir altres dispositius al vostre compte (com ara un telèfon mòbil o un portàtil).</translation>
+        <translation>Per a protegir la vostra identitat criptogràfica, la xifrarem amb una clau mnemotècnica de 12 paraules del diccionari. Anoteu-les i deseu-les en un lloc segur. Les necessitareu per a afegir altres dispositius al vostre compte (com ara un telèfon mòbil o un portàtil).</translation>
     </message>
 </context>
 <context>
@@ -1059,7 +1059,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1366"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>No teniu permís per escriure a la carpeta seleccionada.</translation>
+        <translation>No teniu permís per a escriure a la carpeta seleccionada.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1402"/>
@@ -1127,7 +1127,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>Hi ha conflictes sense resoldre. Feu clic per veure més detalls.</translation>
+        <translation>Hi ha conflictes sense resoldre. Feu clic per a veure més detalls.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
@@ -1266,7 +1266,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Feu clic per seleccionar una carpeta local per a sincronitzar.</translation>
+        <translation>Feu clic per a seleccionar una carpeta local per a sincronitzar.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
@@ -1314,7 +1314,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="315"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Trieu això per sincronitzar tot el compte</translation>
+        <translation>Trieu això per a sincronitzar tot el compte</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="456"/>
@@ -3394,17 +3394,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1456"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>No es permet perquè no teniu permís per afegir subcarpetes en aquesta carpeta</translation>
+        <translation>No es permet perquè no teniu permís per a afegir subcarpetes en aquesta carpeta</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1471"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation>No es permet perquè no teniu permís per afegir una carpeta principal</translation>
+        <translation>No es permet perquè no teniu permís per a afegir una carpeta principal</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1478"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>No es permet perquè no teniu permís per afegir fitxers en aquesta carpeta</translation>
+        <translation>No es permet perquè no teniu permís per a afegir fitxers en aquesta carpeta</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1503"/>
@@ -3450,7 +3450,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1818"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation>No hi ha prou espai en el servidor per pujar-hi alguns fitxers.</translation>
+        <translation>No hi ha prou espai en el servidor per a pujar-hi alguns fitxers.</translation>
     </message>
 </context>
 <context>
@@ -3901,7 +3901,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Obriu el navegador per continuar.</translation>
+        <translation>Obriu el navegador per a continuar.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -4325,7 +4325,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>S&apos;ha produït un error en iniciar el gestor de correu electrònic per crear un missatge nou. És possible que no s&apos;hagi configurat cap client de correu electrònic per defecte.</translation>
+        <translation>S&apos;ha produït un error en iniciar el gestor de correu electrònic per a crear un missatge nou. És possible que no s&apos;hagi configurat cap client de correu electrònic per defecte.</translation>
     </message>
 </context>
 <context>

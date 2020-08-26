@@ -107,12 +107,12 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation>Dilesa Browser</translation>
+        <translation>Dilesa Furcher</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Cheñchit d&apos;ho vrowser evit kendec&apos;hel.</translation>
+        <translation>Cheñchit d&apos;ho furcher evit kendec&apos;hel.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="42"/>
@@ -122,7 +122,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="52"/>
         <source>Re-open Browser</source>
-        <translation>Addigeri ar Vrowser</translation>
+        <translation>Addigeri ar Furcher</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -202,17 +202,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>&lt;b&gt;Lamet&lt;/b&gt; e vo an teuliadoù diwiriet eus ar sistem restroù diabarzh ha ne vint ket kemprennet d&apos;an urzhiataer-mañ ken</translation>
+        <translation>&lt;b&gt;Lamet&lt;/b&gt; e vo an teuliadoù diwiriet eus ar sistem restroù diabarzh ha ne vint ket kempredet d&apos;an urzhiataer-mañ ken</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="77"/>
         <source>Synchronize all</source>
-        <translation>Kemprenn pep tra</translation>
+        <translation>Kempred pep tra</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="84"/>
         <source>Synchronize none</source>
-        <translation>Kemprenn hini ebet</translation>
+        <translation>Kempred hini ebet</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="91"/>
@@ -435,7 +435,7 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="801"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Kaout an aotre gant ar vrowser. &lt;a href=&apos;%1&apos;&gt;Pouezit amañ&lt;/a&gt; evit adloc&apos;hañ ar vrowser.</translation>
+        <translation>Kaout an aotre gant ar Furcher. &lt;a href=&apos;%1&apos;&gt;Klikit amañ&lt;/a&gt; evit adloc&apos;hañ ar Furcher.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="805"/>
@@ -460,17 +460,17 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="931"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Teuliadoù so n&apos;int ket bet kemprennet peogwir e oant re vras :</translation>
+        <translation>Teuliadoù so n&apos;int ket bet kempredet peogwir e oant re vras :</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="933"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Teuliadoù so n&apos;int ket bet kemprenet peogwir in lec&apos;hioù klenkañ diavaez :</translation>
+        <translation>Teuliadoù so n&apos;int ket bet kempredet peogwir in lec&apos;hioù klenkañ diavaez :</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="934"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Teuliadoù so n&apos;int ke bet kemrennet peogwir e oant pe re vra pe lec&apos;hioù klenkañ diavaez :</translation>
+        <translation>Teuliadoù so n&apos;int ke bet kemredet peogwir e oant pe re vra pe lec&apos;hioù klenkañ diavaez :</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="968"/>
@@ -554,37 +554,37 @@ Gortozit ar gemprenn nevez, ha sifrit anezhañ.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>Sertifikat dilesa kliant SSL</translation>
+        <translation>Sertifikad dilesa kliant SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>Ezhomm en deus ar servijour eus ur sertifikat kliant SSL.</translation>
+        <translation>Ezhomm en deus ar servijour eus ur sertifikad kliant SSL.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation>Sertikikat &amp; Alc&apos;hwez (pkcs12) :</translation>
+        <translation>Sertikikad &amp; Alc&apos;hwez (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse …</source>
-        <translation>Browsañ ...</translation>
+        <translation>Furchañ ...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation>Ger-tremen testeni:</translation>
+        <translation>Ger-tremen sertifikad:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Select a certificate</source>
-        <translation>Choaz ur sertifikat</translation>
+        <translation>Choaz ur sertifikad</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>Sertifikat restr (*.p12 *.pfx)</translation>
+        <translation>Sertifikad restr (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -744,7 +744,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation>Mont-tre en ho vrowser (Login Flow v2)</translation>
+        <translation>Mont-tre en ho furcher (Login Flow v2)</translation>
     </message>
 </context>
 <context>
@@ -752,7 +752,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="77"/>
         <source>Unable to open the Browser, please copy the link to your Browser.</source>
-        <translation>Dibosupl digeriñ ar Vrowser, eiliit al liamm d&apos;ho Vrowser.</translation>
+        <translation>Dibosupl digeriñ ar Furcher, eiliit al liamm d&apos;ho Furcher.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="140"/>
@@ -908,12 +908,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1032"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>An teuliad %1 a zo bet krouet mes er-maez eus ar kemprennadenn-mañ eo. Ne vo ket kemprennet ar roadennoù e-barzh.</translation>
+        <translation>An teuliad %1 a zo bet krouet mes er-maez eus ar kemprennadenn-mañ eo. Ne vo ket kempredet ar roadennoù e-barzh.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1035"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Ar restr %1 a zo bet krouet er-maez eus ar gemprennadenn-mañ. Ne vo ket kemprennet.</translation>
+        <translation>Ar restr %1 a zo bet krouet er-maez eus ar gemprennadenn-mañ. Ne vo ket kempredet.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1046"/>
@@ -922,7 +922,7 @@ This can be an issue with your OpenSSL libraries.</source>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>Ne vez ket heuliet mat ar cheñchoù en teuliadoù kemprennet.
+        <translation>Ne vez ket heuliet mat ar cheñchoù en teuliadoù kempredet.
 
 Talvout a ra ar c&apos;hliant kemprenn a c&apos;hell n&apos;omp pas pellkas ar cheñchoù diabarzh diouzhtu ha klask a raio kentoc&apos;h sellet ma ez eus bet cheñchoù diabarzh ha pellkas anezho mare pe vare (bep daou heurvezh dre ziouer)
 
@@ -935,7 +935,7 @@ These deletes will be synchronized to your local sync folder, making such files 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Pep restr en teuliad kemprennet &apos;%1&apos; a zo bet lamet gant ar servijour.
-Ar restroù lamet-mañ a vo kemprennet gant ho teuliad kemprennet diabarzh, lakaat ar restroù diutizhapl m&apos;a nho peus ket droet adtapout anezho.
+Ar restroù lamet-mañ a vo kempredet gant ho teuliad kemprennet diabarzh, lakaat ar restroù diutizhapl m&apos;a nho peus ket droet adtapout anezho.
 Ma choazit adtapout ar restroù, ad-kemprennet e vint gant ar servijour m&apos;ho peus droet en ober.
 Ma choazit lemel ar restroù, kolet e vint ganeoc&apos;h nemet ma oc&apos;h an hini perc&apos;henn.</translation>
     </message>
@@ -1102,7 +1102,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation>Kemprennet gant an teuliad diabarzh (%1)</translation>
+        <translation>Kempredet gant an teuliad diabarzh (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
@@ -1120,7 +1120,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="142"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Pouezit war ar bouton evit ouzhpennañ an teuliad da gemprenn.</translation>
+        <translation>Klikit war ar bouton evit ouzhpennañ an teuliad da gempred.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
@@ -1142,7 +1142,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>Stourmoù diziskoulmet ez eus. Pouezit evit ar munudoù.</translation>
+        <translation>Stourmoù diziskoulmet ez eus. Klikit evit ar munudoù.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
@@ -1281,7 +1281,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Pouezit evit choaz an teuliad diabarzh da gemprenn.</translation>
+        <translation>Klikit evit choaz an teuliad diabarzh da gemprenn.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
@@ -1525,7 +1525,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Pouezit amañ&lt;/a&gt; evit goulenn ur ger-tremen arload ouzh an etrefas web.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Klikit amañ&lt;/a&gt; evit goulenn ur ger-tremen arload ouzh an etrefas web.</translation>
     </message>
 </context>
 <context>
@@ -1588,7 +1588,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Restroù pe teuliadoù a glot gant an tress ne vo ket kemprennet.
+        <translation>Restroù pe teuliadoù a glot gant an tress ne vo ket kempredet.
 
 Traoù lec&apos;h m&apos;eo aotreet al lemel a vo lamet ma ampechont lamadur an teuliad. Sikour a ra evit ar meta roadennoù.</translation>
     </message>
@@ -1878,7 +1878,7 @@ Skrivet e vo ar gazetenn e %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="129"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Implijour fall&lt;/h1&gt; &lt;p&gt;Deuet oc&apos;h tre gant implijer &lt;em&gt;%1&lt;/em&gt;, mes ret eo deoc&apos;h mont tre gant implijer &lt;em&gt;%2&lt;/em&gt;. &lt;br&gt;Kit kuit eus %3 en ur bajenn all, ha &lt;a href=&apos;%4&apos;&gt;pouezit amañ&lt;/a&gt; ha deuit tre evel implijer %2&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;Implijour fall&lt;/h1&gt; &lt;p&gt;Deuet oc&apos;h tre gant implijer &lt;em&gt;%1&lt;/em&gt;, mes ret eo deoc&apos;h mont tre gant implijer &lt;em&gt;%2&lt;/em&gt;. &lt;br&gt;Kit kuit eus %3 en ur bajenn all, ha &lt;a href=&apos;%4&apos;&gt;klikit amañ&lt;/a&gt; ha deuit tre evel implijer %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1908,7 +1908,7 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Dibosupl pellkargañ an adnevesadenn. Pouezit &lt;a href=&apos;%1&apos;&gt;amañ&lt;/a&gt; evit pellkargañ diouzhtu gant an dorn.</translation>
+        <translation>Dibosupl pellkargañ an adnevesadenn. Klikit &lt;a href=&apos;%1&apos;&gt;amañ&lt;/a&gt; evit pellkargañ diouzhtu gant an dorn.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -1918,7 +1918,7 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>%1 stumm %2 nevez a zo posupl kaout. Pouezit &lt;a href=&apos;%3&apos;&gt;amañ&lt;/a&gt; evit pellkargañ an adnevesadenn.</translation>
+        <translation>%1 stumm %2 nevez a zo posupl kaout. Klikit &lt;a href=&apos;%3&apos;&gt;amañ&lt;/a&gt; evit pellkargañ an adnevesadenn.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -2020,7 +2020,7 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation>Arventennañ kostez kliant ar sertifikat TLS</translation>
+        <translation>Arventennañ kostez kliant ar sertifikad TLS</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
@@ -2056,7 +2056,7 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation>Mont-tre gant ho vrowser</translation>
+        <translation>Mont-tre gant ho furcher</translation>
     </message>
 </context>
 <context>
@@ -2115,7 +2115,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="408"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>N&apos;heller ket kargañ an testeni. Ha mat eo ar ger-tremen?</translation>
+        <translation>N&apos;heller ket kargañ ar sertifikad. Ha mat eo ar ger-tremen?</translation>
     </message>
 </context>
 <context>
@@ -2153,7 +2153,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>An aksed a zo difennet d&apos;ar servijour. Evit gouzout hag-eñ e c&apos;hallit tizhout ar servijer, &lt;a href=&quot;%1&quot;&gt;pouezit amañ&lt;/a&gt; evit tizhout servijoù ho merdeer.</translation>
+        <translation>An aksed a zo difennet d&apos;ar servijour. Evit gouzout hag-eñ e c&apos;hallit tizhout ar servijer, &lt;a href=&quot;%1&quot;&gt;klikit amañ&lt;/a&gt; evit tizhout servijoù ho furcher.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
@@ -2291,7 +2291,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="45"/>
         <source>Open %1 in Browser</source>
-        <translation>Digeriñ %1 er Vrowser</translation>
+        <translation>Digeriñ %1 er Furcher</translation>
     </message>
 </context>
 <context>
@@ -2597,7 +2597,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Choazit peseurt teuliadoù pell n&apos;ho peus ket c&apos;hoant kemrpennañ.</translation>
+        <translation>Choazit peseurt teuliadoù pell n&apos;ho peus ket c&apos;hoant kemrpedañ.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -3011,7 +3011,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="88"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Munnudoù ar Sertifikat&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Munnudoù ar Sertifikad&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="91"/>
@@ -3086,7 +3086,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;Notenn :&lt;/b&gt; aotreet eo bet ar sertifikat gant an dorn&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;Notenn :&lt;/b&gt; aotreet eo bet ar sertifikad gant an dorn&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
@@ -3125,7 +3125,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
         <source>Certificate information:</source>
-        <translation>Titouroù sertifikat :</translation>
+        <translation>Titouroù sertifikad :</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="244"/>
@@ -3138,12 +3138,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.ui" line="25"/>
         <source>Trust this certificate anyway</source>
-        <translation>Kaout fiziañs er sertifikat memestra</translation>
+        <translation>Kaout fiziañs er sertifikad memestra</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>Untrusted Certificate</source>
-        <translation>Sertifikat difiziet</translation>
+        <translation>Sertifikad difiziet</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
@@ -3153,7 +3153,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
-        <translation>gant ar Sertfikat %1</translation>
+        <translation>gant ar Sertfikad %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="175"/>
@@ -3525,7 +3525,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/theme.cpp" line="363"/>
         <location filename="../src/libsync/theme.cpp" line="373"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Stumm %1. Evit muioc&apos;h a ditouroù, pouezit &lt;a href=&apos;%2&apos;&gt;amañ&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Stumm %1. Evit muioc&apos;h a ditouroù, klikit &lt;a href=&apos;%2&apos;&gt;amañ&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="377"/>
@@ -3589,12 +3589,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="210"/>
         <source>Invalid certificate detected</source>
-        <translation>Sertifikat fall kavet</translation>
+        <translation>Sertifikad fall kavet</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="211"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>An ost &quot;%1&quot; en deus roet ur sertifikat fall. Kendec&apos;hel memstra ?</translation>
+        <translation>An ost &quot;%1&quot; en deus roet ur sertifikad fall. Kendec&apos;hel memstra ?</translation>
     </message>
 </context>
 <context>
@@ -3925,7 +3925,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Cheñchit d&apos;ho vrowser evit kendec&apos;hel.</translation>
+        <translation>Cheñchit d&apos;ho furcherevit kendec&apos;hel.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -3935,7 +3935,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation>Addigeri ar Vrowser</translation>
+        <translation>Addigeri ar Furcher</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
