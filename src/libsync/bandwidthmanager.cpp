@@ -383,7 +383,7 @@ void BandwidthManager::absoluteLimitTimerExpired()
             qCDebug(lcBandwidthManager) << "Gave " << quotaPerDevice / 1024.0 << " kB to" << device;
         }
     }
-    if (usingAbsoluteDownloadLimit() && _downloadJobList.size() > 0) {
+    if (usingAbsoluteDownloadLimit() && !_downloadJobList.empty()) {
         qint64 quotaPerJob = _currentDownloadLimit / qMax((std::list<GETFileJob *>::size_type)1, _downloadJobList.size());
         qCDebug(lcBandwidthManager) << quotaPerJob << _downloadJobList.size() << _currentDownloadLimit;
         Q_FOREACH (GETFileJob *j, _downloadJobList) {
@@ -392,4 +392,5 @@ void BandwidthManager::absoluteLimitTimerExpired()
         }
     }
 }
-}
+
+} // namespace OCC

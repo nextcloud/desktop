@@ -100,6 +100,7 @@ private:
 
     qint64 _currentDownloadLimit;
 };
-}
+
+} // namespace OCC
 
 #endif
