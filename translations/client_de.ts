@@ -539,12 +539,12 @@ Warten Sie auf die neue Synchronisierung und verschlüsseln Sie sie dann.</trans
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="341"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Dateien aus der Ignorierliste sowie symbolische Links werden nicht synchronisiert. Dazu gehören:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="443"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Um weitere Aktivitäten anzusehen bitte die Activity-App öffnen.</translation>
     </message>
@@ -1481,22 +1481,22 @@ Wenn diese Synchronisierung fortgesetzt wird, werden Dateien eventuell von älte
 <context>
     <name>OCC::GetOrCreatePublicLinkShare</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="564"/>
         <source>Password for share required</source>
         <translation>Passwort für die Freigabe erforderlich</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="564"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Please enter a password for your link share:</source>
         <translation>Bitte Passwort für die Link-Freigabe eingeben:</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="583"/>
+        <location filename="../src/gui/socketapi.cpp" line="584"/>
         <source>Sharing error</source>
         <translation>Fehler beim Teilen</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="584"/>
+        <location filename="../src/gui/socketapi.cpp" line="585"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
@@ -2949,18 +2949,18 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <translation>Teile mit %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="536"/>
+        <location filename="../src/gui/socketapi.cpp" line="537"/>
         <source>Context menu share</source>
         <translation>Kontextmenü Freigabe</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="693"/>
+        <location filename="../src/gui/socketapi.cpp" line="694"/>
         <source>I shared something with you</source>
         <translation>Ich habe etwas mit Ihnen geteilt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="706"/>
-        <location filename="../src/gui/socketapi.cpp" line="737"/>
+        <location filename="../src/gui/socketapi.cpp" line="707"/>
+        <location filename="../src/gui/socketapi.cpp" line="738"/>
         <source>Share options</source>
         <translation>Freigabeoptionen</translation>
     </message>
@@ -2970,38 +2970,38 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <translation>Teilen mittels %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="708"/>
+        <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Copy private link to clipboard</source>
         <translation>Privater Link in die Zwischenablage kopiert</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="709"/>
+        <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Send private link by email …</source>
         <translation>Privaten Link als E-Mail verschicken …</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="735"/>
+        <location filename="../src/gui/socketapi.cpp" line="736"/>
         <source>Resharing this file is not allowed</source>
         <translation>Weiterteilen dieser Datei ist nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="748"/>
-        <location filename="../src/gui/socketapi.cpp" line="750"/>
+        <location filename="../src/gui/socketapi.cpp" line="749"/>
+        <location filename="../src/gui/socketapi.cpp" line="751"/>
         <source>Copy public link</source>
         <translation>Öffentlichen Link kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="754"/>
+        <location filename="../src/gui/socketapi.cpp" line="755"/>
         <source>Copy internal link</source>
         <translation>Kopiere internen Link</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="807"/>
+        <location filename="../src/gui/socketapi.cpp" line="809"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="811"/>
         <source>Open in browser</source>
         <translation>Im Browser öffnen</translation>
     </message>
