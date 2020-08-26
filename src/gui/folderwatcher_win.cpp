@@ -78,6 +78,9 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
                 emit changed(_path);
                 *increaseBufferSize = true;
+            } else if (errorCode == ERROR_INVALID_FUNCTION) {
+                // ReadDirectoryChangesW works with network drives, but only if the remote server supports the functionality e.g. Windows server
+                qCWarning(lcFolderWatcher) << "The target file system does not support ReadDirectoryChangesW, the function fails with ERROR_INVALID_FUNCTION" << errorCode;
             } else {
                 qCWarning(lcFolderWatcher) << "ReadDirectoryChangesW error" << errorCode;
             }
