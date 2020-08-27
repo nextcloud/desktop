@@ -22,7 +22,6 @@
 #include "networkjobs.h"
 #include <QMutex>
 #include <QWaitCondition>
-#include <QLinkedList>
 #include <deque>
 #include "syncoptions.h"
 

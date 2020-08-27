@@ -18,7 +18,6 @@
 #include <QHash>
 #include <QObject>
 #include <QMap>
-#include <QLinkedList>
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QPointer>
