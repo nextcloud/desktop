@@ -2934,7 +2934,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation>Sesijai skirtas laikas pasibaigė. Norėdami naudotis klientu turite iš nauji prisijungti.</translation>
+        <translation>Jūsų seansas nebegalioja. Norėdami ir toliau naudotis kliento programa, turite prisijungti iš naujo.</translation>
     </message>
 </context>
 <context>
@@ -3604,7 +3604,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="186"/>
         <source>Please login with the user: %1</source>
-        <translation>Prisijunkite vartotoju: %1</translation>
+        <translation>Prisijunkite naudotoju: %1</translation>
     </message>
 </context>
 <context>
