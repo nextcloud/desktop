@@ -16,9 +16,9 @@
 #define BANDWIDTHMANAGER_H
 
 #include <QObject>
-#include <QLinkedList>
 #include <QTimer>
 #include <QIODevice>
+#include <list>
 
 namespace OCC {
 
@@ -71,8 +71,8 @@ private:
     QTimer _absoluteLimitTimer;
 
     // FIXME merge these two lists
-    QLinkedList<UploadDevice *> _absoluteUploadDeviceList;
-    QLinkedList<UploadDevice *> _relativeUploadDeviceList;
+    std::list<UploadDevice *> _absoluteUploadDeviceList;
+    std::list<UploadDevice *> _relativeUploadDeviceList;
 
     QTimer _relativeUploadMeasuringTimer;
 
@@ -86,7 +86,7 @@ private:
     qint64 _relativeUploadLimitProgressAtMeasuringRestart;
     qint64 _currentUploadLimit;
 
-    QLinkedList<GETFileJob *> _downloadJobList;
+    std::list<GETFileJob *> _downloadJobList;
     QTimer _relativeDownloadMeasuringTimer;
 
     // for relative bw limiting, we need to wait this amount before measuring again
@@ -100,6 +100,7 @@ private:
 
     qint64 _currentDownloadLimit;
 };
-}
+
+} // namespace OCC
 
 #endif
