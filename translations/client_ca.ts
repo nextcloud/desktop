@@ -3342,7 +3342,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
         <source>Stat failed.</source>
-        <translation>No s&apos;ha pogut comprovar l&apos;estat.</translation>
+        <translation>S&apos;ha produït un error en comprovar l&apos;estat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="571"/>
