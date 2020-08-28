@@ -203,7 +203,7 @@ Description: Nextcloud integration for Nautilus
 Package: nemo-nextcloud
 Architecture: all
 Depends: nemo,
-         nemo-python,
+         nemo-python | python-nemo,
          nextcloud-desktop (<< ${source:Version}.1~),
          nextcloud-desktop (>= ${source:Version}),
          nextcloud-desktop-common,
