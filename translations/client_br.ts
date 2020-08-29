@@ -2613,7 +2613,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="227"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="284"/>
         <source>No subfolders currently on the server.</source>
-        <translation>Izteuiadoù ebet er servijour evit ar poent.</translation>
+        <translation>Isteuiadoù ebet er servijour evit ar poent.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="286"/>
@@ -3418,12 +3418,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1456"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Disaotret peogwir n&apos;ho peu ket an aotre da ouzhpennañ izteuliadoù en teuliad-mañ</translation>
+        <translation>Disaotret peogwir n&apos;ho peu ket an aotre da ouzhpennañ isteuliadoù en teuliad-mañ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1471"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation>Diaotreet peogwir n&apos;ho peus ket an aotre da ouzhpennañ un teuliad kerent</translation>
+        <translation>Diaotreet peogwir n&apos;ho peus ket an aotre da ouzhpennañ un teuliad kar</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1478"/>
