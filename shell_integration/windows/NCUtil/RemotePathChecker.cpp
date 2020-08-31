@@ -37,7 +37,7 @@ void RemotePathChecker::workerThreadLoop()
     CommunicationSocket socket;
     std::unordered_set<std::wstring> asked;
 
-    while(!_stop) {
+    while (!_stop) {
         Sleep(50);
 
         if (!connected) {
@@ -154,7 +154,8 @@ void RemotePathChecker::workerThreadLoop()
             }
         }
 
-        if (_stop) return;
+        if (_stop)
+            return;
 
         HANDLE handles[2] = { _newQueries, socket.Event() };
         WaitForMultipleObjects(2, handles, false, 0);
@@ -162,13 +163,12 @@ void RemotePathChecker::workerThreadLoop()
 }
 
 
-
 RemotePathChecker::RemotePathChecker()
     : _stop(false)
     , _watchedDirectories(make_shared<const vector<wstring>>())
     , _connected(false)
     , _newQueries(CreateEvent(NULL, FALSE, FALSE, NULL))
-    , _thread([this]{ this->workerThreadLoop(); })
+    , _thread([this] { this->workerThreadLoop(); })
 {
 }
 
@@ -186,9 +186,10 @@ std::shared_ptr<const std::vector<std::wstring>> RemotePathChecker::WatchedDirec
     return atomic_load(&_watchedDirectories);
 }
 
-bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
+bool RemotePathChecker::IsMonitoredPath(const wchar_t *filePath, int *state)
 {
-    assert(state); assert(filePath);
+    assert(state);
+    assert(filePath);
 
     std::unique_lock<std::mutex> lock(_mutex);
     if (!_connected) {

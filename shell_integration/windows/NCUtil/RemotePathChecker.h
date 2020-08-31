@@ -24,14 +24,16 @@
 #include <atomic>
 #include <condition_variable>
 
-#pragma once    
+#pragma once
 
-class __declspec(dllexport) RemotePathChecker {
+class __declspec(dllexport) RemotePathChecker
+{
 public:
     enum FileState {
         // Order synced with NCOverlay
         StateError = 0,
-        StateOk, StateOkSWM,
+        StateOk,
+        StateOkSWM,
         StateSync,
         StateWarning,
         StateNone
@@ -39,7 +41,7 @@ public:
     RemotePathChecker();
     ~RemotePathChecker();
     std::shared_ptr<const std::vector<std::wstring>> WatchedDirectories() const;
-    bool IsMonitoredPath(const wchar_t* filePath, int* state);
+    bool IsMonitoredPath(const wchar_t *filePath, int *state);
 
 private:
     FileState _StrToFileState(const std::wstring &str);

@@ -42,15 +42,15 @@
     "(" path " == " prefix " OR " IS_PREFIX_PATH_OF(prefix, path) ")"
 
 namespace OCC {
-	SyncJournalDb* SyncJournalDb::_instance = 0;
+SyncJournalDb *SyncJournalDb::_instance = 0;
 
 Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 
-#define GET_FILE_RECORD_QUERY \
-        "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
-        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, virtualfile" \
-        " FROM metadata" \
-        "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
+#define GET_FILE_RECORD_QUERY                                                                                                  \
+    "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize,"                                                    \
+    "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, virtualfile" \
+    " FROM metadata"                                                                                                           \
+    "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
 static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &query)
 {
@@ -384,7 +384,7 @@ bool SyncJournalDb::checkConnect()
 #ifndef SQLITE_IOERR_SHMMAP
 // Requires sqlite >= 3.7.7 but old CentOS6 has sqlite-3.6.20
 // Definition taken from https://sqlite.org/c3ref/c_abort_rollback.html
-#define SQLITE_IOERR_SHMMAP            (SQLITE_IOERR | (21<<8))
+#define SQLITE_IOERR_SHMMAP (SQLITE_IOERR | (21 << 8))
 #endif
 
     if (!createQuery.exec()) {
@@ -685,7 +685,6 @@ bool SyncJournalDb::updateDatabaseStructure()
 
 bool SyncJournalDb::updateMetadataTableStructure()
 {
-
     auto columns = tableColumns("metadata");
     bool re = true;
 
@@ -955,9 +954,10 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         int contentChecksumTypeId = mapChecksumType(checksumType);
 
         if (!_setFileRecordQuery.initOrReset(QByteArrayLiteral(
-            "INSERT OR REPLACE INTO metadata "
-            "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, virtualfile) "
-            "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19);"), _db)) {
+                                                 "INSERT OR REPLACE INTO metadata "
+                                                 "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, virtualfile) "
+                                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19);"),
+                _db)) {
             return false;
         }
 
@@ -981,7 +981,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         _setFileRecordQuery.bindValue(18, record._isE2eEncrypted);
         _setFileRecordQuery.bindValue(19, record._virtualfile);
 
-	if (!_setFileRecordQuery.exec()) {
+        if (!_setFileRecordQuery.exec()) {
             return false;
         }
 
@@ -1167,7 +1167,7 @@ bool SyncJournalDb::getFileRecordsByFileId(const QByteArray &fileId, const std::
     return true;
 }
 
-bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback)
+bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord &)> &rowCallback)
 {
     QMutexLocker locker(&_mutex);
 
@@ -1179,28 +1179,28 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
 
     SqlQuery *query = nullptr;
 
-    if(path.isEmpty()) {
+    if (path.isEmpty()) {
         // Since the path column doesn't store the starting /, the getFilesBelowPathQuery
         // can't be used for the root path "". It would scan for (path > '/' and path < '0')
         // and find nothing. So, unfortunately, we have to use a different query for
         // retrieving the whole tree.
 
-        if (!_getAllFilesQuery.initOrReset(QByteArrayLiteral( GET_FILE_RECORD_QUERY " ORDER BY path||'/' ASC"), _db))
+        if (!_getAllFilesQuery.initOrReset(QByteArrayLiteral(GET_FILE_RECORD_QUERY " ORDER BY path||'/' ASC"), _db))
             return false;
         query = &_getAllFilesQuery;
     } else {
         // This query is used to skip discovery and fill the tree from the
         // database instead
         if (!_getFilesBelowPathQuery.initOrReset(QByteArrayLiteral(
-                GET_FILE_RECORD_QUERY
-                " WHERE " IS_PREFIX_PATH_OF("?1", "path")
-                " OR " IS_PREFIX_PATH_OF("?1", "e2eMangledName")
-                // We want to ensure that the contents of a directory are sorted
-                // directly behind the directory itself. Without this ORDER BY
-                // an ordering like foo, foo-2, foo/file would be returned.
-                // With the trailing /, we get foo-2, foo, foo/file. This property
-                // is used in fill_tree_from_db().
-                " ORDER BY path||'/' ASC"), _db)) {
+                                                     GET_FILE_RECORD_QUERY
+                                                     " WHERE " IS_PREFIX_PATH_OF("?1", "path") " OR " IS_PREFIX_PATH_OF("?1", "e2eMangledName")
+                                                     // We want to ensure that the contents of a directory are sorted
+                                                     // directly behind the directory itself. Without this ORDER BY
+                                                     // an ordering like foo, foo-2, foo/file would be returned.
+                                                     // With the trailing /, we get foo-2, foo, foo/file. This property
+                                                     // is used in fill_tree_from_db().
+                                                     " ORDER BY path||'/' ASC"),
+                _db)) {
             return false;
         }
         query = &_getFilesBelowPathQuery;
@@ -1307,9 +1307,10 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
     int checksumTypeId = mapChecksumType(contentChecksumType);
 
     if (!_setFileRecordChecksumQuery.initOrReset(QByteArrayLiteral(
-            "UPDATE metadata"
-            " SET contentChecksum = ?2, contentChecksumTypeId = ?3"
-            " WHERE phash == ?1;"), _db)) {
+                                                     "UPDATE metadata"
+                                                     " SET contentChecksum = ?2, contentChecksumTypeId = ?3"
+                                                     " WHERE phash == ?1;"),
+            _db)) {
         return false;
     }
     _setFileRecordChecksumQuery.bindValue(1, phash);
@@ -1334,9 +1335,10 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
 
 
     if (!_setFileRecordLocalMetadataQuery.initOrReset(QByteArrayLiteral(
-            "UPDATE metadata"
-            " SET inode=?2, modtime=?3, filesize=?4"
-            " WHERE phash == ?1;"), _db)) {
+                                                          "UPDATE metadata"
+                                                          " SET inode=?2, modtime=?3, filesize=?4"
+                                                          " WHERE phash == ?1;"),
+            _db)) {
         return false;
     }
 
@@ -1431,9 +1433,9 @@ SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString &file)
     DownloadInfo res;
 
     if (checkConnect()) {
-
         if (!_getDownloadInfoQuery.initOrReset(QByteArrayLiteral(
-                "SELECT tmpfile, etag, errorcount FROM downloadinfo WHERE path=?1"), _db)) {
+                                                   "SELECT tmpfile, etag, errorcount FROM downloadinfo WHERE path=?1"),
+                _db)) {
             return res;
         }
 
@@ -1463,9 +1465,10 @@ void SyncJournalDb::setDownloadInfo(const QString &file, const SyncJournalDb::Do
 
     if (i._valid) {
         if (!_setDownloadInfoQuery.initOrReset(QByteArrayLiteral(
-                "INSERT OR REPLACE INTO downloadinfo "
-                "(path, tmpfile, etag, errorcount) "
-                "VALUES ( ?1 , ?2, ?3, ?4 )"), _db)) {
+                                                   "INSERT OR REPLACE INTO downloadinfo "
+                                                   "(path, tmpfile, etag, errorcount) "
+                                                   "VALUES ( ?1 , ?2, ?3, ?4 )"),
+                _db)) {
             return;
         }
         _setDownloadInfoQuery.bindValue(1, file);
@@ -1542,8 +1545,9 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
 
     if (checkConnect()) {
         if (!_getUploadInfoQuery.initOrReset(QByteArrayLiteral(
-                "SELECT chunk, transferid, errorcount, size, modtime, contentChecksum FROM "
-                "uploadinfo WHERE path=?1"), _db)) {
+                                                 "SELECT chunk, transferid, errorcount, size, modtime, contentChecksum FROM "
+                                                 "uploadinfo WHERE path=?1"),
+                _db)) {
             return res;
         }
         _getUploadInfoQuery.bindValue(1, file);
@@ -1576,9 +1580,10 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
 
     if (i._valid) {
         if (!_setUploadInfoQuery.initOrReset(QByteArrayLiteral(
-            "INSERT OR REPLACE INTO uploadinfo "
-            "(path, chunk, transferid, errorcount, size, modtime, contentChecksum) "
-            "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 , ?7 )"), _db)) {
+                                                 "INSERT OR REPLACE INTO uploadinfo "
+                                                 "(path, chunk, transferid, errorcount, size, modtime, contentChecksum) "
+                                                 "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 , ?7 )"),
+                _db)) {
             return;
         }
 
@@ -1775,9 +1780,10 @@ void SyncJournalDb::setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord
     }
 
     if (!_setErrorBlacklistQuery.initOrReset(QByteArrayLiteral(
-        "INSERT OR REPLACE INTO blacklist "
-        "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget, errorCategory) "
-        "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)"), _db)) {
+                                                 "INSERT OR REPLACE INTO blacklist "
+                                                 "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget, errorCategory) "
+                                                 "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)"),
+            _db)) {
         return;
     }
 
@@ -2070,9 +2076,9 @@ void SyncJournalDb::setConflictRecord(const ConflictRecord &record)
 
     auto &query = _setConflictRecordQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
-                          "INSERT OR REPLACE INTO conflicts "
-                          "(path, baseFileId, baseModtime, baseEtag) "
-                          "VALUES (?1, ?2, ?3, ?4);"),
+                                 "INSERT OR REPLACE INTO conflicts "
+                                 "(path, baseFileId, baseModtime, baseEtag) "
+                                 "VALUES (?1, ?2, ?3, ?4);"),
         _db));
     query.bindValue(1, record.path);
     query.bindValue(2, record.baseFileId);
@@ -2277,7 +2283,7 @@ int SyncJournalDb::setSyncMode(const QString &path, SyncMode mode)
     return _setSyncModeQuery.numRowsAffected();
 }
 
-int SyncJournalDb::deleteSyncMode(QString const & path)
+int SyncJournalDb::deleteSyncMode(QString const &path)
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
@@ -2341,7 +2347,7 @@ int SyncJournalDb::updateLastAccess(const QString &path)
     return _setLastAccessQuery.numRowsAffected();
 }
 
-qint64 SyncJournalDb::secondsSinceLastAccess(QString const & path)
+qint64 SyncJournalDb::secondsSinceLastAccess(QString const &path)
 {
     QDateTime lastAccess = getLastAccess(path);
     if (lastAccess.isNull())

@@ -49,7 +49,7 @@ public:
         std::wstring streamSubMenuTitle;
         std::wstring streamOfflineItemTitle;
         std::wstring streamOnlineItemTitle;
-	std::wstring defaultFileStreamLetterDrive;
+        std::wstring defaultFileStreamLetterDrive;
     };
     static ContextMenuInfo FetchInfo();
     static void ShareObject(const std::wstring &path);

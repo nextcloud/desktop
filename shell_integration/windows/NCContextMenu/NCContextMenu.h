@@ -16,72 +16,73 @@
 #define NCCONTEXTMENU_H
 
 #pragma once
-#include <shlobj.h>     // For IShellExtInit and IContextMenu
+#include <shlobj.h> // For IShellExtInit and IContextMenu
 #include <string>
 #include "NCClientInterface.h"
 
 class NCContextMenu : public IShellExtInit, public IContextMenu
 {
 public:
-	// IUnknown
-	IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
-	IFACEMETHODIMP_(ULONG) AddRef();
-	IFACEMETHODIMP_(ULONG) Release();
+    // IUnknown
+    IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
+    IFACEMETHODIMP_(ULONG)
+    AddRef();
+    IFACEMETHODIMP_(ULONG)
+    Release();
 
-	// IShellExtInit
-	IFACEMETHODIMP Initialize(LPCITEMIDLIST pidlFolder, LPDATAOBJECT pDataObj, HKEY hKeyProgID);
+    // IShellExtInit
+    IFACEMETHODIMP Initialize(LPCITEMIDLIST pidlFolder, LPDATAOBJECT pDataObj, HKEY hKeyProgID);
 
-	// IContextMenu
-	IFACEMETHODIMP QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags);
-	IFACEMETHODIMP InvokeCommand(LPCMINVOKECOMMANDINFO pici);
-	IFACEMETHODIMP GetCommandString(UINT_PTR idCommand, UINT uFlags, UINT *pwReserved, LPSTR pszName, UINT cchMax);
+    // IContextMenu
+    IFACEMETHODIMP QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags);
+    IFACEMETHODIMP InvokeCommand(LPCMINVOKECOMMANDINFO pici);
+    IFACEMETHODIMP GetCommandString(UINT_PTR idCommand, UINT uFlags, UINT *pwReserved, LPSTR pszName, UINT cchMax);
 
-	NCContextMenu();
+    NCContextMenu();
 
 protected:
-	~NCContextMenu();
+    ~NCContextMenu();
 
 private:
-	// Reference count of component.
-	long m_cRef;
+    // Reference count of component.
+    long m_cRef;
 
-	// The name of the selected file.
-	wchar_t m_szSelectedFile[MAX_PATH];
+    // The name of the selected file.
+    wchar_t m_szSelectedFile[MAX_PATH];
 
-	// Reference count of component.
-	long m_cRef;
+    // Reference count of component.
+    long m_cRef;
 
-	// The name of the selected files (separated by '\x1e')
-	std::wstring m_selectedFiles;
-	NCClientInterface::ContextMenuInfo m_info;
+    // The name of the selected files (separated by '\x1e')
+    std::wstring m_selectedFiles;
+    NCClientInterface::ContextMenuInfo m_info;
 
-	// The method that handles the "display" verb.
-	void OnVerbDisplayFileName(HWND hWnd);
+    // The method that handles the "display" verb.
+    void OnVerbDisplayFileName(HWND hWnd);
 
-	/// @brief changes the 
-	/// @param hWnd
-	void OnDriveMenuOnline(HWND hWnd);
+    /// @brief changes the
+    /// @param hWnd
+    void OnDriveMenuOnline(HWND hWnd);
 
-	/// @brief 
-	/// @param hWnd
-	void OnDriveMenuOffline(HWND hWnd);
+    /// @brief
+    /// @param hWnd
+    void OnDriveMenuOffline(HWND hWnd);
 
-	PWSTR m_pszMenuText;
-	PCSTR m_pszVerb;
-	PCWSTR m_pwszVerb;
-	PCSTR m_pszVerbCanonicalName;
-	PCWSTR m_pwszVerbCanonicalName;
-	PCSTR m_pszVerbHelpText;
-	PCWSTR m_pwszVerbHelpText;
+    PWSTR m_pszMenuText;
+    PCSTR m_pszVerb;
+    PCWSTR m_pwszVerb;
+    PCSTR m_pszVerbCanonicalName;
+    PCWSTR m_pwszVerbCanonicalName;
+    PCSTR m_pszVerbHelpText;
+    PCWSTR m_pwszVerbHelpText;
 
-        enum MenuCommand {
-            First = 0,
-            Share = 0,
-            Drive = 1,
-            DriveOffline = 2,
-            DriveOnline = 3,
-            Last = 4
-        };
+    enum MenuCommand {
+        First = 0,
+        Share = 0,
+        Drive = 1,
+        DriveOffline = 2,
+        DriveOnline = 3,
+        Last = 4
+    };
 };
-	
 #endif //NCCONTEXTMENU_H

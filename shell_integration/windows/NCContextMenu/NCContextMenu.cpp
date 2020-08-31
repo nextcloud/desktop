@@ -109,8 +109,7 @@ IFACEMETHODIMP NCContextMenu::Initialize(
             UINT nFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
             if (nFiles == 1) {
                 // Get the path of the file.
-                if (0 != DragQueryFile(hDrop, 0, m_szSelectedFile,  ARRAYSIZE(m_szSelectedFile)))
-                {
+                if (0 != DragQueryFile(hDrop, 0, m_szSelectedFile, ARRAYSIZE(m_szSelectedFile))) {
                     hr = S_OK;
                 }
             }
@@ -121,7 +120,7 @@ IFACEMETHODIMP NCContextMenu::Initialize(
         ReleaseStgMedium(&stm);
     }
 
-    // If any value other than S_OK is returned from the method, the context 
+    // If any value other than S_OK is returned from the method, the context
     // menu item is not displayed.
     return hr;
 }
@@ -284,47 +283,34 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 
 IFACEMETHODIMP NCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
 {
-
-    // For the Unicode case, if the high-order word is not zero, the 
-    // command's verb string is in lpcmi->lpVerbW. 
-    if (HIWORD(((CMINVOKECOMMANDINFOEX*)pici)->lpVerbW))
-    {
+    // For the Unicode case, if the high-order word is not zero, the
+    // command's verb string is in lpcmi->lpVerbW.
+    if (HIWORD(((CMINVOKECOMMANDINFOEX *)pici)->lpVerbW)) {
         // Is the verb supported by this context menu extension?
-        if (StrCmpIW(((CMINVOKECOMMANDINFOEX*)pici)->lpVerbW, m_pwszVerb) == 0)
-        {
+        if (StrCmpIW(((CMINVOKECOMMANDINFOEX *)pici)->lpVerbW, m_pwszVerb) == 0) {
             OnVerbDisplayFileName(pici->hwnd);
-        }
-        else
-        {
-            // If the verb is not recognized by the context menu handler, it 
-            // must return E_FAIL to allow it to be passed on to the other 
+        } else {
+            // If the verb is not recognized by the context menu handler, it
+            // must return E_FAIL to allow it to be passed on to the other
             // context menu handlers that might implement that verb.
             return E_FAIL;
         }
     }
 
-    // If the command cannot be identified through the verb string, then 
+    // If the command cannot be identified through the verb string, then
     // check the identifier offset.
-    else
-    {
-        // Is the command identifier offset supported by this context menu 
+    else {
+        // Is the command identifier offset supported by this context menu
         // extension?
-        if (LOWORD(pici->lpVerb) == MenuCommand::Share)
-        {
+        if (LOWORD(pici->lpVerb) == MenuCommand::Share) {
             OnVerbDisplayFileName(pici->hwnd);
-        }
-        else if (LOWORD(pici->lpVerb) == MenuCommand::DriveOnline)
-        {
+        } else if (LOWORD(pici->lpVerb) == MenuCommand::DriveOnline) {
             OnDriveMenuOnline(pici->hwnd);
-        }
-        else if (LOWORD(pici->lpVerb) == MenuCommand::DriveOffline)
-        {
+        } else if (LOWORD(pici->lpVerb) == MenuCommand::DriveOffline) {
             OnDriveMenuOffline(pici->hwnd);
-        }
-        else
-        {
-            // If the verb is not recognized by the context menu handler, it 
-            // must return E_FAIL to allow it to be passed on to the other 
+        } else {
+            // If the verb is not recognized by the context menu handler, it
+            // must return E_FAIL to allow it to be passed on to the other
             // context menu handlers that might implement that verb.
             return E_FAIL;
         }
@@ -340,20 +326,18 @@ IFACEMETHODIMP NCContextMenu::GetCommandString(UINT_PTR idCommand,
 {
     HRESULT hr = E_INVALIDARG;
 
-    if (idCommand == MenuCommand::Share)
-    {
-        switch (uFlags)
-        {
+    if (idCommand == MenuCommand::Share) {
+        switch (uFlags) {
         case GCS_HELPTEXTW:
-            // Only useful for pre-Vista versions of Windows that have a 
+            // Only useful for pre-Vista versions of Windows that have a
             // Status bar.
             hr = StringCchCopy(reinterpret_cast<PWSTR>(pszName), cchMax,
                 m_pwszVerbHelpText);
             break;
 
         case GCS_VERBW:
-            // GCS_VERBW is an optional feature that enables a caller to 
-            // discover the canonical name for the verb passed in through 
+            // GCS_VERBW is an optional feature that enables a caller to
+            // discover the canonical name for the verb passed in through
             // idCommand.
             hr = StringCchCopy(reinterpret_cast<PWSTR>(pszName), cchMax,
                 m_pwszVerbCanonicalName);
@@ -364,7 +348,7 @@ IFACEMETHODIMP NCContextMenu::GetCommandString(UINT_PTR idCommand,
         }
     }
 
-    // If the command (idCommand) is not supported by this context menu 
+    // If the command (idCommand) is not supported by this context menu
     // extension handler, return E_INVALIDARG.
 
     return hr;
