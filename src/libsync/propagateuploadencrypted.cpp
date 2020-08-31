@@ -175,6 +175,12 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
       QMimeDatabase mdb;
       encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
+
+      // Other clients expect "httpd/unix-directory" instead of "inode/directory"
+      // Doesn't matter much for us since we don't do much about that mimetype anyway
+      if (encryptedFile.mimetype == QByteArrayLiteral("inode/directory")) {
+          encryptedFile.mimetype = QByteArrayLiteral("httpd/unix-directory");
+      }
   }
 
   _item->_encryptedFileName = _remoteParentPath + QLatin1Char('/') + encryptedFile.encryptedFilename;
