@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation>O sellet m&apos;az eus bet cheñchom e &apos;%1&apos;</translation>
+        <translation>O sellet m&apos;az eus bet cheñchet e &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
@@ -971,7 +971,7 @@ This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation>Ar gemprenadenn-mañ a adlako ar restroù d&apos;ho stumm kent en teuliad kemprennet &apos;%1&apos;.
 Posupl e vefe abalamour m&apos;eo bet adtapet ur vackup war ar servijour.
-Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm kozhoc&apos;h en ur stad kozhoc&apos;h. Choañt ho peus gwarn ar restroù nevesoc&apos;h diabazh evel restroù stourm ?</translation>
+Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm kozhoc&apos;h en ur stad kozhoc&apos;h. Choañt ho peus gouarn ar restroù nevesoc&apos;h diabazh evel restroù stourm ?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1126"/>
@@ -986,7 +986,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folder.cpp" line="1130"/>
         <source>Keep Local Files as Conflict</source>
-        <translation>Gwarn ar Restroù Diabarzh evel Stourm</translation>
+        <translation>Gouarn ar Restroù Diabarzh evel Stourm</translation>
     </message>
 </context>
 <context>
@@ -1162,7 +1162,7 @@ Kendec&apos;hel ar kemprenadenn evel boaz a adskrivao pep restr gant ur stumm ko
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="935"/>
         <source>Reconciling changes</source>
-        <translation>Adkompezañ ar cheñchoù</translation>
+        <translation>Adkompezañ ar cheñchamantoù</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
@@ -1600,7 +1600,7 @@ Traoù lec&apos;h m&apos;eo aotreet al lemel a vo lamet ma ampechont lamadur an 
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation>Dibosupl skrivañ cheñchoù da &apos;%1&apos;.</translation>
+        <translation>Dibosupl skrivañ cheñchamantoù da &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
@@ -2015,7 +2015,7 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>Klask en dr disifrañ war HTTP (n&apos;eo ket sur)</translation>
+        <translation>Klask en dr nann-sifrañ war HTTP (n&apos;eo ket sur)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -2074,7 +2074,7 @@ evit aotreoù ouzhpenn e pad an oberenn.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="77"/>
         <source>Keep your data secure and under your control</source>
-        <translation>Gwarezit o roadennoù ha gwarnit anezho dindañ o kontrol</translation>
+        <translation>Gouarezit o roadennoù ha gwarnit anezho dindañ o kontrol</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="78"/>
@@ -3719,7 +3719,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
         <source>Managed Folders:</source>
-        <translation>Melestrañ an teuliadoù :</translation>
+        <translation>Merañ an teuliadoù :</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
@@ -3774,7 +3774,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>Recent Changes</source>
-        <translation>Cheñchoù nevez</translation>
+        <translation>Cheñchamantoù nevez</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="692"/>
@@ -3845,12 +3845,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Gwiriañ ma ez eus cheñchoù e &apos;%1&apos;</translation>
+        <translation>Gwiriañ ma ez eus cheñchamantoù e &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Gwiriañ ma ez eus cheñchoù e &apos;%1&apos;</translation>
+        <translation>Gwiriañ ma ez eus cheñchamantoù e &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -3894,7 +3894,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation>&amp;Gwarn ar roadennoù diabarzh</translation>
+        <translation>&amp;Gouarn ar roadennoù diabarzh</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
