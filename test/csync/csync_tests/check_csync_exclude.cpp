@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include "config_csync.h"
-#include <string.h>
-#include <time.h>
+#include <cstring>
+#include <ctime>
 #include <sys/time.h>
-#include <stdio.h>
+#include <cstdio>
 
 #define CSYNC_TEST 1
 #include "csync_exclude.cpp"

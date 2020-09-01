@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include "common/utility.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "torture.h"
 
 static void check_csync_normalize_etag(void **state)
