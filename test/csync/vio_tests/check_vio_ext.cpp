@@ -94,7 +94,7 @@ static int setup_testenv(void **state) {
     c_free_locale_string(dir);
 
     /* --- initialize csync */
-    statevar *mystate = (statevar*)malloc( sizeof(statevar) );
+    auto *mystate = (statevar*)malloc( sizeof(statevar) );
     mystate->result = nullptr;
 
     mystate->csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
@@ -118,7 +118,7 @@ static void output( const char *text )
 }
 
 static int teardown(void **state) {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
     CSYNC *csync = sv->csync;
     int rc = 0;
 
@@ -187,7 +187,7 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
 {
     csync_vio_handle_t *dh = nullptr;
     std::unique_ptr<csync_file_stat_t> dirent;
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
     CSYNC *csync = sv->csync;
     char *subdir = nullptr;
     char *subdir_out = nullptr;
@@ -304,7 +304,7 @@ static void create_file( const char *path, const char *name, const char *content
 
 static void check_readdir_shorttree(void **state)
 {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
 
     const char *t1 = "alibaba/und/die/vierzig/räuber/";
     create_dirs( t1 );
@@ -323,7 +323,7 @@ static void check_readdir_shorttree(void **state)
 
 static void check_readdir_with_content(void **state)
 {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
     int files_cnt = 0;
 
     const char *t1 = "warum/nur/40/Räuber/";
@@ -347,7 +347,7 @@ static void check_readdir_with_content(void **state)
 
 static void check_readdir_longtree(void **state)
 {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
 
     /* Strange things here: Compilers only support strings with length of 4k max.
      * The expected result string is longer, so it needs to be split up in r1, r2 and r3
@@ -424,7 +424,7 @@ static void check_readdir_longtree(void **state)
 // https://github.com/owncloud/client/issues/3128 https://github.com/owncloud/client/issues/2777
 static void check_readdir_bigunicode(void **state)
 {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
 //    1: ? ASCII: 239 - EF
 //    2: ? ASCII: 187 - BB
 //    3: ? ASCII: 191 - BF
