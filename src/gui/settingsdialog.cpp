@@ -215,7 +215,7 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
-        accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(),  height * buttonSizeRatio));
+        accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(), qRound(height * buttonSizeRatio)));
     }
 
     _toolBar->insertAction(_actionBefore, accountAction);
@@ -259,7 +259,7 @@ void SettingsDialog::slotAccountDisplayNameChanged()
             QString displayName = account->displayName();
             action->setText(displayName);
             auto height = _toolBar->sizeHint().height();
-            action->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(account, height * buttonSizeRatio));
+            action->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(account, qRound(height * buttonSizeRatio)));
         }
     }
 }

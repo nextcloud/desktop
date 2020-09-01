@@ -439,7 +439,7 @@ public:
             return;
         }
         fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-        remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
+        remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
 
@@ -633,7 +633,7 @@ public:
         QString source = getFilePathFromUrl(request.url());
         Q_ASSERT(!source.isEmpty());
         Q_ASSERT(source.endsWith("/.file"));
-        source = source.left(source.length() - qstrlen("/.file"));
+        source = source.left(source.length() - static_cast<int>(qstrlen("/.file")));
         auto sourceFolder = uploadsFileInfo.find(source);
         Q_ASSERT(sourceFolder);
         Q_ASSERT(sourceFolder->isDir);
@@ -680,7 +680,7 @@ public:
             return;
         }
         fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-        remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
+        remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
 
         QTimer::singleShot(0, this, &FakeChunkMoveReply::respond);
     }

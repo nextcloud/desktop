@@ -18,7 +18,7 @@ int getRandomNumber(int max) {
         num += c;
     }
 
-    return num % max;
+    return static_cast<int>(num % max);
 }
 
 QStringList getRandomWords(int nr)

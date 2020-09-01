@@ -334,7 +334,7 @@ private:
      */
     int _currentChunk = 0;
     int _chunkCount = 0; /// Total number of chunks for this file
-    int _transferId = 0; /// transfer id (part of the url)
+    quint64 _transferId = 0; /// transfer id (part of the url)
 
     quint64 chunkSize() const {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,

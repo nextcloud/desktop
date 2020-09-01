@@ -407,7 +407,7 @@ uint Utility::convertSizeToUint(size_t &convertVar)
     return static_cast<uint>(convertVar);
 }
 
-uint Utility::convertSizeToInt(size_t &convertVar)
+int Utility::convertSizeToInt(size_t &convertVar)
 {
     if (convertVar > INT_MAX) {
         //throw std::bad_cast();

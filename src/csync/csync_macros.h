@@ -26,16 +26,16 @@
 #include <cstring>
 
 /* How many elements there are in a static array */
-#define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
+#define ARRAY_SIZE(a) (sizeof(a)/sizeof((a)[0]))
 
 /* Some special custom errno values to report bugs properly. The BASE value
  * should always be larger than the highest system errno. */
 #define CSYNC_CUSTOM_ERRNO_BASE 10000
 
-#define ERRNO_WRONG_CONTENT          CSYNC_CUSTOM_ERRNO_BASE+11
-#define ERRNO_SERVICE_UNAVAILABLE    CSYNC_CUSTOM_ERRNO_BASE+14
-#define ERRNO_STORAGE_UNAVAILABLE    CSYNC_CUSTOM_ERRNO_BASE+17
-#define ERRNO_FORBIDDEN              CSYNC_CUSTOM_ERRNO_BASE+18
+#define ERRNO_WRONG_CONTENT          (CSYNC_CUSTOM_ERRNO_BASE+11)
+#define ERRNO_SERVICE_UNAVAILABLE    (CSYNC_CUSTOM_ERRNO_BASE+14)
+#define ERRNO_STORAGE_UNAVAILABLE    (CSYNC_CUSTOM_ERRNO_BASE+17)
+#define ERRNO_FORBIDDEN              (CSYNC_CUSTOM_ERRNO_BASE+18)
 
 #endif /* _CSYNC_MACROS_H */
 /* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

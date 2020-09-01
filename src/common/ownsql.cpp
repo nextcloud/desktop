@@ -367,14 +367,14 @@ void SqlQuery::bindValue(int pos, const QVariant &value)
         const QDateTime dateTime = value.toDateTime();
         const QString str = dateTime.toString(QLatin1String("yyyy-MM-ddThh:mm:ss.zzz"));
         res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
-            str.size() * sizeof(ushort), SQLITE_TRANSIENT);
+            str.size() * static_cast<int>(sizeof(ushort)), SQLITE_TRANSIENT);
         break;
     }
     case QVariant::Time: {
         const QTime time = value.toTime();
         const QString str = time.toString(QLatin1String("hh:mm:ss.zzz"));
         res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
-            str.size() * sizeof(ushort), SQLITE_TRANSIENT);
+            str.size() * static_cast<int>(sizeof(ushort)), SQLITE_TRANSIENT);
         break;
     }
     case QVariant::String: {
@@ -382,7 +382,7 @@ void SqlQuery::bindValue(int pos, const QVariant &value)
             // lifetime of string == lifetime of its qvariant
             const auto *str = static_cast<const QString *>(value.constData());
             res = sqlite3_bind_text16(_stmt, pos, str->utf16(),
-                (str->size()) * sizeof(QChar), SQLITE_TRANSIENT);
+                (str->size()) * static_cast<int>(sizeof(QChar)), SQLITE_TRANSIENT);
         } else {
             res = sqlite3_bind_null(_stmt, pos);
         }
@@ -397,7 +397,7 @@ void SqlQuery::bindValue(int pos, const QVariant &value)
         QString str = value.toString();
         // SQLITE_TRANSIENT makes sure that sqlite buffers the data
         res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
-            (str.size()) * sizeof(QChar), SQLITE_TRANSIENT);
+            (str.size()) * static_cast<int>(sizeof(QChar)), SQLITE_TRANSIENT);
         break;
     }
     }

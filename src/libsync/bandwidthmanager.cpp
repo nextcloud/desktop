@@ -169,7 +169,7 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
     qCDebug(lcBandwidthManager) << _relativeUploadLimitProgressAtMeasuringRestart
                                 << relativeLimitProgressMeasured << relativeLimitProgressDifference;
 
-    qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000.0) / 1024.0;
+    qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000) / 1024;
     qCDebug(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec << "kB/sec on full speed ("
                                 << _relativeLimitCurrentMeasuredDevice->_readWithProgress << _relativeLimitCurrentMeasuredDevice->_read
                                 << qAbs(_relativeLimitCurrentMeasuredDevice->_readWithProgress
@@ -262,7 +262,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     qCDebug(lcBandwidthManager) << _relativeDownloadLimitProgressAtMeasuringRestart
                                 << relativeLimitProgressMeasured << relativeLimitProgressDifference;
 
-    qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000.0) / 1024.0;
+    qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec * 1000) / 1024;
     qCDebug(lcBandwidthManager) << relativeLimitProgressDifference / 1024 << "kB =>" << speedkBPerSec << "kB/sec on full speed ("
                                 << _relativeLimitCurrentMeasuredJob->currentDownloadPosition();
 
@@ -287,7 +287,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
         qCInfo(lcBandwidthManager) << "ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20 * 1024;
         quota -= 20 * 1024;
     }
-    qint64 quotaPerJob = quota / jobCount + 1.0;
+    qint64 quotaPerJob = quota / jobCount + 1;
     Q_FOREACH (GETFileJob *gfj, _downloadJobList) {
         gfj->setBandwidthLimited(true);
         gfj->setChoked(false);
