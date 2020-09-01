@@ -741,7 +741,7 @@ bool removeDirs(const QString &dirName)
     QDir dir(dirName);
 
     if (dir.exists(dirName)) {
-        Q_FOREACH (QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+        for (const auto &info : dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
             if (info.isDir()) {
                 result = removeDirs(info.absoluteFilePath());
             } else {
@@ -776,8 +776,7 @@ void Application::slotDeleteOnlineFiles()
     if (!list.empty()) {
         qDebug() << Q_FUNC_INFO << " clfCase 02";
 
-        QString item;
-        foreach (item, list) {
+        for (const auto &item : list) {
             qDebug() << Q_FUNC_INFO << " 03";
             qint64 m_secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
             SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
