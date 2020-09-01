@@ -75,7 +75,7 @@ static int setup_dir(void **state) {
 }
 
 static int teardown(void **state) {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     int rc = 0;
 
     auto statedb = csync->statedb;
@@ -99,7 +99,7 @@ static int teardown(void **state) {
 
 static void check_csync_vio_opendir(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     csync_vio_handle_t *dh = nullptr;
     int rc = 0;
 
@@ -112,7 +112,7 @@ static void check_csync_vio_opendir(void **state)
 
 static void check_csync_vio_opendir_perm(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     csync_vio_handle_t *dh = nullptr;
     int rc = 0;
     mbchar_t *dir = c_utf8_path_to_locale(CSYNC_TEST_DIR);
@@ -132,7 +132,7 @@ static void check_csync_vio_opendir_perm(void **state)
 
 static void check_csync_vio_closedir_null(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     int rc = 0;
 
     rc = csync_vio_closedir(csync, nullptr);

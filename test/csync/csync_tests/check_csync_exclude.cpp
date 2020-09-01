@@ -73,7 +73,7 @@ static int setup_init(void **state) {
 }
 
 static int teardown(void **state) {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     int rc = 0;
 
     auto statedb = csync->statedb;

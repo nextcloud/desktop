@@ -146,7 +146,7 @@ static int setup_ftw(void **state)
 
 static int teardown(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
 
     unlink(TESTDB);
     auto statedb = csync->statedb;
@@ -216,7 +216,7 @@ static int failing_fn(CSYNC *ctx,
 /* detect a new file */
 static void check_csync_detect_update(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     csync_file_stat_t *st = nullptr;
     std::unique_ptr<csync_file_stat_t> fs;
     int rc = 0;
@@ -239,7 +239,7 @@ static void check_csync_detect_update(void **state)
  */
 static void check_csync_detect_update_db_none(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     csync_file_stat_t *st = nullptr;
     std::unique_ptr<csync_file_stat_t> fs;
     int rc = 0;
@@ -260,7 +260,7 @@ static void check_csync_detect_update_db_none(void **state)
 
 static void check_csync_detect_update_db_eval(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     csync_file_stat_t *st = nullptr;
     std::unique_ptr<csync_file_stat_t> fs;
     int rc = 0;
@@ -281,7 +281,7 @@ static void check_csync_detect_update_db_eval(void **state)
 
 static void check_csync_detect_update_db_rename(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     // csync_file_stat_t *st;
 
     std::unique_ptr<csync_file_stat_t> fs;
@@ -306,7 +306,7 @@ static void check_csync_detect_update_db_rename(void **state)
 
 static void check_csync_detect_update_db_new(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     csync_file_stat_t *st = nullptr;
     std::unique_ptr<csync_file_stat_t> fs;
     int rc = 0;
@@ -327,7 +327,7 @@ static void check_csync_detect_update_db_new(void **state)
 
 static void check_csync_ftw(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     int rc = 0;
 
     rc = csync_ftw(csync, "/tmp", csync_walker, MAX_DEPTH);
@@ -336,7 +336,7 @@ static void check_csync_ftw(void **state)
 
 static void check_csync_ftw_empty_uri(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     int rc = 0;
 
     rc = csync_ftw(csync, "", csync_walker, MAX_DEPTH);
@@ -345,7 +345,7 @@ static void check_csync_ftw_empty_uri(void **state)
 
 static void check_csync_ftw_failing_fn(void **state)
 {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     int rc = 0;
 
     rc = csync_ftw(csync, "/tmp", failing_fn, MAX_DEPTH);
