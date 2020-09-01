@@ -270,10 +270,10 @@ void GeneralSettings::slotToggleOptionalVirtualFileSystem(bool enable)
         QString defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
         QString defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
 
-        if (defaultFileStreamSyncPath.isEmpty() || defaultFileStreamSyncPath.compare(QString("")) == 0)
+        if (defaultFileStreamSyncPath.isEmpty() || defaultFileStreamSyncPath.compare(QString()) == 0)
             cfgFile.setDefaultFileStreamSyncPath(QString("/Volumes/" + Theme::instance()->appName() + "fs"));
 
-        if (defaultFileStreamMirrorPath.isEmpty() || defaultFileStreamMirrorPath.compare(QString("")) == 0)
+        if (defaultFileStreamMirrorPath.isEmpty() || defaultFileStreamMirrorPath.compare(QString()) == 0)
             cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles");
 
         //FIXME this doesnt work for multiple accounts...
@@ -293,14 +293,14 @@ void GeneralSettings::slotToggleOptionalVirtualFileSystem(bool enable)
         QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
         QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
 
-        if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
+        if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString()) == 0)
             cfgFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/")
                 + Theme::instance()->appName());
 
-        if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
+        if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString()) == 0)
             cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
 
-        if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
+        if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString()) == 0)
             cfgFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
 
         //FIXME this doesnt work for multiple accounts...
