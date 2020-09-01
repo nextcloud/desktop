@@ -642,7 +642,7 @@ static void check_csync_excluded_performance(void **)
     // Being able to use QElapsedTimer for measurement would be nice...
     {
         struct timeval before, after;
-        gettimeofday(&before, 0);
+        gettimeofday(&before, nullptr);
 
         for (i = 0; i < N; ++i) {
             totalRc += check_dir_full("/this/is/quite/a/long/path/with/many/components");
@@ -650,7 +650,7 @@ static void check_csync_excluded_performance(void **)
         }
         assert_int_equal(totalRc, CSYNC_NOT_EXCLUDED); // mainly to avoid optimization
 
-        gettimeofday(&after, 0);
+        gettimeofday(&after, nullptr);
 
         const double total = (after.tv_sec - before.tv_sec)
                 + (after.tv_usec - before.tv_usec) / 1.0e6;
@@ -660,7 +660,7 @@ static void check_csync_excluded_performance(void **)
 
     {
         struct timeval before, after;
-        gettimeofday(&before, 0);
+        gettimeofday(&before, nullptr);
 
         for (i = 0; i < N; ++i) {
             totalRc += check_dir_traversal("/this/is/quite/a/long/path/with/many/components");
@@ -668,7 +668,7 @@ static void check_csync_excluded_performance(void **)
         }
         assert_int_equal(totalRc, CSYNC_NOT_EXCLUDED); // mainly to avoid optimization
 
-        gettimeofday(&after, 0);
+        gettimeofday(&after, nullptr);
 
         const double total = (after.tv_sec - before.tv_sec)
                 + (after.tv_usec - before.tv_usec) / 1.0e6;
