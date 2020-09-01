@@ -964,7 +964,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 && _item->_originalFile != _item->_renameTarget) {
                 // Remove the stale entries from the database.
                 propagator()->_journal->deleteFileRecord(_item->_originalFile, true);
-				propagator()->_journal->deleteSyncMode(_item->_originalFile);
+                propagator()->_journal->deleteSyncMode(_item->_originalFile);
             }
 
             _item->_file = _item->_renameTarget;

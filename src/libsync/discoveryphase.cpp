@@ -733,6 +733,7 @@ void DiscoveryJob::start()
     emit finished(ret);
     deleteLater();
 }
+
 void DiscoveryFolderFileList::doGetFolderContent(const QString &subPath)
 {
     qDebug() << Q_FUNC_INFO << "Sub path: " << subPath;
