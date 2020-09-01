@@ -230,7 +230,7 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
             if( !sv->result ) {
                 sv->result = c_strdup( subdir_out);
             } else {
-                int newlen = 1+strlen(sv->result)+strlen(subdir_out);
+                const auto newlen = 1 + strlen(sv->result)+strlen(subdir_out);
                 char *tmp = sv->result;
                 sv->result = (char*)c_malloc(newlen);
                 strcpy( sv->result, tmp);
@@ -406,7 +406,7 @@ static void check_readdir_longtree(void **state)
 "<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI/Butteln/VOLL RUM";
 
     /* assemble the result string ... */
-    int overall_len = 1+strlen(r1)+strlen(r2)+strlen(r3);
+    const auto overall_len = 1 + strlen(r1) + strlen(r2) + strlen(r3);
     int files_cnt = 0;
     char *result = (char*)c_malloc(overall_len);
     *result = '\0';
