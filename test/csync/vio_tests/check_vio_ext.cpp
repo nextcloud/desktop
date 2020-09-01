@@ -430,7 +430,7 @@ static void check_readdir_bigunicode(void **state)
 //    3: ? ASCII: 191 - BF
 //    4: ASCII: 32    - 20
 
-    char *p = 0;
+    char *p = nullptr;
     asprintf( &p, "%s/%s", CSYNC_TEST_DIR, "goodone/" );
     int rc = _tmkdir(p, MKDIR_MASK);
     assert_int_equal(rc, 0);
