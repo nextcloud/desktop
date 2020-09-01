@@ -652,8 +652,8 @@ static void check_csync_excluded_performance(void **)
 
         gettimeofday(&after, nullptr);
 
-        const double total = (after.tv_sec - before.tv_sec)
-                + (after.tv_usec - before.tv_usec) / 1.0e6;
+        const auto total = static_cast<double>(after.tv_sec - before.tv_sec)
+                + static_cast<double>(after.tv_usec - before.tv_usec) / 1.0e6;
         const double perCallMs = total / 2 / N * 1000;
         printf("csync_excluded: %f ms per call\n", perCallMs);
     }
@@ -670,8 +670,8 @@ static void check_csync_excluded_performance(void **)
 
         gettimeofday(&after, nullptr);
 
-        const double total = (after.tv_sec - before.tv_sec)
-                + (after.tv_usec - before.tv_usec) / 1.0e6;
+        const auto total = static_cast<double>(after.tv_sec - before.tv_sec)
+                + static_cast<double>(after.tv_usec - before.tv_usec) / 1.0e6;
         const double perCallMs = total / 2 / N * 1000;
         printf("csync_excluded_traversal: %f ms per call\n", perCallMs);
     }
