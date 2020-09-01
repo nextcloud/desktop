@@ -45,10 +45,11 @@ NCContextMenu::~NCContextMenu(void)
 }
 
 
-void OCContextMenu::OnVerbDisplayFileName(HWND hWnd)
+void NCContextMenu::OnVerbDisplayFileName(HWND hWnd)
 {
-    OCClientInterface::ContextMenuInfo info = OCClientInterface::FetchInfo();
-    OCClientInterface::ShareObject(std::wstring(m_szSelectedFile));
+    std::wstring command;
+    NCClientInterface::ContextMenuInfo info = NCClientInterface::FetchInfo(m_selectedFiles);
+    NCClientInterface::SendRequest(command.data(), std::wstring(m_szSelectedFile));
 }
 
 
@@ -157,7 +158,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 
     bool skip = true;
     size_t selectedFileLength = wcslen(m_szSelectedFile);
-    for (const std::wstring &path : info.watchedDirectories) {
+    for (const std::wstring &path : m_info.watchedDirectories) {
         if (StringUtil::isDescendantOf(m_szSelectedFile, selectedFileLength, path)) {
             skip = false;
             break;
@@ -172,7 +173,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
     indexMenu++;
 
     // Query the download mode
-    std::wstring downloadMode = OCClientInterface::GetDownloadMode(m_szSelectedFile);
+    std::wstring downloadMode = NCClientInterface::GetDownloadMode(m_szSelectedFile);
     bool checkOnlineItem = downloadMode == L"ONLINE";
     bool checkOfflineItem = downloadMode == L"OFFLINE";
 
@@ -186,7 +187,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         MENUITEMINFO menuInfoDriveOnline { 0 };
         menuInfoDriveOnline.cbSize = sizeof(MENUITEMINFO);
         menuInfoDriveOnline.fMask = MIIM_STRING;
-        menuInfoDriveOnline.dwTypeData = &info.streamOnlineItemTitle[0];
+        menuInfoDriveOnline.dwTypeData = &m_info.streamOnlineItemTitle[0];
         menuInfoDriveOnline.fMask |= MIIM_ID;
         menuInfoDriveOnline.wID = idCmdFirst + MenuCommand::DriveOnline;
         menuInfoDriveOnline.fMask |= MIIM_STATE;
@@ -208,7 +209,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         MENUITEMINFO menuInfoDriveOffline { 0 };
         menuInfoDriveOffline.cbSize = sizeof(MENUITEMINFO);
         menuInfoDriveOffline.fMask = MIIM_STRING;
-        menuInfoDriveOffline.dwTypeData = &info.streamOfflineItemTitle[0];
+        menuInfoDriveOffline.dwTypeData = &m_info.streamOfflineItemTitle[0];
         menuInfoDriveOffline.fMask |= MIIM_ID;
         menuInfoDriveOffline.wID = idCmdFirst + MenuCommand::DriveOffline;
         menuInfoDriveOffline.fMask |= MIIM_STATE;
@@ -230,7 +231,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         MENUITEMINFO menuInfoDriveShare { 0 };
         menuInfoDriveShare.cbSize = sizeof(MENUITEMINFO);
         menuInfoDriveShare.fMask = MIIM_STRING;
-        menuInfoDriveShare.dwTypeData = &info.shareMenuTitle[0];
+        menuInfoDriveShare.dwTypeData = &m_info.shareMenuTitle[0];
         menuInfoDriveShare.fMask |= MIIM_ID;
         menuInfoDriveShare.wID = idCmdFirst + MenuCommand::Share;
         menuInfoDriveShare.fMask |= MIIM_STATE;
@@ -255,7 +256,7 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         hDriveSubMenuInfo.fMask = MIIM_SUBMENU | MIIM_STATE | MIIM_STRING;
         hDriveSubMenuInfo.fState = MFS_ENABLED;
         // TODO: get text from cliente/gui
-        hDriveSubMenuInfo.dwTypeData = &info.streamSubMenuTitle[0];
+        hDriveSubMenuInfo.dwTypeData = &m_info.streamSubMenuTitle[0];
         hDriveSubMenuInfo.hSubMenu = hDriveSubMenu;
 
         // Insert the subitem into the
@@ -283,6 +284,8 @@ IFACEMETHODIMP NCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 
 IFACEMETHODIMP NCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
 {
+    std::wstring command;
+
     // For the Unicode case, if the high-order word is not zero, the
     // command's verb string is in lpcmi->lpVerbW.
     if (HIWORD(((CMINVOKECOMMANDINFOEX *)pici)->lpVerbW)) {
@@ -354,14 +357,14 @@ IFACEMETHODIMP NCContextMenu::GetCommandString(UINT_PTR idCommand,
     return hr;
 }
 
-void OCContextMenu::OnDriveMenuOffline(HWND hWnd)
+void NCContextMenu::OnDriveMenuOffline(HWND hWnd)
 {
-    OCClientInterface::SetDownloadMode(std::wstring(m_szSelectedFile), false);
+    NCClientInterface::SetDownloadMode(std::wstring(m_szSelectedFile), false);
 }
 
-void OCContextMenu::OnDriveMenuOnline(HWND hWnd)
+void NCContextMenu::OnDriveMenuOnline(HWND hWnd)
 {
-    OCClientInterface::SetDownloadMode(std::wstring(m_szSelectedFile), true);
+    NCClientInterface::SetDownloadMode(std::wstring(m_szSelectedFile), true);
 }
 
 

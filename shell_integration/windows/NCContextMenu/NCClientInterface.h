@@ -45,14 +45,20 @@ class NCClientInterface
 public:
     struct ContextMenuInfo {
         std::vector<std::wstring> watchedDirectories;
+        std::wstring contextMenuTitle;
+        struct MenuItem
+        {
+            std::wstring command, flags, title;
+        };
+        std::vector<MenuItem> menuItems;
         std::wstring shareMenuTitle;
         std::wstring streamSubMenuTitle;
         std::wstring streamOfflineItemTitle;
         std::wstring streamOnlineItemTitle;
         std::wstring defaultFileStreamLetterDrive;
     };
-    static ContextMenuInfo FetchInfo();
-    static void ShareObject(const std::wstring &path);
+    static ContextMenuInfo FetchInfo(const std::wstring &files);
+    static void SendRequest(const wchar_t *verb, const std::wstring &path);
     static void SetDownloadMode(const std::wstring &path, bool online);
     static std::wstring GetDownloadMode(const std::wstring &path);
 

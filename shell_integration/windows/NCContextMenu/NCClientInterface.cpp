@@ -30,6 +30,7 @@
 using namespace std;
 
 #define PIPE_TIMEOUT  5*1000 //ms
+#define SOCK_BUFFER 4096
 
 NCClientInterface::ContextMenuInfo NCClientInterface::FetchInfo(const std::wstring &files)
 {
@@ -95,7 +96,7 @@ void NCClientInterface::SendRequest(const wchar_t *verb, const std::wstring &pat
     }
 }
 
-void OCClientInterface::SetDownloadMode(const std::wstring &path, bool online)
+void NCClientInterface::SetDownloadMode(const std::wstring &path, bool online)
 {
     auto pipename = CommunicationSocket::DefaultPipePath();
 
@@ -120,7 +121,7 @@ void OCClientInterface::SetDownloadMode(const std::wstring &path, bool online)
     }
 }
 
-std::wstring OCClientInterface::GetDownloadMode(const std::wstring &path)
+std::wstring NCClientInterface::GetDownloadMode(const std::wstring &path)
 {
     CommunicationSocket socket;
     auto pipename = CommunicationSocket::DefaultPipePath();
