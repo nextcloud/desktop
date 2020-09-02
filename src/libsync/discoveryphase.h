@@ -213,7 +213,7 @@ class OWNCLOUDSYNC_EXPORT DiscoveryFolderFileList : public QObject {
     bool _firstFolderProcessed;
     
 public:
-    DiscoveryFolderFileList(AccountPtr account) : QObject(), _account(account), _DiscoveryFolderFileListResult(0), _firstFolderProcessed(false)
+    DiscoveryFolderFileList(AccountPtr account) : QObject(), _account(account), _DiscoveryFolderFileListResult(nullptr), _firstFolderProcessed(false)
     { }
     QByteArray _dataFingerprint;
     

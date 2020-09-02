@@ -1132,7 +1132,7 @@ void SearchJob::start()
                     "</d:searchrequest>\n";
 
     qCWarning(lcSearchJob) << "xml: " << xml;
-    QBuffer *buf = new QBuffer(this);
+    auto *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     sendRequest("SEARCH", Utility::concatUrlPath(_account->url(), QLatin1String("/remote.php/dav/")), req, buf);

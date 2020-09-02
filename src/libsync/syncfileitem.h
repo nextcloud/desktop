@@ -101,15 +101,6 @@ public:
         , _errorMayBeBlacklisted(false)
         , _status(NoStatus)
         , _isRestoration(false)
-        , _httpErrorCode(0)
-        , _affectedItems(1)
-        , _instruction(CSYNC_INSTRUCTION_NONE)
-        , _modtime(0)
-        , _size(0)
-        , _inode(0)
-        , _previousSize(0)
-        , _previousModtime(0)
-        , _virtualfile(1)
     {
     }
 
@@ -226,20 +217,20 @@ public:
     // Variables useful to report to the user
     Status _status BITFIELD(4);
     bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
-    quint16 _httpErrorCode;
+    quint16 _httpErrorCode = 0;
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
     QByteArray _responseTimeStamp;
-    quint32 _affectedItems; // the number of affected items by the operation on this item.
+    quint32 _affectedItems = 1; // the number of affected items by the operation on this item.
     // usually this value is 1, but for removes on dirs, it might be much higher.
 
     // Variables used by the propagator
-    csync_instructions_e _instruction;
+    csync_instructions_e _instruction = CSYNC_INSTRUCTION_NONE;
     QString _originalFile; // as it is in the csync tree
-    time_t _modtime;
+    time_t _modtime = 0;
     QByteArray _etag;
-    quint64 _size;
-    quint64 _inode;
+    quint64 _size = 0;
+    quint64 _inode = 0;
     QByteArray _fileId;
 
     // This is the value for the 'new' side, matching with _size and _modtime.
@@ -251,13 +242,13 @@ public:
     QByteArray _checksumHeader;
 
     // The size and modtime of the file getting overwritten (on the disk for downloads, on the server for uploads).
-    quint64 _previousSize;
-    time_t _previousModtime;
+    quint64 _previousSize = 0;
+    time_t _previousModtime = 0;
 
     QString _directDownloadUrl;
     QString _directDownloadCookies;
     // virtual drive
-    quint64 _virtualfile;
+    quint64 _virtualfile = 1;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
