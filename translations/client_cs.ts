@@ -3747,6 +3747,16 @@ Nedoporučuje se jí používat.</translation>
         <translation>Odhlásit se</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
+        <source>Checking for changes in remote &apos;%1&apos;</source>
+        <translation>Zjišťují se změny ve vzdáleném „%1“</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <source>Checking for changes in local &apos;%1&apos;</source>
+        <translation>Zjišťují se změny v místním „%1“</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Synchronizuje se %1 z %2 (zbývá %3)</translation>
@@ -3841,16 +3851,6 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>Žádné nedávno synchronizované položky</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Zjišťují se změny ve vzdáleném „%1“</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Zjišťují se změny v místním „%1“</translation>
     </message>
 </context>
 <context>

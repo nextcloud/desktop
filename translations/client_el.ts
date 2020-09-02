@@ -3746,6 +3746,16 @@ It is not advisable to use it.</source>
         <translation>Αποσύνδεση</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
+        <source>Checking for changes in remote &apos;%1&apos;</source>
+        <translation>Έλεγχος για αλλαγές σε απομακρυσμένο &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <source>Checking for changes in local &apos;%1&apos;</source>
+        <translation>Έλεγχος για αλλαγές τοπικά &apos;%1&apos;</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Συγχρονισμός %1 από %2 (%3 απομένουν)</translation>
@@ -3840,16 +3850,6 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>Κανένα στοιχείο δεν συγχρονίστηκε πρόσφατα</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Έλεγχος για αλλαγές σε απομακρυσμένο &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Έλεγχος για αλλαγές τοπικά &apos;%1&apos;</translation>
     </message>
 </context>
 <context>

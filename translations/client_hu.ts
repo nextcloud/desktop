@@ -3745,6 +3745,16 @@ Használata nem ajánlott.</translation>
         <translation>Kijelentkezés</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
+        <source>Checking for changes in remote &apos;%1&apos;</source>
+        <translation>Változások keresése a(z) „%1” távoli mappában</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <source>Checking for changes in local &apos;%1&apos;</source>
+        <translation>Változások keresése a(z) „%1” helyi mappában</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>%1 / %2 szinkronizálása (%3 maradt)</translation>
@@ -3839,16 +3849,6 @@ Használata nem ajánlott.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>Mostanában nem volt szinkronizált elem</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Változások keresése a(z) „%1” távoli mappában</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Változások keresése a(z) „%1” helyi mappában</translation>
     </message>
 </context>
 <context>

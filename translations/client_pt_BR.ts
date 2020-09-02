@@ -3748,6 +3748,16 @@ Não é aconselhado usá-la.</translation>
         <translation>Sair</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
+        <source>Checking for changes in remote &apos;%1&apos;</source>
+        <translation>Checando por alterações no &apos;%1&apos; remoto</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <source>Checking for changes in local &apos;%1&apos;</source>
+        <translation>Checando por alterações no &apos;%1&apos; local</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sincronizando %1 de %2 (faltam %3)</translation>
@@ -3842,16 +3852,6 @@ Não é aconselhado usá-la.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>Não há itens recentemente sincronizados</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Checando por alterações no &apos;%1&apos; remoto</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Checando por alterações no &apos;%1&apos; local</translation>
     </message>
 </context>
 <context>
