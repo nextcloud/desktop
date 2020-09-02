@@ -386,14 +386,7 @@ void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 
 void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage)
 {
-    QString filename = localFile;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (filename.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        filename.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
+    const auto filename = mapToCacheFilename(localFile);
 
     auto theme = Theme::instance();
 
@@ -507,29 +500,13 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argumentC, SocketLis
 
 void SocketApi::command_SHARE(const QString &localFileC, SocketListener *listener)
 {
-    QString localFile = localFileC;
-    
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto localFile = mapToCacheFilename(localFileC);
     processShareRequest(localFile, listener, ShareDialogStartPage::UsersAndGroups);
 }
 
 void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFileC, SocketListener *listener)
 {
-    QString localFile = localFileC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto localFile = mapToCacheFilename(localFileC);
     processShareRequest(localFile, listener, ShareDialogStartPage::PublicLinks);
 }
 
@@ -540,15 +517,7 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 
 void SocketApi::command_SHARE_STATUS(const QString &localFileC, SocketListener *listener)
 {
-    QString localFile = localFileC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto localFile = mapToCacheFilename(localFileC);
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
 
     if (!shareFolder) {
@@ -697,15 +666,7 @@ private slots:
 
     void serverError(int code, const QString &messageC)
     {
-        QString message = messageC;
-
-#if defined(Q_OS_WIN)
-        OCC::ConfigFile cfg;
-        if (message.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-            message.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-        }
-#endif
-
+        const auto message = SocketApi::mapToCacheFilename(messageC);
         qCWarning(lcPublicLink) << "Share fetch/create error" << code << message;
         QMessageBox::warning(
             nullptr,
@@ -719,15 +680,7 @@ private slots:
 private:
     void success(const QString &linkC)
     {
-        QString link = linkC;
-
-#if defined(Q_OS_WIN)
-        OCC::ConfigFile cfg;
-        if (link.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-            link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-        }
-#endif
-
+        const auto link = SocketApi::mapToCacheFilename(linkC);
         _targetFun(link);
         deleteLater();
     }
@@ -757,15 +710,7 @@ public:
 
 void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFileC, SocketListener *)
 {
-    QString localFile = localFileC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto localFile = mapToCacheFilename(localFileC);
     auto fileData = FileData::get(localFile);
     if (!fileData.folder)
         return;
@@ -796,15 +741,7 @@ void SocketApi::command_OPEN(const QString &localFile, SocketListener *socketLis
 // Fetches the private link url asynchronously and then calls the target slot
 void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFileC, const std::function<void(const QString &url)> &targetFun)
 {
-    QString localFile = localFileC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto localFile = mapToCacheFilename(localFileC);
     auto fileData = FileData::get(localFile);
     if (!fileData.folder) {
         qCWarning(lcSocketApi) << "Unknown path" << localFile;
@@ -825,71 +762,31 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFileC, const std::
 
 void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
-    QString localFile = localFileC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto localFile = mapToCacheFilename(localFileC);
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::copyUrlToClipboard);
 }
 
 void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
-    QString localFile = localFileC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto localFile = mapToCacheFilename(localFileC);
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::emailPrivateLink);
 }
 
 void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
-    QString localFile = localFileC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto localFile = mapToCacheFilename(localFileC);
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
 }
 
 void SocketApi::copyUrlToClipboard(const QString &linkC)
 {
-    QString link = linkC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto link = mapToCacheFilename(linkC);
     QApplication::clipboard()->setText(link);
 }
 
 void SocketApi::emailPrivateLink(const QString &linkC)
 {
-    QString link = linkC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (link.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto link = mapToCacheFilename(linkC);
     Utility::openEmailComposer(
         tr("I shared something with you"),
         link,
@@ -898,29 +795,13 @@ void SocketApi::emailPrivateLink(const QString &linkC)
 
 void OCC::SocketApi::openPrivateLink(const QString &linkC)
 {
-    QString link = linkC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (link.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto link = mapToCacheFilename(linkC);
     Utility::openBrowser(link, nullptr);
 }
 
 void SocketApi::command_GET_STRINGS(const QString &argumentC, SocketListener *listener)
 {
-    QString argument = argumentC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (argument.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto argument = mapToCacheFilename(argumentC);
     static std::array<std::pair<const char *, QString>, 5> strings{ {
         { "SHARE_MENU_TITLE", tr("Share options") },
         { "CONTEXT_MENU_TITLE", tr("Share via ") + Theme::instance()->appNameGUI()},
@@ -978,15 +859,7 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
 
 SocketApi::FileData SocketApi::FileData::get(const QString &localFileC)
 {
-    QString localFile = localFileC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (localFile.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto localFile = mapToCacheFilename(localFileC);
     FileData data;
 
     data.localPath = QDir::cleanPath(localFile);
@@ -1021,15 +894,7 @@ SyncJournalFileRecord SocketApi::FileData::journalRecord() const
 
 void SocketApi::command_GET_MENU_ITEMS(const QString &argumentC, OCC::SocketListener *listener)
 {
-    QString argument = argumentC;
-
-#if defined(Q_OS_WIN)
-    OCC::ConfigFile cfg;
-    if (argument.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
-        argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-    }
-#endif
-
+    const auto argument = mapToCacheFilename(argumentC);
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
 
     bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
@@ -1231,18 +1096,7 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argument, SocketListene
 //< Windows & Mac callback for ContextMenu status option
 void SocketApi::command_GET_DOWNLOAD_MODE(const QString &localFileC, SocketListener *listener)
 {
-    QString localFile = localFileC;
-
-#if defined(Q_OS_WIN)
-    char Letter[2];
-    Letter[0] = localFile.toStdString().c_str()[0];
-    Letter[1] = 0;
-    ConfigFile cfg;
-
-    if (!QString(Letter).compare(cfg.defaultFileStreamLetterDrive().toUpper()))
-        localFile.replace(0, 3, QString(""));
-    localFile.replace("\\", "/");
-#endif
+    const auto localFile = mapToCacheFilename(localFileC);
 
     qDebug() << Q_FUNC_INFO << " localFile_0: " << localFile;
 
@@ -1264,6 +1118,24 @@ void SocketApi::command_GET_DOWNLOAD_MODE(const QString &localFileC, SocketListe
         }
     }
     listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
+}
+
+QString OCC::SocketApi::mapToCacheFilename(const QString &vfsFilename)
+{
+    QString result = vfsFilename;
+
+#if defined(Q_OS_WIN)
+    result.replace('\\', '/');
+
+    OCC::ConfigFile cfg;
+    if (result.at(0) != cfg.defaultFileStreamLetterDrive().toUpper()) {
+        result.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+    }
+#endif
+
+    // FIXME: Handle the Mac and Linux cases
+
+    return result;
 }
 
 } // namespace OCC
