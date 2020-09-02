@@ -309,6 +309,8 @@ void PropagateLocalRename::start()
     propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
+    // FIXME? Carry over the sync mode to the new file path
+
     // store the rename file name in the item.
     const auto oldFile = _item->_file;
     _item->_file = _item->_renameTarget;
