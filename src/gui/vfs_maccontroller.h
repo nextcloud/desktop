@@ -21,8 +21,8 @@
 //
 
 
-#ifndef LOOPBACKCONTROLLER_H
-#define LOOPBACKCONTROLLER_H
+#ifndef VFSMACCONTROLLER_H
+#define VFSMACCONTROLLER_H
 
 #include <QtCore>
 
@@ -36,7 +36,6 @@ class VfsMacController : public QObject
     Q_OBJECT
 public:
     explicit VfsMacController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent);
-    //~LoopbackController();
 
 public slots:
     void slotquotaUpdated(qint64 total, qint64 used);
