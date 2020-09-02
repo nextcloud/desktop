@@ -59,8 +59,6 @@
 #include <QProcess>
 #include <QDesktopServices>
 #include <QGuiApplication>
-#include <QTimer>
-#include <openssl/crypto.h>
 
 class QSocket;
 
