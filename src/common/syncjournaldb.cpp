@@ -604,39 +604,6 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _getErrorBlacklistQuery", _getErrorBlacklistQuery);
     }
 
-    /* _setErrorBlacklistQuery.reset(new SqlQuery(_db));
-    if (_setErrorBlacklistQuery->prepare("INSERT OR REPLACE INTO blacklist "
-                                         "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget, errorCategory) "
-                                         "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)")) {
-        return sqlFail("prepare _setErrorBlacklistQuery", *_setErrorBlacklistQuery);
-    }*/
-
-    // Sync mode
-
-    if (!_getSyncModeDownloadQuery.initOrReset("SELECT downloaded FROM syncmode WHERE path=?1;", _db)) {
-        return sqlFail("prepare _getErrorBlacklistQuery", _getSyncModeDownloadQuery);
-    }
-
-    if (!_setSyncModeDownloadQuery.initOrReset("UPDATE syncmode SET downloaded=?2 WHERE path=?1;", _db)) {
-        return sqlFail("prepare _getErrorBlacklistQuery", _setSyncModeDownloadQuery);
-    }
-
-    if (!_getSyncModeQuery.initOrReset("SELECT mode FROM syncmode WHERE path=?1;", _db)) {
-        return sqlFail("prepare _getErrorBlacklistQuery", _getSyncModeQuery);
-    }
-
-    if (!_setSyncModeQuery.initOrReset("INSERT OR REPLACE INTO syncmode (path, mode)  VALUES (?1, ?2);", _db)) {
-        return sqlFail("prepare _getErrorBlacklistQuery", _setSyncModeQuery);
-    }
-
-    if (!_deleteSyncModeQuery.initOrReset("DELETE FROM syncmode WHERE path=?1;", _db)) {
-        return sqlFail("prepare _getErrorBlacklistQuery", _deleteSyncModeQuery);
-    }
-
-    if (!_getSyncModePathsQuery.initOrReset("SELECT path from syncmode", _db)) {
-        return sqlFail("prepare _getErrorBlacklistQuery", _getSyncModePathsQuery);
-    }
-
     // Last access time
     if (!_getLastAccessQuery.initOrReset("SELECT lastaccess FROM syncmode WHERE path=?1;", _db)) {
         return sqlFail("prepare _getErrorBlacklistQuery", _getLastAccessQuery);
@@ -2209,7 +2176,7 @@ SyncJournalDb::SyncModeDownload SyncJournalDb::getSyncModeDownload(const QString
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
         return SYNCMODE_DOWNLOADED_NONE;
-    _getSyncModeDownloadQuery.reset_and_clear_bindings();
+    _getSyncModeDownloadQuery.initOrReset(QByteArrayLiteral("SELECT downloaded FROM syncmode WHERE path=?1;"), _db);
     _getSyncModeDownloadQuery.bindValue(1, path);
     if (!_getSyncModeDownloadQuery.exec()) {
         qWarning() << "Error SQL statement getSyncModeDownload: "
@@ -2231,7 +2198,7 @@ int SyncJournalDb::setSyncModeDownload(const QString &path, SyncModeDownload mod
     if (!checkConnect())
         return -1;
     QString modeStr(static_cast<char>(mode));
-    _setSyncModeDownloadQuery.reset_and_clear_bindings();
+    _setSyncModeDownloadQuery.initOrReset(QByteArrayLiteral("UPDATE syncmode SET downloaded=?2 WHERE path=?1;"), _db);
     _setSyncModeDownloadQuery.bindValue(1, path);
     _setSyncModeDownloadQuery.bindValue(2, modeStr);
     if (!_setSyncModeDownloadQuery.exec()) {
@@ -2249,7 +2216,7 @@ SyncJournalDb::SyncMode SyncJournalDb::getSyncMode(const QString &path)
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
         return SYNCMODE_NONE;
-    _getSyncModeQuery.reset_and_clear_bindings();
+    _getSyncModeQuery.initOrReset(QByteArrayLiteral("SELECT mode FROM syncmode WHERE path=?1;"), _db);
     _getSyncModeQuery.bindValue(1, path);
     if (!_getSyncModeQuery.exec()) {
         qWarning() << "Error SQL statement getSyncMode: "
@@ -2271,7 +2238,7 @@ int SyncJournalDb::setSyncMode(const QString &path, SyncMode mode)
     if (!checkConnect())
         return -1;
     QString modeStr(static_cast<char>(mode));
-    _setSyncModeQuery.reset_and_clear_bindings();
+    _setSyncModeQuery.initOrReset(QByteArrayLiteral("INSERT OR REPLACE INTO syncmode (path, mode)  VALUES (?1, ?2);"), _db);
     _setSyncModeQuery.bindValue(1, path);
     _setSyncModeQuery.bindValue(2, modeStr);
     if (!_setSyncModeQuery.exec()) {
@@ -2288,7 +2255,7 @@ int SyncJournalDb::deleteSyncMode(QString const &path)
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
         return -1;
-    _deleteSyncModeQuery.reset_and_clear_bindings();
+    _deleteSyncModeQuery.initOrReset(QByteArrayLiteral("DELETE FROM syncmode WHERE path=?1;"), _db);
     _deleteSyncModeQuery.bindValue(1, path);
     if (!_deleteSyncModeQuery.exec()) {
         qWarning() << "Error SQL statement setSyncMode: "
@@ -2304,7 +2271,7 @@ QDateTime SyncJournalDb::getLastAccess(const QString &path)
     QMutexLocker locker(&_mutex);
     if (!checkConnect())
         return QDateTime {};
-    _getLastAccessQuery.reset_and_clear_bindings();
+    _getLastAccessQuery.initOrReset(QByteArrayLiteral("SELECT lastaccess FROM syncmode WHERE path=?1;"), _db);
     _getLastAccessQuery.bindValue(1, path);
     if (!_getLastAccessQuery.exec()) {
         qWarning() << "Error SQL statement getSyncMode: "
@@ -2335,7 +2302,7 @@ int SyncJournalDb::updateLastAccess(const QString &path)
     QString format = "yyyy-MM-dd HH:mm:ss";
     QString currentDateTime = QDateTime::currentDateTime().toString(format);
 
-    _setLastAccessQuery.reset_and_clear_bindings();
+    _setLastAccessQuery.initOrReset(QByteArrayLiteral("UPDATE syncmode SET lastaccess=?1 WHERE path=?2;"), _db);
     _setLastAccessQuery.bindValue(1, currentDateTime);
     _setLastAccessQuery.bindValue(2, path);
     if (!_setLastAccessQuery.exec()) {
@@ -2365,7 +2332,7 @@ QList<QString> SyncJournalDb::getSyncModePaths()
     if (!checkConnect())
         return QList<QString> {};
     QString path;
-    _getSyncModePathsQuery.reset_and_clear_bindings();
+    _getSyncModePathsQuery.initOrReset(QByteArrayLiteral("SELECT path from syncmode"), _db);
     if (!_getSyncModePathsQuery.exec()) {
         qWarning() << "Error SQL statement getSyncModePaths: "
                    << _getSyncModePathsQuery.lastQuery() << " :"
