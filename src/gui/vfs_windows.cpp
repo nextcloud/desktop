@@ -2529,7 +2529,7 @@ void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
     OCC::SyncJournalFileRecord rec;
     if (SyncJournalDb::instance()->getFileRecord(path, &rec)) {
         rec._virtualfile = 0;
-        SyncJournalDb::instance()->setFileRecordVirtualFile(rec);
+        SyncJournalDb::instance()->setFileRecordMetadata(rec);
     } else {
         //
     }

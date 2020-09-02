@@ -66,8 +66,6 @@ public:
 
     /// Like setFileRecord, but preserves checksums
     bool setFileRecordMetadata(const SyncJournalFileRecord &record);
-    /// Like setFileRecord, but only changes virtualfile value
-    bool setFileRecordVirtualFile(const SyncJournalFileRecord &record);
 
     bool deleteFileRecord(const QString &filename, bool recursively = false);
     bool updateFileRecordChecksum(const QString &filename,
