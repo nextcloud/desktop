@@ -3747,6 +3747,16 @@ It is not advisable to use it.</source>
         <translation>Kuitat</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
+        <source>Checking for changes in remote &apos;%1&apos;</source>
+        <translation>Gwiriañ ma ez eus cheñchamantoù e &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <source>Checking for changes in local &apos;%1&apos;</source>
+        <translation>Gwiriañ ma ez eus cheñchamantoù e &apos;%1&apos;</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>O kemprenn %1 eus %2 (chom a ra %3)</translation>
@@ -3841,16 +3851,6 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>Tra kemprennet ebet nevez-zo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Gwiriañ ma ez eus cheñchamantoù e &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Gwiriañ ma ez eus cheñchamantoù e &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
