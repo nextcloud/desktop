@@ -442,7 +442,7 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
     ConfigFile Cfg;
     QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append("://");
     uint directoryHash = qHash(systemPath.left(FileStreamLetterDrive.lastIndexOf('/')));
-#elif defined(Q_OS_MAC)
+#else
     uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
 #endif
     foreach (auto &listener, _listeners) {
@@ -452,7 +452,7 @@ void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileSt
         systemPath2.replace(0, relative_prefix.length(), Cfg.defaultFileStreamLetterDrive().toUpper().append(":"));
         QString msg2 = buildMessage(QLatin1String("STATUS"), systemPath2, fileStatus.toSocketAPIString());
         listener.sendMessageIfDirectoryMonitored(msg2, directoryHash);
-#elif defined(Q_OS_MAC)
+#else
         listener.sendMessageIfDirectoryMonitored(msg, directoryHash);
 #endif
     }
@@ -1130,7 +1130,7 @@ QString SocketApi::buildRegisterPathMessage(const QString &pathC)
 #if defined(Q_OS_WIN)
 	ConfigFile Cfg;
 	QString path = Cfg.defaultFileStreamLetterDrive().toUpper().append(":/");
-#elif defined(Q_OS_MAC)
+#else
 	QString path = pathC;
 #endif
     QFileInfo fi(path);
@@ -1147,7 +1147,7 @@ QString SocketApi::buildRegisterFsMessage()
     path = QLatin1String("REGISTER_DRIVEFS:");
     path.append(cfg.defaultFileStreamLetterDrive().toUpper());
     return path;
-#elif defined(Q_OS_MAC)
+#else
     path = cfg.defaultFileStreamSyncPath();
 #endif
     QFileInfo fi(path);
