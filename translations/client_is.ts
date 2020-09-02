@@ -3744,6 +3744,16 @@ Ekki er mælt með því að hún sé notuð.
         <translation>Skrá út</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
+        <source>Checking for changes in remote &apos;%1&apos;</source>
+        <translation>Athuga með breytingar í fjartengdri &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <source>Checking for changes in local &apos;%1&apos;</source>
+        <translation>Athuga með breytingar í staðværri &apos;%1&apos;</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Samstilli %1 af %2 (%3 eftir)</translation>
@@ -3838,16 +3848,6 @@ Ekki er mælt með því að hún sé notuð.
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>Ekkert samstillt nýlega</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Athuga með breytingar í fjartengdri &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Athuga með breytingar í staðværri &apos;%1&apos;</translation>
     </message>
 </context>
 <context>

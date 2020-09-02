@@ -3746,6 +3746,16 @@ It is not advisable to use it.</source>
         <translation>로그아웃</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
+        <source>Checking for changes in remote &apos;%1&apos;</source>
+        <translation>원격 &apos;%1&apos;의 변경 사항 확인 중</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <source>Checking for changes in local &apos;%1&apos;</source>
+        <translation>로컬 &apos;%1&apos;의 변경 사항 확인 중</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation type="unfinished"/>
@@ -3840,16 +3850,6 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>최근에 동기화 된 항목이 없습니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>원격 &apos;%1&apos;의 변경 사항 확인 중</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>로컬 &apos;%1&apos;의 변경 사항 확인 중</translation>
     </message>
 </context>
 <context>

@@ -3746,6 +3746,16 @@ Nije preporučljivo koristiti ga.</translation>
         <translation>Odjava</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
+        <source>Checking for changes in remote &apos;%1&apos;</source>
+        <translation>Provjera za promjene u udaljenom ‘%1’</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
+        <source>Checking for changes in local &apos;%1&apos;</source>
+        <translation>Provjera za promjene u lokalnom ‘%1’</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sinkronizacija %1 od %2 (preostalo %3)</translation>
@@ -3840,16 +3850,6 @@ Nije preporučljivo koristiti ga.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="897"/>
         <source>No items synced recently</source>
         <translation>Nije sinkronizirana nijedna stavka nedavno</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
-        <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Provjera za promjene u udaljenom ‘%1’</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
-        <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Provjera za promjene u lokalnom ‘%1’</translation>
     </message>
 </context>
 <context>
