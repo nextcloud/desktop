@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include "config_csync.h"
-#include <string.h>
-#include <time.h>
+#include <cstring>
+#include <ctime>
 #include <sys/time.h>
-#include <stdio.h>
+#include <cstdio>
 
 #define CSYNC_TEST 1
 #include "csync_exclude.cpp"
@@ -73,7 +73,7 @@ static int setup_init(void **state) {
 }
 
 static int teardown(void **state) {
-    CSYNC *csync = (CSYNC*)*state;
+    auto *csync = (CSYNC*)*state;
     int rc = 0;
 
     auto statedb = csync->statedb;
@@ -642,7 +642,7 @@ static void check_csync_excluded_performance(void **)
     // Being able to use QElapsedTimer for measurement would be nice...
     {
         struct timeval before, after;
-        gettimeofday(&before, 0);
+        gettimeofday(&before, nullptr);
 
         for (i = 0; i < N; ++i) {
             totalRc += check_dir_full("/this/is/quite/a/long/path/with/many/components");
@@ -650,17 +650,17 @@ static void check_csync_excluded_performance(void **)
         }
         assert_int_equal(totalRc, CSYNC_NOT_EXCLUDED); // mainly to avoid optimization
 
-        gettimeofday(&after, 0);
+        gettimeofday(&after, nullptr);
 
-        const double total = (after.tv_sec - before.tv_sec)
-                + (after.tv_usec - before.tv_usec) / 1.0e6;
+        const auto total = static_cast<double>(after.tv_sec - before.tv_sec)
+                + static_cast<double>(after.tv_usec - before.tv_usec) / 1.0e6;
         const double perCallMs = total / 2 / N * 1000;
         printf("csync_excluded: %f ms per call\n", perCallMs);
     }
 
     {
         struct timeval before, after;
-        gettimeofday(&before, 0);
+        gettimeofday(&before, nullptr);
 
         for (i = 0; i < N; ++i) {
             totalRc += check_dir_traversal("/this/is/quite/a/long/path/with/many/components");
@@ -668,10 +668,10 @@ static void check_csync_excluded_performance(void **)
         }
         assert_int_equal(totalRc, CSYNC_NOT_EXCLUDED); // mainly to avoid optimization
 
-        gettimeofday(&after, 0);
+        gettimeofday(&after, nullptr);
 
-        const double total = (after.tv_sec - before.tv_sec)
-                + (after.tv_usec - before.tv_usec) / 1.0e6;
+        const auto total = static_cast<double>(after.tv_sec - before.tv_sec)
+                + static_cast<double>(after.tv_usec - before.tv_usec) / 1.0e6;
         const double perCallMs = total / 2 / N * 1000;
         printf("csync_excluded_traversal: %f ms per call\n", perCallMs);
     }
