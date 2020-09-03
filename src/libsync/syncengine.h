@@ -219,6 +219,9 @@ private:
     // Removes stale error blacklist entries from the journal.
     void deleteStaleErrorBlacklistEntries(const SyncFileItemVector &syncItems);
 
+    // Removes stales cache file
+    void deleteUnusedOnlineCachedFiles();
+
     // Removes stale and adds missing conflict records after sync
     void conflictRecordMaintenance();
 
