@@ -414,7 +414,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Connected to %1.</source>
-        <translation>S&apos;ha connectat a %1.</translation>
+        <translation>Connectat a %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
