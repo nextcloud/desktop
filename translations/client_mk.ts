@@ -663,7 +663,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>Тајм аут</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="196"/>
@@ -1374,7 +1374,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Правно известување</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1600,7 +1600,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <location filename="../src/gui/legalnotice.ui" line="25"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Правно известување</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
@@ -2981,7 +2981,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="811"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Отвори во прелистувач</translation>
     </message>
 </context>
 <context>
@@ -3619,12 +3619,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Исклучен од %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="289"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Исклучен од сметките:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="291"/>
@@ -3660,17 +3660,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="359"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Неразрешени конфликти</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Up to date</source>
-        <translation type="unfinished"/>
+        <translation>Ажурирано</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при синхронизација</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="369"/>
@@ -3685,12 +3685,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Отвори во прелистувач</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="368"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>Отвори %1 во прелистувач</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
@@ -3700,7 +3700,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Отвори папка &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="404"/>
@@ -3795,12 +3795,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings …</source>
-        <translation type="unfinished"/>
+        <translation>Параметри ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account …</source>
-        <translation type="unfinished"/>
+        <translation>Нова сметка ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
@@ -4123,7 +4123,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="268"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Излез</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
@@ -4133,7 +4133,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation type="unfinished"/>
+        <translation>Отвори URL</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>
@@ -4167,12 +4167,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>Преземено</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>Прикачено</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -4182,7 +4182,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
         <source>Deleted</source>
-        <translation type="unfinished"/>
+        <translation>Избришани</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
@@ -4218,27 +4218,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="66"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>преземање</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="68"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>прикачување</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="70"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>бришење</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="73"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>поместување</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>игнорирање</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
