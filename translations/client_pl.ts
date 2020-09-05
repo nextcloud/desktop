@@ -4158,7 +4158,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation>Otwórz URL</translation>
+        <translation>Otwórz adres URL</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>
