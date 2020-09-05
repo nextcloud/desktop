@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *
+ * Copyright (C) by Michael Schuster <michael.schuster@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+-->
+<?include $(sys.CURRENTDIR)OEM.wxi?>
+<?include $(sys.CURRENTDIR)Platform.wxi?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+    <!--
+         When to change the Product GUID:
+         https://www.firegiant.com/wix/tutorial/upgrades-and-modularization/
+         https://www.firegiant.com/wix/tutorial/upgrades-and-modularization/checking-for-oldies/
+
+         We change the Product Id for every release, to let up-/downgrading always work.
+         But we then should never change the UpgradeCode.
+     -->
+    <Product Name="$(var.AppName)" Manufacturer="$(var.AppVendor)"
+        Id="*" 
+        UpgradeCode="$(var.UpgradeCode)"
+        Language="1033" Codepage="$(var.codepage)" Version="$(var.VerFull)">
+    <Package Id="*" Keywords="Installer" Description="$(var.AppName) $(var.VerDesc)" Manufacturer="$(var.AppVendor)"
+        InstallerVersion="300" Platform="$(var.Platform)" Languages="1033" Compressed="yes" SummaryCodepage="$(var.codepage)" InstallScope="perMachine" />
+
+    <!--
+        Upgrading: Since we always want to allow up-/downgrade, we don't specify a maximum version, thus
+                   leading the WiX linker (light.exe) to trigger the following warning:
+                        warning LGHT1076 : ICE61: This product should remove only older versions of itself. No Maximum version was detected for the current product. (WIX_UPGRADE_DETECTED)
+                   We suppress the warning: light.exe -sw1076
+        
+        If at some point we want to change this behaviour, read the docs:
+        https://www.firegiant.com/wix/tutorial/upgrades-and-modularization/replacing-ourselves/
+        https://www.joyofsetup.com/2010/01/16/major-upgrades-now-easier-than-ever/
+    -->
+    <MajorUpgrade Schedule="afterInstallInitialize" AllowDowngrades="yes" />
+
+    <Media Id="1" Cabinet="$(var.AppShortName).cab" EmbedCab="yes" />
+
+    <!-- If already installed: Use previously chosen path (use 32-bit registry like NSIS does) -->
+    <Property Id="INSTALLDIR">
+        <RegistrySearch Id="RegistryInstallDir" Type="raw" Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" Win64="no" />
+    </Property>
+
+    <!-- Detect legacy NSIS installation -->
+    <Property Id="NSIS_UNINSTALLEXE">
+        <DirectorySearch Id="LegacyUninstallVersion" Path="[INSTALLDIR]">
+            <FileSearch Name="Uninstall.exe" />
+        </DirectorySearch>
+    </Property>
+
+    <!-- Quit / restart application -->
+    <util:RestartResource ProcessName="$(var.AppExe)" />
+
+    <!-- Helper DLL Custom Actions -->
+    <SetProperty Id="ExecNsisUninstaller" Value="&quot;$(var.AppShortName)&quot; &quot;[NSIS_UNINSTALLEXE]&quot;" Before="ExecNsisUninstaller" Sequence="execute" />
+    <SetProperty Id="RemoveNavigationPaneEntries" Value="&quot;$(var.AppName)&quot;" Before="RemoveNavigationPaneEntries" Sequence="execute" />
+
+    <InstallExecuteSequence>
+        <!-- Install: Remove previous NSIS installation, if detected -->
+        <Custom Action="ExecNsisUninstaller" Before="ProcessComponents">NSIS_UNINSTALLEXE AND NOT Installed</Custom>
+
+        <!-- Uninstall: Remove sync folders from Explorer's Navigation Pane, only effective for the current user (home users) -->
+        <Custom Action="RemoveNavigationPaneEntries" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
+
+        <!-- Schedule Reboot for the Shell Extensions -->
+        <ScheduleReboot After="InstallFinalize">NOT (DO_NOT_SCHEDULE_REBOOT=1)</ScheduleReboot>
+    </InstallExecuteSequence>
+
+    <!-- "Add or Remove" Programs Entries -->
+    <Property Id="ARPPRODUCTICON">$(var.AppIcon)</Property>
+    <Property Id="ARPHELPLINK">$(var.AppHelpLink)</Property>
+    <Property Id="ARPURLINFOABOUT">$(var.AppInfoLink)</Property>
+
+    <!-- https://www.firegiant.com/wix/tutorial/com-expression-syntax-miscellanea/add-or-remove-programs-entries/ -->
+    <!--
+    <Property Id="ARPNOMODIFY">1</Property>
+    <Property Id="ARPNOREPAIR">1</Property>
+    -->
+
+    <!-- App icon -->
+    <Icon Id="$(var.AppIcon)" SourceFile="$(var.HarvestAppDir)\$(var.AppIcon)" />
+
+    <!-- Custom bitmaps -->
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.UIBannerBmp)" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.UIDialogBmp)" />
+
+    <!-- Custom icons -->
+    <!-- https://wixtoolset.org/documentation/manual/v3/wixui/wixui_customizations.html -->
+    <!--
+    <WixVariable Id="WixUIExclamationIco" Value="ui\Exclam.ico" />
+    <WixVariable Id="WixUIInfoIco" Value="ui\Info.ico" />
+    <WixVariable Id="WixUINewIco" Value="ui\New.ico" />
+    <WixVariable Id="WixUIUpIco" Value="ui\Up.ico" />
+    -->
+
+    <!-- Custom license -->
+    <!--
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.AppLicenseRtf)" />
+    -->
+
+    <UI>
+        <UIRef Id="WixUI_FeatureTree" />
+        <UIRef Id="WixUI_ErrorProgressText" />
+
+        <!-- Skip the license page -->
+        <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="3">1</Publish>
+        <!-- Skip the page on the way back too -->
+        <Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="3">1</Publish>
+
+        <!-- https://wixtoolset.org/documentation/manual/v3/howtos/ui_and_localization/run_program_after_install.html -->        
+        <Publish Dialog="ExitDialog" 
+            Control="Finish" 
+            Event="DoAction" 
+            Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+
+        <ProgressText Action="ExecNsisUninstaller">Removing previous installation</ProgressText>
+        <ProgressText Action="KillProcess">Trying to terminate application process of previous installation</ProgressText>
+        <ProgressText Action="RemoveNavigationPaneEntries">Removing sync folders from Explorer's Navigation Pane</ProgressText>
+    </UI>
+
+    <!-- "Launch" checkbox -->
+    <Property Id="WixShellExecTarget" Value="[#MainExecutable]" />
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch $(var.AppName)" />
+    <SetProperty Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" Before="CostInitialize">NOT (LAUNCH=0)</SetProperty>
+
+    <!-- Components -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+        <Directory Id="$(var.PlatformProgramFilesFolder)" Name="PFiles">
+            <Directory Id="INSTALLDIR" Name="$(var.AppName)">
+                <!-- Shell Extensions -->
+                <Directory Id="ShellExtDir" Name="shellext" />
+            </Directory>
+        </Directory>
+
+        <Directory Id="ProgramMenuFolder" Name="Programs">
+            <!-- Start Menu Shortcut -->
+            <Component Id="StartMenuIcon" Guid="*" Win64="$(var.PlatformWin64)">
+                <Shortcut Id="StartMenu" Name="$(var.AppName)" Target="[INSTALLDIR]$(var.AppExe)" WorkingDirectory="INSTALLDIR" Icon="$(var.AppIcon)" IconIndex="0" Advertise="no" />
+                <RegistryValue Root="HKCU" Key="Software\$(var.AppVendor)\$(var.AppName)" Name="installedStartMenuShortcut" Type="integer" Value="1" KeyPath="yes"/>
+            </Component>
+        </Directory>
+
+        <Directory Id="DesktopFolder" Name="Desktop">
+            <!-- Desktop Shortcut -->
+            <Component Id="DesktopIcon" Guid="*" Win64="$(var.PlatformWin64)">
+                <Shortcut Id="Desktop" Name="$(var.AppName)" Target="[INSTALLDIR]$(var.AppExe)" WorkingDirectory="INSTALLDIR" Icon="$(var.AppIcon)" IconIndex="0" Advertise="no" />
+                <RegistryValue Root="HKCU" Key="Software\$(var.AppVendor)\$(var.AppName)" Name="installedDesktopShortcut" Type="integer" Value="1" KeyPath="yes"/>
+            </Component>
+        </Directory>
+    </Directory>
+
+    <DirectoryRef Id="TARGETDIR">
+        <Component Id="RegistryEntries" Guid="*" Win64="no">
+            <!-- Version numbers used to detect existing installation (use 32-bit registry like NSIS does) -->
+            <RegistryKey Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+                <RegistryValue Type="string" Value="[INSTALLDIR]" />
+                <RegistryValue Type="integer" Name="VersionMajor" Value="$(var.VerMajor)" />
+                <RegistryValue Type="integer" Name="VersionMinor" Value="$(var.VerMinor)" />
+                <RegistryValue Type="integer" Name="VersionRevision" Value="$(var.VerRevision)" />
+                <RegistryValue Type="integer" Name="VersionBuild" Value="$(var.VerBuild)" />
+
+                <!-- Save MSI ProductCode to allow being uninstalled by custom tools -->
+                <RegistryValue Type="string" Name="InstallerProductCode" Value="[ProductCode]" />
+            </RegistryKey>
+        </Component>
+    </DirectoryRef>
+
+    <!-- Features -->
+    <Feature Id="Client" Title="$(var.AppName) $(var.PlatformBitness)" Display="collapse" Absent="disallow" ConfigurableDirectory="INSTALLDIR"
+        Description="$(var.AppName) $(var.VerDesc)">
+        <ComponentGroupRef Id="ClientFiles" />
+
+        <ComponentRef Id="RegistryEntries" />
+
+        <Feature Id="ShellExtensions" Title="Integration for Windows Explorer"
+            Description="This feature requires a reboot." >
+            <ComponentGroupRef Id="ShellExtensions" />
+
+            <Condition Level="0">(NO_SHELL_EXTENSIONS=1)</Condition>
+        </Feature>
+
+        <Feature Id="StartMenuShortcut" Title="Start Menu Shortcut">
+            <ComponentRef Id="StartMenuIcon" />
+            <Condition Level="0">(NO_START_MENU_SHORTCUTS=1)</Condition>
+        </Feature>
+
+        <Feature Id="DesktopShortcut" Title="Desktop Shortcut">
+            <ComponentRef Id="DesktopIcon" />
+            <Condition Level="0">(NO_DESKTOP_SHORTCUT=1)</Condition>
+        </Feature>
+    </Feature>
+
+    </Product>
+</Wix>

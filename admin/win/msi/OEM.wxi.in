@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *
+ * Copyright (C) by Michael Schuster <michael.schuster@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+-->
+<Include>
+
+    <!-- Changing the Vendor breaks registry (also NSIS) product detection -->
+    <?define AppVendor = "@APPLICATION_VENDOR@" ?>
+
+    <!-- App Defines -->
+    <?define AppName = "@APPLICATION_NAME@" ?>
+    <?define AppShortName = "@APPLICATION_EXECUTABLE@" ?>
+
+    <?define AppIcon = "@APPLICATION_ICON_NAME@.ico" ?>
+    <?define AppExe = "@APPLICATION_EXECUTABLE@.exe" ?>
+
+    <?define AppHelpLink = "https://@APPLICATION_DOMAIN@/" ?>
+    <?define AppInfoLink = "$(var.AppHelpLink)" ?>
+
+    <!-- Custom license: To use it, also remove the "Skip the license page" stuff in the <UI> section
+                         and uncomment <WixVariable Id="WixUILicenseRtf"...
+    <?define AppLicenseRtf = "path\License.rtf" ?>
+    -->
+
+    <!-- App Version -->
+    <?define VerMajor = "@MIRALL_VERSION_MAJOR@" ?>
+    <?define VerMinor = "@MIRALL_VERSION_MINOR@" ?>
+    <?define VerRevision = "@MIRALL_VERSION_PATCH@" ?>
+    <?define VerBuild = "@MIRALL_VERSION_BUILD@" ?>
+    <?define VerStd = "$(var.VerMajor).$(var.VerMinor).$(var.VerRevision)" ?>
+    <?define VerFull = "$(var.VerStd).$(var.VerBuild)" ?>
+
+    <?define VerDesc = "@MIRALL_VERSION_STRING@ (Git revision @GIT_REVISION@)" ?>
+
+    <!-- MSI upgrade support -->
+    <?define UpgradeCode = "@WIN_MSI_UPGRADE_CODE@" ?>
+
+    <!-- UI resources -->
+    <?define UIBannerBmp = "banner.bmp" ?>
+    <?define UIDialogBmp = "dialog.bmp" ?>
+
+</Include>
