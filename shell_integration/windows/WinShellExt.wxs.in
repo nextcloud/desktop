@@ -14,7 +14,7 @@
  * for more details.
  *
 -->
-<?include $(var.ProjectPath)Platform.wxi?>
+<?include $(sys.CURRENTDIR)Platform.wxi?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Fragment>
