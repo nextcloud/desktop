@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *
+ * Copyright (C) by Michael Schuster <michael.schuster@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+
+        <?if $(var.Platform) = x64 ?>
+        <?define bitness = "64" ?>
+        <?else ?>
+        <?define bitness = "32" ?>
+        <?endif ?>
+
+        <Binary Id="NCMsiHelper" SourceFile="NCMsiHelper$(var.bitness).dll" />
+
+        <CustomAction Id="ExecNsisUninstaller"
+                    Return="ignore"
+                    BinaryKey="NCMsiHelper"
+                    DllEntry="ExecNsisUninstaller"
+                    Execute="deferred"
+                    Impersonate="no" />
+
+        <CustomAction Id="RemoveNavigationPaneEntries"
+                    Return="ignore"
+                    BinaryKey="NCMsiHelper"
+                    DllEntry="RemoveNavigationPaneEntries"
+                    Execute="deferred"
+                    Impersonate="yes" />
+
+    </Fragment>
+</Wix>
