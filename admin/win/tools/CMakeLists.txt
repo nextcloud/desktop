@@ -59,3 +59,7 @@ add_subdirectory(NCToolsShared)
 if(BUILD_WIN_MSI)
     add_subdirectory(NCMsiHelper)
 endif()
+
+if(BUILD_WIN_TOOLS)
+    add_subdirectory(NCNavRemove)
+endif()
