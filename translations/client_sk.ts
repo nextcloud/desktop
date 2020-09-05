@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť mnemotechnické</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -4043,7 +4043,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="169"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Odobrať účet</translation>
     </message>
 </context>
 <context>
@@ -4127,12 +4127,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovať v synchronizácii pre všetky účty</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pozastaviť synchronizáciu pre všetky účty</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="213"/>
@@ -4152,17 +4152,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open sync item locally</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť synchronizovanú položku lokálne</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Open URL</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť URL</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="565"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť dialógové okno sprístupnenia</translation>
     </message>
 </context>
 <context>
