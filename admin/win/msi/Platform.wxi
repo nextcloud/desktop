@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ *
+ * Copyright (C) by Michael Schuster <michael.schuster@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+-->
+<Include>
+
+    <!--
+        MSI packages are built either for x86 or x64, we use defines to maintain a single WiX script.
+
+        Some hints:
+        https://www.joyofsetup.com/2010/05/14/working-hard-or-hardly-working/
+        https://stackoverflow.com/questions/18628790/build-wix-3-6-project-targeting-x64
+        https://www.howtobuildsoftware.com/index.php/how-do/1oQ/wix-detect-if-32-or-64-bit-windows-and-define-var
+    -->
+
+    <?if $(var.Platform) = x64 ?>
+    <?define PlatformBitness = "(64-bit)" ?>
+    <?define PlatformWin64 = "yes" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+    <?else ?>
+    <?define PlatformBitness = "(32-bit)" ?>
+    <?define PlatformWin64 = "no" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+    <?endif ?>
+
+</Include>
