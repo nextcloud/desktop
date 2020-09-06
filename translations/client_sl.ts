@@ -1905,7 +1905,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Na voljo je nova različica %1 %2. Kliknite na &lt;a href=&apos;%3&apos;&gt;povezavo&lt;/a&gt; za prejem posodobitve.</translation>
+        <translation>Na voljo je različica %1 %2. Kliknite na &lt;a href=&apos;%3&apos;&gt;povezavo&lt;/a&gt; za prejem posodobitve.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
