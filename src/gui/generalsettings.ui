@@ -35,10 +35,10 @@
           <string>General Settings</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="autostartCheckBox">
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="monoIconsCheckBox">
             <property name="text">
-             <string>&amp;Launch on System Startup</string>
+             <string>Use &amp;Monochrome Icons in the system tray</string>
             </property>
            </widget>
           </item>
@@ -49,10 +49,10 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="monoIconsCheckBox">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="autostartCheckBox">
             <property name="text">
-             <string>Use &amp;Monochrome Icons in the system tray</string>
+             <string>&amp;Launch on System Startup</string>
             </property>
            </widget>
           </item>
@@ -149,6 +149,13 @@
              <widget class="QPushButton" name="ignoredFilesButton">
               <property name="text">
                <string>Edit &amp;Ignored Files</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="logSettingsButton">
+              <property name="text">
+               <string>Log Settings</string>
               </property>
              </widget>
             </item>

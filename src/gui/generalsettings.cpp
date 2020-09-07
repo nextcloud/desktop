@@ -94,6 +94,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
 
     connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
+    connect(_ui->logSettingsButton, &QPushButton::clicked, this, [] {
+        // only access occApp after things are set up
+        ocApp()->gui()->slotToggleLogBrowser();
+    });
 
     // accountAdded means the wizard was finished and the wizard might change some options.
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);

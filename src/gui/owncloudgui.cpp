@@ -1028,15 +1028,10 @@ void ownCloudGui::slotToggleLogBrowser()
 {
     if (_logBrowser.isNull()) {
         // init the log browser.
-        _logBrowser = new LogBrowser;
-        // ## TODO: allow new log name maybe?
+        _logBrowser = new LogBrowser(settingsDialog());
     }
-
-    if (_logBrowser->isVisible()) {
-        _logBrowser->hide();
-    } else {
-        raiseDialog(_logBrowser);
-    }
+    _logBrowser->open();
+    raiseDialog(_logBrowser);
 }
 
 void ownCloudGui::slotOpenOwnCloud()

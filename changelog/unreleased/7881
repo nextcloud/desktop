@@ -1,0 +1,5 @@
+Change: Add button for `Log Settings` to advanced settings
+
+We added an easy way, besides pressing F12, to access the log settings.
+
+https://github.com/owncloud/client/issues/7881
