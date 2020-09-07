@@ -1,0 +1,5 @@
+Change: Sharing dialog is now always on top of the settings dialog
+
+The sharing dialog is now a sub dialog, so it will be easier to continue sharing a folder.
+
+https://github.com/owncloud/client/pull/8050

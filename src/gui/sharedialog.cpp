@@ -20,7 +20,9 @@
 
 #include "account.h"
 #include "accountstate.h"
+#include "application.h"
 #include "configfile.h"
+#include "settingsdialog.h"
 #include "theme.h"
 #include "thumbnailjob.h"
 
@@ -139,6 +141,9 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     connect(job, &PropfindJob::result, this, &ShareDialog::slotPropfindReceived);
     connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
     job->start();
+
+    auto size = ocApp()->gui()->settingsDialog()->minimumSizeHint();
+    resize(size.width() - 50, size.height() - 50);
 }
 
 ShareDialog::~ShareDialog()

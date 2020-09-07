@@ -46,7 +46,7 @@ public:
         SharePermissions maxSharingPermissions,
         const QByteArray &numericFileId,
         ShareDialogStartPage startPage,
-        QWidget *parent = nullptr);
+        QWidget *parent);
     ~ShareDialog() override;
 
 private slots:

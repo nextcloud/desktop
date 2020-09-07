@@ -76,7 +76,6 @@ namespace {
         "  -h --help            : show this help screen.\n"
         "  -s --showsettings    : show the settings dialog while starting.\n"
         "  -q --quit            : quit the running instance\n"
-        "  --logwindow          : open a window to show log output.\n"
         "  --logfile <filename> : write log output to file <filename>.\n"
         "  --logfile -          : write log output to stdout.\n"
         "  --logdir <name>      : write each sync log output in a new file\n"

@@ -49,7 +49,7 @@ public:
 
     void openBrowser()
     {
-        if (isUsingOAuth())
+        if (isUsingOAuth() && _asyncAuth)
         {
             _asyncAuth->openBrowser();
         }

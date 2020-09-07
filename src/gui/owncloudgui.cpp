@@ -1028,15 +1028,10 @@ void ownCloudGui::slotToggleLogBrowser()
 {
     if (_logBrowser.isNull()) {
         // init the log browser.
-        _logBrowser = new LogBrowser;
-        // ## TODO: allow new log name maybe?
+        _logBrowser = new LogBrowser(settingsDialog());
     }
-
-    if (_logBrowser->isVisible()) {
-        _logBrowser->hide();
-    } else {
-        raiseDialog(_logBrowser);
-    }
+    _logBrowser->open();
+    raiseDialog(_logBrowser);
 }
 
 void ownCloudGui::slotOpenOwnCloud()
@@ -1060,6 +1055,7 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
     }
     window->showNormal();
     window->raise();
+    raiseWidget->showNormal();
     raiseWidget->raise();
     window->activateWindow();
     raiseWidget->activateWindow();
@@ -1124,12 +1120,13 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         w = _shareDialogs[localPath];
     } else {
         qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
-        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.legacyDeriveNumericFileId(), startPage);
+        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.legacyDeriveNumericFileId(), startPage, settingsDialog());
         w->setAttribute(Qt::WA_DeleteOnClose, true);
 
         _shareDialogs[localPath] = w;
         connect(w, &QObject::destroyed, this, &ownCloudGui::slotRemoveDestroyedShareDialogs);
     }
+    w->open();
     raiseDialog(w);
 }
 
