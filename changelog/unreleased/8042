@@ -1,0 +1,5 @@
+Bugfix: Use the same HDPI for the crash reporter as for the client
+
+We fixed the behaviour of the crash reporter on HDPI screens.
+
+https://github.com/owncloud/client/issues/8042

@@ -22,7 +22,21 @@
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+#ifdef Q_OS_WIN
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+#endif // !Q_OS_WIN
     QApplication app(argc, argv);
+
+#ifdef Q_OS_WIN
+    // The Windows style still has pixelated elements with Qt 5.6,
+    // it's recommended to use the Fusion style in this case, even
+    // though it looks slightly less native. Check here after the
+    // QApplication was constructed, but before any QWidget is
+    // constructed.
+    if (app.devicePixelRatio() > 1)
+        QApplication::setStyle(QStringLiteral("fusion"));
+#endif // Q_OS_WIN
 
     if (app.arguments().size() != 2) {
         qDebug() << "You need to pass the .dmp file path as only argument";
