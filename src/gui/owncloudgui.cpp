@@ -1055,6 +1055,7 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
     }
     window->showNormal();
     window->raise();
+    raiseWidget->showNormal();
     raiseWidget->raise();
     window->activateWindow();
     raiseWidget->activateWindow();
