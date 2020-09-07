@@ -12,12 +12,14 @@ Summary
 * Bugfix - Selective sync dialog is displayed when virtual files are enabled: [#7976](https://github.com/owncloud/client/issues/7976)
 * Bugfix - Fix support of adler32 checksums with Windows virtual files support: [#7999](https://github.com/owncloud/client/issues/7999)
 * Bugfix - Use the correct style for the folder wizard: [#8027](https://github.com/owncloud/client/pull/8027)
+* Bugfix - Use the same HDPI for the crash reporter as for the client: [#8042](https://github.com/owncloud/client/issues/8042)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
 * Change - The password dialog is hidden behind a window: [#7833](https://github.com/owncloud/client/issues/7833)
 * Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
 * Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
 * Change - Option to log HTTP requests and responses: [#7873](https://github.com/owncloud/client/issues/7873)
+* Change - Add button for `Log Settings` to advanced settings: [#7881](https://github.com/owncloud/client/issues/7881)
 * Change - The layout of serveral ui elements is broken: [#7920](https://github.com/owncloud/client/issues/7920)
 * Change - The client hides the window during the authentication process: [#7922](https://github.com/owncloud/client/pull/7922)
 * Change - The settings ui shows a prompt for a few seconds: [#7925](https://github.com/owncloud/client/pull/7925)
@@ -27,6 +29,7 @@ Summary
 * Change - Enable Windows Virtual files by default: [#8019](https://github.com/owncloud/client/pull/8019)
 * Change - Move sync hidden files to advanced settings: [#8020](https://github.com/owncloud/client/issues/8020)
 * Change - Replace the old icons with a unified look: [#8038](https://github.com/owncloud/client/pull/8038)
+* Change - Sharing dialog is now always on top of the settings dialog: [#8050](https://github.com/owncloud/client/pull/8050)
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
@@ -61,6 +64,12 @@ Details
    We now use the same style for the wizard on all platforms
 
    https://github.com/owncloud/client/pull/8027
+
+* Bugfix - Use the same HDPI for the crash reporter as for the client: [#8042](https://github.com/owncloud/client/issues/8042)
+
+   We fixed the behaviour of the crash reporter on HDPI screens.
+
+   https://github.com/owncloud/client/issues/8042
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
@@ -98,6 +107,12 @@ Details
    We now allow to log http requests and responses
 
    https://github.com/owncloud/client/issues/7873
+
+* Change - Add button for `Log Settings` to advanced settings: [#7881](https://github.com/owncloud/client/issues/7881)
+
+   We added an easy way, besides pressing F12, to access the log settings.
+
+   https://github.com/owncloud/client/issues/7881
 
 * Change - The layout of serveral ui elements is broken: [#7920](https://github.com/owncloud/client/issues/7920)
 
@@ -157,6 +172,12 @@ Details
    We replaced the different styles and colors of the icons with a new unified look.
 
    https://github.com/owncloud/client/pull/8038
+
+* Change - Sharing dialog is now always on top of the settings dialog: [#8050](https://github.com/owncloud/client/pull/8050)
+
+   The sharing dialog is now a sub dialog, so it will be easier to continue sharing a folder.
+
+   https://github.com/owncloud/client/pull/8050
 
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 
