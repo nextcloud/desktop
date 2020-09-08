@@ -177,6 +177,21 @@ issue the following command:
 nextcloud --logdir /tmp/nextcloud_logs --logexpire 48
 ```
 
+Alternatively, you can add the following to the configuration file:
+```
+logDebug=true
+logExpire=<hours>
+logDir=<dir>
+```
+
+Once you restart the client, you will find the log file in the ``<dir>`` defined in ``logDir``.
+
+  .. note:: You will find the configuration file in the following locations:
+
+   * Microsoft Windows systems: ``%APPDATA%\Nextcloud\nextcloud.cfg``
+   * macOS systems: ``$HOME/Library/Preferences/Nextcloud/nextcloud.cfg``
+   * Linux distributions: ``$HOME/.config/Nextcloud/nextcloud.cfg``
+
 Nextcloud server Log File
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
