@@ -30,6 +30,7 @@
 #include "selectivesyncdialog.h"
 #include <folderman.h>
 #include "creds/abstractcredentials.h"
+#include "creds/oauth.h"
 #include "networkjobs.h"
 #include "guiutility.h"
 
@@ -92,6 +93,17 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
         setRadioChecked(_ui.rVirtualFileSync);
     }
 #endif
+
+    connect(this, &OwncloudAdvancedSetupPage::completeChanged, this, [this]{
+        if (wizard() && qobject_cast<OwncloudWizard*>(wizard())->authType() == OCC::DetermineAuthTypeJob::AuthType::OAuth) {
+            // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
+            // to re-open the browser.
+            // HACK: the wizard will reenable the buttons on completeChanged, so delay it
+            QTimer::singleShot(0, [this]{
+                wizard()->button(QWizard::BackButton)->setEnabled(false);
+            });
+        }
+    });
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
