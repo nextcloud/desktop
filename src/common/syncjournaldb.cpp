@@ -42,7 +42,6 @@
     "(" path " == " prefix " OR " IS_PREFIX_PATH_OF(prefix, path) ")"
 
 namespace OCC {
-SyncJournalDb *SyncJournalDb::_instance = nullptr;
 
 Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 
@@ -104,14 +103,6 @@ SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
     if (_journalMode.isEmpty()) {
         _journalMode = defaultJournalMode(_dbFile);
     }
-
-    ASSERT(!_instance);
-    _instance = this;
-}
-
-SyncJournalDb *SyncJournalDb::instance()
-{
-    return _instance;
 }
 
 QString SyncJournalDb::makeDbName(const QUrl &remoteUrl,
@@ -2117,7 +2108,6 @@ void SyncJournalDb::commitInternal(const QString &context, bool startTrans)
 SyncJournalDb::~SyncJournalDb()
 {
     close();
-    _instance = nullptr;
 }
 
 bool SyncJournalDb::isConnected()

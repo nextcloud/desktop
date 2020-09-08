@@ -45,7 +45,6 @@ class OCSYNC_EXPORT SyncJournalDb : public QObject
 public:
     explicit SyncJournalDb(const QString &dbFilePath, QObject *parent = nullptr);
     virtual ~SyncJournalDb();
-    static SyncJournalDb *instance();
 
     /// Create a journal path for a specific configuration
     static QString makeDbName(const QUrl &remoteUrl,
@@ -398,8 +397,6 @@ private:
      * The contained paths have a trailing /.
      */
     QList<QByteArray> _etagStorageFilter;
-
-    static SyncJournalDb *_instance;
 
     /** The journal mode to use for the db.
      *
