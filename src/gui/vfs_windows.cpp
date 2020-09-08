@@ -2479,63 +2479,20 @@ QString VfsWindows::getRelativePath(const QString &path) const
 
 void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
 {
-    //QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-    //QString relative_path = path;
-    //relative_path.replace(0, relative_prefix.length(), QString(""));
-
-    //< Alway ONLY FIRST >TIME when download file-open set SYNCMODE_ONLINE.
-    //   if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_NONE)
-    //       SyncJournalDb::instance()->setSyncMode(relative_path, SyncJournalDb::SYNCMODE_ONLINE);
-    //
-    //	//< Set when file was opened or updated
-    //   SyncJournalDb::instance()->updateLastAccess(relative_path);
-
-    //if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
-    //       qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_ONLINE" \
- //                << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
-    //   else if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
-    //       qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_OFFLINE" \
- //                << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
-
-    /////////////////
-    //char fgv[5];
-    //fgv[0] = 'X';
-    //fgv[1] = ':';
-    //fgv[2] = '\\';
-    //fgv[3] = 0;
-    ////fgv[4] = 0;
-
-    //path.replace(0, relative_prefix.length(), fgv);
-
-    //// SI ESTA EN LA RAIZ SE VA ASI
-    //       // 01-16 14:04:25:827 [ debug default ] 5928 OCC::VfsWindows::openFileAtPath:  gbh path:  "X:\\0706075.pdf"
-
-
-    //       QString name = path;
-    //       path.replace("\\", "/");
-    //       name.replace("\\", "/");
-
-
-    //       int pos = name.lastIndexOf(QChar('/'));
-
-    //       qDebug() << " gbh path: " << path;
-    //       qDebug() << " gbh fgv: " << fgv;
-    //       qDebug() << " gbh name.left(pos): " << name.left(pos);
-
-    //       SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.toStdWString().data(), NULL);
-    //       SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, name.left(pos).toStdWString().data(), NULL);
-    //	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
+    const auto folder = FolderMan::instance()->folderForPath(path);
+    const auto journal = folder->journalDb();
+    const auto relativePath = getRelativePath(path);
 
     OCC::SyncJournalFileRecord rec;
-    if (SyncJournalDb::instance()->getFileRecord(path, &rec)) {
+    if (journal->getFileRecord(relativePath, &rec)) {
         rec._virtualfile = 0;
-        SyncJournalDb::instance()->setFileRecordMetadata(rec);
+        journal->setFileRecordMetadata(rec);
     } else {
         //
     }
 
 
-    auto job = new SearchJob(_accountState->account(), getRelativePath(path));
+    auto job = new SearchJob(_accountState->account(), relativePath);
     job->setProperties(
         QList<QByteArray>()
         << "fileid"
