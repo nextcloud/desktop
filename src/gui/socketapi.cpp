@@ -978,17 +978,17 @@ void SocketApi::command_ONLINE_DOWNLOAD_MODE(const QString &path, SocketListener
 {
     Q_UNUSED(listener)
 
-    ConfigFile cfg;
-    QString relative_prefix = cfg.defaultFileStreamMirrorPath();
-    QString relative_path = path;
-    relative_path = relative_path.replace(0, relative_prefix.length(), QString(""));
+    const auto localFile = mapToCacheFilename(path);
+    const auto folder = FolderMan::instance()->folderForPath(localFile);
+    const auto relativePath = folder->relativePath(localFile);
+    const auto journal = folder->journalDb();
 
     qDebug() << "\n"
-             << Q_FUNC_INFO << "ONLINE_DOWNLOAD_MODE: " << relative_path;
-    SyncJournalDb::instance()->setSyncMode(relative_path, SyncJournalDb::SYNCMODE_ONLINE);
+             << Q_FUNC_INFO << "ONLINE_DOWNLOAD_MODE: " << relativePath;
+    journal->setSyncMode(relativePath, SyncJournalDb::SYNCMODE_ONLINE);
     //< Example
-    //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-    //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+    //journal->setSyncModeDownload(relativePath, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+    //journal->updateLastAccess(relativePath);  //< Set when file was opened or updated
 }
 
 //< Mac callback for ContextMenu Offline option
@@ -996,17 +996,17 @@ void SocketApi::command_OFFLINE_DOWNLOAD_MODE(const QString &path, SocketListene
 {
     Q_UNUSED(listener)
 
-    ConfigFile cfg;
-    QString relative_prefix = cfg.defaultFileStreamMirrorPath();
-    QString relative_path = path;
-    relative_path = relative_path.replace(0, relative_prefix.length(), QString(""));
+    const auto localFile = mapToCacheFilename(path);
+    const auto folder = FolderMan::instance()->folderForPath(localFile);
+    const auto relativePath = folder->relativePath(localFile);
+    const auto journal = folder->journalDb();
 
     qDebug() << "\n"
-             << Q_FUNC_INFO << "OFFLINE_DOWNLOAD_MODE: " << relative_path;
-    SyncJournalDb::instance()->setSyncMode(relative_path, SyncJournalDb::SYNCMODE_OFFLINE);
+             << Q_FUNC_INFO << "OFFLINE_DOWNLOAD_MODE: " << relativePath;
+    journal->setSyncMode(relativePath, SyncJournalDb::SYNCMODE_OFFLINE);
     //< Example
-    //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-    //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+    //journal->setSyncModeDownload(relativePath, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+    //journal->updateLastAccess(relativePath);  //< Set when file was opened or updated
 }
 
 //< Windows callback for ContextMenu option
@@ -1044,10 +1044,10 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argument, SocketListene
     QQ[l] = *pq;
     QQ[l + 1] = 0;
 
-    QString path = QString(QQ);
-    QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-    path.replace(0, relative_prefix.length(), QString(""));
-    path.replace("\\", "/");
+    const auto localFile = mapToCacheFilename(QQ);
+    const auto folder = FolderMan::instance()->folderForPath(localFile);
+    const auto relativePath = folder->relativePath(localFile);
+    const auto journal = folder->journalDb();
 
     qDebug() << "\n"
              << Q_FUNC_INFO << " QQ==" << QQ << "==";
@@ -1056,66 +1056,41 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argument, SocketListene
     {
         qDebug() << "\n"
                  << Q_FUNC_INFO << " *pc is 0";
-        SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
-
-        //< Example
-        SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-        SyncJournalDb::instance()->updateLastAccess(path); //< Set when file was opened or updated
+        journal->setSyncMode(relativePath, SyncJournalDb::SYNCMODE_OFFLINE);
+        journal->setSyncModeDownload(relativePath, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+        journal->updateLastAccess(relativePath); //< Set when file was opened or updated
     } else if (*pc == '1') //< Online
     {
         qDebug() << "\n"
                  << Q_FUNC_INFO << " *pc is 1";
-        SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
-
-        //< Example
-        SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-        SyncJournalDb::instance()->updateLastAccess(path); //< Set when file was opened or updated
+        journal->setSyncMode(relativePath, SyncJournalDb::SYNCMODE_ONLINE);
+        journal->setSyncModeDownload(relativePath, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+        journal->updateLastAccess(relativePath); //< Set when file was opened or updated
     }
 #endif
-
-    qDebug() << "\n"
-             << Q_FUNC_INFO << " Show paths BD INIT";
-
-    //< Show paths from SyncMode table.
-    QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
-    QString item;
-    foreach (item, list) {
-        SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
-
-        if (m == SyncJournalDb::SYNCMODE_ONLINE)
-            qDebug() << " :::BD " << item << " ONLINE";
-
-        if (m == SyncJournalDb::SYNCMODE_OFFLINE)
-            qDebug() << " :::BD " << item << " OFFLINE";
-    }
-
-    qDebug() << "\n"
-             << Q_FUNC_INFO << " Show paths BD END";
 }
 
 //< Windows & Mac callback for ContextMenu status option
 void SocketApi::command_GET_DOWNLOAD_MODE(const QString &localFileC, SocketListener *listener)
 {
     const auto localFile = mapToCacheFilename(localFileC);
+    const auto folder = FolderMan::instance()->folderForPath(localFile);
+    const auto relativePath = folder->relativePath(localFile);
+    const auto journal = folder->journalDb();
 
     qDebug() << Q_FUNC_INFO << " localFile_0: " << localFile;
 
     QString downloadMode = "ONLINE";
 
     //< Iterate paths from SyncMode table.
-    QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+    QList<QString> list = journal->getSyncModePaths();
     QString item;
 
-    foreach (item, list) {
-        qDebug() << "  :::BD localFile: " << localFile << " item: " << item;
-        if (item.compare(localFile) == 0) {
-            SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
-            if (m == SyncJournalDb::SYNCMODE_OFFLINE) {
-                downloadMode = "OFFLINE";
-                qDebug() << "  :::BD item: " << item << " isOFFLINE";
-            }
-            break;
-        }
+    qDebug() << "  :::BD localFile: " << localFile << " relativePath: " << relativePath;
+    SyncJournalDb::SyncMode m = journal->getSyncMode(relativePath);
+    if (m == SyncJournalDb::SYNCMODE_OFFLINE) {
+        downloadMode = "OFFLINE";
+        qDebug() << "  :::BD item: " << relativePath << " isOFFLINE";
     }
     listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
 }
