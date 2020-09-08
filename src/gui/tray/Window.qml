@@ -471,6 +471,7 @@ Window {
                 spacing: 0
 
                 MouseArea {
+                    id: activityMouseArea
                     enabled: (path !== "" || link !== "")
                     anchors.left: activityItem.left
                     anchors.right: ((shareButton.visible) ? shareButton.left : activityItem.right)
@@ -484,9 +485,7 @@ Window {
                             Qt.openUrlExternally(link)
                         }
                     }
-                    ToolTip.visible: hovered
-                    ToolTip.delay: 1000
-                    ToolTip.text: path !== "" ? qsTr("Open sync item locally") : qsTr("Open URL")
+
                     Rectangle {
                         anchors.fill: parent
                         color: (parent.containsMouse ? Style.lightHover : "transparent")
@@ -542,6 +541,13 @@ Window {
                         elide: Text.ElideRight
                         font.pixelSize: Style.subLinePixelSize
                         color: "#808080"
+                    }
+
+                    ToolTip {
+                        visible: activityMouseArea.containsMouse
+                        text: activityTextTitle.text
+                        delay: 250
+                        timeout: 3000
                     }
                 }
                 Button {
