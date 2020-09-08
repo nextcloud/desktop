@@ -559,6 +559,13 @@ void Folder::removeFromSettings() const
     settings->remove(FolderMan::escapeAlias(_definition.alias));
 }
 
+QString Folder::relativePath(const QString &absolutePath) const
+{
+    const auto prefix = path();
+    Q_ASSERT(absolutePath.startsWith(prefix));
+    return absolutePath.mid(prefix.length() - 1);
+}
+
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
 {
     return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
