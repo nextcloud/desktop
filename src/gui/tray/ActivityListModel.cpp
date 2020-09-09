@@ -68,7 +68,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     AccountStatePtr ast = AccountManager::instance()->account(a._accName);
     if (!ast && _accountState != ast.data())
         return QVariant();
-    QStringList list;
 
     switch (role) {
     case DisplayPathRole:
@@ -78,8 +77,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             if (folder) {
                 relPath.prepend(folder->remotePath());
             }
-            list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
-            if (list.count() > 0) {
+            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
+            if (localFiles.count() > 0) {
                 if (relPath.startsWith('/') || relPath.startsWith('\\')) {
                     return relPath.remove(0, 1);
                 } else {
@@ -90,24 +89,19 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QString();
     case PathRole:
         if (!a._file.isEmpty()) {
-            auto folder = FolderMan::instance()->folderForPath(a._folder);
+            const auto folder = FolderMan::instance()->folder(a._folder);
 
             QString relPath(a._file);
-            if (folder)
+            if (folder) {
                 relPath.prepend(folder->remotePath());
-            list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
-
-            // File does not exist anymore? Let's try to open its path
-            if (list.isEmpty() && QFileInfo(relPath).exists()) {
-                list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(relPath).path(), ast->account());
             }
 
-            if (list.isEmpty()) {
+            // get relative path to the file so we can open it in the file manager
+            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(QFileInfo(relPath).path(), ast->account());
+
+            if (localFiles.isEmpty()) {
                 return QString();
             }
-
-            const auto path = list.at(0);
-            folder = FolderMan::instance()->folderForPath(path);
 
             // If this is an E2EE file or folder, pretend we got no path, this leads to
             // hiding the share button which is what we want
@@ -119,7 +113,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 }
             }
 
-            return QUrl::fromLocalFile(path);
+            return QUrl::fromLocalFile(localFiles.constFirst());
         }
         return QString();
     case AbsolutePathRole: {
@@ -129,9 +123,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             if (folder) {
                 relPath.prepend(folder->remotePath());
             }
-            list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
-            if (!list.empty()) {
-                return list.at(0);
+            const auto localFiles = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
+            if (!localFiles.empty()) {
+                return localFiles.constFirst();
             } else {
                 qWarning("File not local folders while processing absolute path request.");
                 return QString();
@@ -181,7 +175,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         } else {
             // We have an activity
             if (!a._iconData.isEmpty()) {
-                QString svgData = "data:image/svg+xml;utf8," + a._iconData;
+                const QString svgData = "data:image/svg+xml;utf8," + a._iconData;
                 return svgData;
             }
             return "qrc:///client/theme/black/activity.svg";
