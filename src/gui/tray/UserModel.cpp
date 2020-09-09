@@ -364,18 +364,19 @@ void User::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
             activity._fileAction = "file_changed";
         }
 
-
         if (item->_status == SyncFileItem::NoStatus || item->_status == SyncFileItem::Success) {
             qCWarning(lcActivity) << "Item " << item->_file << " retrieved successfully.";
-            
-            if (activity._fileAction == "file_renamed") {
-                activity._message.prepend(tr("You renamed") + " ");
+
+            if (item->_direction != SyncFileItem::Up) {
+                activity._message = tr("Synced %1").arg(item->_originalFile);
+            } else if (activity._fileAction == "file_renamed") {
+                activity._message = tr("You renamed %1").arg(item->_originalFile);
             } else if (activity._fileAction == "file_deleted") {
-                activity._message.prepend(tr("You deleted") + " ");
+                activity._message = tr("You deleted %1").arg(item->_originalFile);
             } else if (activity._fileAction == "file_created") {
-                activity._message.prepend(tr("You created") + " ");
+                activity._message = tr("You created %1").arg(item->_originalFile);
             } else {
-                activity._message.prepend(tr("You changed") + " ");
+                activity._message = tr("You changed %1").arg(item->_originalFile);
             }
 
             _activityModel->addSyncFileItemToActivityList(activity);
