@@ -19,7 +19,6 @@
  * 
  */
 
-#include "NCTools.h"
 #include "NCMsiHelper.h"
 
 //
@@ -64,14 +63,14 @@ void LogError(DWORD dwErrorMsgId)
             hInst, // Handle to the DLL.
             dwMessageId, // Message identifier.
             MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language.
-            (LPSTR)&pBuffer, // Buffer that will hold the text string.
+            reinterpret_cast<LPSTR>(&pBuffer), // Buffer that will hold the text string.
             ERRMSGBUFFERSIZE, // Allocate at least this many chars for pBuffer.
             nullptr // No insert values.
         );
     }
 
     if (0 < ret && nullptr != pBuffer) {
-        pMessage = (LPSTR)pBuffer;
+        pMessage = static_cast<LPSTR>(pBuffer);
     }
 
     // Display the string.
@@ -102,21 +101,20 @@ void LogResult(
     va_start(args, fmt);
 #pragma warning(push)
 #pragma warning(disable : 4996)
-    auto len = _vsnprintf(nullptr, 0, fmt, args) + 1;
+    const auto len = _vsnprintf(nullptr, 0, fmt, args) + 1;
 #pragma warning(pop)
-    auto buffer = (char*)malloc(len * sizeof(char));
+    auto buffer = static_cast<char*>(malloc(len * sizeof(char)));
 
 #ifdef _DEBUG
     ::ZeroMemory(buffer, len);
 #endif // _DEBUG
-    _vsnprintf_s(buffer, len, len-1, fmt, args);
+    _vsnprintf_s(buffer, len, len - 1, fmt, args);
 
     // (MSDN code complete)
 
     // Now that the buffer holds the formatted string, send it to
     // the appropriate output.
-    if (WcaIsInitialized())
-    {
+    if (WcaIsInitialized()) {
         if (FAILED(hr)) {
             WcaLogError(hr, buffer);
             LogError(hr);
@@ -124,8 +122,7 @@ void LogResult(
             WcaLog(LOGMSG_STANDARD, buffer);
         }
     } else { // Log to stdout/stderr
-        if (FAILED(hr))
-        {
+        if (FAILED(hr)) {
             fprintf_s(stderr, "%s\n", buffer);
             LogError(hr);
         } else {

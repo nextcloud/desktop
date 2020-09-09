@@ -12,7 +12,7 @@
  * for more details.
  */
 
-#include "NCTools.h"
+#include <windows.h>
 #include "utility.h"
 #include "NavRemove.h"
 #include "../ConfigIni.h"

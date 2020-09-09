@@ -12,10 +12,9 @@
  * for more details.
  */
 
-#include "NCTools.h"
+#include "NCMsiHelper.h"
 #include "utility.h"
 #include "LogResult.h"
-#include "NCMsiHelper.h"
 
 using namespace NCTools;
 
@@ -25,8 +24,8 @@ HRESULT NCMSIHELPER_API DoExecNsisUninstaller(int argc, LPWSTR *argv)
         return HRESULT_FROM_WIN32(ERROR_INVALID_PARAMETER);
     }
 
-    auto appShortName = std::wstring(argv[0]);
-    auto uninstallExePath = std::wstring(argv[1]);
+    const auto appShortName = std::wstring(argv[0]);
+    const auto uninstallExePath = std::wstring(argv[1]);
 
     if (appShortName.empty()
          || uninstallExePath.empty()) {
@@ -34,7 +33,7 @@ HRESULT NCMSIHELPER_API DoExecNsisUninstaller(int argc, LPWSTR *argv)
     }
 
     auto appInstallDir = uninstallExePath;
-    auto posLastSlash = appInstallDir.find_last_of(PathSeparator);
+    const auto posLastSlash = appInstallDir.find_last_of(PathSeparator);
     if (posLastSlash != std::wstring::npos) {
         appInstallDir.erase(posLastSlash);
     } else {
@@ -42,7 +41,7 @@ HRESULT NCMSIHELPER_API DoExecNsisUninstaller(int argc, LPWSTR *argv)
     }
 
     // Run uninstaller
-    std::wstring cmd = L'\"' + uninstallExePath + L"\" /S _?=" + appInstallDir;
+    const std::wstring cmd = L'\"' + uninstallExePath + L"\" /S _?=" + appInstallDir;
     LogResult(S_OK, "Running '%ls'.", cmd.data());
     Utility::execCmd(cmd);
 
@@ -69,7 +68,7 @@ HRESULT NCMSIHELPER_API DoRemoveNavigationPaneEntries(int argc, LPWSTR *argv)
         return HRESULT_FROM_WIN32(ERROR_INVALID_PARAMETER);
     }
 
-    auto appName = std::wstring(argv[0]);
+    const auto appName = std::wstring(argv[0]);
 
     if (appName.empty()) {
         return HRESULT_FROM_WIN32(ERROR_INVALID_PARAMETER);

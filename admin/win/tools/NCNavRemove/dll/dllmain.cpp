@@ -12,31 +12,31 @@
  * for more details.
  */
 
-#include "NCTools.h"
-#include "SimpleMutex.h"
+#include <windows.h>
+#include "SimpleNamedMutex.h"
 #include "NavRemoveConstants.h"
 
-SimpleMutex g_mutex;
+SimpleNamedMutex g_mutex(std::wstring(MUTEX_NAME));
 bool g_alreadyRunning = false;
 
 extern "C" BOOL WINAPI DllMain(
-	__in HINSTANCE hInst,
-	__in ULONG ulReason,
-	__in LPVOID
-	)
+    __in HINSTANCE hInst,
+    __in ULONG ulReason,
+    __in LPVOID
+    )
 {
-	switch(ulReason)
-	{
-	case DLL_PROCESS_ATTACH:
+    switch(ulReason)
+    {
+    case DLL_PROCESS_ATTACH:
         // Mutex
-        g_alreadyRunning = !g_mutex.create(std::wstring(MUTEX_NAME));
-		break;
+        g_alreadyRunning = !g_mutex.lock();
+        break;
 
-	case DLL_PROCESS_DETACH:
+    case DLL_PROCESS_DETACH:
         // Release mutex
-        g_mutex.release();
-		break;
-	}
+        g_mutex.unlock();
+        break;
+    }
 
-	return TRUE;
+    return TRUE;
 }

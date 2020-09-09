@@ -12,19 +12,21 @@
  * for more details.
  */
 
-#include "NCTools.h"
-#include "SimpleMutex.h"
+#include "SimpleNamedMutex.h"
 
-SimpleMutex::SimpleMutex()
+SimpleNamedMutex::SimpleNamedMutex(const std::wstring &name)
 {
+    _name = name;
 }
 
-bool SimpleMutex::create(const std::wstring &name)
+bool SimpleNamedMutex::lock()
 {
-    release();
+    if (_name.empty() || _hMutex) {
+        return false;
+    }
 
     // Mutex
-    _hMutex = CreateMutex(nullptr, TRUE, name.data());
+    _hMutex = CreateMutex(nullptr, TRUE, _name.data());
 
     if (GetLastError() == ERROR_ALREADY_EXISTS) {
         CloseHandle(_hMutex);
@@ -35,7 +37,7 @@ bool SimpleMutex::create(const std::wstring &name)
     return true;
 }
 
-void SimpleMutex::release()
+void SimpleNamedMutex::unlock()
 {
     // Release mutex
     if (_hMutex) {

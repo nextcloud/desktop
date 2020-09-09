@@ -20,7 +20,11 @@
 
 #pragma once
 
-#include "NCTools.h"
+#include <windows.h>
+#include <string>
+#include <vector>
+#include <variant>
+#include <functional>
 
 namespace NCTools {
 

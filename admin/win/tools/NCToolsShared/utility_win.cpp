@@ -17,9 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include <cassert>
-#include "NCTools.h"
 #include "utility.h"
+#include <cassert>
+#include <algorithm>
+#include <Shlobj.h>
+#include <psapi.h>
 
 #define ASSERT assert
 #define Q_ASSERT assert
