@@ -12,9 +12,9 @@
  * for more details.
  */
 
-#include "NCTools.h"
+#include <windows.h>
 #include "utility.h"
-#include "SimpleMutex.h"
+#include "SimpleNamedMutex.h"
 #include "NavRemoveConstants.h"
 #include "../ConfigIni.h"
 
@@ -31,9 +31,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(nCmdShow);
 
     // Mutex
-    SimpleMutex mutex;
+    SimpleNamedMutex mutex(std::wstring(MUTEX_NAME));
 
-    if (!mutex.create(std::wstring(MUTEX_NAME))) {
+    if (!mutex.lock()) {
         return 0;
     }
 
@@ -47,7 +47,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     Utility::removeNavigationPaneEntries(ini.getAppName());
 
     // Release mutex
-    mutex.release();
+    mutex.unlock();
 
     return 0;
 }

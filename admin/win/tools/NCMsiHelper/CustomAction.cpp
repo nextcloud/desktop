@@ -19,7 +19,6 @@
  * 
  */
 
-#include "NCTools.h"
 #include "NCMsiHelper.h"
 
 /**
@@ -48,22 +47,17 @@
  */
 UINT CustomActionArgcArgv(MSIHANDLE hInstall, CUSTOM_ACTION_ARGC_ARGV func, LPCSTR actionName)
 {
-	HRESULT hr = S_OK;
-	UINT er = ERROR_SUCCESS;
-    LPWSTR pszCustomActionData = nullptr;
-    int argc = 0;
-    LPWSTR *argv = nullptr;
+    LPWSTR pszCustomActionData = nullptr, *argv = nullptr;
 
-	hr = WcaInitialize(hInstall, actionName);
-	ExitOnFailure(hr, "Failed to initialize");
+    HRESULT hr = WcaInitialize(hInstall, actionName);
+    ExitOnFailure(hr, "Failed to initialize");
 
-	WcaLog(LOGMSG_STANDARD, "Initialized.");
+    WcaLog(LOGMSG_STANDARD, "Initialized.");
     
     // Retrieve our custom action property. This is one of
     // only three properties we can request on a Deferred
     // Custom Action.  So, we assume the caller puts all
     // parameters in this one property.
-    pszCustomActionData = nullptr;
     hr = WcaGetProperty(L"CustomActionData", &pszCustomActionData);
     ExitOnFailure(hr, "Failed to get Custom Action Data.");
     WcaLog(LOGMSG_STANDARD, "Custom Action Data = '%ls'.", pszCustomActionData);
@@ -71,9 +65,9 @@ UINT CustomActionArgcArgv(MSIHANDLE hInstall, CUSTOM_ACTION_ARGC_ARGV func, LPCS
     // Convert the string retrieved into a standard argc/arg layout
     // (ignoring the fact that the first parameter is whatever was
     // passed, not necessarily the application name/path).
+    int argc = 0;
     argv = CommandLineToArgvW(pszCustomActionData, &argc);
-    if (argv)
-    {
+    if (argv) {
         hr = HRESULT_FROM_WIN32(GetLastError());
         ExitOnFailure(hr, "Failed to convert Custom Action Data to argc/argv.");
     }
@@ -87,8 +81,7 @@ LExit:
     if (argv)
         LocalFree(argv);
 
-	er = SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE;
-	return WcaFinalize(er);
+    return WcaFinalize(SUCCEEDED(hr) ? ERROR_SUCCESS : ERROR_INSTALL_FAILURE);
 }
 
 UINT __stdcall ExecNsisUninstaller(MSIHANDLE hInstall)
@@ -105,21 +98,21 @@ UINT __stdcall RemoveNavigationPaneEntries(MSIHANDLE hInstall)
  * DllMain - Initialize and cleanup WiX custom action utils.
  */
 extern "C" BOOL WINAPI DllMain(
-	__in HINSTANCE hInst,
-	__in ULONG ulReason,
-	__in LPVOID
-	)
+    __in HINSTANCE hInst,
+    __in ULONG ulReason,
+    __in LPVOID
+    )
 {
-	switch(ulReason)
-	{
-	case DLL_PROCESS_ATTACH:
-		WcaGlobalInitialize(hInst);
-		break;
+    switch(ulReason)
+    {
+    case DLL_PROCESS_ATTACH:
+        WcaGlobalInitialize(hInst);
+        break;
 
-	case DLL_PROCESS_DETACH:
-		WcaGlobalFinalize();
-		break;
-	}
+    case DLL_PROCESS_DETACH:
+        WcaGlobalFinalize();
+        break;
+    }
 
-	return TRUE;
+    return TRUE;
 }

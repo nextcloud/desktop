@@ -33,6 +33,8 @@
  */
 #pragma once
 
+#include <windows.h>
+
 #ifdef _NCMSIHELPER_EXPORTS
 #  pragma comment (lib, "newdev")
 #  pragma comment (lib, "setupapi")
@@ -41,8 +43,10 @@
 #  pragma comment (lib, "wcautil")
 #  pragma comment (lib, "Version")
 
+#  include <cstdlib>
+#  include <string>
+#  include <tchar.h>
 #  include <msiquery.h>
-#  include <stdlib.h>
 #  include <lmerr.h>
 
 // WiX Header Files:
@@ -92,5 +96,4 @@ HRESULT NCMSIHELPER_API DoRemoveNavigationPaneEntries(int argc, LPWSTR *argv);
  *  As a result, all functions defined in this header should
  *  conform to this function prototype.
  */
-typedef HRESULT NCMSIHELPER_API (*CUSTOM_ACTION_ARGC_ARGV)(
-    int argc, LPWSTR *argv);
+using CUSTOM_ACTION_ARGC_ARGV = NCMSIHELPER_API HRESULT(*)(int argc, LPWSTR *argv);

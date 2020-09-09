@@ -14,16 +14,18 @@
 
 #pragma once
 
-#include "NCTools.h"
+#include <windows.h>
+#include <string>
 
-class SimpleMutex
+class SimpleNamedMutex
 {
 public:
-    SimpleMutex();
+    SimpleNamedMutex(const std::wstring &name);
 
-    bool create(const std::wstring &name);
-    void release();
+    bool lock();
+    void unlock();
 
 private:
+    std::wstring _name;
     HANDLE _hMutex = nullptr;
 };
