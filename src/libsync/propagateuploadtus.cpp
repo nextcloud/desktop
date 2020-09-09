@@ -227,9 +227,10 @@ void PropagateUploadFileTUS::slotChunkFinished()
     if (!_finished) {
         auto check = new PropfindJob(propagator()->account(), _item->_file);
         _jobs.append(check);
-        check->setProperties({ "http://owncloud.org/ns:fileid", "getetag" });
+        check->setProperties({ "http://owncloud.org/ns:fileid", "http://owncloud.org/ns:permissions", "getetag" });
         connect(check, &PropfindJob::result, this, [this, check](const QVariantMap &map) {
             _finished = true;
+            _item->_remotePerm = RemotePermissions::fromServerString(map.value("permissions").toString());
             finalize(Utility::normalizeEtag(map.value("getetag").toByteArray()), map.value("fileid").toByteArray());
             slotJobDestroyed(check);
         });

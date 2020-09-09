@@ -1,0 +1,7 @@
+Bugfix: Ensure permissions for newly added files are available
+
+We fixed a bug where newly added files had no server permissions set.
+Under certain conditions that was leading to an undefined behaviour.
+
+https://github.com/owncloud/client/issues/8066
+https://github.com/owncloud/client/issues/7967
