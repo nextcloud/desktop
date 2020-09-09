@@ -508,11 +508,7 @@ void FolderWizardSelectiveSync::initializePage()
     QString alias = QFileInfo(targetPath).fileName();
     if (alias.isEmpty())
         alias = Theme::instance()->appName();
-    QStringList initialBlacklist;
-    if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
-        initialBlacklist = QStringList("/");
-    }
-    _selectiveSync->setFolderInfo(targetPath, alias, initialBlacklist);
+    _selectiveSync->setFolderInfo(targetPath, alias);
     QWizardPage::initializePage();
 }
 

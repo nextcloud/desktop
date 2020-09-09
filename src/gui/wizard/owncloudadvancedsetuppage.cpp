@@ -153,12 +153,6 @@ void OwncloudAdvancedSetupPage::initializePage()
     connect(quotaJob, &PropfindJob::result, this, &OwncloudAdvancedSetupPage::slotQuotaRetrieved);
     quotaJob->start();
 
-
-    if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
-        _selectiveSyncBlacklist = QStringList("/");
-        QTimer::singleShot(0, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
-    }
-
     ConfigFile cfgFile;
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     _ui.confCheckBoxSize->setChecked(newFolderLimit.first);
@@ -339,8 +333,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
     bool updateBlacklist = false;
 
     // We need to update the selective sync blacklist either when the dialog
-    // was accepted, or when it was used in conjunction with the
-    // wizardSelectiveSyncDefaultNothing feature and was cancelled - in that
+    // was accepted in that
     // case the stub blacklist of / was expanded to the actual list of top
     // level folders by the selective sync dialog.
     if (result == QDialog::Accepted) {

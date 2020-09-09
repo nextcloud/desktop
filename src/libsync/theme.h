@@ -224,12 +224,6 @@ public:
     virtual QString updateCheckUrl() const;
 
     /**
-     * When true, the setup wizard will show the selective sync dialog by default and default
-     * to nothing selected
-     */
-    virtual bool wizardSelectiveSyncDefaultNothing() const;
-
-    /**
      * Default option for the newBigFolderSizeLimit.
      * Size in MB of the maximum size of folder before we ask the confirmation.
      * Set -1 to never ask confirmation.  0 to ask confirmation for every folder.
