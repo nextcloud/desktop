@@ -474,13 +474,9 @@ int main(int argc, char **argv)
 
     job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"));
     QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
-        const QJsonObject data = json.object().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toObject();
+        const QJsonObject data = json.object().value("ocs").toObject().value("data").toObject();
         account->setDavUser(data.value("id").toString());
-        auto displayName = data.value(QLatin1String("display-name"));
-        if (displayName.isNull()) {
-            displayName = data.value(QLatin1String("displayname"));
-        }
-        account->setDavDisplayName(displayName.toString());
+        account->setDavDisplayName(data.value("display-name").toString());
         loop.quit();
     });
     job->start();
