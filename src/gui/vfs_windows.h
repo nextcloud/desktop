@@ -16,8 +16,8 @@
 #ifndef VFS_WINDOWS_H
 #define VFS_WINDOWS_H
 
-#include "../../dokanLib/dokan.h"
-#include "../../dokanLib/fileinfo.h"
+#include "dokan.h"
+#include "fileinfo.h"
 
 #include "discoveryphase.h"
 #include "accountstate.h"

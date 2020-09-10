@@ -2551,7 +2551,10 @@ void VfsWindows::openFileAtPath(QString path, QVariantMap &error)
 
 void VfsWindows::deleteFileAtPath(QString path, QVariantMap &error)
 {
-    SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
+    const auto folder = FolderMan::instance()->folderForPath(path);
+    const auto relativePath = folder->relativePath(path);
+    const auto journal = folder->journalDb();
+    journal->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
 }
 
 void VfsWindows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
