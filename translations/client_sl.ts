@@ -464,12 +464,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="933"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Zaznane so mape, ki zaradi pripadnosti zunanji shrambi niso bile usklajene: </translation>
+        <translation>Zaznane so mape, ki so del zunanje shrambe, zato niso bile usklajene: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="934"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Zaznane so mape, ki zaradi omejitve velikosti ali pripadnosti zunanji shrambi niso bile usklajene: </translation>
+        <translation>Zaznane so mape, ki zaradi omejitve velikosti, ali zato, ker so del zunanje shrambe, niso bile usklajene: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="968"/>
