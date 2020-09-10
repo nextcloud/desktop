@@ -1,0 +1,6 @@
+Change: Remove the branding option `wizardSelectiveSyncDefaultNothing`
+
+The branding option was removed as believe that it did not provide a good user experience.
+We recommend `newBigFolderSizeLimit` together with `wizardHideFolderSizeLimitCheckbox` as a replacement.
+
+https://github.com/owncloud/client/pull/8064

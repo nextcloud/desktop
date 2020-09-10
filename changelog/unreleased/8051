@@ -1,0 +1,5 @@
+Bugfix: The back button on the advanced wizard page no longer gets enabled
+
+We fixed a bug where the back button in the advanced wizard page get re enabled.
+
+https://github.com/owncloud/client/issues/8051

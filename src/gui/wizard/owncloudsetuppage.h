@@ -78,7 +78,6 @@ private:
     bool _authTypeKnown;
     bool _checking;
     bool _multipleFoldersExist;
-    DetermineAuthTypeJob::AuthType _authType;
 
     QProgressIndicator *_progressIndi;
     QButtonGroup *_selectiveSyncButtons;

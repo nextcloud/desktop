@@ -32,6 +32,9 @@ jobs:
             - target: macos-64-clang
               os: macos-latest
               python: python3
+            - target: linux-64-gcc
+              os: ubuntu-18.04
+              python: python3
     env:
       CRAFT: ${{ matrix.python }} "${{ github.workspace }}/CraftMaster/CraftMaster/CraftMaster.py" --config "${{ github.workspace }}/.craft.ini" --target ${{ matrix.target }} --variables "WORKSPACE=${{ github.workspace }}" -c
 
@@ -48,8 +51,15 @@ jobs:
     - name: Craft unshelve
       run:  Invoke-Expression "$env:CRAFT --unshelve `"${{ github.workspace }}/.craft.shelf`" "
 
-    - name: Install NSIS
-      run: Invoke-Expression "$env:CRAFT dev-utils/nsis"
+    - name: Prepare
+      run: |
+        if ($IsWindows) {
+            Invoke-Expression "$env:CRAFT dev-utils/nsis"
+        } elseif($IsLinux) {
+            sudo apt-get update -y
+            sudo apt-get install -y mesa-common-dev libglu1-mesa-dev libmtdev1 libgl1-mesa-dev libmtdev1 libinput-dev libxkbcommon0 libxcb-icccm4 libxcb-image0 libxcb-render-util0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-keysyms1 libxcb-xinerama0 libsm6
+            Invoke-Expression "$env:CRAFT dev-utils/linuxdeploy"
+        }
 
     - name: Install dependencies
       run: Invoke-Expression "$env:CRAFT --install-deps owncloud/owncloud-client"
@@ -61,7 +71,7 @@ jobs:
       run: Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --test owncloud/owncloud-client"
 
     - name: Package
-      run: if ($IsWindows) { Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --package owncloud/owncloud-client" } else {Write-Host "Skip packaging on mac as the build gets stuck when mounting"}
+      run: if (-not $IsMacOS) { Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --package owncloud/owncloud-client" } else {Write-Host "Skip packaging on mac as the build gets stuck when mounting"}
 
     - name: Update shelf
       run: |

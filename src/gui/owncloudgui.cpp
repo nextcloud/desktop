@@ -964,9 +964,8 @@ void ownCloudGui::runNewAccountWizard()
         connect(_wizard, &OwncloudSetupWizard::ownCloudWizardDone, ocApp(), &Application::slotownCloudWizardDone);
         FolderMan::instance()->setSyncEnabled(false);
         _wizard->startWizard();
-    } else {
-        raiseDialog(settingsDialog());
     }
+    raiseDialog(settingsDialog());
 }
 
 void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
@@ -1002,7 +1001,6 @@ void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &messag
 
 void ownCloudGui::slotShowSettings()
 {
-    _settingsDialog->show();
     raiseDialog(_settingsDialog);
 }
 

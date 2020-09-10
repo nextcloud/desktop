@@ -30,6 +30,7 @@
 #include "selectivesyncdialog.h"
 #include <folderman.h>
 #include "creds/abstractcredentials.h"
+#include "creds/oauth.h"
 #include "networkjobs.h"
 #include "guiutility.h"
 
@@ -92,6 +93,17 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
         setRadioChecked(_ui.rVirtualFileSync);
     }
 #endif
+
+    connect(this, &OwncloudAdvancedSetupPage::completeChanged, this, [this]{
+        if (wizard() && qobject_cast<OwncloudWizard*>(wizard())->authType() == OCC::DetermineAuthTypeJob::AuthType::OAuth) {
+            // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
+            // to re-open the browser.
+            // HACK: the wizard will reenable the buttons on completeChanged, so delay it
+            QTimer::singleShot(0, [this]{
+                wizard()->button(QWizard::BackButton)->setEnabled(false);
+            });
+        }
+    });
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -152,12 +164,6 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     connect(quotaJob, &PropfindJob::result, this, &OwncloudAdvancedSetupPage::slotQuotaRetrieved);
     quotaJob->start();
-
-
-    if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
-        _selectiveSyncBlacklist = QStringList("/");
-        QTimer::singleShot(0, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
-    }
 
     ConfigFile cfgFile;
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -339,8 +345,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
     bool updateBlacklist = false;
 
     // We need to update the selective sync blacklist either when the dialog
-    // was accepted, or when it was used in conjunction with the
-    // wizardSelectiveSyncDefaultNothing feature and was cancelled - in that
+    // was accepted in that
     // case the stub blacklist of / was expanded to the actual list of top
     // level folders by the selective sync dialog.
     if (result == QDialog::Accepted) {

@@ -655,42 +655,42 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="134"/>
+        <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="136"/>
+        <location filename="../src/gui/application.cpp" line="135"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="142"/>
+        <location filename="../src/gui/application.cpp" line="141"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="149"/>
+        <location filename="../src/gui/application.cpp" line="148"/>
         <source>Quit</source>
         <translation>Afsluiten</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="150"/>
+        <location filename="../src/gui/application.cpp" line="149"/>
         <source>Continue</source>
         <translation>Verder</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="299"/>
+        <location filename="../src/gui/application.cpp" line="298"/>
         <source>Error accessing the configuration file</source>
         <translation>Fout bij benaderen configuratiebestand</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="300"/>
+        <location filename="../src/gui/application.cpp" line="299"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Er trad een fout op bij het benaderen configuratiebestand op %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="303"/>
+        <location filename="../src/gui/application.cpp" line="302"/>
         <source>Quit ownCloud</source>
         <translation>Verlaten ownCloud</translation>
     </message>
@@ -1422,22 +1422,27 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
         <translation>Synchroniseer verborgen bestanden</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="176"/>
+        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <source>Log Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>Network</source>
         <translation>Netwerk</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="188"/>
+        <location filename="../src/gui/generalsettings.ui" line="195"/>
         <source>Updates</source>
         <translation>Updates</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="217"/>
+        <location filename="../src/gui/generalsettings.ui" line="224"/>
         <source>stable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>beta</source>
         <translation type="unfinished"/>
     </message>
@@ -1447,7 +1452,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
         <translation>Geavanceerd</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="55"/>
+        <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Use &amp;Monochrome Icons in the system tray</source>
         <translation type="unfinished"/>
     </message>
@@ -1468,7 +1473,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
         <translation>Vraag bevestiging voor synchronisatie van mappen op externe opslag</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="41"/>
+        <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>&amp;Launch on System Startup</source>
         <translation>&amp;Starten bij systeemstart</translation>
     </message>
@@ -1478,12 +1483,12 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
         <translation>Tonen &amp;desktopberichten</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="200"/>
+        <location filename="../src/gui/generalsettings.ui" line="207"/>
         <source>&amp;Update Channel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="320"/>
+        <location filename="../src/gui/generalsettings.ui" line="327"/>
         <source>•</source>
         <translation type="unfinished"/>
     </message>
@@ -1503,34 +1508,34 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
         <translation>T&amp;onen crash reporter</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="249"/>
+        <location filename="../src/gui/generalsettings.ui" line="256"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Herstarten en &amp;Bijwerken</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="277"/>
+        <location filename="../src/gui/generalsettings.cpp" line="281"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="187"/>
+        <location filename="../src/gui/generalsettings.cpp" line="191"/>
         <source>Change update channel?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="188"/>
+        <location filename="../src/gui/generalsettings.cpp" line="192"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="201"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Change update channel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="202"/>
+        <location filename="../src/gui/generalsettings.cpp" line="206"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
@@ -3067,42 +3072,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>OwnCloud Pad:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="108"/>
+        <location filename="../src/gui/sharedialog.cpp" line="110"/>
         <source>%1 Sharing</source>
         <translation>%1 Delen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="86"/>
+        <location filename="../src/gui/sharedialog.cpp" line="88"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="105"/>
+        <location filename="../src/gui/sharedialog.cpp" line="107"/>
         <source>Folder: %2</source>
         <translation>Map: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="111"/>
+        <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>The server does not allow sharing</source>
         <translation>De server staat delen niet toe</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="127"/>
+        <location filename="../src/gui/sharedialog.cpp" line="129"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
         <translation>Maximum aantal mogelijke permissies van de server ophalen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="197"/>
+        <location filename="../src/gui/sharedialog.cpp" line="202"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Het bestand kan niet worden gedeeld, omdat het werd gedeeld zonder verder delen toestemming.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="211"/>
+        <location filename="../src/gui/sharedialog.cpp" line="216"/>
         <source>Users and Groups</source>
         <translation>Gebruikers en Groepen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="218"/>
+        <location filename="../src/gui/sharedialog.cpp" line="223"/>
         <source>Public Links</source>
         <translation>Openbare Links</translation>
     </message>
@@ -4022,7 +4027,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="791"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1149"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1146"/>
         <source>About %1</source>
         <translation>About %1</translation>
     </message>

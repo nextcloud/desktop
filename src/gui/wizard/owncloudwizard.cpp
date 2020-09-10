@@ -48,11 +48,10 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _account(nullptr)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
-    , _browserCredsPage(new OwncloudOAuthCredsPage)
+    , _oauthCredsPage(new OwncloudOAuthCredsPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage)
     , _resultPage(new OwncloudWizardResultPage)
     , _credentialsPage(nullptr)
-    , _setupLog()
 {
     setObjectName("owncloudWizard");
     auto size = ocApp()->gui()->settingsDialog()->minimumSizeHint();
@@ -61,7 +60,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
-    setPage(WizardCommon::Page_OAuthCreds, _browserCredsPage);
+    setPage(WizardCommon::Page_OAuthCreds, _oauthCredsPage);
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
     setPage(WizardCommon::Page_Result, _resultPage);
 
@@ -74,7 +73,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(this, &QWizard::currentIdChanged, this, &OwncloudWizard::slotCurrentPageChanged);
     connect(_setupPage, &OwncloudSetupPage::determineAuthType, this, &OwncloudWizard::determineAuthType);
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
-    connect(_browserCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
+    connect(_oauthCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
 
@@ -154,7 +153,7 @@ void OwncloudWizard::successfulStep()
         break;
 
     case WizardCommon::Page_OAuthCreds:
-        _browserCredsPage->setConnected();
+        _oauthCredsPage->setConnected();
         break;
 
     case WizardCommon::Page_AdvancedSetup:
@@ -171,11 +170,17 @@ void OwncloudWizard::successfulStep()
     next();
 }
 
+DetermineAuthTypeJob::AuthType OwncloudWizard::authType() const
+{
+    return _authType;
+}
+
 void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
+    _authType = type;
     _setupPage->setAuthType(type);
     if (type == DetermineAuthTypeJob::AuthType::OAuth) {
-        _credentialsPage = _browserCredsPage;
+        _credentialsPage = _oauthCredsPage;
     } else { // try Basic auth even for "Unknown"
         _credentialsPage = _httpCredsPage;
     }
@@ -198,12 +203,6 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         // Immediately close on show, we currently don't want this page anymore
         done(Accepted);
     }
-
-    if (id == WizardCommon::Page_AdvancedSetup && _credentialsPage == _browserCredsPage) {
-        // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
-        // to re-open the browser.
-        button(QWizard::BackButton)->setEnabled(false);
-    }
 }
 
 void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
@@ -225,7 +224,6 @@ void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
 
 void OwncloudWizard::appendToConfigurationLog(const QString &msg, LogType /*type*/)
 {
-    _setupLog << msg;
     qCDebug(lcWizard) << "Setup-Log: " << msg;
 }
 

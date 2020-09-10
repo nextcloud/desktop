@@ -83,6 +83,8 @@ public:
     QSslKey _clientSslKey; // key extracted from pkcs12
     QSslCertificate _clientSslCertificate; // cert extracted from pkcs12
 
+    DetermineAuthTypeJob::AuthType authType() const;
+
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
     void setRemoteFolder(const QString &);
@@ -103,12 +105,11 @@ private:
     AccountPtr _account;
     OwncloudSetupPage *_setupPage;
     OwncloudHttpCredsPage *_httpCredsPage;
-    OwncloudOAuthCredsPage *_browserCredsPage;
+    OwncloudOAuthCredsPage *_oauthCredsPage;
     OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage;
     AbstractCredentialsWizardPage *_credentialsPage;
-
-    QStringList _setupLog;
+    DetermineAuthTypeJob::AuthType _authType;
 
     friend class OwncloudSetupWizard;
 };

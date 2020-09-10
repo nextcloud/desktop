@@ -446,11 +446,6 @@ QPixmap Theme::wizardHeaderBanner(const QSize &size) const
 }
 #endif
 
-bool Theme::wizardSelectiveSyncDefaultNothing() const
-{
-    return false;
-}
-
 QString Theme::webDavPath() const
 {
     return QLatin1String("remote.php/webdav/");

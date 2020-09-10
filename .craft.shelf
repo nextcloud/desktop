@@ -46,7 +46,7 @@ version = 0.32.3
 version = 1_1_3
 
 [dev-utils/kshimgen]
-version = 0.4.0
+version = 0.4.2
 
 [dev-utils/libtool]
 version = 2.4.6

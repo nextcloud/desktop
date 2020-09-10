@@ -653,6 +653,20 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 
 void PropagateUploadFileCommon::finalize()
 {
+    if (_item->_remotePerm.isNull()) {
+        qCWarning(lcPropagateUpload) << "PropagateUploadFileCommon::finalize: Missing permissions for" << _item->_file;
+        auto permCheck = new PropfindJob(propagator()->account(), _item->_file);
+        _jobs.append(permCheck);
+        permCheck->setProperties({ "http://owncloud.org/ns:permissions" });
+        connect(permCheck, &PropfindJob::result, this, [this, permCheck](const QVariantMap &map) {
+            _item->_remotePerm = RemotePermissions::fromServerString(map.value("permissions").toString());
+            finalize();
+            slotJobDestroyed(permCheck);
+        });
+        connect(permCheck, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+        permCheck->start();
+        return;
+    }
     // Update the quota, if known
     auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
     if (quotaIt != propagator()->_folderQuota.end())
