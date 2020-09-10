@@ -24,6 +24,11 @@ if(FUSE_FOUND AND NOT BUILD_LIBRARIES_ONLY)
     list (APPEND OS_SPECIFIC_LINK_LIBRARIES ${FUSE_LIBRARIES})
 endif()
 
+if(DOKAN_FOUND AND NOT BUILD_LIBRARIES_ONLY)
+    message("Adding Dokan Library")
+    list (APPEND OS_SPECIFIC_LINK_LIBRARIES ${DOKAN_LIBRARIES})
+endif()
+
 set(libsync_SRCS
     account.cpp
     wordlist.cpp

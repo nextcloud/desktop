@@ -200,6 +200,11 @@ if(BUILD_CLIENT)
    find_package(GLib2)
    find_package(Gio)
    find_package(Libcloudproviders)
+
+if( WIN32 )
+    find_package(Dokan REQUIRED)
+    include_directories(BEFORE ${DOKAN_INCLUDE_DIR})
+endif()
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)
