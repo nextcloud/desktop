@@ -13,6 +13,8 @@ Summary
 * Bugfix - Fix support of adler32 checksums with Windows virtual files support: [#7999](https://github.com/owncloud/client/issues/7999)
 * Bugfix - Use the correct style for the folder wizard: [#8027](https://github.com/owncloud/client/pull/8027)
 * Bugfix - Use the same HDPI for the crash reporter as for the client: [#8042](https://github.com/owncloud/client/issues/8042)
+* Bugfix - The back button on the advanced wizard page no longer gets enabled: [#8051](https://github.com/owncloud/client/issues/8051)
+* Bugfix - Ensure permissions for newly added files are available: [#8066](https://github.com/owncloud/client/issues/8066)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
 * Change - The password dialog is hidden behind a window: [#7833](https://github.com/owncloud/client/issues/7833)
@@ -30,6 +32,7 @@ Summary
 * Change - Move sync hidden files to advanced settings: [#8020](https://github.com/owncloud/client/issues/8020)
 * Change - Replace the old icons with a unified look: [#8038](https://github.com/owncloud/client/pull/8038)
 * Change - Sharing dialog is now always on top of the settings dialog: [#8050](https://github.com/owncloud/client/pull/8050)
+* Change - Remove the branding option `wizardSelectiveSyncDefaultNothing`: [#8064](https://github.com/owncloud/client/pull/8064)
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
@@ -70,6 +73,20 @@ Details
    We fixed the behaviour of the crash reporter on HDPI screens.
 
    https://github.com/owncloud/client/issues/8042
+
+* Bugfix - The back button on the advanced wizard page no longer gets enabled: [#8051](https://github.com/owncloud/client/issues/8051)
+
+   We fixed a bug where the back button in the advanced wizard page get re enabled.
+
+   https://github.com/owncloud/client/issues/8051
+
+* Bugfix - Ensure permissions for newly added files are available: [#8066](https://github.com/owncloud/client/issues/8066)
+
+   We fixed a bug where newly added files had no server permissions set. Under certain conditions
+   that was leading to an undefined behaviour.
+
+   https://github.com/owncloud/client/issues/8066
+   https://github.com/owncloud/client/issues/7967
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
@@ -178,6 +195,14 @@ Details
    The sharing dialog is now a sub dialog, so it will be easier to continue sharing a folder.
 
    https://github.com/owncloud/client/pull/8050
+
+* Change - Remove the branding option `wizardSelectiveSyncDefaultNothing`: [#8064](https://github.com/owncloud/client/pull/8064)
+
+   The branding option was removed as believe that it did not provide a good user experience. We
+   recommend `newBigFolderSizeLimit` together with `wizardHideFolderSizeLimitCheckbox`
+   as a replacement.
+
+   https://github.com/owncloud/client/pull/8064
 
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 
