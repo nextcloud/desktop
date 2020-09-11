@@ -104,6 +104,10 @@ public:
     Optional<std::chrono::hours> automaticDeleteOldLogsAge() const;
     void setAutomaticDeleteOldLogsAge(Optional<std::chrono::hours> expireTime);
 
+    /** Whether to log http traffic */
+    void setLogHttp(bool b);
+    bool logHttp() const;
+
     // Whether experimental UI options should be shown
     bool showExperimentalOptions() const;
 

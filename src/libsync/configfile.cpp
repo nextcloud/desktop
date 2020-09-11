@@ -14,11 +14,11 @@
 
 #include "config.h"
 
-#include "configfile.h"
-#include "theme.h"
-#include "version.h"
 #include "common/utility.h"
 #include "common/asserts.h"
+#include "configfile.h"
+#include "logger.h"
+#include "theme.h"
 #include "version.h"
 
 #include "creds/abstractcredentials.h"
@@ -48,7 +48,9 @@ namespace OCC {
 namespace chrono = std::chrono;
 
 Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
-
+namespace  {
+const QString logHttpC() { return QStringLiteral("logHttp"); }
+}
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
@@ -104,6 +106,7 @@ static chrono::milliseconds millisecondsValue(const QSettings &setting, const ch
 ConfigFile::ConfigFile()
 {
     // QDesktopServices uses the application name to create a config path
+    // TODO: we use multiple calls to setApplicationName with different arguments...
     qApp->setApplicationName(Theme::instance()->appNameGUI());
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
@@ -113,6 +116,13 @@ ConfigFile::ConfigFile()
 
     QSettings settings(config, QSettings::IniFormat);
     settings.beginGroup(defaultConnection());
+
+    // run init only once
+    static bool init = [this]() {
+        setLogHttp(logHttp());
+        return false;
+    }();
+    Q_UNUSED(init);
 }
 
 bool ConfigFile::setConfDir(const QString &value)
@@ -798,6 +808,24 @@ void ConfigFile::setAutomaticDeleteOldLogsAge(Optional<chrono::hours> expireTime
     } else {
         settings.setValue(QLatin1String(deleteOldLogsAfterHoursC), QVariant::fromValue(expireTime->count()));
     }
+}
+
+void ConfigFile::setLogHttp(bool b)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(logHttpC(), b);
+    const QSet<QString> rule = { QStringLiteral("sync.httplogger=true") };
+    if (b) {
+        Logger::instance()->addLogRule(rule);
+    } else {
+        Logger::instance()->removeLogRule(rule);
+    }
+}
+
+bool ConfigFile::logHttp() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(logHttpC(), false).toBool();
 }
 
 bool ConfigFile::showExperimentalOptions() const
