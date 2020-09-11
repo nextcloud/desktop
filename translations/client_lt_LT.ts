@@ -538,12 +538,12 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="350"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Failai, pažymėti kaip ingoruotini, kaip ir simbolinės nuorodos nėra sinchronizuojami. Tai įtraukia:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="452"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Jei norite matyti daugiau veiklos, atidarykite programą Veikla.</translation>
     </message>
@@ -3538,45 +3538,50 @@ Patariama jo nenaudoti.</translation>
         <translation>Pakartoti visus įkėlimus</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
-        <source>You renamed</source>
-        <translation>Jūs pervadinote</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
+        <source>Synced %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
-        <source>You deleted</source>
-        <translation>Jūs ištrynėte</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
+        <source>You renamed %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
-        <source>You created</source>
-        <translation>Jūs sukūrėte</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
+        <source>You deleted %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
-        <source>You changed</source>
-        <translation>Jūs pakeitėte</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
+        <source>You created %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <source>You changed %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="705"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>Confirm Account Removal</source>
         <translation>Patvirtinti paskyros šalinimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ar tikrai norite pašalinti ryšį su paskyra &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Pastaba:&lt;/b&gt; Tai &lt;b&gt;neištrins&lt;/b&gt; jokių failų.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="711"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Remove connection</source>
         <translation>Šalinti ryšį</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
         <source>Cancel</source>
         <translation>Atsisakyti</translation>
     </message>
@@ -4147,17 +4152,7 @@ Patariama jo nenaudoti.</translation>
         <translation>Išeiti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
-        <source>Open sync item locally</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
-        <source>Open URL</source>
-        <translation>Atverti URL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="565"/>
+        <location filename="../src/gui/tray/Window.qml" line="571"/>
         <source>Open share dialog</source>
         <translation>Atverti bendrinimo dialogą</translation>
     </message>

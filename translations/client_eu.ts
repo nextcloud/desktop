@@ -539,12 +539,12 @@ Itxaron berriro sinkronizatu arte, ondoren enkriptatu.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="350"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Ez-ikusien zerrendako fitxategiak eta esteka sinbolikoak ez dira sinkronizatuko. Hauek:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="452"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Jarduera gehiagorako ireki Jarduerak aplikazioa.</translation>
     </message>
@@ -3542,45 +3542,50 @@ Ez da gomendagarria erabiltzea.</translation>
         <translation>Saiatu dena berriro kargatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
-        <source>You renamed</source>
-        <translation>Izena aldatu diozu</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
+        <source>Synced %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
-        <source>You deleted</source>
-        <translation>Ezabatu duzu</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
+        <source>You renamed %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
-        <source>You created</source>
-        <translation>Sortu duzu</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
+        <source>You deleted %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
-        <source>You changed</source>
-        <translation>Aldatu duzu</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
+        <source>You created %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <source>You changed %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="705"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>Confirm Account Removal</source>
         <translation>Baieztatu kontua kentzea</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ziur zaude &lt;i&gt;%1&lt;/i&gt; kontura konexioa kendu nahi duzula?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt; Honek &lt;b&gt;ez&lt;/b&gt; du fitxategirik ezabatuko.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="711"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Remove connection</source>
         <translation>Kendu konexioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
         <source>Cancel</source>
         <translation>Utzi</translation>
     </message>
@@ -4151,17 +4156,7 @@ Ez da gomendagarria erabiltzea.</translation>
         <translation>Irten</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
-        <source>Open sync item locally</source>
-        <translation>Ireki sinkronizazio elementua lokalki</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
-        <source>Open URL</source>
-        <translation>Ireki URLa</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="565"/>
+        <location filename="../src/gui/tray/Window.qml" line="571"/>
         <source>Open share dialog</source>
         <translation>Ireki partekatzeko elkarrizketa-koadroa</translation>
     </message>

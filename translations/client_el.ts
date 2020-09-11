@@ -539,12 +539,12 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="350"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Τα αρχεία από την λίστα αγνόησης αλλά και των συμβολικών συνδέσμων δεν θα συνχρονιστούν. Περιλαμβάνει: </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="452"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Για εμφάνιση περισσότερων δραστηριοτήτων παρακαλώ ανοίξτε την εφαρμογή Activity.</translation>
     </message>
@@ -3540,45 +3540,50 @@ It is not advisable to use it.</source>
         <translation>Επανάληψη όλων των μεταφορτώσεων</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
-        <source>You renamed</source>
-        <translation>Μετονομάσατε</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
+        <source>Synced %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
-        <source>You deleted</source>
-        <translation>Διαγράψατε</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
+        <source>You renamed %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
-        <source>You created</source>
-        <translation>Δημιουργήσατε</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
+        <source>You deleted %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
-        <source>You changed</source>
-        <translation>Αλλάξατε</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
+        <source>You created %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <source>You changed %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="705"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>Confirm Account Removal</source>
         <translation>Επιβεβαίωση Αφαίρεσης Λογαριασμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Θέλετε πραγματικά να αφαιρέσετε τη σύνδεση με το λογαριασμό &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="711"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Remove connection</source>
         <translation>Αφαίρεση σύνδεσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
         <source>Cancel</source>
         <translation>Ακύρωση</translation>
     </message>
@@ -4149,17 +4154,7 @@ It is not advisable to use it.</source>
         <translation>Έξοδος</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
-        <source>Open sync item locally</source>
-        <translation>Άνοιγμα τοπικά συγχρονισμένου στοιχείου</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
-        <source>Open URL</source>
-        <translation>Άνοιγμα URL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="565"/>
+        <location filename="../src/gui/tray/Window.qml" line="571"/>
         <source>Open share dialog</source>
         <translation>Άνοιγμα του διαλόγου διαμοιρασμού</translation>
     </message>

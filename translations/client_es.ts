@@ -539,12 +539,12 @@ Espere a una nueva sincronización, luego cifrala.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="356"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="350"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Los archivos de la la lista de ignorados así como los enlace simbólicos no están sincronizados: Esto incluye:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="458"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="452"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Para más detalles, por favor, abre la app Actividades.</translation>
     </message>
@@ -3541,45 +3541,50 @@ No se recomienda usarla.</translation>
         <translation>Reintentar todas las subidas</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="372"/>
-        <source>You renamed</source>
-        <translation>Has renombrado</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
+        <source>Synced %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
-        <source>You deleted</source>
-        <translation>Has eliminado</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
+        <source>You renamed %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
-        <source>You created</source>
-        <translation>Has creado</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
+        <source>You deleted %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
-        <source>You changed</source>
-        <translation>Has cambiado</translation>
+        <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
+        <source>You created %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <source>You changed %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="705"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>Confirm Account Removal</source>
         <translation>Confirma  la eliminación de cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;¿De verdad quieres eliminar la conexión con la cuenta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Esto &lt;b&gt;no eliminará&lt;/b&gt; ningún archivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="711"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Remove connection</source>
         <translation>Eliminar vinculación</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -4150,17 +4155,7 @@ No se recomienda usarla.</translation>
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
-        <source>Open sync item locally</source>
-        <translation>Abrir en local el objeto sincronizado</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
-        <source>Open URL</source>
-        <translation>Abrir URL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="565"/>
+        <location filename="../src/gui/tray/Window.qml" line="571"/>
         <source>Open share dialog</source>
         <translation>Abrir diálogo de compartir</translation>
     </message>
