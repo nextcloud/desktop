@@ -49,8 +49,6 @@ public:
     void doLog(const QString &log);
     void close();
 
-    static void mirallLog(const QString &message);
-
     const QList<Log> &logs() const { return _logs; }
 
     static Logger *instance();

@@ -152,15 +152,6 @@ void Logger::close()
     }
 }
 
-void Logger::mirallLog(const QString &message)
-{
-    Log log_;
-    log_.timeStamp = QDateTime::currentDateTimeUtc();
-    log_.message = message;
-
-    Logger::instance()->log(log_);
-}
-
 void Logger::setLogFile(const QString &name)
 {
     QMutexLocker locker(&_mutex);
@@ -248,8 +239,9 @@ void Logger::disableTemporaryFolderLogDir()
 
 void Logger::setLogRules(const QSet<QString> &rules)
 {
+    static const QString defaultRule = qEnvironmentVariable("QT_LOGGING_RULES").replace(QLatin1Char(';'), QLatin1Char('\n'));
     _logRules = rules;
-    QLoggingCategory::setFilterRules(rules.toList().join(QLatin1Char('\n')));
+    QLoggingCategory::setFilterRules(rules.toList().join(QLatin1Char('\n')) + QLatin1Char('\n') + defaultRule);
 }
 
 static bool compressLog(const QString &originalName, const QString &targetName)
