@@ -14,6 +14,7 @@
  */
 #include <QtGlobal>
 
+#include <cmath>
 #include <csignal>
 
 #ifdef Q_OS_UNIX
@@ -34,6 +35,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QQuickStyle>
+#include <QQuickWindow>
 
 using namespace OCC;
 
@@ -98,6 +100,15 @@ int main(int argc, char **argv)
         app.showVersion();
         return 0;
     }
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
+#else
+    // See https://bugreports.qt.io/browse/QTBUG-70481
+    if (std::fmod(app.devicePixelRatio(), 1) == 0) {
+        QQuickWindow::setTextRenderType(QQuickWindow::NativeTextRendering);
+    }
+#endif
 
 // check a environment variable for core dumps
 #ifdef Q_OS_UNIX
