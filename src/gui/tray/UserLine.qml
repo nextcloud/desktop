@@ -123,9 +123,12 @@ MenuItem {
                     id: userMoreButtonMouseArea
                     anchors.fill: parent
                     hoverEnabled: true
-                    onClicked:
-                    {
-                        userMoreButtonMenu.popup()
+                    onClicked: {
+                        if (userMoreButtonMenu.visible) {
+                            userMoreButtonMenu.close()
+                        } else {
+                            userMoreButtonMenu.popup()
+                        }
                     }
                 }
                 background:
@@ -139,6 +142,7 @@ MenuItem {
                 Menu {
                     id: userMoreButtonMenu
                     width: 120
+                    closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                     background: Rectangle {
                         border.color: Style.menuBorder
