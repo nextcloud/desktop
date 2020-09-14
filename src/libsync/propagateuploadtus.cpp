@@ -81,7 +81,9 @@ SimpleNetworkJob *PropagateUploadFileTUS::makeCreationWithUploadJob(QNetworkRequ
     Q_ASSERT(propagator()->account()->capabilities().tusSupport().extensions.contains(QStringLiteral("creation-with-upload")));
     // in difference to the old protocol the algrithm and the value are space seperated
     const auto checkSum = _transmissionChecksumHeader.replace(':', ' ').toBase64();
-    request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), "filename " + _item->_file.toUtf8().toBase64() + ",checksum " + checkSum);
+    const QString filePath = propagator()->_remoteFolder + _item->_file;
+    qCDebug(lcPropagateUploadTUS) << "FullPath:" << filePath;
+    request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), "filename " + filePath.toUtf8().toBase64() + ",checksum " + checkSum);
     request->setRawHeader(QByteArrayLiteral("Upload-Length"), QByteArray::number(_item->_size));
     return propagator()->account()->sendRequest("POST", uploadURL(propagator()->account()), *request, device);
 }
