@@ -43,7 +43,7 @@ MenuItem {
 
                 background: Item {
                     height: parent.height
-                    width: parent.menu.width
+                    width: userLine.menu ? userLine.menu.width : 0
                     Rectangle {
                         anchors.fill: parent
                         anchors.margins: 1
