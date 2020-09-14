@@ -147,7 +147,11 @@ Window {
                         // exactly below the dropdown button, not the mouse
                         onClicked: {
                             syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
-                            accountMenu.open()
+                            if (accountMenu.visible) {
+                                accountMenu.close()
+                            } else {
+                                accountMenu.open()
+                            }
                         }
 
                         Menu {
@@ -160,7 +164,7 @@ Window {
 
                             width: (Style.currentAccountButtonWidth - 2)
                             height: Math.min(implicitHeight, maxMenuHeight)
-                            closePolicy: "CloseOnPressOutside"
+                            closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                             background: Rectangle {
                                 border.color: Style.menuBorder
@@ -387,10 +391,12 @@ Window {
                     id: trayWindowAppsButton
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
                     onClicked: {
-                        if(appsMenu.count > 0) {
-                            appsMenu.open()
-                        } else {
+                        if(appsMenu.count <= 0) {
                             UserModel.openCurrentAccountServer()
+                        } else if (appsMenu.visible) {
+                            appsMenu.close()
+                        } else {
+                            appsMenu.open()
                         }
                     }
 
@@ -400,7 +406,7 @@ Window {
                         readonly property Item listContentItem: contentItem.contentItem
                         width: Math.min(listContentItem.childrenRect.width + 4, Style.trayWindowWidth / 2)
                         height: Math.min(implicitHeight, maxMenuHeight)
-                        closePolicy: "CloseOnPressOutside"
+                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
                             border.color: Style.menuBorder
