@@ -525,6 +525,7 @@ public:
     bool enableSetVolumeName();
     void fuseInit();
     void fuseDestroy();
+    bool closeExternally = true;
 
     bool fillStatfsBuffer(struct statfs *stbuf, QString path, QVariantMap &error);
     bool fillStatBuffer(struct stat *stbuf, QString path, QVariant userData, QVariantMap &error);

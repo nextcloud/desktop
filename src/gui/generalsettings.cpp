@@ -281,7 +281,7 @@ void GeneralSettings::slotToggleOptionalVirtualFileSystem(bool enable)
             emit mountVirtualDrive(ai.data());
         }
     } else {
-        VfsMac::instance()->unmount();
+        VfsMacController::instance()->unmount();
     }
 #endif
 

@@ -16,6 +16,7 @@
 #include "vfs_mac.h"
 #include "fileManager.h"
 #include "discoveryphase.h"
+#include "folderman.h"
 
 #include <sys/param.h>
 #include <sys/mount.h>
@@ -595,11 +596,11 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                 }
 
                 const auto relativePath = _fileListMap.value(path)->list.at(i)->path;
-                const auto folder = FolderMan::instance()->folderForPath(completePath);
+                const auto folder = OCC::FolderMan::instance()->folderForPath(completePath);
                 const auto journal = folder->journalDb();
 
                 // set all by default as online
-                journal->setSyncMode(relativePath, SyncJournalDb::SYNCMODE_ONLINE);
+                journal->setSyncMode(relativePath, OCC::SyncJournalDb::SYNCMODE_ONLINE);
             }
             //        qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
         }
