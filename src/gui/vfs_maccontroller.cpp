@@ -21,6 +21,16 @@
 
 #include <AvailabilityMacros.h>
 
+VfsMacController* VfsMacController::_instance = 0;
+
+VfsMacController *VfsMacController::instance()
+{
+    if (_instance == 0) {
+        _instance = new VfsMacController();
+    }
+
+    return _instance;
+}
 
 void VfsMacController::mountFailed(QVariantMap userInfo)
 {
@@ -40,34 +50,57 @@ void VfsMacController::didMount(QVariantMap userInfo)
     qDebug() << "Got didMount notification.";
 
     QString mountPath = userInfo.value(kGMUserFileSystemMountPathKey).toString();
-    /*QMessageBox alert;
-    alert.setText(tr(QString("Mounted at: %1").arg(mountPath).toLatin1().data()));
-    alert.exec();
-     */
 }
 
 void VfsMacController::didUnmount(QVariantMap userInfo)
 {
+    Q_UNUSED(userInfo);
     qDebug() << "Got didUnmount notification.";
+    if (fuse->closeExternally) {
+        QApplication::quit();
+    }
+    fuse->closeExternally = true;
+}
 
-    QApplication::quit();
+void VfsMacController::mount()
+{
+    if (fuse) {
+        fuse->mountAtPath(mountPath, options);
+    }
 }
 
 void VfsMacController::unmount()
 {
-    fs_->unmount();
+    if (fuse) {
+        fuse->closeExternally = false;
+        fuse->unmount();
+    }
+}
+
+void VfsMacController::cleanCacheFolder()
+{
+    QDir mirror_path(rootPath);
+
+    sleep(1000);
+    mirror_path.removeRecursively();
 }
 
 void VfsMacController::slotquotaUpdated(qint64 total, qint64 used)
 {
-    fs_->setTotalQuota(total);
-    fs_->setUsedQuota(used);
+    fuse->setTotalQuota(total);
+    fuse->setUsedQuota(used);
 }
 
-VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent)
-    : QObject(parent)
-    , fs_(new VfsMac(rootPath, false, accountState, this))
+void VfsMacController::initialize(const QString rootPath, const QString mountPath, OCC::AccountState *accountState)
 {
+    this->rootPath = rootPath;
+    this->mountPath = mountPath;
+
+    fuse = new VfsMac(rootPath, false, accountState, this);
+
+    cfgFile.setDefaultFileStreamMirrorPath(rootPath);
+    cfgFile.setDefaultFileStreamSyncPath(mountPath);
+
     QFileInfo root(rootPath);
     if (root.exists() && !root.isDir()) {
         QFile().remove(rootPath);
@@ -75,19 +108,15 @@ VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::Acc
     if (!root.exists()) {
         QDir().mkdir(rootPath);
     }
-    qi_ = new OCC::QuotaInfo(accountState, this);
 
-    connect(qi_, &OCC::QuotaInfo::quotaUpdated, this, &VfsMacController::slotquotaUpdated);
-    connect(fs_.data(), &VfsMac::FuseFileSystemDidMount, this, didMount);
-    connect(fs_.data(), &VfsMac::FuseFileSystemMountFailed, this, mountFailed);
-    connect(fs_.data(), &VfsMac::FuseFileSystemDidUnmount, this, didUnmount);
-
-    qi_->setActive(true);
+    connect(fuse, &VfsMac::FuseFileSystemDidMount, this, &VfsMacController::didMount);
+    connect(fuse, &VfsMac::FuseFileSystemMountFailed, this, &VfsMacController::mountFailed);
+    connect(fuse, &VfsMac::FuseFileSystemDidUnmount, this, &VfsMacController::didUnmount);
 
     QStringList options;
 
     QFileInfo icons(QCoreApplication::applicationDirPath() + "/../Resources/Nextcloud.icns");
-    QString volArg = QString("volicon=%1").arg(icons.canonicalFilePath());
+    const auto volArg = QString("volicon=%1").arg(icons.canonicalFilePath());
 
     options.append(volArg);
 
@@ -100,10 +129,21 @@ VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::Acc
     options.append("local");
 
     options.append("volname=" + QApplication::applicationName() + "FS");
-    fs_->mountAtPath(mountPath, options);
+    fuse->mountAtPath(mountPath, options);
 }
 
-/*VfsMacController::~VfsMacController()
+VfsMacController::VfsMacController()
 {
-    //fs_->unmount();
-}*/
+
+}
+
+VfsMacController::~VfsMacController()
+{
+    if (fuse) {
+        disconnect(fuse, &VfsMac::FuseFileSystemDidMount, this, &VfsMacController::didMount);
+        disconnect(fuse, &VfsMac::FuseFileSystemMountFailed, this, &VfsMacController::mountFailed);
+        disconnect(fuse, &VfsMac::FuseFileSystemDidUnmount, this, &VfsMacController::didUnmount);
+    }
+
+    _instance = 0;
+}

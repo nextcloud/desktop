@@ -195,6 +195,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     connect(&_userInfo, &UserInfo::quotaUpdated,
         this, &AccountSettings::slotUpdateQuota);
+#if defined(Q_OS_MAC)
+    connect(&_userInfo, &UserInfo::quotaUpdated,
+        this, &AccountSettings::slotUpdateQuota);
+#endif
 
     // Connect E2E stuff
     connect(this, &AccountSettings::requesetMnemonic, _accountState->account()->e2e(), &ClientSideEncryption::slotRequestMnemonic);
