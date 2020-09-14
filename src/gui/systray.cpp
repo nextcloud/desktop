@@ -211,7 +211,9 @@ QScreen *Systray::currentScreen() const
         }
     }
 
-    return nullptr;
+    // Didn't find anything matching the cursor position,
+    // falling back to the primary screen
+    return QGuiApplication::primaryScreen();
 }
 
 Systray::TaskBarPosition Systray::taskbarOrientation() const
