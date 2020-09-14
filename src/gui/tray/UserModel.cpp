@@ -654,9 +654,6 @@ Q_INVOKABLE void UserModel::openCurrentAccountTalk()
 
 Q_INVOKABLE void UserModel::openCurrentAccountServer()
 {
-    // Don't open this URL when the QML appMenu pops up on click (see Window.qml)
-    if (appList().count() > 0)
-        return;
     if (_users.isEmpty())
         return;
 

@@ -2,7 +2,7 @@ import QtQml 2.1
 import QtQml.Models 2.1
 import QtQuick 2.9
 import QtQuick.Window 2.3
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 
@@ -387,22 +387,11 @@ Window {
                     id: trayWindowAppsButton
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
                     onClicked: {
-                        /*
-                        // The count() property was introduced in QtQuick.Controls 2.3 (Qt 5.10)
-                        // so we handle this with UserModel.openCurrentAccountServer()
-                        //
-                        // See UserModel::openCurrentAccountServer() to disable this workaround
-                        // in the future for Qt >= 5.10
-
-                        if(appsMenu.count() > 0) {
-                            appsMenu.popup();
+                        if(appsMenu.count > 0) {
+                            appsMenu.open()
                         } else {
-                            UserModel.openCurrentAccountServer();
+                            UserModel.openCurrentAccountServer()
                         }
-                        */
-
-                        appsMenu.open();
-                        UserModel.openCurrentAccountServer();
                     }
 
                     Menu {
