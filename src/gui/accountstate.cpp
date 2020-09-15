@@ -143,6 +143,7 @@ bool AccountState::isSignedOut() const
 void AccountState::signOutByUi()
 {
     account()->credentials()->forgetSensitiveData();
+    account()->clearCookieJar();
     setState(SignedOut);
 }
 
