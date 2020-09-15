@@ -2,7 +2,7 @@ import QtQml 2.1
 import QtQml.Models 2.1
 import QtQuick 2.9
 import QtQuick.Window 2.3
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 
@@ -147,7 +147,11 @@ Window {
                         // exactly below the dropdown button, not the mouse
                         onClicked: {
                             syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
-                            accountMenu.open()
+                            if (accountMenu.visible) {
+                                accountMenu.close()
+                            } else {
+                                accountMenu.open()
+                            }
                         }
 
                         Menu {
@@ -160,7 +164,7 @@ Window {
 
                             width: (Style.currentAccountButtonWidth - 2)
                             height: Math.min(implicitHeight, maxMenuHeight)
-                            closePolicy: "CloseOnPressOutside"
+                            closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                             background: Rectangle {
                                 border.color: Style.menuBorder
@@ -387,22 +391,13 @@ Window {
                     id: trayWindowAppsButton
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
                     onClicked: {
-                        /*
-                        // The count() property was introduced in QtQuick.Controls 2.3 (Qt 5.10)
-                        // so we handle this with UserModel.openCurrentAccountServer()
-                        //
-                        // See UserModel::openCurrentAccountServer() to disable this workaround
-                        // in the future for Qt >= 5.10
-
-                        if(appsMenu.count() > 0) {
-                            appsMenu.popup();
+                        if(appsMenu.count <= 0) {
+                            UserModel.openCurrentAccountServer()
+                        } else if (appsMenu.visible) {
+                            appsMenu.close()
                         } else {
-                            UserModel.openCurrentAccountServer();
+                            appsMenu.open()
                         }
-                        */
-
-                        appsMenu.open();
-                        UserModel.openCurrentAccountServer();
                     }
 
                     Menu {
@@ -411,7 +406,7 @@ Window {
                         readonly property Item listContentItem: contentItem.contentItem
                         width: Math.min(listContentItem.childrenRect.width + 4, Style.trayWindowWidth / 2)
                         height: Math.min(implicitHeight, maxMenuHeight)
-                        closePolicy: "CloseOnPressOutside"
+                        closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
                             border.color: Style.menuBorder
