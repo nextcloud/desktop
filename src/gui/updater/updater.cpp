@@ -70,31 +70,31 @@ QUrlQuery Updater::getQueryParams()
 {
     QUrlQuery query;
     Theme *theme = Theme::instance();
-    QString platform = QLatin1String("stranger");
+    QString platform = QStringLiteral("stranger");
     if (Utility::isLinux()) {
-        platform = QLatin1String("linux");
+        platform = QStringLiteral("linux");
     } else if (Utility::isBSD()) {
-        platform = QLatin1String("bsd");
+        platform = QStringLiteral("bsd");
     } else if (Utility::isWindows()) {
-        platform = QLatin1String("win32");
+        platform = QStringLiteral("win32");
     } else if (Utility::isMac()) {
-        platform = QLatin1String("macos");
+        platform = QStringLiteral("macos");
     }
 
     QString sysInfo = getSystemInfo();
     if (!sysInfo.isEmpty()) {
-        query.addQueryItem(QLatin1String("client"), sysInfo);
+        query.addQueryItem(QStringLiteral("client"), sysInfo);
     }
-    query.addQueryItem(QLatin1String("version"), clientVersion());
-    query.addQueryItem(QLatin1String("platform"), platform);
-    query.addQueryItem(QLatin1String("oem"), theme->appName());
+    query.addQueryItem(QStringLiteral("version"), clientVersion());
+    query.addQueryItem(QStringLiteral("platform"), platform);
+    query.addQueryItem(QStringLiteral("oem"), theme->appName());
 
-    QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-    query.addQueryItem(QLatin1String("versionsuffix"), suffix);
+    QString suffix = QStringLiteral(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    query.addQueryItem(QStringLiteral("versionsuffix"), suffix);
 
     auto channel = ConfigFile().updateChannel();
-    if (channel != "stable") {
-        query.addQueryItem(QLatin1String("channel"), channel);
+    if (channel != QLatin1String("stable")) {
+        query.addQueryItem(QStringLiteral("channel"), channel);
     }
 
     return query;
