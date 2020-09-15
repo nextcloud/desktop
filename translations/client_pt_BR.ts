@@ -3544,27 +3544,27 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 sincronizado</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Você renomeou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Você excluiu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Você criou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Você alterou %1</translation>
     </message>
 </context>
 <context>
