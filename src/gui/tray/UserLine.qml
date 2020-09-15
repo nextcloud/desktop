@@ -130,9 +130,7 @@ MenuItem {
 
                 Accessible.role: Accessible.ButtonMenu
                 Accessible.name: qsTr("Account actions")
-                Accessible.onPressAction: {
-                    userMoreButtonMenu.popup()
-                }
+                Accessible.onPressAction: userMoreButtonMouseArea.clicked()
 
                 MouseArea {
                     id: userMoreButtonMouseArea
@@ -187,12 +185,17 @@ MenuItem {
                         Accessible.name: isConnected ? qsTr("Log out") : qsTr("Log in")
 
                         onPressed: {
-                            isConnected ? UserModel.logout(index) : UserModel.login(index)
+                            if (isConnected) {
+                                UserModel.logout(index)
+                            } else {
+                                UserModel.login(index)
+                            }
                             accountMenu.close()
                         }
                     }
 
                     MenuItem {
+                        id: removeAccountButton
                         text: qsTr("Remove account")
                         font.pixelSize: Style.topLinePixelSize
                         hoverEnabled: true
@@ -213,11 +216,7 @@ MenuItem {
 
                         Accessible.role: Accessible.Button
                         Accessible.name: text
-
-                        Accessible.onPressAction: {
-                            UserModel.removeAccount(index)
-                            accountMenu.close()
-                        }
+                        Accessible.onPressAction: removeAccountButton.clicked()
                     }
                 }
             }

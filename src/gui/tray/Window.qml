@@ -139,10 +139,7 @@ Window {
 
                     Accessible.role: Accessible.ButtonMenu
                     Accessible.name: qsTr("Current account")
-                    Accessible.onPressAction: {
-                        syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
-                        accountMenu.open()
-                    }
+                    Accessible.onPressAction: currentAccountButton.clicked()
 
                     MouseArea {
                         id: accountBtnMouseArea
@@ -244,9 +241,7 @@ Window {
 
                                 Accessible.role: Accessible.MenuItem
                                 Accessible.name: qsTr("Add new account")
-                                Accessible.onPressAction: {
-                                    Systray.pauseResumeSync()
-                                }
+                                Accessible.onPressAction: addAccountButton.clicked()
                             }
 
                             MenuSeparator {
@@ -274,12 +269,11 @@ Window {
 
                                 Accessible.role: Accessible.MenuItem
                                 Accessible.name: Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
-                                Accessible.onPressAction: {
-                                    Systray.pauseResumeSync()
-                                }
+                                Accessible.onPressAction: syncPauseButton.clicked()
                             }
 
                             MenuItem {
+                                id: settingsButton
                                 text: qsTr("Settings")
                                 font.pixelSize: Style.topLinePixelSize
                                 hoverEnabled: true
@@ -297,12 +291,11 @@ Window {
 
                                 Accessible.role: Accessible.MenuItem
                                 Accessible.name: text
-                                Accessible.onPressAction: {
-                                    Systray.openSettings()
-                                }
+                                Accessible.onPressAction: settingsButton.clicked()
                             }
 
                             MenuItem {
+                                id: exitButton
                                 text: qsTr("Exit");
                                 font.pixelSize: Style.topLinePixelSize
                                 hoverEnabled: true
@@ -320,9 +313,7 @@ Window {
 
                                 Accessible.role: Accessible.MenuItem
                                 Accessible.name: text
-                                Accessible.onPressAction: {
-                                    Systray.shutdown()
-                                }
+                                Accessible.onPressAction: exitButton.clicked()
                             }
                         }
                     }
@@ -427,9 +418,7 @@ Window {
 
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Open local folder of current account")
-                    Accessible.onPressAction: {
-                        UserModel.openCurrentAccountLocalFolder()
-                    }
+                    Accessible.onPressAction: openLocalFolderButton.clicked()
                 }
 
                 HeaderButton {
@@ -441,9 +430,7 @@ Window {
 
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Open Nextcloud Talk in browser")
-                    Accessible.onPressAction: {
-                        UserModel.openCurrentAccountTalk()
-                    }
+                    Accessible.onPressAction: trayWindowTalkButton.clicked()
                 }
 
                 HeaderButton {
@@ -461,10 +448,7 @@ Window {
 
                     Accessible.role: Accessible.ButtonMenu
                     Accessible.name: qsTr("More apps")
-                    Accessible.onPressAction: {
-                        appsMenu.open();
-                        UserModel.openCurrentAccountServer();
-                    }
+                    Accessible.onPressAction: trayWindowAppsButton.clicked()
 
                     Menu {
                         id: appsMenu
@@ -509,9 +493,7 @@ Window {
 
                                 Accessible.role: Accessible.MenuItem
                                 Accessible.name: qsTr("Open ") + appName + qsTr(" in browser")
-                                Accessible.onPressAction: {
-                                    UserAppsModel.openAppUrl(appUrl)
-                                }
+                                Accessible.onPressAction: appEntry.triggered()
                             }
                         }
                     }
@@ -548,13 +530,7 @@ Window {
                 Accessible.role: Accessible.ListItem
                 Accessible.name: path !== "" ? qsTr("Open") + " " + displayPath + " " + qsTr("locally")
                                                     : message
-                Accessible.onPressAction: {
-                    if (path !== "") {
-                        Qt.openUrlExternally(path)
-                    } else {
-                        Qt.openUrlExternally(link)
-                    }
-                }
+                Accessible.onPressAction: activityMouseArea.clicked()
 
                 MouseArea {
                     id: activityMouseArea
@@ -667,9 +643,7 @@ Window {
 
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Share") + " " + displayPath
-                    Accessible.onPressAction: {
-                        Systray.openShareDialog(displayPath,absolutePath)
-                    }
+                    Accessible.onPressAction: shareButton.clicked()
                 }
             }
 
