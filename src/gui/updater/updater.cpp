@@ -88,6 +88,8 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("version"), clientVersion());
     query.addQueryItem(QStringLiteral("platform"), platform);
     query.addQueryItem(QStringLiteral("oem"), theme->appName());
+    query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
+    query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
 
     QString suffix = QStringLiteral(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
     query.addQueryItem(QStringLiteral("versionsuffix"), suffix);
