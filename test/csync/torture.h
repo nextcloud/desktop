@@ -24,9 +24,9 @@
 extern "C" {
 #endif
 
-#include <stdarg.h>
-#include <stddef.h>
-#include <setjmp.h>
+#include <stdarg.h> // NOLINT sometimes compiled in C mode
+#include <stddef.h> // NOLINT sometimes compiled in C mode
+#include <setjmp.h> // NOLINT sometimes compiled in C mode
 
 #include <cmocka.h>
 

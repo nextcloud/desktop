@@ -20,9 +20,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <string.h>
-#include <errno.h>
-#include <stdio.h>
+#include <cstring>
+#include <cerrno>
+#include <cstdio>
 
 #include "csync_private.h"
 #include "std/c_utf8.h"
@@ -94,7 +94,7 @@ static int setup_testenv(void **state) {
     c_free_locale_string(dir);
 
     /* --- initialize csync */
-    statevar *mystate = (statevar*)malloc( sizeof(statevar) );
+    auto *mystate = (statevar*)malloc( sizeof(statevar) );
     mystate->result = nullptr;
 
     mystate->csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
@@ -118,7 +118,7 @@ static void output( const char *text )
 }
 
 static int teardown(void **state) {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
     CSYNC *csync = sv->csync;
     int rc = 0;
 
@@ -187,7 +187,7 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
 {
     csync_vio_handle_t *dh = nullptr;
     std::unique_ptr<csync_file_stat_t> dirent;
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
     CSYNC *csync = sv->csync;
     char *subdir = nullptr;
     char *subdir_out = nullptr;
@@ -230,7 +230,7 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
             if( !sv->result ) {
                 sv->result = c_strdup( subdir_out);
             } else {
-                int newlen = 1+strlen(sv->result)+strlen(subdir_out);
+                const auto newlen = 1 + strlen(sv->result)+strlen(subdir_out);
                 char *tmp = sv->result;
                 sv->result = (char*)c_malloc(newlen);
                 strcpy( sv->result, tmp);
@@ -304,7 +304,7 @@ static void create_file( const char *path, const char *name, const char *content
 
 static void check_readdir_shorttree(void **state)
 {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
 
     const char *t1 = "alibaba/und/die/vierzig/räuber/";
     create_dirs( t1 );
@@ -323,7 +323,7 @@ static void check_readdir_shorttree(void **state)
 
 static void check_readdir_with_content(void **state)
 {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
     int files_cnt = 0;
 
     const char *t1 = "warum/nur/40/Räuber/";
@@ -347,7 +347,7 @@ static void check_readdir_with_content(void **state)
 
 static void check_readdir_longtree(void **state)
 {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
 
     /* Strange things here: Compilers only support strings with length of 4k max.
      * The expected result string is longer, so it needs to be split up in r1, r2 and r3
@@ -406,7 +406,7 @@ static void check_readdir_longtree(void **state)
 "<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI/Butteln/VOLL RUM";
 
     /* assemble the result string ... */
-    int overall_len = 1+strlen(r1)+strlen(r2)+strlen(r3);
+    const auto overall_len = 1 + strlen(r1) + strlen(r2) + strlen(r3);
     int files_cnt = 0;
     char *result = (char*)c_malloc(overall_len);
     *result = '\0';
@@ -424,13 +424,13 @@ static void check_readdir_longtree(void **state)
 // https://github.com/owncloud/client/issues/3128 https://github.com/owncloud/client/issues/2777
 static void check_readdir_bigunicode(void **state)
 {
-    statevar *sv = (statevar*) *state;
+    auto *sv = (statevar*) *state;
 //    1: ? ASCII: 239 - EF
 //    2: ? ASCII: 187 - BB
 //    3: ? ASCII: 191 - BF
 //    4: ASCII: 32    - 20
 
-    char *p = 0;
+    char *p = nullptr;
     asprintf( &p, "%s/%s", CSYNC_TEST_DIR, "goodone/" );
     int rc = _tmkdir(p, MKDIR_MASK);
     assert_int_equal(rc, 0);
