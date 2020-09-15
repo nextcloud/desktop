@@ -36,6 +36,7 @@ volumes:
 trigger:
   branch:
     - master
+    - stable-*
   event:
     - pull_request
     - push
@@ -86,6 +87,7 @@ volumes:
 trigger:
   branch:
     - master
+    - stable-*
   event:
     - pull_request
     - push
@@ -108,6 +110,7 @@ steps:
 trigger:
   branch:
     - master
+    - stable-*
   event:
     - pull_request
     - push
