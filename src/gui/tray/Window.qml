@@ -540,9 +540,9 @@ Window {
 
                     ToolTip {
                         visible: activityMouseArea.containsMouse
-                        text: activityTextTitle.text
+                        text: activityTextTitle.text + ((activityTextInfo.text !== "") ? "\n\n" + activityTextInfo.text : "")
                         delay: 250
-                        timeout: 3000
+                        timeout: 10000
                     }
                 }
                 Button {
