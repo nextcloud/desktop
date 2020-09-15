@@ -67,8 +67,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     // TODO: show checkbox once the virtual drive is NOT a experimental feature
     // #ifndef defined(Q_OS_UNIX)
-#if 0
     _ui->virtualFileSystemCheckbox->hide();
+#if 0
     connect(_ui->virtualFileSystemCheckbox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalVirtualFileSystem);
     connect(this, &GeneralSettings::mountVirtualDrive, AccountManager::instance(), &AccountManager::mountVirtualDriveForAccount);
