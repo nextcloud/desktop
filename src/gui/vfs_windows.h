@@ -16,6 +16,8 @@
 #ifndef VFS_WINDOWS_H
 #define VFS_WINDOWS_H
 
+#include "virtualdriveinterface.h"
+
 #include "dokan.h"
 #include "fileinfo.h"
 
@@ -40,15 +42,16 @@ public:
     void run();
 };
 
-class VfsWindows : public QObject
+class VfsWindows : public OCC::VirtualDriveInterface
 {
     Q_OBJECT
 public:
+    explicit VfsWindows(QObject *parent = nullptr);
     ~VfsWindows();
     static VfsWindows *instance();
     void initialize(AccountState *accountState);
-    void mount();
-    void unmount();
+    void mount() override;
+    void unmount() override;
     bool removeRecursively(const QString &dirName);
     bool removeDir();
 
@@ -75,7 +78,6 @@ public:
     QString getAvailableLogicalDrive();
 
 private:
-    VfsWindows();
     static VfsWindows *_instance;
     QMap<QString, OCC::DiscoveryDirectoryResult *> _fileListMap;
     QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;

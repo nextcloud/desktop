@@ -24,21 +24,22 @@
 #ifndef VFSMACCONTROLLER_H
 #define VFSMACCONTROLLER_H
 
-#include <QtCore>
+#include "virtualdriveinterface.h"
 
 #include "accountstate.h"
 #include "configfile.h"
 
 class VfsMac;
 
-class VfsMacController : public QObject
+class VfsMacController : public OCC::VirtualDriveInterface
 {
     Q_OBJECT
 public:
+    explicit VfsMacController(QObject *parent = nullptr);
     ~VfsMacController();
     static VfsMacController* instance();
-    void mount();
-    void unmount();
+    void mount() override;
+    void unmount() override;
     void cleanCacheFolder();
     void initialize(OCC::AccountState *accountState);
 
@@ -54,7 +55,6 @@ private:
     QStringList options;
     QString rootPath;
     QString mountPath;
-    explicit VfsMacController();
     OCC::ConfigFile cfgFile;
 };
 

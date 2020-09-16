@@ -133,9 +133,9 @@ void VfsMacController::initialize(OCC::AccountState *accountState)
     fuse->mountAtPath(mountPath, options);
 }
 
-VfsMacController::VfsMacController()
+VfsMacController::VfsMacController(QObject *parent)
+    : OCC::VirtualDriveInterface(parent)
 {
-
 }
 
 VfsMacController::~VfsMacController()

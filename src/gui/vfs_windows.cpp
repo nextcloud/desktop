@@ -2687,7 +2687,8 @@ void VfsWindows::initialize(AccountState *accountState)
     connect(_remotefileListJob, &OCC::DiscoveryFolderFileList::gotDataSignal, this, &VfsWindows::folderFileListFinish);
 }
 
-VfsWindows::VfsWindows()
+VfsWindows::VfsWindows(QObject *parent)
+    : OCC::VirtualDriveInterface(parent)
 {
 }
 
