@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Mostrar las notas de la versión"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "El/los proceso(s) ${APPLICATION_EXECUTABLE} debe(n) ser detenido(s).$\n¿Quiere que el instalador lo haga por usted?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Deteniendo el/los proceso(s) ${APPLICATION_EXECUTABLE}."

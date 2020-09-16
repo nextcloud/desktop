@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Sürüm notlarını göster"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Durdurulması gereken ${APPLICATION_EXECUTABLE} süreçleri bulundu.$\nYükleyicinin bunları sizin için durdurmasını ister misiniz?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "${APPLICATION_EXECUTABLE} süreçleri sonlandırılıyor."

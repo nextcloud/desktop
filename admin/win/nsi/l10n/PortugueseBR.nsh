@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Mostrar notas de lançamento"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Encontrados ${APPLICATION_EXECUTABLE} processo(s) que precisam ser interrompidos.$\nVocê quer que o instalador pare esses processos para você?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Desativando ${APPLICATION_EXECUTABLE} processos."

@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Release-Informationen anzeigen"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "${APPLICATION_EXECUTABLE} Prozess(e) gefunden, die gestoppt werden müssen.$\nWollen Sie, dass der Installer diese nun für Sie stoppt?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Stoppe ${APPLICATION_EXECUTABLE} Prozess(e)."

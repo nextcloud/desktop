@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Show release notes"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Found ${APPLICATION_EXECUTABLE} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Killing ${APPLICATION_EXECUTABLE} processes."

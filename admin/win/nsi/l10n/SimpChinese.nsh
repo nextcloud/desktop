@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "查看版本日志"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "有 ${APPLICATION_EXECUTABLE} 项进程需要关闭。$\n您想让安装程序关闭这些进程吗？"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "停止${APPLICATION_EXECUTABLE}进程。"

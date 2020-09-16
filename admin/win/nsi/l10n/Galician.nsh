@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Amosar as notas de publicación"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Atopáronse procesos ${APPLICATION_EXECUTABLE} que teñen que ser detidos.$\nQuere que sexa o instalador quen o(s) deteña?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Matando os procesos ${APPLICATION_EXECUTABLE}."

@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "リリースノートを表示"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "${APPLICATION_EXECUTABLE} のプロセスを終了する必要があります。$\nインストーラーがそのプロセスを停止してもよろしいですか？"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "${APPLICATION_EXECUTABLE} プロセスを停止しています。"
