@@ -3545,22 +3545,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="703"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmeu la supressió del compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="704"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Segur que voleu suprimir la connexió al compte &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; això &lt;b&gt;no&lt;/b&gt; suprimirà cap fitxer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="709"/>
         <source>Remove connection</source>
         <translation>Suprimeix la connexió</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="710"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
@@ -4012,17 +4012,17 @@ It is not advisable to use it.</source>
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Log out</source>
         <translation>Tanca la sessió</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="149"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Log in</source>
         <translation>Inicia la sessió</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="169"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Remove Account</source>
         <translation>Suprimeix el compte</translation>
     </message>
@@ -4116,22 +4116,22 @@ It is not advisable to use it.</source>
         <translation>Atura la sincronització de tot</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="213"/>
+        <location filename="../src/gui/tray/Window.qml" line="217"/>
         <source>Add account</source>
         <translation>Afegeix un compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="251"/>
+        <location filename="../src/gui/tray/Window.qml" line="255"/>
         <source>Settings</source>
         <translation>Paràmetres</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="268"/>
+        <location filename="../src/gui/tray/Window.qml" line="272"/>
         <source>Exit</source>
         <translation>Surt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="571"/>
+        <location filename="../src/gui/tray/Window.qml" line="566"/>
         <source>Open share dialog</source>
         <translation>Obre el quadre de diàleg de compartició</translation>
     </message>
