@@ -423,7 +423,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
         _ocWizard->appendToConfigurationLog(res);
     }
     if (nextStep) {
-        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), _ocWizard->account()->davPath() + remoteFolder, this);
+        EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), Utility::concatUrlPath(_ocWizard->account()->davPath(), remoteFolder).path(), this);
         connect(job, &EntityExistsJob::exists, this, &OwncloudSetupWizard::slotRemoteFolderExists);
         job->start();
     } else {
