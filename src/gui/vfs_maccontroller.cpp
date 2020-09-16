@@ -18,6 +18,7 @@
 
 #include "vfs_maccontroller.h"
 #include "vfs_mac.h"
+#include "theme.h"
 
 #include <AvailabilityMacros.h>
 
@@ -91,10 +92,10 @@ void VfsMacController::slotquotaUpdated(qint64 total, qint64 used)
     fuse->setUsedQuota(used);
 }
 
-void VfsMacController::initialize(const QString rootPath, const QString mountPath, OCC::AccountState *accountState)
+void VfsMacController::initialize(OCC::AccountState *accountState)
 {
-    this->rootPath = rootPath;
-    this->mountPath = mountPath;
+    rootPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";
+    mountPath = "/Volumes/" + OCC::Theme::instance()->appName() + "fs";
 
     fuse = new VfsMac(rootPath, false, accountState, this);
 

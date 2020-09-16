@@ -40,7 +40,7 @@ public:
     void mount();
     void unmount();
     void cleanCacheFolder();
-    void initialize(const QString rootPath, const QString mountPath, OCC::AccountState *accountState);
+    void initialize(OCC::AccountState *accountState);
 
 public slots:
     void slotquotaUpdated(qint64 total, qint64 used);

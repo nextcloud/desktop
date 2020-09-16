@@ -46,7 +46,7 @@ class VfsWindows : public QObject
 public:
     ~VfsWindows();
     static VfsWindows *instance();
-    void initialize(QString rootPath, WCHAR mountLetter, AccountState *accountState);
+    void initialize(AccountState *accountState);
     void mount();
     void unmount();
     bool removeRecursively(const QString &dirName);

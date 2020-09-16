@@ -2649,13 +2649,29 @@ QString VfsWindows::getAvailableLogicalDrive()
     return availableLetters.first().mid(0, 1);
 }
 
-void VfsWindows::initialize(QString rootPath, WCHAR mountLetter, AccountState *accountState_)
+void VfsWindows::initialize(AccountState *accountState)
 {
-    this->rootPath = rootPath;
-    this->mountLetter = mountLetter;
-    this->_accountState = accountState_;
-
     ConfigFile cfg;
+
+    QString m_defaultFileStreamSyncPath = cfg.defaultFileStreamSyncPath();
+    QString m_defaultFileStreamMirrorPath = cfg.defaultFileStreamMirrorPath();
+    QString m_defaultFileStreamLetterDrive = cfg.defaultFileStreamLetterDrive();
+    QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
+
+    if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
+        cfg.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/")
+            + Theme::instance()->appName());
+
+    if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
+        cfg.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
+
+    if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
+        cfg.setDefaultFileStreamLetterDrive(availableLogicalDrive);
+
+    rootPath = m_defaultStreamMirrorPath;
+    mountLetter = availableLogicalDrive.toStdWString().front();
+    _accountState = accountState;
+
     QDir path_mirror(cfg.defaultFileStreamMirrorPath());
     while (!path_mirror.exists()) {
         qDebug() << "\n Dokan: " << Q_FUNC_INFO << " !path_mirror.exists()" << cfg.defaultFileStreamMirrorPath();

@@ -354,9 +354,7 @@ void Application::slotMountVirtualDrive(AccountState *accountState)
 #if defined(Q_OS_MAC)
     ConfigFile configFile;
     if (configFile.enableVirtualFileSystem()) {
-        QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";
-        QString mountPath = "/Volumes/" + _theme->appName() + "fs";
-        VfsMacController::instance()->initialize(rootPath, mountPath, accountState);
+        VfsMacController::instance()->initialize(accountState);
         VfsMacController::instance()->mount();
     }
 #endif
@@ -364,25 +362,7 @@ void Application::slotMountVirtualDrive(AccountState *accountState)
 #if defined(Q_OS_WIN)
     ConfigFile configFile;
     if (configFile.enableVirtualFileSystem()) {
-        QString m_defaultFileStreamSyncPath = configFile.defaultFileStreamSyncPath();
-        QString m_defaultFileStreamMirrorPath = configFile.defaultFileStreamMirrorPath();
-        QString m_defaultFileStreamLetterDrive = configFile.defaultFileStreamLetterDrive();
-        QString availableLogicalDrive = VfsWindows::instance()->getAvailableLogicalDrive();
-
-        if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
-            configFile.setDefaultFileStreamSyncPath(availableLogicalDrive + QString(":/")
-                + Theme::instance()->appName());
-
-        if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
-            configFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
-
-        if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
-            configFile.setDefaultFileStreamLetterDrive(availableLogicalDrive);
-
-        //FIXME
-        WCHAR mountLetter[260] = L"X:\\";
-        wcscpy(mountLetter, availableLogicalDrive.toStdWString().c_str());
-        VfsWindows::instance()->initialize(m_defaultFileStreamMirrorPath, *mountLetter, accountState);
+        VfsWindows::instance()->initialize(accountState);
         VfsWindows::instance()->mount();
     }
 #endif
