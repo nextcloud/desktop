@@ -91,6 +91,7 @@ set(client_SRCS
     systray.cpp
     thumbnailjob.cpp
     userinfo.cpp
+    virtualdriveinterface.cpp
     accountstate.cpp
     addcertificatedialog.cpp
     authenticationdialog.cpp
