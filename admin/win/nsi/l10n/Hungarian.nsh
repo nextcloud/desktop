@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Kiadási jegyzetek megtekintése"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "A következő folyamatot(okat) meg kell állítani ${APPLICATION_EXECUTABLE}.$\nSzeretné ha a telepítő program megállítani ezeket a folyamatokat?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "${APPLICATION_EXECUTABLE} folyamat kilövése."

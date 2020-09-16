@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Afficher les notes de version"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Les processus ${APPLICATION_EXECUTABLE} en cours d’exécution doivent être stoppés avant de poursuivre.$\nVoulez-vous que le programme d’installation s’en charge pour vous ?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Fermeture des processus ${APPLICATION_EXECUTABLE}."

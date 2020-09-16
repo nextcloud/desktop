@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Näytä julkaisutiedot"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Havaittiin sovelluksen ${APPLICATION_EXECUTABLE} prosessi (tai prosesseja) jotka pitäisi pysäyttää.$\nHaluatko että asennusohjelma pysäyttää nämä puolestasi?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Pysäytetään sovelluksen ${APPLICATION_EXECUTABLE} prosessit."

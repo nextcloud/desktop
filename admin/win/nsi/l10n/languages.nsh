@@ -1,4 +1,3 @@
-; Auto-generated - do not modify
 !insertmacro MUI_LANGUAGE "Swedish"
 !insertmacro MUI_LANGUAGE "Estonian"
 !insertmacro MUI_LANGUAGE "Turkish"

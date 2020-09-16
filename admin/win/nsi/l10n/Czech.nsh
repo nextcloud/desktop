@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Zobrazit poznámky k vydání"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Nalezen proces(y) ${APPLICATION_EXECUTABLE}, které je nutné ukončit .$\nPřejete si, aby je instalátor za vás ukončil?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Ukončuji procesy ${APPLICATION_EXECUTABLE}."

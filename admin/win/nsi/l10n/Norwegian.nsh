@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Vis versjonsmerknader"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Fant ${APPLICATION_EXECUTABLE}-prosess(er) som må stoppes.$\nVil du at installasjonsprogrammet skal stoppe dem for deg?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Terminerer ${APPLICATION_EXECUTABLE}-prosesser."

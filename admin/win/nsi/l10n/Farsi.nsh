@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "نمایش پادداشت های انتشار نسخه"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "${APPLICATION_EXECUTABLE} پردازش (ها) که باید متوقف شوند را پیدا کرد. $\nآیا میخواهیم برنامه نصاب این پردازشها را برای شما متوقف کند ؟"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "حذف پردازش‌های ${APPLICATION_EXECUTABLE}."

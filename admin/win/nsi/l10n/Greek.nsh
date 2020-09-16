@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Εμφάνιση σημειώσεων έκδοσης"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Βρέθηκε η(οι) διεργασία(ες) ${APPLICATION_EXECUTABLE} η(οι) οποία(ες) θα πρέπει να τερματιστεί(ούν).$\nΘα θέλατε να την(τις) τερματίσει ο βοηθός εγκατάστασης για εσάς;"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Τερματισμός διεργασιών ${APPLICATION_EXECUTABLE}."

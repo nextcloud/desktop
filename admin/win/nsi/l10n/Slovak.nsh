@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Zobraziť zoznam zmien"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Našli sa ${APPLICATION_EXECUTABLE} proces (y), ktoré je potrebné zastaviť.$\nChcete, aby ich inštalátor zastavil?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Ukončujem ${APPLICATION_EXECUTABLE} procesy."

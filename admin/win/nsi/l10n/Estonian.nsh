@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Näita väljalaske märkmeid"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Leitud protsess(id) ${processName} mis tuleks peatada. $\nKas soovid, et installer seiskaks need?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "${APPLICATION_EXECUTABLE} protsessi lõpetamine."

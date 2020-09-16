@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Pokaži opombe k objavi"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Zaznana so dejavna opravila programa ${APPLICATION_EXECUTABLE}, ki pa morajo biti pred nadaljevanjem zaustavljena.$\nAli želite izvajanje teh dejanj končati?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Poteka zaustavljanje opravil programa ${APPLICATION_EXECUTABLE}"
