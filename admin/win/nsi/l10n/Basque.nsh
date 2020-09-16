@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Erakutsi bertsio-berritze oharrak"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Gelditu beharreko ${APPLICATION_EXECUTABLE} prozesua(k) aurkitu dira.$\nNahi duzu instalatzaileak zure partetik hauek gelditzea?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "${APPLICATION_EXECUTABLE} prozesuak hiltzen."

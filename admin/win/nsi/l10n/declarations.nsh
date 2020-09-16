@@ -1,4 +1,3 @@
-; Auto-generated - do not modify
 Var MUI_FINISHPAGE_SHOWREADME_TEXT_STRING
 Var ConfirmEndProcess_MESSAGEBOX_TEXT
 Var ConfirmEndProcess_KILLING_PROCESSES_TEXT

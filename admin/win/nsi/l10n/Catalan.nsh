@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Mostrar les notes de versió"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "S'ha trobat el(s) procés ${APPLICATION_EXECUTABLE} que s'ha d'aturar.$\nVoleu que l'instal·lador l'aturi?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "S'estan matant els processos ${APPLICATION_EXECUTABLE}."

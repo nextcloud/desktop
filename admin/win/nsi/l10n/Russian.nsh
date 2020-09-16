@@ -1,5 +1,4 @@
-# Auto-generated - do not modify
-StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Показать примечания к выпуску"
+﻿StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Показать примечания к выпуску"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Обнаружен процесс ${APPLICATION_EXECUTABLE}, который требуется остановить.$\nВы хотите чтобы программа установки сделала это самостоятельно?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Завершение процессов ${APPLICATION_EXECUTABLE}."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Процессы для завершения не найдены!"
