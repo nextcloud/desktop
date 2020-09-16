@@ -31,6 +31,7 @@ class AccountState;
 class Account;
 class AccountApp;
 class RemoteWipe;
+class VirtualDriveInterface;
 
 using AccountStatePtr = QExplicitlySharedDataPointer<AccountState>;
 using AccountAppList = QList<AccountApp *>;
@@ -94,6 +95,8 @@ public:
     void writeToSettings(QSettings &settings);
 
     AccountPtr account() const;
+    // FIXME: Can we get this down to Account at some point?
+    VirtualDriveInterface *drive() const;
 
     ConnectionStatus connectionStatus() const;
     QStringList connectionErrors() const;
@@ -189,6 +192,7 @@ protected Q_SLOTS:
 
 private:
     AccountPtr _account;
+    VirtualDriveInterface *_drive = nullptr;
     State _state;
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;

@@ -32,6 +32,15 @@
 #include <QNetworkRequest>
 #include <QBuffer>
 
+#if defined(Q_OS_MAC)
+#include "vfs_maccontroller.h"
+#endif
+
+#if defined(Q_OS_WIN)
+#include <windows.h>
+#include "vfs_windows.h"
+#endif
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountState, "nextcloud.gui.account.state", QtInfoMsg)
@@ -46,6 +55,28 @@ AccountState::AccountState(AccountPtr account)
     , _remoteWipe(new RemoteWipe(_account))
 {
     qRegisterMetaType<AccountState *>("AccountState*");
+
+#if !defined(OWNCLOUD_TEST) // FIXME: Mainly for test linking purposes, we should get rid of this
+    ConfigFile configFile;
+    if (configFile.enableVirtualFileSystem()) {
+#if defined(Q_OS_MAC)
+        _drive = [this] {
+            auto drive = new VfsMacController(this);
+            drive->initialize(this);
+            return drive;
+        }();
+#elif defined(Q_OS_WIN)
+        _drive = [this] {
+            auto drive = new VfsWindows(this);
+            drive->initialize(this);
+            return drive;
+        }();
+#else
+        // FIXME we need a non-Mac/Windows implementation
+        _drive = nullptr;
+#endif
+    }
+#endif // !defined(OWNCLOUD_TEST)
 
     connect(account.data(), &Account::invalidCredentials,
         this, &AccountState::slotHandleRemoteWipeCheck);
@@ -71,6 +102,11 @@ void AccountState::writeToSettings(QSettings & /*settings*/)
 AccountPtr AccountState::account() const
 {
     return _account;
+}
+
+VirtualDriveInterface *AccountState::drive() const
+{
+    return _drive;
 }
 
 AccountState::ConnectionStatus AccountState::connectionStatus() const
