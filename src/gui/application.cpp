@@ -244,11 +244,8 @@ Application::Application(int &argc, char **argv)
         this, &Application::slotAccountStateAdded);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
-    connect(AccountManager::instance(), &AccountManager::mountVirtualDriveForAccount,
-        this, &Application::slotMountVirtualDrive);
     foreach (auto ai, AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
-        slotMountVirtualDrive(ai.data());
     }
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
