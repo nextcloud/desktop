@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Показати примітки до випуску"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Знайдено процес(и) ${APPLICATION_EXECUTABLE}, які необхідно зупинити.$\nХочете щоб програма установки зробила це самостійно?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Завершення процесів ${APPLICATION_EXECUTABLE}."

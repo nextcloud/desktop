@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "แสดงบันทึกที่มี"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "พบว่ากระบวนการ ${APPLICATION_EXECUTABLE} จะต้องหยุดทำงาน$\nคุณต้องการติดตั้งเพื่อหยุดการทำงานเหล่านี้ของคุณ?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "ฆ่ากระบวนการทำงาน ${APPLICATION_EXECUTABLE}"

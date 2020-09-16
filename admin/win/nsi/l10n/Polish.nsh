@@ -1,4 +1,3 @@
-# Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Pokaż informacje o wydaniu"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Znaleziono proces(y) ${APPLICATION_EXECUTABLE}, które muszą być zatrzymane $\nCzy chcesz, aby instalator zatrzymał je za Ciebie?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Zamykam proces ${APPLICATION_EXECUTABLE}."
