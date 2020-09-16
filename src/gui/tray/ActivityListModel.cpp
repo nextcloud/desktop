@@ -202,9 +202,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActionTextColorRole:
         return a._id == -1 ? QLatin1String("#808080") : QLatin1String("#222");   // FIXME: This is a temporary workaround for _showMoreActivitiesAvailableEntry
     case MessageRole:
-        if (a._message.isEmpty()) {
-            return QString("No description available.");
-        }
         return a._message;
     case LinkRole: {
         if (a._link.isEmpty()) {
