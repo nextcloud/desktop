@@ -239,7 +239,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 Folder *f = addFolderInternal(folderDefinition, account.data());
                 f->saveToSettings();
 
-                return;
+                continue;
             }
 
             // Migration: ._ files sometimes don't work
