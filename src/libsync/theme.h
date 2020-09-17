@@ -149,9 +149,16 @@ public:
     /**
      * Setting a value here will pre-define the server url.
      *
-     * The respective UI controls will be disabled
+     * The respective UI controls will be disabled only if forceOverrideServerUrl() is true
      */
     virtual QString overrideServerUrl() const;
+
+    /**
+     * Enforce a pre-defined server url.
+     *
+     * When true, the respective UI controls will be disabled
+     */
+    virtual bool forceOverrideServerUrl() const;
 
     /**
      * This is only usefull when previous version had a different overrideServerUrl
