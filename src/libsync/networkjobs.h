@@ -436,9 +436,7 @@ private slots:
  * Note: targetFun is guaranteed to be called only through the event
  * loop and never directly.
  */
-void OWNCLOUDSYNC_EXPORT fetchPrivateLinkUrl(
-    AccountPtr account, const QString &remotePath,
-    const QByteArray &numericFileId, QObject *target,
+void OWNCLOUDSYNC_EXPORT fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath, QObject *target,
     std::function<void(const QString &url)> targetFun);
 
 } // namespace OCC

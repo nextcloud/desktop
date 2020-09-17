@@ -915,14 +915,9 @@ bool SimpleNetworkJob::finished()
     return true;
 }
 
-void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
-    const QByteArray &numericFileId, QObject *target,
+void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath, QObject *target,
     std::function<void(const QString &url)> targetFun)
 {
-    QString oldUrl;
-    if (!numericFileId.isEmpty())
-        oldUrl = account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
-
     // Retrieve the new link by PROPFIND
     PropfindJob *job = new PropfindJob(account, remotePath, target);
     job->setProperties(
@@ -935,14 +930,7 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
         auto numericFileId = result[QStringLiteral("fileid")].toByteArray();
         if (!privateLinkUrl.isEmpty()) {
             targetFun(privateLinkUrl);
-        } else if (!numericFileId.isEmpty()) {
-            targetFun(account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded));
-        } else {
-            targetFun(oldUrl);
         }
-    });
-    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply *) {
-        targetFun(oldUrl);
     });
     job->start();
 }

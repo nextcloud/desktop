@@ -44,7 +44,6 @@ public:
         const QString &sharePath,
         const QString &localPath,
         SharePermissions maxSharingPermissions,
-        const QByteArray &numericFileId,
         ShareDialogStartPage startPage,
         QWidget *parent);
     ~ShareDialog() override;

@@ -21,27 +21,6 @@
 
 namespace OCC {
 
-QByteArray SyncJournalFileRecord::legacyDeriveNumericFileId() const
-{
-    // The id property which is stored in _fileId is
-    //   leftpad_with_zero(fileid, 8) + instanceid
-    // so if it starts with a 0 we know the first 8 bytes
-    // can be taken.
-    if (_fileId.startsWith('0')) {
-        return _fileId.left(8);
-    }
-
-    // Otherwise we don't know exactly how long it is,
-    // use every digit until the first letter. The instanceid of
-    // oc >= 6 starts with "oc". This will break for older instances
-    // that have a digit as the first character of the instance id.
-    for (int i = 0; i < _fileId.size(); ++i) {
-        if (_fileId[i] < '0' || _fileId[i] > '9') {
-            return _fileId.left(i);
-        }
-    }
-    return _fileId;
-}
 
 bool SyncJournalErrorBlacklistRecord::isValid() const
 {

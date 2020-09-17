@@ -170,23 +170,6 @@ private slots:
         QVERIFY(!wipedRecord._valid);
     }
 
-    void testNumericId()
-    {
-        SyncJournalFileRecord record;
-
-        // Typical 8-digit padded id
-        record._fileId = "00000001abcd";
-        QCOMPARE(record.legacyDeriveNumericFileId(), QByteArray("00000001"));
-
-        // Typical 8-digit padded id with instanceid that starts with a digit
-        record._fileId = "00000001999";
-        QCOMPARE(record.legacyDeriveNumericFileId(), QByteArray("00000001"));
-
-        // When the numeric id overflows the 8-digit boundary
-        record._fileId = "123456789ocidblaabcd";
-        QCOMPARE(record.legacyDeriveNumericFileId(), QByteArray("123456789"));
-    }
-
     void testConflictRecord()
     {
         ConflictRecord record;
