@@ -23,17 +23,6 @@ namespace OCC {
 
 SyncJournalFileRecord::SyncJournalFileRecord() = default;
 
-QByteArray SyncJournalFileRecord::numericFileId() const
-{
-    // Use the id up until the first non-numeric character
-    for (int i = 0; i < _fileId.size(); ++i) {
-        if (_fileId[i] < '0' || _fileId[i] > '9') {
-            return _fileId.left(i);
-        }
-    }
-    return _fileId;
-}
-
 bool SyncJournalErrorBlacklistRecord::isValid() const
 {
     return !_file.isEmpty()

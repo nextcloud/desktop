@@ -666,7 +666,6 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::f
     fetchPrivateLinkUrl(
         fileData.folder->accountState()->account(),
         fileData.accountRelativePath,
-        record.numericFileId(),
         this,
         targetFun);
 }

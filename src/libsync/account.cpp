@@ -205,12 +205,6 @@ QUrl Account::davUrl() const
     return Utility::concatUrlPath(url(), davPath());
 }
 
-QUrl Account::deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const
-{
-    return Utility::concatUrlPath(_userVisibleUrl,
-        QLatin1String("/index.php/f/") + QUrl::toPercentEncoding(QString::fromLatin1(numericFileId)));
-}
-
 /**
  * clear all cookies. (Session cookies or not)
  */
@@ -344,12 +338,6 @@ void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 void Account::setUrl(const QUrl &url)
 {
     _url = url;
-    _userVisibleUrl = url;
-}
-
-void Account::setUserVisibleHost(const QString &host)
-{
-    _userVisibleUrl.setHost(host);
 }
 
 QVariant Account::credentialSetting(const QString &key) const

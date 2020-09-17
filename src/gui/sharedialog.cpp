@@ -56,7 +56,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     const QString &sharePath,
     const QString &localPath,
     SharePermissions maxSharingPermissions,
-    const QByteArray &numericFileId,
     ShareDialogStartPage startPage,
     QWidget *parent)
     : QDialog(parent)
@@ -65,7 +64,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _sharePath(sharePath)
     , _localPath(localPath)
     , _maxSharingPermissions(maxSharingPermissions)
-    , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
     , _startPage(startPage)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -260,13 +258,9 @@ void ShareDialog::slotPropfindReceived(const QVariantMap &result)
         qCInfo(lcSharing) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
     }
     auto privateLinkUrl = result["privatelink"].toString();
-    auto numericFileId = result["fileid"].toByteArray();
     if (!privateLinkUrl.isEmpty()) {
         qCInfo(lcSharing) << "Received private link url for" << _sharePath << privateLinkUrl;
         _privateLinkUrl = privateLinkUrl;
-    } else if (!numericFileId.isEmpty()) {
-        qCInfo(lcSharing) << "Received numeric file id for" << _sharePath << numericFileId;
-        _privateLinkUrl = _accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
     }
 
     showSharingUi();
