@@ -31,9 +31,6 @@
 #include "progressdispatcher.h"
 #include "clientproxy.h"
 #include "folderman.h"
-#if defined(Q_OS_MAC)
-#include "vfs_maccontroller.h"
-#endif
 
 class QMessageBox;
 class QSystemTrayIcon;
@@ -76,7 +73,6 @@ public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
     void slotCrash();
-    void slotMountVirtualDrive(AccountState *accountState);
 
 protected:
     void parseOptions(const QStringList &);
@@ -104,9 +100,6 @@ private:
     QPointer<ownCloudGui> _gui;
 
     Theme *_theme;
-    #if defined(Q_OS_MAC)
-        VfsMacController *cont;
-    #endif
 
     bool _helpOnly;
     bool _versionOnly;

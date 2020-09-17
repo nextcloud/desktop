@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include "clientsideencryption.h"
 #include "ui_mnemonicdialog.h"
+#include "virtualdriveinterface.h"
 
 namespace {
 static const char urlC[] = "url";
@@ -331,6 +332,11 @@ void AccountManager::deleteAccount(AccountState *account)
 
     // Forget E2E keys
     account->account()->e2e()->forgetSensitiveData();
+
+    const auto drive = account->drive();
+    if (drive) {
+        drive->unmount();
+    }
 
     emit accountRemoved(account);
 }

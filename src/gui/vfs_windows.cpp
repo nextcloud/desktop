@@ -69,6 +69,7 @@ THE SOFTWARE.
 
 #include <networkjobs.h>
 #include "socketapi.h"
+#include "theme.h"
 
 namespace OCC {
 
@@ -2668,7 +2669,7 @@ void VfsWindows::initialize(AccountState *accountState)
     if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
         cfg.setDefaultFileStreamLetterDrive(availableLogicalDrive);
 
-    rootPath = m_defaultStreamMirrorPath;
+    rootPath = m_defaultFileStreamMirrorPath;
     mountLetter = availableLogicalDrive.toStdWString().front();
     _accountState = accountState;
 
@@ -2680,7 +2681,7 @@ void VfsWindows::initialize(AccountState *accountState)
         Sleep(100);
     }
 
-    _remotefileListJob = new OCC::DiscoveryFolderFileList(accountState_->account());
+    _remotefileListJob = new OCC::DiscoveryFolderFileList(_accountState->account());
     _remotefileListJob->setParent(this);
 
     connect(this, &VfsWindows::startRemoteFileListJob, _remotefileListJob, &OCC::DiscoveryFolderFileList::doGetFolderContent);

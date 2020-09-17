@@ -31,6 +31,7 @@
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "cloudproviders/cloudprovidermanager.h"
 #endif
+#include "virtualdriveinterface.h"
 
 #include <QQmlApplicationEngine>
 
@@ -54,10 +55,6 @@
 #include <QQmlContext>
 
 #include <QFileDialog>
-
-#if defined(Q_OS_WIN)
-	#include "vfs_windows.h"
-#endif
 
 namespace OCC {
 
@@ -510,16 +507,12 @@ void ownCloudGui::slotLogout()
     }
 
     foreach (const auto &ai, list) {
+        const auto drive = ai->drive();
+        if (drive) {
+            drive->unmount();
+        }
         ai->signOutByUi();
     }
-
-#if defined(Q_OS_WIN)
-    VfsWindows::instance()->unmount();
-#endif
-    
-#if defined(Q_OS_MAC)
-    VfsMacController::instance()->unmount();
-#endif
 }
 
 void ownCloudGui::slotUnpauseAllFolders()

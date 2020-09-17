@@ -34,6 +34,7 @@
 #include "sharedialog.h"
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
+#include "virtualdriveinterface.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
@@ -43,11 +44,6 @@
 #include "version.h"
 
 #include "config.h"
-
-#if defined(Q_OS_WIN)
-#include <windows.h>
-#include "vfs_windows.h"
-#endif
 
 #if defined(WITH_CRASHREPORTER)
 #include <libcrashreporter-handler/Handler.h>
@@ -292,24 +288,15 @@ Application::~Application()
     disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
-
-#if defined(Q_OS_WIN)
-    ConfigFile configFile;
-    if (configFile.enableVirtualFileSystem()) {
-        VfsWindows::instance()->unmount();
-    }
-#endif
-
-#if defined(Q_OS_MAC)
-    ConfigFile configFile;
-    if (configFile.enableVirtualFileSystem()) {
-        VfsMacController::instance()->unmount();
-    }
-#endif
 }
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
+    const auto drive = accountState->drive();
+    if (drive) {
+        drive->unmount();
+    }
+
     if (_gui) {
         disconnect(accountState, &AccountState::stateChanged,
             _gui.data(), &ownCloudGui::slotAccountStateChanged);
@@ -345,27 +332,10 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 
-    slotMountVirtualDrive(accountState);
-}
-
-void Application::slotMountVirtualDrive(AccountState *accountState)
-{
-    // Mount the virtual FileSystem.
-#if defined(Q_OS_MAC)
-    ConfigFile configFile;
-    if (configFile.enableVirtualFileSystem()) {
-        VfsMacController::instance()->initialize(accountState);
-        VfsMacController::instance()->mount();
+    const auto drive = accountState->drive();
+    if (drive) {
+        drive->mount();
     }
-#endif
-
-#if defined(Q_OS_WIN)
-    ConfigFile configFile;
-    if (configFile.enableVirtualFileSystem()) {
-        VfsWindows::instance()->initialize(accountState);
-        VfsWindows::instance()->mount();
-    }
-#endif
 }
 
 void Application::slotCleanup()

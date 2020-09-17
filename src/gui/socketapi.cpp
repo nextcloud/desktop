@@ -57,12 +57,6 @@
 #include "configfile.h"
 #include <QStandardPaths>
 
-#if defined(Q_OS_WIN)
-#include "vfs_windows.h"
-#include <shlobj_core.h>
-#include <windows.h>
-#endif
-
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
 // The second number should be changed when there are new features.
