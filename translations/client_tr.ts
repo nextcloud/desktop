@@ -3542,27 +3542,27 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 eşitlendi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 yeniden adlandırdınız</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 sildiniz</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 eklediniz</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 değiştirdiniz</translation>
     </message>
 </context>
 <context>
