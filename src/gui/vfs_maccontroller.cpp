@@ -22,17 +22,6 @@
 
 #include <AvailabilityMacros.h>
 
-VfsMacController* VfsMacController::_instance = 0;
-
-VfsMacController *VfsMacController::instance()
-{
-    if (_instance == 0) {
-        _instance = new VfsMacController();
-    }
-
-    return _instance;
-}
-
 void VfsMacController::mountFailed(QVariantMap userInfo)
 {
     qDebug() << "Got mountFailed notification.";
@@ -145,6 +134,4 @@ VfsMacController::~VfsMacController()
         disconnect(fuse, &VfsMac::FuseFileSystemMountFailed, this, &VfsMacController::mountFailed);
         disconnect(fuse, &VfsMac::FuseFileSystemDidUnmount, this, &VfsMacController::didUnmount);
     }
-
-    _instance = 0;
 }

@@ -37,7 +37,6 @@ class VfsMacController : public OCC::VirtualDriveInterface
 public:
     explicit VfsMacController(QObject *parent = nullptr);
     ~VfsMacController();
-    static VfsMacController* instance();
     void mount() override;
     void unmount() override;
     void cleanCacheFolder();
@@ -51,7 +50,6 @@ public slots:
 
 private:
     VfsMac *fuse;
-    static VfsMacController *_instance;
     QStringList options;
     QString rootPath;
     QString mountPath;
