@@ -46,7 +46,6 @@ Window {
         ignoreUnknownSignals: true
         onDismissNotification: {
             Systray.dismissLastNotification()
-            notificationLayer.visible = Systray.hasNotification()
         }
     }
 
@@ -605,8 +604,8 @@ Window {
 
         Notification {
             id: notificationLayer
-            visible: Systray.hasNotification()
-            text: Systray.getLastNotification()
+            visible: Systray.notification !== ""
+            text: Systray.notification
         }
 
     }   // Rectangle trayWindowBackground

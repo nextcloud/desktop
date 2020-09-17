@@ -52,13 +52,15 @@ public:
     void setToolTip(const QString &tip);
     bool isOpen();
 
+    Q_PROPERTY(QString notification READ getLastNotification NOTIFY notificationsChanged)
+
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();
     Q_INVOKABLE void setOpened();
     Q_INVOKABLE void setClosed();
     Q_INVOKABLE void positionWindow(QQuickWindow *window) const;
-    Q_INVOKABLE bool hasNotification() const { return !_notificationList.isEmpty(); }
-    Q_INVOKABLE QString getLastNotification() const;
+
+
     Q_INVOKABLE void dismissLastNotification();
 
 signals:
@@ -70,6 +72,7 @@ signals:
     void shutdown();
     void pauseSync();
     void resumeSync();
+    void notificationsChanged();
 
     Q_INVOKABLE void hideWindow();
     Q_INVOKABLE void showWindow();
@@ -90,6 +93,8 @@ private:
     TaskBarPosition taskbarOrientation() const;
     QRect taskbarGeometry() const;
     QPoint computeWindowPosition(int width, int height) const;
+
+    QString getLastNotification() const;
 
     bool _isOpen = false;
     bool _syncIsPaused = true;

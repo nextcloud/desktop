@@ -200,6 +200,7 @@ QString Systray::getLastNotification() const {
 void Systray::dismissLastNotification() {
     if (!_notificationList.isEmpty()) {
         _notificationList.removeLast();
+        emit notificationsChanged();
     }
 }
 
