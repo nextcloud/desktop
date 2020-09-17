@@ -60,8 +60,8 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 }
 
 Systray::Systray()
-    : QSystemTrayIcon(nullptr),
-      _notificationList(QStringList())
+    : QSystemTrayIcon(nullptr)
+    ,_notificationList(QStringList())
 {
     qmlRegisterSingletonType<UserModel>("com.nextcloud.desktopclient", 1, 0, "UserModel",
         [](QQmlEngine *, QJSEngine *) -> QObject * {

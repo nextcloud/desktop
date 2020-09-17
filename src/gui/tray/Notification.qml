@@ -15,6 +15,10 @@ Item {
     anchors.bottom: parent.bottom
     anchors.horizontalCenter: parent.horizontalCente
 
+    // Systray component implements rounded corner style,
+    // which is provided by QML components only rudimentary for now.
+    // The following two rectangles take care of bottom corner rounding,
+    // but eliminiate it for the top corners
     Rectangle {
         id: roundedBackground
         width: parent.width
@@ -23,7 +27,6 @@ Item {
         color: Style.lightMessage
         radius: Style.trayWindowRadius
     }
-
     Rectangle {
         width: parent.width
         height: roundedBackground.radius
@@ -32,16 +35,15 @@ Item {
     }
 
     RowLayout {
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
         spacing: 4
         Layout.alignment: Qt.AlignVCenter
 
         Image {
             id: messageIcon
-            anchors.left: parent.left
-            anchors.leftMargin: 8
-            anchors.rightMargin: 8
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
             Layout.preferredWidth: dismissButton.icon.width
             Layout.preferredHeight: dismissButton.icon.height
             verticalAlignment: Qt.AlignCenter
@@ -53,8 +55,9 @@ Item {
 
         Text {
             id: notificationMessage
-            anchors.left: messageIcon.right
-            anchors.leftMargin: 8
+            Layout.alignment: Qt.AlignLeft
+            Layout.leftMargin: 8
+            Layout.fillWidth: true
             text: msgText
             font.pixelSize: Style.topLinePixelSize
             Layout.preferredWidth: Style.notificationLabelWidth
@@ -65,8 +68,7 @@ Item {
 
         Button {
             id: dismissButton
-            anchors.right: parent.right
-            anchors.rightMargin: 4
+            Layout.rightMargin: 4
             Layout.alignment: Qt.AlignRight
             flat: true
             hoverEnabled: true
