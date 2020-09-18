@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Legacy config migration reverted files to online only: [#7779](https://github.com/owncloud/client/issues/7779)
 * Bugfix - Some check boxes in the sharing dialog are disabled: [#7877](https://github.com/owncloud/client/issues/7877)
 * Bugfix - Selective sync dialog is displayed when virtual files are enabled: [#7976](https://github.com/owncloud/client/issues/7976)
 * Bugfix - Fix support of adler32 checksums with Windows virtual files support: [#7999](https://github.com/owncloud/client/issues/7999)
@@ -15,6 +16,7 @@ Summary
 * Bugfix - Use the same HDPI for the crash reporter as for the client: [#8042](https://github.com/owncloud/client/issues/8042)
 * Bugfix - The back button on the advanced wizard page no longer gets enabled: [#8051](https://github.com/owncloud/client/issues/8051)
 * Bugfix - Ensure permissions for newly added files are available: [#8066](https://github.com/owncloud/client/issues/8066)
+* Bugfix - Remove notifications when the account they belong to was removed: [#8085](https://github.com/owncloud/client/issues/8085)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
 * Change - The password dialog is hidden behind a window: [#7833](https://github.com/owncloud/client/issues/7833)
@@ -39,6 +41,12 @@ Summary
 
 Details
 -------
+
+* Bugfix - Legacy config migration reverted files to online only: [#7779](https://github.com/owncloud/client/issues/7779)
+
+   We fixed a legacy config migration which reverted all files to online only on every start.
+
+   https://github.com/owncloud/client/issues/7779
 
 * Bugfix - Some check boxes in the sharing dialog are disabled: [#7877](https://github.com/owncloud/client/issues/7877)
 
@@ -87,6 +95,12 @@ Details
 
    https://github.com/owncloud/client/issues/8066
    https://github.com/owncloud/client/issues/7967
+
+* Bugfix - Remove notifications when the account they belong to was removed: [#8085](https://github.com/owncloud/client/issues/8085)
+
+   We fixed a bug where notifications where still displayed after an account was removed.
+
+   https://github.com/owncloud/client/issues/8085
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
