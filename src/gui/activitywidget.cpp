@@ -85,8 +85,15 @@ ActivityWidget::ActivityWidget(QWidget *parent)
         this, &ActivityWidget::slotAccountActivityStatus);
 
     connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](AccountState *ast) {
-        if (_accountsWithoutActivities.remove(ast->account()->displayName()))
+        if (_accountsWithoutActivities.remove(ast->account()->displayName())) {
             showLabels();
+        }
+
+        for (auto it = _widgetForNotifId.cbegin(); it != _widgetForNotifId.cend(); ++it) {
+            if (it.key().second == ast->account()->displayName()) {
+                scheduleWidgetToRemove(it.value());
+            }
+        }
     });
 
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);

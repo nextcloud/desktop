@@ -68,6 +68,15 @@ LogBrowser::LogBrowser(QWidget *parent)
     connect(enableLoggingButton, &QCheckBox::toggled, this, &LogBrowser::togglePermanentLogging);
     mainLayout->addWidget(enableLoggingButton);
 
+    auto httpLogButton = new QCheckBox;
+    // TODO: text?
+    httpLogButton->setText(tr("Log Http traffic (Warning the logs might contain information about your networks setup)"));
+    httpLogButton->setChecked(ConfigFile().logHttp());
+    connect(httpLogButton, &QCheckBox::toggled, this, [](bool b){
+        ConfigFile().setLogHttp(b);
+    });
+    mainLayout->addWidget(httpLogButton);
+
     auto deleteLogsButton = new QCheckBox;
     deleteLogsButton->setText(tr("Delete logs older than %1 hours").arg(QString::number(defaultExpireDuration.count())));
     deleteLogsButton->setChecked(bool(ConfigFile().automaticDeleteOldLogsAge()));

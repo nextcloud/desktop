@@ -1,0 +1,5 @@
+Bugfix: Remove notifications when the account they belong to was removed
+
+We fixed a bug where notifications where still displayed after an account was removed.
+
+https://github.com/owncloud/client/issues/8085

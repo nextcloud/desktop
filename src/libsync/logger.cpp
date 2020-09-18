@@ -68,7 +68,7 @@ Logger::Logger(QObject *parent)
     , _logExpire(0)
     , _logDebug(false)
 {
-    qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
+    qSetMessagePattern(QStringLiteral("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}"));
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler(mirallLogCatcher);
 #else
@@ -103,7 +103,7 @@ void Logger::log(Log log)
 {
     QString msg;
     if (_showTime) {
-        msg = log.timeStamp.toString(QLatin1String("MM-dd hh:mm:ss:zzz")) + QLatin1Char(' ');
+        msg = log.timeStamp.toString(QStringLiteral("MM-dd hh:mm:ss:zzz")) + QLatin1Char(' ');
     }
 
     msg += log.message;
@@ -150,15 +150,6 @@ void Logger::close()
         _logFile.close();
         _logstream.reset();
     }
-}
-
-void Logger::mirallLog(const QString &message)
-{
-    Log log_;
-    log_.timeStamp = QDateTime::currentDateTimeUtc();
-    log_.message = message;
-
-    Logger::instance()->log(log_);
 }
 
 void Logger::setLogFile(const QString &name)
@@ -210,14 +201,18 @@ void Logger::setLogFlush(bool flush)
 
 void Logger::setLogDebug(bool debug)
 {
-    QLoggingCategory::setFilterRules(debug ? QStringLiteral("sync.*.debug=true\ngui.*.debug=true") : QString());
+    const QSet<QString> rules = {QStringLiteral("sync.*.debug=true"), QStringLiteral("gui.*.debug=true")};
+    if (debug) {
+        addLogRule(rules);
+    } else {
+        removeLogRule(rules);
+    }
     _logDebug = debug;
 }
 
 QString Logger::temporaryFolderLogDirPath() const
 {
-    QString dirName = APPLICATION_SHORTNAME + QString("-logdir");
-    return QDir::temp().filePath(dirName);
+    return QDir::temp().filePath(QStringLiteral(APPLICATION_SHORTNAME "-logdir"));
 }
 
 void Logger::setupTemporaryFolderLogDir()
@@ -242,20 +237,27 @@ void Logger::disableTemporaryFolderLogDir()
     _temporaryFolderLogDir = false;
 }
 
+void Logger::setLogRules(const QSet<QString> &rules)
+{
+    static const QString defaultRule = qEnvironmentVariable("QT_LOGGING_RULES").replace(QLatin1Char(';'), QLatin1Char('\n'));
+    _logRules = rules;
+    QLoggingCategory::setFilterRules(rules.toList().join(QLatin1Char('\n')) + QLatin1Char('\n') + defaultRule);
+}
+
 static bool compressLog(const QString &originalName, const QString &targetName)
 {
 #ifdef ZLIB_FOUND
     QFile original(originalName);
     if (!original.open(QIODevice::ReadOnly))
         return false;
-    auto compressed = gzopen(targetName.toUtf8(), "wb");
+    auto compressed = gzopen(targetName.toUtf8().constData(), "wb");
     if (!compressed) {
         return false;
     }
 
     while (!original.atEnd()) {
         auto data = original.read(1024 * 1024);
-        auto written = gzwrite(compressed, data.data(), data.size());
+        auto written = gzwrite(compressed, data.constData(), data.size());
         if (written != data.size()) {
             gzclose(compressed);
             return false;
@@ -274,17 +276,17 @@ void Logger::enterNextLogFile()
 
         QDir dir(_logDirectory);
         if (!dir.exists()) {
-            dir.mkpath(".");
+            dir.mkpath(QStringLiteral("."));
         }
 
         // Tentative new log name, will be adjusted if one like this already exists
         QDateTime now = QDateTime::currentDateTime();
-        QString newLogName = now.toString("yyyyMMdd_HHmm") + "_owncloud.log";
+        QString newLogName = now.toString(QStringLiteral("yyyyMMdd_HHmm")) + QStringLiteral("_owncloud.log");
 
         // Expire old log files and deal with conflicts
-        QStringList files = dir.entryList(QStringList("*owncloud.log.*"),
+        QStringList files = dir.entryList(QStringList(QStringLiteral("*owncloud.log.*")),
             QDir::Files, QDir::Name);
-        QRegExp rx(R"(.*owncloud\.log\.(\d+).*)");
+        QRegExp rx(QStringLiteral(R"(.*owncloud\.log\.(\d+).*)"));
         int maxNumber = -1;
         foreach (const QString &s, files) {
             if (_logExpire.count() > 0) {
@@ -298,7 +300,7 @@ void Logger::enterNextLogFile()
                 maxNumber = qMax(maxNumber, rx.cap(1).toInt());
             }
         }
-        newLogName.append("." + QString::number(maxNumber + 1));
+        newLogName.append(QLatin1Char('.') + QString::number(maxNumber + 1));
 
         auto previousLog = _logFile.fileName();
         setLogFile(dir.filePath(newLogName));
@@ -306,10 +308,10 @@ void Logger::enterNextLogFile()
         // Compress the previous log file. On a restart this can be the most recent
         // log file.
         auto logToCompress = previousLog;
-        if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(".gz"))
+        if (logToCompress.isEmpty() && files.size() > 0 && !files.last().endsWith(QLatin1String(".gz")))
             logToCompress = dir.absoluteFilePath(files.last());
         if (!logToCompress.isEmpty()) {
-            QString compressedName = logToCompress + ".gz";
+            QString compressedName = logToCompress + QStringLiteral(".gz");
             if (compressLog(logToCompress, compressedName)) {
                 QFile::remove(logToCompress);
             } else {

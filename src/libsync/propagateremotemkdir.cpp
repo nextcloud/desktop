@@ -127,8 +127,8 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
 {
     propagator()->_activeJobList.removeOne(this);
-    if (result.contains("id")) {
-        _item->_fileId = result["id"].toByteArray();
+    if (result.contains(QStringLiteral("id"))) {
+        _item->_fileId = result[QStringLiteral("id")].toByteArray();
     }
     success();
 }

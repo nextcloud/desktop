@@ -438,7 +438,7 @@ void SyncEngine::startSync()
     if (!QDir(_localPath).exists()) {
         _anotherSyncNeeded = DelayedFollowUp;
         // No _tr, it should only occur in non-mirall
-        syncError("Unable to find local sync folder.");
+        syncError(QStringLiteral("Unable to find local sync folder."));
         finalize(false);
         return;
     }
@@ -474,12 +474,7 @@ void SyncEngine::startSync()
         qCInfo(lcEngine) << "Sync with existing sync journal";
     }
 
-    QString verStr("Using Qt ");
-    verStr.append(qVersion());
-
-    verStr.append(" SSL library ").append(QSslSocket::sslLibraryVersionString().toUtf8().data());
-    verStr.append(" on ").append(Utility::platformName());
-    qCInfo(lcEngine) << verStr;
+    qCInfo(lcEngine) << "Using Qt " << qVersion() << " SSL library " << QSslSocket::sslLibraryVersionString() << " on " << Utility::platformName();
 
     // This creates the DB if it does not exist yet.
     if (!_journal->open()) {
@@ -532,11 +527,11 @@ void SyncEngine::startSync()
     _discoveryPhase->_excludes = _excludedFiles.data();
     _discoveryPhase->_statedb = _journal;
     _discoveryPhase->_localDir = _localPath;
-    if (!_discoveryPhase->_localDir.endsWith('/'))
-        _discoveryPhase->_localDir+='/';
+    if (!_discoveryPhase->_localDir.endsWith(QLatin1Char('/')))
+        _discoveryPhase->_localDir+=QLatin1Char('/');
     _discoveryPhase->_remoteFolder = _remotePath;
-    if (!_discoveryPhase->_remoteFolder.endsWith('/'))
-        _discoveryPhase->_remoteFolder+='/';
+    if (!_discoveryPhase->_remoteFolder.endsWith(QLatin1Char('/')))
+        _discoveryPhase->_remoteFolder+=QLatin1Char('/');
     _discoveryPhase->_syncOptions = _syncOptions;
     _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &s) { return shouldDiscoverLocally(s); };
     _discoveryPhase->setSelectiveSyncBlackList(selectiveSyncBlackList);
@@ -557,7 +552,7 @@ void SyncEngine::startSync()
         // files with names that contain these.
         // It's important to respect the capability also for older servers -- the
         // version check doesn't make sense for custom servers.
-        invalidFilenamePattern = "[\\\\:?*\"<>|]";
+        invalidFilenamePattern = QLatin1String("[\\\\:?*\"<>|]");
     }
     if (!invalidFilenamePattern.isEmpty())
         _discoveryPhase->_invalidFilenameRx = QRegExp(invalidFilenamePattern);
@@ -622,7 +617,7 @@ void SyncEngine::slotDiscoveryFinished()
         return;
     }
 
-    qCInfo(lcEngine) << "#### Discovery end #################################################### " << _stopWatch.addLapTime(QLatin1String("Discovery Finished")) << "ms";
+    qCInfo(lcEngine) << "#### Discovery end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Discovery Finished")) << "ms";
 
     // Sanity check
     if (!_journal->open()) {
@@ -632,7 +627,7 @@ void SyncEngine::slotDiscoveryFinished()
         return;
     } else {
         // Commits a possibly existing (should not though) transaction and starts a new one for the propagate phase
-        _journal->commitIfNeededAndStartNewTransaction("Post discovery");
+        _journal->commitIfNeededAndStartNewTransaction(QStringLiteral("Post discovery"));
     }
 
     _progressInfo->_currentDiscoveredRemoteFolder.clear();
@@ -674,14 +669,14 @@ void SyncEngine::slotDiscoveryFinished()
 
     Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
 
-    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QLatin1String("Reconcile (aboutToPropagate)")) << "ms";
+    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";
 
     _localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
     emit aboutToPropagate(_syncItems);
 
-    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate OK) #################################################### "<< _stopWatch.addLapTime(QLatin1String("Reconcile (aboutToPropagate OK)")) << "ms";
+    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate OK) #################################################### "<< _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate OK)")) << "ms";
 
     // it's important to do this before ProgressInfo::start(), to announce start of new sync
     _progressInfo->_status = ProgressInfo::Propagation;
@@ -691,17 +686,17 @@ void SyncEngine::slotDiscoveryFinished()
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
     if (!qEnvironmentVariableIsEmpty("OWNCLOUD_POST_UPDATE_SCRIPT")) {
 #ifndef NDEBUG
-        QString script = qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT");
+        const QString script = qEnvironmentVariable("OWNCLOUD_POST_UPDATE_SCRIPT");
 
         qCDebug(lcEngine) << "Post Update Script: " << script;
-        QProcess::execute(script.toUtf8());
+        QProcess::execute(script);
 #else
         qCWarning(lcEngine) << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
 #endif
     }
 
     // do a database commit
-    _journal->commit("post treewalk");
+    _journal->commit(QStringLiteral("post treewalk"));
 
     _propagator = QSharedPointer<OwncloudPropagator>(
         new OwncloudPropagator(_account, _localPath, _remotePath, _journal));
@@ -725,7 +720,7 @@ void SyncEngine::slotDiscoveryFinished()
     deleteStaleDownloadInfos(_syncItems);
     deleteStaleUploadInfos(_syncItems);
     deleteStaleErrorBlacklistEntries(_syncItems);
-    _journal->commit("post stale entry removal");
+    _journal->commit(QStringLiteral("post stale entry removal"));
 
     // Emit the started signal only after the propagator has been set up.
     if (_needsUpdate)
@@ -734,7 +729,7 @@ void SyncEngine::slotDiscoveryFinished()
     _propagator->start(_syncItems);
     _syncItems.clear();
 
-    qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Post-Reconcile Finished")) << "ms";
+    qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
 }
 
 void SyncEngine::slotCleanPollsJobAborted(const QString &error)
@@ -780,7 +775,7 @@ void SyncEngine::slotPropagationFinished(bool success)
     conflictRecordMaintenance();
 
     _journal->deleteStaleFlagsEntries();
-    _journal->commit("All Finished.", false);
+    _journal->commit(QStringLiteral("All Finished."), false);
 
     // Send final progress information even if no
     // files needed propagation, but clear the lastCompletedItem
@@ -794,7 +789,7 @@ void SyncEngine::slotPropagationFinished(bool success)
 
 void SyncEngine::finalize(bool success)
 {
-    qCInfo(lcEngine) << "Sync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished")) << "ms";
+    qCInfo(lcEngine) << "Sync run took " << _stopWatch.addLapTime(QStringLiteral("Sync Finished")) << "ms";
     _stopWatch.stop();
 
     if (_discoveryPhase) {
@@ -918,7 +913,7 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
     QString prev;
     auto it = _localDiscoveryPaths.begin();
     while(it != _localDiscoveryPaths.end()) {
-        if (!prev.isNull() && it->startsWith(prev) && (prev.endsWith('/') || *it == prev || it->at(prev.size()) <= '/')) {
+        if (!prev.isNull() && it->startsWith(prev) && (prev.endsWith(QLatin1Char('/')) || *it == prev || it->at(prev.size()) <= QLatin1Char('/'))) {
             it = _localDiscoveryPaths.erase(it);
         } else {
             prev = *it;
@@ -944,7 +939,7 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
     if (it == _localDiscoveryPaths.end() || !it->startsWith(path)) {
         // Maybe a subfolder of something in the list?
         if (it != _localDiscoveryPaths.begin() && path.startsWith(*(--it))) {
-            return it->endsWith('/') || (path.size() > it->size() && path.at(it->size()) <= '/');
+            return it->endsWith(QLatin1Char('/')) || (path.size() > it->size() && path.at(it->size()) <= QLatin1Char('/'));
         }
         return false;
     }
@@ -956,7 +951,7 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
     // Maybe a parent folder of something in the list?
     // check for a prefix + / match
     forever {
-        if (it->size() > path.size() && it->at(path.size()) == '/')
+        if (it->size() > path.size() && it->at(path.size()) == QLatin1Char('/'))
             return true;
         ++it;
         if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
@@ -973,11 +968,11 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
             return;
 
         qCDebug(lcEngine) << "Removing db record for" << rec._path;
-        journal.deleteFileRecord(rec._path);
+        journal.deleteFileRecord(QString::fromUtf8(rec._path));
 
         // If the local file is a dehydrated placeholder, wipe it too.
         // Otherwise leave it to allow the next sync to have a new-new conflict.
-        QString localFile = localPath + rec._path;
+        QString localFile = localPath + QString::fromUtf8(rec._path);
         if (QFile::exists(localFile) && vfs.isDehydratedPlaceholder(localFile)) {
             qCDebug(lcEngine) << "Removing local dehydrated placeholder" << rec._path;
             QFile::remove(localFile);

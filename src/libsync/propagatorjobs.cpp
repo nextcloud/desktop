@@ -81,7 +81,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
             propagator()->_journal->deleteFileRecord(it.first.mid(folderDir.size()), it.second);
         }
 
-        _error = errors.join(", ");
+        _error = errors.join(QStringLiteral(", "));
     }
     return success;
 }
@@ -124,7 +124,7 @@ void PropagateLocalRemove::start()
     }
     propagator()->reportProgress(*_item, 0);
     propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory());
-    propagator()->_journal->commit("Local remove");
+    propagator()->_journal->commit(QStringLiteral("Local remove"));
     done(SyncFileItem::Success);
 }
 
@@ -180,7 +180,7 @@ void PropagateLocalMkdir::start()
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
-    propagator()->_journal->commit("localMkdir");
+    propagator()->_journal->commit(QStringLiteral("localMkdir"));
 
     auto resultStatus = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         ? SyncFileItem::Conflict
@@ -262,7 +262,7 @@ void PropagateLocalRename::start()
         return;
     }
 
-    propagator()->_journal->commit("localRename");
+    propagator()->_journal->commit(QStringLiteral("localRename"));
 
     done(SyncFileItem::Success);
 }

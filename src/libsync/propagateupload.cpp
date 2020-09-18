@@ -110,8 +110,8 @@ void PollJob::start()
 {
     setTimeout(120 * 1000);
     QUrl accountUrl = account()->url();
-    QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QLatin1String("://") + accountUrl.authority()
-        + (path().startsWith('/') ? QLatin1String("") : QLatin1String("/")) + path());
+    QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QStringLiteral("://") + accountUrl.authority()
+        + (path().startsWith(QLatin1Char('/')) ? QString() : QStringLiteral("/")) + path());
     sendRequest("GET", finalUrl);
     connect(reply(), &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::resetTimeout, Qt::UniqueConnection);
     AbstractNetworkJob::start();
@@ -133,7 +133,7 @@ bool PollJob::finished()
                 info._file = _item->_file;
                 // no info._url removes it from the database
                 _journal->setPollInfo(info);
-                _journal->commit("remove poll info");
+                _journal->commit(QStringLiteral("remove poll info"));
             }
             emit finishedSignal();
             return true;
@@ -153,29 +153,29 @@ bool PollJob::finished()
         return true;
     }
 
-    auto status = json["status"].toString();
+    auto status = json[QStringLiteral("status")].toString();
     if (status == QLatin1String("init") || status == QLatin1String("started")) {
         QTimer::singleShot(5 * 1000, this, &PollJob::start);
         return false;
     }
 
     _item->_responseTimeStamp = responseTimestamp();
-    _item->_httpErrorCode = json["errorCode"].toInt();
+    _item->_httpErrorCode = json[QStringLiteral("errorCode")].toInt();
 
     if (status == QLatin1String("finished")) {
         _item->_status = SyncFileItem::Success;
-        _item->_fileId = json["fileId"].toString().toUtf8();
-        _item->_etag = parseEtag(json["ETag"].toString().toUtf8());
+        _item->_fileId = json[QStringLiteral("fileId")].toString().toUtf8();
+        _item->_etag = parseEtag(json[QStringLiteral("ETag")].toString().toUtf8());
     } else { // error
         _item->_status = classifyError(QNetworkReply::UnknownContentError, _item->_httpErrorCode);
-        _item->_errorString = json["errorMessage"].toString();
+        _item->_errorString = json[QStringLiteral("errorMessage")].toString();
     }
 
     SyncJournalDb::PollInfo info;
     info._file = _item->_file;
     // no info._url removes it from the database
     _journal->setPollInfo(info);
-    _journal->commit("remove poll info");
+    _journal->commit(QStringLiteral("remove poll info"));
 
     emit finishedSignal();
     return true;
@@ -495,7 +495,7 @@ void PropagateUploadFileCommon::startPollJob(const QString &path)
     info._modtime = _item->_modtime;
     info._fileSize = _item->_size;
     propagator()->_journal->setPollInfo(info);
-    propagator()->_journal->commit("add poll info");
+    propagator()->_journal->commit(QStringLiteral("add poll info"));
     propagator()->_activeJobList.append(this);
     job->start();
 }
@@ -537,7 +537,7 @@ void PropagateUploadFileCommon::checkResettingErrors()
                                       << "is" << uploadInfo._errorCount;
         }
         propagator()->_journal->setUploadInfo(_item->_file, uploadInfo);
-        propagator()->_journal->commit("Upload info");
+        propagator()->_journal->commit(QStringLiteral("Upload info"));
     }
 }
 
@@ -659,7 +659,7 @@ void PropagateUploadFileCommon::finalize()
         _jobs.append(permCheck);
         permCheck->setProperties({ "http://owncloud.org/ns:permissions" });
         connect(permCheck, &PropfindJob::result, this, [this, permCheck](const QVariantMap &map) {
-            _item->_remotePerm = RemotePermissions::fromServerString(map.value("permissions").toString());
+            _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")).toString());
             finalize();
             slotJobDestroyed(permCheck);
         });
@@ -691,7 +691,7 @@ void PropagateUploadFileCommon::finalize()
 
     // Remove from the progress database:
     propagator()->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
-    propagator()->_journal->commit("upload file start");
+    propagator()->_journal->commit(QStringLiteral("upload file start"));
 
     done(SyncFileItem::Success);
 }

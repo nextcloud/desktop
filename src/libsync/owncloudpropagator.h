@@ -402,8 +402,8 @@ public:
 public:
     OwncloudPropagator(AccountPtr account, const QString &localDir,
         const QString &remoteFolder, SyncJournalDb *progressDb)
-        : _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
-        , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
+        : _localDir((localDir.endsWith(QLatin1Char('/'))) ? localDir : localDir + QLatin1Char('/'))
+        , _remoteFolder((remoteFolder.endsWith(QLatin1Char('/'))) ? remoteFolder : remoteFolder + QLatin1Char('/'))
         , _journal(progressDb)
         , _finishedEmited(false)
         , _bandwidthManager(this)

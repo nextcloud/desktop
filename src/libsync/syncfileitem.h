@@ -148,9 +148,9 @@ public:
         if (prefixL == d1.size())
             return true;
 
-        if (data1[prefixL] == '/')
+        if (data1[prefixL] == QLatin1Char('/'))
             return true;
-        if (data2[prefixL] == '/')
+        if (data2[prefixL] == QLatin1Char('/'))
             return false;
 
         return data1[prefixL] < data2[prefixL];

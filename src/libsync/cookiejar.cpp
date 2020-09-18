@@ -103,7 +103,7 @@ bool CookieJar::save(const QString &fileName)
     const QFileInfo info(fileName);
     if (!info.dir().exists())
     {
-        info.dir().mkpath(".");
+        info.dir().mkpath(QStringLiteral("."));
     }
 
     qCDebug(lcCookieJar) << fileName;

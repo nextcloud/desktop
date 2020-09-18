@@ -49,8 +49,6 @@ public:
     void doLog(const QString &log);
     void close();
 
-    static void mirallLog(const QString &message);
-
     const QList<Log> &logs() const { return _logs; }
 
     static Logger *instance();
@@ -83,6 +81,14 @@ public:
     /** For switching off via logwindow */
     void disableTemporaryFolderLogDir();
 
+    void addLogRule(const QSet<QString> &rules) {
+        setLogRules(_logRules + rules);
+    }
+    void removeLogRule(const QSet<QString> &rules) {
+        setLogRules(_logRules - rules);
+    }
+    void setLogRules(const QSet<QString> &rules);
+
 signals:
     void logWindowLog(const QString &);
 
@@ -106,6 +112,7 @@ private:
     mutable QMutex _mutex;
     QString _logDirectory;
     bool _temporaryFolderLogDir = false;
+    QSet<QString> _logRules;
 };
 
 } // namespace OCC

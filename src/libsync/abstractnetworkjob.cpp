@@ -308,7 +308,7 @@ QString AbstractNetworkJob::errorString() const
     } else if (!reply()) {
         return tr("Unknown error: network reply was deleted");
     } else if (reply()->hasRawHeader("OC-ErrorString")) {
-        return reply()->rawHeader("OC-ErrorString");
+        return QString::fromUtf8(reply()->rawHeader("OC-ErrorString"));
     } else {
         return networkReplyErrorString(*reply());
     }
@@ -329,7 +329,7 @@ QString AbstractNetworkJob::errorStringParsingBody(QByteArray *body)
     QString extra = extractErrorMessage(replyBody);
     // Don't append the XML error message to a OC-ErrorString message.
     if (!extra.isEmpty() && !reply()->hasRawHeader("OC-ErrorString")) {
-        return QString::fromLatin1("%1 (%2)").arg(base, extra);
+        return QStringLiteral("%1 (%2)").arg(base, extra);
     }
 
     return base;
@@ -345,16 +345,16 @@ void AbstractNetworkJob::start()
     _timer.start();
 
     const QUrl url = account()->url();
-    const QString displayUrl = QString("%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
+    const QString displayUrl = QStringLiteral("%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
 
-    QString parentMetaObjectName = parent() ? parent()->metaObject()->className() : "";
+    QByteArray parentMetaObjectName = parent() ? parent()->metaObject()->className() : QByteArray();
     qCInfo(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
 }
 
 void AbstractNetworkJob::slotTimeout()
 {
     _timedout = true;
-    qCWarning(lcNetworkJob) << "Network job timeout" << (reply() ? reply()->request().url() : path());
+    qCWarning(lcNetworkJob) << "Network job timeout" << (reply() ? reply()->request().url().path() : path());
     onTimedOut();
 }
 
@@ -370,9 +370,9 @@ void AbstractNetworkJob::onTimedOut()
 QString AbstractNetworkJob::replyStatusString() {
     Q_ASSERT(reply());
     if (reply()->error() == QNetworkReply::NoError) {
-        return QLatin1String("OK");
+        return QStringLiteral("OK");
     } else {
-        QString enumStr = QMetaEnum::fromType<QNetworkReply::NetworkError>().valueToKey(static_cast<int>(reply()->error()));
+        const QString enumStr = QString::fromUtf8(QMetaEnum::fromType<QNetworkReply::NetworkError>().valueToKey(static_cast<int>(reply()->error())));
         return QStringLiteral("%1 %2").arg(enumStr, errorString());
     }
 }
@@ -396,7 +396,7 @@ QString extractErrorMessage(const QByteArray &errorResponse)
 {
     QXmlStreamReader reader(errorResponse);
     reader.readNextStartElement();
-    if (reader.name() != "error") {
+    if (reader.name() != QLatin1String("error")) {
         return QString();
     }
 
@@ -421,7 +421,7 @@ QString errorMessage(const QString &baseError, const QByteArray &body)
     QString msg = baseError;
     QString extra = extractErrorMessage(body);
     if (!extra.isEmpty()) {
-        msg += QString::fromLatin1(" (%1)").arg(extra);
+        msg += QStringLiteral(" (%1)").arg(extra);
     }
     return msg;
 }
@@ -437,7 +437,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
         return base;
     }
 
-    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, HttpLogger::requestVerb(reply), reply.request().url().toDisplayString());
+    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, QString::fromLatin1(HttpLogger::requestVerb(reply)), reply.request().url().toDisplayString());
 }
 
 void AbstractNetworkJob::retry()

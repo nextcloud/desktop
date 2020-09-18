@@ -119,7 +119,7 @@ private slots:
         auto successCallback = [](TestCase *tc, const QNetworkRequest &request) {
             tc->pollRequest = [](TestCase *, const QNetworkRequest &) -> QNetworkReply * { std::abort(); }; // shall no longer be called
             FileInfo *info = tc->perform();
-            QByteArray body = "{ \"status\":\"finished\", \"ETag\":\"\\\"" + info->etag.toUtf8() + "\\\"\", \"fileId\":\"" + info->fileId + "\"}\n";
+            QByteArray body = "{ \"status\":\"finished\", \"ETag\":\"\\\"" + info->etag + "\\\"\", \"fileId\":\"" + info->fileId + "\"}\n";
             return new FakePayloadReply(QNetworkAccessManager::GetOperation, request, body, nullptr);
         };
         // Callback that never finishes

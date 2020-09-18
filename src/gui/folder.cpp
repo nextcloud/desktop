@@ -647,14 +647,6 @@ void Folder::setSupportsVirtualFiles(bool enabled)
     }
 }
 
-bool Folder::newFilesAreVirtual() const
-{
-    if (!supportsVirtualFiles())
-        return false;
-    auto pinState = _vfs->pinState(QString());
-    return pinState && *pinState == PinState::OnlineOnly;
-}
-
 void Folder::setRootPinState(PinState state)
 {
     _vfs->setPinState(QString(), state);
@@ -707,9 +699,6 @@ void Folder::saveToSettings() const
     //       currently unused.
     settings->beginGroup(FolderMan::escapeAlias(_definition.alias));
     FolderDefinition::save(*settings, _definition);
-
-    // Technically redundant, just for older clients
-    settings->setValue(QLatin1String("usePlaceholders"), newFilesAreVirtual());
 
     settings->sync();
     qCInfo(lcFolder) << "Saved folder" << _definition.alias << "to settings, status" << settings->status();

@@ -44,6 +44,7 @@ public:
 class Activity
 {
 public:
+    // id, account name
     typedef QPair<qlonglong, QString> Identifier;
 
     enum Type {

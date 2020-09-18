@@ -304,9 +304,6 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
         _account->setDavUser(user);
     }
     QString displayName = json.object().value("ocs").toObject().value("data").toObject().value("display-name").toString();
-    if ( displayName.isEmpty()) {
-        displayName = json.object().value("ocs").toObject().value("data").toObject().value("displayname").toString();
-    }
     if (!displayName.isEmpty()) {
         _account->setDavDisplayName(displayName);
     }

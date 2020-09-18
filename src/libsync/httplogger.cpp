@@ -33,17 +33,22 @@ bool isTextBody(const QString &s)
     return regexp.match(s).hasMatch();
 }
 
-void logHttp(bool isRequest, const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, const qint64 &contentLength, const QList<QNetworkReply::RawHeaderPair> &header, QIODevice *device)
+void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, const qint64 &contentLength, const QList<QNetworkReply::RawHeaderPair> &header, QIODevice *device)
 {
+    const auto reply = qobject_cast<QNetworkReply *>(device);
     QString msg;
     QTextStream stream(&msg);
     stream << id << ": ";
-    if (isRequest) {
+    if (!reply) {
         stream << "Request: ";
     } else {
         stream << "Response: ";
     }
-    stream << verb << " " << url << " Header: { ";
+    stream << verb;
+    if (reply) {
+        stream << " " << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    }
+    stream << " " << url << " Header: { ";
     for (const auto &it : header) {
         stream << it.first << ": ";
         if (it.first == "Authorization") {
@@ -86,8 +91,7 @@ void HttpLogger::logReplyOnFinished(const QNetworkReply *reply)
         return;
     }
     QObject::connect(reply, &QNetworkReply::finished, reply, [reply] {
-        logHttp(false,
-            requestVerb(*reply),
+        logHttp(requestVerb(*reply),
             reply->url().toString(),
             reply->request().rawHeader(XRequestId()),
             reply->header(QNetworkRequest::ContentTypeHeader).toString(),
@@ -108,8 +112,7 @@ void HttpLogger::logRequest(const QNetworkRequest &request, QNetworkAccessManage
     for (const auto &key : keys) {
         header << qMakePair(key, request.rawHeader(key));
     }
-    logHttp(true,
-        requestVerb(operation, request),
+    logHttp(requestVerb(operation, request),
         request.url().toString(),
         request.rawHeader(XRequestId()),
         request.header(QNetworkRequest::ContentTypeHeader).toString(),

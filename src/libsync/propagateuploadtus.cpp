@@ -81,7 +81,9 @@ SimpleNetworkJob *PropagateUploadFileTUS::makeCreationWithUploadJob(QNetworkRequ
     Q_ASSERT(propagator()->account()->capabilities().tusSupport().extensions.contains(QStringLiteral("creation-with-upload")));
     // in difference to the old protocol the algrithm and the value are space seperated
     const auto checkSum = _transmissionChecksumHeader.replace(':', ' ').toBase64();
-    request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), "filename " + _item->_file.toUtf8().toBase64() + ",checksum " + checkSum);
+    const QString filePath = propagator()->_remoteFolder + _item->_file;
+    qCDebug(lcPropagateUploadTUS) << "FullPath:" << filePath;
+    request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), "filename " + filePath.toUtf8().toBase64() + ",checksum " + checkSum);
     request->setRawHeader(QByteArrayLiteral("Upload-Length"), QByteArray::number(_item->_size));
     return propagator()->account()->sendRequest("POST", uploadURL(propagator()->account()), *request, device);
 }
@@ -230,8 +232,8 @@ void PropagateUploadFileTUS::slotChunkFinished()
         check->setProperties({ "http://owncloud.org/ns:fileid", "http://owncloud.org/ns:permissions", "getetag" });
         connect(check, &PropfindJob::result, this, [this, check](const QVariantMap &map) {
             _finished = true;
-            _item->_remotePerm = RemotePermissions::fromServerString(map.value("permissions").toString());
-            finalize(Utility::normalizeEtag(map.value("getetag").toByteArray()), map.value("fileid").toByteArray());
+            _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")).toString());
+            finalize(Utility::normalizeEtag(map.value(QStringLiteral("getetag")).toByteArray()), map.value(QStringLiteral("fileid")).toByteArray());
             slotJobDestroyed(check);
         });
         connect(check, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);

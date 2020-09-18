@@ -71,7 +71,7 @@ jobs:
       run: Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --test owncloud/owncloud-client"
 
     - name: Package
-      run: if (-not $IsMacOS) { Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --package owncloud/owncloud-client" } else {Write-Host "Skip packaging on mac as the build gets stuck when mounting"}
+      run: Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --package owncloud/owncloud-client"
 
     - name: Update shelf
       run: |

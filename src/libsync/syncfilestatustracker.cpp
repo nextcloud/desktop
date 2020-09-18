@@ -66,7 +66,7 @@ SyncFileStatus::SyncFileStatusTag SyncFileStatusTracker::lookupProblem(const QSt
             return severity;
         } else if (severity == SyncFileStatus::StatusError
             && pathStartsWith(problemPath, pathToMatch)
-            && (pathToMatch.isEmpty() || problemPath.at(pathToMatch.size()) == '/')) {
+            && (pathToMatch.isEmpty() || problemPath.at(pathToMatch.size()) == QLatin1Char('/'))) {
             return SyncFileStatus::StatusWarning;
         } else if (!pathStartsWith(problemPath, pathToMatch)) {
             // Starting at lower_bound we get the first path that is not smaller,
@@ -186,8 +186,8 @@ void SyncFileStatusTracker::incSyncCountAndEmitStatusChanged(const QString &rela
 
         // We passed from OK to SYNC, increment the parent to keep it marked as
         // SYNC while we propagate ourselves and our own children.
-        OC_ASSERT(!relativePath.endsWith('/'));
-        int lastSlashIndex = relativePath.lastIndexOf('/');
+        OC_ASSERT(!relativePath.endsWith(QLatin1Char('/')));
+        int lastSlashIndex = relativePath.lastIndexOf(QLatin1Char('/'));
         if (lastSlashIndex != -1)
             incSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
         else if (!relativePath.isEmpty())
@@ -208,8 +208,8 @@ void SyncFileStatusTracker::decSyncCountAndEmitStatusChanged(const QString &rela
         emit fileStatusChanged(getSystemDestination(relativePath), status);
 
         // We passed from SYNC to OK, decrement our parent.
-        OC_ASSERT(!relativePath.endsWith('/'));
-        int lastSlashIndex = relativePath.lastIndexOf('/');
+        OC_ASSERT(!relativePath.endsWith(QLatin1Char('/')));
+        int lastSlashIndex = relativePath.lastIndexOf(QLatin1Char('/'));
         if (lastSlashIndex != -1)
             decSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
         else if (!relativePath.isEmpty())
@@ -332,9 +332,9 @@ SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &r
 
 void SyncFileStatusTracker::invalidateParentPaths(const QString &path)
 {
-    QStringList splitPath = path.split('/', QString::SkipEmptyParts);
+    QStringList splitPath = path.split(QLatin1Char('/'), QString::SkipEmptyParts);
     for (int i = 0; i < splitPath.size(); ++i) {
-        QString parentPath = QStringList(splitPath.mid(0, i)).join(QLatin1String("/"));
+        QString parentPath = QStringList(splitPath.mid(0, i)).join(QLatin1Char('/'));
         emit fileStatusChanged(getSystemDestination(parentPath), fileStatus(parentPath));
     }
 }

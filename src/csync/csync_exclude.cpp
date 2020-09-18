@@ -132,9 +132,6 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
 
 static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool excludeConflictFiles)
 {
-    int rc = -1;
-    CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
-
     /* split up the path */
     QStringRef bname(&path);
     int lastSlash = path.lastIndexOf(QLatin1Char('/'));
@@ -160,8 +157,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     // check the strlen and ignore the file if its name is longer than 254 chars.
     // whenever changing this also check createDownloadTmpFileName
     if (blen > 254) {
-        match = CSYNC_FILE_EXCLUDE_LONG_FILENAME;
-        goto out;
+        return CSYNC_FILE_EXCLUDE_LONG_FILENAME;
     }
 
 #ifdef _WIN32
@@ -171,17 +167,14 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     // not allow to sync those to avoid file loss/ambiguities (#416)
     if (blen > 1) {
         if (bname.at(blen - 1) == QLatin1Char(' ')) {
-            match = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
-            goto out;
+            return CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
         } else if (bname.at(blen - 1) == QLatin1Char('.')) {
-            match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-            goto out;
+            return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
         }
     }
 
     if (csync_is_windows_reserved_word(bname)) {
-      match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-      goto out;
+        return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
     }
 
     // Filter out characters not allowed in a filename on windows
@@ -189,8 +182,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     for (auto p : path) {
         ushort c = p.unicode();
         if (c < 32) {
-            match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-            goto out;
+            return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
         }
         switch (c) {
         case '\\':
@@ -201,8 +193,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
         case '>':
         case '<':
         case '|':
-            match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-            goto out;
+            return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
         default:
             break;
         }
@@ -211,21 +202,15 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
 
     /* We create a Desktop.ini on Windows for the sidebar icon, make sure we don't sync it. */
     if (blen == 11 && path == bname) {
-        rc = bname.compare(QLatin1String("Desktop.ini"), Qt::CaseInsensitive);
-        if (rc == 0) {
-            match = CSYNC_FILE_SILENTLY_EXCLUDED;
-            goto out;
+        if (bname.compare(QLatin1String("Desktop.ini"), Qt::CaseInsensitive) == 0) {
+            return CSYNC_FILE_SILENTLY_EXCLUDED;
         }
     }
 
     if (excludeConflictFiles && OCC::Utility::isConflictFile(path)) {
-        match = CSYNC_FILE_EXCLUDE_CONFLICT;
-        goto out;
+        return CSYNC_FILE_EXCLUDE_CONFLICT;
     }
-
-  out:
-
-    return match;
+    return CSYNC_NOT_EXCLUDED;
 }
 
 

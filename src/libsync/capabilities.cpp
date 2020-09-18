@@ -24,7 +24,7 @@ Capabilities::Capabilities(const QVariantMap &capabilities)
     : _capabilities(capabilities)
     , _fileSharingCapabilities(_capabilities.value(QStringLiteral("files_sharing")).toMap())
     , _fileSharingPublicCapabilities(_fileSharingCapabilities.value(QStringLiteral("public"), {}).toMap())
-    , _tusSupport(_capabilities.value(QLatin1String("files")).toMap().value(QStringLiteral("tus_support")).toMap())
+    , _tusSupport(_capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("tus_support")).toMap())
 {
 }
 
@@ -50,27 +50,27 @@ bool Capabilities::sharePublicLinkSupportsUploadOnly() const
     return _fileSharingPublicCapabilities.value(QStringLiteral("supports_upload_only")).toBool();
 }
 
-static bool getEnforcePasswordCapability(const QVariantMap &fileSharingPublicCapabilities, const QByteArray &name)
+static bool getEnforcePasswordCapability(const QVariantMap &fileSharingPublicCapabilities, const QString &name)
 {
-    auto value = fileSharingPublicCapabilities["password"].toMap()["enforced_for"].toMap()[name];
+    auto value = fileSharingPublicCapabilities[QStringLiteral("password")].toMap()[QStringLiteral("enforced_for")].toMap()[name];
     if (!value.isValid())
-        return fileSharingPublicCapabilities["password"].toMap()["enforced"].toBool();
+        return fileSharingPublicCapabilities[QStringLiteral("password")].toMap()[QStringLiteral("enforced")].toBool();
     return value.toBool();
 }
 
 bool Capabilities::sharePublicLinkEnforcePasswordForReadOnly() const
 {
-    return getEnforcePasswordCapability(_fileSharingPublicCapabilities, QByteArrayLiteral("read_only"));
+    return getEnforcePasswordCapability(_fileSharingPublicCapabilities, QStringLiteral("read_only"));
 }
 
 bool Capabilities::sharePublicLinkEnforcePasswordForReadWrite() const
 {
-    return getEnforcePasswordCapability(_fileSharingPublicCapabilities, QByteArrayLiteral("read_write"));
+    return getEnforcePasswordCapability(_fileSharingPublicCapabilities, QStringLiteral("read_write"));
 }
 
 bool Capabilities::sharePublicLinkEnforcePasswordForUploadOnly() const
 {
-    return getEnforcePasswordCapability(_fileSharingPublicCapabilities, QByteArrayLiteral("upload_only"));
+    return getEnforcePasswordCapability(_fileSharingPublicCapabilities, QStringLiteral("upload_only"));
 }
 
 bool Capabilities::sharePublicLinkDefaultExpire() const
@@ -106,7 +106,7 @@ int Capabilities::defaultPermissions() const
 bool Capabilities::notificationsAvailable() const
 {
     // We require the OCS style API in 9.x, can't deal with the REST one only found in 8.2
-    return _capabilities.contains("notifications") && _capabilities.value("notifications").toMap().contains("ocs-endpoints");
+    return _capabilities.contains(QStringLiteral("notifications")) && _capabilities.value(QStringLiteral("notifications")).toMap().contains(QStringLiteral("ocs-endpoints"));
 }
 
 bool Capabilities::isValid() const
@@ -117,7 +117,7 @@ bool Capabilities::isValid() const
 QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
     QList<QByteArray> list;
-    foreach (const auto &t, _capabilities.value("checksums").toMap().value("supportedTypes").toList()) {
+    foreach (const auto &t, _capabilities.value(QStringLiteral("checksums")).toMap().value(QStringLiteral("supportedTypes")).toList()) {
         list.push_back(t.toByteArray());
     }
     return list;
@@ -152,7 +152,7 @@ bool Capabilities::chunkingNg() const
         return false;
     if (chunkng == "1")
         return true;
-    return _capabilities.value("dav").toMap().value("chunking").toByteArray() >= "1.0";
+    return _capabilities.value(QStringLiteral("dav")).toMap().value(QStringLiteral("chunking")).toByteArray() >= "1.0";
 }
 
 bool Capabilities::bigfilechunkingEnabled() const
@@ -163,7 +163,7 @@ bool Capabilities::bigfilechunkingEnabled() const
     {
         return false;
     }
-    return _capabilities.value("files").toMap().value(QStringLiteral("bigfilechunking"), true).toBool();
+    return _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("bigfilechunking"), true).toBool();
 }
 
 const TusSupport &Capabilities::tusSupport() const
@@ -173,23 +173,23 @@ const TusSupport &Capabilities::tusSupport() const
 
 bool Capabilities::chunkingParallelUploadDisabled() const
 {
-    return _capabilities.value("dav").toMap().value("chunkingParallelUploadDisabled").toBool();
+    return _capabilities.value(QStringLiteral("dav")).toMap().value(QStringLiteral("chunkingParallelUploadDisabled")).toBool();
 }
 
 bool Capabilities::privateLinkPropertyAvailable() const
 {
-    return _capabilities.value("files").toMap().value("privateLinks").toBool();
+    return _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("privateLinks")).toBool();
 }
 
 bool Capabilities::privateLinkDetailsParamAvailable() const
 {
-    return _capabilities.value("files").toMap().value("privateLinksDetailsParam").toBool();
+    return _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("privateLinksDetailsParam")).toBool();
 }
 
 QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 {
     QList<int> list;
-    foreach (const auto &t, _capabilities.value("dav").toMap().value("httpErrorCodesThatResetFailingChunkedUploads").toList()) {
+    foreach (const auto &t, _capabilities.value(QStringLiteral("dav")).toMap().value(QStringLiteral("httpErrorCodesThatResetFailingChunkedUploads")).toList()) {
         list.push_back(t.toInt());
     }
     return list;
@@ -212,12 +212,12 @@ bool Capabilities::uploadConflictFiles() const
 
 bool Capabilities::versioningEnabled() const
 {
-    return _capabilities.value("files").toMap().value("versioning").toBool();
+    return _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("versioning")).toBool();
 }
 
 QStringList Capabilities::blacklistedFiles() const
 {
-    return _capabilities.value("files").toMap().value("blacklisted_files").toStringList();
+    return _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("blacklisted_files")).toStringList();
 }
 
 TusSupport::TusSupport(const QVariantMap &tus_support)

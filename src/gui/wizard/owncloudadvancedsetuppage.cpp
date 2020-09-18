@@ -99,7 +99,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
             // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
             // to re-open the browser.
             // HACK: the wizard will reenable the buttons on completeChanged, so delay it
-            QTimer::singleShot(0, [this]{
+            QTimer::singleShot(0, this, [this]{
                 wizard()->button(QWizard::BackButton)->setEnabled(false);
             });
         }

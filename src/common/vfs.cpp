@@ -126,6 +126,7 @@ Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
 
 bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
 {
+    // TODO: cache plugins available?
     if (mode == Vfs::Off)
         return true;
     auto name = modeToPluginName(mode);
