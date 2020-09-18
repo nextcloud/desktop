@@ -108,7 +108,7 @@ bool FolderWizardLocalPath::isComplete() const
     _ui.warnLabel->setWordWrap(true);
     if (isOk) {
         _ui.warnLabel->hide();
-        _ui.warnLabel->setText(QString());
+        _ui.warnLabel->clear();
     } else {
         _ui.warnLabel->show();
         QString warnings = formatWarnings(warnStrings);
@@ -228,8 +228,17 @@ void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
     }
 }
 
-void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply * /*reply*/)
+void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply *reply)
 {
+    // Ignore 404s, otherwise users will get annoyed by error popups
+    // when not typing fast enough. It's still clear that a given path
+    // was not found, because the 'Next' button is disabled and no entry
+    // is selected in the tree view.
+    int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (httpCode == 404) {
+        showWarn(QString()); // hides the warning pane
+        return;
+    }
     auto job = qobject_cast<LsColJob *>(sender());
     ASSERT(job);
     showWarn(tr("Failed to list a folder. Error: %1")
@@ -389,7 +398,7 @@ void FolderWizardRemotePath::slotLsColFolderEntry()
     // because of extra logic in the typed-path case.
     disconnect(job, nullptr, this, nullptr);
     connect(job, &LsColJob::finishedWithError,
-        this, &FolderWizardRemotePath::slotTypedPathError);
+        this, &FolderWizardRemotePath::slotHandleLsColNetworkError);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotTypedPathFound);
 }
@@ -398,21 +407,6 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
 {
     slotUpdateDirectories(subpaths);
     selectByPath(_ui.folderEntry->text());
-}
-
-void FolderWizardRemotePath::slotTypedPathError(QNetworkReply *reply)
-{
-    // Ignore 404s, otherwise users will get annoyed by error popups
-    // when not typing fast enough. It's still clear that a given path
-    // was not found, because the 'Next' button is disabled and no entry
-    // is selected in the tree view.
-    int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (httpCode == 404) {
-        showWarn(""); // hides the warning pane
-        return;
-    }
-
-    slotHandleLsColNetworkError(reply);
 }
 
 LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)

@@ -102,7 +102,6 @@ protected slots:
     void slotFolderEntryEdited(const QString &text);
     void slotLsColFolderEntry();
     void slotTypedPathFound(const QStringList &subpaths);
-    void slotTypedPathError(QNetworkReply *reply);
 
 private:
     LsColJob *runLsColJob(const QString &path);
