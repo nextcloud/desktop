@@ -1287,12 +1287,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="569"/>
+        <location filename="../src/gui/folderwizard.cpp" line="570"/>
         <source>Add Folder Sync Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="571"/>
+        <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>Add Sync Connection</source>
         <translation type="unfinished"></translation>
     </message>
