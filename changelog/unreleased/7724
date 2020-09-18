@@ -1,0 +1,6 @@
+Change: When manually adding a folder sync connection, don't display 404 errors
+
+We no longer display 404 errors when exploring the folders.
+A user might not have access to the full file tree on the server.
+
+https://github.com/owncloud/client/issues/7724
