@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Vis mnemonic</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -297,7 +297,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="293"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Du kan ikke kryptere en mappe med indhold, venligst fjern filerne.
+Vent på en ny sync, og krypter herefter mappen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="362"/>
@@ -703,7 +704,8 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>Kunne ikke generere metadata for kryptering, låser mappen op igen.
+Dette kan være et problem med dine OpenSSL biblioteker.</translation>
     </message>
 </context>
 <context>
@@ -3493,7 +3495,7 @@ Det frarådes at benytte den.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Åben hoved dialog</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="90"/>
@@ -3503,7 +3505,7 @@ Det frarådes at benytte den.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="91"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Afslut %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="172"/>
@@ -3541,27 +3543,27 @@ Det frarådes at benytte den.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseret %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Du omdøbte %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Du slettede %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Du oprettede %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Du ændrede %1</translation>
     </message>
 </context>
 <context>
@@ -4046,7 +4048,7 @@ Det frarådes at benytte den.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Fjern Konto</translation>
     </message>
 </context>
 <context>
@@ -4130,12 +4132,12 @@ Det frarådes at benytte den.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Genoptag synkronisering for alle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pause alle synkroniseringer</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="217"/>
@@ -4150,12 +4152,12 @@ Det frarådes at benytte den.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="272"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Afslut</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="566"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Åben deling dialog</translation>
     </message>
 </context>
 <context>
