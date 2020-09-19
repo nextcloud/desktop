@@ -538,12 +538,12 @@ Wait for the new sync, then encrypt it.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="350"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
         <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
         <translation>Ne sinkroniziraju se datoteke s popisa za zanemarivanje, kao ni simboličke poveznice. Navedeno uključuje:</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityListModel.cpp" line="452"/>
+        <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Više aktivnosti možete pronaći u aplikaciji Activity.</translation>
     </message>
