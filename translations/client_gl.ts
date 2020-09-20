@@ -3222,7 +3222,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation>Produciuse un fallo ao cargar ou crear o ficheiro do diario. Asegúrate de que ten permisos de lectura e escritura no cartafol local de sincronización.</translation>
+        <translation>Produciuse un fallo ao cargar ou crear o ficheiro do diario. Asegúrese de que ten permisos de lectura e escritura no cartafol local de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
