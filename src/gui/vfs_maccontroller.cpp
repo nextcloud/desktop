@@ -20,6 +20,8 @@
 #include "vfs_mac.h"
 #include "theme.h"
 
+#include <QDir>
+#include <QStandardPaths>
 #include <AvailabilityMacros.h>
 
 void VfsMacController::mountFailed(QVariantMap userInfo)
