@@ -37,6 +37,7 @@ public:
     void removePath(const QString &) {}
 
     void startWatching();
+    QStringList addCoalescedPaths(const QStringList &) const;
     void doNotifyParent(const QStringList &);
 
 private:
