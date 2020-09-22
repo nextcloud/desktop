@@ -327,7 +327,7 @@ void PropagateUploadFileNG::doFinalMove()
 
     // Finish with a MOVE
     QString destination = QDir::cleanPath(propagator()->account()->davUrl().path()
-        + propagator()->_remoteFolder + _item->_file);
+        + propagator()->fullRemotePath(_item->_file));
     auto headers = PropagateUploadFileCommon::headers();
 
     // "If-Match applies to the source, but we are interested in comparing the etag of the destination
@@ -369,7 +369,7 @@ void PropagateUploadFileNG::startNextChunk()
     _currentChunkOffset = _rangesToUpload.first().start;
     _currentChunkSize = qMin(propagator()->_chunkSize, _rangesToUpload.first().size);
 
-    const QString fileName = propagator()->getFilePath(_item->_file);
+    const QString fileName = propagator()->fullLocalPath(_item->_file);
 
     auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
             fileName, _currentChunkOffset, _currentChunkSize, &propagator()->_bandwidthManager));
@@ -466,7 +466,7 @@ void PropagateUploadFileNG::slotPutFinished()
     _finished = _sent == _bytesToUpload;
 
     // Check if the file still exists
-    const QString fullFilePath(propagator()->getFilePath(_item->_file));
+    const QString fullFilePath(propagator()->fullLocalPath(_item->_file));
     if (!FileSystem::fileExists(fullFilePath)) {
         if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));

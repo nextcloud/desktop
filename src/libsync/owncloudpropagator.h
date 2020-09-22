@@ -393,9 +393,6 @@ class OWNCLOUDSYNC_EXPORT OwncloudPropagator : public QObject
 {
     Q_OBJECT
 public:
-    const QString _localDir; // absolute path to the local directory. ends with '/'
-    const QString _remoteFolder; // remote folder, ends with '/'
-
     SyncJournalDb *const _journal;
     bool _finishedEmited; // used to ensure that finished is only emitted once
 
@@ -482,7 +479,15 @@ public:
      */
     bool hasCaseClashAccessibilityProblem(const QString &relfile);
 
-    QString getFilePath(const QString &tmp_file_name) const;
+    Q_REQUIRED_RESULT QString fullLocalPath(const QString &tmp_file_name) const;
+    QString localPath() const;
+
+    /**
+     * Returns the full remote path including the folder root of a
+     * folder sync path.
+     */
+    Q_REQUIRED_RESULT QString fullRemotePath(const QString &tmp_file_name) const;
+    QString remotePath() const;
 
     /** Creates the job for an item.
      */
@@ -595,6 +600,9 @@ private:
     QScopedPointer<PropagateRootDirectory> _rootJob;
     SyncOptions _syncOptions;
     bool _jobScheduled = false;
+
+    const QString _localDir; // absolute path to the local directory. ends with '/'
+    const QString _remoteFolder; // remote folder, ends with '/'
 };
 
 

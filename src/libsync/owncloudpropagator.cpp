@@ -590,9 +590,14 @@ bool OwncloudPropagator::hasCaseClashAccessibilityProblem(const QString &relfile
 #endif
 }
 
-QString OwncloudPropagator::getFilePath(const QString &tmp_file_name) const
+QString OwncloudPropagator::fullLocalPath(const QString &tmp_file_name) const
 {
     return _localDir + tmp_file_name;
+}
+
+QString OwncloudPropagator::localPath() const
+{
+    return _localDir;
 }
 
 void OwncloudPropagator::scheduleNextJob()
@@ -671,7 +676,7 @@ OwncloudPropagator::DiskSpaceResult OwncloudPropagator::diskSpaceCheck() const
 bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     PropagatorCompositeJob *composite, QString *error)
 {
-    QString fn = getFilePath(item->_file);
+    QString fn = fullLocalPath(item->_file);
 
     QString renameError;
     auto conflictModTime = FileSystem::getModTime(fn);
@@ -680,7 +685,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
         conflictUserName = account()->davDisplayName();
     QString conflictFileName = Utility::makeConflictFileName(
         item->_file, Utility::qDateTimeFromTime_t(conflictModTime), conflictUserName);
-    QString conflictFilePath = getFilePath(conflictFileName);
+    QString conflictFilePath = fullLocalPath(conflictFileName);
 
     emit touchedFile(fn);
     emit touchedFile(conflictFilePath);
@@ -987,7 +992,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         if (_item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
             // special case for local MKDIR, set local directory mtime
             // (it's not synced later at all, but can be nice to have it set initially)
-            FileSystem::setModTime(propagator()->getFilePath(_item->destination()), _item->_modtime);
+            FileSystem::setModTime(propagator()->fullLocalPath(_item->destination()), _item->_modtime);
         }
 
         // For new directories we always want to update the etag once
@@ -1141,5 +1146,16 @@ void CleanupPollsJob::slotPollFinished()
     }
     // Continue with the next entry, or finish
     start();
+}
+
+QString OwncloudPropagator::fullRemotePath(const QString &tmp_file_name) const
+{
+    // TODO: should this be part of the _item (SyncFileItemPtr)?
+    return _remoteFolder + tmp_file_name;
+}
+
+QString OwncloudPropagator::remotePath() const
+{
+    return _remoteFolder;
 }
 }

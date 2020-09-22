@@ -216,7 +216,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
     const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
         _journal->getAndDeleteStaleDownloadInfos(download_file_paths);
     foreach (const SyncJournalDb::DownloadInfo &deleted_info, deleted_infos) {
-        const QString tmppath = _propagator->getFilePath(deleted_info._tmpfile);
+        const QString tmppath = _propagator->fullLocalPath(deleted_info._tmpfile);
         qCInfo(lcEngine) << "Deleting stale temporary file: " << tmppath;
         FileSystem::remove(tmppath);
     }
@@ -268,7 +268,7 @@ void SyncEngine::conflictRecordMaintenance()
     // missing ones.
     auto conflictRecordPaths = _journal->conflictRecordPaths();
     for (const auto &path : conflictRecordPaths) {
-        auto fsPath = _propagator->getFilePath(QString::fromUtf8(path));
+        auto fsPath = _propagator->fullLocalPath(QString::fromUtf8(path));
         if (!QFileInfo(fsPath).exists()) {
             _journal->deleteConflictRecord(path);
         }

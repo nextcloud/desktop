@@ -67,7 +67,7 @@ void PropagateRemoteDelete::start()
     qCDebug(lcPropagateRemoteDelete) << _item->_file;
 
     _job = new DeleteJob(propagator()->account(),
-        propagator()->_remoteFolder + _item->_file,
+        propagator()->fullRemotePath(_item->_file),
         this);
     connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);

@@ -58,7 +58,7 @@ Q_LOGGING_CATEGORY(lcPropagateUploadTUS, "sync.propagator.upload.tus", QtDebugMs
 
 UploadDevice *PropagateUploadFileTUS::prepareDevice(const quint64 &chunkSize)
 {
-    const QString localFileName = propagator()->getFilePath(_item->_file);
+    const QString localFileName = propagator()->fullLocalPath(_item->_file);
     auto device = new UploadDevice(localFileName, _currentOffset, chunkSize, &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadTUS) << "Could not prepare upload device: " << device->errorString();
@@ -81,7 +81,7 @@ SimpleNetworkJob *PropagateUploadFileTUS::makeCreationWithUploadJob(QNetworkRequ
     Q_ASSERT(propagator()->account()->capabilities().tusSupport().extensions.contains(QStringLiteral("creation-with-upload")));
     // in difference to the old protocol the algrithm and the value are space seperated
     const auto checkSum = _transmissionChecksumHeader.replace(':', ' ').toBase64();
-    const QString filePath = propagator()->_remoteFolder + _item->_file;
+    const QString filePath = propagator()->fullRemotePath(_item->_file);
     qCDebug(lcPropagateUploadTUS) << "FullPath:" << filePath;
     request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), "filename " + filePath.toUtf8().toBase64() + ",checksum " + checkSum);
     request->setRawHeader(QByteArrayLiteral("Upload-Length"), QByteArray::number(_item->_size));
@@ -199,7 +199,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
     _finished = offset == _item->_size;
 
     // Check if the file still exists
-    const QString fullFilePath(propagator()->getFilePath(_item->_file));
+    const QString fullFilePath(propagator()->fullLocalPath(_item->_file));
     if (!FileSystem::fileExists(fullFilePath)) {
         if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));

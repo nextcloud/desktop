@@ -217,7 +217,7 @@ void PropagateUploadFileCommon::start()
     }
 
     auto job = new DeleteJob(propagator()->account(),
-        propagator()->_remoteFolder + _item->_file,
+        propagator()->fullRemotePath(_item->_file),
         this);
     _jobs.append(job);
     connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileCommon::slotComputeContentChecksum);
@@ -231,7 +231,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
         return;
     }
 
-    const QString filePath = propagator()->getFilePath(_item->_file);
+    const QString filePath = propagator()->fullLocalPath(_item->_file);
 
     // remember the modtime before checksumming to be able to detect a file
     // change during the checksum calculation
@@ -282,7 +282,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
         this, &PropagateUploadFileCommon::slotStartUpload);
     connect(computeChecksum, &ComputeChecksum::done,
         computeChecksum, &QObject::deleteLater);
-    const QString filePath = propagator()->getFilePath(_item->_file);
+    const QString filePath = propagator()->fullLocalPath(_item->_file);
     computeChecksum->start(filePath);
 }
 
@@ -299,7 +299,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         _item->_checksumHeader = _transmissionChecksumHeader;
     }
 
-    const QString fullFilePath = propagator()->getFilePath(_item->_file);
+    const QString fullFilePath = propagator()->fullLocalPath(_item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
@@ -487,7 +487,7 @@ void UploadDevice::setChoked(bool b)
 void PropagateUploadFileCommon::startPollJob(const QString &path)
 {
     PollJob *job = new PollJob(propagator()->account(), path, _item,
-        propagator()->_journal, propagator()->_localDir, this);
+        propagator()->_journal, propagator()->localPath(), this);
     connect(job, &PollJob::finishedSignal, this, &PropagateUploadFileCommon::slotPollFinished);
     SyncJournalDb::PollInfo info;
     info._file = _item->_file;
