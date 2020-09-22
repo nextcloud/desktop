@@ -540,13 +540,18 @@ Vent på en ny sync, og krypter herefter mappen.</translation>
     <name>OCC::ActivityListModel</name>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
-        <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation>Filer fra ignorer listen og symbolske link er ikke synkroniseret. Det inkluderer:</translation>
+        <source>Files from the ignore list as well as symbolic links are not synced.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
         <source>For more activities please open the Activity app.</source>
         <translation>For flere aktiviteter åbn Activity app&apos;n.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
+        <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
+        <translation>Filer fra ignorer listen og symbolske link er ikke synkroniseret. Det inkluderer:</translation>
     </message>
 </context>
 <context>

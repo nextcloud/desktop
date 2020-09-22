@@ -539,13 +539,18 @@ Wait for the new sync, then encrypt it.</source>
     <name>OCC::ActivityListModel</name>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
-        <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation>Els fitxers de la llista de fitxers ignorats i els enllaços simbòlics no se sincronitzen. Això inclou:</translation>
+        <source>Files from the ignore list as well as symbolic links are not synced.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Per a veure més activitats, obriu l&apos;aplicació Activitat.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
+        <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
+        <translation>Els fitxers de la llista de fitxers ignorats i els enllaços simbòlics no se sincronitzen. Això inclou:</translation>
     </message>
 </context>
 <context>
