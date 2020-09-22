@@ -539,13 +539,18 @@ Wait for the new sync, then encrypt it.</source>
     <name>OCC::ActivityListModel</name>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
-        <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation>Failai, pažymėti kaip ingoruotini, kaip ir simbolinės nuorodos nėra sinchronizuojami. Tai įtraukia:</translation>
+        <source>Files from the ignore list as well as symbolic links are not synced.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Jei norite matyti daugiau veiklos, atidarykite programą Veikla.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
+        <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
+        <translation>Failai, pažymėti kaip ingoruotini, kaip ir simbolinės nuorodos nėra sinchronizuojami. Tai įtraukia:</translation>
     </message>
 </context>
 <context>

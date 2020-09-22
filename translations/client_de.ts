@@ -540,13 +540,18 @@ Warten Sie auf die neue Synchronisierung und verschlüsseln Sie sie dann.</trans
     <name>OCC::ActivityListModel</name>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
-        <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
-        <translation>Dateien aus der Ignorierliste sowie symbolische Links werden nicht synchronisiert. Dazu gehören:</translation>
+        <source>Files from the ignore list as well as symbolic links are not synced.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Um weitere Aktivitäten anzusehen bitte die Activity-App öffnen.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
+        <source>Files from the ignore list as well as symbolic links are not synced. This includes:</source>
+        <translation>Dateien aus der Ignorierliste sowie symbolische Links werden nicht synchronisiert. Dazu gehören:</translation>
     </message>
 </context>
 <context>
