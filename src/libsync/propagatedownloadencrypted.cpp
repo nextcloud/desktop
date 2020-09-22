@@ -22,7 +22,7 @@ void PropagateDownloadEncrypted::start() {
 void PropagateDownloadEncrypted::checkFolderEncryptedStatus()
 {
     const auto rootPath = [=]() {
-        const auto result = _propagator->_remoteFolder;
+        const auto result = _propagator->remotePath();
         if (result.startsWith('/')) {
             return result.mid(1);
         } else {
@@ -129,7 +129,7 @@ bool PropagateDownloadEncrypted::decryptFile(QFile& tmpFile)
     qCDebug(lcPropagateDownloadEncrypted) << "Content Checksum Computed starting decryption" << tmpFileName;
 
     tmpFile.close();
-    QFile _tmpOutput(_propagator->getFilePath(tmpFileName), this);
+    QFile _tmpOutput(_propagator->fullLocalPath(tmpFileName), this);
     EncryptionHelper::fileDecryption(_encryptedInfo.encryptionKey,
                                      _encryptedInfo.initializationVector,
                                      &tmpFile,

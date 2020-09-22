@@ -79,7 +79,7 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
     // Encrypt File!
     FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
 
-    QFileInfo info(_propagator->_localDir + QDir::separator() + _item->_file);
+    QFileInfo info(_propagator->fullLocalPath(_item->_file));
     const QString fileName = info.fileName();
 
     // Find existing metadata for this file

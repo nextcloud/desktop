@@ -101,8 +101,8 @@ void PropagateRemoteDelete::createDeleteJob(const QString &filename)
     qCInfo(lcPropagateRemoteDelete) << "Deleting file, local" << _item->_file << "remote" << filename;
 
     _job = new DeleteJob(propagator()->account(),
-                         propagator()->_remoteFolder + filename,
-                         this);
+        propagator()->fullRemotePath(_item->_file),
+        this);
     if (_deleteEncryptedHelper && !_deleteEncryptedHelper->folderToken().isEmpty()) {
         _job->setFolderToken(_deleteEncryptedHelper->folderToken());
     }

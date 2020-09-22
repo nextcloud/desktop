@@ -56,8 +56,7 @@ QByteArray localFileIdFromFullId(const QByteArray &id)
  */
 bool PropagateLocalRemove::removeRecursively(const QString &path)
 {
-    auto folderDir = propagator()->_localDir;
-    QString absolute = folderDir + _item->_file + path;
+    QString absolute = propagator()->fullLocalPath(_item->_file + path);
     QStringList errors;
     QList<QPair<QString, bool>> deleted;
     bool success = FileSystem::removeRecursively(
@@ -73,14 +72,14 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         // Do it while avoiding redundant delete calls to the journal.
         QString deletedDir;
         foreach (const auto &it, deleted) {
-            if (!it.first.startsWith(folderDir))
+            if (!it.first.startsWith(propagator()->localPath()))
                 continue;
             if (!deletedDir.isEmpty() && it.first.startsWith(deletedDir))
                 continue;
             if (it.second) {
                 deletedDir = it.first;
             }
-            propagator()->_journal->deleteFileRecord(it.first.mid(folderDir.size()), it.second);
+            propagator()->_journal->deleteFileRecord(it.first.mid(propagator()->localPath().size()), it.second);
         }
 
         _error = errors.join(", ");
@@ -95,7 +94,7 @@ void PropagateLocalRemove::start()
     if (propagator()->_abortRequested)
         return;
 
-    QString filename = propagator()->_localDir + _item->_file;
+    const QString filename = propagator()->fullLocalPath(_item->_file);
     qCDebug(lcPropagateLocalRemove) << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {
@@ -136,7 +135,7 @@ void PropagateLocalMkdir::start()
         return;
 
     const auto rootPath = [=]() {
-        const auto result = propagator()->_remoteFolder;
+        const auto result = propagator()->remotePath();
         if (result.startsWith('/')) {
             return result.mid(1);
         } else {
@@ -169,7 +168,7 @@ void PropagateLocalMkdir::setDeleteExistingFile(bool enabled)
 
 void PropagateLocalMkdir::startLocalMkdir()
 {
-    QDir newDir(propagator()->getFilePath(_item->_file));
+    QDir newDir(propagator()->fullLocalPath(_item->_file));
     QString newDirStr = QDir::toNativeSeparators(newDir.path());
 
     // When turning something that used to be a file into a directory
@@ -199,7 +198,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         return;
     }
     emit propagator()->touchedFile(newDirStr);
-    QDir localDir(propagator()->_localDir);
+    QDir localDir(propagator()->localPath());
     if (!localDir.mkpath(_item->_file)) {
         done(SyncFileItem::NormalError, tr("could not create folder %1").arg(newDirStr));
         return;
@@ -247,8 +246,8 @@ void PropagateLocalRename::start()
     if (propagator()->_abortRequested)
         return;
 
-    QString existingFile = propagator()->getFilePath(propagator()->adjustRenamedPath(_item->_file));
-    QString targetFile = propagator()->getFilePath(_item->_renameTarget);
+    QString existingFile = propagator()->fullLocalPath(propagator()->adjustRenamedPath(_item->_file));
+    QString targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.

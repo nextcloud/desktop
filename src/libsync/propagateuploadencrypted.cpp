@@ -28,7 +28,7 @@ PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagato
 void PropagateUploadEncrypted::start()
 {
     const auto rootPath = [=]() {
-        const auto result = _propagator->_remoteFolder;
+        const auto result = _propagator->remotePath();
         if (result.startsWith('/')) {
             return result.mid(1);
         } else {
@@ -147,7 +147,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   // Encrypt File!
   _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
 
-  QFileInfo info(_propagator->_localDir + QDir::separator() + _item->_file);
+  QFileInfo info(_propagator->fullLocalPath(_item->_file));
   const QString fileName = info.fileName();
 
   // Find existing metadata for this file

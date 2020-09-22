@@ -197,7 +197,7 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     , _uploadingEncrypted(false)
 {
     const auto rootPath = [=]() {
-        const auto result = propagator->_remoteFolder;
+        const auto result = propagator->remotePath();
         if (result.startsWith('/')) {
             return result.mid(1);
         } else {
@@ -237,7 +237,7 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 void PropagateUploadFileCommon::start()
 {
     const auto rootPath = [=]() {
-        const auto result = propagator()->_remoteFolder;
+        const auto result = propagator()->remotePath();
         if (result.startsWith('/')) {
             return result.mid(1);
         } else {
@@ -290,7 +290,7 @@ void PropagateUploadFileCommon::setupUnencryptedFile()
     _uploadingEncrypted = false;
     _fileToUpload._file = _item->_file;
     _fileToUpload._size = _item->_size;
-    _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
+    _fileToUpload._path = propagator()->fullLocalPath(_fileToUpload._file);
     startUploadFile();
 }
 
@@ -325,7 +325,7 @@ void PropagateUploadFileCommon::startUploadFile() {
 
     qDebug() << "Deleting the current";
     auto job = new DeleteJob(propagator()->account(),
-        propagator()->_remoteFolder + _fileToUpload._file,
+        propagator()->fullRemotePath(_fileToUpload._file),
         this);
     _jobs.append(job);
     connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileCommon::slotComputeContentChecksum);
@@ -341,7 +341,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
         return;
     }
 
-    const QString filePath = propagator()->getFilePath(_item->_file);
+    const QString filePath = propagator()->fullLocalPath(_item->_file);
 
     // remember the modtime before checksumming to be able to detect a file
     // change during the checksum calculation - This goes inside of the _item->_file
@@ -397,7 +397,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
         this, &PropagateUploadFileCommon::slotStartUpload);
     connect(computeChecksum, &ComputeChecksum::done,
         computeChecksum, &QObject::deleteLater);
-    const QString filePath = propagator()->getFilePath(_item->_file);
+    const QString filePath = propagator()->fullLocalPath(_item->_file);
     computeChecksum->start(filePath);
 }
 
@@ -414,8 +414,8 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         _item->_checksumHeader = _transmissionChecksumHeader;
     }
 
-    const QString fullFilePath = _fileToUpload._path;
-    const QString originalFilePath = propagator()->getFilePath(_item->_file);
+    const QString fullFilePath = propagator()->fullLocalPath(_fileToUpload._file);
+    const QString originalFilePath = propagator()->fullLocalPath(_item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
       if (_uploadingEncrypted) {
@@ -613,7 +613,7 @@ void UploadDevice::setChoked(bool b)
 void PropagateUploadFileCommon::startPollJob(const QString &path)
 {
     auto *job = new PollJob(propagator()->account(), path, _item,
-        propagator()->_journal, propagator()->_localDir, this);
+        propagator()->_journal, propagator()->localPath(), this);
     connect(job, &PollJob::finishedSignal, this, &PropagateUploadFileCommon::slotPollFinished);
     SyncJournalDb::PollInfo info;
     info._file = _item->_file;

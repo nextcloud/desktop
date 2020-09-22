@@ -291,7 +291,7 @@ void PropagateUploadFileNG::startNextChunk()
         // Finish with a MOVE
         // If we changed the file name, we must store the changed filename in the remote folder, not the original one.
         QString destination = QDir::cleanPath(propagator()->account()->davUrl().path()
-            + propagator()->_remoteFolder + _fileToUpload._file);
+            + propagator()->fullRemotePath(_fileToUpload._file));
         auto headers = PropagateUploadFileCommon::headers();
 
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination
@@ -316,7 +316,7 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    const QString fileName = _fileToUpload._path;
+    const QString fileName = propagator()->fullLocalPath(_fileToUpload._file);
     auto device = std::make_unique<UploadDevice>(
             fileName, _currentChunk, _currentChunkSize, &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {
@@ -410,7 +410,7 @@ void PropagateUploadFileNG::slotPutFinished()
     _finished = _sent == _item->_size;
 
     // Check if the file still exists
-    const QString fullFilePath(propagator()->getFilePath(_item->_file));
+    const QString fullFilePath(propagator()->fullLocalPath(_item->_file));
     if (!FileSystem::fileExists(fullFilePath)) {
         if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));

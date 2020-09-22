@@ -35,7 +35,7 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     , _parallelism(FullParallelism)
 {
     const auto rootPath = [=]() {
-        const auto result = propagator->_remoteFolder;
+        const auto result = propagator->remotePath();
         if (result.startsWith('/')) {
             return result.mid(1);
         } else {
@@ -82,7 +82,7 @@ void PropagateRemoteMkdir::start()
     }
 
     _job = new DeleteJob(propagator()->account(),
-        propagator()->_remoteFolder + _item->_file,
+        propagator()->fullRemotePath(_item->_file),
         this);
     connect(static_cast<DeleteJob*>(_job.data()), &DeleteJob::finishedSignal,
             this, &PropagateRemoteMkdir::slotMkdir);
@@ -97,7 +97,7 @@ void PropagateRemoteMkdir::slotStartMkcolJob()
     qCDebug(lcPropagateRemoteMkdir) << _item->_file;
 
     _job = new MkColJob(propagator()->account(),
-        propagator()->_remoteFolder + _item->_file,
+        propagator()->fullRemotePath(_item->_file),
         this);
     connect(_job, SIGNAL(finished(QNetworkReply::NetworkError)), this, SLOT(slotMkcolJobFinished()));
     _job->start();
@@ -115,7 +115,7 @@ void PropagateRemoteMkdir::slotStartEncryptedMkcolJob(const QString &path, const
     qCDebug(lcPropagateRemoteMkdir) << filename;
 
     auto job = new MkColJob(propagator()->account(),
-                            propagator()->_remoteFolder + filename,
+                            propagator()->fullRemotePath(filename),
                             {{"e2e-token", _uploadEncryptedHelper->_folderToken }},
                             this);
     connect(job, qOverload<QNetworkReply::NetworkError>(&MkColJob::finished),
@@ -144,7 +144,7 @@ void PropagateRemoteMkdir::setDeleteExisting(bool enabled)
 void PropagateRemoteMkdir::slotMkdir()
 {
     const auto rootPath = [=]() {
-        const auto result = propagator()->_remoteFolder;
+        const auto result = propagator()->remotePath();
         if (result.startsWith('/')) {
             return result.mid(1);
         } else {
