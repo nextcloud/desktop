@@ -81,7 +81,7 @@ void PropagateRemoteMove::start()
     QString origin = propagator()->adjustRenamedPath(_item->_file);
     qCDebug(lcPropagateRemoteMove) << origin << _item->_renameTarget;
 
-    QString targetFile(propagator()->getFilePath(_item->_renameTarget));
+    QString targetFile(propagator()->fullLocalPath(_item->_renameTarget));
 
     if (origin == _item->_renameTarget) {
         // The parent has been renamed already so there is nothing more to do.
@@ -89,8 +89,8 @@ void PropagateRemoteMove::start()
         return;
     }
 
-    QString remoteSource = propagator()->_remoteFolder + origin;
-    QString remoteDestination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->_remoteFolder + _item->_renameTarget);
+    QString remoteSource = propagator()->fullRemotePath(origin);
+    QString remoteDestination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_item->_renameTarget));
 
     auto &vfs = propagator()->syncOptions()._vfs;
     auto itype = _item->_type;
@@ -130,8 +130,8 @@ void PropagateRemoteMove::start()
             folderTargetAlt.chop(suffix.size());
         }
 
-        QString localTarget = propagator()->getFilePath(folderTarget);
-        QString localTargetAlt = propagator()->getFilePath(folderTargetAlt);
+        QString localTarget = propagator()->fullLocalPath(folderTarget);
+        QString localTargetAlt = propagator()->fullLocalPath(folderTargetAlt);
 
         // If the expected target doesn't exist but a file with different hydration
         // state does, rename the local file to bring it in line with what the discovery

@@ -222,7 +222,7 @@ QStringList Capabilities::blacklistedFiles() const
 
 TusSupport::TusSupport(const QVariantMap &tus_support)
 {
-    if (tus_support.isEmpty()) {
+    if (tus_support.isEmpty() || qEnvironmentVariableIsSet("OWNCLOUD_NO_TUS")) {
         return;
     }
     version = QVersionNumber::fromString(tus_support.value(QStringLiteral("version")).toString());

@@ -357,7 +357,7 @@ void PropagateDownloadFile::start()
 
     // For virtual files just dehydrate or create the file and be done
     if (_item->_type == ItemTypeVirtualFileDehydration) {
-        QString fsPath = propagator()->getFilePath(_item->_file);
+        QString fsPath = propagator()->fullLocalPath(_item->_file);
         if (!FileSystem::verifyFileUnchanged(fsPath, _item->_previousSize, _item->_previousModtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
@@ -414,7 +414,7 @@ void PropagateDownloadFile::start()
         connect(computeChecksum, &ComputeChecksum::done,
             this, &PropagateDownloadFile::conflictChecksumComputed);
         propagator()->_activeJobList.append(this);
-        computeChecksum->start(propagator()->getFilePath(_item->_file));
+        computeChecksum->start(propagator()->fullLocalPath(_item->_file));
         return;
     }
 
@@ -430,7 +430,7 @@ void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumT
 
         // Apply the server mtime locally if necessary, ensuring the journal
         // and local mtimes end up identical
-        auto fn = propagator()->getFilePath(_item->_file);
+        auto fn = propagator()->fullLocalPath(_item->_file);
         if (_item->_modtime != _item->_previousModtime) {
             FileSystem::setModTime(fn, _item->_modtime);
             emit propagator()->touchedFile(fn);
@@ -460,7 +460,7 @@ void PropagateDownloadFile::startDownload()
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
         if (progressInfo._etag != _item->_etag) {
-            FileSystem::remove(propagator()->getFilePath(progressInfo._tmpfile));
+            FileSystem::remove(propagator()->fullLocalPath(progressInfo._tmpfile));
             propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
@@ -471,7 +471,7 @@ void PropagateDownloadFile::startDownload()
     if (tmpFileName.isEmpty()) {
         tmpFileName = createDownloadTmpFileName(_item->_file);
     }
-    _tmpFile.setFileName(propagator()->getFilePath(tmpFileName));
+    _tmpFile.setFileName(propagator()->fullLocalPath(tmpFileName));
 
     _resumeStart = _tmpFile.size();
     if (_resumeStart > 0 && _resumeStart == _item->_size) {
@@ -534,7 +534,7 @@ void PropagateDownloadFile::startFullDownload()
     if (_item->_directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
         _job = new GETFileJob(propagator()->account(),
-            propagator()->_remoteFolder + _item->_file,
+            propagator()->fullRemotePath(_item->_file),
             &_tmpFile, headers, _expectedEtagForResume, _resumeStart, this);
     } else {
         // We were provided a direct URL, use that one
@@ -751,7 +751,7 @@ void PropagateDownloadFile::slotChecksumFail(const QString &errMsg)
 
 void PropagateDownloadFile::deleteExistingFolder()
 {
-    QString existingDir = propagator()->getFilePath(_item->_file);
+    QString existingDir = propagator()->fullLocalPath(_item->_file);
     if (!QFileInfo(existingDir).isDir()) {
         return;
     }
@@ -876,7 +876,7 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 void PropagateDownloadFile::downloadFinished()
 {
     OC_ASSERT(!_tmpFile.isOpen());
-    QString fn = propagator()->getFilePath(_item->_file);
+    QString fn = propagator()->fullLocalPath(_item->_file);
 
     // In case of file name clash, report an error
     // This can happen if another parallel download saved a clashing file.
@@ -965,7 +965,7 @@ void PropagateDownloadFile::downloadFinished()
         // entry, remove it transfer its old pin state.
         if (_item->_type == ItemTypeVirtualFileDownload) {
             QString virtualFile = _item->_file + vfs->fileSuffix();
-            auto fn = propagator()->getFilePath(virtualFile);
+            auto fn = propagator()->fullLocalPath(virtualFile);
             qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
             QFile::remove(fn);
             propagator()->_journal->deleteFileRecord(virtualFile);
@@ -989,7 +989,7 @@ void PropagateDownloadFile::downloadFinished()
 
 void PropagateDownloadFile::updateMetadata(bool isConflict)
 {
-    QString fn = propagator()->getFilePath(_item->_file);
+    QString fn = propagator()->fullLocalPath(_item->_file);
 
     if (!propagator()->updateMetadata(*_item)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
@@ -1004,7 +1004,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     if (!_item->_remotePerm.hasPermission(RemotePermissions::IsShared)
         && (_item->_file == QLatin1String(".sys.admin#recall#")
                || _item->_file.endsWith(QLatin1String("/.sys.admin#recall#")))) {
-        handleRecallFile(fn, propagator()->_localDir, *propagator()->_journal);
+        handleRecallFile(fn, propagator()->localPath(), *propagator()->_journal);
     }
 
     qint64 duration = _stopwatch.elapsed();

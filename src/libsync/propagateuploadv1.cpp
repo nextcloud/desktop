@@ -124,11 +124,11 @@ void PropagateUploadFileV1::startNextChunk()
     qCDebug(lcPropagateUploadV1) << _chunkCount << isFinalChunk << chunkStart << currentChunkSize;
 
     if (isFinalChunk && !_transmissionChecksumHeader.isEmpty()) {
-        qCInfo(lcPropagateUploadV1) << propagator()->_remoteFolder + path << _transmissionChecksumHeader;
+        qCInfo(lcPropagateUploadV1) << propagator()->fullRemotePath(path) << _transmissionChecksumHeader;
         headers[checkSumHeaderC] = _transmissionChecksumHeader;
     }
 
-    const QString fileName = propagator()->getFilePath(_item->_file);
+    const QString fileName = propagator()->fullLocalPath(_item->_file);
     auto device = std::unique_ptr<UploadDevice>(new UploadDevice(
             fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager));
     if (!device->open(QIODevice::ReadOnly)) {
@@ -146,7 +146,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     auto devicePtr = device.get(); // for connections later
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, std::move(device), headers, _currentChunk, this);
+    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->fullRemotePath(path), std::move(device), headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileV1::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
@@ -241,7 +241,7 @@ void PropagateUploadFileV1::slotPutFinished()
     _finished = etag.length() > 0;
 
     // Check if the file still exists
-    const QString fullFilePath(propagator()->getFilePath(_item->_file));
+    const QString fullFilePath(propagator()->fullLocalPath(_item->_file));
     if (!FileSystem::fileExists(fullFilePath)) {
         if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
