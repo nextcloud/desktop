@@ -81,9 +81,8 @@ SimpleNetworkJob *PropagateUploadFileTUS::makeCreationWithUploadJob(QNetworkRequ
     Q_ASSERT(propagator()->account()->capabilities().tusSupport().extensions.contains(QStringLiteral("creation-with-upload")));
     // in difference to the old protocol the algrithm and the value are space seperated
     const auto checkSum = _transmissionChecksumHeader.replace(':', ' ').toBase64();
-    const QString filePath = propagator()->fullRemotePath(_item->_file);
-    qCDebug(lcPropagateUploadTUS) << "FullPath:" << filePath;
-    request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), "filename " + filePath.toUtf8().toBase64() + ",checksum " + checkSum);
+    qCDebug(lcPropagateUploadTUS) << "FullPath:" << propagator()->fullRemotePath(_item->_file);
+    request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), "filename " + propagator()->fullRemotePath(_item->_file).toUtf8().toBase64() + ",checksum " + checkSum);
     request->setRawHeader(QByteArrayLiteral("Upload-Length"), QByteArray::number(_item->_size));
     return propagator()->account()->sendRequest("POST", uploadURL(propagator()->account()), *request, device);
 }
@@ -135,11 +134,11 @@ void PropagateUploadFileTUS::startNextChunk()
 
     SimpleNetworkJob *job;
     if (_currentOffset != 0) {
-        qCDebug(lcPropagateUploadTUS) << "Starting to patch upload:" << _item->_file;
+        qCDebug(lcPropagateUploadTUS) << "Starting to patch upload:" << propagator()->fullRemotePath(_item->_file);
         job = propagator()->account()->sendRequest("PATCH", _location, req, device);
     } else {
         OC_ASSERT(_location.isEmpty());
-        qCDebug(lcPropagateUploadTUS) << "Starting creation with upload:" << _item->_file;
+        qCDebug(lcPropagateUploadTUS) << "Starting creation with upload:" << propagator()->fullRemotePath(_item->_file);
         job = makeCreationWithUploadJob(&req, device);
     }
     qCDebug(lcPropagateUploadTUS) << "Offset:" << _currentOffset << _currentOffset  / (_item->_size + 1) * 100
@@ -161,7 +160,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
     SimpleNetworkJob *job = qobject_cast<SimpleNetworkJob *>(sender());
     OC_ASSERT(job);
     slotJobDestroyed(job); // remove it from the _jobs list
-    qCDebug(lcPropagateUploadTUS) << _item->_file << HttpLogger::requestVerb(*job->reply());
+    qCDebug(lcPropagateUploadTUS) << propagator()->fullRemotePath(_item->_file) << HttpLogger::requestVerb(*job->reply());
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     _item->_responseTimeStamp = job->responseTimestamp();
@@ -172,7 +171,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
         // try to get the offset if possible, only try once
         if (err == QNetworkReply::TimeoutError && !_location.isEmpty() && HttpLogger::requestVerb(*job->reply())  != "HEAD")
         {
-            qCWarning(lcPropagateUploadTUS) << _item->_file << "Encountered a timeout -> get progrss for" << _location;
+            qCWarning(lcPropagateUploadTUS) << propagator()->fullRemotePath(_item->_file) << "Encountered a timeout -> get progrss for" << _location;
             QNetworkRequest req;
             setTusVersionHeader(req);
             auto updateJob = propagator()->account()->sendRequest("HEAD", _location, req);
@@ -227,7 +226,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
 
     _finished = !etag.isEmpty();
     if (!_finished) {
-        auto check = new PropfindJob(propagator()->account(), _item->_file);
+        auto check = new PropfindJob(propagator()->account(), propagator()->fullRemotePath(_item->_file));
         _jobs.append(check);
         check->setProperties({ "http://owncloud.org/ns:fileid", "http://owncloud.org/ns:permissions", "getetag" });
         connect(check, &PropfindJob::result, this, [this, check](const QVariantMap &map) {
