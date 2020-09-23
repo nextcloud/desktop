@@ -269,6 +269,15 @@ QString Theme::overrideServerUrl() const
 #endif
 }
 
+bool Theme::forceOverrideServerUrl() const
+{
+#ifdef APPLICATION_SERVER_URL_ENFORCE
+    return true;
+#else
+    return false;
+#endif
+}
+
 QString Theme::forceConfigAuthType() const
 {
     return QString();
