@@ -51,7 +51,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     if (theme->overrideServerUrl().isEmpty()) {
         _ui.leUrl->setPostfix(theme->wizardUrlPostfix());
         _ui.leUrl->setPlaceholderText(theme->wizardUrlHint());
-    } else {
+    } else if (Theme::instance()->forceOverrideServerUrl()) {
         _ui.leUrl->setEnabled(false);
     }
 
@@ -213,6 +213,10 @@ void OwncloudSetupPage::initializePage()
     // immediately.
     if (Theme::instance()->overrideServerUrl().isEmpty()) {
         _ui.leUrl->setFocus();
+    } else if (!Theme::instance()->forceOverrideServerUrl()) {
+        if (nextButton) {
+            nextButton->setFocus();
+        }
     } else {
         setCommitPage(true);
         // Hack: setCommitPage() changes caption, but after an error this page could still be visible
