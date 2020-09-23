@@ -233,20 +233,13 @@ static void determinesTypeOfOperation(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFi
 
     //if(DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess()))
 
-    //FIXME this whole manipulation of the path is not good
     if (DokanFileInfo->ProcessId == getExplorerID()) {
         QVariantMap error;
 
-        if (da == 1179776) //< OpenFile
-        {
-            //QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-            QSFileName.replace("/", "");
-            vfs->openFileAtPath(QSFileName, error);
-        } else if (da == 65536) //< DeleteFile
-        {
-            //QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-            QSFileName.replace("/", "");
-            vfs->deleteFileAtPath(QSFileName, error);
+        if (da == 1179776) { //< OpenFile
+            vfs->openFileAtPath(transformPath(QSFileName), error);
+        } else if (da == 65536) { //< DeleteFile
+            vfs->deleteFileAtPath(transformPath(QSFileName), error);
         }
     }
 }
