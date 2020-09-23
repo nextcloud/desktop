@@ -2579,9 +2579,13 @@ QStringList *VfsWindows::contentsOfDirectoryAtPath(QString path, QVariantMap &er
 
     emit startRemoteFileListJob(path);
 
+    QMutexLocker locker(&_fileListMapMutex);
     while (!_fileListMap.contains(path)) {
         if (!_fileListMap.keys().isEmpty())
             qDebug() << Q_FUNC_INFO << " ERROR paso buscado" << path << "keys" << _fileListMap.keys();
+        locker.unlock();
+        QThread::msleep(50);
+        locker.relock();
     }
 
     if (_fileListMap.value(path)->code != 0) {
@@ -2629,6 +2633,7 @@ QStringList *VfsWindows::contentsOfDirectoryAtPath(QString path, QVariantMap &er
 void VfsWindows::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
 {
     if (dr) {
+        QMutexLocker locker(&_fileListMapMutex);
         QString ruta = dr->path;
         _fileListMap.insert(dr->path, dr);
     } else

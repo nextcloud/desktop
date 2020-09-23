@@ -84,6 +84,7 @@ public:
 
 private:
     QMap<QString, OCC::DiscoveryDirectoryResult *> _fileListMap;
+    QMutex _fileListMapMutex;
     QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
     QString rootPath;
     WCHAR mountLetter;
