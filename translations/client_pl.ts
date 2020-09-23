@@ -541,7 +541,7 @@ Poczekaj na nową synchronizację, a następnie ją zaszyfruj.</translation>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Pliki z listy ignorowanych oraz dowiązania symboliczne nie są synchronizowane.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
