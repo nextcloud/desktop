@@ -539,10 +539,18 @@ Window {
                     }
 
                     ToolTip {
+                        id: toolTip
                         visible: activityMouseArea.containsMouse
                         text: activityTextTitle.text + ((activityTextInfo.text !== "") ? "\n\n" + activityTextInfo.text : "")
                         delay: 250
                         timeout: 10000
+                        // Can be dropped on more recent Qt, but on 5.12 it doesn't wrap...
+                        contentItem: Text {
+                            text: toolTip.text
+                            font: toolTip.font
+                            wrapMode: Text.Wrap
+                            color: toolTip.palette.toolTipText
+                        }
                     }
                 }
                 Button {
