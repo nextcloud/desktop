@@ -36,7 +36,9 @@ jobs:
               os: ubuntu-18.04
               python: python3
     env:
-      CRAFT: ${{ matrix.python }} "${{ github.workspace }}/CraftMaster/CraftMaster/CraftMaster.py" --config "${{ github.workspace }}/.craft.ini" --target ${{ matrix.target }} --variables "WORKSPACE=${{ github.workspace }}" -c
+      CRAFT: ${{ matrix.python }} "$env:HOME/craft/CraftMaster/CraftMaster/CraftMaster.py" --config "${{ github.workspace }}/.craft.ini" --target ${{ matrix.target }} --variables "WORKSPACE=$env:HOME/craft" -c
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
     - name: Check out source code
@@ -46,7 +48,7 @@ jobs:
         submodules: true
 
     - name: Clone CraftMaster
-      run: git clone --depth=1 https://invent.kde.org/kde/craftmaster.git "${{ github.workspace }}/CraftMaster/CraftMaster"
+      run: git clone --depth=1 https://invent.kde.org/kde/craftmaster.git "$env:HOME/craft/CraftMaster/CraftMaster"
 
     - name: Craft unshelve
       run:  Invoke-Expression "$env:CRAFT --unshelve `"${{ github.workspace }}/.craft.shelf`" "
@@ -65,7 +67,15 @@ jobs:
       run: Invoke-Expression "$env:CRAFT --install-deps owncloud/owncloud-client"
 
     - name: Build
-      run: Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" owncloud/owncloud-client"
+      run: |
+        if ("${{ matrix.target }}" -eq "windows-msvc2017_64-cl") {
+            Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --configure owncloud/owncloud-client"
+            $env:BUILD_DIR = $(Invoke-Expression "$env:CRAFT --get buildDir -q owncloud-client")
+            Invoke-Expression "$env:CRAFT  --run pwsh `"${{ github.workspace }}/.github/workflows/.sonar.ps1`""
+            Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --install --qmerge owncloud/owncloud-client"
+        } else {
+            Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" owncloud/owncloud-client"
+        }
 
     - name: Run tests
       run: Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --test owncloud/owncloud-client"
@@ -73,9 +83,10 @@ jobs:
     - name: Package
       run: Invoke-Expression "$env:CRAFT --no-cache --src-dir `"${{ github.workspace }}`" --package owncloud/owncloud-client"
 
-    - name: Update shelf
+    - name: Prepare artifacts
       run: |
         New-Item -ItemType Directory "${{ github.workspace }}/binaries/" -ErrorAction SilentlyContinue
+        Copy-Item "$env:HOME/craft/binaries/*" "${{ github.workspace }}/binaries/"
         Invoke-Expression "$env:CRAFT --shelve `"${{ github.workspace }}/.craft.shelf`" "
         Copy-Item "${{ github.workspace }}/.craft.shelf" "${{ github.workspace }}/binaries/"
 
