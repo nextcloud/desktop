@@ -25,14 +25,6 @@
 #include "creds/httpcredentials.h"
 #include <QRandomGenerator>
 
-namespace {
-// TODO: make theming parameter
-QString SCOPE()
-{
-    return QStringLiteral("openid offline_access email profile");
-}
-}
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
@@ -265,7 +257,7 @@ SimpleNetworkJob *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &
     QUrlQuery arguments;
     arguments.setQueryItems(QList<QPair<QString, QString>> { { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
                                 { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() },
-                                { QStringLiteral("scope"), SCOPE() } }
+                                { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() } }
         << queryItems);
 
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
@@ -306,7 +298,7 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(QString::number(_server.serverPort())) },
         { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
         { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
-        { QStringLiteral("scope"), SCOPE() },
+        { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },
         { QStringLiteral("prompt"), QStringLiteral("consent") },
         { QStringLiteral("state"), QString::fromUtf8(_state) },
     });

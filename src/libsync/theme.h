@@ -341,6 +341,11 @@ public:
     virtual QPair<QString, QString> oauthOverrideAuthUrl() const;
 
     /**
+     * Returns the required opeidconnect scopes
+     */
+    virtual QString openIdConnectScopes() const;
+
+    /**
      * @brief What should be output for the --version command line switch.
      *
      * By default, it's a combination of appName(), version(), the GIT SHA1 and some
