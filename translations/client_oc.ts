@@ -344,7 +344,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="444"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Suprimir la sincro. del dossièr</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="515"/>
@@ -1142,12 +1142,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="924"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Verificacion de las modificacions distantas dins « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="928"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Verificacion de las modificacions localas dins « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="935"/>
@@ -1434,12 +1434,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Modificar los fichièrs &amp;ignorats</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Demandar una confirmacion abans de sincronizar dossièrs de mai de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="262"/>
@@ -1450,7 +1450,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="286"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Demandar una confirmacion abans de sincronizar los dossièrs extèrns</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="297"/>
@@ -1521,7 +1521,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>Editor de fichièrs ignorats</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
@@ -1620,7 +1620,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Jos licéncia GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Jos licéncia GNU General Public License (GPL) Version 2.0 o quina version ulteriora que siá.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3478,7 +3478,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Dobrir fenèstra principala</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="90"/>
@@ -3488,7 +3488,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="91"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Quitar %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="172"/>
@@ -3508,7 +3508,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/theme.cpp" line="372"/>
         <location filename="../src/libsync/theme.cpp" line="382"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %1. Per mai d’informacion clicatz &lt;a href=&apos;%2&apos;&gt;aquí&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="386"/>
@@ -3737,12 +3737,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Verificacion de las modificacions distantas dins « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Verificacion de las modificacions localas dins « %1 »</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
@@ -3851,7 +3851,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Demandar una confirmacion abans de sincroni&amp;zar dossièrs de mai de</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
@@ -3862,7 +3862,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>Demandar una confirmacion abans de sincronizar los dossièrs e&amp;xtèrns</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
@@ -3997,12 +3997,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="484"/>
         <source>%n minute ago</source>
-        <translation><numerusform>fa %d minuta</numerusform><numerusform>fa %d minuta</numerusform></translation>
+        <translation><numerusform>fa %n minuta</numerusform><numerusform>fa %n minuta</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="486"/>
         <source>%n minutes ago</source>
-        <translation><numerusform>fa %d minutas</numerusform><numerusform>fa %d minutas</numerusform></translation>
+        <translation><numerusform>fa %n minutas</numerusform><numerusform>fa %n minutas</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="490"/>
@@ -4039,7 +4039,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="130"/>
         <source>%L1 GB</source>
-        <translation>ML 1 Go</translation>
+        <translation>%L1 Go</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="134"/>
@@ -4049,7 +4049,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="138"/>
         <source>%L1 KB</source>
-        <translation>%L Ko</translation>
+        <translation>%L1 Ko</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="141"/>
@@ -4135,10 +4135,10 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="272"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Quitar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="566"/>
+        <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>

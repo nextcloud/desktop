@@ -4161,7 +4161,7 @@ Nie zaleca się korzystania z niego.</translation>
         <translation>Wyjście</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="566"/>
+        <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation>Otwórz okno udostępniania</translation>
     </message>
