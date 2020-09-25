@@ -4161,7 +4161,7 @@ Det är inte lämpligt att använda den.</translation>
         <translation>Avsluta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="566"/>
+        <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation>Öppna delningsdialogen</translation>
     </message>

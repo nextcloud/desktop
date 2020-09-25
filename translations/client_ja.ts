@@ -4155,7 +4155,7 @@ It is not advisable to use it.</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="566"/>
+        <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation>共有ダイアログを開く</translation>
     </message>

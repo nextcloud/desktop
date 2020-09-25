@@ -4165,7 +4165,7 @@ Het is niet te adviseren om het te gebruiken.</translation>
         <translation>Afsluiten</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="566"/>
+        <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation>Open het dialoogvenster voor delen</translation>
     </message>
