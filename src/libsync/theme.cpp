@@ -512,6 +512,11 @@ QPair<QString, QString> Theme::oauthOverrideAuthUrl() const
     return {};
 }
 
+QString Theme::openIdConnectScopes() const
+{
+    return QStringLiteral("openid offline_access email profile");
+}
+
 QString Theme::versionSwitchOutput() const
 {
     QString helpText;
