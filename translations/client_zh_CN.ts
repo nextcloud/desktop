@@ -4160,7 +4160,7 @@ It is not advisable to use it.</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="566"/>
+        <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>

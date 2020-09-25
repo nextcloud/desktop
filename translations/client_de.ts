@@ -3653,7 +3653,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>
         <source>Disconnected from %1</source>
-        <translation>Von %1 trennen</translation>
+        <translation>Von %1 getrennt</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="289"/>
@@ -4160,7 +4160,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="566"/>
+        <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation>Teilen-Dialog öffnen</translation>
     </message>

@@ -4159,7 +4159,7 @@ It is not advisable to use it.</source>
         <translation>Έξοδος</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="566"/>
+        <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation>Άνοιγμα του διαλόγου διαμοιρασμού</translation>
     </message>
