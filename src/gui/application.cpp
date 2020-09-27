@@ -241,7 +241,7 @@ Application::Application(int &argc, char **argv)
         this, &Application::slotAccountStateAdded);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
-    foreach (auto ai, AccountManager::instance()->accounts()) {
+    for (const auto &ai : AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
     }
 
@@ -349,8 +349,8 @@ void Application::slotSystemOnlineConfigurationChanged(QNetworkConfiguration cnf
 
 void Application::slotCheckConnection()
 {
-    auto list = AccountManager::instance()->accounts();
-    foreach (const auto &accountState, list) {
+    const auto &list = AccountManager::instance()->accounts();
+    for (const auto &accountState : list) {
         AccountState::State state = accountState->state();
 
         // Don't check if we're manually signed out or
@@ -612,7 +612,7 @@ void Application::setupTranslations()
     auto *qtTranslator = new QTranslator(this);
     auto *qtkeychainTranslator = new QTranslator(this);
 
-    foreach (QString lang, uiLanguages) {
+    for (QString lang : qAsConst(uiLanguages)) {
         lang.replace(QLatin1Char('-'), QLatin1Char('_')); // work around QTBUG-25973
         lang = substLang(lang);
         const QString trPath = applicationTrPath();
