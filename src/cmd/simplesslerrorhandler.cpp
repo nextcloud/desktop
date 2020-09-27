@@ -27,7 +27,7 @@ bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
         return false;
     }
 
-    foreach (QSslError error, errors) {
+    for (const auto &error : qAsConst(errors)) {
         certs->append(error.certificate());
     }
     return true;
