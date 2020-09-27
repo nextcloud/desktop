@@ -171,7 +171,7 @@ int FolderMan::setupFolders()
 
     qCInfo(lcFolderMan) << "Setup folders from settings file";
 
-    foreach (const auto &account, AccountManager::instance()->accounts()) {
+    for (const auto &account : AccountManager::instance()->accounts()) {
         const auto id = account->account()->id();
         if (!accountsWithSettings.contains(id)) {
             continue;
@@ -197,7 +197,7 @@ int FolderMan::setupFolders()
 
 void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible)
 {
-    foreach (const auto &folderAlias, settings.childGroups()) {
+    for (const auto &folderAlias : settings.childGroups()) {
         FolderDefinition folderDefinition;
         if (FolderDefinition::load(settings, folderAlias, &folderDefinition)) {
             auto defaultJournalPath = folderDefinition.defaultJournalPath(account->account());
@@ -280,11 +280,11 @@ int FolderMan::setupFoldersMigration()
     QDir dir(_folderConfigPath);
     //We need to include hidden files just in case the alias starts with '.'
     dir.setFilter(QDir::Files | QDir::Hidden);
-    QStringList list = dir.entryList();
+    const auto &list = dir.entryList();
 
     // Normally there should be only one account when migrating.
     AccountState *accountState = AccountManager::instance()->accounts().value(0).data();
-    foreach (const QString &alias, list) {
+    for (const auto &alias : list) {
         Folder *f = setupFolderFromOldConfigFile(alias, accountState);
         if (f) {
             scheduleFolder(f);
@@ -508,7 +508,7 @@ Folder *FolderMan::folder(const QString &alias)
 
 void FolderMan::scheduleAllFolders()
 {
-    foreach (Folder *f, _folderMap.values()) {
+    for (Folder *f : _folderMap.values()) {
         if (f && f->canSync()) {
             scheduleFolder(f);
         }
@@ -595,7 +595,7 @@ void FolderMan::slotRunOneEtagJob()
 {
     if (_currentEtagJob.isNull()) {
         Folder *folder = nullptr;
-        foreach (Folder *f, _folderMap) {
+        for (Folder *f : qAsConst(_folderMap)) {
             if (f->etagJob()) {
                 // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a seperate queue.
                 _currentEtagJob = f->etagJob();
@@ -628,7 +628,7 @@ void FolderMan::slotAccountStateChanged()
     if (accountState->isConnected()) {
         qCInfo(lcFolderMan) << "Account" << accountName << "connected, scheduling its folders";
 
-        foreach (Folder *f, _folderMap.values()) {
+        for (Folder *f : _folderMap.values()) {
             if (f
                 && f->canSync()
                 && f->accountState() == accountState) {
@@ -758,7 +758,7 @@ void FolderMan::slotEtagPollTimerTimeout()
     ConfigFile cfg;
     auto polltime = cfg.remotePollInterval();
 
-    foreach (Folder *f, _folderMap) {
+    for (Folder *f : qAsConst(_folderMap)) {
         if (!f) {
             continue;
         }
@@ -793,7 +793,7 @@ void FolderMan::slotRemoveFoldersForAccount(AccountState *accountState)
         }
     }
 
-    foreach (const auto &f, foldersToRemove) {
+    for (const auto &f : qAsConst(foldersToRemove)) {
         removeFolder(f);
     }
     emit folderListChanged(_folderMap);
@@ -813,7 +813,7 @@ void FolderMan::slotServerVersionChanged(Account *account)
         qCWarning(lcFolderMan) << "The server version is unsupported:" << account->serverVersion()
                                << "pausing all folders on the account";
 
-        foreach (auto &f, _folderMap) {
+        for (auto &f : qAsConst(_folderMap)) {
             if (f->accountState()->account().data() == account) {
                 f->setSyncPaused(true);
             }
@@ -830,7 +830,7 @@ void FolderMan::slotWatchedFileUnlocked(const QString &path)
 
 void FolderMan::slotScheduleFolderByTime()
 {
-    foreach (auto &f, _folderMap) {
+    for (const auto &f : qAsConst(_folderMap)) {
         // Never schedule if syncing is disabled or when we're currently
         // querying the server for etags
         if (!f->canSync() || f->etagJob()) {
@@ -913,13 +913,12 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
 
     // Migration: The first account that's configured for a local folder shall
     // be saved in a backwards-compatible way.
-    bool oneAccountOnly = true;
-    foreach (Folder *other, FolderMan::instance()->map()) {
-        if (other != folder && other->cleanPath() == folder->cleanPath()) {
-            oneAccountOnly = false;
-            break;
-        }
-    }
+    const auto &folderList = FolderMan::instance()->map();
+    const auto it = std::find_if(folderList.cbegin(), folderList.cend(), [this, folder](const auto *other) {
+        return other != folder && other->cleanPath() == folder->cleanPath();
+    });
+
+    bool oneAccountOnly = it == folderList.cend();
     folder->setSaveBackwardsCompatible(oneAccountOnly);
 
     if (folder) {
@@ -976,22 +975,20 @@ Folder *FolderMan::folderForPath(const QString &path)
 {
     QString absolutePath = QDir::cleanPath(path) + QLatin1Char('/');
 
-    foreach (Folder *folder, this->map().values()) {
+    const auto &folders = this->map().values();
+    const auto it = std::find_if(folders.cbegin(), folders.cend(), [absolutePath](const auto *folder) {
         const QString folderPath = folder->cleanPath() + QLatin1Char('/');
+        return absolutePath.startsWith(folderPath, (Utility::isWindows() || Utility::isMac()) ? Qt::CaseInsensitive : Qt::CaseSensitive);
+    });
 
-        if (absolutePath.startsWith(folderPath, (Utility::isWindows() || Utility::isMac()) ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
-            return folder;
-        }
-    }
-
-    return nullptr;
+    return it != folders.cend() ? *it : nullptr;
 }
 
 QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const AccountPtr acc)
 {
     QStringList re;
 
-    foreach (Folder *folder, this->map().values()) {
+    for (Folder *folder : this->map().values()) {
         if (acc && folder->accountState()->account() != acc) {
             continue;
         }
@@ -1134,7 +1131,7 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
     }
 
     bool success = false;
-    foreach (const auto &f, foldersToRemove) {
+    for (const auto &f : qAsConst(foldersToRemove)) {
         if (!f) {
             qCCritical(lcFolderMan) << "Can not remove null folder";
             return;
@@ -1190,7 +1187,7 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
 
 void FolderMan::setDirtyProxy()
 {
-    foreach (Folder *f, _folderMap.values()) {
+    for (const Folder *f : _folderMap.values()) {
         if (f) {
             if (f->accountState() && f->accountState()->account()
                 && f->accountState()->account()->networkAccessManager()) {
@@ -1204,7 +1201,7 @@ void FolderMan::setDirtyProxy()
 
 void FolderMan::setDirtyNetworkLimits()
 {
-    foreach (Folder *f, _folderMap.values()) {
+    for (Folder *f : _folderMap.values()) {
         // set only in busy folders. Otherwise they read the config anyway.
         if (f && f->isBusy()) {
             f->setDirtyNetworkLimits();
@@ -1255,7 +1252,7 @@ void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
         int runSeen = 0;
         int various = 0;
 
-        foreach (Folder *folder, folders) {
+        for (const Folder *folder : qAsConst(folders)) {
             SyncResult folderResult = folder->syncResult();
             if (folder->syncPaused()) {
                 abortOrPausedSeen++;
@@ -1478,7 +1475,7 @@ void FolderMan::setIgnoreHiddenFiles(bool ignore)
 {
     // Note that the setting will revert to 'true' if all folders
     // are deleted...
-    foreach (Folder *folder, _folderMap) {
+    for (Folder *folder : qAsConst(_folderMap)) {
         folder->setIgnoreHiddenFiles(ignore);
         folder->saveToSettings();
     }
