@@ -441,7 +441,7 @@ int Folder::slotDiscardDownloadProgress()
     QSet<QString> keep_nothing;
     const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
         _journal.getAndDeleteStaleDownloadInfos(keep_nothing);
-    foreach (const SyncJournalDb::DownloadInfo &deleted_info, deleted_infos) {
+    for (const auto &deleted_info : deleted_infos) {
         const QString tmppath = folderpath.filePath(deleted_info._tmpfile);
         qCInfo(lcFolder) << "Deleting temporary file: " << tmppath;
         FileSystem::remove(tmppath);
@@ -528,14 +528,12 @@ void Folder::saveToSettings() const
     // This ensures that older clients will not read a configuration
     // where two folders for different accounts point at the same
     // local folders.
-    bool oneAccountOnly = true;
-    foreach (Folder *other, FolderMan::instance()->map()) {
-        if (other != this && other->cleanPath() == this->cleanPath()) {
-            oneAccountOnly = false;
-            break;
-        }
-    }
+    const auto &folderMap = FolderMan::instance()->map();
+    const auto it = std::find_if(folderMap.cbegin(), folderMap.cend(), [this](const auto *other) {
+        return other != this && other->cleanPath() == this->cleanPath();
+    });
 
+    bool oneAccountOnly = it == folderMap.cend();
     bool compatible = _saveBackwardsCompatible || oneAccountOnly;
 
     if (compatible) {
