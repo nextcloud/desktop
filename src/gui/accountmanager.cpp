@@ -372,10 +372,10 @@ void AccountManager::shutdown()
 
 bool AccountManager::isAccountIdAvailable(const QString &id) const
 {
-    auto acc = std::find_if(_accounts.cbegin(), _accounts.cend(), [&id](const auto &acc) {
+    const auto it = std::find_if(_accounts.cbegin(), _accounts.cend(), [id](const auto &acc) {
         return acc->account()->id() == id;
     });
-    return acc == _accounts.cend();
+    return it == _accounts.cend();
 }
 
 QString AccountManager::generateFreeAccountId() const
