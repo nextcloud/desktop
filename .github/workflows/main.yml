@@ -26,15 +26,19 @@ jobs:
             - target: windows-msvc2017_32-cl
               os: windows-latest
               python: py
+              fetch-depth: 1
             - target: windows-msvc2017_64-cl
               os: windows-latest
               python: py
+              fetch-depth: 0
             - target: macos-64-clang
               os: macos-latest
               python: python3
+              fetch-depth: 1
             - target: linux-64-gcc
               os: ubuntu-18.04
               python: python3
+              fetch-depth: 1
     env:
       CRAFT: ${{ matrix.python }} "$env:HOME/craft/CraftMaster/CraftMaster/CraftMaster.py" --config "${{ github.workspace }}/.craft.ini" --target ${{ matrix.target }} --variables "WORKSPACE=$env:HOME/craft" -c
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +48,7 @@ jobs:
     - name: Check out source code
       uses: actions/checkout@v2
       with:
-        fetch-depth: 1
+        fetch-depth: ${{ matrix.fetch-depth }}
         submodules: true
 
     - name: Clone CraftMaster
