@@ -21,6 +21,9 @@ Window {
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
+    Accessible.role: Accessible.Application
+    Accessible.name: qsTr("Nextcloud desktop main dialog")
+
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
         if(!active) {
@@ -96,6 +99,9 @@ Window {
         border.width:   Style.trayWindowBorderWidth
         border.color:   Style.menuBorder
 
+        Accessible.role: Accessible.Grouping
+        Accessible.name: qsTr("Nextcloud desktop main dialog")
+
         Rectangle {
             id: trayWindowHeaderBackground
 
@@ -130,6 +136,10 @@ Window {
                     Layout.preferredHeight: Style.trayWindowHeaderHeight
                     display:                AbstractButton.IconOnly
                     flat:                   true
+
+                    Accessible.role: Accessible.ButtonMenu
+                    Accessible.name: qsTr("Current account")
+                    Accessible.onPressAction: currentAccountButton.clicked()
 
                     MouseArea {
                         id: accountBtnMouseArea
@@ -170,6 +180,9 @@ Window {
                                 border.color: Style.menuBorder
                                 radius: Style.currentAccountButtonRadius
                             }
+
+                            Accessible.role: PopupMenu
+                            Accessible.name: qsTr("Account switcher and settings menu")
 
                             onClosed: {
                                 // HACK: reload account Instantiator immediately by restting it - could be done better I guess
@@ -225,6 +238,10 @@ Window {
                                     }
                                 }
                                 onClicked: UserModel.addAccount()
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: qsTr("Add new account")
+                                Accessible.onPressAction: addAccountButton.clicked()
                             }
 
                             MenuSeparator {
@@ -249,9 +266,14 @@ Window {
                                         color: parent.parent.hovered ? Style.lightHover : "transparent"
                                     }
                                 }
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                                Accessible.onPressAction: syncPauseButton.clicked()
                             }
 
                             MenuItem {
+                                id: settingsButton
                                 text: qsTr("Settings")
                                 font.pixelSize: Style.topLinePixelSize
                                 hoverEnabled: true
@@ -266,9 +288,14 @@ Window {
                                         color: parent.parent.hovered ? Style.lightHover : "transparent"
                                     }
                                 }
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: text
+                                Accessible.onPressAction: settingsButton.clicked()
                             }
 
                             MenuItem {
+                                id: exitButton
                                 text: qsTr("Exit");
                                 font.pixelSize: Style.topLinePixelSize
                                 hoverEnabled: true
@@ -283,6 +310,10 @@ Window {
                                         color: parent.parent.hovered ? Style.lightHover : "transparent"
                                     }
                                 }
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: text
+                                Accessible.onPressAction: exitButton.clicked()
                             }
                         }
                     }
@@ -298,6 +329,7 @@ Window {
                         height: Style.trayWindowHeaderHeight
                         width:  Style.currentAccountButtonWidth
                         spacing: 0
+
                         Image {
                             id: currentAccountAvatar
 
@@ -307,6 +339,9 @@ Window {
                             source: "image://avatars/currentUser"
                             Layout.preferredHeight: Style.accountAvatarSize
                             Layout.preferredWidth: Style.accountAvatarSize
+
+                            Accessible.role: Accessible.Graphic
+                            Accessible.name: qsTr("Current user avatar")
 
                             Rectangle {
                                 id: currentAccountStateIndicatorBackground
@@ -326,6 +361,9 @@ Window {
                                 y: currentAccountStateIndicatorBackground.y + 1
                                 sourceSize.width: Style.accountAvatarStateIndicatorSize
                                 sourceSize.height: Style.accountAvatarStateIndicatorSize
+
+                                Accessible.role: Accessible.Indicator
+                                Accessible.name: UserModel.isUserConnected(UserModel.currentUserId()) ? qsTr("Connected") : qsTr("Disconnected")
                             }
                         }
 
@@ -377,6 +415,10 @@ Window {
                     visible: UserModel.currentUser.hasLocalFolder
                     icon.source: "qrc:///client/theme/white/folder.svg"
                     onClicked: UserModel.openCurrentAccountLocalFolder()
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: qsTr("Open local folder of current account")
+                    Accessible.onPressAction: openLocalFolderButton.clicked()
                 }
 
                 HeaderButton {
@@ -385,6 +427,10 @@ Window {
                     visible: UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
                     onClicked: UserModel.openCurrentAccountTalk()
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: qsTr("Open Nextcloud Talk in browser")
+                    Accessible.onPressAction: trayWindowTalkButton.clicked()
                 }
 
                 HeaderButton {
@@ -400,6 +446,10 @@ Window {
                         }
                     }
 
+                    Accessible.role: Accessible.ButtonMenu
+                    Accessible.name: qsTr("More apps")
+                    Accessible.onPressAction: trayWindowAppsButton.clicked()
+
                     Menu {
                         id: appsMenu
                         y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
@@ -412,6 +462,9 @@ Window {
                             border.color: Style.menuBorder
                             radius: 2
                         }
+
+                        Accessible.role: Accessible.PopupMenu
+                        Accessible.name: qsTr("Apps menu")
 
                         Instantiator {
                             id: appsMenuInstantiator
@@ -437,6 +490,10 @@ Window {
                                         color: appEntry.hovered ? Style.lightHover : "transparent"
                                     }
                                 }
+
+                                Accessible.role: Accessible.MenuItem
+                                Accessible.name: qsTr("Open ") + appName + qsTr(" in browser")
+                                Accessible.onPressAction: appEntry.triggered()
                             }
                         }
                     }
@@ -456,6 +513,11 @@ Window {
                 id: listViewScrollbar
             }
 
+            keyNavigationEnabled: true
+
+            Accessible.role: Accessible.List
+            Accessible.name: qsTr("Activity list")
+
             model: activityModel
 
             delegate: RowLayout {
@@ -464,6 +526,11 @@ Window {
                 width: parent.width
                 height: Style.trayWindowHeaderHeight
                 spacing: 0
+
+                Accessible.role: Accessible.ListItem
+                Accessible.name: path !== "" ? qsTr("Open") + " " + displayPath + " " + qsTr("locally")
+                                                    : message
+                Accessible.onPressAction: activityMouseArea.clicked()
 
                 MouseArea {
                     id: activityMouseArea
@@ -573,6 +640,10 @@ Window {
                     ToolTip.delay: 1000
                     ToolTip.text: qsTr("Open share dialog")
                     onClicked: Systray.openShareDialog(displayPath,absolutePath)
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: qsTr("Share") + " " + displayPath
+                    Accessible.onPressAction: shareButton.clicked()
                 }
             }
 
