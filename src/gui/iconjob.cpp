@@ -35,6 +35,7 @@ void IconJob::finished(QNetworkReply *reply)
         return;
 
     reply->deleteLater();
+    deleteLater();
     emit jobFinished(reply->readAll());
 }
 }
