@@ -1775,7 +1775,7 @@ Dzienniki zostaną zapisane w %1</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation>Określ serwer proxy ręcznie jako</translation>
+        <translation>Określ ręcznie serwer proxy jako</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
