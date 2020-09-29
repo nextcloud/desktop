@@ -4017,6 +4017,31 @@ It is not advisable to use it.</source>
 <context>
     <name>UserLine</name>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
+        <source>Account entry</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="32"/>
+        <source>Switch to account</source>
+        <translation>Canvia el compte</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <source>Account connected</source>
+        <translation>Compte connectat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <source>Account not connected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="132"/>
+        <source>Account actions</source>
+        <translation>Accions del compte</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Log out</source>
         <translation>Tanca la sessió</translation>
@@ -4029,6 +4054,11 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Remove Account</source>
+        <translation>Suprimeix el compte</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="199"/>
+        <source>Remove account</source>
         <translation>Suprimeix el compte</translation>
     </message>
 </context>
@@ -4111,6 +4141,17 @@ It is not advisable to use it.</source>
 <context>
     <name>Window</name>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="25"/>
+        <location filename="../src/gui/tray/Window.qml" line="103"/>
+        <source>Nextcloud desktop main dialog</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="141"/>
+        <source>Current account</source>
+        <translation>Compte actual</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
         <translation>Reprèn la sincronització de tot</translation>
@@ -4121,9 +4162,19 @@ It is not advisable to use it.</source>
         <translation>Atura la sincronització de tot</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="185"/>
+        <source>Account switcher and settings menu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="217"/>
         <source>Add account</source>
         <translation>Afegeix un compte</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="243"/>
+        <source>Add new account</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
@@ -4136,9 +4187,74 @@ It is not advisable to use it.</source>
         <translation>Surt</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="344"/>
+        <source>Current user avatar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="366"/>
+        <source>Connected</source>
+        <translation>S&apos;ha connectat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="366"/>
+        <source>Disconnected</source>
+        <translation>Desconnectat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="420"/>
+        <source>Open local folder of current account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="432"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="450"/>
+        <source>More apps</source>
+        <translation>Més aplicacions</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="467"/>
+        <source>Apps menu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="495"/>
+        <source>Open </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="495"/>
+        <source> in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="519"/>
+        <source>Activity list</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <source>Open</source>
+        <translation>Obert</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <source>locally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation>Obre el quadre de diàleg de compartició</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="645"/>
+        <source>Share</source>
+        <translation>Compartir</translation>
     </message>
 </context>
 <context>
