@@ -63,17 +63,17 @@ If you want to disable, e.g., desktop shortcut icons you can simply change the a
 
 See the following table for a list of available features:
 
-+--------------------+--------------------+----------------------------------+---------------------------+
-| Feature            | Enabled by default | Description                      |Property to disable        |
-+====================+====================+==================================+===========================+
-| Client             | Yes, required      | The actual client                |                           |
-+--------------------+--------------------+----------------------------------+---------------------------+
-| DesktopShortcut    | Yes                | Adds a shortcut to the desktop   |``NO_DESKTOP_SHORTCUT``    |
-+--------------------+--------------------+----------------------------------+---------------------------+
-| StartMenuShortcuts | Yes                | Adds shortcuts to the start menu |``NO_START_MENU_SHORTCUTS``|
-+--------------------+--------------------+----------------------------------+---------------------------+
-| ShellExtensions    | Yes                | Adds Explorer integration        |``NO_SHELL_EXTENSIONS``    |
-+--------------------+--------------------+----------------------------------+---------------------------+
++--------------------+--------------------+-----------------------------------+---------------------------+
+| Feature            | Enabled by default | Description                       |Property to disable        |
++====================+====================+===================================+===========================+
+| Client             | Yes, required      | The actual client                 |                           |
++--------------------+--------------------+-----------------------------------+---------------------------+
+| DesktopShortcut    | Yes                | Adds a shortcut to the desktop    |``NO_DESKTOP_SHORTCUT``    |
++--------------------+--------------------+-----------------------------------+---------------------------+
+| StartMenuShortcuts | Yes                | Adds a shortcut to the start menu |``NO_START_MENU_SHORTCUTS``|
++--------------------+--------------------+-----------------------------------+---------------------------+
+| ShellExtensions    | Yes                | Adds Explorer integration         |``NO_SHELL_EXTENSIONS``    |
++--------------------+--------------------+-----------------------------------+---------------------------+
 
 Installation
 ~~~~~~~~~~~~
