@@ -914,11 +914,10 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     // Migration: The first account that's configured for a local folder shall
     // be saved in a backwards-compatible way.
     const auto folderList = FolderMan::instance()->map();
-    const auto it = std::find_if(folderList.cbegin(), folderList.cend(), [this, folder](const auto *other) {
+    const auto oneAccountOnly = std::none_of(folderList.cbegin(), folderList.cend(), [this, folder](const auto *other) {
         return other != folder && other->cleanPath() == folder->cleanPath();
     });
 
-    bool oneAccountOnly = it == folderList.cend();
     folder->setSaveBackwardsCompatible(oneAccountOnly);
 
     if (folder) {

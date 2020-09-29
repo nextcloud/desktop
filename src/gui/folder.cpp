@@ -529,11 +529,10 @@ void Folder::saveToSettings() const
     // where two folders for different accounts point at the same
     // local folders.
     const auto folderMap = FolderMan::instance()->map();
-    const auto it = std::find_if(folderMap.cbegin(), folderMap.cend(), [this](const auto *other) {
+    const auto oneAccountOnly = std::none_of(folderMap.cbegin(), folderMap.cend(), [this](const auto *other) {
         return other != this && other->cleanPath() == this->cleanPath();
     });
 
-    bool oneAccountOnly = it == folderMap.cend();
     bool compatible = _saveBackwardsCompatible || oneAccountOnly;
 
     if (compatible) {
