@@ -28,7 +28,8 @@ System Requirements
 ----------------------------------
 
 - Windows 8.1+
-- macOS 10.7+ (**64-bit only**)
+- macOS 10.12+ (**64-bit only**)
+- macOS 10.10 & 10.11 (**64-bit and up to client legacy version 2.6.5 only**)
 - CentOS 6 & 7 (64-bit only)
 - Debian 8.0 & 9.0
 - Fedora 25 & 26 & 27
