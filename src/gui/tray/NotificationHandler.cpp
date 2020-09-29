@@ -92,7 +92,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         auto json = element.toObject();
         a._type = Activity::NotificationType;
         a._accName = ai->account()->displayName();
-        a._id = json.value("activity_id").toInt();
+        a._id = json.value("notification_id").toInt();
 
         //need to know, specially for remote_share
         a._objectType = json.value("object_type").toString();
