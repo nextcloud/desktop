@@ -536,7 +536,9 @@ Window {
                     id: activityMouseArea
                     enabled: (path !== "" || link !== "")
                     anchors.left: activityItem.left
-                    anchors.right: ((shareButton.visible) ? shareButton.left : activityItem.right)
+                    anchors.right: (shareButton.visible) ? shareButton.left
+                                 : (replyButton.visible) ? replyButton.left
+                                 : activityItem.right
                     height: parent.height
                     anchors.margins: 2
                     hoverEnabled: true
@@ -644,6 +646,32 @@ Window {
                     Accessible.role: Accessible.Button
                     Accessible.name: qsTr("Share") + " " + displayPath
                     Accessible.onPressAction: shareButton.clicked()
+                }
+
+                Button {
+                    id: replyButton
+                    anchors.right: activityItem.right
+
+                    Layout.preferredWidth: (objectType == "chat" || objectType == "call") ? parent.height : 0
+                    Layout.preferredHeight: parent.height
+                    Layout.alignment: Qt.AlignRight
+                    flat: true
+                    hoverEnabled: true
+                    visible: (objectType == "chat" || objectType == "call") ? true : false
+                    display: AbstractButton.IconOnly
+                    icon.source: "qrc:///client/theme/reply.svg"
+                    icon.color: "transparent"
+                    background: Rectangle {
+                        color: parent.hovered ? Style.lightHover : "transparent"
+                    }
+                    ToolTip.visible: hovered
+                    ToolTip.delay: 1000
+                    ToolTip.text: qsTr("Open Talk")
+                    onClicked: Qt.openUrlExternally(link)
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: qsTr("Open Talk") + " " + link
+                    Accessible.onPressAction: replyButton.clicked()
                 }
             }
 
