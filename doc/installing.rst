@@ -39,11 +39,11 @@ System Requirements
 .. note::
    For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous LTS.
 
-Customizing the Windows installation
+Customizing the Windows Installation
 ------------------------------------
 
 If you just want to install ownCloud Desktop Synchronization Client on your local
-system, you can simply launch the .msi file and configure it in the wizard
+system, you can simply launch the `.msi` file and configure it in the wizard
 that pops up.
 
 Features
@@ -51,13 +51,13 @@ Features
 
 The MSI installer provides several features that can be installed or removed
 individually, which you can also control via command-line, if you are automating
-the installation::
+the installation, then run the following command::
 
    msiexec /passive /i ownCloud-x.y.z.msi
 
-will install the ownCloud Desktop Synchronization Client into the default location
-with the default features enabled. If you want to disable, e.g., desktop shortcut
-icons you can simply change the above command to::
+The command will install the ownCloud Desktop Synchronization Client into the default location
+with the default features enabled.
+If you want to disable, e.g., desktop shortcut icons you can simply change the above command to the following::
 
    msiexec /passive /i ownCloud-x.y.z.msi REMOVE=DesktopShortcut
 
@@ -93,21 +93,21 @@ If you for instance want to install everything but the ``DesktopShortcut`` and t
   msiexec /passive /i ownCloud-x.y.z.msi NO_DESKTOP_SHORTCUT="1" NO_SHELL_EXTENSIONS="1"
 
 .. NOTE::
-The ownCloud .msi remembers these properties, so you don't need to specify them on upgrades.
+The ownCloud `.msi` remembers these properties, so you don't need to specify them on upgrades.
 
 .. NOTE::
 You cannot use these to change the installed features, if you want to do that, see the next section.
 
-Changing installed features
+Changing Installed Features
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can change the installed features later by using `REMOVE` and `ADDDEFAULT` properties.
 
-1. If you want to add the the desktop shortcut later::
+1. If you want to add the the desktop shortcut later, run the following command::
 
   msiexec /passive /i ownCloud-x.y.z.msi ADDDEFAULT="DesktopShortcut"
 
-2. If you want to remove it, simply do::
+2. If you want to remove it, simply run the following command::
 
   msiexec /passive /i ownCloud-x.y.z.msi REMOVE="DesktopShortcut"
 
@@ -120,7 +120,7 @@ on the Windows Installer Guide.
 .. NOTE::
 You cannot specify `REMOVE` on initial installation as it will disable all features.
 
-Installation folder
+Installation Folder
 ^^^^^^^^^^^^^^^^^^^
 
 You can adjust the installation folder by specifying the `INSTALLDIR`
@@ -129,18 +129,17 @@ property like this::
   msiexec /passive /i ownCloud-x.y.z.msi INSTALLDIR="C:\Program Files (x86)\Non Standard ownCloud Client Folder"
 
 Be careful when using PowerShell instead of `cmd.exe`, it can be tricky to get
-the whitespace escaping right there. Specifying the `INSTALLDIR` like this
-only works on first installation, you cannot simply reinvoke the .msi with a
-different path. If you still need to change it, uninstall it first and reinstall
-it with the new path.
+the whitespace escaping right there.
+Specifying the `INSTALLDIR` like this only works on first installation, you cannot simply re-invoke the `.msi` with a different path. If you still need to change it, uninstall it first and reinstall it with the new path.
 
-Disabling automatic updates
+Disabling Automatic Updates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 To disable automatic updates, you can pass the `SKIPAUTOUPDATE` property.::
 
     msiexec /passive /i ownCloud-x.y.z.msi SKIPAUTOUPDATE="1"
 
-Launch after installation
+Launch After Installation
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To launch the client automatically after installation, you can pass the `LAUNCH` property.::
@@ -153,7 +152,7 @@ for non passive/quiet mode.
 .. NOTE::
 This option does not have any effect without GUI.
 
-No reboot after installation
+No Reboot After Installation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ownCloud Client schedules a reboot after installation to make sure the Explorer extension is correctly (un)loaded.
