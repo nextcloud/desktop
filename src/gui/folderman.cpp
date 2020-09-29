@@ -280,7 +280,7 @@ int FolderMan::setupFoldersMigration()
     QDir dir(_folderConfigPath);
     //We need to include hidden files just in case the alias starts with '.'
     dir.setFilter(QDir::Files | QDir::Hidden);
-    const auto &list = dir.entryList();
+    const auto list = dir.entryList();
 
     // Normally there should be only one account when migrating.
     AccountState *accountState = AccountManager::instance()->accounts().value(0).data();
@@ -913,7 +913,7 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
 
     // Migration: The first account that's configured for a local folder shall
     // be saved in a backwards-compatible way.
-    const auto &folderList = FolderMan::instance()->map();
+    const auto folderList = FolderMan::instance()->map();
     const auto it = std::find_if(folderList.cbegin(), folderList.cend(), [this, folder](const auto *other) {
         return other != folder && other->cleanPath() == folder->cleanPath();
     });
@@ -975,7 +975,7 @@ Folder *FolderMan::folderForPath(const QString &path)
 {
     QString absolutePath = QDir::cleanPath(path) + QLatin1Char('/');
 
-    const auto &folders = this->map().values();
+    const auto folders = this->map().values();
     const auto it = std::find_if(folders.cbegin(), folders.cend(), [absolutePath](const auto *folder) {
         const QString folderPath = folder->cleanPath() + QLatin1Char('/');
         return absolutePath.startsWith(folderPath, (Utility::isWindows() || Utility::isMac()) ? Qt::CaseInsensitive : Qt::CaseSensitive);

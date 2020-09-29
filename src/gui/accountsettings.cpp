@@ -761,7 +761,7 @@ void AccountSettings::slotAccountStateChanged()
         AccountPtr account = _accountState->account();
         QUrl safeUrl(account->url());
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
-        const auto &folders = FolderMan::instance()->map().values();
+        const auto folders = FolderMan::instance()->map().values();
         for (Folder *folder : folders) {
             _model->slotUpdateFolderState(folder);
         }
@@ -894,14 +894,14 @@ void AccountSettings::refreshSelectiveSyncStatus()
 
     QString msg;
     int cnt = 0;
-    const auto &folders = FolderMan::instance()->map().values();
+    const auto folders = FolderMan::instance()->map().values();
     for (Folder *folder : folders) {
         if (folder->accountState() != _accountState) {
             continue;
         }
 
         bool ok = false;
-        const auto &undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
+        const auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
         QString p;
         for (const auto &it : undecidedList) {
             // FIXME: add the folder alias in a hoover hint.

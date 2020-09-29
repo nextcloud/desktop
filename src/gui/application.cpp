@@ -349,7 +349,7 @@ void Application::slotSystemOnlineConfigurationChanged(QNetworkConfiguration cnf
 
 void Application::slotCheckConnection()
 {
-    const auto &list = AccountManager::instance()->accounts();
+    const auto list = AccountManager::instance()->accounts();
     for (const auto &accountState : list) {
         AccountState::State state = accountState->state();
 
