@@ -192,7 +192,7 @@
             <Condition Level="0">(NO_SHELL_EXTENSIONS=1)</Condition>
         </Feature>
 
-        <Feature Id="StartMenuShortcut" Title="Start Menu Shortcut">
+        <Feature Id="StartMenuShortcuts" Title="Start Menu Shortcut">
             <ComponentRef Id="StartMenuIcon" />
             <Condition Level="0">(NO_START_MENU_SHORTCUTS=1)</Condition>
         </Feature>
