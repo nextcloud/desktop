@@ -7,6 +7,7 @@
 #include "ocsjob.h"
 #include "configfile.h"
 #include "notificationconfirmjob.h"
+#include "logger.h"
 
 #include <QDesktopServices>
 #include <QIcon>
@@ -45,6 +46,8 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(_account->account().data(), &Account::accountChangedDisplayName, this, &User::nameChanged);
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &User::hasLocalFolderChanged);
+
+    connect(this, &User::guiLog, Logger::instance(), &Logger::guiLog);
 }
 
 void User::slotBuildNotificationDisplay(const ActivityList &list)
