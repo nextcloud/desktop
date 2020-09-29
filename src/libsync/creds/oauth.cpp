@@ -155,7 +155,7 @@ void OAuth::startAuthentication()
                         return;
                     }
                     // If the reply don't contains the user id, we must do another call to query it
-                    JsonApiJob *job = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v1.php/cloud/user"), this);
+                    JsonApiJob *job = new JsonApiJob(_account->sharedFromThis(), QStringLiteral("ocs/v2.php/cloud/user"), this);
                     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
                     QNetworkRequest req;
                     // We are not connected yet so we need to handle the authentication manually
@@ -163,9 +163,15 @@ void OAuth::startAuthentication()
                     // We just added the Authorization header, don't let HttpCredentialsAccessManager tamper with it
                     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
                     job->startWithRequest(req);
-                    QObject::connect(job, &JsonApiJob::jsonReceived, this, [=](const QJsonDocument &json) {
-                        QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("id")).toString();
-                        finalize(socket, accessToken, refreshToken, user, messageUrl);
+                    connect(job, &JsonApiJob::jsonReceived, this, [=](const QJsonDocument &json, int status) {
+                        if (status != 200) {
+                            httpReplyAndClose(socket, "500 Internal Server Error",
+                                tr("<h1>Login Error</h1><p>Failed to retrieve user info</p>").toUtf8().constData());
+                            emit result(Error);
+                        } else {
+                            const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("id")).toString();
+                            finalize(socket, accessToken, refreshToken, user, messageUrl);
+                        }
                     });
                 });
             });
