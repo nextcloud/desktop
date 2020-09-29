@@ -297,7 +297,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="293"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Ne možete šifrirati mapu sa sadržajem, prvo uklonite datoteke.
+Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="362"/>
@@ -708,7 +709,8 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>Generiranje metapodataka za šifriranje nije uspjelo, u tijeku je otključavanje mape.
+Možda se radi o pogrešci u radu OpenSSL biblioteka.</translation>
     </message>
 </context>
 <context>
@@ -3499,7 +3501,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Otvori glavni dijaloški okvir</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="90"/>
@@ -3509,7 +3511,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="91"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Izlaz %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="172"/>
@@ -4040,6 +4042,31 @@ Nije preporučljivo koristiti ga.</translation>
 <context>
     <name>UserLine</name>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
+        <source>Account entry</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="32"/>
+        <source>Switch to account</source>
+        <translation>Prebaci na račun</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <source>Account connected</source>
+        <translation>Račun povezan</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <source>Account not connected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="132"/>
+        <source>Account actions</source>
+        <translation>Radnje računa</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Log out</source>
         <translation>Odjava</translation>
@@ -4052,7 +4079,12 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši račun</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="199"/>
+        <source>Remove account</source>
+        <translation>Izbriši račun</translation>
     </message>
 </context>
 <context>
@@ -4134,19 +4166,40 @@ Nije preporučljivo koristiti ga.</translation>
 <context>
     <name>Window</name>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="25"/>
+        <location filename="../src/gui/tray/Window.qml" line="103"/>
+        <source>Nextcloud desktop main dialog</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="141"/>
+        <source>Current account</source>
+        <translation>Trenutni račun</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Nastavi sinkronizaciju za sve</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Pause sync for all</source>
+        <translation>Pauziraj sinkronizaciju za sve</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="185"/>
+        <source>Account switcher and settings menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="217"/>
         <source>Add account</source>
         <translation>Dodaj račun</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="243"/>
+        <source>Add new account</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
@@ -4156,12 +4209,77 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="272"/>
         <source>Exit</source>
+        <translation>Izlaz</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="344"/>
+        <source>Current user avatar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="366"/>
+        <source>Connected</source>
+        <translation>Povezan</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="366"/>
+        <source>Disconnected</source>
+        <translation>Odspojen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="420"/>
+        <source>Open local folder of current account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="432"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="450"/>
+        <source>More apps</source>
+        <translation>Više aplikacija</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="467"/>
+        <source>Apps menu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="495"/>
+        <source>Open </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="495"/>
+        <source> in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="519"/>
+        <source>Activity list</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <source>Open</source>
+        <translation>Otvori</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <source>locally</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Otvori dijaloški okvir za dijeljenje</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="645"/>
+        <source>Share</source>
+        <translation>Dijeli</translation>
     </message>
 </context>
 <context>

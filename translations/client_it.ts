@@ -4042,6 +4042,31 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>UserLine</name>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
+        <source>Account entry</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="32"/>
+        <source>Switch to account</source>
+        <translation>Cambia account</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <source>Account connected</source>
+        <translation>Account connesso</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <source>Account not connected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="132"/>
+        <source>Account actions</source>
+        <translation>Azioni account</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
         <source>Log out</source>
         <translation>Esci</translation>
@@ -4054,6 +4079,11 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Remove Account</source>
+        <translation>Rimuovi account</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="199"/>
+        <source>Remove account</source>
         <translation>Rimuovi account</translation>
     </message>
 </context>
@@ -4136,6 +4166,17 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Window</name>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="25"/>
+        <location filename="../src/gui/tray/Window.qml" line="103"/>
+        <source>Nextcloud desktop main dialog</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="141"/>
+        <source>Current account</source>
+        <translation>Account attuale</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
         <translation>Riprendi la sincronizzazione per tutto</translation>
@@ -4146,9 +4187,19 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Sospendi la sincronizzazione per tutto</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="185"/>
+        <source>Account switcher and settings menu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="217"/>
         <source>Add account</source>
         <translation>Aggiungi account</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="243"/>
+        <source>Add new account</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
@@ -4161,9 +4212,74 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Esci</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="344"/>
+        <source>Current user avatar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="366"/>
+        <source>Connected</source>
+        <translation>Connesso</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="366"/>
+        <source>Disconnected</source>
+        <translation>Disconnesso</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="420"/>
+        <source>Open local folder of current account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="432"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="450"/>
+        <source>More apps</source>
+        <translation>Altre applicazioni</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="467"/>
+        <source>Apps menu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="495"/>
+        <source>Open </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="495"/>
+        <source> in browser</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="519"/>
+        <source>Activity list</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <source>Open</source>
+        <translation>Apri</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <source>locally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
         <translation>Apri finestra di condivisione</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="645"/>
+        <source>Share</source>
+        <translation>Condividi</translation>
     </message>
 </context>
 <context>
