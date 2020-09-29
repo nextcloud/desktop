@@ -293,8 +293,8 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
     auto oldBlackListSet = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
     if (ok) {
         auto blackListSet = newList.toSet();
-        auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
-        foreach (const auto &it, changes) {
+        const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        for (const auto &it : changes) {
             journal->avoidReadFromDbOnNextSync(it);
         }
 

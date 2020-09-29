@@ -65,7 +65,7 @@ bool AccountManager::restore()
         return true;
     }
 
-    foreach (const auto &accountId, settings->childGroups()) {
+    for (const auto &accountId : settings->childGroups()) {
         settings->beginGroup(accountId);
         if (auto acc = loadAccountHelper(*settings)) {
             acc->_id = accountId;
@@ -140,7 +140,7 @@ void AccountManager::save(bool saveCredentials)
 {
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->setValue(QLatin1String(versionC), 2);
-    foreach (const auto &acc, _accounts) {
+    for (const auto &acc : qAsConst(_accounts)) {
         settings->beginGroup(acc->account()->id());
         saveAccountHelper(acc->account().data(), *settings, saveCredentials);
         acc->writeToSettings(*settings);
@@ -187,7 +187,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
             // re-persisting them)
             acc->_credentials->persist();
         }
-        Q_FOREACH (QString key, acc->_settingsMap.keys()) {
+        for (const auto &key : acc->_settingsMap.keys()) {
             settings.setValue(key, acc->_settingsMap.value(key));
         }
         settings.setValue(QLatin1String(authTypeC), acc->_credentials->authType());
@@ -201,7 +201,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.beginGroup(QLatin1String("General"));
     qCInfo(lcAccountManager) << "Saving " << acc->approvedCerts().count() << " unknown certs.";
     QByteArray certs;
-    Q_FOREACH (const QSslCertificate &cert, acc->approvedCerts()) {
+    for (const auto &cert : acc->approvedCerts()) {
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
@@ -258,7 +258,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
         authType = "webflow";
         settings.setValue(QLatin1String(authTypeC), authType);
 
-        foreach(QString key, settings.childKeys()) {
+        for (const QString &key : settings.childKeys()) {
             if (!key.startsWith("http_"))
                 continue;
             auto newkey = QString::fromLatin1("webflow_").append(key.mid(5));
@@ -274,7 +274,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
     QString authTypePrefix = authType + "_";
-    Q_FOREACH (QString key, settings.childKeys()) {
+    for (const auto &key : settings.childKeys()) {
         if (!key.startsWith(authTypePrefix))
             continue;
         acc->_settingsMap.insert(key, settings.value(key));
@@ -292,12 +292,10 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
 AccountStatePtr AccountManager::account(const QString &name)
 {
-    foreach (const auto &acc, _accounts) {
-        if (acc->account()->displayName() == name) {
-            return acc;
-        }
-    }
-    return AccountStatePtr();
+    const auto it = std::find_if(_accounts.cbegin(), _accounts.cend(), [name](const auto &acc) {
+        return acc->account()->displayName() == name;
+    });
+    return it != _accounts.cend() ? *it : AccountStatePtr();
 }
 
 AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
@@ -364,9 +362,9 @@ void AccountManager::displayMnemonic(const QString& mnemonic)
 
 void AccountManager::shutdown()
 {
-    auto accountsCopy = _accounts;
+    const auto accountsCopy = _accounts;
     _accounts.clear();
-    foreach (const auto &acc, accountsCopy) {
+    for (const auto &acc : accountsCopy) {
         emit accountRemoved(acc.data());
         emit removeAccountFolders(acc.data());
     }
@@ -374,12 +372,9 @@ void AccountManager::shutdown()
 
 bool AccountManager::isAccountIdAvailable(const QString &id) const
 {
-    foreach (const auto &acc, _accounts) {
-        if (acc->account()->id() == id) {
-            return false;
-        }
-    }
-    return true;
+    return std::none_of(_accounts.cbegin(), _accounts.cend(), [id](const auto &acc) {
+        return acc->account()->id() == id;
+    });
 }
 
 QString AccountManager::generateFreeAccountId() const
