@@ -492,7 +492,7 @@ Window {
                                 }
 
                                 Accessible.role: Accessible.MenuItem
-                                Accessible.name: qsTr("Open ") + appName + qsTr(" in browser")
+                                Accessible.name: qsTr("Open") + " " + appName + " " + qsTr("in browser")
                                 Accessible.onPressAction: appEntry.triggered()
                             }
                         }
