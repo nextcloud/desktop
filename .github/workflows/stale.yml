@@ -1,0 +1,17 @@
+name: "Close stale issues"
+on:
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/stale@v3
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        debug-only: true
+        days-before-stale: -1
+        exempt-issue-labels: "blue-ticket, p1-urgent, p2-high, p3-medium, p4-low"
+        days-before-close: 7  
+        close-issue-message: "The issue was marked as stale for 7 days and closed automatically."
