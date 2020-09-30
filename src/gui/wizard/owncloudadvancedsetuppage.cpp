@@ -87,13 +87,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
 
-#ifdef Q_OS_WIN
-    if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
-        qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
-        setRadioChecked(_ui.rVirtualFileSync);
-    }
-#endif
-
     connect(this, &OwncloudAdvancedSetupPage::completeChanged, this, [this]{
         if (wizard() && qobject_cast<OwncloudWizard*>(wizard())->authType() == OCC::DetermineAuthTypeJob::AuthType::OAuth) {
             // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
@@ -142,6 +135,13 @@ void OwncloudAdvancedSetupPage::initializePage()
         // Just manually hide the button and remove the layout.
         _ui.rVirtualFileSync->hide();
         _ui.wSyncStrategy->layout()->removeItem(_ui.lVirtualFileSync);
+    } else {
+#ifdef Q_OS_WIN
+    if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
+        qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
+        setRadioChecked(_ui.rVirtualFileSync);
+    }
+#endif
     }
 
     _checking = false;
