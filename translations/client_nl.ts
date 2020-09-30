@@ -4252,23 +4252,19 @@ Het is niet te adviseren om het te gebruiken.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
-        <source>Open </source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <source>Open</source>
+        <translation>Openen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
-        <source> in browser</source>
+        <source>in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="519"/>
         <source>Activity list</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
-        <source>Open</source>
-        <translation>Openen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
