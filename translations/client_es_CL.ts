@@ -4047,7 +4047,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="132"/>
         <source>Account actions</source>
-        <translation type="unfinished"/>
+        <translation>Acciones de la cuenta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="153"/>
@@ -4067,7 +4067,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="199"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar cuenta</translation>
     </message>
 </context>
 <context>
@@ -4157,7 +4157,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="141"/>
         <source>Current account</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta actual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
@@ -4202,12 +4202,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="366"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Conectado</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="366"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Desconectado</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
@@ -4222,7 +4222,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="450"/>
         <source>More apps</source>
-        <translation type="unfinished"/>
+        <translation>Más aplicaciones</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="467"/>
@@ -4231,22 +4231,18 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
-        <source>Open </source>
+        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <source>Open</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
-        <source> in browser</source>
+        <source>in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="519"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
-        <source>Open</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4262,7 +4258,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="645"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>Compartir</translation>
     </message>
 </context>
 <context>
