@@ -245,7 +245,7 @@ void PropagateUploadFileCommon::startUploadFile() {
 
 void PropagateUploadFileCommon::slotComputeContentChecksum()
 {
-    qDebug() << "Tryint to compute the checksum of the file";
+    qDebug() << "Trying to compute the checksum of the file";
     qDebug() << "Still trying to understand if this is the local file or the uploaded one";
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
