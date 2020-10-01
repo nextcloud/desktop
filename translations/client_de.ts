@@ -4254,7 +4254,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
         <source>in browser</source>
-        <translation type="unfinished"/>
+        <translation>im Browser</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="519"/>
@@ -4272,9 +4272,15 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <translation>Teilen-Dialog öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="645"/>
+        <location filename="../src/gui/tray/Window.qml" line="647"/>
         <source>Share</source>
         <translation>Teilen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
+        <location filename="../src/gui/tray/Window.qml" line="673"/>
+        <source>Open Talk</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

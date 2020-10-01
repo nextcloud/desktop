@@ -2704,7 +2704,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="38"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Compartir enlace</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
@@ -4256,9 +4256,15 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="645"/>
+        <location filename="../src/gui/tray/Window.qml" line="647"/>
         <source>Share</source>
         <translation>Compartir</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
+        <location filename="../src/gui/tray/Window.qml" line="673"/>
+        <source>Open Talk</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

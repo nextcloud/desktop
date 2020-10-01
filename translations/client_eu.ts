@@ -4273,9 +4273,15 @@ Ez da gomendagarria erabiltzea.</translation>
         <translation>Ireki partekatzeko elkarrizketa-koadroa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="645"/>
+        <location filename="../src/gui/tray/Window.qml" line="647"/>
         <source>Share</source>
         <translation>Partekatu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
+        <location filename="../src/gui/tray/Window.qml" line="673"/>
+        <source>Open Talk</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
