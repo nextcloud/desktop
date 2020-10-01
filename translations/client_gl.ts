@@ -4255,7 +4255,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
         <source>in browser</source>
-        <translation type="unfinished"/>
+        <translation>no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="519"/>
@@ -4273,9 +4273,15 @@ Recomendámoslle que non o use.</translation>
         <translation>Abrir o diálogo de compartición</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="645"/>
+        <location filename="../src/gui/tray/Window.qml" line="647"/>
         <source>Share</source>
         <translation>Compartir</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
+        <location filename="../src/gui/tray/Window.qml" line="673"/>
+        <source>Open Talk</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

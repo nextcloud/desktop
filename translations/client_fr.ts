@@ -4046,7 +4046,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Saisie de compte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -4171,7 +4171,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="103"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Boîte de dialogue principale du bureau Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="141"/>
@@ -4191,7 +4191,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="185"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Sélecteur de compte et menu des paramètres</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="217"/>
@@ -4236,7 +4236,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="432"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrez Nextcloud Talk dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="450"/>
@@ -4246,7 +4246,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="467"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu apps</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
@@ -4257,17 +4257,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
         <source>in browser</source>
-        <translation type="unfinished"/>
+        <translation>dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="519"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Liste d&apos;activités</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>locally</source>
-        <translation type="unfinished"/>
+        <translation>localement</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
@@ -4275,9 +4275,15 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Ouvrir la fenêtre de partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="645"/>
+        <location filename="../src/gui/tray/Window.qml" line="647"/>
         <source>Share</source>
         <translation>Partager</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
+        <location filename="../src/gui/tray/Window.qml" line="673"/>
+        <source>Open Talk</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
