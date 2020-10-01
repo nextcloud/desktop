@@ -1,0 +1,5 @@
+Change: Account display name `servername (username)` to `username@servername`
+
+We changed the way the accounts are displayed to improve the syntactical value.
+
+https://github.com/owncloud/client/issues/8104

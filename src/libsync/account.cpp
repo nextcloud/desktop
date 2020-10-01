@@ -114,13 +114,11 @@ QString Account::displayName() const
     if (user.isEmpty())
         user = davUser();
     QString host = _url.host();
-    int port = url().port();
+    const int port = url().port();
     if (port > 0 && port != 80 && port != 443) {
-        host.append(QLatin1Char(':'));
-        host.append(QString::number(port));
+        host += QStringLiteral(":%1").arg(QString::number(port));
     }
-    QString dn = QStringLiteral("%1 (%2)").arg(host, user);
-    return dn;
+    return tr("%1@%2").arg(user, host);
 }
 
 QString Account::davDisplayName() const
