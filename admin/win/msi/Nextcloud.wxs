@@ -60,6 +60,9 @@
         </DirectorySearch>
     </Property>
 
+    <!-- Property to disable update checks -->
+    <Property Id="SKIPAUTOUPDATE" Value="0" />
+
     <!-- Quit / restart application -->
     <util:RestartResource ProcessName="$(var.AppExe)" />
 
@@ -163,8 +166,8 @@
     </Directory>
 
     <DirectoryRef Id="TARGETDIR">
-        <Component Id="RegistryEntries" Guid="*" Win64="no">
-            <!-- Version numbers used to detect existing installation (use 32-bit registry like NSIS does) -->
+        <!-- Version numbers used to detect existing installation (use 32-bit registry like NSIS does) -->
+        <Component Id="RegistryVersionInfo" Guid="*" Win64="no">
             <RegistryKey Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
                 <RegistryValue Type="string" Value="[INSTALLDIR]" />
                 <RegistryValue Type="integer" Name="VersionMajor" Value="$(var.VerMajor)" />
@@ -176,6 +179,14 @@
                 <RegistryValue Type="string" Name="InstallerProductCode" Value="[ProductCode]" />
             </RegistryKey>
         </Component>
+
+        <!-- Platform bitness-dependent settings -->
+        <Component Id="RegistryDefaultSettings" Guid="*" Win64="$(var.PlatformWin64)">
+            <RegistryKey Root="HKLM" Key="Software\$(var.AppVendor)\$(var.AppName)">
+                <!-- Property to disable update checks -->
+                <RegistryValue Type="integer" Name="skipUpdateCheck" Value="[SKIPAUTOUPDATE]" />
+            </RegistryKey>
+        </Component>
     </DirectoryRef>
 
     <!-- Features -->
@@ -183,7 +194,8 @@
         Description="$(var.AppName) $(var.VerDesc)">
         <ComponentGroupRef Id="ClientFiles" />
 
-        <ComponentRef Id="RegistryEntries" />
+        <ComponentRef Id="RegistryVersionInfo" />
+        <ComponentRef Id="RegistryDefaultSettings" />
 
         <Feature Id="ShellExtensions" Title="Integration for Windows Explorer"
             Description="This feature requires a reboot." >
