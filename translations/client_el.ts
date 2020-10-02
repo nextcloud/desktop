@@ -3540,32 +3540,32 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="323"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="326"/>
         <source>Retry all uploads</source>
         <translation>Επανάληψη όλων των μεταφορτώσεων</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>Synced %1</source>
         <translation>Συγχρονίστηκε το %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
         <translation>Μετονομάσατε το %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
         <translation>Διαγράψατε το %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
         <translation>Δημιουργήσατε το %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
         <translation>Αλλάξατε το %1</translation>
     </message>
@@ -3573,22 +3573,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="703"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>Confirm Account Removal</source>
         <translation>Επιβεβαίωση Αφαίρεσης Λογαριασμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="704"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Θέλετε πραγματικά να αφαιρέσετε τη σύνδεση με το λογαριασμό &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="709"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Remove connection</source>
         <translation>Αφαίρεση σύνδεσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="710"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
         <source>Cancel</source>
         <translation>Ακύρωση</translation>
     </message>

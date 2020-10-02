@@ -3541,32 +3541,32 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="323"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="326"/>
         <source>Retry all uploads</source>
         <translation>Reintentar todas las subidas</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>Synced %1</source>
         <translation>Sincronizado %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
         <translation>Has renombrado %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
         <translation>Has borrado %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
         <translation>Has creado %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
         <translation>Has cambiado %1</translation>
     </message>
@@ -3574,22 +3574,22 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="703"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>Confirm Account Removal</source>
         <translation>Confirma  la eliminación de cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="704"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;¿De verdad quieres eliminar la conexión con la cuenta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Esto &lt;b&gt;no eliminará&lt;/b&gt; ningún archivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="709"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Remove connection</source>
         <translation>Eliminar vinculación</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="710"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>

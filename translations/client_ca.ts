@@ -3517,32 +3517,32 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="323"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="326"/>
         <source>Retry all uploads</source>
         <translation>Torna a intentar totes les pujades</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="371"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>Synced %1</source>
         <translation>S&apos;ha sincronitzat %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="373"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
         <translation>Heu reanomenat %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="375"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
         <translation>Heu suprimit %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="377"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
         <translation>Heu creat %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
         <translation>Heu canviat %1</translation>
     </message>
@@ -3550,22 +3550,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="703"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="706"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmeu la supressió del compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="704"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Segur que voleu suprimir la connexió al compte &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; això &lt;b&gt;no&lt;/b&gt; suprimirà cap fitxer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="709"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Remove connection</source>
         <translation>Suprimeix la connexió</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserModel.cpp" line="710"/>
+        <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
