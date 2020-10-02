@@ -411,10 +411,12 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemTy
 
     // Directories are guaranteed to be visited before their files
     if (filetype == ItemTypeDirectory) {
-        QFileInfo fi = QFileInfo(_localPath + path + "/.sync-exclude.lst");
+        const auto basePath = QString(_localPath + path + QLatin1Char('/')).toUtf8();
+        const auto fi = QFileInfo(basePath + QStringLiteral(".sync-exclude.lst"));
+
         if (fi.isReadable()) {
             addInTreeExcludeFilePath(fi.absoluteFilePath());
-            loadExcludeFile(fi.absolutePath().toUtf8(), fi.absoluteFilePath());
+            loadExcludeFile(basePath, fi.absoluteFilePath());
         }
     }
 
