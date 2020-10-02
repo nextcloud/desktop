@@ -10,7 +10,7 @@ jobs:
     - uses: actions/stale@v3
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        debug-only: true
+        debug-only: false
         days-before-stale: -1
         exempt-issue-labels: "blue-ticket, p1-urgent, p2-high, p3-medium, p4-low"
         days-before-close: 7  
