@@ -31,6 +31,7 @@ class AccountState;
 class Account;
 class AccountApp;
 class RemoteWipe;
+class UserStatus;
 
 using AccountStatePtr = QExplicitlySharedDataPointer<AccountState>;
 using AccountAppList = QList<AccountApp *>;
@@ -161,6 +162,10 @@ public:
     ///Asks for user credentials
     void handleInvalidCredentials();
 
+    QString currentUserStatus() const;
+
+    void fetchCurrentUserStatus();
+
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
@@ -174,6 +179,7 @@ signals:
     void stateChanged(State state);
     void isConnectedChanged();
     void hasFetchedNavigationApps();
+    void userStatusChanged();
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
@@ -223,6 +229,7 @@ private:
      */
     AccountAppList _apps;
 
+    UserStatus *_userStatus;
 };
 
 class AccountApp : public QObject

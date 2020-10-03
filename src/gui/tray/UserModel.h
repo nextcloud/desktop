@@ -19,6 +19,7 @@ class User : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
     Q_PROPERTY(QString server READ server CONSTANT)
+    Q_PROPERTY(QString status READ currentUserStatus NOTIFY userStatusChanged)
     Q_PROPERTY(bool hasLocalFolder READ hasLocalFolder NOTIFY hasLocalFolderChanged)
     Q_PROPERTY(bool serverHasTalk READ serverHasTalk NOTIFY serverHasTalkChanged)
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
@@ -35,6 +36,7 @@ public:
     void openLocalFolder();
     QString name() const;
     QString server(bool shortened = true) const;
+    QString currentUserStatus() const;
     bool hasLocalFolder() const;
     bool serverHasTalk() const;
     AccountApp *talkApp() const;
@@ -53,6 +55,7 @@ signals:
     void serverHasTalkChanged();
     void avatarChanged();
     void accountStateChanged(int state);
+    void userStatusChanged();
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
@@ -142,6 +145,7 @@ public:
     enum UserRoles {
         NameRole = Qt::UserRole + 1,
         ServerRole,
+        StatusRole,
         AvatarRole,
         IsCurrentUserRole,
         IsConnectedRole,

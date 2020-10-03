@@ -110,6 +110,14 @@ MenuItem {
                             font.bold: true
                         }
                         Label {
+                            id: userStatus
+                            width: 128
+                            text: status
+                            elide: Text.ElideRight
+                            color: "black"
+                            font.pixelSize: 10
+                        }
+                        Label {
                             id: accountServer
                             width: 128
                             text: server

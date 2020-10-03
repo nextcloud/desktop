@@ -379,9 +379,9 @@ Window {
                                 font.bold: true
                             }
                             Label {
-                                id: currentAccountServer
+                                id: currentUserStatus
                                 width: Style.currentAccountLabelWidth
-                                text: UserModel.currentUser.server
+                                text: UserModel.currentUser.status
                                 elide: Text.ElideRight
                                 color: Style.ncTextColor
                                 font.pixelSize: Style.subLinePixelSize
