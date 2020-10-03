@@ -658,7 +658,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="50"/>
         <source>No Nextcloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud-tiliä ei ole määritelty</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
@@ -748,7 +748,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authcredspage.cpp" line="37"/>
         <source>Login in your browser (Login Flow v2)</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu selaimessa (Login Flow v2)</translation>
     </message>
 </context>
 <context>
@@ -799,7 +799,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="373"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n muu tiedosto on poistettu.</numerusform><numerusform>%1 ja %n muuta tiedostoa on poistettu.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="375"/>
@@ -810,7 +810,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n muu tiedosto on ladattu.</numerusform><numerusform>%1 ja %n muuta tiedostoa on ladattu.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
@@ -821,7 +821,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n muu tiedosto on päivitetty.</numerusform><numerusform>%1 ja %n muuta tiedostoa on päivitetty.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="389"/>
@@ -3675,7 +3675,7 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="359"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Selvittämättömiä konflikteja</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
@@ -3720,7 +3720,7 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="404"/>
         <source>Resume all folders</source>
-        <translation type="unfinished"/>
+        <translation>Jatka kaikkia hakemistoja</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="409"/>
@@ -3780,12 +3780,12 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="692"/>
         <source>Resume all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Jatka kaikkien synkronointia</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="694"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Jatka synkronointia</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="702"/>
@@ -3820,7 +3820,7 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
-        <translation type="unfinished"/>
+        <translation>Näytä lisää aktiivisuutta...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
@@ -4159,17 +4159,17 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Jatka synkronointia</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Tauota synkronointi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="185"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Tilin valinta ja asetukset</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="217"/>
@@ -4179,7 +4179,7 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="243"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Lisää uusi tili</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
@@ -4194,7 +4194,7 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="344"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Käyttäjän avatar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="366"/>
@@ -4235,22 +4235,22 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
         <source>in browser</source>
-        <translation type="unfinished"/>
+        <translation>selaimessa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="519"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Aktiviteettilista</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>locally</source>
-        <translation type="unfinished"/>
+        <translation>paikallisesti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Avaa jakoikkuna</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="647"/>
@@ -4261,7 +4261,7 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <location filename="../src/gui/tray/Window.qml" line="673"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>Avaa Talk</translation>
     </message>
 </context>
 <context>
