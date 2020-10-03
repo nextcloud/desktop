@@ -1142,7 +1142,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="191"/>
         <source>Fetching folder list from server …</source>
-        <translation>Recuperando a lista de cartafoles do servidor...</translation>
+        <translation>Obtendo a lista de cartafoles do servidor...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
