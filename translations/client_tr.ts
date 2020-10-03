@@ -4279,7 +4279,7 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <location filename="../src/gui/tray/Window.qml" line="673"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>Talk Uygulamasını Aç</translation>
     </message>
 </context>
 <context>
