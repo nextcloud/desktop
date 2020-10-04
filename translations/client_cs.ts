@@ -4280,7 +4280,7 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <location filename="../src/gui/tray/Window.qml" line="673"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít Talk</translation>
     </message>
 </context>
 <context>
