@@ -123,6 +123,8 @@ void createDebugArchive(const QString &filename)
             zip.addFile(entry.zipFilename, &file);
         }
     }
+
+    zip.addFile("__nextcloud_client_parameters.txt", QCoreApplication::arguments().join(' ').toUtf8());
 }
 }
 
