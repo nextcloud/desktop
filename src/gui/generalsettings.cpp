@@ -125,6 +125,9 @@ void createDebugArchive(const QString &filename)
     }
 
     zip.addFile("__nextcloud_client_parameters.txt", QCoreApplication::arguments().join(' ').toUtf8());
+
+    const auto buildInfo = QString(OCC::Theme::instance()->about() + "\n\n" + OCC::Theme::instance()->aboutDetails());
+    zip.addFile("__nextcloud_client_buildinfo.txt", buildInfo.toUtf8());
 }
 }
 
