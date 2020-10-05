@@ -31,7 +31,6 @@ AboutDialog::AboutDialog(QWidget *parent)
 
     connect(ui->versionInfo, &QTextBrowser::anchorClicked, this, &AboutDialog::openBrowserFromUrl);
     connect(ui->aboutText, &QLabel::linkActivated, this, &AboutDialog::openBrowser);
-    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 AboutDialog::~AboutDialog()

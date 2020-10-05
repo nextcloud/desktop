@@ -293,6 +293,9 @@ QString Theme::gitSHA1(VersionFormat format) const
 #ifdef GIT_SHA1
     const auto gitSha = QStringLiteral(GIT_SHA1);
     const auto gitShahSort = gitSha.left(6);
+    if (!aboutShowCopyright()) {
+        return gitShahSort;
+    }
     const auto gitUrl = QStringLiteral("https://github.com/owncloud/client/commit/%1").arg(gitSha);
     switch (format) {
     case Theme::VersionFormat::Plain:
@@ -308,19 +311,32 @@ QString Theme::gitSHA1(VersionFormat format) const
 
 QString Theme::aboutVersions(Theme::VersionFormat format) const
 {
-#ifdef GIT_SHA1
-    const QString _version = QStringLiteral("%1 %2").arg(version(), gitSHA1(format));
-#else
-    const QString _version = version();
-#endif
     const QString br = format == Theme::VersionFormat::RichText ? QStringLiteral("<br>") : QStringLiteral("\n");
     const QString qtVersion = QString::fromUtf8(qVersion());
-    const QString qtVersionString = (QLatin1String(QT_VERSION_STR) == qtVersion ? qtVersion : tr("ownCloudTheme::qtVer", "%1 (Built against Qt %1)").arg(qtVersion, QStringLiteral(QT_VERSION_STR)));
+    const QString qtVersionString = (QLatin1String(QT_VERSION_STR) == qtVersion ? qtVersion : QCoreApplication::translate("ownCloudTheme::qtVer", "%1 (Built against Qt %1)").arg(qtVersion, QStringLiteral(QT_VERSION_STR)));
+    QString _version = version();
+    QString gitUrl;
+#ifdef GIT_SHA1
+    if (format != Theme::VersionFormat::Url) {
+        _version = QCoreApplication::translate("ownCloudTheme::versionWithSha", "%1 %2").arg(version(), gitSHA1(format));
+    } else {
+        gitUrl = gitSHA1(format) + br;
+    }
+#endif
     return QCoreApplication::translate("ownCloudTheme::aboutVersions()",
         "%1 %2 %3 %4%8"
+        "%9"
         "Libraries Qt %5, %6%8"
         "Using virtual files plugin: %7")
-        .arg(appName(), _version, QStringLiteral(__DATE__), QStringLiteral(__TIME__), qtVersionString, QSslSocket::sslLibraryVersionString(), Vfs::modeToString(bestAvailableVfsMode()), br);
+        .arg(appName(),
+            _version,
+            QStringLiteral(__DATE__),
+            QStringLiteral(__TIME__),
+            qtVersionString,
+            QSslSocket::sslLibraryVersionString(),
+            Vfs::modeToString(bestAvailableVfsMode()),
+            br,
+            gitUrl);
 }
 
 
