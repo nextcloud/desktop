@@ -46,7 +46,10 @@ public:
         SyncRunning,
         SyncDate,
 
-        AddButton // 1 = enabled; 2 = disabled
+        AddButton, // 1 = enabled; 2 = disabled
+        FolderSyncText,
+        DataRoleCount
+
     };
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;

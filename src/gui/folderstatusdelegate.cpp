@@ -166,8 +166,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     auto itemString = qvariant_cast<QString>(index.data(SyncProgressItemString));
     auto warningCount = qvariant_cast<int>(index.data(WarningCount));
     auto syncOngoing = qvariant_cast<bool>(index.data(SyncRunning));
-    auto syncDate = qvariant_cast<QDateTime>(index.data(SyncDate));
     auto syncEnabled = qvariant_cast<bool>(index.data(FolderAccountConnected));
+    auto syncText = qvariant_cast<QString>(index.data(FolderSyncText));
 
     auto iconRect = option.rect;
     auto aliasRect = option.rect;
@@ -251,7 +251,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (!showProgess) {
         painter->setFont(subFont);
         QString elidedRemotePathText = subFm.elidedText(
-            tr("Synchronized with local folder (%1)").arg(syncDate.toTimeSpec(Qt::LocalTime).toString(Qt::SystemLocaleShortDate)),
+            syncText,
             Qt::ElideRight, remotePathRect.width());
         painter->drawText(QStyle::visualRect(option.direction, option.rect, remotePathRect),
             textAlign, elidedRemotePathText);
