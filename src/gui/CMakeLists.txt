@@ -314,7 +314,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
-target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml Qt5::Qml Qt5::Quick Qt5::QuickControls2 Qt5::WebEngineWidgets)
+target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::GuiPrivate Qt5::Svg Qt5::Network Qt5::Xml Qt5::Qml Qt5::Quick Qt5::QuickControls2 Qt5::WebEngineWidgets)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 IF(BUILD_UPDATER)
     target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
