@@ -901,8 +901,9 @@ void ConfigFile::setAutomaticLogDir(bool enabled)
 
 QString ConfigFile::logDir() const
 {
+    const auto defaultLogDir = QString(configPath() + QStringLiteral("/logs"));
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(logDirC), QString()).toString();
+    return settings.value(QLatin1String(logDirC), defaultLogDir).toString();
 }
 
 void ConfigFile::setLogDir(const QString &dir)
@@ -914,7 +915,7 @@ void ConfigFile::setLogDir(const QString &dir)
 bool ConfigFile::logDebug() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(logDebugC), false).toBool();
+    return settings.value(QLatin1String(logDebugC), true).toBool();
 }
 
 void ConfigFile::setLogDebug(bool enabled)
@@ -926,7 +927,7 @@ void ConfigFile::setLogDebug(bool enabled)
 int ConfigFile::logExpire() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(logExpireC), 0).toBool();
+    return settings.value(QLatin1String(logExpireC), 24).toBool();
 }
 
 void ConfigFile::setLogExpire(int hours)
