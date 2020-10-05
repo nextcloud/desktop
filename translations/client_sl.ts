@@ -917,7 +917,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="1035"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Datoteka %1 je bila ustvarjena, a je bila izločena iz seznama usklajevanja. Podatki v tej mapi ne bodo usklajeni.</translation>
+        <translation>Datoteka %1 je bila ustvarjena, a je bila izločena s seznama usklajevanja. Podatki ne bodo usklajeni.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1046"/>
@@ -2758,7 +2758,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
         <source>File Drop (Upload Only)</source>
-        <translation>Povleci datoteke (samo nalaganje)</translation>
+        <translation>Poteg datotek v okno (samo nalaganje)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="170"/>
@@ -2768,7 +2768,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>File drop (upload only)</source>
-        <translation>Povleci datoteke (samo nalaganje)</translation>
+        <translation>Poteg datotek v okno (samo nalaganje)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
@@ -2818,7 +2818,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ali res želite izbrisati javno povezavo do mesta souporabe &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Opomba: opravila ni mogoče povrniti.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
@@ -2841,7 +2841,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
-        <translation type="unfinished"/>
+        <translation>Souporaba z uporabniki ali skupinami ...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
@@ -4171,7 +4171,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="149"/>
         <source>Pause sync for all</source>
-        <translation>Zaustavi usklajevanje za vse</translation>
+        <translation>Ustavi usklajevanje za vse</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="185"/>
