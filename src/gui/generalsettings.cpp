@@ -30,20 +30,101 @@
 
 #include "ignorelisteditor.h"
 #include "common/utility.h"
+#include "logger.h"
 
 #include "config.h"
 
 #include "legalnotice.h"
 
+#include <QFileDialog>
+#include <QMessageBox>
 #include <QNetworkProxy>
 #include <QDir>
 #include <QScopedValueRollback>
+
+#include <private/qzipwriter_p.h>
 
 #define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
 
 #if !(QTLEGACY)
 #include <QOperatingSystemVersion>
 #endif
+
+namespace {
+struct ZipEntry {
+    QString localFilename;
+    QString zipFilename;
+};
+
+ZipEntry fileInfoToZipEntry(const QFileInfo &info)
+{
+    return {
+        info.absoluteFilePath(),
+        info.fileName()
+    };
+}
+
+ZipEntry fileInfoToLogZipEntry(const QFileInfo &info)
+{
+    auto entry = fileInfoToZipEntry(info);
+    entry.zipFilename.prepend(QStringLiteral("logs/"));
+    return entry;
+}
+
+ZipEntry syncFolderToZipEntry(OCC::Folder *f)
+{
+    const auto journalPath = f->journalDb()->databaseFilePath();
+    const auto journalInfo = QFileInfo(journalPath);
+    return fileInfoToZipEntry(journalInfo);
+}
+
+QVector<ZipEntry> createFileList()
+{
+    auto list = QVector<ZipEntry>();
+    OCC::ConfigFile cfg;
+
+    list.append(fileInfoToZipEntry(QFileInfo(cfg.configFile())));
+
+    const auto logger = OCC::Logger::instance();
+
+    if (!logger->logDir().isEmpty()) {
+        list.append({QString(), QStringLiteral("logs")});
+
+        QDir dir(logger->logDir());
+        const auto infoList = dir.entryInfoList(QDir::Files);
+        std::transform(std::cbegin(infoList), std::cend(infoList),
+                       std::back_inserter(list),
+                       fileInfoToLogZipEntry);
+    } else if (!logger->logFile().isEmpty()) {
+        list.append(fileInfoToZipEntry(QFileInfo(logger->logFile())));
+    }
+
+    const auto folders = OCC::FolderMan::instance()->map().values();
+    std::transform(std::cbegin(folders), std::cend(folders),
+                   std::back_inserter(list),
+                   syncFolderToZipEntry);
+
+    return list;
+}
+
+void createDebugArchive(const QString &filename)
+{
+    const auto entries = createFileList();
+
+    QZipWriter zip(filename);
+    for (const auto &entry : entries) {
+        if (entry.localFilename.isEmpty()) {
+            zip.addDirectory(entry.zipFilename);
+        } else {
+            QFile file(entry.localFilename);
+            if (!file.open(QFile::ReadOnly)) {
+                continue;
+            }
+            zip.addFile(entry.zipFilename, &file);
+        }
+    }
+}
+}
 
 namespace OCC {
 
@@ -122,6 +203,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
 
     connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
+    connect(_ui->debugArchiveButton, &QAbstractButton::clicked, this, &GeneralSettings::slotCreateDebugArchive);
 
     // accountAdded means the wizard was finished and the wizard might change some options.
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
@@ -258,6 +340,17 @@ void GeneralSettings::slotIgnoreFilesEditor()
     } else {
         ownCloudGui::raiseDialog(_ignoreEditor);
     }
+}
+
+void GeneralSettings::slotCreateDebugArchive()
+{
+    const auto filename = QFileDialog::getSaveFileName(this, tr("Create Debug Archive"), QString(), tr("Zip Archives") + " (*.zip)");
+    if (filename.isEmpty()) {
+        return;
+    }
+
+    createDebugArchive(filename);
+    QMessageBox::information(this, tr("Debug Archive Created"), tr("Debug archive is created at %1").arg(filename));
 }
 
 void GeneralSettings::slotShowLegalNotice()

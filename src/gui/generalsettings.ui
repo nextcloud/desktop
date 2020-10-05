@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>523</height>
+    <width>553</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -216,6 +216,13 @@
          <widget class="QPushButton" name="ignoredFilesButton">
           <property name="text">
            <string>Edit &amp;Ignored Files</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="debugArchiveButton">
+          <property name="text">
+           <string>Create Debug Archive...</string>
           </property>
          </widget>
         </item>
