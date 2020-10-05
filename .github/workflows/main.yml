@@ -40,7 +40,8 @@ jobs:
               python: python3
               fetch-depth: 1
     env:
-      CRAFT: ${{ matrix.python }} "$env:HOME/craft/CraftMaster/CraftMaster/CraftMaster.py" --config "${{ github.workspace }}/.craft.ini" --target ${{ matrix.target }} --variables "WORKSPACE=$env:HOME/craft" -c
+      CRAFT_MASTER: "`"$env:HOME/craft/CraftMaster/CraftMaster/CraftMaster.py`" --config `"${{ github.workspace }}/.craft.ini`" --target ${{ matrix.target }} --variables `"WORKSPACE=$env:HOME/craft`""
+      CRAFT: "${{ matrix.python }} $env:CRAFT_MASTER -c"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
@@ -53,6 +54,9 @@ jobs:
 
     - name: Clone CraftMaster
       run: git clone --depth=1 https://invent.kde.org/kde/craftmaster.git "$env:HOME/craft/CraftMaster/CraftMaster"
+
+    - name: Craft setup
+      run: Invoke-Expression ${{ matrix.python }} "$env:CRAFT_MASTER --setup"
 
     - name: Craft unshelve
       run:  Invoke-Expression "$env:CRAFT --unshelve `"${{ github.workspace }}/.craft.shelf`" "
