@@ -434,7 +434,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="801"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>S&apos;està obtenint l&apos;autorització del navegador. &lt;a href=&apos;%1&apos;&gt;Feu clic aquí&lt;/a&gt; per tornar a obrir el navegador.</translation>
+        <translation>S&apos;està obtenint l&apos;autorització del navegador. &lt;a href=&apos;%1&apos;&gt;Feu clic aquí&lt;/a&gt; per a tornar a obrir el navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="805"/>
@@ -459,17 +459,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="931"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són massa grans:</translation>
+        <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són massa grans: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="933"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són fonts d&apos;emmagatzematge extern:</translation>
+        <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són fonts d&apos;emmagatzematge extern: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="934"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són massa grans o són fonts d&apos;emmagatzematge extern:</translation>
+        <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són massa grans o són fonts d&apos;emmagatzematge extern: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="968"/>
@@ -540,7 +540,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Els fitxers de la llista de fitxers ignorats i els enllaços simbòlics no se sincronitzen.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
@@ -678,7 +678,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="289"/>
         <source>The configured server for this client is too old</source>
-        <translation>El servidor configurat per aquest client és massa antic</translation>
+        <translation>El servidor configurat per a aquest client és massa antic</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="290"/>
@@ -894,13 +894,15 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="973"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>S&apos;ha afegit una carpeta amb una mida superior a %1 MB: %2.</translation>
+        <translation>S&apos;ha afegit una carpeta amb una mida superior a %1 MB: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="976"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>S&apos;ha afegit una carpeta d&apos;una font d&apos;emmagatzematge extern.</translation>
+        <translation>S&apos;ha afegit una carpeta d&apos;una font d&apos;emmagatzematge extern.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="977"/>
@@ -932,7 +934,7 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>S&apos;han suprimit tots els fitxers de la carpeta de sincronització «%1» del servidor. Aquestes supressions se sincronitzaran a la vostra carpeta de sincronització local i aquests fitxers deixaran d&apos;estar disponibles si no teniu dret a restaurar-los. Si decidiu restaurar els fitxers, es tornaran a sincronitzar amb el servidor si teniu drets per fer-ho. Si decidiu suprimir els fitxers, deixaran d&apos;estar disponibles, tret que en sigueu el propietari.</translation>
+        <translation>S&apos;han suprimit tots els fitxers de la carpeta de sincronització «%1» del servidor. Aquestes supressions se sincronitzaran a la vostra carpeta de sincronització local i aquests fitxers deixaran d&apos;estar disponibles si no teniu dret a restaurar-los. Si decidiu restaurar els fitxers, es tornaran a sincronitzar amb el servidor si teniu drets per a fer-ho. Si decidiu suprimir els fitxers, deixaran d&apos;estar disponibles, tret que en sigueu el propietari.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1096"/>
@@ -994,12 +996,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1060"/>
         <source> (backup)</source>
-        <translation>(còpia de seguretat)</translation>
+        <translation> (còpia de seguretat)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1065"/>
         <source> (backup %1)</source>
-        <translation>(còpia de seguretat %1)</translation>
+        <translation> (còpia de seguretat %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1310"/>
@@ -1176,7 +1178,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>, </source>
-        <translation>,</translation>
+        <translation>, </translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
@@ -1250,7 +1252,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="85"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation>Aquest problema normalment es produeix quan s&apos;han esgotat les supervisions d&apos;inotify. Consulteu les PMF per obtenir més informació.</translation>
+        <translation>Aquest problema normalment es produeix quan s&apos;han esgotat les supervisions d&apos;inotify. Consulteu les PMF per a obtenir més informació.</translation>
     </message>
 </context>
 <context>
@@ -2136,7 +2138,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>El servidor ha prohibit l&apos;accés. Per comprovar que hi teniu accés, &lt;a href=&quot;%1&quot;&gt;feu clic aquí&lt;/a&gt; per a accedir al servei amb el vostre navegador.</translation>
+        <translation>El servidor ha prohibit l&apos;accés. Per a comprovar que hi teniu accés, &lt;a href=&quot;%1&quot;&gt;feu clic aquí&lt;/a&gt; per a accedir al servei amb el vostre navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
@@ -3085,13 +3087,15 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation>Aquesta connexió està xifrada mitjançant %2 de %1 bits.</translation>
+        <translation>Aquesta connexió està xifrada mitjançant %2 de %1 bits.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>Aquesta connexió NO és segura perquè no està xifrada.</translation>
+        <translation>Aquesta connexió NO és segura perquè no està xifrada.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
@@ -3529,7 +3533,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
-        <translation>Heu reanomenat %1</translation>
+        <translation>Heu canviat el nom de %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
@@ -3952,7 +3956,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>El vostre compte està totalment sincronitzat amb la carpeta local</translation>
+        <translation>El vostre compte està totalment sincronitzat amb la carpeta local </translation>
     </message>
 </context>
 <context>
@@ -4019,12 +4023,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Entrada de compte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
         <source>Switch to account</source>
-        <translation>Canvia el compte</translation>
+        <translation>Canvia al compte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
@@ -4034,7 +4038,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>Compte no connectat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="132"/>
@@ -4144,7 +4148,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="103"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Quadre de diàleg principal del client d&apos;escriptori del Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="141"/>
@@ -4164,7 +4168,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="185"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Canvi de compte i menú de paràmetres</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="217"/>
@@ -4174,7 +4178,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="243"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Afegeix un compte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
@@ -4189,12 +4193,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="344"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar de l&apos;usuari actual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="366"/>
         <source>Connected</source>
-        <translation>S&apos;ha connectat</translation>
+        <translation>Connectat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="366"/>
@@ -4204,12 +4208,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>Obre la carpeta local del compte actual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="432"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Obre l&apos;aplicació Converses del Nextcloud al navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="450"/>
@@ -4219,28 +4223,28 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="467"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Menú d&apos;aplicacions</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>Open</source>
-        <translation>Obert</translation>
+        <translation>Obre</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
         <source>in browser</source>
-        <translation type="unfinished"/>
+        <translation>en el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="519"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Llista d&apos;activitat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>locally</source>
-        <translation type="unfinished"/>
+        <translation>localment</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
@@ -4250,13 +4254,13 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="647"/>
         <source>Share</source>
-        <translation>Compartir</translation>
+        <translation>Comparteix</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <location filename="../src/gui/tray/Window.qml" line="673"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>Obre l&apos;aplicació Converses</translation>
     </message>
 </context>
 <context>
@@ -4433,7 +4437,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>S&apos;ha produït un error en iniciar el navegador per anar a l&apos;URL %1. És possible que no s&apos;hagi configurat cap navegador per defecte.</translation>
+        <translation>S&apos;ha produït un error en iniciar el navegador per a anar a l&apos;URL %1. És possible que no s&apos;hagi configurat cap navegador per defecte.</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
