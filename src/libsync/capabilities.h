@@ -40,6 +40,7 @@ public:
     bool sharePublicLink() const;
     bool sharePublicLinkAllowUpload() const;
     bool sharePublicLinkSupportsUploadOnly() const;
+    bool sharePublicLinkAskOptionalPassword() const;
     bool sharePublicLinkEnforcePassword() const;
     bool sharePublicLinkEnforceExpireDate() const;
     int sharePublicLinkExpireDateDays() const;
