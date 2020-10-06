@@ -28,7 +28,15 @@ namespace {
 static const char urlC[] = "url";
 static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
-static const char davUserC[] = "dav_user";
+const QString davUserC()
+{
+    return QStringLiteral("dav_user");
+}
+
+const QString davUserDisplyNameC()
+{
+    return QStringLiteral("display-name");
+}
 static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
 static const char versionC[] = "version";
@@ -216,7 +224,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
 {
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
-    settings.setValue(QLatin1String(davUserC), acc->_davUser);
+    settings.setValue(davUserC(), acc->_davUser);
+    settings.setValue(davUserDisplyNameC(), acc->_displayName);
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     if (acc->_credentials) {
         if (saveCredentials) {
@@ -282,7 +291,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
-    acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
+    acc->_davUser = settings.value(davUserC()).toString();
+    acc->_displayName = settings.value(davUserDisplyNameC()).toString();
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
