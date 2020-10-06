@@ -11,5 +11,6 @@
         <file alias="resources/bell.svg">resources/font-awesome/bell-solid.svg</file>
         <file alias="resources/quit.svg">resources/font-awesome/power-off-solid.svg</file>
         <file alias="resources/plus-solid.svg">resources/font-awesome/plus-solid.svg</file>
+        <file alias="resources/exclamation-triangle-solid.svg">resources/font-awesome/exclamation-triangle-solid.svg</file>
     </qresource>
 </RCC>

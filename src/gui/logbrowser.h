@@ -29,6 +29,10 @@
 
 namespace OCC {
 
+namespace Ui {
+    class LogBrowser;
+};
+
 /**
  * @brief The LogBrowser class
  * @ingroup gui
@@ -50,6 +54,9 @@ public:
 protected slots:
     void togglePermanentLogging(bool enabled);
     void toggleLogDeletion(bool enabled);
+
+private:
+    QScopedPointer<Ui::LogBrowser> ui;
 };
 
 } // namespace

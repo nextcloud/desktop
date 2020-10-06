@@ -49,7 +49,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
     , _tray(new Systray(this))
     , _settingsDialog(new SettingsDialog(this))
-    , _logBrowser(nullptr)
     , _recentActionsMenu(nullptr)
     , _app(parent)
 {
@@ -1018,18 +1017,14 @@ void ownCloudGui::slotShutdown()
 
     // those do delete on close
     _settingsDialog->close();
-    if (!_logBrowser.isNull())
-        _logBrowser->deleteLater();
 }
 
 void ownCloudGui::slotToggleLogBrowser()
 {
-    if (_logBrowser.isNull()) {
-        // init the log browser.
-        _logBrowser = new LogBrowser(settingsDialog());
-    }
-    _logBrowser->open();
-    raiseDialog(_logBrowser);
+    auto logBrowser = new LogBrowser(settingsDialog());
+    logBrowser->setAttribute(Qt::WA_DeleteOnClose);
+    logBrowser->open();
+    raiseDialog(logBrowser);
 }
 
 void ownCloudGui::slotOpenOwnCloud()
