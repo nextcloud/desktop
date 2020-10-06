@@ -121,6 +121,14 @@
     </message>
 </context>
 <context>
+    <name>OCC::Account</name>
+    <message>
+        <location filename="../src/libsync/account.cpp" line="121"/>
+        <source>%1@%2</source>
+        <translation>%1@%2</translation>
+    </message>
+</context>
+<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
@@ -1518,17 +1526,17 @@ Se fose un accidente e decide manter os seus ficheiros, volverán ser sincroniza
         <translation>&amp;Reiniciar e actualizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="281"/>
+        <location filename="../src/gui/generalsettings.cpp" line="283"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Non pode desactivar o inicio automático porque está activado o inicio automático do sistema principal.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="191"/>
+        <location filename="../src/gui/generalsettings.cpp" line="193"/>
         <source>Change update channel?</source>
         <translation>Cambiar a canle de actualizacións?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="192"/>
+        <location filename="../src/gui/generalsettings.cpp" line="194"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1537,12 +1545,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Teña en conta que isto só selecciona a canle desexada e que non hai reversións: por iso, volver do canal de beta á canle estábel xeralmente non se pode facer de inmediato e significa agardar por unha versión estábel que sexa máis recente que a beta instalada actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="205"/>
+        <location filename="../src/gui/generalsettings.cpp" line="207"/>
         <source>Change update channel</source>
         <translation>Cambiar a canle de actualizacións</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="206"/>
+        <location filename="../src/gui/generalsettings.cpp" line="208"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -2016,7 +2024,7 @@ Teña en conta que o uso de calquera opción de rexistro por liña de ordes anul
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="169"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;Failed to retrieve user info&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Produciuse un erro de acceso&lt;/h1&gt;&lt;p&gt;Produciuse un fallo ao recuperar a información do usuario&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="289"/>
