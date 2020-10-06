@@ -1730,27 +1730,27 @@ Loggar kommer att skrivas till %1</translation>
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="334"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="336"/>
         <source>New Version Available</source>
         <translation>Ny version tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="340"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="342"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;En ny version av %1 klienten är tillgänglig.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; är tillgänglig för hämtning. Den installerade versionen är %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="356"/>
         <source>Skip this version</source>
         <translation>Hoppa över denna version</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="355"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="357"/>
         <source>Skip this time</source>
         <translation>Hoppa över denna gång</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="356"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="358"/>
         <source>Get update</source>
         <translation>Hämta uppdatering</translation>
     </message>

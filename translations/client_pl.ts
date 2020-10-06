@@ -1730,27 +1730,27 @@ Dzienniki zostaną zapisane w %1</translation>
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="334"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="336"/>
         <source>New Version Available</source>
         <translation>Dostępna nowa wersja</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="340"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="342"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Dostępna jest nowa wersja klienta %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; jest dostępny do pobrania. Zainstalowana wersja to %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="356"/>
         <source>Skip this version</source>
         <translation>Pomiń tą wersję</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="355"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="357"/>
         <source>Skip this time</source>
         <translation>Pomiń tym razem</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="356"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="358"/>
         <source>Get update</source>
         <translation>Pobierz aktualizację</translation>
     </message>
