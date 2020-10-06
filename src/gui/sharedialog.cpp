@@ -25,6 +25,7 @@
 #include "configfile.h"
 #include "theme.h"
 #include "thumbnailjob.h"
+#include "wordlist.h"
 
 #include <QFileInfo>
 #include <QFileIconProvider>
@@ -32,6 +33,20 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QFrame>
+
+namespace {
+QString createRandomPassword()
+{
+    const auto words = OCC::WordList::getRandomWords(10);
+
+    const auto addFirstLetter = [](const QString &current, const QString &next) {
+        return current + next.at(0);
+    };
+
+    return std::accumulate(std::cbegin(words), std::cend(words), QString(), addFirstLetter);
+}
+}
+
 
 namespace OCC {
 
@@ -303,7 +318,9 @@ void ShareDialog::showSharingUi()
 void ShareDialog::slotCreateLinkShare()
 {
     if(_manager) {
-        _manager->createLinkShare(_sharePath, QString(), QString());
+        const auto askOptionalPassword = _accountState->account()->capabilities().sharePublicLinkAskOptionalPassword();
+        const auto password = askOptionalPassword ? createRandomPassword() : QString();
+        _manager->createLinkShare(_sharePath, QString(), password);
     }
 }
 
