@@ -744,6 +744,7 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
         // Is is possible to create a public link without user choices?
         bool canCreateDefaultPublicLink = publicLinksEnabled
             && !capabilities.sharePublicLinkEnforceExpireDate()
+            && !capabilities.sharePublicLinkAskOptionalPassword()
             && !capabilities.sharePublicLinkEnforcePassword();
 
         if (canCreateDefaultPublicLink) {
