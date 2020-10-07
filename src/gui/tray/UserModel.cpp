@@ -810,6 +810,20 @@ User *UserModel::currentUser() const
     return _users[currentUserId()];
 }
 
+int UserModel::findUserIdForAccount(AccountState *account) const
+{
+    const auto it = std::find_if(std::cbegin(_users), std::cend(_users), [=](const User *user) {
+        return user->account()->id() == account->account()->id();
+    });
+
+    if (it == std::cend(_users)) {
+        return -1;
+    }
+
+    const auto id = std::distance(std::cbegin(_users), it);
+    return id;
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 ImageProvider::ImageProvider()
