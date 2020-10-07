@@ -211,7 +211,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case FolderStatusDelegate::FolderErrorMsg:
         return f->syncResult().errorStrings();
     case FolderStatusDelegate::FolderInfoMsg:
-        return f->supportsVirtualFiles()
+        return f->supportsVirtualFiles() && f->vfs().mode() != Vfs::Mode::WindowsCfApi
             ? QStringList(tr("Virtual file support is enabled."))
             : QStringList();
     case FolderStatusDelegate::SyncRunning:
@@ -274,6 +274,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return progress._overallPercent;
     case FolderStatusDelegate::SyncProgressOverallString:
         return progress._overallSyncString;
+    case FolderStatusDelegate::FolderSyncText:
+        if (f->supportsVirtualFiles()) {
+            return tr("Synchronizing VirtualFiles with local folder");
+        } else {
+            return tr("Synchronizing with local folder");
+        }
     }
     return QVariant();
 }

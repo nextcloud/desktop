@@ -308,6 +308,16 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     connect(job, &PropfindJob::result, _ocWizard, &OwncloudWizard::successfulStep);
     connect(job, &PropfindJob::finishedWithError, this, &OwncloudSetupWizard::slotAuthError);
     job->start();
+
+    // get the display name so that the folder we register with the file browser has a pretty name
+    auto userJob = new JsonApiJob(account, QStringLiteral("ocs/v2.php/cloud/user"), this);
+    connect(userJob, &JsonApiJob::jsonReceived, this, [account](const QJsonDocument &json, int status) {
+        if (status == 200) {
+            const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("display-name")).toString();
+            account->setDavDisplayName(user);
+        }
+    });
+    userJob->start();
 }
 
 void OwncloudSetupWizard::slotAuthError()

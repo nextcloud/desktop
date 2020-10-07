@@ -5,6 +5,7 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets)
 add_subdirectory(updater)
 
 set(client_UI_SRCS
+    aboutdialog.ui
     accountsettings.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
@@ -23,6 +24,7 @@ set(client_UI_SRCS
     addcertificatedialog.ui
     proxyauthdialog.ui
     notificationwidget.ui
+    logbrowser.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
@@ -32,6 +34,7 @@ set(client_UI_SRCS
 )
 
 set(client_SRCS
+    aboutdialog.cpp
     accountmanager.cpp
     accountsettings.cpp
     application.cpp

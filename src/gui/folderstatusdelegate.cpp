@@ -148,20 +148,21 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
     painter->save();
 
-    QIcon statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
-    QString aliasText = qvariant_cast<QString>(index.data(HeaderRole));
-    QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
-    QString remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
-    QStringList conflictTexts = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
-    QStringList errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
-    QStringList infoTexts = qvariant_cast<QStringList>(index.data(FolderInfoMsg));
+    const QIcon statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
+    const QString aliasText = qvariant_cast<QString>(index.data(HeaderRole));
+    const QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
+    const QString remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
+    const QStringList conflictTexts = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
+    const QStringList errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
+    const QStringList infoTexts = qvariant_cast<QStringList>(index.data(FolderInfoMsg));
 
-    int overallPercent = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
-    QString overallString = qvariant_cast<QString>(index.data(SyncProgressOverallString));
-    QString itemString = qvariant_cast<QString>(index.data(SyncProgressItemString));
-    int warningCount = qvariant_cast<int>(index.data(WarningCount));
-    bool syncOngoing = qvariant_cast<bool>(index.data(SyncRunning));
-    bool syncEnabled = qvariant_cast<bool>(index.data(FolderAccountConnected));
+    const int overallPercent = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
+    const QString overallString = qvariant_cast<QString>(index.data(SyncProgressOverallString));
+    const QString itemString = qvariant_cast<QString>(index.data(SyncProgressItemString));
+    const int warningCount = qvariant_cast<int>(index.data(WarningCount));
+    const bool syncOngoing = qvariant_cast<bool>(index.data(SyncRunning));
+    const bool syncEnabled = qvariant_cast<bool>(index.data(FolderAccountConnected));
+    const QString syncText = qvariant_cast<QString>(index.data(FolderSyncText));
 
     QRect iconRect = option.rect;
     QRect aliasRect = option.rect;
@@ -245,7 +246,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (!showProgess) {
         painter->setFont(subFont);
         QString elidedRemotePathText = subFm.elidedText(
-            tr("Synchronizing with local folder"),
+            syncText,
             Qt::ElideRight, remotePathRect.width());
         painter->drawText(QStyle::visualRect(option.direction, option.rect, remotePathRect),
             textAlign, elidedRemotePathText);

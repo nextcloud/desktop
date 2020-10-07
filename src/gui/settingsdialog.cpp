@@ -107,7 +107,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
 
     if (Theme::instance()->multiAccount()) {
-        _addAccountAction = createColorAwareAction(QStringLiteral(":/client/resources/plus-solid.svg"), tr("Add account"));
+        _addAccountAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/plus-solid.svg")), tr("Add account"));
         _addAccountAction->setCheckable(false);
         connect(_addAccountAction, &QAction::triggered, this, []{
             // don't directly connect here, ocApp might not be defined yet
@@ -118,7 +118,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
-    _activityAction = createColorAwareAction(QStringLiteral(":/client/resources/activity.svg"), tr("Activity"));
+    _activityAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/activity.svg")), tr("Activity"));
     _actionGroup->addAction(_activityAction);
     _ui->toolBar->addAction(_activityAction);
     _activitySettings = new ActivitySettings;
@@ -127,7 +127,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         &ownCloudGui::slotShowOptionalTrayMessage);
     _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 
-    QAction *generalAction = createColorAwareAction(QStringLiteral(":/client/resources/settings.svg"), tr("Settings"));
+    QAction *generalAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/settings.svg")), tr("Settings"));
     _actionGroup->addAction(generalAction);
     _ui->toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
@@ -138,7 +138,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _ui->toolBar->addWidget(spacer);
 
-    QAction *quitAction = createColorAwareAction(QStringLiteral(":/client/resources/quit.svg"), tr("Quit %1").arg(qApp->applicationName()));
+    QAction *quitAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/quit.svg")), tr("Quit %1").arg(qApp->applicationName()));
     quitAction->setCheckable(false);
     connect(quitAction, &QAction::triggered, this, [this] {
         const auto reply = QMessageBox::question(this, tr("Quit %1").arg(qApp->applicationName()),
@@ -275,7 +275,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     QImage avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     if (avatar.isNull()) {
-        accountAction = createColorAwareAction(QStringLiteral(":/client/resources/account.svg"),
+        accountAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/account.svg")),
             actionText);
     } else {
         QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));
@@ -372,15 +372,6 @@ void SettingsDialog::customizeStyle()
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
     _ui->toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
-
-    Q_FOREACH (QAction *a, _actionGroup->actions()) {
-        QIcon icon = QIcon(a->property("iconPath").toString());
-        a->setIcon(icon);
-        QToolButton *btn = qobject_cast<QToolButton *>(_ui->toolBar->widgetForAction(a));
-        if (btn) {
-            btn->setIcon(icon);
-        }
-    }
 }
 
 class ToolButtonAction : public QWidgetAction
@@ -416,21 +407,11 @@ public:
     }
 };
 
-QAction *SettingsDialog::createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath)
+QAction *SettingsDialog::createActionWithIcon(const QIcon &icon, const QString &text)
 {
     QAction *action = new ToolButtonAction(icon, text, this);
     action->setCheckable(true);
-    if (!iconPath.isEmpty()) {
-        action->setProperty("iconPath", iconPath);
-    }
     return action;
-}
-
-QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const QString &text)
-{
-    // all buttons must have the same size in order to keep a good layout
-    QIcon coloredIcon = QIcon(iconPath);
-    return createActionWithIcon(coloredIcon, text, iconPath);
 }
 
 void SettingsDialog::slotRefreshActivityAccountStateSender()

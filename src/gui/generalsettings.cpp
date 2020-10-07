@@ -103,22 +103,21 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
 
     // Only our standard brandings currently support beta channel
-    Theme *theme = Theme::instance();
-    if (theme->appName() != QLatin1String("ownCloud") && theme->appName() != QLatin1String("testpilotcloud") ) {
+    if (Theme::instance()->appName() != QLatin1String("testpilotcloud")) {
 #ifdef Q_OS_MAC
         // Because we don't have any statusString from the SparkleUpdater anyway we can hide the whole thing
         _ui->updaterWidget->hide();
 #else
         _ui->updateChannelLabel->hide();
         _ui->updateChannel->hide();
+        if (ConfigFile().updateChannel() != QLatin1String("stable")) {
+            ConfigFile().setUpdateChannel(QStringLiteral("stable"));
+        }
 #endif
     }
+    connect(_ui->about_pushButton, &QPushButton::clicked, this, &GeneralSettings::showAbout);
 
-    _ui->versionLabel->setText(QStringLiteral("<a href='%1'>%1</a>").arg(MIRALL_VERSION_STRING));
-    QObject::connect(_ui->versionLabel, &QLabel::linkActivated, this, &GeneralSettings::showAbout);
-
-    if (!theme->aboutShowCopyright()) {
-        _ui->copyrightLabelDotBefore->hide();
+    if (!Theme::instance()->aboutShowCopyright()) {
         _ui->copyrightLabel->hide();
     }
 }

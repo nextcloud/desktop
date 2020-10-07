@@ -87,13 +87,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
 
-#ifdef Q_OS_WIN
-    if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
-        qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
-        setRadioChecked(_ui.rVirtualFileSync);
-    }
-#endif
-
     connect(this, &OwncloudAdvancedSetupPage::completeChanged, this, [this]{
         if (wizard() && qobject_cast<OwncloudWizard*>(wizard())->authType() == OCC::DetermineAuthTypeJob::AuthType::OAuth) {
             // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
@@ -136,12 +129,20 @@ void OwncloudAdvancedSetupPage::initializePage()
         labelSizeHint.width(),
         qMax<int>(1.3 * labelSizeHint.height(), _progressIndi->height()));
 
-    if (!Theme::instance()->showVirtualFilesOption() || bestAvailableVfsMode() == Vfs::Off) {
+    const auto vfsMode = bestAvailableVfsMode();
+    if (!Theme::instance()->showVirtualFilesOption() || vfsMode == Vfs::Off || (vfsMode != Vfs::WindowsCfApi && Theme::instance()->enableExperimentalFeatures()) ) {
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.
         _ui.rVirtualFileSync->hide();
         _ui.wSyncStrategy->layout()->removeItem(_ui.lVirtualFileSync);
+    } else {
+#ifdef Q_OS_WIN
+        if (vfsMode == Vfs::WindowsCfApi) {
+            qobject_cast<QVBoxLayout *>(_ui.wSyncStrategy->layout())->insertItem(0, _ui.lVirtualFileSync);
+            setRadioChecked(_ui.rVirtualFileSync);
+        }
+#endif
     }
 
     _checking = false;

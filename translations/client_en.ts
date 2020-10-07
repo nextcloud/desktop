@@ -123,6 +123,14 @@
     </message>
 </context>
 <context>
+    <name>OCC::Account</name>
+    <message>
+        <location filename="../src/libsync/account.cpp" line="121"/>
+        <source>%1@%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
@@ -1534,29 +1542,29 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="281"/>
+        <location filename="../src/gui/generalsettings.cpp" line="283"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="191"/>
+        <location filename="../src/gui/generalsettings.cpp" line="193"/>
         <source>Change update channel?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="192"/>
+        <location filename="../src/gui/generalsettings.cpp" line="194"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="205"/>
+        <location filename="../src/gui/generalsettings.cpp" line="207"/>
         <source>Change update channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="206"/>
+        <location filename="../src/gui/generalsettings.cpp" line="208"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2022,7 +2030,12 @@ Note that using any logging command line options will override the settings.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="283"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="169"/>
+        <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;Failed to retrieve user info&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/creds/oauth.cpp" line="289"/>
         <source>	Error: Missing field %1
 </source>
         <translation type="unfinished"></translation>
@@ -2033,21 +2046,21 @@ Note that using any logging command line options will override the settings.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="194"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="197"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="201"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="200"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="203"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="207"/>
         <source>Error while refreshing the token: %1 : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="206"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="212"/>
         <source>The reply from the server did not contain all expected fields
 :%1
 Received data: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="227"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="233"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>

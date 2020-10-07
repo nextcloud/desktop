@@ -122,7 +122,6 @@ private:
 
     Systray *_tray;
     SettingsDialog *_settingsDialog;
-    QPointer<LogBrowser> _logBrowser;
     // tray's menu
     QScopedPointer<QMenu> _contextMenu;
 

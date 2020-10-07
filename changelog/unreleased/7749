@@ -1,0 +1,8 @@
+Change: Redesign the About dialog
+
+We redesigned the way the About information is displayed and unified it
+with the "--version" switch.
+
+https://github.com/owncloud/client/issues/7749
+https://github.com/owncloud/enterprise/issues/3787
+https://github.com/owncloud/client/issues/7704

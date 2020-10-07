@@ -25,7 +25,7 @@
         <x>0</x>
         <y>0</y>
         <width>771</width>
-        <height>640</height>
+        <height>637</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -63,6 +63,77 @@
         <widget class="QGroupBox" name="advancedGroupBox">
          <property name="title">
           <string>Advanced</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
+              <property name="text">
+               <string>Show sync folders in &amp;Explorer's Navigation Pane</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="syncHiddenFilesCheckBox">
+              <property name="text">
+               <string>Sync hidden files</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="crashreporterCheckBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>S&amp;how crash reporter</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QPushButton" name="ignoredFilesButton">
+                <property name="text">
+                 <string>Edit &amp;Ignored Files</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="logSettingsButton">
+                <property name="text">
+                 <string>Log Settings</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="spacer_3">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>555</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_non_vfs">
+         <property name="title">
+          <string>Advanced - Approval of folder sync (Non virtual file mode only)</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
@@ -115,64 +186,6 @@
              <string>Ask for confirmation before synchronizing external storages</string>
             </property>
            </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
-            <property name="text">
-             <string>Show sync folders in &amp;Explorer's Navigation Pane</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="crashreporterCheckBox">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>S&amp;how crash reporter</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="syncHiddenFilesCheckBox">
-            <property name="text">
-             <string>Sync hidden files</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QPushButton" name="ignoredFilesButton">
-              <property name="text">
-               <string>Edit &amp;Ignored Files</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="logSettingsButton">
-              <property name="text">
-               <string>Log Settings</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="spacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>555</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>
@@ -306,32 +319,6 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="versionLabel">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="text">
-         <string notr="true">Version 3.1.3 (build 37)</string>
-        </property>
-        <property name="textInteractionFlags">
-         <set>Qt::LinksAccessibleByMouse</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="copyrightLabelDotBefore">
-        <property name="cursor">
-         <cursorShape>ArrowCursor</cursorShape>
-        </property>
-        <property name="text">
-         <string>•</string>
-        </property>
-        <property name="textInteractionFlags">
-         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="copyrightLabel">
         <property name="cursor">
          <cursorShape>ArrowCursor</cursorShape>
@@ -341,6 +328,13 @@
         </property>
         <property name="textInteractionFlags">
          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="about_pushButton">
+        <property name="text">
+         <string>About</string>
         </property>
        </widget>
       </item>
@@ -361,13 +355,16 @@
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>desktopNotificationsCheckBox</tabstop>
   <tabstop>monoIconsCheckBox</tabstop>
+  <tabstop>showInExplorerNavigationPaneCheckBox</tabstop>
+  <tabstop>syncHiddenFilesCheckBox</tabstop>
+  <tabstop>crashreporterCheckBox</tabstop>
+  <tabstop>ignoredFilesButton</tabstop>
+  <tabstop>logSettingsButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>
   <tabstop>newExternalStorage</tabstop>
-  <tabstop>showInExplorerNavigationPaneCheckBox</tabstop>
-  <tabstop>crashreporterCheckBox</tabstop>
-  <tabstop>syncHiddenFilesCheckBox</tabstop>
-  <tabstop>ignoredFilesButton</tabstop>
+  <tabstop>updateChannel</tabstop>
+  <tabstop>restartButton</tabstop>
   <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources/>

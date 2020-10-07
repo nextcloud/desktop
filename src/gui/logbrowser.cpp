@@ -31,6 +31,7 @@
 
 #include "configfile.h"
 #include "logger.h"
+#include "ui_logbrowser.h"
 
 namespace OCC {
 
@@ -40,80 +41,32 @@ const std::chrono::hours defaultExpireDuration(4);
 
 LogBrowser::LogBrowser(QWidget *parent)
     : QDialog(parent)
+    , ui(new Ui::LogBrowser)
 {
+    ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    setObjectName("LogBrowser"); // for save/restoreGeometry()
-    setWindowTitle(tr("Log Output"));
-    setMinimumWidth(600);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+    ui->locationLabel->setText(Logger::instance()->temporaryFolderLogDirPath());
 
-    auto label = new QLabel(
-        tr("The client can write debug logs to a temporary folder. "
-           "These logs are very helpful for diagnosing problems.\n"
-           "Since log files can get large, the client will start a new one for each sync "
-           "run and compress older ones. It is also recommended to enable deleting log files "
-           "after a couple of hours to avoid consuming too much disk space.\n"
-           "If enabled, logs will be written to %1")
-        .arg(Logger::instance()->temporaryFolderLogDirPath()));
-    label->setWordWrap(true);
-    label->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
-    mainLayout->addWidget(label);
+    ui->enableLoggingButton->setChecked(ConfigFile().automaticLogDir());
+    connect(ui->enableLoggingButton, &QCheckBox::toggled, this, &LogBrowser::togglePermanentLogging);
 
-    // button to permanently save logs
-    auto enableLoggingButton = new QCheckBox;
-    enableLoggingButton->setText(tr("Enable logging to temporary folder"));
-    enableLoggingButton->setChecked(ConfigFile().automaticLogDir());
-    connect(enableLoggingButton, &QCheckBox::toggled, this, &LogBrowser::togglePermanentLogging);
-    mainLayout->addWidget(enableLoggingButton);
-
-    auto httpLogButton = new QCheckBox;
-    // TODO: text?
-    httpLogButton->setText(tr("Log Http traffic (Warning the logs might contain information about your networks setup)"));
-    httpLogButton->setChecked(ConfigFile().logHttp());
-    connect(httpLogButton, &QCheckBox::toggled, this, [](bool b){
+    ui->httpLogButton->setChecked(ConfigFile().logHttp());
+    connect(ui->httpLogButton, &QCheckBox::toggled, this, [](bool b) {
         ConfigFile().setLogHttp(b);
     });
-    mainLayout->addWidget(httpLogButton);
 
-    auto deleteLogsButton = new QCheckBox;
-    deleteLogsButton->setText(tr("Delete logs older than %1 hours").arg(QString::number(defaultExpireDuration.count())));
-    deleteLogsButton->setChecked(bool(ConfigFile().automaticDeleteOldLogsAge()));
-    connect(deleteLogsButton, &QCheckBox::toggled, this, &LogBrowser::toggleLogDeletion);
-    mainLayout->addWidget(deleteLogsButton);
+    ui->deleteLogsButton->setText(tr("Delete logs older than %1 hours").arg(QString::number(defaultExpireDuration.count())));
+    ui->deleteLogsButton->setChecked(bool(ConfigFile().automaticDeleteOldLogsAge()));
+    connect(ui->deleteLogsButton, &QCheckBox::toggled, this, &LogBrowser::toggleLogDeletion);
 
-    label = new QLabel(
-        tr("These settings persist across client restarts.\n"
-           "Note that using any logging command line options will override the settings."));
-    label->setWordWrap(true);
-    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
-    mainLayout->addWidget(label);
 
-    auto openFolderButton = new QPushButton;
-    openFolderButton->setText(tr("Open folder"));
-    connect(openFolderButton, &QPushButton::clicked, this, []() {
+    connect(ui->openFolderButton, &QPushButton::clicked, this, []() {
         QString path = Logger::instance()->temporaryFolderLogDirPath();
         QDir().mkpath(path);
         QDesktopServices::openUrl(QUrl::fromLocalFile(path));
     });
-    mainLayout->addWidget(openFolderButton);
-
-    QDialogButtonBox *btnbox = new QDialogButtonBox;
-    QPushButton *closeBtn = btnbox->addButton(QDialogButtonBox::Close);
-    connect(closeBtn, &QAbstractButton::clicked, this, &QWidget::close);
-
-    mainLayout->addStretch();
-    mainLayout->addWidget(btnbox);
-
-    setLayout(mainLayout);
-
-    setModal(false);
-
-    QAction *showLogWindow = new QAction(this);
-    showLogWindow->setShortcut(QKeySequence("F12"));
-    connect(showLogWindow, &QAction::triggered, this, &QWidget::close);
-    addAction(showLogWindow);
+    connect(ui->buttonBox->button(QDialogButtonBox::Close), &QPushButton::clicked, this, &QWidget::close);
 
     ConfigFile cfg;
     cfg.restoreGeometry(this);

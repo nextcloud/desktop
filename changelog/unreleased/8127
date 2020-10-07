@@ -1,0 +1,8 @@
+Change: Remove update channels from the ownCloud client
+
+To ensure a maximum of stability user should not replace their productive client with a preview build.
+For that exact reason we offer tespilotcloud clients, they can be installed in parallel and updated via the beta channel.
+
+If a user is more adventures than the average a manual install of a preview is always possible.
+
+https://github.com/owncloud/client/issues/8127

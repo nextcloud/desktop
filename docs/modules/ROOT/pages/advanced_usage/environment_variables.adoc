@@ -40,6 +40,7 @@ Set to 0 to disable dynamic chunk sizing.
 | Force-enable ("1") or force-disable ("0") the NG chunking algorithm.
 
 | `OWNCLOUD_NO_TUS`
+|
 | Set to any value to disable uploads using the tus protocol
 
 | `OWNCLOUD_TIMEOUT`

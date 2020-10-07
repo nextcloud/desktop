@@ -43,6 +43,14 @@ public:
         oCSetupBottom,
         oCSetupResultTop // ownCloud connect result page
     };
+    Q_ENUM(CustomMediaType);
+
+    enum class VersionFormat {
+        Plain,
+        Url,
+        RichText
+    };
+    Q_ENUM(VersionFormat);
 
     /* returns a singleton instance. */
     static Theme *instance();
@@ -195,7 +203,12 @@ public:
     /**
      * The SHA sum of the released git commit
      */
-    QString gitSHA1() const;
+    QString gitSHA1(VersionFormat format = VersionFormat::Plain) const;
+
+    /**
+     * The used library versions
+     */
+    QString aboutVersions(VersionFormat format = VersionFormat::Plain) const;
 
     /**
      * About dialog contents
