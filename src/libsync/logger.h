@@ -60,9 +60,15 @@ public:
     void postGuiMessage(const QString &title, const QString &message);
 
     void setLogWindowActivated(bool activated);
+
+    QString logFile() const;
     void setLogFile(const QString &name);
+
     void setLogExpire(int expire);
+
+    QString logDir() const;
     void setLogDir(const QString &dir);
+
     void setLogFlush(bool flush);
 
     bool logDebug() const { return _logDebug; }

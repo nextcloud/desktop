@@ -167,6 +167,11 @@ void Logger::setLogWindowActivated(bool activated)
     _logWindowActivated = activated;
 }
 
+QString Logger::logFile() const
+{
+    return _logFile.fileName();
+}
+
 void Logger::setLogFile(const QString &name)
 {
     QMutexLocker locker(&_mutex);
@@ -202,6 +207,11 @@ void Logger::setLogFile(const QString &name)
 void Logger::setLogExpire(int expire)
 {
     _logExpire = expire;
+}
+
+QString Logger::logDir() const
+{
+    return _logDirectory;
 }
 
 void Logger::setLogDir(const QString &dir)
