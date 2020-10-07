@@ -77,8 +77,8 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     }
 
     // Respect request specific user agent if any
-    if (!newRequest.hasRawHeader(QByteArrayLiteral("User-Agent"))) {
-        newRequest.setRawHeader(QByteArray("User-Agent"), Utility::userAgentString());
+    if (!newRequest.header(QNetworkRequest::UserAgentHeader).isValid()) {
+        newRequest.setHeader(QNetworkRequest::UserAgentHeader, Utility::userAgentString());
     }
 
     // Some firewalls reject requests that have a "User-Agent" but no "Accept" header
