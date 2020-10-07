@@ -255,7 +255,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Pokaži mnemoniko</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -291,13 +291,14 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Pokaži mnemoniko E2E</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="293"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Mape z vsebino ni mogoče šifrirati. Najprej je treba datoteke odstraniti in začeti znova.
+S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="362"/>
@@ -540,7 +541,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke, ki so na seznamu neusklajevanja, in simbolne povezave se ne usklajujejo.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
@@ -699,7 +700,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="399"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>Strežniški odziv odkrivanja datotek je brez podatkov.</translation>
     </message>
 </context>
 <context>
@@ -708,7 +709,8 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče ustvariti metapodatkov za šifriranje. Mapa bo odklenjena.
+Morda je napaka v knjužnicah OpenSSL.</translation>
     </message>
 </context>
 <context>
@@ -766,7 +768,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="145"/>
         <source>Polling for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Preverjanje za overitev</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="150"/>
@@ -926,7 +928,11 @@ This can be an issue with your OpenSSL libraries.</source>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Spremembe v usklajenih mapah morda niso zanesljivo beležene.
+
+To pomeni, da odjemalec usklajevanja ne pošilja krajevnih sprememb takoj in morda le preverja za spremembe, te pa nato občasno pošilja v oblak (privzeto vsaki dve uri).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
@@ -2856,7 +2862,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Nekaj vam dajem v souporabo</translation>
     </message>
 </context>
 <context>
@@ -2949,7 +2955,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Nekaj vam dajem v souporaboNekaj vam dajem v souporabo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="707"/>
@@ -2960,7 +2966,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Share via %1</source>
-        <translation type="unfinished"/>
+        <translation>Souporaba prek %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="709"/>
@@ -2970,12 +2976,12 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Pošlji zasebno povezavo prek elektronske pošte ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="736"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Nadaljnje omogočanje souporabe ni dovoljeno</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="749"/>
@@ -3244,12 +3250,12 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Poskus ustvarjanja mape je spodletel, ker mapa že obstaja.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>Na strežniku %1 ni razpoložljivega prostora.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
@@ -3354,7 +3360,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Spor: prejeta je strežniška različica, krajevna je preimenovana, a ne tudi poslana v oblak. </translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
@@ -3380,7 +3386,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="840"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče odpreti ali ustvariti krajevne usklajevalne podatkovne zbirke. Prepričajte se, da imate ustrezna dovoljenja za pisanje v usklajevani mapi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="931"/>
@@ -3462,12 +3468,12 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1811"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Zmanjkuje prostora na disku: prejem predmetov, ki bi zmanjšali prostor na disku pod %1 bo prekinjen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1818"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Za usklajevanje je na strežniku premalo prostora.</translation>
     </message>
 </context>
 <context>
@@ -3488,7 +3494,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="88"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Odpri glavno pogovorno okno</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="90"/>
@@ -3536,27 +3542,27 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Usklajeno %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Preimenovali ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Izbrisali ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Ustvarili ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Spremenili ste %1</translation>
     </message>
 </context>
 <context>
@@ -3569,7 +3575,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="707"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ali res želite odstraniti povezavo z računom &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opomba:&lt;/b&gt; odstranitev povezave &lt;b&gt;ne izbriše&lt;/b&gt; nobene datoteke.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
@@ -3592,7 +3598,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="211"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Gostitelj »%1« objavlja neveljavno potrdilo. Ali želite vseeno nadaljevati?</translation>
     </message>
 </context>
 <context>
@@ -3605,7 +3611,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="186"/>
         <source>Please login with the user: %1</source>
-        <translation type="unfinished"/>
+        <translation>Prijavite se z računom: %1</translation>
     </message>
 </context>
 <context>
@@ -3636,7 +3642,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="278"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Prekinjena je povezava z nekaterimi računi</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>
@@ -3747,7 +3753,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Poteka preverjanje za spremembe v »%1«</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="922"/>
@@ -3757,7 +3763,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje %1 od %2  (preostaja %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="439"/>
@@ -3928,7 +3934,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Med vzpostavljanjem povezave je prišlo do napake. Poskusite znova.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
@@ -4031,7 +4037,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Vpis računa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -4046,7 +4052,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>Račun ni povezan</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="132"/>
@@ -4147,7 +4153,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Prejeta datoteka ni skladna z nadzorno vsoto te datoteke, zato bo prenos ponovljen.</translation>
     </message>
 </context>
 <context>
@@ -4156,7 +4162,7 @@ Uporaba možnosti ni priporočljiva.</translation>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="103"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Glavni vmesnik namizja Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="141"/>
@@ -4176,7 +4182,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="185"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Preklopnik računov in meni nastavitev</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="217"/>
@@ -4186,7 +4192,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="243"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj račun</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
@@ -4201,7 +4207,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="344"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Trenutna podoba uporabnika</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="366"/>
@@ -4216,12 +4222,12 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="420"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>Odpri krajevno mapo v trenutnem računu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="432"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Odpri Nextcloud Talk v brskalniku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="450"/>
@@ -4231,7 +4237,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="467"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Meni programov</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
@@ -4242,22 +4248,22 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="495"/>
         <source>in browser</source>
-        <translation type="unfinished"/>
+        <translation>v brskalniku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="519"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Seznam dejavnosti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="531"/>
         <source>locally</source>
-        <translation type="unfinished"/>
+        <translation>krajevno</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Odpri pogovorno okno souporebe</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="647"/>
@@ -4268,7 +4274,7 @@ Uporaba možnosti ni priporočljiva.</translation>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <location filename="../src/gui/tray/Window.qml" line="673"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>Odpri Talk</translation>
     </message>
 </context>
 <context>
