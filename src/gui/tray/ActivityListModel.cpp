@@ -22,6 +22,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "accountmanager.h"
+#include "conflictdialog.h"
 #include "folderman.h"
 #include "iconjob.h"
 #include "accessmanager.h"
@@ -426,6 +427,32 @@ void ActivityListModel::triggerActionAtIndex(int id) const
 
     const auto modelIndex = index(id);
     const auto path = data(modelIndex, PathRole).toUrl();
+
+    const auto activity = _finalList.at(id);
+    if (activity._status == SyncFileItem::Conflict) {
+        Q_ASSERT(!activity._file.isEmpty());
+        Q_ASSERT(!activity._folder.isEmpty());
+        Q_ASSERT(Utility::isConflictFile(activity._file));
+
+        const auto folder = FolderMan::instance()->folder(activity._folder);
+
+        const auto conflictedRelativePath = activity._file;
+        const auto baseRelativePath = folder->journalDb()->conflictFileBaseName(conflictedRelativePath.toUtf8());
+
+        const auto dir = QDir(folder->path());
+        const auto conflictedPath = dir.filePath(conflictedRelativePath);
+        const auto basePath = dir.filePath(baseRelativePath);
+
+        const auto baseName = QFileInfo(basePath).fileName();
+
+        ConflictDialog dialog;
+        dialog.setBaseFilename(baseName);
+        dialog.setLocalVersionFilename(conflictedPath);
+        dialog.setRemoteVersionFilename(basePath);
+        dialog.exec();
+        return;
+    }
+
     if (path.isValid()) {
         QDesktopServices::openUrl(path);
     } else {
