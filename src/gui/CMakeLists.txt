@@ -21,6 +21,7 @@ endif()
 
 set(client_UI_SRCS
     accountsettings.ui
+    conflictdialog.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
     generalsettings.ui
@@ -54,6 +55,7 @@ set(client_SRCS
     accountmanager.cpp
     accountsettings.cpp
     application.cpp
+    conflictdialog.cpp
     conflictsolver.cpp
     connectionvalidator.cpp
     folder.cpp
