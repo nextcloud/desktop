@@ -54,6 +54,7 @@ set(client_SRCS
     accountmanager.cpp
     accountsettings.cpp
     application.cpp
+    conflictsolver.cpp
     connectionvalidator.cpp
     folder.cpp
     folderman.cpp

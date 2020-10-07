@@ -16,6 +16,7 @@
 
 #include "socketapi.h"
 
+#include "conflictsolver.h"
 #include "config.h"
 #include "configfile.h"
 #include "folderman.h"
@@ -691,22 +692,9 @@ void SocketApi::copyUrlToClipboard(const QString &link)
 
 void SocketApi::command_DELETE_ITEM(const QString &localFile, SocketListener *)
 {
-    QFileInfo info(localFile);
-
-    auto result = QMessageBox::question(
-        nullptr, tr("Confirm deletion"),
-        info.isDir()
-            ? tr("Do you want to delete the directory <i>%1</i> and all its contents permanently?").arg(info.dir().dirName())
-            : tr("Do you want to delete the file <i>%1</i> permanently?").arg(info.fileName()),
-        QMessageBox::Yes, QMessageBox::No);
-    if (result != QMessageBox::Yes)
-        return;
-
-    if (info.isDir()) {
-        FileSystem::removeRecursively(localFile);
-    } else {
-        QFile(localFile).remove();
-    }
+    ConflictSolver solver;
+    solver.setLocalVersionFilename(localFile);
+    solver.exec(ConflictSolver::KeepRemoteVersion);
 }
 
 void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
@@ -742,13 +730,9 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     if (target.isEmpty())
         return;
 
-    QString error;
-    if (!FileSystem::uncheckedRenameReplace(localFile, target, &error)) {
-        qCWarning(lcSocketApi) << "Rename error:" << error;
-        QMessageBox::warning(
-            nullptr, tr("Error"),
-            tr("Moving file failed:\n\n%1").arg(error));
-    }
+    ConflictSolver solver;
+    solver.setLocalVersionFilename(localFile);
+    solver.setRemoteVersionFilename(target);
 }
 
 void SocketApi::emailPrivateLink(const QString &link)
