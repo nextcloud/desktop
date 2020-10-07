@@ -59,6 +59,11 @@ bool Capabilities::sharePublicLinkSupportsUploadOnly() const
     return _capabilities["files_sharing"].toMap()["public"].toMap()["supports_upload_only"].toBool();
 }
 
+bool Capabilities::sharePublicLinkAskOptionalPassword() const
+{
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["askForOptionalPassword"].toBool();
+}
+
 bool Capabilities::sharePublicLinkEnforcePassword() const
 {
     return _capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool();
