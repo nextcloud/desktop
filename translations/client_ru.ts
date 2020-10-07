@@ -540,7 +540,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Из синхронизации исключены символьные ссылки и  файлы, попадающие под правила из списка игнорируемых файлов.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
