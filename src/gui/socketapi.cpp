@@ -16,6 +16,7 @@
 
 #include "socketapi.h"
 
+#include "conflictdialog.h"
 #include "conflictsolver.h"
 #include "config.h"
 #include "configfile.h"
@@ -690,6 +691,30 @@ void SocketApi::copyUrlToClipboard(const QString &link)
     QApplication::clipboard()->setText(link);
 }
 
+void SocketApi::command_RESOLVE_CONFLICT(const QString &localFile, SocketListener *)
+{
+    const auto fileData = FileData::get(localFile);
+    if (!fileData.folder || !Utility::isConflictFile(fileData.folderRelativePath))
+        return; // should not have shown menu item
+
+    const auto conflictedRelativePath = fileData.folderRelativePath;
+    const auto baseRelativePath = fileData.folder->journalDb()->conflictFileBaseName(fileData.folderRelativePath.toUtf8());
+
+    const auto dir = QDir(fileData.folder->path());
+    const auto conflictedPath = dir.filePath(conflictedRelativePath);
+    const auto basePath = dir.filePath(baseRelativePath);
+
+    const auto baseName = QFileInfo(basePath).fileName();
+
+#ifndef OWNCLOUD_TEST
+    ConflictDialog dialog;
+    dialog.setBaseFilename(baseName);
+    dialog.setLocalVersionFilename(conflictedPath);
+    dialog.setRemoteVersionFilename(basePath);
+    dialog.exec();
+#endif
+}
+
 void SocketApi::command_DELETE_ITEM(const QString &localFile, SocketListener *)
 {
     ConflictSolver solver;
@@ -886,13 +911,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
             if (isConflict && canChangeFile) {
                 if (canAddToDir) {
-                    if (isOnTheServer) {
-                        // Conflict file that is already uploaded
-                        listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Rename..."));
-                    } else {
-                        // Local-only conflict file
-                        listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Rename and upload..."));
-                    }
+                    listener->sendMessage(QLatin1String("MENU_ITEM:RESOLVE_CONFLICT::") + tr("Resolve conflict..."));
                 } else {
                     if (isOnTheServer) {
                         // Uploaded conflict file in read-only directory
@@ -901,8 +920,8 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                         // Local-only conflict file in a read-only dir
                         listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move, rename and upload..."));
                     }
+                    listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete local changes"));
                 }
-                listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete local changes"));
             }
 
             // File in a read-only directory?
