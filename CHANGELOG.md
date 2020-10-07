@@ -20,6 +20,7 @@ Summary
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - When manually adding a folder sync connection, don't display 404 errors: [#7724](https://github.com/owncloud/client/issues/7724)
 * Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
+* Change - Redesign the About dialog: [#7749](https://github.com/owncloud/client/issues/7749)
 * Change - The password dialog is hidden behind a window: [#7833](https://github.com/owncloud/client/issues/7833)
 * Change - The client uploads chunks even though the server repports lack of support: [#7862](https://github.com/owncloud/client/issues/7862)
 * Change - Mac does not display a dock entry: [#7868](https://github.com/owncloud/client/issues/7868)
@@ -36,6 +37,8 @@ Summary
 * Change - Replace the old icons with a unified look: [#8038](https://github.com/owncloud/client/pull/8038)
 * Change - Sharing dialog is now always on top of the settings dialog: [#8050](https://github.com/owncloud/client/pull/8050)
 * Change - Remove the branding option `wizardSelectiveSyncDefaultNothing`: [#8064](https://github.com/owncloud/client/pull/8064)
+* Change - Account display name `servername (username)` to `username@servername`: [#8104](https://github.com/owncloud/client/issues/8104)
+* Change - Remove update channels from the ownCloud client: [#8127](https://github.com/owncloud/client/issues/8127)
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 * Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
@@ -123,6 +126,15 @@ Details
 
    https://github.com/owncloud/client/issues/7748
 
+* Change - Redesign the About dialog: [#7749](https://github.com/owncloud/client/issues/7749)
+
+   We redesigned the way the About information is displayed and unified it with the "--version"
+   switch.
+
+   https://github.com/owncloud/client/issues/7749
+   https://github.com/owncloud/enterprise/issues/3787
+   https://github.com/owncloud/client/issues/7704
+
 * Change - The password dialog is hidden behind a window: [#7833](https://github.com/owncloud/client/issues/7833)
 
    We changed the password dialog to stay on top of the ownCloud window.
@@ -197,6 +209,7 @@ Details
 
    We now enable the Windows Virtual file support by default.
 
+   https://github.com/owncloud/client/issues/8139
    https://github.com/owncloud/client/pull/8019
 
 * Change - Move sync hidden files to advanced settings: [#8020](https://github.com/owncloud/client/issues/8020)
@@ -225,6 +238,22 @@ Details
    as a replacement.
 
    https://github.com/owncloud/client/pull/8064
+
+* Change - Account display name `servername (username)` to `username@servername`: [#8104](https://github.com/owncloud/client/issues/8104)
+
+   We changed the way the accounts are displayed to improve the syntactical value.
+
+   https://github.com/owncloud/client/issues/8104
+
+* Change - Remove update channels from the ownCloud client: [#8127](https://github.com/owncloud/client/issues/8127)
+
+   To ensure a maximum of stability user should not replace their productive client with a preview
+   build. For that exact reason we offer tespilotcloud clients, they can be installed in parallel
+   and updated via the beta channel.
+
+   If a user is more adventures than the average a manual install of a preview is always possible.
+
+   https://github.com/owncloud/client/issues/8127
 
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 
