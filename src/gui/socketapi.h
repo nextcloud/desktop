@@ -79,6 +79,7 @@ private:
         static FileData get(const QString &localFile);
         SyncFileStatus syncFileStatus() const;
         SyncJournalFileRecord journalRecord() const;
+        FileData parentFolder() const;
 
         Folder *folder;
         QString localPath;
@@ -105,6 +106,8 @@ private:
     Q_INVOKABLE void command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_DELETE_ITEM(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_MOVE_ITEM(const QString &localFile, SocketListener *listener);
 
     // Windows Shell / Explorer pinning fallbacks, see issue: https://github.com/nextcloud/desktop/issues/1599
 #ifdef Q_OS_WIN
