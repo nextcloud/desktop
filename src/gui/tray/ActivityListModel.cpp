@@ -14,6 +14,7 @@
 
 #include <QtCore>
 #include <QAbstractListModel>
+#include <QDesktopServices>
 #include <QWidget>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -413,6 +414,23 @@ void ActivityListModel::removeActivityFromActivityList(Activity activity)
         qCInfo(lcActivity) << "Activity/Notification/Error successfully removed from the list.";
         qCInfo(lcActivity) << "Updating Activity/Notification/Error view.";
         combineActivityLists();
+    }
+}
+
+void ActivityListModel::triggerActionAtIndex(int id) const
+{
+    if (id < 0 || id >= _finalList.size()) {
+        qCWarning(lcActivity) << "Couldn't trigger action at index" << id << "/ final list size:" << _finalList.size();
+        return;
+    }
+
+    const auto modelIndex = index(id);
+    const auto path = data(modelIndex, PathRole).toUrl();
+    if (path.isValid()) {
+        QDesktopServices::openUrl(path);
+    } else {
+        const auto link = data(modelIndex, LinkRole).toUrl();
+        QDesktopServices::openUrl(link);
     }
 }
 

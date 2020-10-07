@@ -74,6 +74,8 @@ public:
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(Activity activity);
 
+    Q_INVOKABLE void triggerActionAtIndex(int id) const;
+
 public slots:
     void slotRefreshActivity();
     void slotRemoveAccount();
