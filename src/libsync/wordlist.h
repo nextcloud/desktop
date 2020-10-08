@@ -4,10 +4,12 @@
 #include <QList>
 #include <QString>
 
+#include "owncloudlib.h"
+
 namespace OCC {
     namespace WordList {
-        QStringList getRandomWords(int nr);
-        QString getUnifiedString(const QStringList& l);
+        OWNCLOUDSYNC_EXPORT QStringList getRandomWords(int nr);
+        OWNCLOUDSYNC_EXPORT QString getUnifiedString(const QStringList& l);
     }
 }
 
