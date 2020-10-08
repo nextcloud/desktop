@@ -1452,6 +1452,11 @@ Fortsætter sync som normalt, vil alle dine filer blive overskrevne med en ældr
         <translation>Rediger &amp;Ignorerede Filer</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <source>Create Debug Archive...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Spørg om bekræftelse inden synkronisering af mapper større end</translation>
@@ -1481,6 +1486,26 @@ Fortsætter sync som normalt, vil alle dine filer blive overskrevne med en ældr
         <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>Server notifications that require attention.</source>
         <translation>Server notifikationer der kræver opmærksomhed.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <source>Create Debug Archive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <source>Zip Archives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <source>Debug Archive Created</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <source>Debug archive is created at %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2685,32 +2710,32 @@ Det frarådes at benytte den.</translation>
         <translation>Ikon</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="77"/>
+        <location filename="../src/gui/sharedialog.cpp" line="92"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="98"/>
+        <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Folder: %2</source>
         <translation>Mappe: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="101"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>%1 Sharing</source>
         <translation>%1 Deling</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="275"/>
+        <location filename="../src/gui/sharedialog.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Filen kan ikke deles fordi den blev delt uden tilladelse til deling.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="314"/>
+        <location filename="../src/gui/sharedialog.cpp" line="331"/>
         <source>Password for share required</source>
         <translation>Password til deling påkrævet</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="315"/>
+        <location filename="../src/gui/sharedialog.cpp" line="332"/>
         <source>Please enter a password for your link share:</source>
         <translation>Indtast venligst et kodeord til denne linkdeling</translation>
     </message>
@@ -2990,23 +3015,23 @@ Det frarådes at benytte den.</translation>
         <translation>Videredeling af denne fil ikke tilladt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="749"/>
-        <location filename="../src/gui/socketapi.cpp" line="751"/>
+        <location filename="../src/gui/socketapi.cpp" line="750"/>
+        <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Copy public link</source>
         <translation>Kopier offentligt link</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="755"/>
+        <location filename="../src/gui/socketapi.cpp" line="756"/>
         <source>Copy internal link</source>
         <translation>Kopier internt link</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="810"/>
         <source>Edit</source>
         <translation>Rediger</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="811"/>
+        <location filename="../src/gui/socketapi.cpp" line="812"/>
         <source>Open in browser</source>
         <translation>Åbn i browser</translation>
     </message>

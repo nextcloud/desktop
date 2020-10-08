@@ -1451,6 +1451,11 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Upravit &amp;ignorované soubory</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <source>Create Debug Archive...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Zeptat se před synchronizací složek větších než</translation>
@@ -1480,6 +1485,26 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>Server notifications that require attention.</source>
         <translation>Upozornění ze serveru, která vyžadují pozornost.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <source>Create Debug Archive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <source>Zip Archives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <source>Debug Archive Created</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <source>Debug archive is created at %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2685,32 +2710,32 @@ Nedoporučuje se jí používat.</translation>
         <translation>Ikona</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="77"/>
+        <location filename="../src/gui/sharedialog.cpp" line="92"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="98"/>
+        <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Folder: %2</source>
         <translation>Složka: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="101"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>%1 Sharing</source>
         <translation>%1 sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="275"/>
+        <location filename="../src/gui/sharedialog.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Tento soubor nelze sdílet, protože byl nasdílen bez umožnění dalšího sdílení.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="314"/>
+        <location filename="../src/gui/sharedialog.cpp" line="331"/>
         <source>Password for share required</source>
         <translation>Je vyžadováno heslo ke sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="315"/>
+        <location filename="../src/gui/sharedialog.cpp" line="332"/>
         <source>Please enter a password for your link share:</source>
         <translation>Zadejte heslo pro sdílení odkazem:</translation>
     </message>
@@ -2990,23 +3015,23 @@ Nedoporučuje se jí používat.</translation>
         <translation>Příjemcům sdílení tohoto souboru není dovoleno ho sdílet dále dalším</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="749"/>
-        <location filename="../src/gui/socketapi.cpp" line="751"/>
+        <location filename="../src/gui/socketapi.cpp" line="750"/>
+        <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Copy public link</source>
         <translation>Zkopírovat veřejný odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="755"/>
+        <location filename="../src/gui/socketapi.cpp" line="756"/>
         <source>Copy internal link</source>
         <translation>Zkopírovat interní odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="810"/>
         <source>Edit</source>
         <translation>Upravit</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="811"/>
+        <location filename="../src/gui/socketapi.cpp" line="812"/>
         <source>Open in browser</source>
         <translation>Otevřít v prohlížeči</translation>
     </message>
