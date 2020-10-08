@@ -17,6 +17,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
+#include "common/utility.h"
 #include "filesystem.h"
 
 namespace OCC {
@@ -46,6 +47,8 @@ bool ConflictSolver::exec(ConflictSolver::Solution solution)
         return overwriteRemoteVersion();
     case KeepRemoteVersion:
         return deleteLocalVersion();
+    case KeepBothVersions:
+        return renameLocalVersion();
     }
     Q_UNREACHABLE();
     return false;
@@ -92,6 +95,44 @@ bool ConflictSolver::deleteLocalVersion()
         return FileSystem::removeRecursively(_localVersionFilename);
     } else {
         return QFile(_localVersionFilename).remove();
+    }
+}
+
+bool ConflictSolver::renameLocalVersion()
+{
+    if (_localVersionFilename.isEmpty()) {
+        return false;
+    }
+
+    QFileInfo info(_localVersionFilename);
+    if (!info.exists()) {
+        return false;
+    }
+
+    const auto renamePattern = [=] {
+        auto result = QString::fromUtf8(OCC::Utility::conflictFileBaseNameFromPattern(_localVersionFilename.toUtf8()));
+        const auto dotIndex = result.lastIndexOf('.');
+        return QString(result.left(dotIndex) + "_%1" + result.mid(dotIndex));
+    }();
+
+    const auto targetFilename = [=] {
+        uint i = 1;
+        auto result = renamePattern.arg(i);
+        while (QFileInfo::exists(result)) {
+            Q_ASSERT(i > 0);
+            i++;
+            result = renamePattern.arg(i);
+        }
+        return result;
+    }();
+
+    QString error;
+    if (FileSystem::uncheckedRenameReplace(_localVersionFilename, targetFilename, &error)) {
+        return true;
+    } else {
+        qCWarning(lcConflict) << "Rename error:" << error;
+        QMessageBox::warning(_parentWidget, tr("Error"), tr("Moving file failed:\n\n%1").arg(error));
+        return false;
     }
 }
 

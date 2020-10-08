@@ -29,7 +29,8 @@ class ConflictSolver : public QObject
 public:
     enum Solution {
         KeepLocalVersion,
-        KeepRemoteVersion
+        KeepRemoteVersion,
+        KeepBothVersions
     };
 
     explicit ConflictSolver(QWidget *parent = nullptr);
@@ -49,6 +50,7 @@ signals:
 
 private:
     bool deleteLocalVersion();
+    bool renameLocalVersion();
     bool overwriteRemoteVersion();
 
     QWidget *_parentWidget;
