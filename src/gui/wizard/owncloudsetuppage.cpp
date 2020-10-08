@@ -175,14 +175,15 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
         _ui.leUrl->setText(newUrl);
     }
 
-    if (!url.startsWith(QLatin1String("https://"))) {
-        _ui.urlLabel->setPixmap(QPixmap(Theme::hidpiFileName(":/client/theme/lock-http.svg")));
-        _ui.urlLabel->setToolTip(tr("This URL is NOT secure as it is not encrypted.\n"
-                                    "It is not advisable to use it."));
-    } else {
-        _ui.urlLabel->setPixmap(QPixmap(Theme::hidpiFileName(":/client/theme/lock-https.svg")));
-        _ui.urlLabel->setToolTip(tr("This URL is secure. You can use it."));
-    }
+    const auto isSecure = url.startsWith(QLatin1String("https://"));
+    const auto toolTip = isSecure ? tr("This URL is secure. You can use it.")
+                                  : tr("This URL is NOT secure as it is not encrypted.\n"
+                                       "It is not advisable to use it.");
+    const auto pixmap = isSecure ? QPixmap(Theme::hidpiFileName(":/client/theme/lock-https.svg"))
+                                 : QPixmap(Theme::hidpiFileName(":/client/theme/lock-http.svg"));
+
+    _ui.urlLabel->setToolTip(toolTip);
+    _ui.urlLabel->setPixmap(pixmap.scaled(_ui.urlLabel->size(), Qt::KeepAspectRatio));
 }
 
 void OwncloudSetupPage::slotUrlEditFinished()
