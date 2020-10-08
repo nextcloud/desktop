@@ -93,9 +93,28 @@ Systray::Systray()
     } else {
         contextMenu->addAction(tr("Open main dialog"), this, &Systray::openMainDialog);
     }
+
+    auto pauseAction = contextMenu->addAction(tr("Pause sync"), this, &Systray::slotPauseAllFolders);
+    auto resumeAction = contextMenu->addAction(tr("Resume sync"), this, &Systray::slotUnpauseAllFolders);
     contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
     contextMenu->addAction(tr("Exit %1").arg(Theme::instance()->appNameGUI()), this, &Systray::shutdown);
     setContextMenu(contextMenu);
+
+    connect(contextMenu, &QMenu::aboutToShow, [=] {
+        const auto folders = FolderMan::instance()->map();
+
+        const auto allPaused = std::all_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
+        const auto pauseText = folders.size() > 1 ? tr("Pause sync for all") : tr("Pause sync");
+        pauseAction->setText(pauseText);
+        pauseAction->setVisible(!allPaused);
+        pauseAction->setEnabled(!allPaused);
+
+        const auto anyPaused = std::any_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
+        const auto resumeText = folders.size() > 1 ? tr("Resume sync for all") : tr("Resume sync");
+        resumeAction->setText(resumeText);
+        resumeAction->setVisible(anyPaused);
+        resumeAction->setEnabled(anyPaused);
+    });
 #endif
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
