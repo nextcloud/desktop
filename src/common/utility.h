@@ -55,6 +55,7 @@ namespace Utility {
     OCSYNC_EXPORT bool writeRandomFile(const QString &fname, int size = -1);
     OCSYNC_EXPORT QString octetsToString(qint64 octets);
     OCSYNC_EXPORT QByteArray userAgentString();
+    OCSYNC_EXPORT QByteArray friendlyUserAgentString();
     OCSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, bool launch);
     OCSYNC_EXPORT uint convertSizeToUint(size_t &convertVar);

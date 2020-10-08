@@ -76,7 +76,10 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
         setRawCookie(request.rawHeader("cookie"), request.url());
     }
 
-    newRequest.setRawHeader(QByteArray("User-Agent"), Utility::userAgentString());
+    // Respect request specific user agent if any
+    if (!newRequest.header(QNetworkRequest::UserAgentHeader).isValid()) {
+        newRequest.setHeader(QNetworkRequest::UserAgentHeader, Utility::userAgentString());
+    }
 
     // Some firewalls reject requests that have a "User-Agent" but no "Accept" header
     newRequest.setRawHeader(QByteArray("Accept"), "*/*");

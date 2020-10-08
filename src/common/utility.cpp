@@ -190,6 +190,13 @@ QByteArray Utility::userAgentString()
     return re.toLatin1();
 }
 
+QByteArray Utility::friendlyUserAgentString()
+{
+    const auto pattern = QStringLiteral("%1 (Desktop Client - %2)");
+    const auto userAgent = pattern.arg(QSysInfo::machineHostName(), platform());
+    return userAgent.toUtf8();
+}
+
 bool Utility::hasLaunchOnStartup(const QString &appName)
 {
     return hasLaunchOnStartup_private(appName);
