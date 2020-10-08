@@ -340,7 +340,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Register with a provider</string>
+        <string>Sign up with a provider</string>
        </property>
        <property name="default">
         <bool>false</bool>
@@ -362,7 +362,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Log in</string>
+        <string>Log in to your Nextcloud</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
