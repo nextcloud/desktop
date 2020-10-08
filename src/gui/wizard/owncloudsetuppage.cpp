@@ -125,6 +125,10 @@ void OwncloudSetupPage::setupCustomization()
 #ifdef WITH_PROVIDERS
 void OwncloudSetupPage::slotLogin()
 {
+    _ui.slideShow->hide();
+    _ui.nextButton->hide();
+    _ui.prevButton->hide();
+
     _ocWizard->setRegistration(false);
     _ui.login->setMaximumHeight(0);
     auto *animation = new QPropertyAnimation(_ui.login, "maximumHeight");
