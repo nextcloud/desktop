@@ -1448,6 +1448,11 @@ Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
         <translation>Bre&amp;yta hunsuðum skrám</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <source>Create Debug Archive...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Biðja um staðfestingu áður en samstilltar eru möppur stærri en</translation>
@@ -1477,6 +1482,26 @@ Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
         <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>Server notifications that require attention.</source>
         <translation>Tilkynningar frá þjóni sem krefjast athugunar.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <source>Create Debug Archive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <source>Zip Archives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <source>Debug Archive Created</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <source>Debug archive is created at %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2679,32 +2704,32 @@ Ekki er mælt með því að hún sé notuð.
         <translation>Táknmynd</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="77"/>
+        <location filename="../src/gui/sharedialog.cpp" line="92"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="98"/>
+        <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Folder: %2</source>
         <translation>Mappa: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="101"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>%1 Sharing</source>
         <translation>%1 deilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="275"/>
+        <location filename="../src/gui/sharedialog.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="314"/>
+        <location filename="../src/gui/sharedialog.cpp" line="331"/>
         <source>Password for share required</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="315"/>
+        <location filename="../src/gui/sharedialog.cpp" line="332"/>
         <source>Please enter a password for your link share:</source>
         <translation type="unfinished"/>
     </message>
@@ -2986,23 +3011,23 @@ Ekki er mælt með því að hún sé notuð.
         <translation>Endurdeiling þessarar skráar er ekki leyfð</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="749"/>
-        <location filename="../src/gui/socketapi.cpp" line="751"/>
+        <location filename="../src/gui/socketapi.cpp" line="750"/>
+        <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Copy public link</source>
         <translation>Afrita opinberan tengil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="755"/>
+        <location filename="../src/gui/socketapi.cpp" line="756"/>
         <source>Copy internal link</source>
         <translation>Afrita innri tengil</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="809"/>
+        <location filename="../src/gui/socketapi.cpp" line="810"/>
         <source>Edit</source>
         <translation>Breyta</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="811"/>
+        <location filename="../src/gui/socketapi.cpp" line="812"/>
         <source>Open in browser</source>
         <translation>Opna í vafra</translation>
     </message>
