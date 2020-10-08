@@ -76,12 +76,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &QSystemTrayIcon::activated,
         this, &ownCloudGui::slotTrayClicked);
 
-    connect(_tray.data(), &Systray::pauseSync,
-        this, &ownCloudGui::slotPauseAllFolders);
-
-    connect(_tray.data(), &Systray::resumeSync,
-        this, &ownCloudGui::slotUnpauseAllFolders);
-
     connect(_tray.data(), &Systray::openHelp,
         this, &ownCloudGui::slotHelp);
 
@@ -507,39 +501,9 @@ void ownCloudGui::slotLogout()
     }
 }
 
-void ownCloudGui::slotUnpauseAllFolders()
-{
-    setPauseOnAllFoldersHelper(false);
-}
-
-void ownCloudGui::slotPauseAllFolders()
-{
-    setPauseOnAllFoldersHelper(true);
-}
-
 void ownCloudGui::slotNewAccountWizard()
 {
     OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
-}
-
-void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
-{
-    QList<AccountState *> accounts;
-    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
-        accounts.append(account.data());
-    } else {
-        foreach (auto a, AccountManager::instance()->accounts()) {
-            accounts.append(a.data());
-        }
-    }
-    foreach (Folder *f, FolderMan::instance()->map()) {
-        if (accounts.contains(f->accountState())) {
-            f->setSyncPaused(pause);
-            if (pause) {
-                f->slotTerminateSync();
-            }
-        }
-    }
 }
 
 void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &message)

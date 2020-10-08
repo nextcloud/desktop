@@ -136,6 +136,41 @@ void Systray::slotNewUserSelected()
     UserAppsModel::instance()->buildAppList();
 }
 
+void Systray::slotUnpauseAllFolders()
+{
+    setPauseOnAllFoldersHelper(false);
+}
+
+void Systray::slotPauseAllFolders()
+{
+    setPauseOnAllFoldersHelper(true);
+}
+
+void Systray::setPauseOnAllFoldersHelper(bool pause)
+{
+    // For some reason we get the raw pointer from Folder::accountState()
+    // that's why we need a list of raw pointers for the call to contains
+    // later on...
+    const auto accounts = [=] {
+        const auto ptrList = AccountManager::instance()->accounts();
+        auto result = QList<AccountState *>();
+        result.reserve(ptrList.size());
+        std::transform(std::cbegin(ptrList), std::cend(ptrList), std::back_inserter(result), [](const AccountStatePtr &account) {
+            return account.data();
+        });
+        return result;
+    }();
+    const auto folders = FolderMan::instance()->map();
+    for (auto f : folders) {
+        if (accounts.contains(f->accountState())) {
+            f->setSyncPaused(pause);
+            if (pause) {
+                f->slotTerminateSync();
+            }
+        }
+    }
+}
+
 bool Systray::isOpen()
 {
     return _isOpen;
@@ -187,10 +222,10 @@ void Systray::pauseResumeSync()
 {
     if (_syncIsPaused) {
         _syncIsPaused = false;
-        emit resumeSync();
+        slotUnpauseAllFolders();
     } else {
         _syncIsPaused = true;
-        emit pauseSync();
+        slotPauseAllFolders();
     }
 }
 
