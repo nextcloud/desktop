@@ -238,14 +238,6 @@ Application::Application(int &argc, char **argv)
     }
 
     parseOptions(arguments());
-    //no need to waste time;
-    if (_helpOnly || _versionOnly)
-        return;
-
-    if (_quitInstance) {
-        QTimer::singleShot(0, qApp, &QApplication::quit);
-        return;
-    }
 
     if (isRunning())
         return;
@@ -281,6 +273,15 @@ Application::Application(int &argc, char **argv)
         qCInfo(lcApplication) << "VFS windows plugin is available";
     if (isVfsPluginAvailable(Vfs::WithSuffix))
         qCInfo(lcApplication) << "VFS suffix plugin is available";
+
+    //no need to waste time;
+    if (_helpOnly || _versionOnly)
+        return;
+
+    if (_quitInstance) {
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return;
+    }
 
     _folderManager.reset(new FolderMan);
 
