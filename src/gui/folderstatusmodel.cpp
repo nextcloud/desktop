@@ -102,7 +102,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
 Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
 {
     if (!_accountState) {
-        return nullptr;
+        return {};
     }
     switch (classify(index)) {
     case AddButton: {
@@ -120,7 +120,7 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
     case SubFolder:
         return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
     }
-    return nullptr;
+    return {};
 }
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
