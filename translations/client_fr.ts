@@ -1496,7 +1496,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Archives Zip</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>

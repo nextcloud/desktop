@@ -1454,7 +1454,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Create Debug Archive...</source>
-        <translation type="unfinished"/>
+        <translation>Crear arquivo de depuración…</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1490,22 +1490,22 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Crear arquivo de depuración</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos Zip</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Creose o arquivo de depuración</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo de depuración creouse en %1</translation>
     </message>
 </context>
 <context>

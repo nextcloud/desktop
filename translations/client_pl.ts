@@ -1454,7 +1454,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Create Debug Archive...</source>
-        <translation type="unfinished"/>
+        <translation>Utwórz archiwum debugowania...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1490,22 +1490,22 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Utwórz archiwum debugowania</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Archiwa Zip</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Utworzono archiwum debugowania</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Archiwum debugowania jest utworzone w %1</translation>
     </message>
 </context>
 <context>
