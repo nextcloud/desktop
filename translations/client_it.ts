@@ -1506,7 +1506,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug archive is created at %1</source>
-        <translation>L&apos;archivio di debug è stato creato a %1</translation>
+        <translation>L&apos;archivio di debug è stato creato in %1</translation>
     </message>
 </context>
 <context>
