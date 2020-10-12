@@ -39,7 +39,6 @@ namespace OCC {
 FolderStatusDelegate::FolderStatusDelegate()
     : QStyledItemDelegate()
 {
-    m_moreIcon = QIcon(QStringLiteral(":/client/resources/more.svg"));
 }
 
 QString FolderStatusDelegate::addFolderText()
@@ -346,7 +345,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
         btnOpt.rect = optionsButtonVisualRect;
-        btnOpt.icon = m_moreIcon;
+        btnOpt.icon = QIcon(QStringLiteral(":/client/resources/more.svg"));
         int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
         btnOpt.iconSize = QSize(e,e);
         QApplication::style()->drawComplexControl(QStyle::CC_ToolButton, &btnOpt, painter);
