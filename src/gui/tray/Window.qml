@@ -488,7 +488,7 @@ Window {
                                 }
 
                                 Accessible.role: Accessible.MenuItem
-                                Accessible.name: qsTr("Open") + " " + appName + " " + qsTr("in browser")
+                                Accessible.name: qsTr("Open %1 in browser").arg(appName)
                                 Accessible.onPressAction: appEntry.triggered()
                             }
                         }
@@ -524,7 +524,7 @@ Window {
                 spacing: 0
 
                 Accessible.role: Accessible.ListItem
-                Accessible.name: path !== "" ? qsTr("Open") + " " + displayPath + " " + qsTr("locally")
+                Accessible.name: path !== "" ? qsTr("Open %1 locally").arg(displayPath)
                                                     : message
                 Accessible.onPressAction: activityMouseArea.clicked()
 
@@ -640,7 +640,7 @@ Window {
                     onClicked: Systray.openShareDialog(displayPath,absolutePath)
 
                     Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Share") + " " + displayPath
+                    Accessible.name: qsTr("Share %1").arg(displayPath)
                     Accessible.onPressAction: shareButton.clicked()
                 }
 
@@ -666,7 +666,7 @@ Window {
                     onClicked: Qt.openUrlExternally(link)
 
                     Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Open Talk") + " " + link
+                    Accessible.name: qsTr("Open Talk %1").arg(link)
                     Accessible.onPressAction: replyButton.clicked()
                 }
             }
