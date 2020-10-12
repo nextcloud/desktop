@@ -142,8 +142,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
             return cached = QIcon::fromTheme(name);
         }
 
-        QList<int> sizes;
-        sizes << 16 << 22 << 32 << 48 << 64 << 128 << 256 << 512 << 1024;
+        const QList<int> sizes {16, 22, 32, 48, 64, 128, 256, 512, 1024};
         foreach (int size, sizes) {
             QString pixmapName = QStringLiteral(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
             if (QFile::exists(pixmapName)) {
@@ -159,11 +158,9 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
             }
         }
         if (cached.isNull()) {
-            foreach (int size, sizes) {
-                QString pixmapName = QStringLiteral(":/client/resources/%1-%2.png").arg(name).arg(size);
-                if (QFile::exists(pixmapName)) {
-                    cached.addFile(pixmapName);
-                }
+            QString pixmapName = QStringLiteral(":/client/resources/%1.svg").arg(name);
+            if (QFile::exists(pixmapName)) {
+                cached.addFile(pixmapName);
             }
         }
     }
