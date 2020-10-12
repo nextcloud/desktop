@@ -209,7 +209,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         warnRect.setWidth(16);
         warnRect.setHeight(16);
 
-        QIcon warnIcon(":/client/resources/warning");
+        QIcon warnIcon(":/client/resources/warning.svg");
         QPixmap pm = warnIcon.pixmap(16, 16, syncEnabled ? QIcon::Normal : QIcon::Disabled);
         warnRect = QStyle::visualRect(option.direction, option.rect, warnRect);
         painter->drawPixmap(QPoint(warnRect.left(), warnRect.top()), pm);
