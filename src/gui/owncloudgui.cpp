@@ -683,7 +683,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         | SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete
         | SharePermissionShare;
     if (!resharingAllowed) {
-        maxSharingPermissions = nullptr;
+        maxSharingPermissions = {};
     }
 
 
