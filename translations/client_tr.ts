@@ -1452,7 +1452,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Create Debug Archive...</source>
-        <translation type="unfinished"/>
+        <translation>Hata Ayıklama Arşivi Oluştur...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1488,22 +1488,22 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Hata Ayıklama Arşivi Oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip Arşivleri</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Hata Ayıklama Arşivi Oluşturuldu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 üzerinde hata ayıklama arşivi oluşturuldu</translation>
     </message>
 </context>
 <context>
