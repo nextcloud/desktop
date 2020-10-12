@@ -1453,7 +1453,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Create Debug Archive...</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořit ladicí archiv...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1489,22 +1489,22 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořit ladicí archiv</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip archivy</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Ladicí archiv vytvořen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Archiv s ladicími informacemi je vytvořen v %1</translation>
     </message>
 </context>
 <context>

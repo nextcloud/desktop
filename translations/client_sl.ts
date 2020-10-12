@@ -425,7 +425,7 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="790"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation>Strežnik %1 je trenutno v načinu vzdrževanja.</translation>
+        <translation>Strežnik %1 je trenutno v vzdrževalnem načinu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="792"/>
@@ -725,7 +725,7 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
         <location filename="../src/gui/creds/flow2auth.cpp" line="110"/>
         <location filename="../src/gui/creds/flow2auth.cpp" line="213"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Prišlo je do napake med dostopom do končne točke: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Prišlo je do napake med dostopom do končne točke »žetona«: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
@@ -914,7 +914,7 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="1032"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>Mapa %1 je bila ustvarjena, a je bila izločena iz seznama usklajevanja. Podatki v tej mapi ne bodo usklajeni.</translation>
+        <translation>Mapa %1 je bila ustvarjena, a je bila izločena s seznama usklajevanja. Podatki v tej mapi ne bodo usklajeni.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1035"/>
@@ -940,7 +940,10 @@ To pomeni, da odjemalec usklajevanja ne pošilja krajevnih sprememb takoj in mor
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Vse datoteke v usklajevani mapi »%1« so bile na strežniku izbrisane.
+Sprememba bo usklajena tudi s krajevno mapo na disku, zato bodo te datoteke, če ni ustreznih dovoljenj za obnovitev, izgubljene. 
+Če se odločite te datoteke ohraniti, in so na voljo ustrezna dovoljenja, bodo spet usklajene s strežnikom.
+Nasprotno, če potrdite brisanje in niste lastnik datotek, te ne bodo več na voljo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1096"/>
@@ -1449,7 +1452,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Create Debug Archive...</source>
-        <translation type="unfinished"/>
+        <translation>Ustvari arhiv razhroščevanja ...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1485,22 +1488,22 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Ustvari arhiv razhroščevanja</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Arhivi ZIP</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Arhiv razhroščevanja je ustvarjen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Arhiv razhroščevanja je ustvarjen na %1</translation>
     </message>
 </context>
 <context>
@@ -1901,7 +1904,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="129"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Napačen uporabnik&lt;/h1&gt;&lt;p&gt;Prijavljeni ste kot uporabnik &lt;em&gt;%1&lt;/em&gt;, morali pa bi biti povezani kot &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Odjavite povezavo %3 v drugem zavihku, nato &lt;a href=&apos;%4&apos;&gt;kliknite za novo sejo&lt;/a&gt; in se prijavite kot %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2506,7 +2509,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="401"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka je odstranjena (začni pošiljanje) %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="415"/>
@@ -3245,7 +3248,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Nalaganje ali ustvarjanje dnevniške datoteke je spodletelo. Za to opravilo so zahtevana dovoljenja branja in zapisovanja krajevne mape za usklajevanje.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="129"/>
@@ -3325,7 +3328,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="244"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (preskočeno zaradi predhodne napake; poskus bo ponovljen čez %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
