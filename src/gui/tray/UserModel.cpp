@@ -48,6 +48,8 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &User::hasLocalFolderChanged);
 
     connect(this, &User::guiLog, Logger::instance(), &Logger::guiLog);
+
+    connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
 }
 
 void User::slotBuildNotificationDisplay(const ActivityList &list)
@@ -463,21 +465,18 @@ QString User::server(bool shortened) const
     return serverUrl;
 }
 
-QImage User::avatar(bool whiteBg) const
+QImage User::avatar() const
 {
-    QImage img = AvatarJob::makeCircularAvatar(_account->account()->avatar());
-    if (img.isNull()) {
-        QImage image(128, 128, QImage::Format_ARGB32);
-        image.fill(Qt::GlobalColor::transparent);
-        QPainter painter(&image);
+    return AvatarJob::makeCircularAvatar(_account->account()->avatar());
+}
 
-        QSvgRenderer renderer(QString(whiteBg ? ":/client/theme/black/user.svg" : ":/client/theme/white/user.svg"));
-        renderer.render(&painter);
-
-        return image;
-    } else {
-        return img;
+QString User::avatarUrl() const
+{
+    if (avatar().isNull()) {
+        return QString();
     }
+
+    return QStringLiteral("image://avatars/") + _account->account()->id();
 }
 
 bool User::hasLocalFolder() const
@@ -575,27 +574,12 @@ Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
     return _users[id]->isConnected();
 }
 
-Q_INVOKABLE QImage UserModel::currentUserAvatar()
-{
-    if (!_users.isEmpty()) {
-        return _users[_currentUserId]->avatar();
-    } else {
-        QImage image(128, 128, QImage::Format_ARGB32);
-        image.fill(Qt::GlobalColor::transparent);
-        QPainter painter(&image);
-        QSvgRenderer renderer(QString(":/client/theme/white/user.svg"));
-        renderer.render(&painter);
-
-        return image;
-    }
-}
-
 QImage UserModel::avatarById(const int &id)
 {
     if (_users.isEmpty())
         return {};
 
-    return _users[id]->avatar(true);
+    return _users[id]->avatar();
 }
 
 Q_INVOKABLE QString UserModel::currentUserServer()
@@ -617,11 +601,20 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
     }
 
     if (!containsUser) {
-        beginInsertRows(QModelIndex(), rowCount(), rowCount());
-        _users << new User(user, isCurrent);
+        int row = rowCount();
+        beginInsertRows(QModelIndex(), row, row);
+
+        User *u = new User(user, isCurrent);
+
+        connect(u, &User::avatarChanged, this, [this, row] {
+           emit dataChanged(index(row, 0), index(row, 0), {UserModel::AvatarRole});
+        });
+
+        _users << u;
         if (isCurrent) {
             _currentUserId = _users.indexOf(_users.last());
         }
+
         endInsertRows();
         ConfigFile cfg;
         _users.last()->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
@@ -748,7 +741,7 @@ QVariant UserModel::data(const QModelIndex &index, int role) const
     } else if (role == ServerRole) {
         return _users[index.row()]->server();
     } else if (role == AvatarRole) {
-        return _users[index.row()]->avatar();
+        return _users[index.row()]->avatarUrl();
     } else if (role == IsCurrentUserRole) {
         return _users[index.row()]->isCurrentUser();
     } else if (role == IsConnectedRole) {
@@ -829,12 +822,25 @@ QImage ImageProvider::requestImage(const QString &id, QSize *size, const QSize &
     Q_UNUSED(size)
     Q_UNUSED(requestedSize)
 
-    if (id == "currentUser") {
-        return UserModel::instance()->currentUserAvatar();
-    } else {
-        int uid = id.toInt();
-        return UserModel::instance()->avatarById(uid);
+    const auto makeIcon = [](const QString &path) {
+        QImage image(128, 128, QImage::Format_ARGB32);
+        image.fill(Qt::GlobalColor::transparent);
+        QPainter painter(&image);
+        QSvgRenderer renderer(path);
+        renderer.render(&painter);
+        return image;
+    };
+
+    if (id == QLatin1String("fallbackWhite")) {
+        return makeIcon(QStringLiteral(":/client/theme/white/user.svg"));
     }
+
+    if (id == QLatin1String("fallbackBlack")) {
+        return makeIcon(QStringLiteral(":/client/theme/black/user.svg"));
+    }
+
+    const int uid = id.toInt();
+    return UserModel::instance()->avatarById(uid);
 }
 
 /*-------------------------------------------------------------------------------------*/
