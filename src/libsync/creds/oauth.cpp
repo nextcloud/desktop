@@ -299,17 +299,16 @@ QUrl OAuth::authorisationLink() const
     QUrlQuery query;
     const QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
                                           .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
-    query.setQueryItems({
-        { QStringLiteral("response_type"), QStringLiteral("code") },
+    query.setQueryItems({ { QStringLiteral("response_type"), QStringLiteral("code") },
         { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
         { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(QString::number(_server.serverPort())) },
         { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
         { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
         { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },
-        { QStringLiteral("prompt"), QStringLiteral("consent") },
+        { QStringLiteral("prompt"), QStringLiteral("select_account") },
         { QStringLiteral("state"), QString::fromUtf8(_state) },
-        { QStringLiteral("display"), Theme::instance()->appNameGUI() }
-    });
+        { QStringLiteral("display"), Theme::instance()->appNameGUI() },
+        { QStringLiteral("login_hint"), _account->davUser() } });
     if (!_account->davUser().isNull())
         query.addQueryItem(QStringLiteral("user"), _account->davUser().replace(QLatin1Char('+'), QStringLiteral("%2B"))); // Issue #7762
     const QUrl url = _authEndpoint.isValid()
