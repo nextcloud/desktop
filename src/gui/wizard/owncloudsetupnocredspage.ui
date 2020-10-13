@@ -221,10 +221,16 @@
             <item>
              <widget class="QLabel" name="urlLabel">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
               </property>
               <property name="text">
                <string/>
@@ -232,6 +238,16 @@
              </widget>
             </item>
            </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="addressDescriptionLabel">
+            <property name="text">
+             <string>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="errorLabel">
@@ -340,7 +356,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Register with a provider</string>
+        <string>Sign up with a provider</string>
        </property>
        <property name="default">
         <bool>false</bool>
@@ -362,7 +378,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Log in</string>
+        <string>Log in to your %1</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -472,8 +488,6 @@
    <header>wizard/slideshow.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../../../theme.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

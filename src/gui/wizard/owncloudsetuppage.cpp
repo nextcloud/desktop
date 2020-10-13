@@ -91,6 +91,11 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui.slideShow->hide();
 #endif
 
+    const auto appName = Theme::instance()->appNameGUI();
+    _ui.loginButton->setText(tr("Log in to your %1").arg(appName));
+    _ui.addressDescriptionLabel->setText(tr("This is the link to your %1 web interface when you open it in the browser.<br/>"
+                                            "It looks like https://cloud.example.com or https://example.com/cloud").arg(appName));
+
     customizeStyle();
 }
 
@@ -125,6 +130,10 @@ void OwncloudSetupPage::setupCustomization()
 #ifdef WITH_PROVIDERS
 void OwncloudSetupPage::slotLogin()
 {
+    _ui.slideShow->hide();
+    _ui.nextButton->hide();
+    _ui.prevButton->hide();
+
     _ocWizard->setRegistration(false);
     _ui.login->setMaximumHeight(0);
     auto *animation = new QPropertyAnimation(_ui.login, "maximumHeight");
@@ -171,14 +180,15 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
         _ui.leUrl->setText(newUrl);
     }
 
-    if (!url.startsWith(QLatin1String("https://"))) {
-        _ui.urlLabel->setPixmap(QPixmap(Theme::hidpiFileName(":/client/theme/lock-http.svg")));
-        _ui.urlLabel->setToolTip(tr("This URL is NOT secure as it is not encrypted.\n"
-                                    "It is not advisable to use it."));
-    } else {
-        _ui.urlLabel->setPixmap(QPixmap(Theme::hidpiFileName(":/client/theme/lock-https.svg")));
-        _ui.urlLabel->setToolTip(tr("This URL is secure. You can use it."));
-    }
+    const auto isSecure = url.startsWith(QLatin1String("https://"));
+    const auto toolTip = isSecure ? tr("This URL is secure. You can use it.")
+                                  : tr("This URL is NOT secure as it is not encrypted.\n"
+                                       "It is not advisable to use it.");
+    const auto pixmap = isSecure ? QPixmap(Theme::hidpiFileName(":/client/theme/lock-https.svg"))
+                                 : QPixmap(Theme::hidpiFileName(":/client/theme/lock-http.svg"));
+
+    _ui.urlLabel->setToolTip(toolTip);
+    _ui.urlLabel->setPixmap(pixmap.scaled(_ui.urlLabel->size(), Qt::KeepAspectRatio));
 }
 
 void OwncloudSetupPage::slotUrlEditFinished()
