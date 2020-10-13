@@ -91,6 +91,11 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui.slideShow->hide();
 #endif
 
+    const auto appName = Theme::instance()->appNameGUI();
+    _ui.loginButton->setText(tr("Log in to your %1").arg(appName));
+    _ui.addressDescriptionLabel->setText(tr("This is the link to your %1 web interface when you open it in the browser.<br/>"
+                                            "It looks like https://cloud.example.com or https://example.com/cloud").arg(appName));
+
     customizeStyle();
 }
 

@@ -240,9 +240,9 @@
            </layout>
           </item>
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="addressDescriptionLabel">
             <property name="text">
-             <string>This is the link to your Nextcloud web interface when you open it in the browser.&lt;br/&gt; It looks like https://cloud.example.com or https://example.com/cloud</string>
+             <string>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -378,7 +378,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Log in to your Nextcloud</string>
+        <string>Log in to your %1</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -488,8 +488,6 @@
    <header>wizard/slideshow.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../../../theme.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
