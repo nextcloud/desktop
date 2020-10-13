@@ -39,21 +39,20 @@ OAuth::~OAuth()
 {
 }
 
-static void httpReplyAndClose(QTcpSocket *socket, const QByteArray &code, const QByteArray &html,
+static void httpReplyAndClose(QPointer<QTcpSocket> socket, const QByteArray &code, const QByteArray &html,
                               const QByteArray &moreHeaders = {})
 {
     if (!socket)
         return; // socket can have been deleted if the browser was closed
-    socket->write("HTTP/1.1 ");
-    socket->write(code);
-    socket->write("\r\nContent-Type: text/html; charset=utf-8\r\nConnection: close\r\nContent-Length: ");
-    socket->write(QByteArray::number(html.length()));
-    if (!moreHeaders.isEmpty()) {
-        socket->write("\r\n");
-        socket->write(moreHeaders);
-    }
-    socket->write("\r\n\r\n");
-    socket->write(html);
+    const QByteArray msg = QByteArrayLiteral("HTTP/1.1 ") %
+            code %
+            QByteArrayLiteral("\r\nContent-Type: text/html; charset=utf-8\r\nConnection: close\r\nContent-Length: ") %
+            QByteArray::number(html.length()) %
+            (!moreHeaders.isEmpty() ? QByteArrayLiteral("\r\n") % moreHeaders : QByteArray()) %
+            QByteArrayLiteral("\r\n\r\n") %
+            html;
+    qCDebug(lcOauth) << msg;
+    socket->write(msg);
     socket->disconnectFromHost();
     // We don't want that deleting the server too early prevent queued data to be sent on this socket.
     // The socket will be deleted after disconnection because disconnected is connected to deleteLater
@@ -84,14 +83,16 @@ void OAuth::startAuthentication()
             QObject::connect(socket.data(), &QTcpSocket::disconnected, socket.data(), &QTcpSocket::deleteLater);
             QObject::connect(socket.data(), &QIODevice::readyRead, this, [this, socket] {
                 const QByteArray peek = socket->peek(qMin(socket->bytesAvailable(), 4000LL)); //The code should always be within the first 4K
-                if (peek.indexOf('\n') < 0)
+                if (!peek.contains('\n'))
                     return; // wait until we find a \n
-                if (!peek.startsWith("GET /?")) {
+                qCDebug(lcOauth) << "Server provided:" << peek;
+                const auto getPrefix = QByteArrayLiteral("GET /?");
+                if (!peek.startsWith(getPrefix)) {
                     httpReplyAndClose(socket, QByteArrayLiteral("404 Not Found"), QByteArrayLiteral("<html><head><title>404 Not Found</title></head><body><center><h1>404 Not Found</h1></center></body></html>"));
                     return;
                 }
-                const int offset = 6;
-                const QUrlQuery args(QString::fromUtf8(peek.mid(offset, peek.indexOf(' ', offset) - offset)));
+                const auto endOfUrl = peek.indexOf(' ', getPrefix.length());
+                const QUrlQuery args(QUrl::fromPercentEncoding(peek.mid(getPrefix.length(), endOfUrl - getPrefix.length())));
                 if (args.queryItemValue(QStringLiteral("state")).toUtf8() != _state) {
                     httpReplyAndClose(socket, QByteArrayLiteral("400 Bad Request"), QByteArrayLiteral("<html><head><title>400 Bad Request</title></head><body><center><h1>400 Bad Request</h1></center></body></html>"));
                     return;
