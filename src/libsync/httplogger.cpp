@@ -33,9 +33,10 @@ bool isTextBody(const QString &s)
     return regexp.match(s).hasMatch();
 }
 
-void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, const qint64 &contentLength, const QList<QNetworkReply::RawHeaderPair> &header, QIODevice *device)
+void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, const QList<QNetworkReply::RawHeaderPair> &header, QIODevice *device)
 {
     const auto reply = qobject_cast<QNetworkReply *>(device);
+    const auto contentLength = device ? device->size() : 0;
     QString msg;
     QTextStream stream(&msg);
     stream << id << ": ";
@@ -95,7 +96,6 @@ void HttpLogger::logReplyOnFinished(const QNetworkReply *reply)
             reply->url().toString(),
             reply->request().rawHeader(XRequestId()),
             reply->header(QNetworkRequest::ContentTypeHeader).toString(),
-            reply->header(QNetworkRequest::ContentLengthHeader).toInt(),
             reply->rawHeaderPairs(),
             const_cast<QNetworkReply *>(reply));
     });
@@ -116,7 +116,6 @@ void HttpLogger::logRequest(const QNetworkRequest &request, QNetworkAccessManage
         request.url().toString(),
         request.rawHeader(XRequestId()),
         request.header(QNetworkRequest::ContentTypeHeader).toString(),
-        device ? device->size() : 0,
         header,
         device);
 }
