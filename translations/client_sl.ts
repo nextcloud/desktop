@@ -4188,12 +4188,12 @@ Uporaba možnosti ni priporočljiva.</translation>
     <name>Window</name>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
-        <location filename="../src/gui/tray/Window.qml" line="103"/>
+        <location filename="../src/gui/tray/Window.qml" line="99"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Glavni vmesnik namizja Nextcloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="141"/>
+        <location filename="../src/gui/tray/Window.qml" line="137"/>
         <source>Current account</source>
         <translation>Trenutni račun</translation>
     </message>
@@ -4208,7 +4208,7 @@ Uporaba možnosti ni priporočljiva.</translation>
         <translation>Ustavi usklajevanje za vse</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="185"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
         <source>Account switcher and settings menu</source>
         <translation>Preklopnik računov in meni nastavitev</translation>
     </message>
@@ -4218,7 +4218,7 @@ Uporaba možnosti ni priporočljiva.</translation>
         <translation>Dodaj račun</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="243"/>
+        <location filename="../src/gui/tray/Window.qml" line="239"/>
         <source>Add new account</source>
         <translation>Dodaj račun</translation>
     </message>
@@ -4233,60 +4233,54 @@ Uporaba možnosti ni priporočljiva.</translation>
         <translation>Končaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="344"/>
+        <location filename="../src/gui/tray/Window.qml" line="340"/>
         <source>Current user avatar</source>
         <translation>Trenutna podoba uporabnika</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="366"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Connected</source>
         <translation>Povezano</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="366"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Disconnected</source>
         <translation>Brez povezave</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="420"/>
+        <location filename="../src/gui/tray/Window.qml" line="416"/>
         <source>Open local folder of current account</source>
         <translation>Odpri krajevno mapo v trenutnem računu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="432"/>
+        <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Odpri Nextcloud Talk v brskalniku</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="450"/>
+        <location filename="../src/gui/tray/Window.qml" line="446"/>
         <source>More apps</source>
         <translation>Več programov</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="467"/>
+        <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Apps menu</source>
         <translation>Meni programov</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="495"/>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
-        <source>Open</source>
-        <translation>Odpri</translation>
+        <location filename="../src/gui/tray/Window.qml" line="491"/>
+        <source>Open %1 in browser</source>
+        <translation>Odpri %1 v brskalniku</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="495"/>
-        <source>in browser</source>
-        <translation>v brskalniku</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="519"/>
+        <location filename="../src/gui/tray/Window.qml" line="515"/>
         <source>Activity list</source>
         <translation>Seznam dejavnosti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
-        <source>locally</source>
-        <translation>krajevno</translation>
+        <location filename="../src/gui/tray/Window.qml" line="527"/>
+        <source>Open %1 locally</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
@@ -4294,15 +4288,19 @@ Uporaba možnosti ni priporočljiva.</translation>
         <translation>Odpri pogovorno okno souporebe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="647"/>
-        <source>Share</source>
-        <translation>Souporaba</translation>
+        <location filename="../src/gui/tray/Window.qml" line="643"/>
+        <source>Share %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="665"/>
+        <source>Open Talk</source>
+        <translation>Odpri Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
-        <location filename="../src/gui/tray/Window.qml" line="673"/>
-        <source>Open Talk</source>
-        <translation>Odpri Talk</translation>
+        <source>Open Talk %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
