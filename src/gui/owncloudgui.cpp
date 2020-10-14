@@ -1137,10 +1137,12 @@ void ownCloudGui::slotRemoveDestroyedShareDialogs()
 
 void ownCloudGui::slotAbout()
 {
-    auto about = new AboutDialog(_settingsDialog);
-    about->setAttribute(Qt::WA_DeleteOnClose);
-    about->open();
-    raiseDialog(about);
+    if(!_aboutDialog) {
+        _aboutDialog = new AboutDialog(_settingsDialog);
+        _aboutDialog->setAttribute(Qt::WA_DeleteOnClose);
+        _aboutDialog->open();
+    }
+    raiseDialog(_aboutDialog);
 }
 
 
