@@ -2126,16 +2126,26 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <translation>Schermdelen, online afspraken &amp; web conferenties</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
-        <source>This URL is NOT secure as it is not encrypted.
-It is not advisable to use it.</source>
-        <translation>Deze URL is NIET veilig omdat versleuteling ontbreekt.
-Het is niet te adviseren om het te gebruiken.</translation>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
+        <source>Log in to your %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
         <source>This URL is secure. You can use it.</source>
         <translation>Deze URL is veilig. Je kan het gebruiken.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
+        <source>This URL is NOT secure as it is not encrypted.
+It is not advisable to use it.</source>
+        <translation>Deze URL is NIET veilig omdat versleuteling ontbreekt.
+Het is niet te adviseren om het te gebruiken.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="223"/>
@@ -3991,14 +4001,29 @@ Het is niet te adviseren om het te gebruiken.</translation>
         <translation>Serveradres</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
         <translation>Registreren bij een provider</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
+        <source>Sign up with a provider</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
         <translation>Aanmelden</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
+        <source>Log in to your %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

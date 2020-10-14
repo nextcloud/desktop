@@ -2122,16 +2122,26 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
         <translation>Compartir a pantalla, xuntanzas en liña e conferencias web </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
-        <source>This URL is NOT secure as it is not encrypted.
-It is not advisable to use it.</source>
-        <translation>Este URL non é seguro, xa que non está cifrado.
-Recomendámoslle que non o use.</translation>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
+        <source>Log in to your %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
         <source>This URL is secure. You can use it.</source>
         <translation>Este URL é seguro. Pode utilizalo.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
+        <source>This URL is NOT secure as it is not encrypted.
+It is not advisable to use it.</source>
+        <translation>Este URL non é seguro, xa que non está cifrado.
+Recomendámoslle que non o use.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="223"/>
@@ -3987,14 +3997,29 @@ Recomendámoslle que non o use.</translation>
         <translation>Enderezo do servidor</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
         <translation>Rexistrarse cun provedor</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
+        <source>Sign up with a provider</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
         <translation>Acceder</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
+        <source>Log in to your %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4284,7 +4309,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="527"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Abrir %1 localmente</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
@@ -4294,7 +4319,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="643"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Compartir %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="665"/>
@@ -4304,7 +4329,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open Talk %1</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Talk %1</translation>
     </message>
 </context>
 <context>
