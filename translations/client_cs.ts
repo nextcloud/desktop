@@ -2121,16 +2121,26 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <translation>Sdílení obrazovky, online schůzky a webové konference</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
-        <source>This URL is NOT secure as it is not encrypted.
-It is not advisable to use it.</source>
-        <translation>Tato URL adresa NENÍ zabezpečená, protože není šifrovaná.
-Nedoporučuje se jí používat.</translation>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
+        <source>Log in to your %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
         <source>This URL is secure. You can use it.</source>
         <translation>Tato URL adresa je bezpečná. Můžete ji použít.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
+        <source>This URL is NOT secure as it is not encrypted.
+It is not advisable to use it.</source>
+        <translation>Tato URL adresa NENÍ zabezpečená, protože není šifrovaná.
+Nedoporučuje se jí používat.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="223"/>
@@ -3986,14 +3996,29 @@ Nedoporučuje se jí používat.</translation>
         <translation>Adresa serveru</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
         <translation>Zaregistrovat se u poskytovatele</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
+        <source>Sign up with a provider</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
         <translation>Přihlásit</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
+        <source>Log in to your %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4283,7 +4308,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="527"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít %1 lokálně</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
@@ -4293,7 +4318,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="643"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Sdílet %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="665"/>
@@ -4303,7 +4328,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open Talk %1</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít Talk %1</translation>
     </message>
 </context>
 <context>

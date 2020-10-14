@@ -2122,16 +2122,26 @@ for additional privileges during the process.</source>
         <translation>Дељење екрана, састанци на интернету &amp; веб конференције</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
-        <source>This URL is NOT secure as it is not encrypted.
-It is not advisable to use it.</source>
-        <translation>Ова адреса НИЈЕ безбедна јер није шифрована.
-Не препоручује се њено коришћење.</translation>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
+        <source>Log in to your %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
         <source>This URL is secure. You can use it.</source>
         <translation>Ова адреса је безбедна. Можете је користити.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
+        <source>This URL is NOT secure as it is not encrypted.
+It is not advisable to use it.</source>
+        <translation>Ова адреса НИЈЕ безбедна јер није шифрована.
+Не препоручује се њено коришћење.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="223"/>
@@ -3987,14 +3997,29 @@ It is not advisable to use it.</source>
         <translation>Адреса сервера</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
+        <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
         <source>Register with a provider</source>
         <translation>Региструјте се са провајдером</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
+        <source>Sign up with a provider</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
         <source>Log in</source>
         <translation>Пријава</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
+        <source>Log in to your %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
