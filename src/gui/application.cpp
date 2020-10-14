@@ -71,7 +71,9 @@ Q_LOGGING_CATEGORY(lcApplication, "gui.application", QtInfoMsg)
 
 namespace {
 
-    static const char optionsC[] =
+    const QString optionsC()
+    {
+        return QStringLiteral(
         "Options:\n"
         "  -h --help            : show this help screen.\n"
         "  -s --showsettings    : show the settings dialog while starting.\n"
@@ -84,7 +86,8 @@ namespace {
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
         "  --logdebug           : also output debug-level messages in the log.\n"
-        "  --confdir <dirname>  : Use the given configuration folder.\n";
+        "  --confdir <dirname>  : Use the given configuration folder.");
+    }
 
     QString applicationTrPath()
     {
@@ -619,7 +622,7 @@ void Application::parseOptions(const QStringList &options)
 // Helpers for displaying messages. Note that there is probably no console on Windows.
 static void displayHelpText(const QString &t)
 {
-    std::cout << qUtf8Printable(t);
+    std::cout << qUtf8Printable(t) << std::endl;
 #ifdef Q_OS_WIN
     // No console on Windows.
     QString spaces(80, ' '); // Add a line of non-wrapped space to make the messagebox wide enough.
@@ -640,12 +643,13 @@ void Application::showHelp()
 
     stream << QLatin1String("File synchronisation desktop utility.") << endl
            << endl
-           << QLatin1String(optionsC);
+           << optionsC();
 
-    if (_theme->appName() == QLatin1String("ownCloud"))
+    if (_theme->appName() == QLatin1String("ownCloud")) {
         stream << endl
-               << "For more information, see http://www.owncloud.org" << endl
-               << endl;
+               << endl
+               << "For more information, see http://www.owncloud.org";
+    }
 
     displayHelpText(helpText);
 }
