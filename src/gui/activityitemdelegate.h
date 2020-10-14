@@ -37,8 +37,6 @@ public:
 
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
-    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-        const QModelIndex &index) override;
 
     static int rowHeight();
     static int iconHeight();
