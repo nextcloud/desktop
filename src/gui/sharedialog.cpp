@@ -184,6 +184,10 @@ void ShareDialog::initLinkShareWidget(){
         _emptyShareLinkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
         _linkWidgetList.append(_emptyShareLinkWidget);
 
+        if (_manager) {
+            connect(_manager, &ShareManager::linkShareRequiresPassword, _emptyShareLinkWidget, &ShareLinkWidget::slotCreateShareRequiresPassword);
+        }
+
         connect(_emptyShareLinkWidget, &ShareLinkWidget::resizeRequested, this, &ShareDialog::slotAdjustScrollWidgetSize);
 //        connect(this, &ShareDialog::toggleAnimation, _emptyShareLinkWidget, &ShareLinkWidget::slotToggleAnimation);
         connect(_emptyShareLinkWidget, &ShareLinkWidget::createLinkShare, this, &ShareDialog::slotCreateLinkShare);
