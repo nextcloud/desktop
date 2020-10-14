@@ -238,14 +238,6 @@ Application::Application(int &argc, char **argv)
     }
 
     parseOptions(arguments());
-    //no need to waste time;
-    if (_helpOnly || _versionOnly)
-        return;
-
-    if (_quitInstance) {
-        QTimer::singleShot(0, qApp, &QApplication::quit);
-        return;
-    }
 
     if (isRunning())
         return;
@@ -281,6 +273,15 @@ Application::Application(int &argc, char **argv)
         qCInfo(lcApplication) << "VFS windows plugin is available";
     if (isVfsPluginAvailable(Vfs::WithSuffix))
         qCInfo(lcApplication) << "VFS suffix plugin is available";
+
+    //no need to waste time;
+    if (_helpOnly || _versionOnly)
+        return;
+
+    if (_quitInstance) {
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return;
+    }
 
     _folderManager.reset(new FolderMan);
 
@@ -615,23 +616,18 @@ void Application::parseOptions(const QStringList &options)
     }
 }
 
-// Helpers for displaying messages. Note that there is no console on Windows.
-#ifdef Q_OS_WIN
-static void displayHelpText(const QString &t) // No console on Windows.
+// Helpers for displaying messages. Note that there is probably no console on Windows.
+static void displayHelpText(const QString &t)
 {
+    std::cout << qUtf8Printable(t);
+#ifdef Q_OS_WIN
+    // No console on Windows.
     QString spaces(80, ' '); // Add a line of non-wrapped space to make the messagebox wide enough.
     QString text = QLatin1String("<qt><pre style='white-space:pre-wrap'>")
         + t.toHtmlEscaped() + QLatin1String("</pre><pre>") + spaces + QLatin1String("</pre></qt>");
     QMessageBox::information(0, Theme::instance()->appNameGUI(), text);
-}
-
-#else
-
-static void displayHelpText(const QString &t)
-{
-    std::cout << qUtf8Printable(t);
-}
 #endif
+}
 
 void Application::showHelp()
 {

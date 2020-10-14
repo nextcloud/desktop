@@ -30,6 +30,7 @@ namespace OCC {
 
 class Folder;
 
+class AboutDialog;
 class SettingsDialog;
 class ShareDialog;
 class Application;
@@ -159,6 +160,7 @@ private:
     QList<QAction *> _recentItemsActions;
     Application *_app;
     QPointer<OwncloudSetupWizard> _wizard;
+    QPointer<AboutDialog> _aboutDialog;
 };
 
 } // namespace OCC

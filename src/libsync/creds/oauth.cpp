@@ -39,21 +39,20 @@ OAuth::~OAuth()
 {
 }
 
-static void httpReplyAndClose(QTcpSocket *socket, const char *code, const char *html,
-const char *moreHeaders = nullptr)
+static void httpReplyAndClose(QPointer<QTcpSocket> socket, const QByteArray &code, const QByteArray &html,
+                              const QByteArray &moreHeaders = {})
 {
     if (!socket)
         return; // socket can have been deleted if the browser was closed
-    socket->write("HTTP/1.1 ");
-    socket->write(code);
-    socket->write("\r\nContent-Type: text/html; charset=utf-8\r\nConnection: close\r\nContent-Length: ");
-    socket->write(QByteArray::number(qstrlen(html)));
-    if (moreHeaders) {
-        socket->write("\r\n");
-        socket->write(moreHeaders);
-    }
-    socket->write("\r\n\r\n");
-    socket->write(html);
+    const QByteArray msg = QByteArrayLiteral("HTTP/1.1 ") %
+            code %
+            QByteArrayLiteral("\r\nContent-Type: text/html; charset=utf-8\r\nConnection: close\r\nContent-Length: ") %
+            QByteArray::number(html.length()) %
+            (!moreHeaders.isEmpty() ? QByteArrayLiteral("\r\n") % moreHeaders : QByteArray()) %
+            QByteArrayLiteral("\r\n\r\n") %
+            html;
+    qCDebug(lcOauth) << msg;
+    socket->write(msg);
     socket->disconnectFromHost();
     // We don't want that deleting the server too early prevent queued data to be sent on this socket.
     // The socket will be deleted after disconnection because disconnected is connected to deleteLater
@@ -84,16 +83,18 @@ void OAuth::startAuthentication()
             QObject::connect(socket.data(), &QTcpSocket::disconnected, socket.data(), &QTcpSocket::deleteLater);
             QObject::connect(socket.data(), &QIODevice::readyRead, this, [this, socket] {
                 const QByteArray peek = socket->peek(qMin(socket->bytesAvailable(), 4000LL)); //The code should always be within the first 4K
-                if (peek.indexOf('\n') < 0)
+                if (!peek.contains('\n'))
                     return; // wait until we find a \n
-                if (!peek.startsWith("GET /?")) {
-                    httpReplyAndClose(socket, "404 Not Found", "<html><head><title>404 Not Found</title></head><body><center><h1>404 Not Found</h1></center></body></html>");
+                qCDebug(lcOauth) << "Server provided:" << peek;
+                const auto getPrefix = QByteArrayLiteral("GET /?");
+                if (!peek.startsWith(getPrefix)) {
+                    httpReplyAndClose(socket, QByteArrayLiteral("404 Not Found"), QByteArrayLiteral("<html><head><title>404 Not Found</title></head><body><center><h1>404 Not Found</h1></center></body></html>"));
                     return;
                 }
-                const int offset = 6;
-                const QUrlQuery args(QString::fromUtf8(peek.mid(offset, peek.indexOf(' ', offset) - offset)));
+                const auto endOfUrl = peek.indexOf(' ', getPrefix.length());
+                const QUrlQuery args(QUrl::fromPercentEncoding(peek.mid(getPrefix.length(), endOfUrl - getPrefix.length())));
                 if (args.queryItemValue(QStringLiteral("state")).toUtf8() != _state) {
-                    httpReplyAndClose(socket, "400 Bad Request", "<html><head><title>400 Bad Request</title></head><body><center><h1>400 Bad Request</h1></center></body></html>");
+                    httpReplyAndClose(socket, QByteArrayLiteral("400 Bad Request"), QByteArrayLiteral("<html><head><title>400 Bad Request</title></head><body><center><h1>400 Bad Request</h1></center></body></html>"));
                     return;
                 }
               auto job = postTokenRequest({
@@ -145,8 +146,8 @@ void OAuth::startAuthentication()
                             errorReason = tr("Unknown Error");
                         }
                         qCWarning(lcOauth) << "Error when getting the accessToken" << errorReason << "received data:" << jsonData;
-                        httpReplyAndClose(socket, "500 Internal Server Error",
-                            tr("<h1>Login Error</h1><p>%1</p>").arg(errorReason).toUtf8().constData());
+                        httpReplyAndClose(socket, QByteArrayLiteral("500 Internal Server Error"),
+                            tr("<h1>Login Error</h1><p>%1</p>").arg(errorReason).toUtf8());
                         emit result(Error);
                         return;
                     }
@@ -165,8 +166,8 @@ void OAuth::startAuthentication()
                     job->startWithRequest(req);
                     connect(job, &JsonApiJob::jsonReceived, this, [=](const QJsonDocument &json, int status) {
                         if (status != 200) {
-                            httpReplyAndClose(socket, "500 Internal Server Error",
-                                tr("<h1>Login Error</h1><p>Failed to retrieve user info</p>").toUtf8().constData());
+                            httpReplyAndClose(socket, QByteArrayLiteral("500 Internal Server Error"),
+                                tr("<h1>Login Error</h1><p>Failed to retrieve user info</p>").toUtf8());
                             emit result(Error);
                         } else {
                             const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("id")).toString();
@@ -236,16 +237,16 @@ void OAuth::finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
                                    "and log in as user %2</p>")
                                     .arg(user, _account->davUser(), Theme::instance()->appNameGUI(),
                                         authorisationLink().toString(QUrl::FullyEncoded));
-        httpReplyAndClose(socket, "403 Forbidden", message.toUtf8().constData());
+        httpReplyAndClose(socket, QByteArrayLiteral("403 Forbidden"), message.toUtf8());
         // We are still listening on the socket so we will get the new connection
         return;
     }
-    const char *loginSuccessfullHtml = "<h1>Login Successful</h1><p>You can close this window.</p>";
+    const auto loginSuccessfullHtml = QByteArrayLiteral("<h1>Login Successful</h1><p>You can close this window.</p>");
     if (messageUrl.isValid()) {
-        httpReplyAndClose(socket, "303 See Other", loginSuccessfullHtml,
-            QByteArray("Location: " + messageUrl.toEncoded()).constData());
+        httpReplyAndClose(socket, QByteArrayLiteral("303 See Other"), loginSuccessfullHtml,
+            QByteArrayLiteral("Location: ") + messageUrl.toEncoded());
     } else {
-        httpReplyAndClose(socket, "200 OK", loginSuccessfullHtml);
+        httpReplyAndClose(socket, QByteArrayLiteral("200 OK"), loginSuccessfullHtml);
     }
     emit result(LoggedIn, user, accessToken, refreshToken);
 }
@@ -307,6 +308,7 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },
         { QStringLiteral("prompt"), QStringLiteral("consent") },
         { QStringLiteral("state"), QString::fromUtf8(_state) },
+        { QStringLiteral("display"), Theme::instance()->appNameGUI() }
     });
     if (!_account->davUser().isNull())
         query.addQueryItem(QStringLiteral("user"), _account->davUser().replace(QLatin1Char('+'), QStringLiteral("%2B"))); // Issue #7762

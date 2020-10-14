@@ -26,7 +26,6 @@ class FolderStatusDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    QIcon m_moreIcon;
     FolderStatusDelegate();
 
     enum datarole { FolderAliasRole = Qt::UserRole + 100,
@@ -53,8 +52,6 @@ public:
     };
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
-    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-        const QModelIndex &index) override;
 
 
     /**

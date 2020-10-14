@@ -116,10 +116,10 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     /* === start drawing === */
     QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
-    painter->drawPixmap(QPoint(actionIconRect.left(), actionIconRect.top()), pm);
+    painter->drawPixmap(QStyle::visualPos(option.direction, option.rect, QPoint(actionIconRect.left(), actionIconRect.top())), pm);
 
     pm = userIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
-    painter->drawPixmap(QPoint(userIconRect.left(), userIconRect.top()), pm);
+    painter->drawPixmap(QStyle::visualPos(option.direction, option.rect, QPoint(userIconRect.left(), userIconRect.top())), pm);
 
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
         ? QPalette::Normal
@@ -133,7 +133,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
 
     const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, actionTextBox.width());
-    painter->drawText(actionTextBox, elidedAction);
+    painter->drawText(QStyle::visualRect(option.direction, option.rect, actionTextBox), elidedAction);
 
     QString timeStr;
     if (accountOnline) {
@@ -145,14 +145,8 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
     const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, timeBox.width());
 
-    painter->drawText(timeBox, elidedTime);
+    painter->drawText(QStyle::visualRect(option.direction, option.rect, timeBox), elidedTime);
     painter->restore();
-}
-
-bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
-    const QStyleOptionViewItem &option, const QModelIndex &index)
-{
-    return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
 } // namespace OCC
