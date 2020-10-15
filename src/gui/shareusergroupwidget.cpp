@@ -472,13 +472,13 @@ void ShareUserLine::loadAvatar()
     }
 }
 
-void ShareUserLine::slotAvatarLoaded(QImage avatar)
+void ShareUserLine::slotAvatarLoaded(const QPixmap &avatar)
 {
     if (avatar.isNull())
         return;
 
-    avatar = AvatarJob::makeCircularAvatar(avatar);
-    _ui->avatar->setPixmap(QPixmap::fromImage(avatar));
+    const QPixmap _avatar = AvatarJob::makeCircularAvatar(avatar);
+    _ui->avatar->setPixmap(_avatar);
 
     // Remove the stylesheet for the fallback avatar
     _ui->avatar->setStyleSheet("");

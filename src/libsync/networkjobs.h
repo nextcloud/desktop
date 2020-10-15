@@ -169,14 +169,14 @@ public:
     void start() override;
 
     /** The retrieved avatar images don't have the circle shape by default */
-    static QImage makeCircularAvatar(const QImage &baseAvatar);
+    static QPixmap makeCircularAvatar(const QPixmap &baseAvatar);
 
 signals:
     /**
      * @brief avatarPixmap - returns either a valid pixmap or not.
      */
 
-    void avatarPixmap(const QImage &);
+    void avatarPixmap(const QPixmap &);
 
 private slots:
     bool finished() override;

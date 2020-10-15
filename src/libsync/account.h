@@ -95,8 +95,8 @@ public:
     void setDavDisplayName(const QString &newDisplayName);
 
 #ifndef TOKEN_AUTH_ONLY
-    QImage avatar() const;
-    void setAvatar(const QImage &img);
+    QPixmap avatar() const;
+    void setAvatar(const QPixmap &img);
 #endif
 
     /// The name of the account as shown in the toolbar
@@ -280,7 +280,7 @@ private:
     QString _displayName;
     QString _idpUserName;
 #ifndef TOKEN_AUTH_ONLY
-    QImage _avatarImg;
+    QPixmap _avatarImg;
 #endif
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;

@@ -131,7 +131,7 @@ private slots:
     void slotShareDeleted();
     void slotPermissionsSet();
 
-    void slotAvatarLoaded(QImage avatar);
+    void slotAvatarLoaded(const QPixmap &avatar);
 
 private:
     void displayPermissions();

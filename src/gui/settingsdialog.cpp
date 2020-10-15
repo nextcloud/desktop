@@ -338,13 +338,13 @@ void SettingsDialog::accountAdded(AccountState *s)
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
     QAction *accountAction;
-    QImage avatar = s->account()->avatar();
+    const QPixmap avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     if (avatar.isNull()) {
         accountAction = createActionWithIcon(QStringLiteral("account"),
             actionText);
     } else {
-        QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));
+        const QIcon icon(AvatarJob::makeCircularAvatar(avatar));
         accountAction = new ToolButtonAction(icon, actionText, this);
     }
 
@@ -383,9 +383,9 @@ void SettingsDialog::slotAccountAvatarChanged()
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if (action) {
-            QImage pix = account->avatar();
+            const QPixmap pix = account->avatar();
             if (!pix.isNull()) {
-                action->setIcon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(pix)));
+                action->setIcon(AvatarJob::makeCircularAvatar(pix));
             }
         }
     }

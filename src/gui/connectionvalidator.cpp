@@ -323,7 +323,7 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
 }
 
 #ifndef TOKEN_AUTH_ONLY
-void ConnectionValidator::slotAvatarImage(const QImage &img)
+void ConnectionValidator::slotAvatarImage(const QPixmap &img)
 {
     _account->setAvatar(img);
     reportResult(Connected);
