@@ -4011,7 +4011,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;inscrire avec un fournisseur</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>

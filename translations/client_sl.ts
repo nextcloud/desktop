@@ -950,7 +950,9 @@ Nasprotno, če potrdite brisanje in niste lastnik datotek, te ne bodo več na vo
         <source>All files got deleted from your local sync folder '%1'.
 These files will be deleted from the server and will not be available on your other devices if they will not be restored.
 If this action was unintended you can restore the lost data now.</source>
-        <translation type="unfinished"/>
+        <translation>Iz usklajevalne mape »%1« so bile izbrisane vse datoteke.
+Te bodo izbrisane s strežnika in ne bodo več na voljo na drugih povezanih napravah, če jih ne obnovite.
+Če je to opravilo zagnano nenamerno, lahko izgubljene podatke obnovite zdaj.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1100"/>
@@ -2120,12 +2122,12 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Povežite se v vaš %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>To je povezava do spletnega vmesnika %1, ki se odpre v brskalniku.&lt;br/&gt;Videti je kot https://oblak.domena.si oziroma https://domena.si/oblak.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
@@ -2175,7 +2177,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>Prekinitev med poskusom povezave na %1 pri %2.</translation>
+        <translation>Povezovanje na %1 pri %2 je časovno poteklo.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="316"/>
@@ -3556,7 +3558,7 @@ Uporaba možnosti ni priporočljiva.</translation>
         <location filename="../src/libsync/theme.cpp" line="369"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation>&lt;p&gt;%1 namizni program&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Namizni program %1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="372"/>
@@ -3995,7 +3997,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>To je povezava do spletnega vmesnika %1, ki se odpre v brskalniku.&lt;br/&gt;Videti je kot https://oblak.domena.si oziroma https://domena.si/oblak.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -4015,7 +4017,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Povežite se v vaš %1</translation>
     </message>
 </context>
 <context>
@@ -4305,7 +4307,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="527"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Odpri datoteko %1 krajevno</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
@@ -4325,7 +4327,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open Talk %1</source>
-        <translation type="unfinished"/>
+        <translation>Odpri Talk %1</translation>
     </message>
 </context>
 <context>
