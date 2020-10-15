@@ -1,0 +1,5 @@
+Bugfix: "All Files removed" dialog no longer blocks the application
+
+We fixed a bug where a dialog locked the whole application
+
+https://github.com/owncloud/client/issues/8170
