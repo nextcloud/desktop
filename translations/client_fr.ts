@@ -1924,7 +1924,7 @@ Les journaux seront écrits dans %1.</translation>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>Une mise à jour de %1 est sur le point d&apos;être installée. 
-L&apos;assistant de mise à jour peut vous demandez des autorisations supplémentaires afin de procéder à l&apos;installation.</translation>
+L&apos;assistant de mise à jour peut vous demander des autorisations supplémentaires afin de procéder à l&apos;installation.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
