@@ -2124,12 +2124,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Accedi al tuo %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Questo è il collegamento alla tua interfaccia web di %1 quando la apri nel browser. Si presenta come https://cloud.esempio.com o https://esempio.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
@@ -3999,7 +3999,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Questo è il collegamento alla tua interfaccia web di %1 quando la apri nel browser. Si presenta come https://cloud.esempio.com o https://esempio.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -4009,7 +4009,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Registrati a un fornitore</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -4019,7 +4019,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Accedi al tuo %1</translation>
     </message>
 </context>
 <context>
