@@ -347,45 +347,41 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 {
     AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
     auto *dlg = new SelectiveSyncDialog(acc, _remoteFolder, _selectiveSyncBlacklist, this);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
 
-    const int result = dlg->exec();
-    bool updateBlacklist = false;
+    connect(dlg, &SelectiveSyncDialog::finished, this, [this, dlg]{
+        const int result = dlg->result();
+        bool updateBlacklist = false;
 
-    // We need to update the selective sync blacklist either when the dialog
-    // was accepted, or when it was used in conjunction with the
-    // wizardSelectiveSyncDefaultNothing feature and was cancelled - in that
-    // case the stub blacklist of / was expanded to the actual list of top
-    // level folders by the selective sync dialog.
-    if (result == QDialog::Accepted) {
-        _selectiveSyncBlacklist = dlg->createBlackList();
-        updateBlacklist = true;
-    } else if (result == QDialog::Rejected && _selectiveSyncBlacklist == QStringList("/")) {
-        _selectiveSyncBlacklist = dlg->oldBlackList();
-        updateBlacklist = true;
-    }
+        // We need to update the selective sync blacklist either when the dialog
+        // was accepted in that
+        // case the stub blacklist of / was expanded to the actual list of top
+        // level folders by the selective sync dialog.
+        if (result == QDialog::Accepted) {
+            _selectiveSyncBlacklist = dlg->createBlackList();
+            updateBlacklist = true;
+        } else if (result == QDialog::Rejected && _selectiveSyncBlacklist == QStringList("/")) {
+            _selectiveSyncBlacklist = dlg->oldBlackList();
+            updateBlacklist = true;
+        }
 
-    if (updateBlacklist) {
-        if (!_selectiveSyncBlacklist.isEmpty()) {
-            _ui.rSelectiveSync->blockSignals(true);
-            setRadioChecked(_ui.rSelectiveSync);
-            _ui.rSelectiveSync->blockSignals(false);
-            auto s = dlg->estimatedSize();
-            if (s > 0) {
-                _ui.lSelectiveSyncSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(s)));
-
-                _rSelectedSize = s;
-                QString errorStr = checkLocalSpace(_rSelectedSize);
-                setErrorString(errorStr);
-
+        if (updateBlacklist) {
+            if (!_selectiveSyncBlacklist.isEmpty()) {
+                auto s = dlg->estimatedSize();
+                if (s > 0) {
+                    _ui.lSelectiveSyncSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(s)));
+                } else {
+                    _ui.lSelectiveSyncSizeLabel->setText(QString());
+                }
             } else {
+                setRadioChecked(_ui.rSyncEverything);
                 _ui.lSelectiveSyncSizeLabel->setText(QString());
             }
-        } else {
-            setRadioChecked(_ui.rSyncEverything);
-            _ui.lSelectiveSyncSizeLabel->setText(QString());
+            wizard()->setProperty("blacklist", _selectiveSyncBlacklist);
         }
-        wizard()->setProperty("blacklist", _selectiveSyncBlacklist);
-    }
+
+    });
+    dlg->open();
 }
 
 void OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked()
