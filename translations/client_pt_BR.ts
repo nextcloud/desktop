@@ -541,7 +541,7 @@ Aguarde a nova sincronização e criptografe-a.</translation>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos da lista de ignorados e links simbólicos não são sincronizados.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
@@ -1454,7 +1454,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Create Debug Archive...</source>
-        <translation type="unfinished"/>
+        <translation>Criar arquivamento de depuração...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1490,22 +1490,22 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Criar arquivamento de depuração</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Compactar arquivamentos</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Depurar arquivamento criado</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo de depuração é criado às %1</translation>
     </message>
 </context>
 <context>
@@ -2124,12 +2124,12 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Fazer login em seu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Este é o link para sua interface web %1 quando você abrir a partir do navegador. &lt;br/&gt;Seu formato é https://cloud.example.com ou https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
@@ -3999,7 +3999,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Este é o link para sua interface web %1 quando você abrir a partir do navegador. Seu formato é https://cloud.example.com ou https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -4009,7 +4009,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Inscrever-se com um provedor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -4019,7 +4019,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Fazer login em seu %1</translation>
     </message>
 </context>
 <context>
@@ -4094,7 +4094,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Entrada de conta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -4109,7 +4109,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>Conta não conectada</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="132"/>
@@ -4219,7 +4219,7 @@ Não é aconselhado usá-la.</translation>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="99"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Diálogo principal do Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="137"/>
@@ -4239,7 +4239,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="181"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Alternador de conta e menu de configurações</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="217"/>
@@ -4249,7 +4249,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="239"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar nova conta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
@@ -4264,7 +4264,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="340"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar do usuário atual</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="362"/>
@@ -4279,12 +4279,12 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="416"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>Abrir diretório local da conta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir o Nextcloud Talk no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="446"/>
@@ -4294,7 +4294,7 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Menu de aplicativos</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="491"/>
@@ -4304,12 +4304,12 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="515"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Lista de atividade</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="527"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Abrir %1 localmente</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="574"/>
@@ -4319,17 +4319,17 @@ Não é aconselhado usá-la.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="643"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Compartilhar %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="665"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>Abrir o Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open Talk %1</source>
-        <translation type="unfinished"/>
+        <translation>Abrir o Talk %1</translation>
     </message>
 </context>
 <context>
