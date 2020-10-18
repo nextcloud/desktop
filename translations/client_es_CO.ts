@@ -4125,12 +4125,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="130"/>
         <source>%L1 GB</source>
-        <translation>%L1 GB</translation>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="134"/>
         <source>%L1 MB</source>
-        <translation>%L1 GB</translation>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="138"/>
