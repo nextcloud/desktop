@@ -725,7 +725,15 @@ void SyncEngine::slotDiscoveryFinished()
                 side += it->_direction == SyncFileItem::Down ? 1 : -1;
             }
         }
-        emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, [this, finish](bool cancel){
+
+        QPointer<QObject> guard = new QObject();
+        auto callback = [this, finish, guard](bool cancel) -> void {
+            // use a guard to ensure its only called once...
+            if (!guard)
+            {
+                return;
+            }
+            guard->deleteLater();
             if (cancel) {
                 qCInfo(lcEngine) << "User aborted sync";
                 finalize(false);
@@ -733,7 +741,8 @@ void SyncEngine::slotDiscoveryFinished()
             } else {
                 finish();
             }
-        });
+        };
+        emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, callback);
         return;
     }
     finish();
