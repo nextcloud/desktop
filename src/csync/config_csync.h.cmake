@@ -8,7 +8,6 @@
 
 #cmakedefine HAVE_ARGP_H 1
 
-#cmakedefine HAVE_TIMEGM 1
 #cmakedefine HAVE_UTIMES 1
 #cmakedefine HAVE_LSTAT 1
 
