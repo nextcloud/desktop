@@ -29,7 +29,6 @@ endif()
 set(csync_SRCS
   csync.cpp
   csync_exclude.cpp
-  csync_util.cpp
 
   std/c_time.cpp
 

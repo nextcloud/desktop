@@ -209,8 +209,6 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   { }
 };
 
-time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
-
 /**
  * }@
  */

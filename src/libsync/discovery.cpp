@@ -25,7 +25,7 @@
 #include <QThreadPool>
 #include "common/checksums.h"
 #include "csync_exclude.h"
-#include "csync_util.h"
+#include "csync.h"
 
 
 namespace OCC {

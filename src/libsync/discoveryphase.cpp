@@ -28,6 +28,7 @@
 #include <QFileInfo>
 #include <QTextCodec>
 #include <cstring>
+#include <QDateTime>
 
 
 namespace OCC {
@@ -383,7 +384,11 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
         if (property == QLatin1String("resourcetype")) {
             result.isDirectory = value.contains(QLatin1String("collection"));
         } else if (property == QLatin1String("getlastmodified")) {
-            result.modtime = oc_httpdate_parse(value.toUtf8().constData());
+            const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
+            if (date.isValid()) {
+                qCCritical(lcDiscovery) << "Failed to parse getlastmodified:" << value;
+            }
+            result.modtime = date.toTime_t();
         } else if (property == QLatin1String("getcontentlength")) {
             // See #4573, sometimes negative size values are returned
             bool ok = false;

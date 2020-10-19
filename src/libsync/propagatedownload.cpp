@@ -404,6 +404,12 @@ void PropagateDownloadFile::start()
     // Maybe it's not a real conflict and no download is necessary!
     // If the hashes are collision safe and identical, we assume the content is too.
     // For weak checksums, we only do that if the mtimes are also identical.
+
+    const auto csync_is_collision_safe_hash = [](const QByteArray &checksum_header)
+    {
+        return checksum_header.startsWith("SHA")
+            || checksum_header.startsWith("MD5:");
+    };
     if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         && _item->_size == _item->_previousSize
         && !_item->_checksumHeader.isEmpty()
