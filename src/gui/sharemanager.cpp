@@ -133,9 +133,8 @@ void Share::deleteShare()
 
 void Share::slotDeleted()
 {
-    emit shareDeleted();
-
     updateFolder(_account, _path);
+    emit shareDeleted();
 }
 
 void Share::slotOcsError(int statusCode, const QString &message)
