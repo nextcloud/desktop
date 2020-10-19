@@ -401,7 +401,7 @@ void ShareLinkWidget::slotDeleteAnimationFinished()
 
 void ShareLinkWidget::slotCreateShareRequiresPassword(const QString &message)
 {
-    slotToggleAnimation(true);
+    slotToggleAnimation(message.isEmpty());
 
     showPasswordOptions(true);
     if (!message.isEmpty()) {
