@@ -24,7 +24,7 @@
 #include <QIODevice>
 #include <QMutex>
 
-#include "csync_util.h"
+#include "csync.h"
 #include "syncfileitem.h"
 #include "common/syncjournaldb.h"
 #include "bandwidthmanager.h"

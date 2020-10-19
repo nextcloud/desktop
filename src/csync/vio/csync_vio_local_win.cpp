@@ -31,7 +31,7 @@
 
 #include "c_private.h"
 #include "c_lib.h"
-#include "csync_util.h"
+#include "csync.h"
 #include "vio/csync_vio_local.h"
 #include "common/filesystembase.h"
 
