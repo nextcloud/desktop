@@ -1263,13 +1263,14 @@ void ClientSideEncryption::folderEncryptedStatusFetched(const QHash<QString, boo
 
     _folderStatusJobs.removeAll(job);
 
+    qCDebug(lcCse) << "Retrieved correctly the encrypted status of the folders for" << job->folder() << result;
+
     // FIXME: Can be replaced by _folder2encryptedStatus.insert(result); once we depend on Qt 5.15
     for (auto it = result.constKeyValueBegin(); it != result.constKeyValueEnd(); ++it) {
         _folder2encryptedStatus.insert((*it).first, (*it).second);
     }
 
     _refreshingEncryptionStatus = false;
-    qCDebug(lcCse) << "Retrieved correctly the encrypted status of the folders." << result;
     emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
 }
 
@@ -1278,10 +1279,11 @@ void ClientSideEncryption::folderEncryptedStatusError(int error)
     auto job = static_cast<GetFolderEncryptStatusJob *>(sender());
     Q_ASSERT(job);
 
+    qCDebug(lcCse) << "Failed to retrieve the status of the folders for" << job->folder() << error;
+
     _folderStatusJobs.removeAll(job);
 
     _refreshingEncryptionStatus = false;
-    qCDebug(lcCse) << "Failed to retrieve the status of the folders." << error;
     emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
 }
 
