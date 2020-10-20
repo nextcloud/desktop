@@ -23,6 +23,8 @@ class ReadPasswordJob;
 
 namespace OCC {
 
+class GetFolderEncryptStatusJob;
+
 QString baseUrl();
 
 namespace EncryptionHelper {
@@ -125,6 +127,7 @@ private:
     //TODO: Save this on disk.
     QHash<QByteArray, QByteArray> _folder2token;
     QHash<QString, bool> _folder2encryptedStatus;
+    QVector<GetFolderEncryptStatusJob*> _folderStatusJobs;
 
 public:
     //QSslKey _privateKey;
