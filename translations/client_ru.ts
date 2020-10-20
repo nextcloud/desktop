@@ -2730,17 +2730,17 @@ It is not advisable to use it.</source>
         <translation>%1 — Предоставление общего доступа</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Невозможно предоставить общий доступ: отсутствуют разрешения на предоставление общего доступа.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>Требуется задать пароль для общего ресурса</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Задайте пароль для доступа по ссылке:</translation>
     </message>

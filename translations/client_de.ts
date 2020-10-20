@@ -2735,17 +2735,17 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <translation>%1-Freigabe</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Die Datei kann nicht geteilt werden, weil sie ohne erneute Teilungs-Berechtigung für Sie geteilt wurde.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>Passwort für die Freigabe erforderlich</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Bitte Passwort für die Link-Freigabe eingeben:</translation>
     </message>

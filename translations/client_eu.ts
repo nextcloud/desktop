@@ -2736,17 +2736,17 @@ Ez da gomendagarria erabiltzea.</translation>
         <translation>%1 partekatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Fitxategia ezin da partekatu partekatze baimenik gabe partekatu delako.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>Partekatzearen pasahitza beharrezkoa</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Sartu pasahitza esteka partekatzeko:</translation>
     </message>

@@ -2736,17 +2736,17 @@ Nie zaleca się korzystania z niego.</translation>
         <translation>Udostępnianie %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Nie można udostępnić pliku, ponieważ został udostępniony bez pozwolenia na dalsze udostępnianie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>Wymagane hasło do udostępnienia</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Wprowadź hasło do udostępnionego linku:</translation>
     </message>

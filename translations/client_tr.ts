@@ -2734,17 +2734,17 @@ Kullanmanız önerilmez.</translation>
         <translation>%1 Paylaşma</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Dosya paylaşılamaz, çünkü sizinle herhangi bir paylaşım izni olmaksızın paylaşılmış.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>Paylaşım parolası zorunludur</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Lütfen bağlantı paylaşımınız için bir parola yazın:</translation>
     </message>
