@@ -1241,19 +1241,23 @@ void ClientSideEncryption::getPublicKeyFromServer()
     job->start();
 }
 
+void ClientSideEncryption::scheduleFolderEncryptedStatusJob(const QString &path)
+{
+    auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, path);
+    connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
+            this, &ClientSideEncryption::folderEncryptedStatusFetched);
+    connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
+            this, &ClientSideEncryption::folderEncryptedStatusError);
+    getEncryptedStatus->start();
+
+    _folderStatusJobs.append(getEncryptedStatus);
+}
+
 void ClientSideEncryption::fetchFolderEncryptedStatus()
 {
     _refreshingEncryptionStatus = true;
     _folder2encryptedStatus.clear();
-
-    auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, QString());
-    connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
-                    this, &ClientSideEncryption::folderEncryptedStatusFetched);
-    connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
-                    this, &ClientSideEncryption::folderEncryptedStatusError);
-    getEncryptedStatus->start();
-
-    _folderStatusJobs.append(getEncryptedStatus);
+    scheduleFolderEncryptedStatusJob(QString());
 }
 
 void ClientSideEncryption::folderEncryptedStatusFetched(const QHash<QString, bool>& result)
