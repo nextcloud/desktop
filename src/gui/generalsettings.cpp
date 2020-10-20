@@ -118,6 +118,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     if (!Theme::instance()->aboutShowCopyright()) {
         _ui->copyrightLabel->hide();
     }
+    if (Theme::instance()->forceVirtualFilesOption()) {
+        _ui->groupBox_non_vfs->hide();
+    }
 }
 
 GeneralSettings::~GeneralSettings()

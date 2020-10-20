@@ -655,6 +655,11 @@ bool Theme::showVirtualFilesOption() const
     return enableExperimentalFeatures();
 }
 
+bool Theme::forceVirtualFilesOption() const
+{
+    return false;
+}
+
 bool Theme::enableExperimentalFeatures() const
 {
     return ConfigFile().showExperimentalOptions();
