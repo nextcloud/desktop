@@ -1243,7 +1243,7 @@ void ClientSideEncryption::getPublicKeyFromServer()
 
 void ClientSideEncryption::scheduleFolderEncryptedStatusJob(const QString &path)
 {
-    auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, path);
+    auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, path, this);
     connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
             this, &ClientSideEncryption::folderEncryptedStatusFetched);
     connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
