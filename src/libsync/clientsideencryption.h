@@ -111,6 +111,7 @@ signals:
     void folderEncryptedStatusFetchDone(const QHash<QString, bool> &values);
 
 private:
+    void scheduleFolderEncryptedStatusJob(const QString &path);
     void getPrivateKeyFromServer();
     void getPublicKeyFromServer();
     void decryptPrivateKey(const QByteArray &key);
