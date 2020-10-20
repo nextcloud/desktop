@@ -2733,17 +2733,17 @@ Használata nem ajánlott.</translation>
         <translation>%1 megosztás</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>A fájlt nem lehetett megosztani, mert megosztási jogosultság nélkül lett megosztva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>A megosztáshoz jelszó szükséges</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Adjon meg egy jelszót a megosztási hivatkozásához:</translation>
     </message>

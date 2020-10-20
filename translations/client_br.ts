@@ -2735,17 +2735,17 @@ It is not advisable to use it.</source>
         <translation>%1 O rannañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>N&apos;eo ket rannapl ar restr peogwir eo bet rannet hep aotre rannañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>Ger-tremen ret evit gellout rannañ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Ebarzhit ur ger-tremen d&apos;ho liamm rannet:</translation>
     </message>
