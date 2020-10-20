@@ -1274,8 +1274,17 @@ void ClientSideEncryption::folderEncryptedStatusFetched(const QHash<QString, boo
         _folder2encryptedStatus.insert((*it).first, (*it).second);
     }
 
-    _refreshingEncryptionStatus = false;
-    emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
+    for (const auto &folder : result.keys()) {
+        if (folder == job->folder()) {
+            continue;
+        }
+        scheduleFolderEncryptedStatusJob(folder);
+    }
+
+    if (_folderStatusJobs.isEmpty()) {
+        _refreshingEncryptionStatus = false;
+        emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
+    }
 }
 
 void ClientSideEncryption::folderEncryptedStatusError(int error)
@@ -1287,8 +1296,10 @@ void ClientSideEncryption::folderEncryptedStatusError(int error)
 
     _folderStatusJobs.removeAll(job);
 
-    _refreshingEncryptionStatus = false;
-    emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
+    if (_folderStatusJobs.isEmpty()) {
+        _refreshingEncryptionStatus = false;
+        emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
+    }
 }
 
 FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata, int statusCode) : _account(account)
