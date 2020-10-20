@@ -2736,17 +2736,17 @@ Nije preporučljivo koristiti ga.</translation>
         <translation>%1 Dijeljenje</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Datoteku nije moguće dijeliti jer je dijeljena bez dopuštenja.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>Potrebna je zaporka za dijeljenje</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Unesite zaporku svoje poveznice dijeljenja:</translation>
     </message>

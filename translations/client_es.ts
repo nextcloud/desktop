@@ -1490,7 +1490,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Create Debug Archive</source>
-        <translation>Crear archivo de depuración…</translation>
+        <translation>Crear archivo de depuración</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
@@ -1500,7 +1500,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug Archive Created</source>
-        <translation>Archivo de depuración credo</translation>
+        <translation>Archivo de depuración creado</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
@@ -2735,17 +2735,17 @@ No se recomienda usarla.</translation>
         <translation>%1 Compartiendo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>El archivo no puede compartirse ya que ha sido compartido sin los permisos correspondientes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>Se requiere contraseña para compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Por favor, introduce una contraseña para tu enlace compartido:</translation>
     </message>

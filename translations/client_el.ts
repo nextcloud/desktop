@@ -2734,17 +2734,17 @@ It is not advisable to use it.</source>
         <translation>%1 Διαμοιράστηκε</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="290"/>
+        <location filename="../src/gui/sharedialog.cpp" line="294"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Το αρχείο δεν μπορεί να διαμοιραστεί γιατί διαμοιράστηκε χωρίς δικαιώματα διαμοιρασμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="331"/>
+        <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
         <translation>Απαιτείται κωδικός πρόσβασης για το κοινόχρηστο</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
         <translation>Παρακαλώ εισάγετε κωδικό πρόσβασης για το κοινόχρηστο σύνδεσμο:</translation>
     </message>
