@@ -1244,6 +1244,8 @@ void ClientSideEncryption::getPublicKeyFromServer()
 void ClientSideEncryption::fetchFolderEncryptedStatus()
 {
     _refreshingEncryptionStatus = true;
+    _folder2encryptedStatus.clear();
+
     auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, QString());
     connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
                     this, &ClientSideEncryption::folderEncryptedStatusFetched);
@@ -1261,10 +1263,14 @@ void ClientSideEncryption::folderEncryptedStatusFetched(const QHash<QString, boo
 
     _folderStatusJobs.removeAll(job);
 
+    // FIXME: Can be replaced by _folder2encryptedStatus.insert(result); once we depend on Qt 5.15
+    for (auto it = result.constKeyValueBegin(); it != result.constKeyValueEnd(); ++it) {
+        _folder2encryptedStatus.insert((*it).first, (*it).second);
+    }
+
     _refreshingEncryptionStatus = false;
-    _folder2encryptedStatus = result;
     qCDebug(lcCse) << "Retrieved correctly the encrypted status of the folders." << result;
-    emit folderEncryptedStatusFetchDone(result);
+    emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
 }
 
 void ClientSideEncryption::folderEncryptedStatusError(int error)
@@ -1276,7 +1282,7 @@ void ClientSideEncryption::folderEncryptedStatusError(int error)
 
     _refreshingEncryptionStatus = false;
     qCDebug(lcCse) << "Failed to retrieve the status of the folders." << error;
-    emit folderEncryptedStatusFetchDone({});
+    emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
 }
 
 FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata, int statusCode) : _account(account)
