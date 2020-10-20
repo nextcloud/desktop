@@ -29,6 +29,11 @@ GetFolderEncryptStatusJob::GetFolderEncryptStatusJob(const AccountPtr& account, 
 {
 }
 
+QString GetFolderEncryptStatusJob::folder() const
+{
+    return _folder;
+}
+
 void GetFolderEncryptStatusJob::start()
 {
 	QNetworkRequest req;
