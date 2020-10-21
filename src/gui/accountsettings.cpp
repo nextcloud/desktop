@@ -445,7 +445,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     ac = menu->addAction(tr("Remove folder sync connection"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
 
-    if (folder->supportsVirtualFiles()) {
+    if (folder->virtualFilesEnabled()) {
         auto availabilityMenu = menu->addMenu(tr("Availability"));
         auto availability = folder->vfs().availability(QString());
         if (availability) {
@@ -468,11 +468,12 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
     if (Theme::instance()->showVirtualFilesOption()
-        && !folder->supportsVirtualFiles()
-        && bestAvailableVfsMode() != Vfs::Off
-        && !folder->isVfsOnOffSwitchPending()) {
-        ac = menu->addAction(tr("Enable virtual file support%1...").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
-        connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableVfsCurrentFolder);
+        && !folder->virtualFilesEnabled() && Vfs::checkAvailability(folder->path())) {
+        const auto mode = bestAvailableVfsMode();
+        if (mode == Vfs::WindowsCfApi || ConfigFile().showExperimentalOptions()) {
+            ac = menu->addAction(tr("Enable virtual file support%1...").arg(mode == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
+            connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableVfsCurrentFolder);
+        }
     }
 
 
@@ -688,7 +689,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
             // Change the folder vfs mode and load the plugin
-            folder->setSupportsVirtualFiles(true);
+            folder->setVirtualFilesEnabled(true);
             folder->setVfsOnOffSwitchPending(false);
 
             // Setting to Unspecified retains existing data.
@@ -754,7 +755,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             qCInfo(lcAccountSettings) << "Disabling vfs support for folder" << folder->path();
 
             // Also wipes virtual files, schedules remote discovery
-            folder->setSupportsVirtualFiles(false);
+            folder->setVirtualFilesEnabled(false);
             folder->setVfsOnOffSwitchPending(false);
 
             // Wipe pin states and selective sync db

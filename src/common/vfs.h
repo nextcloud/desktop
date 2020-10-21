@@ -99,6 +99,8 @@ public:
     static QString modeToString(Mode mode);
     static Optional<Mode> modeFromString(const QString &str);
 
+    static Result<bool, QString> checkAvailability(const QString &path);
+
     enum class AvailabilityError
     {
         // Availability can't be retrieved due to db error

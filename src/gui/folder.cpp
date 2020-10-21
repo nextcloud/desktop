@@ -631,7 +631,7 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
     slotScheduleThisFolder();
 }
 
-void Folder::setSupportsVirtualFiles(bool enabled)
+void Folder::setVirtualFilesEnabled(bool enabled)
 {
     Vfs::Mode newMode = _definition.virtualFilesMode;
     if (enabled && _definition.virtualFilesMode == Vfs::Off) {
@@ -671,7 +671,7 @@ void Folder::setRootPinState(PinState state)
 
 bool Folder::supportsSelectiveSync() const
 {
-    return !supportsVirtualFiles() && !isVfsOnOffSwitchPending();
+    return !virtualFilesEnabled() && !isVfsOnOffSwitchPending();
 }
 
 void Folder::saveToSettings() const
@@ -688,7 +688,7 @@ void Folder::saveToSettings() const
         return other != this && other->cleanPath() == this->cleanPath();
     });
 
-    if (supportsVirtualFiles() || _saveInFoldersWithPlaceholders) {
+    if (virtualFilesEnabled() || _saveInFoldersWithPlaceholders) {
         // If virtual files are enabled or even were enabled at some point,
         // save the folder to a group that will not be read by older (<2.5.0) clients.
         // The name is from when virtual files were called placeholders.
@@ -1221,7 +1221,7 @@ void Folder::registerFolderWatcher()
     _folderWatcher->startNotificatonTest(path() + QLatin1String(".owncloudsync.log"));
 }
 
-bool Folder::supportsVirtualFiles() const
+bool Folder::virtualFilesEnabled() const
 {
     return _definition.virtualFilesMode != Vfs::Off && !isVfsOnOffSwitchPending();
 }
