@@ -143,12 +143,6 @@ Window {
                         anchors.fill:   parent
                         hoverEnabled:   Style.hoverEffectsEnabled
 
-                        // HACK: Imitate Qt hover effect brightness (which is not accessible as property)
-                        // so that indicator background also flicks when hovered
-                        onContainsMouseChanged: {
-                            currentAccountStateIndicatorBackground.color = (containsMouse ? Style.ncBlueHover : Style.ncBlue)
-                        }
-
                         // We call open() instead of popup() because we want to position it
                         // exactly below the dropdown button, not the mouse
                         onClicked: {
@@ -349,6 +343,16 @@ Window {
                                 radius: width*0.5
                             }
 
+                            Rectangle {
+                                width: Style.accountAvatarStateIndicatorSize + 2
+                                height: width
+                                anchors.bottom: currentAccountAvatar.bottom
+                                anchors.right: currentAccountAvatar.right
+                                color: accountBtnMouseArea.containsMouse ? "white" : "transparent"
+                                opacity: 0.2
+                                radius: width*0.5
+                            }
+
                             Image {
                                 id: currentAccountStateIndicator
                                 source: UserModel.isUserConnected(UserModel.currentUserId) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
@@ -374,7 +378,7 @@ Window {
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
                                 elide: Text.ElideRight
-                                color: "white"
+                                color: Style.ncTextColor
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
                             }
@@ -383,7 +387,7 @@ Window {
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.server
                                 elide: Text.ElideRight
-                                color: "white"
+                                color: Style.ncTextColor
                                 font.pixelSize: Style.subLinePixelSize
                             }
                         }
