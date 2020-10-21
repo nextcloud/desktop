@@ -74,6 +74,12 @@ Systray::Systray()
         }
     );
 
+    qmlRegisterSingletonType<Systray>("com.nextcloud.desktopclient", 1, 0, "Theme",
+        [](QQmlEngine *, QJSEngine *) -> QObject * {
+            return Theme::instance();
+        }
+    );
+
     qmlRegisterSingletonType<Systray>("com.nextcloud.desktopclient", 1, 0, "Systray",
         [](QQmlEngine *, QJSEngine *) -> QObject * {
             return Systray::instance();
