@@ -1241,29 +1241,65 @@ void ClientSideEncryption::getPublicKeyFromServer()
     job->start();
 }
 
-void ClientSideEncryption::fetchFolderEncryptedStatus() {
-    _refreshingEncryptionStatus = true;
-    auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, QString());
+void ClientSideEncryption::scheduleFolderEncryptedStatusJob(const QString &path)
+{
+    auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, path, this);
     connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
-                    this, &ClientSideEncryption::folderEncryptedStatusFetched);
+            this, &ClientSideEncryption::folderEncryptedStatusFetched);
     connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
-                    this, &ClientSideEncryption::folderEncryptedStatusError);
+            this, &ClientSideEncryption::folderEncryptedStatusError);
     getEncryptedStatus->start();
+
+    _folderStatusJobs.append(getEncryptedStatus);
+}
+
+void ClientSideEncryption::fetchFolderEncryptedStatus()
+{
+    _refreshingEncryptionStatus = true;
+    _folder2encryptedStatus.clear();
+    scheduleFolderEncryptedStatusJob(QString());
 }
 
 void ClientSideEncryption::folderEncryptedStatusFetched(const QHash<QString, bool>& result)
 {
-    _refreshingEncryptionStatus = false;
-    _folder2encryptedStatus = result;
-    qCDebug(lcCse) << "Retrieved correctly the encrypted status of the folders." << result;
-    emit folderEncryptedStatusFetchDone(result);
+    auto job = static_cast<GetFolderEncryptStatusJob *>(sender());
+    Q_ASSERT(job);
+
+    _folderStatusJobs.removeAll(job);
+
+    qCDebug(lcCse) << "Retrieved correctly the encrypted status of the folders for" << job->folder() << result;
+
+    // FIXME: Can be replaced by _folder2encryptedStatus.insert(result); once we depend on Qt 5.15
+    for (auto it = result.constKeyValueBegin(); it != result.constKeyValueEnd(); ++it) {
+        _folder2encryptedStatus.insert((*it).first, (*it).second);
+    }
+
+    for (const auto &folder : result.keys()) {
+        if (folder == job->folder()) {
+            continue;
+        }
+        scheduleFolderEncryptedStatusJob(folder);
+    }
+
+    if (_folderStatusJobs.isEmpty()) {
+        _refreshingEncryptionStatus = false;
+        emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
+    }
 }
 
 void ClientSideEncryption::folderEncryptedStatusError(int error)
 {
-    _refreshingEncryptionStatus = false;
-    qCDebug(lcCse) << "Failed to retrieve the status of the folders." << error;
-    emit folderEncryptedStatusFetchDone({});
+    auto job = static_cast<GetFolderEncryptStatusJob *>(sender());
+    Q_ASSERT(job);
+
+    qCDebug(lcCse) << "Failed to retrieve the status of the folders for" << job->folder() << error;
+
+    _folderStatusJobs.removeAll(job);
+
+    if (_folderStatusJobs.isEmpty()) {
+        _refreshingEncryptionStatus = false;
+        emit folderEncryptedStatusFetchDone(_folder2encryptedStatus);
+    }
 }
 
 FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata, int statusCode) : _account(account)

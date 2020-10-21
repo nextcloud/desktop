@@ -286,6 +286,8 @@ class OWNCLOUDSYNC_EXPORT GetFolderEncryptStatusJob : public AbstractNetworkJob
 public:
 	explicit GetFolderEncryptStatusJob (const AccountPtr &account, const QString& folder, QObject *parent = nullptr);
 
+    QString folder() const;
+
 public slots:
 	void start() override;
 
