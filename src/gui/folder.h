@@ -282,8 +282,8 @@ public:
      * and never have an automatic virtual file. But when it's on, the shell context menu will allow
      * users to make existing files virtual.
      */
-    bool supportsVirtualFiles() const;
-    void setSupportsVirtualFiles(bool enabled);
+    bool virtualFilesEnabled() const;
+    void setVirtualFilesEnabled(bool enabled);
 
     void setRootPinState(PinState state);
 

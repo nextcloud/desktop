@@ -21,6 +21,8 @@
 #include "version.h"
 #include "syncjournaldb.h"
 
+#include "common/filesystembase.h"
+
 #include <QPluginLoader>
 #include <QLoggingCategory>
 
@@ -58,6 +60,22 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
         return WindowsCfApi;
     }
     return {};
+}
+
+Result<bool, QString> Vfs::checkAvailability(const QString &path)
+{
+    const auto mode = bestAvailableVfsMode();
+#ifdef Q_OS_WIN
+    if (mode == Mode::WindowsCfApi) {
+        const auto fs = FileSystem::fileSystemForPath(path);
+        if (fs != QLatin1String("NTFS")) {
+            return tr("The Virtual filesystem feature requires a NTFS file system, %1 is using %2").arg(path, fs);
+        }
+    }
+#else
+    Q_UNUSED(path);
+#endif
+    return true;
 }
 
 void Vfs::start(const VfsSetupParams &params)
