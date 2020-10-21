@@ -42,8 +42,6 @@
 #include "owncloudsetupwizard.h"
 #include "version.h"
 
-#include "config.h"
-
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
