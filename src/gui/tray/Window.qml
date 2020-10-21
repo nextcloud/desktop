@@ -143,12 +143,6 @@ Window {
                         anchors.fill:   parent
                         hoverEnabled:   Style.hoverEffectsEnabled
 
-                        // HACK: Imitate Qt hover effect brightness (which is not accessible as property)
-                        // so that indicator background also flicks when hovered
-                        onContainsMouseChanged: {
-                            currentAccountStateIndicatorBackground.color = (containsMouse ? Style.ncBlueHover : Style.ncBlue)
-                        }
-
                         // We call open() instead of popup() because we want to position it
                         // exactly below the dropdown button, not the mouse
                         onClicked: {
@@ -346,6 +340,16 @@ Window {
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
                                 color: Style.ncBlue
+                                radius: width*0.5
+                            }
+
+                            Rectangle {
+                                width: Style.accountAvatarStateIndicatorSize + 2
+                                height: width
+                                anchors.bottom: currentAccountAvatar.bottom
+                                anchors.right: currentAccountAvatar.right
+                                color: accountBtnMouseArea.containsMouse ? "white" : "transparent"
+                                opacity: 0.2
                                 radius: width*0.5
                             }
 

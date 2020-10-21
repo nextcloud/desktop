@@ -6,7 +6,6 @@ import QtQuick 2.5
 QtObject {
     // Colors
     property color ncBlue:      "#0082c9"
-    property color ncBlueHover: "#009dd9"
     property color lightHover:  "#f7f7f7"
     property color menuBorder:  "#bdbdbd"
 
