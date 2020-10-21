@@ -246,8 +246,15 @@ Application::Application(int &argc, char **argv)
         return;
 
 #if defined(WITH_CRASHREPORTER)
-    if (ConfigFile().crashReporter())
-        _crashHandler.reset(new CrashReporter::Handler(QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE));
+    if (ConfigFile().crashReporter()) {
+        auto reporter = QStringLiteral(CRASHREPORTER_EXECUTABLE);
+#ifdef Q_OS_WIN
+        if (reporter.endsWith(QLatin1String(".exe"))) {
+            reporter.append(QLatin1String(".exe"));
+        }
+#endif
+        _crashHandler.reset(new CrashReporter::Handler(QDir::tempPath(), true, reporter));
+    }
 #endif
 
     setupLogging();
