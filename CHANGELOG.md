@@ -17,6 +17,8 @@ Summary
 * Bugfix - The back button on the advanced wizard page no longer gets enabled: [#8051](https://github.com/owncloud/client/issues/8051)
 * Bugfix - Ensure permissions for newly added files are available: [#8066](https://github.com/owncloud/client/issues/8066)
 * Bugfix - Remove notifications when the account they belong to was removed: [#8085](https://github.com/owncloud/client/issues/8085)
+* Bugfix - Check whether the local folder supports the virtual file system: [#8131](https://github.com/owncloud/client/issues/8131)
+* Bugfix - "All Files removed" dialog no longer blocks the application: [#8170](https://github.com/owncloud/client/issues/8170)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - When manually adding a folder sync connection, don't display 404 errors: [#7724](https://github.com/owncloud/client/issues/7724)
 * Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
@@ -105,6 +107,19 @@ Details
    We fixed a bug where notifications where still displayed after an account was removed.
 
    https://github.com/owncloud/client/issues/8085
+
+* Bugfix - Check whether the local folder supports the virtual file system: [#8131](https://github.com/owncloud/client/issues/8131)
+
+   The Windows virtual file system requires NTFS, we now ensure that the folder is using NTFS
+   before we continue.
+
+   https://github.com/owncloud/client/issues/8131
+
+* Bugfix - "All Files removed" dialog no longer blocks the application: [#8170](https://github.com/owncloud/client/issues/8170)
+
+   We fixed a bug where a dialog locked the whole application
+
+   https://github.com/owncloud/client/issues/8170
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
