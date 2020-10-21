@@ -3,10 +3,12 @@ pragma Singleton
 // Minimum for this is Qt 5.5
 import QtQuick 2.5
 
+import com.nextcloud.desktopclient 1.0
+
 QtObject {
     // Colors
-    property color ncBlue:      "#0082c9"
-    property color ncTextColor: "white"
+    property color ncBlue:      Theme.wizardHeaderBackgroundColor
+    property color ncTextColor: Theme.wizardHeaderTitleColor
     property color lightHover:  "#f7f7f7"
     property color menuBorder:  "#bdbdbd"
 
