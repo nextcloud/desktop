@@ -37,6 +37,7 @@
 #include <QVBoxLayout>
 #include <QEvent>
 #include <QCheckBox>
+#include <QMessageBox>
 
 #include <stdlib.h>
 
@@ -511,7 +512,16 @@ void FolderWizardSelectiveSync::initializePage()
 
 bool FolderWizardSelectiveSync::validatePage()
 {
-    bool useVirtualFiles = _virtualFilesCheckBox && _virtualFilesCheckBox->isChecked();
+    const bool useVirtualFiles = _virtualFilesCheckBox && _virtualFilesCheckBox->isChecked();
+    if (useVirtualFiles) {
+        const auto availability = Vfs::checkAvailability(wizard()->field(QStringLiteral("sourceFolder")).toString());
+        if (!availability) {
+            auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, this);
+            msg->setAttribute(Qt::WA_DeleteOnClose);
+            msg->open();
+            return false;
+        }
+    }
     wizard()->setProperty("selectiveSyncBlackList", useVirtualFiles ? QVariant() : QVariant(_selectiveSync->createBlackList()));
     wizard()->setProperty("useVirtualFiles", QVariant(useVirtualFiles));
     return true;

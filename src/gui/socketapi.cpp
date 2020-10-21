@@ -1027,7 +1027,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
     // File availability actions
     if (folder
-        && folder->supportsVirtualFiles()
+        && folder->virtualFilesEnabled()
         && folder->vfs().socketApiPinStateActionsShown()) {
         OC_ENFORCE(!files.isEmpty());
 

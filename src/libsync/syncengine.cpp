@@ -636,100 +636,116 @@ void SyncEngine::slotDiscoveryFinished()
     emit transmissionProgress(*_progressInfo);
 
     //    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms.toString();
+    auto finish = [this]{
+
+
+        auto databaseFingerprint = _journal->dataFingerprint();
+        // If databaseFingerprint is empty, this means that there was no information in the database
+        // (for example, upgrading from a previous version, or first sync, or server not supporting fingerprint)
+        if (!databaseFingerprint.isEmpty() && _discoveryPhase
+            && _discoveryPhase->_dataFingerprint != databaseFingerprint) {
+            qCInfo(lcEngine) << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryPhase->_dataFingerprint;
+            restoreOldFiles(_syncItems);
+        }
+
+        if (_discoveryPhase->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
+            _anotherSyncNeeded = ImmediateFollowUp;
+        }
+
+        Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
+
+        qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";
+
+        _localDiscoveryPaths.clear();
+
+        // To announce the beginning of the sync
+        emit aboutToPropagate(_syncItems);
+
+        qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate OK) #################################################### "<< _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate OK)")) << "ms";
+
+        // it's important to do this before ProgressInfo::start(), to announce start of new sync
+        _progressInfo->_status = ProgressInfo::Propagation;
+        emit transmissionProgress(*_progressInfo);
+        _progressInfo->startEstimateUpdates();
+
+        // post update phase script: allow to tweak stuff by a custom script in debug mode.
+        if (!qEnvironmentVariableIsEmpty("OWNCLOUD_POST_UPDATE_SCRIPT")) {
+    #ifndef NDEBUG
+            const QString script = qEnvironmentVariable("OWNCLOUD_POST_UPDATE_SCRIPT");
+
+            qCDebug(lcEngine) << "Post Update Script: " << script;
+            QProcess::execute(script);
+    #else
+            qCWarning(lcEngine) << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
+    #endif
+        }
+
+        // do a database commit
+        _journal->commit(QStringLiteral("post treewalk"));
+
+        _propagator = QSharedPointer<OwncloudPropagator>(
+            new OwncloudPropagator(_account, _localPath, _remotePath, _journal));
+        _propagator->setSyncOptions(_syncOptions);
+        connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
+            this, &SyncEngine::slotItemCompleted);
+        connect(_propagator.data(), &OwncloudPropagator::progress,
+            this, &SyncEngine::slotProgress);
+        connect(_propagator.data(), &OwncloudPropagator::updateFileTotal,
+            this, &SyncEngine::updateFileTotal);
+        connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotPropagationFinished, Qt::QueuedConnection);
+        connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
+        connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
+        connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
+        connect(_propagator.data(), &OwncloudPropagator::insufficientRemoteStorage, this, &SyncEngine::slotInsufficientRemoteStorage);
+        connect(_propagator.data(), &OwncloudPropagator::newItem, this, &SyncEngine::slotNewItem);
+
+        // apply the network limits to the propagator
+        setNetworkLimits(_uploadLimit, _downloadLimit);
+
+        deleteStaleDownloadInfos(_syncItems);
+        deleteStaleUploadInfos(_syncItems);
+        deleteStaleErrorBlacklistEntries(_syncItems);
+        _journal->commit(QStringLiteral("post stale entry removal"));
+
+        // Emit the started signal only after the propagator has been set up.
+        if (_needsUpdate)
+            emit(started());
+
+        _propagator->start(_syncItems);
+        _syncItems.clear();
+
+        qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
+    };
 
     if (!_hasNoneFiles && _hasRemoveFile) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
-        bool cancel = false;
         int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
         foreach (const auto &it, _syncItems) {
             if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 side += it->_direction == SyncFileItem::Down ? 1 : -1;
             }
         }
-        emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, &cancel);
-        if (cancel) {
-            qCInfo(lcEngine) << "User aborted sync";
-            finalize(false);
-            return;
-        }
+
+        QPointer<QObject> guard = new QObject();
+        auto callback = [this, finish, guard](bool cancel) -> void {
+            // use a guard to ensure its only called once...
+            if (!guard)
+            {
+                return;
+            }
+            guard->deleteLater();
+            if (cancel) {
+                qCInfo(lcEngine) << "User aborted sync";
+                finalize(false);
+                return;
+            } else {
+                finish();
+            }
+        };
+        emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, callback);
+        return;
     }
-
-    auto databaseFingerprint = _journal->dataFingerprint();
-    // If databaseFingerprint is empty, this means that there was no information in the database
-    // (for example, upgrading from a previous version, or first sync, or server not supporting fingerprint)
-    if (!databaseFingerprint.isEmpty() && _discoveryPhase
-        && _discoveryPhase->_dataFingerprint != databaseFingerprint) {
-        qCInfo(lcEngine) << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryPhase->_dataFingerprint;
-        restoreOldFiles(_syncItems);
-    }
-
-    if (_discoveryPhase->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
-        _anotherSyncNeeded = ImmediateFollowUp;
-    }
-
-    Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
-
-    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";
-
-    _localDiscoveryPaths.clear();
-
-    // To announce the beginning of the sync
-    emit aboutToPropagate(_syncItems);
-
-    qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate OK) #################################################### "<< _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate OK)")) << "ms";
-
-    // it's important to do this before ProgressInfo::start(), to announce start of new sync
-    _progressInfo->_status = ProgressInfo::Propagation;
-    emit transmissionProgress(*_progressInfo);
-    _progressInfo->startEstimateUpdates();
-
-    // post update phase script: allow to tweak stuff by a custom script in debug mode.
-    if (!qEnvironmentVariableIsEmpty("OWNCLOUD_POST_UPDATE_SCRIPT")) {
-#ifndef NDEBUG
-        const QString script = qEnvironmentVariable("OWNCLOUD_POST_UPDATE_SCRIPT");
-
-        qCDebug(lcEngine) << "Post Update Script: " << script;
-        QProcess::execute(script);
-#else
-        qCWarning(lcEngine) << "**** Attention: POST_UPDATE_SCRIPT installed, but not executed because compiled with NDEBUG";
-#endif
-    }
-
-    // do a database commit
-    _journal->commit(QStringLiteral("post treewalk"));
-
-    _propagator = QSharedPointer<OwncloudPropagator>(
-        new OwncloudPropagator(_account, _localPath, _remotePath, _journal));
-    _propagator->setSyncOptions(_syncOptions);
-    connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
-        this, &SyncEngine::slotItemCompleted);
-    connect(_propagator.data(), &OwncloudPropagator::progress,
-        this, &SyncEngine::slotProgress);
-    connect(_propagator.data(), &OwncloudPropagator::updateFileTotal,
-        this, &SyncEngine::updateFileTotal);
-    connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotPropagationFinished, Qt::QueuedConnection);
-    connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
-    connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
-    connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
-    connect(_propagator.data(), &OwncloudPropagator::insufficientRemoteStorage, this, &SyncEngine::slotInsufficientRemoteStorage);
-    connect(_propagator.data(), &OwncloudPropagator::newItem, this, &SyncEngine::slotNewItem);
-
-    // apply the network limits to the propagator
-    setNetworkLimits(_uploadLimit, _downloadLimit);
-
-    deleteStaleDownloadInfos(_syncItems);
-    deleteStaleUploadInfos(_syncItems);
-    deleteStaleErrorBlacklistEntries(_syncItems);
-    _journal->commit(QStringLiteral("post stale entry removal"));
-
-    // Emit the started signal only after the propagator has been set up.
-    if (_needsUpdate)
-        emit(started());
-
-    _propagator->start(_syncItems);
-    _syncItems.clear();
-
-    qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QStringLiteral("Post-Reconcile Finished")) << "ms";
+    finish();
 }
 
 void SyncEngine::slotCleanPollsJobAborted(const QString &error)

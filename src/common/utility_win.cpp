@@ -290,7 +290,7 @@ void Utility::UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSe
 
 QString Utility::formatWinError(long errorCode)
 {
-    return QStringLiteral("WindowsError: %1: %2").arg(QString::number(errorCode), QString::fromWCharArray(_com_error(errorCode).ErrorMessage()));
+    return QStringLiteral("WindowsError: %1: %2").arg(QString::number(errorCode, 16), QString::fromWCharArray(_com_error(errorCode).ErrorMessage()));
 }
 
 } // namespace OCC

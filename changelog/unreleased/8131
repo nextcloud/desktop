@@ -1,0 +1,6 @@
+Bugfix: Check whether the local folder supports the virtual file system
+
+The Windows virtual file system requires NTFS, we now ensure that the folder is
+using NTFS before we continue.
+
+https://github.com/owncloud/client/issues/8131

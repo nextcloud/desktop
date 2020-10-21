@@ -22,6 +22,7 @@
 #include <QMap>
 #include <QtTest>
 #include <cookiejar.h>
+#include <QTimer>
 
 /*
  * TODO: In theory we should use QVERIFY instead of Q_ASSERT for testing, but this
@@ -1096,6 +1097,13 @@ public:
         _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), QString(), _journalDb.get()));
         // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
         _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
+
+        // handle aboutToRemoveAllFiles with a timeout in case our test does not handle it
+        QObject::connect(_syncEngine.get(), &OCC::SyncEngine::aboutToRemoveAllFiles, _syncEngine.get(), [this](OCC::SyncFileItem::Direction, std::function<void(bool)> callback){
+            QTimer::singleShot(1 * 1000, _syncEngine.get(), [callback]{
+                callback(false);
+            });
+        });
 
         // Ensure we have a valid VfsOff instance "running"
         switchToVfs(_syncEngine->syncOptions()._vfs);

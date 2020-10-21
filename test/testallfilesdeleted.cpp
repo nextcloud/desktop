@@ -58,11 +58,11 @@ private slots:
         auto initialState = fakeFolder.currentLocalState();
         int aboutToRemoveAllFilesCalled = 0;
         QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
-            [&](SyncFileItem::Direction dir, bool *cancel) {
+            [&](SyncFileItem::Direction dir, std::function<void(bool)> callback) {
                 QCOMPARE(aboutToRemoveAllFilesCalled, 0);
                 aboutToRemoveAllFilesCalled++;
                 QCOMPARE(dir, deleteOnRemote ? SyncFileItem::Down : SyncFileItem::Up);
-                *cancel = true;
+                callback(true);
                 fakeFolder.syncEngine().journal()->clearFileTable(); // That's what Folder is doing
             });
 
@@ -99,11 +99,11 @@ private slots:
 
         int aboutToRemoveAllFilesCalled = 0;
         QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
-            [&](SyncFileItem::Direction dir, bool *cancel) {
+            [&](SyncFileItem::Direction dir, std::function<void(bool)> callback) {
                 QCOMPARE(aboutToRemoveAllFilesCalled, 0);
                 aboutToRemoveAllFilesCalled++;
                 QCOMPARE(dir, deleteOnRemote ? SyncFileItem::Down : SyncFileItem::Up);
-                *cancel = false;
+                callback(false);
             });
 
         auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
@@ -158,11 +158,11 @@ private slots:
 
         int aboutToRemoveAllFilesCalled = 0;
         QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
-            [&](SyncFileItem::Direction dir, bool *cancel) {
+            [&](SyncFileItem::Direction dir, std::function<void(bool)> callback) {
                 QCOMPARE(aboutToRemoveAllFilesCalled, 0);
                 aboutToRemoveAllFilesCalled++;
                 QCOMPARE(dir, SyncFileItem::Down);
-                *cancel = false;
+                callback(false);
             });
 
         // Some small changes
@@ -277,7 +277,7 @@ private slots:
 
         int aboutToRemoveAllFilesCalled = 0;
         QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
-            [&](SyncFileItem::Direction , bool *) {
+            [&](SyncFileItem::Direction , std::function<void(bool)> ) {
                 aboutToRemoveAllFilesCalled++;
                 QFAIL("should not be called");
             });
@@ -302,7 +302,7 @@ private slots:
 
         int aboutToRemoveAllFilesCalled = 0;
         QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
-            [&](SyncFileItem::Direction , bool *) {
+            [&](SyncFileItem::Direction , std::function<void(bool)>) {
                 aboutToRemoveAllFilesCalled++;
                 QFAIL("should not be called");
             });

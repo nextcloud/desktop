@@ -12,7 +12,7 @@ function(owncloud_add_test test_class)
         owncloudCore Qt5::Test
     )
 
-    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")
+    target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin" SOURCEDIR="${PROJECT_SOURCE_DIR}")
 
     target_include_directories(${OWNCLOUD_TEST_CLASS}Test PRIVATE "${CMAKE_SOURCE_DIR}/test/")
 endfunction()

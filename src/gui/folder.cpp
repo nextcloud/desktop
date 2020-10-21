@@ -18,6 +18,7 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "application.h"
 #include "folder.h"
 #include "folderman.h"
 #include "logger.h"
@@ -35,6 +36,7 @@
 #include "csync_exclude.h"
 #include "common/vfs.h"
 #include "creds/abstractcredentials.h"
+#include "settingsdialog.h"
 
 #include <QTimer>
 #include <QUrl>
@@ -92,7 +94,6 @@ Folder::Folder(const FolderDefinition &definition,
     connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
     connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
 
-    //direct connection so the message box is blocking the sync.
     connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
         this, &Folder::slotAboutToRemoveAllFiles);
     connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
@@ -618,7 +619,7 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
     slotScheduleThisFolder();
 }
 
-void Folder::setSupportsVirtualFiles(bool enabled)
+void Folder::setVirtualFilesEnabled(bool enabled)
 {
     Vfs::Mode newMode = _definition.virtualFilesMode;
     if (enabled && _definition.virtualFilesMode == Vfs::Off) {
@@ -658,7 +659,7 @@ void Folder::setRootPinState(PinState state)
 
 bool Folder::supportsSelectiveSync() const
 {
-    return !supportsVirtualFiles() && !isVfsOnOffSwitchPending();
+    return !virtualFilesEnabled() && !isVfsOnOffSwitchPending();
 }
 
 void Folder::saveToSettings() const
@@ -678,7 +679,7 @@ void Folder::saveToSettings() const
         }
     }
 
-    if (supportsVirtualFiles() || _saveInFoldersWithPlaceholders) {
+    if (virtualFilesEnabled() || _saveInFoldersWithPlaceholders) {
         // If virtual files are enabled or even were enabled at some point,
         // save the folder to a group that will not be read by older (<2.5.0) clients.
         // The name is from when virtual files were called placeholders.
@@ -1183,18 +1184,17 @@ void Folder::registerFolderWatcher()
     _folderWatcher->startNotificatonTest(path() + QLatin1String(".owncloudsync.log"));
 }
 
-bool Folder::supportsVirtualFiles() const
+bool Folder::virtualFilesEnabled() const
 {
     return _definition.virtualFilesMode != Vfs::Off && !isVfsOnOffSwitchPending();
 }
 
-void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel)
+void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> callback)
 {
     ConfigFile cfgFile;
     if (!cfgFile.promptDeleteFiles())
         return;
-
-    QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder '%1' folder were deleted on the server.\n"
+    const QString msg = dir == SyncFileItem::Down ? tr("All files in the sync folder '%1' folder were deleted on the server.\n"
                                                  "These deletes will be synchronized to your local sync folder, making such files "
                                                  "unavailable unless you have a right to restore. \n"
                                                  "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
@@ -1203,22 +1203,23 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel
                                                  "synchronized with your server, making such files unavailable unless restored.\n"
                                                  "Are you sure you want to sync those actions with the server?\n"
                                                  "If this was an accident and you decide to keep your files, they will be re-synced from the server.");
-    QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
-        msg.arg(shortGuiLocalPath()));
-    msgBox.setWindowFlags(msgBox.windowFlags() | Qt::WindowStaysOnTopHint);
-    msgBox.addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
-    QPushButton *keepBtn = msgBox.addButton(tr("Keep files"), QMessageBox::AcceptRole);
-    if (msgBox.exec() == -1) {
-        *cancel = true;
-        return;
-    }
-    *cancel = msgBox.clickedButton() == keepBtn;
-    if (*cancel) {
-        FileSystem::setFolderMinimumPermissions(path());
-        journalDb()->clearFileTable();
-        _lastEtag.clear();
-        slotScheduleThisFolder();
-    }
+    auto msgBox = new QMessageBox(QMessageBox::Warning, tr("Remove All Files?"),
+        msg.arg(shortGuiLocalPath()), QMessageBox::NoButton, ocApp()->gui()->settingsDialog());
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
+    msgBox->addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
+    QPushButton *keepBtn = msgBox->addButton(tr("Keep files"), QMessageBox::AcceptRole);
+    connect(msgBox, &QMessageBox::finished, this, [msgBox, keepBtn, callback, this]{
+        const bool cancel = msgBox->clickedButton() == keepBtn;
+        callback(cancel);
+        if (cancel) {
+            FileSystem::setFolderMinimumPermissions(path());
+                journalDb()->clearFileTable();
+                _lastEtag.clear();
+                slotScheduleThisFolder();
+        }
+    });
+    msgBox->open();
 }
 
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)

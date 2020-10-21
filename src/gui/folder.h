@@ -282,8 +282,8 @@ public:
      * and never have an automatic virtual file. But when it's on, the shell context menu will allow
      * users to make existing files virtual.
      */
-    bool supportsVirtualFiles() const;
-    void setSupportsVirtualFiles(bool enabled);
+    bool virtualFilesEnabled() const;
+    void setVirtualFilesEnabled(bool enabled);
 
     void setRootPinState(PinState state);
 
@@ -317,7 +317,7 @@ public slots:
     void slotTerminateSync();
 
     // connected to the corresponding signals in the SyncEngine
-    void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *);
+    void slotAboutToRemoveAllFiles(SyncFileItem::Direction, std::function<void(bool)> callback);
 
     /**
       * Starts a sync operation

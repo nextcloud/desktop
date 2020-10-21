@@ -314,7 +314,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     ac = menu->addAction(tr("Remove folder sync connection"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
 
-    if (folder->supportsVirtualFiles()) {
+    if (folder->virtualFilesEnabled()) {
         auto availabilityMenu = menu->addMenu(tr("Availability"));
         auto availability = folder->vfs().availability(QString());
         if (availability) {
@@ -337,7 +337,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
     if (Theme::instance()->showVirtualFilesOption()
-        && !folder->supportsVirtualFiles()) {
+        && !folder->virtualFilesEnabled() && Vfs::checkAvailability(folder->path())) {
         const auto mode = bestAvailableVfsMode();
         if (mode == Vfs::WindowsCfApi || Theme::instance()->enableExperimentalFeatures()) {
             ac = menu->addAction(tr("Enable virtual file support%1...").arg(mode == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
@@ -479,8 +479,7 @@ void AccountSettings::slotFolderWizardRejected()
 
 void AccountSettings::slotRemoveCurrentFolder()
 {
-    FolderMan *folderMan = FolderMan::instance();
-    auto folder = folderMan->folder(selectedFolderAlias());
+    auto folder = FolderMan::instance()->folder(selectedFolderAlias());
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
     if (selected.isValid() && folder) {
         int row = selected.row();
@@ -488,28 +487,27 @@ void AccountSettings::slotRemoveCurrentFolder()
         qCInfo(lcAccountSettings) << "Remove Folder alias " << folder->alias();
         QString shortGuiLocalPath = folder->shortGuiLocalPath();
 
-        QMessageBox messageBox(QMessageBox::Question,
+        auto messageBox = new QMessageBox(QMessageBox::Question,
             tr("Confirm Folder Sync Connection Removal"),
             tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
                "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
                 .arg(shortGuiLocalPath),
             QMessageBox::NoButton,
             this);
+        messageBox->setAttribute(Qt::WA_DeleteOnClose);
         QPushButton *yesButton =
-            messageBox.addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
-        messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
+            messageBox->addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
+        messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
+        connect(messageBox, &QMessageBox::finished, this, [messageBox, yesButton, folder, row, this]{
+            if (messageBox->clickedButton() == yesButton) {
+                FolderMan::instance()->removeFolder(folder);
+                _model->removeRow(row);
 
-        messageBox.exec();
-        if (messageBox.clickedButton() != yesButton) {
-            return;
-        }
-
-        folderMan->removeFolder(folder);
-        _model->removeRow(row);
-
-        // single folder fix to show add-button and hide remove-button
-
-        emit folderChanged();
+                // single folder fix to show add-button and hide remove-button
+                emit folderChanged();
+            }
+        });
+        messageBox->open();
     }
 }
 
@@ -562,7 +560,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
             // Change the folder vfs mode and load the plugin
-            folder->setSupportsVirtualFiles(true);
+            folder->setVirtualFilesEnabled(true);
             folder->setVfsOnOffSwitchPending(false);
 
             // Setting to Unspecified retains existing data.
@@ -630,7 +628,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             qCInfo(lcAccountSettings) << "Disabling vfs support for folder" << folder->path();
 
             // Also wipes virtual files, schedules remote discovery
-            folder->setSupportsVirtualFiles(false);
+            folder->setVirtualFilesEnabled(false);
             folder->setVfsOnOffSwitchPending(false);
 
             // Wipe pin states and selective sync db
@@ -692,7 +690,7 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
     ui->accountStatus->setVisible(!message.isEmpty());
 }
 
-void AccountSettings::slotEnableCurrentFolder()
+void AccountSettings::slotEnableCurrentFolder(bool terminate)
 {
     auto alias = selectedFolderAlias();
 
@@ -700,7 +698,6 @@ void AccountSettings::slotEnableCurrentFolder()
         FolderMan *folderMan = FolderMan::instance();
 
         qCInfo(lcAccountSettings) << "Application: enable folder with alias " << alias;
-        bool terminate = false;
         bool currentlyPaused = false;
 
         // this sets the folder status to disabled but does not interrupt it.
@@ -709,25 +706,19 @@ void AccountSettings::slotEnableCurrentFolder()
             return;
         }
         currentlyPaused = f->syncPaused();
-        if (!currentlyPaused) {
+        if (!currentlyPaused && !terminate) {
             // check if a sync is still running and if so, ask if we should terminate.
             if (f->isBusy()) { // its still running
-#if defined(Q_OS_MAC)
-                QWidget *parent = this;
-                Qt::WindowFlags flags = Qt::Sheet;
-#else
-                QWidget *parent = nullptr;
-                Qt::WindowFlags flags = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint; // default flags
-#endif
-                QMessageBox msgbox(QMessageBox::Question, tr("Sync Running"),
+                auto msgbox = new QMessageBox(QMessageBox::Question, tr("Sync Running"),
                     tr("The syncing operation is running.<br/>Do you want to terminate it?"),
-                    QMessageBox::Yes | QMessageBox::No, parent, flags);
-                msgbox.setDefaultButton(QMessageBox::Yes);
-                int reply = msgbox.exec();
-                if (reply == QMessageBox::Yes)
-                    terminate = true;
-                else
-                    return; // do nothing
+                    QMessageBox::Yes | QMessageBox::No, this);
+                msgbox->setAttribute(Qt::WA_DeleteOnClose);
+                msgbox->setDefaultButton(QMessageBox::Yes);
+                connect(msgbox, &QMessageBox::accepted, this, [this]{
+                    slotEnableCurrentFolder(true);
+                });
+                msgbox->open();
+                return;
             }
         }
 
@@ -1046,33 +1037,27 @@ void AccountSettings::slotDeleteAccount()
 {
     // Deleting the account potentially deletes 'this', so
     // the QMessageBox should be destroyed before that happens.
-    {
-        QMessageBox messageBox(QMessageBox::Question,
-            tr("Confirm Account Removal"),
-            tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
-               "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-                .arg(_accountState->account()->displayName()),
-            QMessageBox::NoButton,
-            this);
-        QPushButton *yesButton =
-            messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
-        messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
+    auto messageBox = new QMessageBox(QMessageBox::Question,
+        tr("Confirm Account Removal"),
+        tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
+           "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
+            .arg(_accountState->account()->displayName()),
+        QMessageBox::NoButton,
+        this);
+    auto yesButton = messageBox->addButton(tr("Remove connection"), QMessageBox::YesRole);
+    messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    connect(messageBox, &QMessageBox::finished, this, [this, messageBox, yesButton]{
+        if (messageBox->clickedButton() == yesButton) {
+            // Else it might access during destruction. This should be better handled by it having a QSharedPointer
+            _model->setAccountState(nullptr);
 
-        messageBox.exec();
-        if (messageBox.clickedButton() != yesButton) {
-            return;
+            auto manager = AccountManager::instance();
+            manager->deleteAccount(_accountState);
+            manager->save();
         }
-    }
-
-    // Else it might access during destruction. This should be better handled by it having a QSharedPointer
-    _model->setAccountState(nullptr);
-
-    auto manager = AccountManager::instance();
-    manager->deleteAccount(_accountState);
-    manager->save();
-
-    // IMPORTANT: "this" is deleted from this point on. We should probably remove this synchronous
-    // .exec() QMessageBox magic above as it recurses into the event loop.
+    });
+    messageBox->open();
 }
 
 bool AccountSettings::event(QEvent *e)

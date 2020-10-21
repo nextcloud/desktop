@@ -12,7 +12,7 @@
 
 using namespace OCC;
 
-#define EXCLUDE_LIST_FILE SOURCEDIR "/../../sync-exclude.lst"
+#define EXCLUDE_LIST_FILE SOURCEDIR "/sync-exclude.lst"
 
 // The tests were converted from the old CMocka framework, that's why there is a global
 static QScopedPointer<ExcludedFiles> excludedFiles;
