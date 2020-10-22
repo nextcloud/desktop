@@ -206,6 +206,15 @@ void Systray::positionWindow(QQuickWindow *window) const
     window->setPosition(position);
 }
 
+void Systray::forceWindowInit(QQuickWindow *window) const
+{
+    // HACK: At least on Windows, if the systray window is not shown at least once
+    // it can prevent session handling to carry on properly, so we show/hide it here
+    // this shouldn't flicker
+    window->show();
+    window->hide();
+}
+
 QScreen *Systray::currentScreen() const
 {
     const auto screens = QGuiApplication::screens();
