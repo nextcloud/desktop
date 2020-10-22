@@ -29,6 +29,8 @@
 
 #include <QLibrary>
 
+extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
+
 static const char systemRunPathC[] = "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
@@ -291,6 +293,17 @@ void Utility::UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSe
 QString Utility::formatWinError(long errorCode)
 {
     return QStringLiteral("WindowsError: %1: %2").arg(QString::number(errorCode, 16), QString::fromWCharArray(_com_error(errorCode).ErrorMessage()));
+}
+
+
+Utility::NtfsPermissionLookupRAII::NtfsPermissionLookupRAII()
+{
+    qt_ntfs_permission_lookup++;
+}
+
+Utility::NtfsPermissionLookupRAII::~NtfsPermissionLookupRAII()
+{
+    qt_ntfs_permission_lookup--;
 }
 
 } // namespace OCC
