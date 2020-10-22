@@ -299,13 +299,18 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
 
 void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
 {
-    QString user = json.object().value("ocs").toObject().value("data").toObject().value("id").toString();
+    const auto data = json.object().value("ocs").toObject().value("data").toObject();
+    const QString user = data.value("id").toString();
     if (!user.isEmpty()) {
         _account->setDavUser(user);
     }
-    QString displayName = json.object().value("ocs").toObject().value("data").toObject().value("display-name").toString();
+    const QString displayName = data.value("display-name").toString();
     if (!displayName.isEmpty()) {
         _account->setDavDisplayName(displayName);
+    }
+    const QString userName = data.value("username").toString();
+    if (!userName.isEmpty()) {
+        _account->setIdpUserName(userName);
     }
 #ifndef TOKEN_AUTH_ONLY
     AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);

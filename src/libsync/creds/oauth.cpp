@@ -170,7 +170,12 @@ void OAuth::startAuthentication()
                                 tr("<h1>Login Error</h1><p>Failed to retrieve user info</p>").toUtf8());
                             emit result(Error);
                         } else {
-                            const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("id")).toString();
+                            const auto data = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
+                            const QString user = data.value(QStringLiteral("id")).toString();
+                            const QString username = data.value(QStringLiteral("username")).toString();
+                            if (!username.isEmpty()) {
+                                _account->setIdpUserName(username);
+                            }
                             finalize(socket, accessToken, refreshToken, user, messageUrl);
                         }
                     });
@@ -308,7 +313,7 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("prompt"), QStringLiteral("select_account") },
         { QStringLiteral("state"), QString::fromUtf8(_state) },
         { QStringLiteral("display"), Theme::instance()->appNameGUI() },
-        { QStringLiteral("login_hint"), _account->davUser() } });
+        { QStringLiteral("login_hint"), _account->idpUserName() } });
     if (!_account->davUser().isNull())
         query.addQueryItem(QStringLiteral("user"), _account->davUser().replace(QLatin1Char('+'), QStringLiteral("%2B"))); // Issue #7762
     const QUrl url = _authEndpoint.isValid()

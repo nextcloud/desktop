@@ -233,6 +233,13 @@ public:
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
 
+    /**
+     * user name used by the idp to identify the user
+     * this might differ from the dav user
+     **/
+    QString idpUserName() const;
+    void setIdpUserName(const QString &userName);
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -271,6 +278,7 @@ private:
     QString _id;
     QString _davUser;
     QString _displayName;
+    QString _idpUserName;
 #ifndef TOKEN_AUTH_ONLY
     QImage _avatarImg;
 #endif
