@@ -2031,6 +2031,23 @@ QByteArrayList SyncJournalDb::conflictRecordPaths()
     return paths;
 }
 
+QByteArray SyncJournalDb::conflictFileBaseName(const QByteArray &conflictName)
+{
+    auto conflict = conflictRecord(conflictName);
+    QByteArray result;
+    if (conflict.isValid()) {
+        getFileRecordsByFileId(conflict.baseFileId, [&result](const SyncJournalFileRecord &record) {
+            if (!record._path.isEmpty())
+                result = record._path;
+        });
+    }
+
+    if (result.isEmpty()) {
+        result = Utility::conflictFileBaseNameFromPattern(conflictName);
+    }
+    return result;
+}
+
 void SyncJournalDb::clearFileTable()
 {
     QMutexLocker lock(&_mutex);

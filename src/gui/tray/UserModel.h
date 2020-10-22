@@ -107,6 +107,8 @@ public:
 
     User *currentUser() const;
 
+    int findUserIdForAccount(AccountState *account) const;
+
     Q_INVOKABLE void fetchCurrentActivityModel();
     Q_INVOKABLE void openCurrentAccountLocalFolder();
     Q_INVOKABLE void openCurrentAccountTalk();

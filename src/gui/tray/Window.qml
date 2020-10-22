@@ -542,13 +542,7 @@ Window {
                     height: parent.height
                     anchors.margins: 2
                     hoverEnabled: true
-                    onClicked: {
-                        if (path !== "") {
-                            Qt.openUrlExternally(path)
-                        } else {
-                            Qt.openUrlExternally(link)
-                        }
-                    }
+                    onClicked: activityModel.triggerActionAtIndex(model.index)
 
                     Rectangle {
                         anchors.fill: parent

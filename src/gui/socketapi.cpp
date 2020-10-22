@@ -16,6 +16,8 @@
 
 #include "socketapi.h"
 
+#include "conflictdialog.h"
+#include "conflictsolver.h"
 #include "config.h"
 #include "configfile.h"
 #include "folderman.h"
@@ -50,7 +52,7 @@
 #include <QStringBuilder>
 #include <QMessageBox>
 #include <QInputDialog>
-
+#include <QFileDialog>
 #include <QClipboard>
 #include <QDesktopServices>
 
@@ -689,6 +691,75 @@ void SocketApi::copyUrlToClipboard(const QString &link)
     QApplication::clipboard()->setText(link);
 }
 
+void SocketApi::command_RESOLVE_CONFLICT(const QString &localFile, SocketListener *)
+{
+    const auto fileData = FileData::get(localFile);
+    if (!fileData.folder || !Utility::isConflictFile(fileData.folderRelativePath))
+        return; // should not have shown menu item
+
+    const auto conflictedRelativePath = fileData.folderRelativePath;
+    const auto baseRelativePath = fileData.folder->journalDb()->conflictFileBaseName(fileData.folderRelativePath.toUtf8());
+
+    const auto dir = QDir(fileData.folder->path());
+    const auto conflictedPath = dir.filePath(conflictedRelativePath);
+    const auto basePath = dir.filePath(baseRelativePath);
+
+    const auto baseName = QFileInfo(basePath).fileName();
+
+#ifndef OWNCLOUD_TEST
+    ConflictDialog dialog;
+    dialog.setBaseFilename(baseName);
+    dialog.setLocalVersionFilename(conflictedPath);
+    dialog.setRemoteVersionFilename(basePath);
+    dialog.exec();
+#endif
+}
+
+void SocketApi::command_DELETE_ITEM(const QString &localFile, SocketListener *)
+{
+    ConflictSolver solver;
+    solver.setLocalVersionFilename(localFile);
+    solver.exec(ConflictSolver::KeepRemoteVersion);
+}
+
+void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
+{
+    const auto fileData = FileData::get(localFile);
+    const auto parentDir = fileData.parentFolder();
+    if (!fileData.folder)
+        return; // should not have shown menu item
+
+    QString defaultDirAndName = fileData.folderRelativePath;
+
+    // If it's a conflict, we want to save it under the base name by default
+    if (Utility::isConflictFile(defaultDirAndName)) {
+        defaultDirAndName = fileData.folder->journalDb()->conflictFileBaseName(fileData.folderRelativePath.toUtf8());
+    }
+
+    // If the parent doesn't accept new files, go to the root of the sync folder
+    QFileInfo fileInfo(localFile);
+    const auto parentRecord = parentDir.journalRecord();
+    if ((fileInfo.isFile() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
+        || (fileInfo.isDir() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories))) {
+        defaultDirAndName = QFileInfo(defaultDirAndName).fileName();
+    }
+
+    // Add back the folder path
+    defaultDirAndName = QDir(fileData.folder->path()).filePath(defaultDirAndName);
+
+    const auto target = QFileDialog::getSaveFileName(
+        nullptr,
+        tr("Select new location..."),
+        defaultDirAndName,
+        QString(), nullptr, QFileDialog::HideNameFilterDetails);
+    if (target.isEmpty())
+        return;
+
+    ConflictSolver solver;
+    solver.setLocalVersionFilename(localFile);
+    solver.setRemoteVersionFilename(target);
+}
+
 void SocketApi::emailPrivateLink(const QString &link)
 {
     Utility::openEmailComposer(
@@ -795,12 +866,18 @@ SyncJournalFileRecord SocketApi::FileData::journalRecord() const
     return record;
 }
 
+SocketApi::FileData SocketApi::FileData::parentFolder() const
+{
+    return FileData::get(QFileInfo(localPath).dir().path().toUtf8());
+}
+
 void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
 {
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
     bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
     FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
-    bool isOnTheServer = fileData.journalRecord().isValid();
+    const auto record = fileData.journalRecord();
+    const bool isOnTheServer = record.isValid();
     const auto isE2eEncryptedPath = fileData.journalRecord()._isE2eEncrypted || !fileData.journalRecord()._e2eMangledName.isEmpty();
     auto flagString = isOnTheServer && !isE2eEncryptedPath ? QLatin1String("::") : QLatin1String(":d:");
 
@@ -814,6 +891,45 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         }
 
         sendSharingContextMenuOptions(fileData, listener, !isE2eEncryptedPath);
+
+        // Conflict files get conflict resolution actions
+        bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);
+        if (isConflict || !isOnTheServer) {
+            // Check whether this new file is in a read-only directory
+            QFileInfo fileInfo(fileData.localPath);
+            const auto parentDir = fileData.parentFolder();
+            const auto parentRecord = parentDir.journalRecord();
+            const bool canAddToDir =
+                !parentRecord.isValid() // We're likely at the root of the sync folder, got to assume we can add there
+                || (fileInfo.isFile() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
+                || (fileInfo.isDir() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories));
+            const bool canChangeFile =
+                !isOnTheServer
+                || (record._remotePerm.hasPermission(RemotePermissions::CanDelete)
+                       && record._remotePerm.hasPermission(RemotePermissions::CanMove)
+                       && record._remotePerm.hasPermission(RemotePermissions::CanRename));
+
+            if (isConflict && canChangeFile) {
+                if (canAddToDir) {
+                    listener->sendMessage(QLatin1String("MENU_ITEM:RESOLVE_CONFLICT::") + tr("Resolve conflict..."));
+                } else {
+                    if (isOnTheServer) {
+                        // Uploaded conflict file in read-only directory
+                        listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move and rename..."));
+                    } else {
+                        // Local-only conflict file in a read-only dir
+                        listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move, rename and upload..."));
+                    }
+                    listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete local changes"));
+                }
+            }
+
+            // File in a read-only directory?
+            if (!isConflict && !isOnTheServer && !canAddToDir) {
+                listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move and upload..."));
+                listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete"));
+            }
+        }
     }
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }
