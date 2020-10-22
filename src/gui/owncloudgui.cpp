@@ -59,7 +59,7 @@ const char propertyAccountC[] = "oc_account";
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
     , _tray(nullptr)
-    , _settingsDialog(new SettingsDialog(this))
+    , _settingsDialog(nullptr)
     , _logBrowser(nullptr)
 #ifdef WITH_LIBCLOUDPROVIDERS
     , _bus(QDBusConnection::sessionBus())
