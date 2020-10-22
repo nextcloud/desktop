@@ -57,6 +57,7 @@ public:
     Q_INVOKABLE void setOpened();
     Q_INVOKABLE void setClosed();
     Q_INVOKABLE void positionWindow(QQuickWindow *window) const;
+    Q_INVOKABLE void forceWindowInit(QQuickWindow *window) const;
 
 signals:
     void currentUserChanged();
