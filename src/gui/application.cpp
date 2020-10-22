@@ -266,7 +266,7 @@ Application::Application(int &argc, char **argv)
     if (ConfigFile().crashReporter()) {
         auto reporter = QStringLiteral(CRASHREPORTER_EXECUTABLE);
 #ifdef Q_OS_WIN
-        if (reporter.endsWith(QLatin1String(".exe"))) {
+        if (!reporter.endsWith(QLatin1String(".exe"))) {
             reporter.append(QLatin1String(".exe"));
         }
 #endif
