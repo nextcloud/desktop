@@ -62,7 +62,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 {
     ConfigFile cfg;
 
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
     _toolBar = new QToolBar;
     _toolBar->setIconSize(QSize(32, 32));
@@ -130,6 +129,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     customizeStyle();
 
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     cfg.restoreGeometry(this);
 }
 
