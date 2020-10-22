@@ -24,6 +24,8 @@ Window {
     Accessible.role: Accessible.Application
     Accessible.name: qsTr("Nextcloud desktop main dialog")
 
+    Component.onCompleted: Systray.forceWindowInit(trayWindow)
+
     // Close tray window when focus is lost (e.g. click somewhere else on the screen)
     onActiveChanged: {
         if(!active) {
