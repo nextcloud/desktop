@@ -74,11 +74,17 @@ jobs:
         if ("${{ matrix.target }}" -eq "windows-msvc2017_64-cl") {
             ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --no-cache --src-dir "${{ github.workspace }}" --configure owncloud/owncloud-client
             $env:BUILD_DIR = $(${{ github.workspace }}/.github/workflows/.craft.ps1 -c --get buildDir -q owncloud-client)
-            ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --run pwsh "${{ github.workspace }}/.github/workflows/.sonar.ps1"
+            ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --run pwsh "${{ github.workspace }}/.github/workflows/.sonar.ps1" --build
             ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --no-cache --src-dir "${{ github.workspace }}" --install --qmerge owncloud/owncloud-client
         } else {
             ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --no-cache --src-dir "${{ github.workspace }}" owncloud/owncloud-client
         }
+
+    - name: Sonarcloud
+      if: ${{ matrix.target == 'windows-msvc2017_64-cl' }}
+      run: |
+        $env:BUILD_DIR = $(${{ github.workspace }}/.github/workflows/.craft.ps1 -c --get buildDir -q owncloud-client)
+        ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --run pwsh "${{ github.workspace }}/.github/workflows/.sonar.ps1" --analyze
 
     - name: Run tests
       run: ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --no-cache --src-dir "${{ github.workspace }}" --test owncloud/owncloud-client

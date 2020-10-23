@@ -13,5 +13,20 @@ rm "$env:SONAR_DIRECTORY/build-wrapper-win-x86" -Force -Recurse -ErrorAction Sil
 (New-Object System.Net.WebClient).DownloadFile("https://sonarcloud.io/static/cpp/build-wrapper-win-x86.zip", "$env:SONAR_DIRECTORY/build-wrapper-win-x86.zip")
 [System.IO.Compression.ZipFile]::ExtractToDirectory("$env:SONAR_DIRECTORY/build-wrapper-win-x86.zip", "$env:SONAR_DIRECTORY")
 
-& $env:SONAR_DIRECTORY/build-wrapper-win-x86/build-wrapper-win-x86-64.exe --out-dir bw-output cmake --build $env:BUILD_DIR 
-& $env:SONAR_SCANNER_HOME/bin/sonar-scanner.bat -D"sonar.organization=owncloud-1" -D"sonar.projectKey=owncloud_client" -D"sonar.sources=." -D"sonar.test.exclusions=test/**" -D"sonar.tests=test/" -D"sonar.cfamily.build-wrapper-output=bw-output" -D"sonar.host.url=https://sonarcloud.io" -D"sonar.exclusions=docs/**,man/**,translations/**,admin/**"
+if ($args[0] -eq "--build") {
+    & $env:SONAR_DIRECTORY/build-wrapper-win-x86/build-wrapper-win-x86-64.exe --out-dir bw-output cmake --build $env:BUILD_DIR
+} elseif($args[0] -eq "--analyze") {
+    $defines = @(
+        "sonar.organization=owncloud-1",
+        "sonar.projectKey=owncloud_client",
+        "sonar.sources=.",
+        "sonar.cfamily.build-wrapper-output=bw-output",
+        "sonar.host.url=https://sonarcloud.io",
+        "sonar.exclusions=docs/**,man/**,translations/**,admin/**,test/**,src/3rdparty/qtokenizer/test/**",
+        "sonar.cfamily.threads=$env:NUMBER_OF_PROCESSORS",
+        "sonar.cfamily.cache.enabled=false")
+    for($i = 0; $i -lt $defines.Length; $i++) {
+        $defines[$i] = ("-D{0}" -f $defines[$i])
+    }
+    & $env:SONAR_SCANNER_HOME/bin/sonar-scanner.bat @defines
+}
