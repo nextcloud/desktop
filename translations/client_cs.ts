@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při odebírání „%1“: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Nedaří se odstranit složku „%1“</translation>
     </message>
 </context>
 <context>
@@ -669,87 +669,87 @@ Počkejte na příští synchronizaci a pak složku zašifrujte.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Konflikt synchronizace</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Kolidující verze %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Kterou verzi souboru chcete ponechat?&lt;br/&gt;Pokud zvolíte obě verze, místní soubor bude mít název doplněný od číslo.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Místní verze</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Soubor otevřete kliknutím</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
         <location filename="../src/gui/conflictdialog.ui" line="204"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>dnes</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 bajtů</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Otevřít místní verzi&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Verze serveru</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Otevřít verzi ze serveru&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Ponechat označenou verzi</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít místní verzi</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open remote version</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít verzi na protějšku</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Ponechat obě verze</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Ponechat místní verzi</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Ponechat verzi ze serveru</translation>
     </message>
 </context>
 <context>
@@ -757,23 +757,23 @@ Počkejte na příští synchronizaci a pak složku zašifrujte.</translation>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete složku &lt;i&gt;%1&lt;/i&gt; a veškerý její obsah natrvalo smazat?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete soubor &lt;i&gt;%1&lt;/i&gt; natrvalo smazat?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Potvrdit smazání</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -781,7 +781,9 @@ Počkejte na příští synchronizaci a pak složku zašifrujte.</translation>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Přesunutí souboru se nezdařilo:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -3126,7 +3128,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Select new location...</source>
-        <translation type="unfinished"/>
+        <translation>Vyberte nové umístění…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3183,32 +3185,32 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Resolve conflict...</source>
-        <translation type="unfinished"/>
+        <translation>Vyřešit konflikt…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename...</source>
-        <translation type="unfinished"/>
+        <translation>Přesunout a přejmenovat…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Přesunout, přejmenovat a nahrát…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Smazat místní změny</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
         <source>Move and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Přesunout a nahrát…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Smazat</translation>
     </message>
 </context>
 <context>

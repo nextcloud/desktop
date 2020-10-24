@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro ao retirar «%1»: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel retirar o cartafol «%1»</translation>
     </message>
 </context>
 <context>
@@ -669,87 +669,87 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Conflito na sinconización</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Versións en conflito de %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Que versión do  ficheiro quere conservar? &lt;br/&gt;Se selecciona ámbalas dúas versións, engadiráselle un número ao nome do ficheiro local.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Versión local</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Prema para abrir o ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
         <location filename="../src/gui/conflictdialog.ui" line="204"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>hoxe</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 byte</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Abrir a versión local&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Versión do servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Abrir a versión do servidor&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Conservar a versión seleccionada</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Abrir a versión local</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open remote version</source>
-        <translation type="unfinished"/>
+        <translation>Abrir a versión remota</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Conservar ámbalas dúas versións</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Conservar a versión local</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Conservar a versión do servidor</translation>
     </message>
 </context>
 <context>
@@ -757,23 +757,23 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Confirma que quere eliminar permanentemente o directorio &lt;i&gt;%1&lt;/i&gt; e todo o seu contido?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Confirma que quere eliminar permanentemente o ficheiro &lt;i&gt;%1&lt;/i&gt; ?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar a eliminación</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -781,7 +781,9 @@ Agarde a nova sincronización e logo cífreo.</translation>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un fallo ao mover o ficheiro:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -3127,7 +3129,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Select new location...</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionar nova localización…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3184,32 +3186,32 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Resolve conflict...</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflitos…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename...</source>
-        <translation type="unfinished"/>
+        <translation>Mover e renomear…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Mover, renomear e enviar…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar os cambios locais</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
         <source>Move and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Mover e enviar…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar</translation>
     </message>
 </context>
 <context>

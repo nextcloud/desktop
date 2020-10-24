@@ -712,7 +712,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Bedienerweergawe</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
@@ -772,7 +772,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Fout</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -3186,7 +3186,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Skrap</translation>
     </message>
 </context>
 <context>

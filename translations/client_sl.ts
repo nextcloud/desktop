@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Napaka odstranjevanja »%1«: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Mape »%1« ni mogoče odstraniti.</translation>
     </message>
 </context>
 <context>
@@ -669,13 +669,13 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Spor usklajevanja</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Različice %1 v sporu.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
@@ -685,71 +685,71 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna različica</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Kliknite za odpiranje datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
         <location filename="../src/gui/conflictdialog.ui" line="204"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>danes</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 bajtov</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Odpri krajevno različico&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Različica strežnika</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Odpri strežniško različico&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Ohrani izbrano različico</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Odpri krajevno različico</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open remote version</source>
-        <translation type="unfinished"/>
+        <translation>Odpri oddaljeno različico</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Ohrani obe različice</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Ohrani krajevno različico</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Ohrani strežniško različico</translation>
     </message>
 </context>
 <context>
@@ -767,13 +767,13 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Potrdi brisanje</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Napaka</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -3125,7 +3125,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Select new location...</source>
-        <translation type="unfinished"/>
+        <translation>Izbor novega mesta ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3182,32 +3182,32 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Resolve conflict...</source>
-        <translation type="unfinished"/>
+        <translation>Razreši spor ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename...</source>
-        <translation type="unfinished"/>
+        <translation>Premakni in preimenuj ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Premakni, preimenuj in pošlji ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši krajevne spremembe</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
         <source>Move and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Premakni in pošlji ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Brisanje</translation>
     </message>
 </context>
 <context>
