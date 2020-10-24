@@ -109,7 +109,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Nije moguće ukloniti mapu &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -697,7 +697,7 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
         <location filename="../src/gui/conflictdialog.ui" line="204"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>danas</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
@@ -713,7 +713,7 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Inačica poslužitelja</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
@@ -773,7 +773,7 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Pogreška</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -3209,7 +3209,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši</translation>
     </message>
 </context>
 <context>
