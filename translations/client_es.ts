@@ -109,7 +109,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>No se ha podido eliminar la carpeta &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -697,7 +697,7 @@ Espere a una nueva sincronización, luego cifrala.</translation>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
         <location filename="../src/gui/conflictdialog.ui" line="204"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>hoy</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
@@ -713,7 +713,7 @@ Espere a una nueva sincronización, luego cifrala.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
         <source>Server version</source>
-        <translation type="unfinished"/>
+        <translation>Versión del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
@@ -773,7 +773,7 @@ Espere a una nueva sincronización, luego cifrala.</translation>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
         <location filename="../src/gui/conflictsolver.cpp" line="159"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -3208,7 +3208,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar</translation>
     </message>
 </context>
 <context>
