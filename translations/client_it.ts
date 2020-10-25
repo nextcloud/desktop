@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Errore durante la rimozione di &apos;%1&apos;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -729,27 +729,27 @@ Attendi la nuova sincronizzazione, quindi cifrala.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Apri la versione locale</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open remote version</source>
-        <translation type="unfinished"/>
+        <translation>Apri la versione remota</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Mantieni entrambi le versioni</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Mantieni la versione locale</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Mantieni la versione del server</translation>
     </message>
 </context>
 <context>
@@ -3127,7 +3127,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Select new location...</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona nuova posizione…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3184,7 +3184,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Resolve conflict...</source>
-        <translation type="unfinished"/>
+        <translation>Risolvi conflitto…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
@@ -3194,12 +3194,12 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Sposta, rinomina e carica…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Elimina modifiche locali</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
