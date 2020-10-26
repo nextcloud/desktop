@@ -72,7 +72,7 @@ static void callback(
         QString fn = qstring.normalized(QString::NormalizationForm_C);
 
         if (!(eventFlags[i] & c_interestingFlags)) {
-            qCDebug(lcFolderWatcher) << "Ignoring non-content changes for" << fn;
+            qCDebug(lcFolderWatcher) << "Ignoring non-content changes for" << fn << eventFlags[i];
             continue;
         }
 
