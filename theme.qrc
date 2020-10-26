@@ -55,8 +55,7 @@
         <file>theme/colored/state-sync-256.png</file>
         <file>theme/colored/state-sync-32.png</file>
         <file>theme/colored/state-sync-64.png</file>
-        <file>theme/colored/wizard_logo.png</file>
-        <file>theme/colored/wizard_logo@2x.png</file>
+        <file>theme/colored/wizard_logo.svg</file>
         <file>theme/white/state-error-128.png</file>
         <file>theme/white/state-error-256.png</file>
         <file>theme/white/state-error-32.png</file>
