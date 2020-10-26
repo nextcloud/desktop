@@ -222,7 +222,7 @@
         <item>
          <widget class="QPushButton" name="debugArchiveButton">
           <property name="text">
-           <string>Create Debug Archive ...</string>
+           <string>Create Debug Archive …</string>
           </property>
          </widget>
         </item>
