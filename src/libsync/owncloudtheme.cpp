@@ -43,12 +43,17 @@ QVariant ownCloudTheme::customMedia(CustomMediaType)
 #ifndef TOKEN_AUTH_ONLY
 QColor ownCloudTheme::wizardHeaderBackgroundColor() const
 {
-    return QColor("#1d2d42");
+    return QColor(4, 30, 66);
 }
 
 QColor ownCloudTheme::wizardHeaderTitleColor() const
 {
-    return QColor("#ffffff");
+    return Qt::white;
+}
+
+QColor ownCloudTheme::wizardHeaderSubTitleColor() const
+{
+    return QColor(78, 133, 200);
 }
 
 QIcon ownCloudTheme::wizardHeaderLogo() const

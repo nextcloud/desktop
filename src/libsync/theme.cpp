@@ -456,6 +456,11 @@ QColor Theme::wizardHeaderTitleColor() const
     return qApp->palette().text().color();
 }
 
+QColor Theme::wizardHeaderSubTitleColor() const
+{
+    return wizardHeaderTitleColor();
+}
+
 QColor Theme::wizardHeaderBackgroundColor() const
 {
     return QColor();
