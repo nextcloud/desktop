@@ -56,5 +56,10 @@ QIcon ownCloudTheme::wizardHeaderLogo() const
     return QIcon(QStringLiteral(":/client/theme/colored/wizard_logo.png"));
 }
 
+QIcon ownCloudTheme::aboutIcon() const
+{
+    return QIcon(QStringLiteral(":/client/theme/colored/oc-image-about.svg"));
+}
+
 #endif
 }

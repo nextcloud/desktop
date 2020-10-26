@@ -121,6 +121,11 @@ QIcon Theme::applicationIcon() const
     return themeIcon(QStringLiteral(APPLICATION_ICON_NAME "-icon"));
 }
 
+QIcon Theme::aboutIcon() const
+{
+    return applicationIcon();
+}
+
 /*
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.

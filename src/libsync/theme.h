@@ -103,6 +103,7 @@ public:
     virtual QIcon folderDisabledIcon() const;
     virtual QIcon folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;
     virtual QIcon applicationIcon() const;
+    virtual QIcon aboutIcon() const;
 #endif
 
     virtual QString statusHeaderText(SyncResult::Status) const;

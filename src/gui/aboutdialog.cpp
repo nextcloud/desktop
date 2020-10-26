@@ -26,7 +26,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle(tr("About %1").arg(Theme::instance()->appNameGUI()));
     ui->aboutText->setText(Theme::instance()->about());
-    ui->icon->setPixmap(Theme::instance()->applicationIcon().pixmap(256));
+    ui->icon->setPixmap(Theme::instance()->aboutIcon().pixmap(256));
     ui->versionInfo->setText(Theme::instance()->aboutVersions(Theme::VersionFormat::RichText));
 
     connect(ui->versionInfo, &QTextBrowser::anchorClicked, this, &AboutDialog::openBrowserFromUrl);

@@ -1,84 +1,85 @@
 <RCC>
     <qresource prefix="/client">
-        <file alias="theme/colored/owncloud-icon-512.png">theme/colored/512-owncloud-icon-sidebar.png</file>
-        <file alias="theme/colored/owncloud-icon-256.png">theme/colored/256-owncloud-icon.png</file>
-        <file alias="theme/colored/owncloud-icon-128.png">theme/colored/128-owncloud-icon.png</file>
-        <file alias="theme/colored/owncloud-icon-32.png">theme/colored/32-owncloud-icon.png</file>
-        <file alias="theme/colored/owncloud-icon-48.png">theme/colored/48-owncloud-icon.png</file>
-        <file alias="theme/colored/owncloud-icon-64.png">theme/colored/64-owncloud-icon.png</file>
-        <file>theme/colored/state-error-32.png</file>
-        <file>theme/colored/state-error-64.png</file>
-        <file>theme/colored/state-error-128.png</file>
-        <file>theme/colored/state-error-256.png</file>
-        <file>theme/colored/state-information-32.png</file>
-        <file>theme/colored/state-information-64.png</file>
-        <file>theme/colored/state-information-128.png</file>
-        <file>theme/colored/state-information-256.png</file>
-        <file>theme/colored/state-offline-32.png</file>
-        <file>theme/colored/state-offline-64.png</file>
-        <file>theme/colored/state-offline-128.png</file>
-        <file>theme/colored/state-offline-256.png</file>
-        <file>theme/colored/state-ok-32.png</file>
-        <file>theme/colored/state-ok-64.png</file>
-        <file>theme/colored/state-ok-128.png</file>
-        <file>theme/colored/state-ok-256.png</file>
-        <file>theme/colored/state-pause-32.png</file>
-        <file>theme/colored/state-pause-64.png</file>
-        <file>theme/colored/state-pause-128.png</file>
-        <file>theme/colored/state-pause-256.png</file>
-        <file>theme/colored/state-sync-32.png</file>
-        <file>theme/colored/state-sync-64.png</file>
-        <file>theme/colored/state-sync-128.png</file>
-        <file>theme/colored/state-sync-256.png</file>
-        <file>theme/colored/wizard_logo.png</file>
-        <file>theme/colored/wizard_logo@2x.png</file>
-        <file>theme/white/state-error-32.png</file>
-        <file>theme/white/state-error-64.png</file>
-        <file>theme/white/state-error-128.png</file>
-        <file>theme/white/state-error-256.png</file>
-        <file>theme/white/state-information-32.png</file>
-        <file>theme/white/state-information-64.png</file>
-        <file>theme/white/state-information-128.png</file>
-        <file>theme/white/state-information-256.png</file>
-        <file>theme/white/state-offline-32.png</file>
-        <file>theme/white/state-offline-64.png</file>
-        <file>theme/white/state-offline-128.png</file>
-        <file>theme/white/state-offline-256.png</file>
-        <file>theme/white/state-ok-32.png</file>
-        <file>theme/white/state-ok-64.png</file>
-        <file>theme/white/state-ok-128.png</file>
-        <file>theme/white/state-ok-256.png</file>
-        <file>theme/white/state-pause-32.png</file>
-        <file>theme/white/state-pause-64.png</file>
-        <file>theme/white/state-pause-128.png</file>
-        <file>theme/white/state-pause-256.png</file>
-        <file>theme/white/state-sync-32.png</file>
-        <file>theme/white/state-sync-64.png</file>
-        <file>theme/white/state-sync-128.png</file>
-        <file>theme/white/state-sync-256.png</file>
-        <file>theme/black/state-error-32.png</file>
-        <file>theme/black/state-error-64.png</file>
         <file>theme/black/state-error-128.png</file>
         <file>theme/black/state-error-256.png</file>
-        <file>theme/black/state-information-32.png</file>
-        <file>theme/black/state-information-64.png</file>
+        <file>theme/black/state-error-32.png</file>
+        <file>theme/black/state-error-64.png</file>
         <file>theme/black/state-information-128.png</file>
         <file>theme/black/state-information-256.png</file>
-        <file>theme/black/state-offline-32.png</file>
-        <file>theme/black/state-offline-64.png</file>
+        <file>theme/black/state-information-32.png</file>
+        <file>theme/black/state-information-64.png</file>
         <file>theme/black/state-offline-128.png</file>
         <file>theme/black/state-offline-256.png</file>
-        <file>theme/black/state-ok-32.png</file>
-        <file>theme/black/state-ok-64.png</file>
+        <file>theme/black/state-offline-32.png</file>
+        <file>theme/black/state-offline-64.png</file>
         <file>theme/black/state-ok-128.png</file>
         <file>theme/black/state-ok-256.png</file>
-        <file>theme/black/state-pause-32.png</file>
-        <file>theme/black/state-pause-64.png</file>
+        <file>theme/black/state-ok-32.png</file>
+        <file>theme/black/state-ok-64.png</file>
         <file>theme/black/state-pause-128.png</file>
         <file>theme/black/state-pause-256.png</file>
-        <file>theme/black/state-sync-32.png</file>
-        <file>theme/black/state-sync-64.png</file>
+        <file>theme/black/state-pause-32.png</file>
+        <file>theme/black/state-pause-64.png</file>
         <file>theme/black/state-sync-128.png</file>
         <file>theme/black/state-sync-256.png</file>
+        <file>theme/black/state-sync-32.png</file>
+        <file>theme/black/state-sync-64.png</file>
+        <file alias="theme/colored/owncloud-icon-128.png">theme/colored/128-owncloud-icon.png</file>
+        <file alias="theme/colored/owncloud-icon-256.png">theme/colored/256-owncloud-icon.png</file>
+        <file alias="theme/colored/owncloud-icon-32.png">theme/colored/32-owncloud-icon.png</file>
+        <file alias="theme/colored/owncloud-icon-48.png">theme/colored/48-owncloud-icon.png</file>
+        <file alias="theme/colored/owncloud-icon-512.png">theme/colored/512-owncloud-icon-sidebar.png</file>
+        <file alias="theme/colored/owncloud-icon-64.png">theme/colored/64-owncloud-icon.png</file>
+        <file>theme/colored/oc-image-about.svg</file>
+        <file>theme/colored/state-error-128.png</file>
+        <file>theme/colored/state-error-256.png</file>
+        <file>theme/colored/state-error-32.png</file>
+        <file>theme/colored/state-error-64.png</file>
+        <file>theme/colored/state-information-128.png</file>
+        <file>theme/colored/state-information-256.png</file>
+        <file>theme/colored/state-information-32.png</file>
+        <file>theme/colored/state-information-64.png</file>
+        <file>theme/colored/state-offline-128.png</file>
+        <file>theme/colored/state-offline-256.png</file>
+        <file>theme/colored/state-offline-32.png</file>
+        <file>theme/colored/state-offline-64.png</file>
+        <file>theme/colored/state-ok-128.png</file>
+        <file>theme/colored/state-ok-256.png</file>
+        <file>theme/colored/state-ok-32.png</file>
+        <file>theme/colored/state-ok-64.png</file>
+        <file>theme/colored/state-pause-128.png</file>
+        <file>theme/colored/state-pause-256.png</file>
+        <file>theme/colored/state-pause-32.png</file>
+        <file>theme/colored/state-pause-64.png</file>
+        <file>theme/colored/state-sync-128.png</file>
+        <file>theme/colored/state-sync-256.png</file>
+        <file>theme/colored/state-sync-32.png</file>
+        <file>theme/colored/state-sync-64.png</file>
+        <file>theme/colored/wizard_logo.png</file>
+        <file>theme/colored/wizard_logo@2x.png</file>
+        <file>theme/white/state-error-128.png</file>
+        <file>theme/white/state-error-256.png</file>
+        <file>theme/white/state-error-32.png</file>
+        <file>theme/white/state-error-64.png</file>
+        <file>theme/white/state-information-128.png</file>
+        <file>theme/white/state-information-256.png</file>
+        <file>theme/white/state-information-32.png</file>
+        <file>theme/white/state-information-64.png</file>
+        <file>theme/white/state-offline-128.png</file>
+        <file>theme/white/state-offline-256.png</file>
+        <file>theme/white/state-offline-32.png</file>
+        <file>theme/white/state-offline-64.png</file>
+        <file>theme/white/state-ok-128.png</file>
+        <file>theme/white/state-ok-256.png</file>
+        <file>theme/white/state-ok-32.png</file>
+        <file>theme/white/state-ok-64.png</file>
+        <file>theme/white/state-pause-128.png</file>
+        <file>theme/white/state-pause-256.png</file>
+        <file>theme/white/state-pause-32.png</file>
+        <file>theme/white/state-pause-64.png</file>
+        <file>theme/white/state-sync-128.png</file>
+        <file>theme/white/state-sync-256.png</file>
+        <file>theme/white/state-sync-32.png</file>
+        <file>theme/white/state-sync-64.png</file>
     </qresource>
 </RCC>
