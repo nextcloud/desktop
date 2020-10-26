@@ -42,6 +42,9 @@ public slots:
     void setActivity(const Activity &activity);
     void slotNotificationRequestFinished(int statusCode);
 
+protected:
+    void changeEvent(QEvent *) override;
+
 private:
     void slotButtonClicked(QPushButton *buttonWidget, const ActivityLink &triggeredLink);
 

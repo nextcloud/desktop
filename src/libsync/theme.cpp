@@ -162,12 +162,6 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
                 cached.addPixmap(px);
             }
         }
-        if (cached.isNull()) {
-            QString pixmapName = QStringLiteral(":/client/resources/%1.svg").arg(name);
-            if (QFile::exists(pixmapName)) {
-                cached.addFile(pixmapName);
-            }
-        }
     }
 
 #ifdef Q_OS_MAC

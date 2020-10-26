@@ -127,11 +127,11 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
     }
 
     if (!url.startsWith(QLatin1String("https://"))) {
-        _ui.urlLabel->setPixmap(QIcon(QStringLiteral(":/client/resources/lock-http.svg")).pixmap(_ui.urlLabel->size()));
+        _ui.urlLabel->setPixmap(Utility::getCoreIcon(QStringLiteral("lock-http")).pixmap(_ui.urlLabel->size()));
         _ui.urlLabel->setToolTip(tr("This url is NOT secure as it is not encrypted.\n"
                                     "It is not advisable to use it."));
     } else {
-        _ui.urlLabel->setPixmap(QIcon(QStringLiteral(":/client/resources/lock-https.svg")).pixmap(_ui.urlLabel->size()));
+        _ui.urlLabel->setPixmap(Utility::getCoreIcon(QStringLiteral("lock-https")).pixmap(_ui.urlLabel->size()));
         _ui.urlLabel->setToolTip(tr("This url is secure. You can use it."));
     }
 }

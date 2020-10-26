@@ -49,6 +49,8 @@ namespace Utility {
     /** Translated text for "free up local space" (and unpinning the item) */
     QString vfsFreeSpaceActionText();
 
+    QIcon getCoreIcon(const QString &icon_name);
+
 } // namespace Utility
 } // namespace OCC
 

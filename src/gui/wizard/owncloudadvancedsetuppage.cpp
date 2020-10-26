@@ -84,6 +84,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
         _ui.confSpinBox->hide();
         _ui.confTraillingSizeLabel->hide();
     }
+    _ui.lLocalIcon->setPixmap(Utility::getCoreIcon(QStringLiteral("folder-sync")).pixmap(_ui.lLocalIcon->size()));
 
     _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
 

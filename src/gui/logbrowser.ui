@@ -17,7 +17,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="warningLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -40,7 +40,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../client.qrc">:/client/resources/warning.svg</pixmap>
+        <pixmap resource="../../client.qrc">:/client/resources/light/warning.svg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
