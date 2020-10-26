@@ -153,7 +153,7 @@ void ConflictDialog::updateWidgets()
     const auto remoteVersion = _solver->remoteVersionFilename();
     updateGroup(remoteVersion,
                 _ui->remoteVersionLink,
-                tr("Open remote version"),
+                tr("Open server version"),
                 _ui->remoteVersionMtime,
                 _ui->remoteVersionSize,
                 _ui->remoteVersionButton);
