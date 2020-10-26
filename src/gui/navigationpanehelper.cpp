@@ -66,17 +66,18 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     // that matches ours when we saved.
     QVector<QUuid> entriesToRemove;
 #ifdef Q_OS_WIN
-    Utility::registryWalkSubKeys(
-        HKEY_CURRENT_USER,
-        QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace)"),
-        [&entriesToRemove](HKEY key, const QString &subKey) {
-            QVariant appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
-            if (appName.toString() == QLatin1String(APPLICATION_NAME)) {
-                QUuid clsid{ subKey };
-                Q_ASSERT(!clsid.isNull());
-                entriesToRemove.append(clsid);
-            }
-        });
+    QString nameSpaceKey = QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace)");
+    if (Utility::registryKeyExists(HKEY_CURRENT_USER, nameSpaceKey)) {
+        Utility::registryWalkSubKeys(HKEY_CURRENT_USER, nameSpaceKey,
+            [&entriesToRemove](HKEY key, const QString &subKey) {
+                QVariant appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
+                if (appName.toString() == QLatin1String(APPLICATION_NAME)) {
+                    QUuid clsid{ subKey };
+                    Q_ASSERT(!clsid.isNull());
+                    entriesToRemove.append(clsid);
+                }
+            });
+    }
 #endif
 
     // Only save folder entries if the option is enabled.
