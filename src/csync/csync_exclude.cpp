@@ -317,17 +317,20 @@ bool ExcludedFiles::loadExcludeFile(const QByteArray & basePath, const QString &
     if (!f.open(QIODevice::ReadOnly))
         return false;
 
+    QList<QByteArray> patterns;
     while (!f.atEnd()) {
         QByteArray line = f.readLine().trimmed();
         if (line.isEmpty() || line.startsWith('#'))
             continue;
         csync_exclude_expand_escapes(line);
-        _allExcludes[basePath].append(line);
+        patterns.append(line);
     }
+    _allExcludes.insert(basePath, patterns);
 
     // nothing to prepare if the user decided to not exclude anything
-    if(_allExcludes.size())
+    if (!_allExcludes.value(basePath).isEmpty()){
         prepare(basePath);
+    }
 
     return true;
 }
