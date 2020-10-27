@@ -29,10 +29,6 @@ version = 1.1.5
 [dev-utils/create-dmg]
 version = master
 
-[dev-utils/git]
-version = 2.26.2
-revision = installation: C:\Program Files\Git\cmd\git.exe
-
 [dev-utils/help2man]
 version = 1.47.6
 
