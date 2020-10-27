@@ -733,7 +733,7 @@ Vänta på en ny synk, sedan kryptera den.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
-        <source>Open remote version</source>
+        <source>Open server version</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1583,7 +1583,7 @@ Om du fortsätter synkroniseringen kommer alla dina filer återställas med en �
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
-        <source>Create Debug Archive...</source>
+        <source>Create Debug Archive …</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3126,7 +3126,7 @@ Det är inte lämpligt att använda den.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
-        <source>Select new location...</source>
+        <source>Select new location …</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3183,17 +3183,17 @@ Det är inte lämpligt att använda den.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
-        <source>Resolve conflict...</source>
+        <source>Resolve conflict …</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
-        <source>Move and rename...</source>
+        <source>Move and rename …</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
-        <source>Move, rename and upload...</source>
+        <source>Move, rename and upload …</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3203,7 +3203,7 @@ Det är inte lämpligt att använda den.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
-        <source>Move and upload...</source>
+        <source>Move and upload …</source>
         <translation type="unfinished"/>
     </message>
     <message>
