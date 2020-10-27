@@ -151,15 +151,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
         foreach (int size, sizes) {
             QString pixmapName = QStringLiteral(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
             if (QFile::exists(pixmapName)) {
-                QPixmap px(pixmapName);
-                // HACK, get rid of it by supporting FDO icon themes, this is really just emulating ubuntu-mono
-                if (qgetenv("DESKTOP_SESSION") == "ubuntu") {
-                    QBitmap mask = px.createMaskFromColor(Qt::white, Qt::MaskOutColor);
-                    QPainter p(&px);
-                    p.setPen(QColor("#dfdbd2"));
-                    p.drawPixmap(px.rect(), mask, mask.rect());
-                }
-                cached.addPixmap(px);
+                cached.addPixmap(QPixmap(pixmapName));
             }
         }
     }
