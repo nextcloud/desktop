@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la suppression de &apos;%1&apos;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -674,7 +674,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Versions en conflit de %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
@@ -732,8 +732,8 @@ Wait for the new sync, then encrypt it.</source>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
-        <source>Open remote version</source>
-        <translation>Ouvrir la version distante</translation>
+        <source>Open server version</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
@@ -1586,8 +1586,8 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
-        <source>Create Debug Archive...</source>
-        <translation>Création de l&apos;archive de déboggage...</translation>
+        <source>Create Debug Archive …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -2262,7 +2262,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Il s&apos;agit du lien vers votre interface Web %1 lorsque vous l&apos;ouvrez dans le navigateur. Il ressemble à https://cloud.example.com ou https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
@@ -3130,7 +3130,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
-        <source>Select new location...</source>
+        <source>Select new location …</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3187,27 +3187,27 @@ Il est déconseillé de l&apos;utiliser.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
-        <source>Resolve conflict...</source>
-        <translation>Résoudre le conflit...</translation>
+        <source>Resolve conflict …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
-        <source>Move and rename...</source>
-        <translation>Déplacer et renommer...</translation>
+        <source>Move and rename …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
-        <source>Move, rename and upload...</source>
+        <source>Move, rename and upload …</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer les modifications locales</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
-        <source>Move and upload...</source>
+        <source>Move and upload …</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4168,7 +4168,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Il s&apos;agit du lien vers votre interface Web %1 lorsque vous l&apos;ouvrez dans le navigateur. Il ressemble à https://cloud.example.com ou https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -4493,12 +4493,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="665"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open Talk %1</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir Talk %1</translation>
     </message>
 </context>
 <context>

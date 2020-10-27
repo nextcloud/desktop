@@ -733,8 +733,8 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
-        <source>Open remote version</source>
-        <translation>Odpri oddaljeno različico</translation>
+        <source>Open server version</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
@@ -1583,8 +1583,8 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
-        <source>Create Debug Archive...</source>
-        <translation>Ustvari arhiv razhroščevanja ...</translation>
+        <source>Create Debug Archive …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -3124,8 +3124,8 @@ Uporaba možnosti ni priporočljiva.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
-        <source>Select new location...</source>
-        <translation>Izbor novega mesta ...</translation>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3181,18 +3181,18 @@ Uporaba možnosti ni priporočljiva.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
-        <source>Resolve conflict...</source>
-        <translation>Razreši spor ...</translation>
+        <source>Resolve conflict …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
-        <source>Move and rename...</source>
-        <translation>Premakni in preimenuj ...</translation>
+        <source>Move and rename …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
-        <source>Move, rename and upload...</source>
-        <translation>Premakni, preimenuj in pošlji ...</translation>
+        <source>Move, rename and upload …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
@@ -3201,8 +3201,8 @@ Uporaba možnosti ni priporočljiva.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
-        <source>Move and upload...</source>
-        <translation>Premakni in pošlji ...</translation>
+        <source>Move and upload …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>

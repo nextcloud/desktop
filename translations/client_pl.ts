@@ -733,8 +733,8 @@ Poczekaj na nową synchronizację, a następnie ją zaszyfruj.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
-        <source>Open remote version</source>
-        <translation>Otwórz wersję zdalną</translation>
+        <source>Open server version</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
@@ -1221,7 +1221,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/folderman.cpp" line="1408"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>W folderze lokalnym %1 jest już zawarty folder używany w obsłudze do synchronizacji folderów. Wybierz inny!...</translation>
+        <translation>W folderze lokalnym %1 jest już zawarty folder używany w obsłudze do synchronizacji folderów. Wybierz inny!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1422"/>
@@ -1274,7 +1274,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="191"/>
         <source>Fetching folder list from server …</source>
-        <translation>Pobieranie listy katalogów z serwera...</translation>
+        <translation>Pobieranie listy katalogów z serwera…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="217"/>
@@ -1379,7 +1379,7 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1105"/>
         <source>Waiting …</source>
-        <translation>Oczekiwanie...</translation>
+        <translation>Oczekiwanie…</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1107"/>
@@ -1585,8 +1585,8 @@ Kontynuowanie synchronizacji w normalny sposób spowoduje zastąpienie wszystkic
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
-        <source>Create Debug Archive...</source>
-        <translation>Utwórz archiwum debugowania...</translation>
+        <source>Create Debug Archive …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -2118,7 +2118,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
         <source>Connect …</source>
-        <translation>Połącz...</translation>
+        <translation>Połącz…</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -3128,8 +3128,8 @@ Nie zaleca się korzystania z niego.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
-        <source>Select new location...</source>
-        <translation>Wybierz nową lokalizację...</translation>
+        <source>Select new location …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3155,7 +3155,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Send private link by email …</source>
-        <translation>Wyślij link prywatny e-mailem...</translation>
+        <translation>Wyślij link prywatny e-mailem…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="736"/>
@@ -3185,18 +3185,18 @@ Nie zaleca się korzystania z niego.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
-        <source>Resolve conflict...</source>
-        <translation>Rozwiąż konflikt...</translation>
+        <source>Resolve conflict …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
-        <source>Move and rename...</source>
-        <translation>Przenieś i zmień nazwę...</translation>
+        <source>Move and rename …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
-        <source>Move, rename and upload...</source>
-        <translation>Przenieś, zmień nazwę i wyślij...</translation>
+        <source>Move, rename and upload …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
@@ -3205,8 +3205,8 @@ Nie zaleca się korzystania z niego.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
-        <source>Move and upload...</source>
-        <translation>Przenieś i wyślij...</translation>
+        <source>Move and upload …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
@@ -3952,7 +3952,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="415"/>
         <source>Log in …</source>
-        <translation>Zaloguj...</translation>
+        <translation>Zaloguj…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
@@ -4042,7 +4042,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
-        <translation>Wyświetl więcej aktywności...</translation>
+        <translation>Wyświetl więcej aktywności…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
