@@ -15,7 +15,7 @@ You can locate this configuration file as follows:
 | *Microsoft Windows* 
 | `%APPDATA%\ownCloud\owncloud.cfg`
 | *macOS* 
-|`$HOME/Library/ApplicationSupport/ownCloud/owncloud.cfg`
+|`$HOME/Library/Preferences/ownCloud/owncloud.cfg`
 |===
 
 The configuration file contains settings using {ini-file-format-url}[the Microsoft Windows `.ini` file format].

@@ -52,7 +52,7 @@ namespace WizardCommon {
 
     QString subTitleTemplate()
     {
-        return QString::fromLatin1("<font color=\"%1\">").arg(Theme::instance()->wizardHeaderTitleColor().name()) + QString::fromLatin1("%1</font>");
+        return QString::fromLatin1("<font color=\"%1\">").arg(Theme::instance()->wizardHeaderSubTitleColor().name()) + QString::fromLatin1("%1</font>");
     }
 
     void initErrorLabel(QLabel *errorLabel)

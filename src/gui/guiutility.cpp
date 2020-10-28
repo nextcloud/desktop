@@ -20,6 +20,7 @@
 #include <QLoggingCategory>
 #include <QMessageBox>
 #include <QUrlQuery>
+#include <QIcon>
 
 #include "theme.h"
 
@@ -96,4 +97,18 @@ QString Utility::vfsPinActionText()
 QString Utility::vfsFreeSpaceActionText()
 {
     return QCoreApplication::translate("utility", "Free up local space");
+}
+
+
+QIcon Utility::getCoreIcon(const QString &icon_name)
+{
+    if (icon_name.isEmpty()) {
+        return {};
+    }
+    const QColor bg(QPalette().base().color());
+    const double treshold = 1.0 - (0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue()) / 255.0;
+    const QString path = treshold > 0.5 ? QStringLiteral("light") : QStringLiteral("dark");
+    const QIcon icon(QStringLiteral(":/client/resources/%1/%2").arg(path, icon_name));
+    Q_ASSERT(!icon.isNull());
+    return icon;
 }

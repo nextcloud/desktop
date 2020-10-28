@@ -103,6 +103,7 @@ public:
     virtual QIcon folderDisabledIcon() const;
     virtual QIcon folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;
     virtual QIcon applicationIcon() const;
+    virtual QIcon aboutIcon() const;
 #endif
 
     virtual QString statusHeaderText(SyncResult::Status) const;
@@ -183,6 +184,7 @@ public:
 
     /** @return color for the setup wizard */
     virtual QColor wizardHeaderTitleColor() const;
+    virtual QColor wizardHeaderSubTitleColor() const;
 
     /** @return color for the setup wizard. */
     virtual QColor wizardHeaderBackgroundColor() const;
@@ -357,6 +359,14 @@ public:
      * Returns the required opeidconnect scopes
      */
     virtual QString openIdConnectScopes() const;
+
+    /**
+     * Returns the openidconnect promt type
+     * It is supposed to be "consent select_account".
+     * For Konnect it currently needs to be select_account,
+     * which is the current default.
+     */
+    virtual QString openIdConnectPrompt() const;
 
     /**
      * @brief What should be output for the --version command line switch.

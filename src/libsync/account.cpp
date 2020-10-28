@@ -78,6 +78,16 @@ void Account::setSharedThis(AccountPtr sharedThis)
     _sharedThis = sharedThis.toWeakRef();
 }
 
+QString Account::idpUserName() const
+{
+    return _idpUserName;
+}
+
+void Account::setIdpUserName(const QString &userName)
+{
+    _idpUserName = userName;
+}
+
 AccountPtr Account::sharedFromThis()
 {
     return _sharedThis.toStrongRef();

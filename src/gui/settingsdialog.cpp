@@ -85,6 +85,72 @@ QString shortDisplayNameForSettings(OCC::Account *account)
 
 namespace OCC {
 
+class ToolButtonAction : public QWidgetAction
+{
+    Q_OBJECT
+public:
+    explicit ToolButtonAction(const QIcon &icon, const QString &text, QObject *parent)
+        : QWidgetAction(parent)
+    {
+        setIcon(icon);
+        setText(text);
+        setCheckable(true);
+    }
+
+    explicit ToolButtonAction(const QString &icon, const QString &text, QObject *parent)
+        : QWidgetAction(parent)
+    {
+        setText(text);
+        setIconName(icon);
+        setCheckable(true);
+    }
+
+
+    QWidget *createWidget(QWidget *parent) override
+    {
+        auto toolbar = qobject_cast<QToolBar *>(parent);
+        if (!toolbar) {
+            // this means we are in the extention menu, no special action here
+            return nullptr;
+        }
+
+        QToolButton *btn = new QToolButton(toolbar);
+        QString objectName = QLatin1String("settingsdialog_toolbutton_");
+        objectName += text();
+        btn->setObjectName(objectName);
+
+        btn->setDefaultAction(this);
+        btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+        // icon size is fixed, we can't use the toolbars actual size hint as it might not be defined yet
+        btn->setMinimumWidth(toolbar->iconSize().height() * BUTTONSIZERATIO);
+        return btn;
+    }
+
+    QString iconName() const
+    {
+        return _iconName;
+    }
+
+    void setIconName(const QString &iconName)
+    {
+        if (_iconName != iconName) {
+            _iconName = iconName;
+            updateIcon();
+        }
+    }
+
+    void updateIcon()
+    {
+        if (!_iconName.isEmpty()) {
+            setIcon(Utility::getCoreIcon(_iconName));
+        }
+    }
+
+private:
+    QString _iconName;
+};
+
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     : QMainWindow(parent, Qt::WindowFlags() & ~Qt::WindowContextHelpButtonHint)
     , _ui(new Ui::SettingsDialog)
@@ -107,7 +173,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
 
     if (Theme::instance()->multiAccount()) {
-        _addAccountAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/plus-solid.svg")), tr("Add account"));
+        _addAccountAction = createActionWithIcon(QStringLiteral("plus-solid"), tr("Add account"));
         _addAccountAction->setCheckable(false);
         connect(_addAccountAction, &QAction::triggered, this, []{
             // don't directly connect here, ocApp might not be defined yet
@@ -118,7 +184,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
-    _activityAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/activity.svg")), tr("Activity"));
+    _activityAction = createActionWithIcon(QStringLiteral("activity"), tr("Activity"));
     _actionGroup->addAction(_activityAction);
     _ui->toolBar->addAction(_activityAction);
     _activitySettings = new ActivitySettings;
@@ -127,7 +193,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         &ownCloudGui::slotShowOptionalTrayMessage);
     _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 
-    QAction *generalAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/settings.svg")), tr("Settings"));
+    QAction *generalAction = createActionWithIcon(QStringLiteral("settings"), tr("Settings"));
     _actionGroup->addAction(generalAction);
     _ui->toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
@@ -138,7 +204,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _ui->toolBar->addWidget(spacer);
 
-    QAction *quitAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/quit.svg")), tr("Quit %1").arg(qApp->applicationName()));
+    QAction *quitAction = createActionWithIcon(QStringLiteral("quit"), tr("Quit %1").arg(qApp->applicationName()));
     quitAction->setCheckable(false);
     connect(quitAction, &QAction::triggered, this, [this] {
         const auto reply = QMessageBox::question(this, tr("Quit %1").arg(qApp->applicationName()),
@@ -275,11 +341,11 @@ void SettingsDialog::accountAdded(AccountState *s)
     QImage avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     if (avatar.isNull()) {
-        accountAction = createActionWithIcon(QIcon(QStringLiteral(":/client/resources/account.svg")),
+        accountAction = createActionWithIcon(QStringLiteral("account"),
             actionText);
     } else {
         QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));
-        accountAction = createActionWithIcon(icon, actionText);
+        accountAction = new ToolButtonAction(icon, actionText, this);
     }
 
     if (!brandingSingleAccount) {
@@ -372,45 +438,16 @@ void SettingsDialog::customizeStyle()
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
     _ui->toolBar->setStyleSheet(TOOLBAR_CSS().arg(background, dark, highlightColor, highlightTextColor));
+
+    for (auto a : findChildren<ToolButtonAction *>()) {
+        a->updateIcon();
+    }
 }
 
-class ToolButtonAction : public QWidgetAction
-{
-public:
-    explicit ToolButtonAction(const QIcon &icon, const QString &text, QObject *parent)
-        : QWidgetAction(parent)
-    {
-        setText(text);
-        setIcon(icon);
-    }
 
-
-    QWidget *createWidget(QWidget *parent) override
-    {
-        auto toolbar = qobject_cast<QToolBar *>(parent);
-        if (!toolbar) {
-            // this means we are in the extention menu, no special action here
-            return nullptr;
-        }
-
-        QToolButton *btn = new QToolButton(toolbar);
-        QString objectName = QLatin1String("settingsdialog_toolbutton_");
-        objectName += text();
-        btn->setObjectName(objectName);
-
-        btn->setDefaultAction(this);
-        btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
-        // icon size is fixed, we can't use the toolbars actual size hint as it might not be defined yet
-        btn->setMinimumWidth(toolbar->iconSize().height() * BUTTONSIZERATIO);
-        return btn;
-    }
-};
-
-QAction *SettingsDialog::createActionWithIcon(const QIcon &icon, const QString &text)
+QAction *SettingsDialog::createActionWithIcon(const QString &icon, const QString &text)
 {
     QAction *action = new ToolButtonAction(icon, text, this);
-    action->setCheckable(true);
     return action;
 }
 
@@ -427,3 +464,5 @@ void SettingsDialog::slotRefreshActivity(AccountState *accountState)
 }
 
 } // namespace OCC
+
+#include "settingsdialog.moc"

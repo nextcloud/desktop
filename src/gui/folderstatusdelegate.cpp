@@ -209,7 +209,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         warnRect.setWidth(16);
         warnRect.setHeight(16);
 
-        QIcon warnIcon(":/client/resources/warning.svg");
+        const QIcon warnIcon = Utility::getCoreIcon(QStringLiteral("warning"));
         QPixmap pm = warnIcon.pixmap(16, 16, syncEnabled ? QIcon::Normal : QIcon::Disabled);
         warnRect = QStyle::visualRect(option.direction, option.rect, warnRect);
         painter->drawPixmap(QPoint(warnRect.left(), warnRect.top()), pm);
@@ -345,7 +345,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
         btnOpt.rect = optionsButtonVisualRect;
-        btnOpt.icon = QIcon(QStringLiteral(":/client/resources/more.svg"));
+        btnOpt.icon = Utility::getCoreIcon(QStringLiteral("more"));
         int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
         btnOpt.iconSize = QSize(e,e);
         QApplication::style()->drawComplexControl(QStyle::CC_ToolButton, &btnOpt, painter);

@@ -373,7 +373,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="../../../client.qrc">:/client/resources/folder-sync.svg</pixmap>
+           <pixmap resource="../../../client.qrc">:/client/resources/light/folder-sync.svg</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>

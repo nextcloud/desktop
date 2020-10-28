@@ -417,6 +417,13 @@ bool HttpCredentials::refreshAccessToken()
     OAuth *oauth = new OAuth(_account, this);
     connect(oauth, &OAuth::refreshFinished, this, [this, oauth](const QString &accessToken, const QString &refreshToken){
         oauth->deleteLater();
+        _isRenewingOAuthToken = false;
+        if (refreshToken.isEmpty()) {
+            // an error occured, log out
+            _retryQueue.clear();
+            forgetSensitiveData();
+            return;
+        }
         _refreshToken = refreshToken;
         if (!accessToken.isNull())
         {
@@ -424,7 +431,6 @@ bool HttpCredentials::refreshAccessToken()
             _password = accessToken;
             persist();
         }
-        _isRenewingOAuthToken = false;
         for (const auto &job : _retryQueue) {
             if (job)
                 job->retry();

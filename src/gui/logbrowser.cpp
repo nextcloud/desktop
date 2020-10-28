@@ -31,6 +31,7 @@
 
 #include "configfile.h"
 #include "logger.h"
+#include "guiutility.h"
 #include "ui_logbrowser.h"
 
 namespace OCC {
@@ -46,6 +47,7 @@ LogBrowser::LogBrowser(QWidget *parent)
     ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
+    ui->warningLabel->setPixmap(Utility::getCoreIcon(QStringLiteral("warning")).pixmap(ui->warningLabel->size()));
     ui->locationLabel->setText(Logger::instance()->temporaryFolderLogDirPath());
 
     ui->enableLoggingButton->setChecked(ConfigFile().automaticLogDir());

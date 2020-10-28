@@ -243,6 +243,21 @@ namespace Utility {
         return formatWinError(GetLastError());
     };
 
+    class OCSYNC_EXPORT NtfsPermissionLookupRAII
+    {
+    public:
+        /**
+         * NTFS permissions lookup is diabled by default for performance reasons
+         * Enable it and disable it again once we leave the scope
+         * https://doc.qt.io/Qt-5/qfileinfo.html#ntfs-permissions
+         */
+        NtfsPermissionLookupRAII();
+        ~NtfsPermissionLookupRAII();
+
+    private:
+        Q_DISABLE_COPY(NtfsPermissionLookupRAII);
+    };
+
 #endif
 }
 /** @} */ // \addtogroup

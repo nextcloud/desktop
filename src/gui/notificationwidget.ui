@@ -52,7 +52,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../../client.qrc">:/client/resources/bell.svg</pixmap>
+        <pixmap resource="../../client.qrc">:/client/resources/light/bell.svg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>

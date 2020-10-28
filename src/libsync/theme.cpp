@@ -121,6 +121,11 @@ QIcon Theme::applicationIcon() const
     return themeIcon(QStringLiteral(APPLICATION_ICON_NAME "-icon"));
 }
 
+QIcon Theme::aboutIcon() const
+{
+    return applicationIcon();
+}
+
 /*
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.
@@ -146,21 +151,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
         foreach (int size, sizes) {
             QString pixmapName = QStringLiteral(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
             if (QFile::exists(pixmapName)) {
-                QPixmap px(pixmapName);
-                // HACK, get rid of it by supporting FDO icon themes, this is really just emulating ubuntu-mono
-                if (qgetenv("DESKTOP_SESSION") == "ubuntu") {
-                    QBitmap mask = px.createMaskFromColor(Qt::white, Qt::MaskOutColor);
-                    QPainter p(&px);
-                    p.setPen(QColor("#dfdbd2"));
-                    p.drawPixmap(px.rect(), mask, mask.rect());
-                }
-                cached.addPixmap(px);
-            }
-        }
-        if (cached.isNull()) {
-            QString pixmapName = QStringLiteral(":/client/resources/%1.svg").arg(name);
-            if (QFile::exists(pixmapName)) {
-                cached.addFile(pixmapName);
+                cached.addPixmap(QPixmap(pixmapName));
             }
         }
     }
@@ -451,6 +442,11 @@ QColor Theme::wizardHeaderTitleColor() const
     return qApp->palette().text().color();
 }
 
+QColor Theme::wizardHeaderSubTitleColor() const
+{
+    return wizardHeaderTitleColor();
+}
+
 QColor Theme::wizardHeaderBackgroundColor() const
 {
     return QColor();
@@ -541,6 +537,11 @@ QPair<QString, QString> Theme::oauthOverrideAuthUrl() const
 QString Theme::openIdConnectScopes() const
 {
     return QStringLiteral("openid offline_access email profile");
+}
+
+QString Theme::openIdConnectPrompt() const
+{
+    return QStringLiteral("select_account");
 }
 
 QString Theme::versionSwitchOutput() const

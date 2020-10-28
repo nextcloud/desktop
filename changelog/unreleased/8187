@@ -1,0 +1,6 @@
+Bugfix: We fixed the permissions check for local folders on NTFS
+
+We fixed a bug where the check whether the local folder is writeable returned a wrong result.
+This could cause a crash with the virtual file system plugin.
+
+https://github.com/owncloud/client/issues/8187

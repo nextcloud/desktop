@@ -1371,7 +1371,10 @@ static QString checkPathValidityRecursive(const QString &path)
         return FolderMan::tr("No valid folder selected!");
     }
 
-    QFileInfo selFile(path);
+#ifdef Q_OS_WIN
+    Utility::NtfsPermissionLookupRAII ntfs_perm;
+#endif
+    const QFileInfo selFile(path);
 
     if (!selFile.exists()) {
         QString parentPath = selFile.dir().path();

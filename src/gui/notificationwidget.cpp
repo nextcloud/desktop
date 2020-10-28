@@ -128,4 +128,18 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
 
     _progressIndi->stopAnimation();
 }
+
+void NotificationWidget::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::StyleChange:
+    case QEvent::PaletteChange:
+    case QEvent::ThemeChange:
+        _ui._notifIcon->setPixmap(Utility::getCoreIcon(QStringLiteral("bell")).pixmap(_ui._notifIcon->size()));
+        break;
+    default:
+        break;
+    }
+    QWidget::changeEvent(e);
+}
 }
