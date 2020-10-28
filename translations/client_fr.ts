@@ -733,7 +733,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir la version serveur</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
@@ -3131,7 +3131,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Sélectionnez le nouvel emplacement ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3188,17 +3188,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Résoudre le conflit ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Déplacer et renommer...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Déplacer, renommer et envoyer ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
@@ -3208,7 +3208,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Déplacer et envoyer ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>

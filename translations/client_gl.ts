@@ -734,7 +734,7 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Abrir a versión do servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
@@ -1586,7 +1586,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Crear o arquivo de depuración…</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -3129,7 +3129,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionar a nova localización…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3186,17 +3186,17 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Resolver conflitos…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Mover e renomear…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Mover, renomear e enviar…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
@@ -3206,7 +3206,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Mover e enviar…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
