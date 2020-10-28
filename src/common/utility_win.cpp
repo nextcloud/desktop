@@ -114,6 +114,17 @@ QRect Utility::getTaskbarDimensions()
     return QRect(barRect.left, barRect.top, (barRect.right - barRect.left), (barRect.bottom - barRect.top));
 }
 
+bool Utility::registryKeyExists(HKEY hRootKey, const QString &subKey)
+{
+    HKEY hKey;
+
+    REGSAM sam = KEY_READ | KEY_WOW64_64KEY;
+    LONG result = RegOpenKeyEx(hRootKey, reinterpret_cast<LPCWSTR>(subKey.utf16()), 0, sam, &hKey);
+
+    RegCloseKey(hKey);
+    return result != ERROR_FILE_NOT_FOUND;
+}
+
 QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName)
 {
     QVariant value;
