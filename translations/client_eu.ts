@@ -3754,22 +3754,22 @@ Ez da gomendagarria erabiltzea.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 berrizendatu duzu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 ezabatu duzu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 sortu duzu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 aldatu duzu</translation>
     </message>
 </context>
 <context>

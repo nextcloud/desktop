@@ -3190,22 +3190,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>移动并重命名 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>移动，重命名并上传 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>删除本地变更</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>移动并上传 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
@@ -3750,27 +3750,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>已同步 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>您重命名了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>您删除了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>您创建了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>您修改了 %1</translation>
     </message>
 </context>
 <context>
@@ -4175,7 +4175,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>在一个服务商处注册</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -4260,7 +4260,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>账号输入</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -4275,7 +4275,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>账号未连接</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="132"/>
@@ -4295,7 +4295,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>移除账号</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="199"/>
@@ -4385,7 +4385,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="101"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud 桌面主对话框</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="139"/>
@@ -4395,17 +4395,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="143"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>全部恢复同步</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="143"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>全部暂停同步</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="177"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>账号切换器和设置菜单</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="211"/>
@@ -4415,7 +4415,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="235"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>添加新账号</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="249"/>
@@ -4430,7 +4430,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="336"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>当前用户头像</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="368"/>
@@ -4445,12 +4445,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="422"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>打开当前账号的本地文件夹</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="434"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>在浏览器中打开 Nextcloud Talk </translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="452"/>
@@ -4460,7 +4460,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="469"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>应用菜单</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="497"/>
@@ -4470,32 +4470,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="521"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>动态列表</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="533"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>本地打开 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>打开共享对话框</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="643"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>共享 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="665"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>打开 Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open Talk %1</source>
-        <translation type="unfinished"/>
+        <translation>打开 Talk %1</translation>
     </message>
 </context>
 <context>
