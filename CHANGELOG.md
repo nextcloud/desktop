@@ -19,6 +19,7 @@ Summary
 * Bugfix - Remove notifications when the account they belong to was removed: [#8085](https://github.com/owncloud/client/issues/8085)
 * Bugfix - Check whether the local folder supports the virtual file system: [#8131](https://github.com/owncloud/client/issues/8131)
 * Bugfix - "All Files removed" dialog no longer blocks the application: [#8170](https://github.com/owncloud/client/issues/8170)
+* Bugfix - We fixed the permissions check for local folders on NTFS: [#8187](https://github.com/owncloud/client/issues/8187)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 * Change - When manually adding a folder sync connection, don't display 404 errors: [#7724](https://github.com/owncloud/client/issues/7724)
 * Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
@@ -42,7 +43,6 @@ Summary
 * Change - Account display name `servername (username)` to `username@servername`: [#8104](https://github.com/owncloud/client/issues/8104)
 * Change - Remove update channels from the ownCloud client: [#8127](https://github.com/owncloud/client/issues/8127)
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
-* Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
 
 Details
@@ -120,6 +120,13 @@ Details
    We fixed a bug where a dialog locked the whole application
 
    https://github.com/owncloud/client/issues/8170
+
+* Bugfix - We fixed the permissions check for local folders on NTFS: [#8187](https://github.com/owncloud/client/issues/8187)
+
+   We fixed a bug where the check whether the local folder is writeable returned a wrong result.
+   This could cause a crash with the virtual file system plugin.
+
+   https://github.com/owncloud/client/issues/8187
 
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
 
@@ -288,14 +295,6 @@ Details
    OpenID Connect.
 
    https://github.com/owncloud/client/pull/7509
-
-* Change - Allow OpenID Connect authentication without a .well-known configuration: [#7681](https://github.com/owncloud/client/pull/7681)
-
-   A user might not want to provide .well-known/openid-configuration. The new changes enable us
-   to authenticate with OpenID Connect without it, by directly compiling the required urls into
-   the client.
-
-   https://github.com/owncloud/client/pull/7681
 
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
 
