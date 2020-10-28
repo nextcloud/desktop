@@ -310,7 +310,7 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
         { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
         { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },
-        { QStringLiteral("prompt"), QStringLiteral("select_account") },
+        { QStringLiteral("prompt"), Theme::instance()->openIdConnectPrompt() },
         { QStringLiteral("state"), QString::fromUtf8(_state) },
         { QStringLiteral("display"), Theme::instance()->appNameGUI() },
         { QStringLiteral("login_hint"), _account->idpUserName() } });

@@ -539,6 +539,11 @@ QString Theme::openIdConnectScopes() const
     return QStringLiteral("openid offline_access email profile");
 }
 
+QString Theme::openIdConnectPrompt() const
+{
+    return QStringLiteral("select_account");
+}
+
 QString Theme::versionSwitchOutput() const
 {
     return aboutVersions(Theme::VersionFormat::Url);

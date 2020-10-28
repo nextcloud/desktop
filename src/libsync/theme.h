@@ -361,6 +361,14 @@ public:
     virtual QString openIdConnectScopes() const;
 
     /**
+     * Returns the openidconnect promt type
+     * It is supposed to be "consent select_account".
+     * For Konnect it currently needs to be select_account,
+     * which is the current default.
+     */
+    virtual QString openIdConnectPrompt() const;
+
+    /**
      * @brief What should be output for the --version command line switch.
      *
      * By default, it's a combination of appName(), version(), the GIT SHA1 and some
