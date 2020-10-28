@@ -139,16 +139,20 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
         flavor = QStringLiteral("colored");
     }
 
-    QString key = name + QLatin1Char(',') + flavor;
+    const QString key = name + QLatin1Char(',') + flavor;
     QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
     if (cached.isNull()) {
         if (appName() == QLatin1String("ownCloud") && QIcon::hasThemeIcon(name)) {
             // use from theme
             return cached = QIcon::fromTheme(name);
         }
+        const auto svg = QIcon(QStringLiteral(":/client/theme/%1/%2.svg").arg(flavor, name));
+        if (!svg.isNull()) {
+            return cached = svg;
+        }
 
         const QList<int> sizes {16, 22, 32, 48, 64, 128, 256, 512, 1024};
-        foreach (int size, sizes) {
+        for (int size : sizes) {
             QString pixmapName = QStringLiteral(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
             if (QFile::exists(pixmapName)) {
                 cached.addPixmap(QPixmap(pixmapName));
