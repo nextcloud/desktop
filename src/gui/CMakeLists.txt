@@ -227,9 +227,8 @@ set( final_src
     ${3rdparty_MOC}
 )
 
-if(QTKEYCHAIN_FOUND OR QT5KEYCHAIN_FOUND)
-    list(APPEND libsync_LINK_TARGETS ${QTKEYCHAIN_LIBRARY})
-    include_directories(${QTKEYCHAIN_INCLUDE_DIR})
+if(Qt5Keychain_FOUND)
+    list(APPEND libsync_LINK_TARGETS qt5keychain)
 endif()
 
 # add executable icon on windows and osx

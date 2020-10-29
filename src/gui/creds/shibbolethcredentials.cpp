@@ -33,7 +33,7 @@
 #include "owncloudgui.h"
 #include "syncengine.h"
 
-#include <keychain.h>
+#include <qt5keychain/keychain.h>
 
 using namespace QKeychain;
 

@@ -22,7 +22,7 @@
 #include <QJsonDocument>
 #include <QBuffer>
 
-#include <keychain.h>
+#include <qt5keychain/keychain.h>
 
 #include "account.h"
 #include "accessmanager.h"

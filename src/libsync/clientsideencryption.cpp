@@ -33,7 +33,7 @@
 #include <QUuid>
 #include <QScopeGuard>
 
-#include <keychain.h>
+#include <qt5keychain/keychain.h>
 #include "common/utility.h"
 
 #include "wordlist.h"
