@@ -1,0 +1,5 @@
+Change: Display the users avatar in the activity list
+
+We now display the users avatar if available in the activity log table.
+
+https://github.com/owncloud/client/issues/8169
