@@ -126,6 +126,15 @@ QIcon Theme::aboutIcon() const
     return applicationIcon();
 }
 
+bool Theme::isUsingDarkTheme() const
+{
+    if (!_hasDarkColoredTheme) {
+        return false;
+    }
+    const QColor bg(QPalette().base().color());
+    const double treshold = 1.0 - (0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue()) / 255.0;
+    return treshold > 0.5;
+}
 /*
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.
@@ -136,7 +145,11 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
     if (sysTray) {
         flavor = systrayIconFlavor(_mono, sysTrayMenuVisible);
     } else {
-        flavor = QStringLiteral("colored");
+        if (isUsingDarkTheme()) {
+            flavor = QStringLiteral("dark");
+        } else {
+            flavor = QStringLiteral("colored");
+        }
     }
 
     const QString key = name + QLatin1Char(',') + flavor;
@@ -237,7 +250,8 @@ QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
         }
 #endif
     } else {
-        flavor = QStringLiteral("colored");
+        // we have a dark sys tray and the theme has support for that
+        flavor = (Utility::hasDarkSystray() && _hasDarkColoredTheme) ? QStringLiteral("dark") : QStringLiteral("colored");
     }
     return flavor;
 }
@@ -255,8 +269,8 @@ bool Theme::systrayUseMonoIcons() const
 
 bool Theme::monoIconsAvailable() const
 {
-    QString themeDir = QStringLiteral(":/client/theme/%1/").arg(Theme::instance()->systrayIconFlavor(true));
-    return QDir(themeDir).exists();
+    const QString themeDir = QStringLiteral(":/client/theme/%1/").arg(Theme::instance()->systrayIconFlavor(true));
+    return QFileInfo(themeDir).isDir();
 }
 
 QString Theme::updateCheckUrl() const

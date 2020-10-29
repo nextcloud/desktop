@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/client">
+        <file alias="theme/black/state-ok.svg">theme/black/ui-light-plain-monochrom-state-checkmark.svg</file>
         <file alias="theme/black/state-error.svg">theme/black/ui-light-plain-monochrom-state-error.svg</file>
         <file alias="theme/black/state-information.svg">theme/black/ui-light-plain-monochrom-state-info.svg</file>
         <file alias="theme/black/state-offline.svg">theme/black/ui-light-plain-monochrom-state-offline.svg</file>
-        <file alias="theme/black/state-ok.svg">theme/black/ui-light-plain-monochrom-state-checkmark.svg</file>
         <file alias="theme/black/state-pause.svg">theme/black/ui-light-plain-monochrom-state-pause.svg</file>
         <file alias="theme/black/state-sync.svg">theme/black/ui-light-plain-monochrom-state-sync.svg</file>
         <file alias="theme/colored/owncloud-icon-128.png">theme/colored/128-owncloud-icon.png</file>
@@ -13,17 +13,23 @@
         <file alias="theme/colored/owncloud-icon-512.png">theme/colored/512-owncloud-icon-sidebar.png</file>
         <file alias="theme/colored/owncloud-icon-64.png">theme/colored/64-owncloud-icon.png</file>
         <file>theme/colored/oc-image-about.svg</file>
+        <file alias="theme/colored/state-ok.svg">theme/colored/ui-light-plain-color-state-checkmark.svg</file>
         <file alias="theme/colored/state-error.svg">theme/colored/ui-light-plain-color-state-error.svg</file>
         <file alias="theme/colored/state-information.svg">theme/colored/ui-light-plain-color-state-info.svg</file>
         <file alias="theme/colored/state-offline.svg">theme/colored/ui-light-plain-color-state-offline.svg</file>
-        <file alias="theme/colored/state-ok.svg">theme/colored/ui-light-plain-color-state-checkmark.svg</file>
         <file alias="theme/colored/state-pause.svg">theme/colored/ui-light-plain-color-state-pause.svg</file>
         <file alias="theme/colored/state-sync.svg">theme/colored/ui-light-plain-color-state-sync.svg</file>
         <file>theme/colored/wizard_logo.svg</file>
+        <file alias="theme/dark/state-ok.svg">theme/dark/ui-dark-plain-color-state-checkmark.svg</file>
+        <file alias="theme/dark/state-error.svg">theme/dark/ui-dark-plain-color-state-error.svg</file>
+        <file alias="theme/dark/state-information.svg">theme/dark/ui-dark-plain-color-state-info.svg</file>
+        <file alias="theme/dark/state-offline.svg">theme/dark/ui-dark-plain-color-state-offline.svg</file>
+        <file alias="theme/dark/state-pause.svg">theme/dark/ui-dark-plain-color-state-pause.svg</file>
+        <file alias="theme/dark/state-sync.svg">theme/dark/ui-dark-plain-color-state-sync.svg</file>
+        <file alias="theme/white/state-ok.svg">theme/white/ui-dark-plain-monochrom-state-checkmark.svg</file>
         <file alias="theme/white/state-error.svg">theme/white/ui-dark-plain-monochrom-state-error.svg</file>
         <file alias="theme/white/state-information.svg">theme/white/ui-dark-plain-monochrom-state-info.svg</file>
         <file alias="theme/white/state-offline.svg">theme/white/ui-dark-plain-monochrom-state-offline.svg</file>
-        <file alias="theme/white/state-ok.svg">theme/white/ui-dark-plain-monochrom-state-checkmark.svg</file>
         <file alias="theme/white/state-pause.svg">theme/white/ui-dark-plain-monochrom-state-pause.svg</file>
         <file alias="theme/white/state-sync.svg">theme/white/ui-dark-plain-monochrom-state-sync.svg</file>
     </qresource>
