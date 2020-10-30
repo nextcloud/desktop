@@ -98,7 +98,7 @@ The ownCloud team has its own repository containing non-standard recipes.
 To set up your build environment for development using http://mxcl.github.com/homebrew/[HomeBrew]:
 
 . Install https://developer.apple.com/xcode[Xcode].
-. Install Xcode command line tools using `xcode-select –install`.
+. Install Xcode command line tools using `xcode-select --install`.
 . Install Homebrew using `/usr/bin/ruby -e $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)`.
 . Add the ownCloud repository using the command `brew tap owncloud/owncloud`
 . Install a Qt5 version, ideally from from 5.10.1, using the command `brew install qt5`.
