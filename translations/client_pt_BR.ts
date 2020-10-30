@@ -355,7 +355,7 @@ Aguarde a nova sincronização e criptografe-a.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="444"/>
         <source>Remove folder sync connection</source>
-        <translation>Remover a conexão de sincronização de pastas</translation>
+        <translation>Remover conexão de sincronização de pastas</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="515"/>
@@ -380,7 +380,7 @@ Aguarde a nova sincronização e criptografe-a.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="576"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Remover a Conexão de Sincronização de pasta</translation>
+        <translation>Remover conexão de sincronização de pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="661"/>
@@ -1232,7 +1232,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="48"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Adicionar Conexão de Sincronização de pasta</translation>
+        <translation>Adicionar conexão de sincronização de pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
@@ -1403,12 +1403,12 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="557"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Adicionar Conexão de Sincronização de pasta</translation>
+        <translation>Adicionar conexão de sincronização de pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="559"/>
         <source>Add Sync Connection</source>
-        <translation>Adicionar Conexão de Sincronização</translation>
+        <translation>Adicionar conexão de sincronização</translation>
     </message>
 </context>
 <context>
@@ -1421,7 +1421,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
-        <translation>Entre com o caminho para a pasta local.</translation>
+        <translation>Informe o caminho da pasta local.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="133"/>
@@ -1539,17 +1539,17 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Usar Icones &amp;Monocromáticos</translation>
+        <translation>Usar ícones &amp;monocromáticos</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Executar na Inicialização do Sistema</translation>
+        <translation>&amp;Executar ao iniciar o sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Exibir &amp;Notificações do Servidor</translation>
+        <translation>Exibir &amp;notificações do servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
@@ -1579,7 +1579,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/generalsettings.ui" line="218"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Editar Arquivos &amp;Ignorados</translation>
+        <translation>Editar arquivos &amp;ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
@@ -1726,7 +1726,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="38"/>
         <source>Allow Deletion</source>
-        <translation>Permitir Exclusão</translation>
+        <translation>Permitir exclusão</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.ui" line="49"/>
@@ -1750,7 +1750,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Arquivos ou pastas correspondentes a um padrão não serão sincronizados.
 
-Os itens em que a exclusão é permitida serão excluídos se impedirem a remoção de um diretório. Isso é útil para metadados.</translation>
+Os itens em que a exclusão é permitida serão excluídos se impedirem a remoção de uma pasta. Isso é útil para metadados.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
@@ -1951,7 +1951,7 @@ Logs serão gravados em %1</translation>
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="275"/>
         <source>Limit to</source>
-        <translation>Limitar a</translation>
+        <translation>Limitar em</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
@@ -3731,7 +3731,7 @@ Não é aconselhado usá-la.</translation>
         <location filename="../src/libsync/theme.cpp" line="372"/>
         <location filename="../src/libsync/theme.cpp" line="382"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Versão %1. Para mais informações por favor clique &lt;a href=&apos;%2&apos;&gt;aqui&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Versão %1. Para mais informações clique &lt;a href=&apos;%2&apos;&gt;aqui&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="386"/>

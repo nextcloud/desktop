@@ -702,7 +702,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 бајти</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
@@ -1770,7 +1770,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2020 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Авторски права 2017-2020 Nextcloud GmbH&lt;br /&gt;Авторски права 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
@@ -4149,7 +4149,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Пријавете се преку провајдер</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -4459,7 +4459,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="643"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Сподели %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="665"/>
