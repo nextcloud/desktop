@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Klaida šalinant „%1“: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -684,13 +684,13 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Vietinė versija</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Spustelėkite norėdami atverti failą</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -707,7 +707,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Atverti vietinę versiją&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -717,38 +717,38 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Atverti serverio versiją&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Palikti pasirinktą versiją</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Atverti vietinę versiją</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Atverti serverio versiją</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Palikti abi versijas</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Palikti vietinę versiją</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Palikti serverio versiją</translation>
     </message>
 </context>
 <context>
@@ -756,17 +756,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Ar norite visam laikui ištrinti katalogą &lt;i&gt;%1&lt;/i&gt; ir visą jo turinį?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Ar norite visam laikui ištrinti failą &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Patvirtinti ištrynimą</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -780,7 +780,9 @@ Wait for the new sync, then encrypt it.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Failo perkėlimas nepavyko:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1621,7 +1623,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip archyvai</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
@@ -3025,7 +3027,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="280"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation>Pagal kriterijų %1 nieko nerasta</translation>
+        <translation>„%1“ negrąžino jokių rezultatų</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
@@ -3185,7 +3187,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Perkelti ir pervadinti…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
@@ -3195,7 +3197,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Ištrinti vietinius pakeitimus</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
@@ -3750,22 +3752,22 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Jūs pervadinote %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Jūs ištrynėte %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Jūs sukūrėte %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Jūs pakeitėte %1</translation>
     </message>
 </context>
 <context>
@@ -4410,7 +4412,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="235"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti naują paskyrą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="249"/>
@@ -4455,7 +4457,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="469"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Programėlių meniu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="497"/>
@@ -4465,7 +4467,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="521"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Veiklos sąrašas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="533"/>
