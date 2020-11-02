@@ -27,6 +27,8 @@
 #include <windows.h>
 #include <winerror.h>
 
+#include <QCoreApplication>
+#include <QFileInfo>
 #include <QLibrary>
 
 #include "common/result.h"
@@ -35,19 +37,36 @@
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 
 namespace {
-const char systemRunPathC[] = "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+const QString systemRunPathC() {
+    return QStringLiteral("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+}
+
+const QString runPathC() {
+    return QStringLiteral("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+}
+
 const QString rtHelperNameC()
 {
     return QStringLiteral(APPLICATION_EXECUTABLE "_winrt");
 }
 
 template <typename T>
-static OCC::Result<std::function<T>, bool> funcLoadHelper(const QString &lib, const char *function)
+static OCC::Result<std::function<T>, nullptr_t> funcLoadHelper(const QString &lib, const char *function)
 {
-    void *f = QLibrary::resolve(lib, function);
+    QFileInfo info(lib);
+    if (!info.isAbsolute()) {
+        info.setFile(QStringLiteral("%1/%2.dll").arg(QCoreApplication::instance()->applicationDirPath(), lib));
+    }
+    if (!info.exists()) {
+        qCWarning(OCC::lcUtility) << "Failed to find:" << info.filePath();
+        return nullptr;
+    }
+
+    QLibrary library(info.filePath());
+    QFunctionPointer f = library.resolve(function);
     if (!f) {
-        return false;
+        qCWarning(OCC::lcUtility) << library.errorString();
+        return nullptr;
     }
     return std::function<T> { reinterpret_cast<T *>(f) };
 }
@@ -95,23 +114,20 @@ static void setupFavLink_private(const QString &folder)
 
 bool hasSystemLaunchOnStartup_private(const QString &appName)
 {
-    QString runPath = QLatin1String(systemRunPathC);
-    QSettings settings(runPath, QSettings::NativeFormat);
+    QSettings settings(systemRunPathC(), QSettings::NativeFormat);
     return settings.contains(appName);
 }
 
 bool hasLaunchOnStartup_private(const QString &appName)
 {
-    QString runPath = QLatin1String(runPathC);
-    QSettings settings(runPath, QSettings::NativeFormat);
+    QSettings settings(runPathC(), QSettings::NativeFormat);
     return settings.contains(appName);
 }
 
 void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
 {
     Q_UNUSED(guiName);
-    QString runPath = QLatin1String(runPathC);
-    QSettings settings(runPath, QSettings::NativeFormat);
+    QSettings settings(runPathC(), QSettings::NativeFormat);
     if (enable) {
         settings.setValue(appName, QCoreApplication::applicationFilePath().replace(QLatin1Char('/'), QLatin1Char('\\')));
     } else {
