@@ -21,7 +21,7 @@
 
 #include <QApplication>
 
-#include <keychain.h>
+#include <qt5keychain/keychain.h>
 
 using namespace OCC;
 using namespace QKeychain;
