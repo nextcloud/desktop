@@ -559,7 +559,7 @@ QString Theme::openIdConnectScopes() const
 
 QString Theme::openIdConnectPrompt() const
 {
-    return QStringLiteral("select_account");
+    return QStringLiteral("select_account consent");
 }
 
 QString Theme::versionSwitchOutput() const
