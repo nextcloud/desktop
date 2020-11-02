@@ -131,9 +131,7 @@ bool Theme::isUsingDarkTheme() const
     if (!_hasDarkColoredTheme) {
         return false;
     }
-    const QColor bg(QPalette().base().color());
-    const double treshold = 1.0 - (0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue()) / 255.0;
-    return treshold > 0.5;
+    return QPalette().base().color().lightnessF() <= 0.5;
 }
 /*
  * helper to load a icon from either the icon theme the desktop provides or from
@@ -181,6 +179,26 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
 
     return cached;
 }
+
+QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
+{
+    Q_UNUSED(sysTrayMenuVisible)
+    QString flavor;
+    if (mono) {
+        flavor = Utility::hasDarkSystray() ? QStringLiteral("white") : QStringLiteral("black");
+
+#ifdef Q_OS_MAC
+        if (sysTrayMenuVisible) {
+            flavor = QLatin1String("white");
+        }
+#endif
+    } else {
+        // we have a dark sys tray and the theme has support for that
+        flavor = (Utility::hasDarkSystray() && _hasDarkColoredTheme) ? QStringLiteral("dark") : QStringLiteral("colored");
+    }
+    return flavor;
+}
+
 #endif
 
 Theme::Theme()
@@ -235,25 +253,6 @@ QString Theme::forceConfigAuthType() const
 QString Theme::defaultClientFolder() const
 {
     return appName();
-}
-
-QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
-{
-    Q_UNUSED(sysTrayMenuVisible)
-    QString flavor;
-    if (mono) {
-        flavor = Utility::hasDarkSystray() ? QStringLiteral("white") : QStringLiteral("black");
-
-#ifdef Q_OS_MAC
-        if (sysTrayMenuVisible) {
-            flavor = QLatin1String("white");
-        }
-#endif
-    } else {
-        // we have a dark sys tray and the theme has support for that
-        flavor = (Utility::hasDarkSystray() && _hasDarkColoredTheme) ? QStringLiteral("dark") : QStringLiteral("colored");
-    }
-    return flavor;
 }
 
 void Theme::setSystrayUseMonoIcons(bool mono)

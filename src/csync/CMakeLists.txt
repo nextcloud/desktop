@@ -49,11 +49,12 @@ configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library("${csync_NAME}" SHARED ${common_SOURCES} ${csync_SRCS})
 
-if (WIN32)
+if (WIN32 AND NOT TOKEN_AUTH_ONLY)
+    find_package(Qt5 REQUIRED COMPONENTS Widgets)
     add_library(ocwinrt SHARED ../common/winrthelper/winrthelper.cpp)
     set_target_properties(ocwinrt PROPERTIES CXX_STANDARD 17
                                              OUTPUT_NAME "${APPLICATION_EXECUTABLE}_winrt")
-    target_link_libraries(ocwinrt PUBLIC runtimeobject)
+    target_link_libraries(ocwinrt PUBLIC runtimeobject Qt5::Widgets)
 endif()
 
 

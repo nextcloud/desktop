@@ -23,9 +23,11 @@
 
 #include <algorithm>
 
+#include <QColor>
+
 namespace {
 
-ABI::Windows::UI::Color GetThemeColor(ABI::Windows::UI::ViewManagement::UIColorType type, bool *ok)
+QColor GetThemeColor(ABI::Windows::UI::ViewManagement::UIColorType type, bool *ok)
 {
     *ok = false;
     ABI::Windows::UI::Color color;
@@ -37,7 +39,7 @@ ABI::Windows::UI::Color GetThemeColor(ABI::Windows::UI::ViewManagement::UIColorT
         settings->GetColorValue(type, &color);
         *ok = true;
     }
-    return color;
+    return QColor(color.R, color.G, color.B);
 }
 }
 
@@ -46,8 +48,7 @@ bool hasDarkSystray()
     bool ok;
     const auto color = GetThemeColor(ABI::Windows::UI::ViewManagement::UIColorType::UIColorType_Background, &ok);
     if (ok) {
-        const auto lightness = 0.5 * (std::max(color.R, std::max(color.G, color.B)) + std::min(color.R, std::min(color.G, color.B))) / 255.0;
-        return lightness < 0.5;
+        return color.lightnessF() <= 0.5;
     }
     return true;
 }

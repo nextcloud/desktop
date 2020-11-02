@@ -177,10 +177,10 @@ public:
      */
     virtual QString enforcedLocale() const { return QString(); }
 
+#ifndef TOKEN_AUTH_ONLY
     /** colored, white or black */
     QString systrayIconFlavor(bool mono, bool sysTrayMenuVisible = false) const;
 
-#ifndef TOKEN_AUTH_ONLY
     /**
      * Override to use a string or a custom image name.
      * The default implementation will try to look up
