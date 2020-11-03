@@ -86,6 +86,8 @@ set(DATADIR "share")
 endif(WIN32)
 set(SHAREDIR ${DATADIR})
 
+set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}" CACHE STRING "Define directory containing a custom theme")
+
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms
 option(TOKEN_AUTH_ONLY "TOKEN_AUTH_ONLY" OFF)

@@ -219,8 +219,21 @@ else()
 endif()
 
 # add executable icon on windows and osx
-
 file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
+if (NOT OWNCLOUD_ICONS)
+    # allow legacy file names
+    file(GLOB_RECURSE OWNCLOUD_ICONS_OLD "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon-*.png")
+    MESSAGE(STATUS "OWNCLOUD_ICONS_OLD: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_ICONS_OLD}")
+    foreach(icon ${OWNCLOUD_ICONS_OLD})
+        get_filename_component(icon_name ${icon} NAME)
+        string(REGEX MATCH "([0-9]+)" size ${icon_name})
+        set(out_name "${CMAKE_BINARY_DIR}/${size}-app-icon.png")
+        configure_file(${icon} ${out_name} COPYONLY)
+        list(APPEND OWNCLOUD_ICONS ${out_name})
+    endforeach()
+endif()
+MESSAGE(STATUS "OWNCLOUD_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_ICONS}")
+
 if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon-sidebar.png")
     MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
