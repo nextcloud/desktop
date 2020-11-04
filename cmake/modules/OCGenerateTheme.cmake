@@ -17,7 +17,7 @@ function(generate_theme TARGET)
     if(NOT "${OEM_THEME_DIR}" STREQUAL "${PROJECT_SOURCE_DIR}")
         set(QRC ${CMAKE_BINARY_DIR}/theme.qrc)
         file(WRITE "${QRC}" "<RCC>\n<qresource prefix=\"/client/${APPLICATION_SHORTNAME}\">\n")
-        __addIcon("colored" "${APPLICATION_SHORTNAME}-icon")
+        __addIcon("colored" "${APPLICATION_ICON_NAME}-icon")
 
         set(STATES "ok;error;information;offline;pause;sync")
         set(THEMES "colored;dark;black;white")
