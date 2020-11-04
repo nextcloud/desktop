@@ -399,7 +399,8 @@ public:
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
-    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false, bool useCoreIcon = false) const;
+    static bool hasTheme(const QString &theme);
 #endif
     Theme();
 
@@ -413,7 +414,7 @@ private:
     static Theme *_instance;
     bool _mono;
 #ifndef TOKEN_AUTH_ONLY
-    bool _hasDarkColoredTheme = QFileInfo(QStringLiteral(":/client/theme/dark/")).isDir();
+    bool _hasDarkColoredTheme = hasTheme(QStringLiteral("dark"));
     mutable QHash<QString, QIcon> _iconCache;
 #endif
 };

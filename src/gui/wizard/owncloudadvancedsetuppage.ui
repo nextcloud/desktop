@@ -70,7 +70,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="../../../theme.qrc">:/client/theme/colored/owncloud-icon-48.png</pixmap>
+          <pixmap>:/client/core/theme/colored/owncloud-icon.svg</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -580,7 +580,6 @@
  </tabstops>
  <resources>
   <include location="../../../client.qrc"/>
-  <include location="../../../theme.qrc"/>
  </resources>
  <connections/>
 </ui>

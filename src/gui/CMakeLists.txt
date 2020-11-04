@@ -209,28 +209,18 @@ if(Qt5LinguistTools_FOUND)
 endif()
 
 #TODO Move resources files
-target_sources(${APPLICATION_EXECUTABLE} PRIVATE ../../client.qrc)
-if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
-    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${OEM_THEME_DIR}/theme.qrc)
-    set(theme_dir ${OEM_THEME_DIR}/theme)
-else()
-    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ../../theme.qrc)
-    set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
-endif()
+target_sources(${APPLICATION_EXECUTABLE} PRIVATE
+    ${PROJECT_SOURCE_DIR}/client.qrc
+    ${PROJECT_SOURCE_DIR}/core_theme.qrc)
+
+include(OCGenerateTheme)
+generate_theme(${APPLICATION_EXECUTABLE})
+set(theme_dir ${OEM_THEME_DIR}/theme)
 
 # add executable icon on windows and osx
 file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
 if (NOT OWNCLOUD_ICONS)
-    # allow legacy file names
-    file(GLOB_RECURSE OWNCLOUD_ICONS_OLD "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon-*.png")
-    MESSAGE(STATUS "OWNCLOUD_ICONS_OLD: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_ICONS_OLD}")
-    foreach(icon ${OWNCLOUD_ICONS_OLD})
-        get_filename_component(icon_name ${icon} NAME)
-        string(REGEX MATCH "([0-9]+)" size ${icon_name})
-        set(out_name "${CMAKE_BINARY_DIR}/${size}-app-icon.png")
-        configure_file(${icon} ${out_name} COPYONLY)
-        list(APPEND OWNCLOUD_ICONS ${out_name})
-    endforeach()
+    generate_legacy_icons(${theme_dir} OWNCLOUD_ICONS)
 endif()
 MESSAGE(STATUS "OWNCLOUD_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_ICONS}")
 

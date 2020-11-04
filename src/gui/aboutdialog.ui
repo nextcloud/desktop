@@ -57,7 +57,7 @@
             <string notr="true"/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../../theme.qrc">:/client/theme/colored/owncloud-icon-256.png</pixmap>
+            <pixmap resource="../../core_theme.qrc">:/client/core/theme/colored/owncloud-icon.svg</pixmap>
            </property>
           </widget>
          </item>
@@ -123,7 +123,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../theme.qrc"/>
+  <include location="../../core_theme.qrc"/>
  </resources>
  <connections>
   <connection>
