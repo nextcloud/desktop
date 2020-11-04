@@ -5,6 +5,18 @@ blueprintrepositories = https://invent.kde.org/packaging/craft-blueprints-kde.gi
 [core/cacert]
 version = 2020-10-14
 
+[craft/craft-blueprints-kde]
+version = master
+revision = 7c3e785c
+
+[craft/craft-blueprints-owncloud]
+version = master
+revision = 5d203b4
+
+[craft/craft-core]
+version = master
+revision = e7631043e
+
 [dev-utils/autoconf]
 version = 2.69
 
