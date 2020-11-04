@@ -161,7 +161,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
             flavor = QStringLiteral("colored");
         }
     }
-    const QString path = useCoreIcon ? QStringLiteral(":/client/core/theme") : QStringLiteral(":/client/theme");
+    const QString path = useCoreIcon ? QStringLiteral(":/client/ownCloud/theme") : QStringLiteral(":/client/%1/theme").arg(appName());
     const QString key = name + QLatin1Char(',') + flavor;
     QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
     if (cached.isNull()) {
@@ -207,10 +207,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
 
 bool Theme::hasTheme(const QString &theme)
 {
-    if (isVanilla()) {
-        return QFileInfo(QStringLiteral(":/client/core/theme/%1/").arg(theme)).isDir();
-    }
-    return QFileInfo(QStringLiteral(":/client/theme/%1/").arg(theme)).isDir();
+    return QFileInfo(QStringLiteral(":/client/" APPLICATION_SHORTNAME "/theme/%1/").arg(theme)).isDir();
 }
 
 QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
@@ -425,7 +422,7 @@ QVariant Theme::customMedia(CustomMediaType type)
         break;
     }
 
-    QString imgPath = QStringLiteral(":/client/theme/colored/%1.png").arg(key);
+    QString imgPath = QStringLiteral(":/client/%1/theme/colored/%2.png").arg(appName(), key);
     if (QFile::exists(imgPath)) {
         QPixmap pix(imgPath);
         if (pix.isNull()) {

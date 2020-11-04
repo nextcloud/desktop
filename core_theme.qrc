@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/client/core">
+    <qresource prefix="/client/ownCloud">
         <file alias="theme/black/state-ok.svg">theme/black/ui-light-plain-monochrom-state-checkmark.svg</file>
         <file alias="theme/black/state-error.svg">theme/black/ui-light-plain-monochrom-state-error.svg</file>
         <file alias="theme/black/state-information.svg">theme/black/ui-light-plain-monochrom-state-info.svg</file>

@@ -70,7 +70,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>:/client/core/theme/colored/owncloud-icon.svg</pixmap>
+          <pixmap>:/client/ownCloud/theme/colored/owncloud-icon.svg</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
