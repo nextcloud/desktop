@@ -2078,7 +2078,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="178"/>
         <source>Update Check</source>
-        <translation>Comprova si hi ha actualitzacions</translation>
+        <translation>Comprovació d&apos;actualitzacions</translation>
     </message>
 </context>
 <context>
