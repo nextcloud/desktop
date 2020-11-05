@@ -213,17 +213,10 @@ target_sources(${APPLICATION_EXECUTABLE} PRIVATE
     ${PROJECT_SOURCE_DIR}/client.qrc
     ${PROJECT_SOURCE_DIR}/core_theme.qrc)
 
-include(OCGenerateTheme)
 generate_theme(${APPLICATION_EXECUTABLE})
 set(theme_dir ${OEM_THEME_DIR}/theme)
 
 # add executable icon on windows and osx
-file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
-if (NOT OWNCLOUD_ICONS)
-    generate_legacy_icons(${theme_dir} OWNCLOUD_ICONS)
-endif()
-MESSAGE(STATUS "OWNCLOUD_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_ICONS}")
-
 if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon-sidebar.png")
     MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
