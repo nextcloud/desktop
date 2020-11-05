@@ -207,11 +207,11 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 folderDefinition.journalPath = defaultJournalPath;
             }
 
-            // Migration #2: journalPath now in DataAppDir, not root of local tree (cross-platform persistent user roaming files)
-            if (folderDefinition.journalPath.at(0) == QChar('.')) {
-                QFile oldJournal(folderDefinition.localPath + "/" + folderDefinition.journalPath);
-                QFile oldJournalShm(folderDefinition.localPath + "/" + folderDefinition.journalPath.append("-shm"));
-                QFile oldJournalWal(folderDefinition.localPath + "/" + folderDefinition.journalPath.append("-wal"));
+            // Migration #2: journalPath might be absolute (in DataAppDir most likely) move it back to the root of local tree
+            if (folderDefinition.journalPath.at(0) != QChar('.')) {
+                QFile oldJournal(folderDefinition.journalPath);
+                QFile oldJournalShm(folderDefinition.journalPath + QStringLiteral("-shm"));
+                QFile oldJournalWal(folderDefinition.journalPath + QStringLiteral("-wal"));
 
                 folderDefinition.journalPath = defaultJournalPath;
 
@@ -221,17 +221,17 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 auto journalFileMoveSuccess = true;
                 // Due to db logic can't be sure which of these file exist.
                 if (oldJournal.exists()) {
-                    journalFileMoveSuccess &= oldJournal.rename(folderDefinition.journalPath);
+                    journalFileMoveSuccess &= oldJournal.rename(folderDefinition.localPath + "/" + folderDefinition.journalPath);
                 }
                 if (oldJournalShm.exists()) {
-                    journalFileMoveSuccess &= oldJournalShm.rename(folderDefinition.journalPath.append("-shm"));
+                    journalFileMoveSuccess &= oldJournalShm.rename(folderDefinition.localPath + "/" + folderDefinition.journalPath + QStringLiteral("-shm"));
                 }
                 if (oldJournalWal.exists()) {
-                    journalFileMoveSuccess &= oldJournalWal.rename(folderDefinition.journalPath.append("-wal"));
+                    journalFileMoveSuccess &= oldJournalWal.rename(folderDefinition.localPath + "/" + folderDefinition.journalPath + QStringLiteral("-wal"));
                 }
 
                 if (!journalFileMoveSuccess) {
-                    qCWarning(lcFolderMan) << "Wasn't able to move pre-2.7 syncjournal database files to new location. One-time loss off sync settings possible.";
+                    qCWarning(lcFolderMan) << "Wasn't able to move 3.0 syncjournal database files to new location. One-time loss off sync settings possible.";
                 } else {
                     qCInfo(lcFolderMan) << "Successfully migrated syncjournal database.";
                 }
