@@ -51,7 +51,7 @@ public:
     QString alias;
     /// path on local machine
     QString localPath;
-    /// path to the journal, usually in QStandardPaths::AppDataLocation
+    /// path to the journal, usually relative to localPath
     QString journalPath;
     /// path on remote
     QString targetPath;
