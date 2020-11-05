@@ -31,6 +31,12 @@ include(CTest)
 
 
 include(OCConfigPluginDir)
+
+if (EXISTS "${PROJECT_SOURCE_DIR}/branding")
+    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/branding" CACHE STRING "The directory containing a custom theme")
+else()
+    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}" CACHE STRING "Define directory containing a custom theme")
+endif()
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 
 set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
@@ -85,11 +91,6 @@ if(WIN32)
 set(DATADIR "share")
 endif(WIN32)
 set(SHAREDIR ${DATADIR})
-
-set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}" CACHE STRING "Define directory containing a custom theme")
-if ("${OEM_THEME_DIR}" STREQUAL "${PROJECT_SOURCE_DIR}" AND EXISTS "${PROJECT_SOURCE_DIR}/branding")
-    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/branding" CACHE STRING "We are using a branding" FORCE)
-endif()
 
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms
