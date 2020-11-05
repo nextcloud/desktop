@@ -87,6 +87,9 @@ endif(WIN32)
 set(SHAREDIR ${DATADIR})
 
 set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}" CACHE STRING "Define directory containing a custom theme")
+if ("${OEM_THEME_DIR}" STREQUAL "${PROJECT_SOURCE_DIR}" AND EXISTS "${PROJECT_SOURCE_DIR}/branding")
+    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/branding" CACHE STRING "We are using a branding" FORCE)
+endif()
 
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
 # external authentication mechanisms

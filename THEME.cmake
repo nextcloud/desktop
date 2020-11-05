@@ -4,6 +4,8 @@ else()
     include ("${CMAKE_CURRENT_LIST_DIR}/OWNCLOUD.cmake")
 endif()
 
+message(STATUS "Branding: ${APPLICATION_NAME}")
+
 # Default suffix if the theme doesn't define one
 if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)
     set(APPLICATION_VIRTUALFILE_SUFFIX "${APPLICATION_SHORTNAME}_virtual" CACHE STRING "Virtual file suffix (not including the .)")
