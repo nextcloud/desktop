@@ -55,6 +55,7 @@ if (WIN32 AND NOT TOKEN_AUTH_ONLY)
     set_target_properties(ocwinrt PROPERTIES CXX_STANDARD 17
                                              OUTPUT_NAME "${APPLICATION_EXECUTABLE}_winrt")
     target_link_libraries(ocwinrt PUBLIC runtimeobject Qt5::Widgets)
+    INSTALL(TARGETS ocwinrt ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 endif()
 
 
