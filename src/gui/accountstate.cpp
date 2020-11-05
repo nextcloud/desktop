@@ -54,6 +54,13 @@ AccountState::AccountState(AccountPtr account)
     connect(account.data(), &Account::credentialsAsked,
         this, &AccountState::slotCredentialsAsked);
     _timeSinceLastETagCheck.invalidate();
+
+    connect(this, &AccountState::isConnectedChanged, [=]{
+        // Get the Apps available on the server if we're now connected.
+        if (isConnected()) {
+            fetchNavigationApps();
+        }
+    });
 }
 
 AccountState::~AccountState() = default;
@@ -236,9 +243,6 @@ void AccountState::checkConnectivity()
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
         conValidator->checkAuthentication();
-
-        // Get the Apps available on the server.
-        fetchNavigationApps();
     } else {
         // Check the server and then the auth.
 
