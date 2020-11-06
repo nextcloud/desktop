@@ -21,6 +21,7 @@ Summary
 * Bugfix - "All Files removed" dialog no longer blocks the application: [#8170](https://github.com/owncloud/client/issues/8170)
 * Bugfix - We fixed the permissions check for local folders on NTFS: [#8187](https://github.com/owncloud/client/issues/8187)
 * Change - Don't hardcode a plugin location: [#3839](https://github.com/owncloud/enterprise/issues/3839)
+* Change - Detect the Windows 10 theme for the system tray: [#7356](https://github.com/owncloud/client/issues/7356)
 * Change - When manually adding a folder sync connection, don't display 404 errors: [#7724](https://github.com/owncloud/client/issues/7724)
 * Change - Enabling native VFS on Windows create two shortcuts in the Explorer: [#7748](https://github.com/owncloud/client/issues/7748)
 * Change - Redesign the About dialog: [#7749](https://github.com/owncloud/client/issues/7749)
@@ -42,6 +43,7 @@ Summary
 * Change - Remove the branding option `wizardSelectiveSyncDefaultNothing`: [#8064](https://github.com/owncloud/client/pull/8064)
 * Change - Account display name `servername (username)` to `username@servername`: [#8104](https://github.com/owncloud/client/issues/8104)
 * Change - Remove update channels from the ownCloud client: [#8127](https://github.com/owncloud/client/issues/8127)
+* Change - Display the users avatar in the activity list: [#8169](https://github.com/owncloud/client/issues/8169)
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 * Change - Add support for the TUS resumeable upload protocol: [#19](https://github.com/owncloud/product/issues/19)
 
@@ -134,6 +136,12 @@ Details
    default plugin location, please consider setting the environment variable QT_PLUGIN_PATH.
 
    https://github.com/owncloud/enterprise/issues/3839
+
+* Change - Detect the Windows 10 theme for the system tray: [#7356](https://github.com/owncloud/client/issues/7356)
+
+   We now display the system tray icon according to the currrent theme
+
+   https://github.com/owncloud/client/issues/7356
 
 * Change - When manually adding a folder sync connection, don't display 404 errors: [#7724](https://github.com/owncloud/client/issues/7724)
 
@@ -276,6 +284,12 @@ Details
    If a user is more adventures than the average a manual install of a preview is always possible.
 
    https://github.com/owncloud/client/issues/8127
+
+* Change - Display the users avatar in the activity list: [#8169](https://github.com/owncloud/client/issues/8169)
+
+   We now display the users avatar if available in the activity log table.
+
+   https://github.com/owncloud/client/issues/8169
 
 * Change - Support for OpenID Connect: [#7509](https://github.com/owncloud/client/pull/7509)
 
