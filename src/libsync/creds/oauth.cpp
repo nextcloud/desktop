@@ -312,8 +312,10 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() },
         { QStringLiteral("prompt"), Theme::instance()->openIdConnectPrompt() },
         { QStringLiteral("state"), QString::fromUtf8(_state) },
-        { QStringLiteral("display"), Theme::instance()->appNameGUI() },
-        { QStringLiteral("login_hint"), _account->idpUserName() } });
+        { QStringLiteral("display"), Theme::instance()->appNameGUI() } });
+    if (!_account->idpUserName().isNull()) {
+        query.addQueryItem(QStringLiteral("login_hint"), _account->idpUserName());
+    }
     if (!_account->davUser().isNull())
         query.addQueryItem(QStringLiteral("user"), _account->davUser().replace(QLatin1Char('+'), QStringLiteral("%2B"))); // Issue #7762
     const QUrl url = _authEndpoint.isValid()
