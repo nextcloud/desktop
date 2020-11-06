@@ -120,7 +120,7 @@
         <translation>Versións</translation>
     </message>
     <message>
-        <location filename="../src/gui/aboutdialog.cpp" line="27"/>
+        <location filename="../src/gui/aboutdialog.cpp" line="28"/>
         <source>About %1</source>
         <translation>Sobre %1</translation>
     </message>
@@ -146,7 +146,7 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="121"/>
+        <location filename="../src/libsync/account.cpp" line="131"/>
         <source>%1@%2</source>
         <translation>%1@%2</translation>
     </message>
@@ -711,17 +711,17 @@ Esta acción interromperá calquera sincronización que estea agora en proceso.<
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="302"/>
+        <location filename="../src/gui/application.cpp" line="309"/>
         <source>Error accessing the configuration file</source>
         <translation>Produciuse un erro ao acceder ao ficheiro de configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="303"/>
+        <location filename="../src/gui/application.cpp" line="310"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Produciuse un erro ao acceder ao ficheiro de configuración en %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="306"/>
+        <location filename="../src/gui/application.cpp" line="313"/>
         <source>Quit ownCloud</source>
         <translation>Saír do ownCloud</translation>
     </message>
@@ -1085,32 +1085,32 @@ Se fose un accidente e decide manter os seus ficheiros, volverán ser sincroniza
         <translation>Non seleccionou ningún cartafol correcto!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1380"/>
+        <location filename="../src/gui/folderman.cpp" line="1383"/>
         <source>The selected path does not exist!</source>
         <translation>A ruta seleccionada non existe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1384"/>
+        <location filename="../src/gui/folderman.cpp" line="1387"/>
         <source>The selected path is not a folder!</source>
         <translation>A ruta seleccionada non é un cartafol!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1388"/>
+        <location filename="../src/gui/folderman.cpp" line="1391"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Vostede non ten permiso para escribir neste cartafol!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1453"/>
+        <location filename="../src/gui/folderman.cpp" line="1456"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Xa existe unha tarefa de sincronización entre o servidor e este cartafol. Escolla outro cartafol local!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1433"/>
+        <location filename="../src/gui/folderman.cpp" line="1436"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>O cartafol local %1 xa contén un cartafol usado nunha conexión de sincronización de cartafoles. Escolla outro!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1439"/>
+        <location filename="../src/gui/folderman.cpp" line="1442"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>O cartafol local %1 está dentro dun cartafol usado nunha conexión de sincronización de cartafoles. Escolla outro!</translation>
     </message>
@@ -1403,7 +1403,7 @@ Se fose un accidente e decide manter os seus ficheiros, volverán ser sincroniza
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="519"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Os ficheiros virtuais non están dispoñíbeis para o cartafol seleccionado</translation>
     </message>
 </context>
 <context>
@@ -1779,12 +1779,12 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
         <translation>Rexistro da saída</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.ui" line="110"/>
+        <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Activar o rexistro no cartafol temporal</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="59"/>
+        <location filename="../src/gui/logbrowser.cpp" line="61"/>
         <source>Delete logs older than %1 hours</source>
         <translation>Eliminar registros anteriores a %1 horas </translation>
     </message>
@@ -1794,36 +1794,36 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Os rexistros conteñen información confidencial que non debería facer pública&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.ui" line="65"/>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
         <translation>O cliente pode escribir rexistros de depuración nun cartafol temporal. Estes rexistros son moi útiles para diagnosticar problemas.
 Como os ficheiros de rexistro poden aumentar de tamaño, o cliente iniciará un novo para cada execución de sincronización e comprimirá os máis antigos. Recomendase tamén activar a eliminación de ficheiros de rexistro após un par de horas para evitar ocupar espazo de máis no disco.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.ui" line="78"/>
+        <location filename="../src/gui/logbrowser.ui" line="84"/>
         <source>If enabled, logs will be written to:</source>
         <translation>Se está activado, os rexistros escribiranse en: </translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.ui" line="85"/>
+        <location filename="../src/gui/logbrowser.ui" line="91"/>
         <source>C:/log</source>
         <translation>C:/log</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.ui" line="117"/>
+        <location filename="../src/gui/logbrowser.ui" line="123"/>
         <source>Log Http traffic </source>
         <translation>Rexistrar o tráfico HTTP</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.ui" line="137"/>
+        <location filename="../src/gui/logbrowser.ui" line="143"/>
         <source>These settings persist across client restarts.
 Note that using any logging command line options will override the settings.</source>
         <translation>Estes axustes persisten nos reinicios do cliente.
 Teña en conta que o uso de calquera opción de rexistro por liña de ordes anulará os axustes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.ui" line="148"/>
+        <location filename="../src/gui/logbrowser.ui" line="154"/>
         <source>Open folder</source>
         <translation>Abrir o cartafol</translation>
     </message>
@@ -2078,7 +2078,7 @@ Teña en conta que o uso de calquera opción de rexistro por liña de ordes anul
         <translation>&lt;h1&gt;Produciuse un erro de acceso&lt;/h1&gt;&lt;p&gt;Produciuse un fallo ao recuperar a información do usuario&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="290"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="295"/>
         <source>	Error: Missing field %1
 </source>
         <translation>	Erro: Falta o campo %1
@@ -2090,14 +2090,14 @@ Teña en conta que o uso de calquera opción de rexistro por liña de ordes anul
         <translation>&lt;h1&gt;Produciuse un erro de acceso&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="201"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="204"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="208"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="206"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="209"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="213"/>
         <source>Error while refreshing the token: %1 : %2</source>
         <translation>Produciuse un erro ao eliminar o testemuño: %1 : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="213"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="218"/>
         <source>The reply from the server did not contain all expected fields
 :%1
 Received data: %2</source>
@@ -2106,7 +2106,7 @@ Received data: %2</source>
 Datos recibidos: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="234"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="239"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Usuario errado&lt;/h1&gt;&lt;p&gt;Accedeu co usuario &lt;em&gt;%1&lt;/em&gt;, mais debe acceder co usuario &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Peche a sesión de %3 noutra lapela, entón &lt;a href=&apos;%4&apos;&gt;prema aquí&lt;/a&gt; e acceda como o usuario %2&lt;/p&gt;</translation>
     </message>
@@ -2189,43 +2189,43 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
         <translation>Conectar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <source>Use &amp;virtual files instead of downloading content immediately</source>
-        <translation>Usar ficheiros &amp;virtuais, no canto de descargar o contido inmediatamente</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
         <source> (experimental)</source>
         <translation> (experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="193"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <source>Use &amp;virtual files instead of downloading content immediately%1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="194"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>O cartafol %1 «%2» está sincronizado co cartafol local «%3»</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="196"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="197"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>Sincronizar o cartafol «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="201"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="202"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Aviso:&lt;/strong&gt; O cartafol local non está baleiro. Escolla unha solución!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="282"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="283"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Os ficheiros virtuais non están dispoñíbeis para o cartafol seleccionado</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="342"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="343"/>
         <source>Local Sync Folder</source>
         <translation>Sincronización do cartafol local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="376"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="411"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="377"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="412"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2362,17 +2362,17 @@ Recomendámoslle que non o use.</translation>
         <translation>Tentando conectarse a %1 en %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="352"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>A solicitude autenticada no servidor foi redirixida a «%1», O URL é incorrecto, o servidor está mal configurado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="379"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Deuse unha resposta incorrecta a unha solicitude de WebDAV autenticada</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="365"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="370"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Acceso prohibido polo servidor. Para comprobar que dispón do acceso axeitado, &lt;a href=&quot;%1&quot;&gt;prema aquí&lt;/a&gt; para acceder ao servizo co seu navegador.</translation>
     </message>
@@ -2382,104 +2382,104 @@ Recomendámoslle que non o use.</translation>
         <translation>URL incorrecto</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="419"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>O cartafol de sincronización local %1 xa existe. Configurándoo para a sincronización.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="422"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="427"/>
         <source>Creating local sync folder %1...</source>
         <translation>Creando un cartafol local de sincronización %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="426"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="431"/>
         <source>ok</source>
         <translation>aceptar</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="428"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="433"/>
         <source>failed.</source>
         <translation>fallou.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="430"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="435"/>
         <source>Could not create local folder %1</source>
         <translation>Non foi posíbel crear o cartafol local %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="461"/>
         <source>No remote folder specified!</source>
         <translation>Non foi especificado o cartafol remoto!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="462"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="467"/>
         <source>Error: %1</source>
         <translation>Erro: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="475"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>creando o cartafol en ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="491"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>O cartafol remoto %1 creouse correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="493"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>O cartafol remoto %1 xa existe. Conectándoo para a sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="495"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="497"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="500"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="502"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>A creación do cartafol resultou nun código de erro HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="499"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="504"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>A creación do cartafol remoto fracasou por mor de seren incorrectas as credenciais!&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;A creación do cartafol remoto fallou probabelmente debido a que as credenciais que se deron non foran as correctas.&lt;/font&gt;&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt; </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="509"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="513"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="514"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Produciuse un fallo ao crear o cartafol remoto %1 e dou o erro &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="531"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Estabeleceuse a conexión de sincronización de %1 ao directorio remoto %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="531"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="536"/>
         <source>Successfully connected to %1!</source>
         <translation>Conectou satisfactoriamente con %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="538"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Non foi posíbel estabelecer a conexión con %1. Compróbeo de novo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="552"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="557"/>
         <source>Folder rename failed</source>
         <translation>Non foi posíbel renomear o cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="553"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="558"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Non é posíbel retirar e facer unha copia de seguridade do cartafol, xa que o cartafol ou un ficheiro está aberto noutro programa Peche o cartafol ou o ficheiro e ténteo de novo, ou cancele a acción.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="605"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="610"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;O cartafol local de sincronización %1 creouse correctamente!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -3100,33 +3100,33 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="130"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="196"/>
         <source>Settings</source>
         <translation>Axustes</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="121"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="187"/>
         <source>Activity</source>
         <translation>Actividade</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="110"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="176"/>
         <source>Add account</source>
         <translation>Engadir unha conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="141"/>
-        <location filename="../src/gui/settingsdialog.cpp" line="144"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="207"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="210"/>
         <source>Quit %1</source>
         <translation>Saír de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="145"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
         <source>Are you sure you want to quit %1?</source>
         <translation>Confirma que quere saír de %1?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="276"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="342"/>
         <source>Account</source>
         <translation>Conta</translation>
     </message>
@@ -3394,32 +3394,32 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pode dirixir a xente a este ficheiro ou cartafol compartido &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline&quot;&gt;dándolles unha ligazón privada&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="210"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="211"/>
         <source>The item is not shared with any users or groups</source>
         <translation>O elemento non foi compartido con ningún grupo ou persoa</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="241"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="242"/>
         <source>Open link in browser</source>
         <translation>Abrir a ligazón no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="243"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="244"/>
         <source>Copy link to clipboard</source>
         <translation>Copiar a ligazón no portapapeis</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="245"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="246"/>
         <source>Send link by email</source>
         <translation>Enviar a ligazón por correo</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="255"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="256"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>Non hai resultados para «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="345"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="346"/>
         <source>I shared something with you</source>
         <translation>Compartín algo con vostede</translation>
     </message>
@@ -3453,17 +3453,17 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="366"/>
         <source>create</source>
         <translation>crear</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="369"/>
         <source>change</source>
         <translation>cambio</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="371"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="372"/>
         <source>delete</source>
         <translation>eliminar</translation>
     </message>
@@ -3893,7 +3893,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="348"/>
+        <location filename="../src/libsync/theme.cpp" line="357"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Version %1. Para obter máis información visite&lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Para incidentes coñecidos e axuda, visite: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, e outros.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distribuído por %4 e licenciado baixo a Licenza Pública Xeral (GPL) de GNU Versión 2.0.&lt;br/&gt;%5 e o logotipo de %5 son marcas rexistradas de %4 nos Estados Unidos, noutros países ou en ambos.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -3921,238 +3921,238 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>A característica do sistema de ficheiros virtual require un sistema de ficheiros NTFS, %1 está a usar %2</translation>
     </message>
 </context>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="257"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
         <source>Please sign in</source>
         <translation>Ten que rexistrarse</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Folder %1: %2</source>
         <translation>Cartafol %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
         <source>There are no sync folders configured.</source>
         <translation>Non existen cartafoles de sincronización configurados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="330"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>Open in browser</source>
         <translation>Abrir no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="379"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="702"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="796"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="380"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="703"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="797"/>
         <source>Log in...</source>
         <translation>Acceder...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="383"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="694"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="798"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="384"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="695"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="799"/>
         <source>Log out</source>
         <translation>Desconectar</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="489"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="490"/>
         <source>Recent Changes</source>
         <translation>Cambios recentes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="358"/>
         <source>Managed Folders:</source>
         <translation>Cartafoles xestionados:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Abrir o cartafol «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="332"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="333"/>
         <source>Open %1 in browser</source>
         <translation>Abrir %1 nun navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="189"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="190"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>O servidor na conta %1 executa unha versión %2 que xa non é compatíbel. O uso deste cliente con versións de servidor non admitidas non está probado e é potencialmente perigoso. Proceda baixo a súa propia responsabilidade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="779"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Unknown status</source>
         <translation>Estado descoñecido</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>Settings...</source>
         <translation>Axustes...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="783"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="784"/>
         <source>Details...</source>
         <translation>Detalles...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="789"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Help</source>
         <translation>Axuda</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="793"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="794"/>
         <source>Quit %1</source>
         <translation>Saír de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="239"/>
         <source>Disconnected from %1</source>
         <translation>Desconectado de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="188"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="189"/>
         <source>Unsupported Server Version</source>
         <translation>Versión del servidor non compatíbel</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="228"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="230"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="231"/>
         <source>Disconnected from some accounts</source>
         <translation>Desconectado dalgunhas contas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="241"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="242"/>
         <source>Disconnected from accounts:</source>
         <translation>Desconectado das contas:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="243"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="244"/>
         <source>Account %1: %2</source>
         <translation>Conta %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="259"/>
         <source>Signed out</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="262"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="263"/>
         <source>Account synchronization is disabled</source>
         <translation>A sincronización está desactivada</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="263"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="316"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="264"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="317"/>
         <source>Synchronization is paused</source>
         <translation>A sincronización está en pausa</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Unresolved conflicts</source>
         <translation>Conflitos sen resolver</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="318"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="319"/>
         <source>Error during synchronization</source>
         <translation>Produciuse un erro durante a sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
         <source>No sync folders configured</source>
         <translation>Non hai cartafoles de sincronización configurados</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="368"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="369"/>
         <source>Unpause all folders</source>
         <translation>Continuar todos os cartafoles</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="373"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="374"/>
         <source>Pause all folders</source>
         <translation>Pausar todos os cartafoles</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="673"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="674"/>
         <source>Unpause all synchronization</source>
         <translation>Continuar con todas as sincronizacións</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="675"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="676"/>
         <source>Unpause synchronization</source>
         <translation>Continuar coa sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="683"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
         <source>Pause all synchronization</source>
         <translation>Pausar todas as sincronizacións</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="685"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="686"/>
         <source>Pause synchronization</source>
         <translation>Pausar a sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="693"/>
         <source>Log out of all accounts</source>
         <translation>Saír de todas as contas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="700"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="701"/>
         <source>Log in to all accounts...</source>
         <translation>Acceder a todas as contas...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="783"/>
         <source>New account...</source>
         <translation>Nova conta...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="792"/>
         <source>About %1</source>
         <translation>Sobre %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="824"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="825"/>
         <source>No items synced recently</source>
         <translation>Non hai elementos sincronizados recentemente</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Comprobando os cambios no cartafol remoto «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="849"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="850"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Comprobando os cambios no cartafol local «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="864"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="865"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Sincronizando %1 of %2  (restan %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="869"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="870"/>
         <source>Syncing %1 of %2</source>
         <translation>Sincronizando %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="878"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="879"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronizando %1 (restan %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="881"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="882"/>
         <source>Syncing %1</source>
         <translation>Sincronizando %1</translation>
     </message>
@@ -4162,7 +4162,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Up to date</source>
         <translation>Actualizado</translation>
     </message>
@@ -4468,7 +4468,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="323"/>
+        <location filename="../src/libsync/theme.cpp" line="332"/>
         <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7</source>
         <translation>%1 %2 %3 %4%8%9Bibliotecas Qt %5, %6%8Usando un complemento de ficheiros virtuais: %7</translation>
     </message>
@@ -4476,7 +4476,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>ownCloudTheme::qtVer</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="313"/>
+        <location filename="../src/libsync/theme.cpp" line="322"/>
         <source>%1 (Built against Qt %1)</source>
         <translation>%1 (Construído sobre Qt %1)</translation>
     </message>
@@ -4484,7 +4484,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>ownCloudTheme::versionWithSha</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="318"/>
+        <location filename="../src/libsync/theme.cpp" line="327"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
@@ -4645,53 +4645,53 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="38"/>
+        <location filename="../src/gui/guiutility.cpp" line="39"/>
         <source>Could not open browser</source>
         <translation>Non foi posíbel abrir o navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="39"/>
+        <location filename="../src/gui/guiutility.cpp" line="40"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>Produciuse un erro ao iniciar o navegador para ir ao URL %1. Quizais non estea configurado ningún navegador predeterminado?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="62"/>
+        <location filename="../src/gui/guiutility.cpp" line="63"/>
         <source>Could not open email client</source>
         <translation>Non foi posíbel abrir o cliente de correo</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="63"/>
+        <location filename="../src/gui/guiutility.cpp" line="64"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>Produciuse un erro ao iniciar o cliente de correo electrónico para crear unha nova mensaxe. Quizais non estea configurado ningún cliente de correo electrónico?</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <location filename="../src/gui/guiutility.cpp" line="79"/>
         <source>Always available locally</source>
         <translation>Sempre dispoñíbel localmente </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="82"/>
+        <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Some available online only</source>
         <translation>Algúns dispoñíbeis só en liña</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="84"/>
-        <location filename="../src/gui/guiutility.cpp" line="86"/>
+        <location filename="../src/gui/guiutility.cpp" line="85"/>
+        <location filename="../src/gui/guiutility.cpp" line="87"/>
         <source>Available online only</source>
         <translation>Só dispoñíbel en liña</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="80"/>
+        <location filename="../src/gui/guiutility.cpp" line="81"/>
         <source>Currently available locally</source>
         <translation>Actualmente dispoñíbel localmente</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="93"/>
+        <location filename="../src/gui/guiutility.cpp" line="94"/>
         <source>Make always available locally</source>
         <translation>Facelo sempre dispoñíbel localmente </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="98"/>
+        <location filename="../src/gui/guiutility.cpp" line="99"/>
         <source>Free up local space</source>
         <translation>Liberar espazo local</translation>
     </message>

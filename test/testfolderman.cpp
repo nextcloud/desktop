@@ -221,5 +221,5 @@ private slots:
     }
 };
 
-QTEST_APPLESS_MAIN(TestFolderMan)
+QTEST_GUILESS_MAIN(TestFolderMan)
 #include "testfolderman.moc"

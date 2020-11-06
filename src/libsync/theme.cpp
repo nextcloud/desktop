@@ -37,6 +37,17 @@
 #undef Mirall
 #endif
 
+namespace {
+constexpr bool strings_equal(char const *a, char const *b)
+{
+    return *a == *b && (*a == '\0' || strings_equal(a + 1, b + 1));
+}
+constexpr bool isVanilla()
+{
+    // TODO: c++17 stringview
+    return strings_equal(APPLICATION_SHORTNAME, "ownCloud");
+}
+}
 namespace OCC {
 
 Theme *Theme::_instance = nullptr;
@@ -126,34 +137,63 @@ QIcon Theme::aboutIcon() const
     return applicationIcon();
 }
 
+bool Theme::isUsingDarkTheme() const
+{
+    if (!_hasDarkColoredTheme) {
+        return false;
+    }
+    return QPalette().base().color().lightnessF() <= 0.5;
+}
 /*
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.
  */
-QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible) const
+QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible, bool useCoreIcon) const
 {
+    useCoreIcon = useCoreIcon || isVanilla();
     QString flavor;
     if (sysTray) {
         flavor = systrayIconFlavor(_mono, sysTrayMenuVisible);
     } else {
-        flavor = QStringLiteral("colored");
+        if (isUsingDarkTheme()) {
+            flavor = QStringLiteral("dark");
+        } else {
+            flavor = QStringLiteral("colored");
+        }
     }
-
-    QString key = name + QLatin1Char(',') + flavor;
+    const QString path = useCoreIcon ? QStringLiteral(":/client/ownCloud/theme") : QStringLiteral(":/client/%1/theme").arg(appName());
+    const QString key = name + QLatin1Char(',') + flavor;
     QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
     if (cached.isNull()) {
-        if (appName() == QLatin1String("ownCloud") && QIcon::hasThemeIcon(name)) {
+        if (isVanilla() && QIcon::hasThemeIcon(name)) {
             // use from theme
             return cached = QIcon::fromTheme(name);
         }
+        const QString svg = QStringLiteral("%1/%2/%3.svg").arg(path, flavor, name);
+        if (QFile::exists(svg)) {
+            return cached = QIcon(svg);
+        }
 
         const QList<int> sizes {16, 22, 32, 48, 64, 128, 256, 512, 1024};
-        foreach (int size, sizes) {
-            QString pixmapName = QStringLiteral(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
+        QString previousIcon;
+        for (int size : sizes) {
+            QString pixmapName = QStringLiteral("%1/%2/%3-%4.png").arg(path, flavor, name, QString::number(size));
             if (QFile::exists(pixmapName)) {
-                cached.addPixmap(QPixmap(pixmapName));
+                previousIcon = pixmapName;
+                cached.addFile(pixmapName, { size, size });
+            } else if (size >= 128) {
+                if (!previousIcon.isEmpty()) {
+                    qWarning() << "Upsacling:" << previousIcon << "to" << size;
+                    cached.addPixmap(QPixmap(previousIcon).scaled({ size, size }, Qt::KeepAspectRatio));
+                }
             }
         }
+    }
+    if (cached.isNull()) {
+        if (!useCoreIcon) {
+            return themeIcon(name, sysTray, sysTrayMenuVisible, true);
+        }
+        qWarning() << "Failed to locate the icon" << name;
     }
 
 #ifdef Q_OS_MAC
@@ -164,6 +204,31 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
 
     return cached;
 }
+
+bool Theme::hasTheme(const QString &theme)
+{
+    return QFileInfo(QStringLiteral(":/client/" APPLICATION_SHORTNAME "/theme/%1/").arg(theme)).isDir();
+}
+
+QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
+{
+    Q_UNUSED(sysTrayMenuVisible)
+    QString flavor;
+    if (mono) {
+        flavor = Utility::hasDarkSystray() ? QStringLiteral("white") : QStringLiteral("black");
+
+#ifdef Q_OS_MAC
+        if (sysTrayMenuVisible) {
+            flavor = QLatin1String("white");
+        }
+#endif
+    } else {
+        // we have a dark sys tray and the theme has support for that
+        flavor = (Utility::hasDarkSystray() && _hasDarkColoredTheme) ? QStringLiteral("dark") : QStringLiteral("colored");
+    }
+    return flavor;
+}
+
 #endif
 
 Theme::Theme()
@@ -220,24 +285,6 @@ QString Theme::defaultClientFolder() const
     return appName();
 }
 
-QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
-{
-    Q_UNUSED(sysTrayMenuVisible)
-    QString flavor;
-    if (mono) {
-        flavor = Utility::hasDarkSystray() ? QStringLiteral("white") : QStringLiteral("black");
-
-#ifdef Q_OS_MAC
-        if (sysTrayMenuVisible) {
-            flavor = QLatin1String("white");
-        }
-#endif
-    } else {
-        flavor = QStringLiteral("colored");
-    }
-    return flavor;
-}
-
 void Theme::setSystrayUseMonoIcons(bool mono)
 {
     _mono = mono;
@@ -251,8 +298,7 @@ bool Theme::systrayUseMonoIcons() const
 
 bool Theme::monoIconsAvailable() const
 {
-    QString themeDir = QStringLiteral(":/client/theme/%1/").arg(Theme::instance()->systrayIconFlavor(true));
-    return QDir(themeDir).exists();
+    return hasTheme(systrayIconFlavor(true));
 }
 
 QString Theme::updateCheckUrl() const
@@ -330,12 +376,9 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
 
 QString Theme::about() const
 {
-    QString vendor = QStringLiteral(APPLICATION_VENDOR);
     // Ideally, the vendor should be "ownCloud GmbH", but it cannot be changed without
     // changing the location of the settings and other registery keys.
-    if (vendor == QLatin1String("ownCloud")) {
-        vendor = QStringLiteral("ownCloud GmbH");
-    }
+    const QString vendor = isVanilla() ? QStringLiteral("ownCloud GmbH") : QStringLiteral(APPLICATION_VENDOR);
     return tr("<p>Version %1. For more information visit <a href=\"%2\">https://%3</a></p>"
               "<p>For known issues and help, please visit: <a href=\"https://central.owncloud.org/c/desktop-client\">https://central.owncloud.org</a></p>"
               "<p><small>By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, "
@@ -379,7 +422,7 @@ QVariant Theme::customMedia(CustomMediaType type)
         break;
     }
 
-    QString imgPath = QStringLiteral(":/client/theme/colored/%1.png").arg(key);
+    QString imgPath = QStringLiteral(":/client/%1/theme/colored/%2.png").arg(appName(), key);
     if (QFile::exists(imgPath)) {
         QPixmap pix(imgPath);
         if (pix.isNull()) {
@@ -541,7 +584,7 @@ QString Theme::openIdConnectScopes() const
 
 QString Theme::openIdConnectPrompt() const
 {
-    return QStringLiteral("select_account");
+    return QStringLiteral("select_account consent");
 }
 
 QString Theme::versionSwitchOutput() const

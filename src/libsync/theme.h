@@ -15,6 +15,7 @@
 #ifndef _THEME_H
 #define _THEME_H
 
+#include <QFileInfo>
 #include <QObject>
 #include "syncresult.h"
 
@@ -104,6 +105,11 @@ public:
     virtual QIcon folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;
     virtual QIcon applicationIcon() const;
     virtual QIcon aboutIcon() const;
+
+    /**
+     * Whether use the dark icon theme
+     */
+    bool isUsingDarkTheme() const;
 #endif
 
     virtual QString statusHeaderText(SyncResult::Status) const;
@@ -171,10 +177,10 @@ public:
      */
     virtual QString enforcedLocale() const { return QString(); }
 
+#ifndef TOKEN_AUTH_ONLY
     /** colored, white or black */
     QString systrayIconFlavor(bool mono, bool sysTrayMenuVisible = false) const;
 
-#ifndef TOKEN_AUTH_ONLY
     /**
      * Override to use a string or a custom image name.
      * The default implementation will try to look up
@@ -393,7 +399,8 @@ public:
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
-    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false, bool useCoreIcon = false) const;
+    static bool hasTheme(const QString &theme);
 #endif
     Theme();
 
@@ -407,6 +414,7 @@ private:
     static Theme *_instance;
     bool _mono;
 #ifndef TOKEN_AUTH_ONLY
+    bool _hasDarkColoredTheme = hasTheme(QStringLiteral("dark"));
     mutable QHash<QString, QIcon> _iconCache;
 #endif
 };

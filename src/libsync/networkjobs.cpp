@@ -662,11 +662,11 @@ void AvatarJob::start()
     AbstractNetworkJob::start();
 }
 
-QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
+QPixmap AvatarJob::makeCircularAvatar(const QPixmap &baseAvatar)
 {
     int dim = baseAvatar.width();
 
-    QImage avatar(dim, dim, baseAvatar.format());
+    QPixmap avatar(dim, dim);
     avatar.fill(Qt::transparent);
 
     QPainter painter(&avatar);
@@ -676,7 +676,7 @@ QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
     path.addEllipse(0, 0, dim, dim);
     painter.setClipPath(path);
 
-    painter.drawImage(0, 0, baseAvatar);
+    painter.drawPixmap(0, 0, baseAvatar);
     painter.end();
 
     return avatar;
@@ -686,7 +686,7 @@ bool AvatarJob::finished()
 {
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    QImage avImage;
+    QPixmap avImage;
 
     if (http_result_code == 200) {
         QByteArray pngData = reply()->readAll();
@@ -696,7 +696,7 @@ bool AvatarJob::finished()
             }
         }
     }
-    emit(avatarPixmap(avImage));
+    emit avatarPixmap(avImage);
     return true;
 }
 #endif

@@ -386,10 +386,12 @@ QByteArray Utility::normalizeEtag(QByteArray etag)
     return etag;
 }
 
+#ifndef TOKEN_AUTH_ONLY
 bool Utility::hasDarkSystray()
 {
     return hasDarkSystray_private();
 }
+#endif
 
 
 QString Utility::platformName()

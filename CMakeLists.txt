@@ -31,6 +31,13 @@ include(CTest)
 
 
 include(OCConfigPluginDir)
+include(OCGenerateTheme)
+
+if (EXISTS "${PROJECT_SOURCE_DIR}/branding")
+    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/branding" CACHE STRING "The directory containing a custom theme")
+else()
+    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}" CACHE STRING "Define directory containing a custom theme")
+endif()
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 
 set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
@@ -172,6 +179,12 @@ endif()
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
 
+
+file(GLOB_RECURSE OWNCLOUD_ICONS "${OEM_THEME_DIR}/theme/colored/*-${APPLICATION_ICON_NAME}-icon.png")
+if (NOT OWNCLOUD_ICONS)
+    generate_legacy_icons(${OEM_THEME_DIR}/theme OWNCLOUD_ICONS)
+endif()
+MESSAGE(STATUS "OWNCLOUD_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_ICONS}")
 
 if(APPLE)
     list(APPEND OWNCLOUD_BUNDLED_RESOURCES "${CMAKE_CURRENT_SOURCE_DIR}/sync-exclude.lst")

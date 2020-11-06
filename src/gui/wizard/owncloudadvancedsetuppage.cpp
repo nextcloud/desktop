@@ -86,7 +86,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     }
     _ui.lLocalIcon->setPixmap(Utility::getCoreIcon(QStringLiteral("folder-sync")).pixmap(_ui.lLocalIcon->size()));
 
-    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
+    _ui.rVirtualFileSync->setText(tr("Use &virtual files instead of downloading content immediately%1").arg(bestAvailableVfsMode() == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
 
     connect(this, &OwncloudAdvancedSetupPage::completeChanged, this, [this]{
         if (wizard() && qobject_cast<OwncloudWizard*>(wizard())->authType() == OCC::DetermineAuthTypeJob::AuthType::OAuth) {

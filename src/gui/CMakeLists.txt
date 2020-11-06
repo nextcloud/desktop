@@ -209,18 +209,14 @@ if(Qt5LinguistTools_FOUND)
 endif()
 
 #TODO Move resources files
-target_sources(${APPLICATION_EXECUTABLE} PRIVATE ../../client.qrc)
-if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
-    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ${OEM_THEME_DIR}/theme.qrc)
-    set(theme_dir ${OEM_THEME_DIR}/theme)
-else()
-    target_sources(${APPLICATION_EXECUTABLE} PRIVATE ../../theme.qrc)
-    set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
-endif()
+target_sources(${APPLICATION_EXECUTABLE} PRIVATE
+    ${PROJECT_SOURCE_DIR}/client.qrc
+    ${PROJECT_SOURCE_DIR}/core_theme.qrc)
+
+generate_theme(${APPLICATION_EXECUTABLE})
+set(theme_dir ${OEM_THEME_DIR}/theme)
 
 # add executable icon on windows and osx
-
-file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
 if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon-sidebar.png")
     MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")

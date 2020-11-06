@@ -103,6 +103,29 @@
     </message>
 </context>
 <context>
+    <name>OCC::AboutDialog</name>
+    <message>
+        <location filename="../src/gui/aboutdialog.ui" line="24"/>
+        <source>About</source>
+        <translation>Hakkında</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/aboutdialog.ui" line="88"/>
+        <source>TextLabel</source>
+        <translation>MetinEtiketi</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/aboutdialog.ui" line="96"/>
+        <source>Versions</source>
+        <translation>Sürümler</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/aboutdialog.cpp" line="28"/>
+        <source>About %1</source>
+        <translation>%1 hakkında</translation>
+    </message>
+</context>
+<context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="307"/>
@@ -123,7 +146,7 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="121"/>
+        <location filename="../src/libsync/account.cpp" line="131"/>
         <source>%1@%2</source>
         <translation>%1@%2</translation>
     </message>
@@ -177,9 +200,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="499"/>
-        <location filename="../src/gui/accountsettings.cpp" line="612"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1058"/>
+        <location filename="../src/gui/accountsettings.cpp" line="500"/>
+        <location filename="../src/gui/accountsettings.cpp" line="611"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1048"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -224,12 +247,12 @@
         <translation>Klasör eşitleme bağlantısını sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="432"/>
+        <location filename="../src/gui/accountsettings.cpp" line="433"/>
         <source>Folder creation failed</source>
         <translation>Klasör oluşturma başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="433"/>
+        <location filename="../src/gui/accountsettings.cpp" line="434"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; yerel klasörü oluşturulamadı.</translation>
     </message>
@@ -239,17 +262,17 @@
         <translation>Klasör Eşitleme Bağlantısının Silinmesini Onaylayın</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="498"/>
+        <location filename="../src/gui/accountsettings.cpp" line="499"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Klasör Eşitleme Bağlantısını Sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="602"/>
         <source>Disable virtual file support?</source>
         <translation>Sanal dosya desteği devre dışı bırakılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="604"/>
+        <location filename="../src/gui/accountsettings.cpp" line="603"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -262,92 +285,92 @@ Sanal dosya sistemi desteğini devre dışı bırakmanın tek avantajı, seçmel
 Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="611"/>
+        <location filename="../src/gui/accountsettings.cpp" line="610"/>
         <source>Disable support</source>
         <translation>Desteği devre dışı bırak</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="721"/>
+        <location filename="../src/gui/accountsettings.cpp" line="712"/>
         <source>Sync Running</source>
         <translation>Eşitleme Çalışıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="722"/>
+        <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Eşitleme işlemi devam ediyor.&lt;br/&gt;Durdurmak istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="817"/>
+        <location filename="../src/gui/accountsettings.cpp" line="809"/>
         <source>%1 in use</source>
         <translation>%1 kullanımda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="844"/>
+        <location filename="../src/gui/accountsettings.cpp" line="836"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="845"/>
         <source>Connected to %1.</source>
         <translation>%1 ile bağlı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="858"/>
+        <location filename="../src/gui/accountsettings.cpp" line="850"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>%1 sunucusu geçici olarak ulaşılamaz durumda.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="861"/>
+        <location filename="../src/gui/accountsettings.cpp" line="853"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Sunucu %1 bakım modunda.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="864"/>
+        <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>Signed out from %1.</source>
         <translation>%1 oturumu sonlandırıldı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="874"/>
+        <location filename="../src/gui/accountsettings.cpp" line="866"/>
         <source>Connecting to %1...</source>
         <translation>%1 e bağlanılıyor...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="879"/>
+        <location filename="../src/gui/accountsettings.cpp" line="871"/>
         <source>No connection to %1 at %2.</source>
         <translation>%1 ile %2 bağlantısı yok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="918"/>
+        <location filename="../src/gui/accountsettings.cpp" line="910"/>
         <source>Log in</source>
         <translation>Giriş yap</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1013"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1005"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Çok büyük oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1015"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1007"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Harici depolama diskinde oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1016"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Çok büyük oldukları ya da harici depolama alanında oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1041"/>
         <source>Confirm Account Removal</source>
         <translation>Hesap Silinmesini Onaylayın</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1051"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; hesabının bağlantısını kaldırmayı gerçekten istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmeyecektir&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1057"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1047"/>
         <source>Remove connection</source>
         <translation>Bağlantıyı kaldır</translation>
     </message>
@@ -358,7 +381,7 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
-        <location filename="../src/gui/accountsettings.cpp" line="920"/>
+        <location filename="../src/gui/accountsettings.cpp" line="912"/>
         <source>Log out</source>
         <translation>Çıkış yap</translation>
     </message>
@@ -408,37 +431,37 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
         <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; klasörünün eşitlemesini durdurmayı gerçekten istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmeyecektir&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="804"/>
+        <location filename="../src/gui/accountsettings.cpp" line="796"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) / %2 kullanımda. Ağdan bağlanmış veya paylaşılan dizinlerin farklı sınırları olabilir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="805"/>
+        <location filename="../src/gui/accountsettings.cpp" line="797"/>
         <source>%1 of %2 in use</source>
         <translation>%1 / %2 kullanımda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="814"/>
+        <location filename="../src/gui/accountsettings.cpp" line="806"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Şu anda depolama kullanım bilgisi mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="851"/>
+        <location filename="../src/gui/accountsettings.cpp" line="843"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Sunucu versiyonu %1 desteklenmiyor! Sorumluluk size ait.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="871"/>
+        <location filename="../src/gui/accountsettings.cpp" line="863"/>
         <source>Obtaining authorization from the browser.</source>
         <translation>Obtaining authorization from the browser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="884"/>
+        <location filename="../src/gui/accountsettings.cpp" line="876"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Server configuration error: %1 at %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="895"/>
+        <location filename="../src/gui/accountsettings.cpp" line="887"/>
         <source>No %1 connection configured.</source>
         <translation>Hiç %1 bağlantısı yapılandırılmamış.</translation>
     </message>
@@ -663,42 +686,42 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="133"/>
+        <location filename="../src/gui/application.cpp" line="136"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Devam etmek &lt;b&gt;bu ayarları silmek anlamına gelir&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="135"/>
+        <location filename="../src/gui/application.cpp" line="138"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Devam etmek &lt;b&gt;bu ayarları yoksaymak anlamına gelir&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="141"/>
+        <location filename="../src/gui/application.cpp" line="144"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Bazı ayarlar bu istemcinin daha yeni sürümlerinde yapılandırıldığından ötürü bu sürümde bulunmayan özellikleri kullanıyor. &lt;br&gt;&lt;br&gt;%1 &lt;br&gt;&lt;br&gt; Geçerli yapılandırma dosyası &lt;i&gt;%2&lt;/i&gt; olarak yedeklendi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="148"/>
+        <location filename="../src/gui/application.cpp" line="151"/>
         <source>Quit</source>
         <translation>Çıkış</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="149"/>
+        <location filename="../src/gui/application.cpp" line="152"/>
         <source>Continue</source>
         <translation>Devam et</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="298"/>
+        <location filename="../src/gui/application.cpp" line="309"/>
         <source>Error accessing the configuration file</source>
         <translation>Konfigürasyon dosyasına erişimde hata</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="299"/>
+        <location filename="../src/gui/application.cpp" line="310"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Konfigürasyon dosyası %1 satırına erişimde hata</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="302"/>
+        <location filename="../src/gui/application.cpp" line="313"/>
         <source>Quit ownCloud</source>
         <translation>ownCloud&apos;dan çık</translation>
     </message>
@@ -807,135 +830,135 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="172"/>
+        <location filename="../src/gui/folder.cpp" line="173"/>
         <source>Local folder %1 does not exist.</source>
         <translation>%1 yerel klasörü mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="175"/>
+        <location filename="../src/gui/folder.cpp" line="176"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 bir dizin olmalı, ancak değil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="178"/>
+        <location filename="../src/gui/folder.cpp" line="179"/>
         <source>%1 is not readable.</source>
         <translation>%1 okunabilir değil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="415"/>
+        <location filename="../src/gui/folder.cpp" line="416"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 kaldırıldı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="429"/>
+        <location filename="../src/gui/folder.cpp" line="430"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 güncellendi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="436"/>
+        <location filename="../src/gui/folder.cpp" line="437"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1, %2 olarak adlandırıldı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="443"/>
+        <location filename="../src/gui/folder.cpp" line="444"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1, %2 konumuna taşındı.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="413"/>
+        <location filename="../src/gui/folder.cpp" line="414"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 ve diğer %n dosya kaldırıldı.</numerusform><numerusform>%1 ve diğer %n dosya kaldırıldı.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="420"/>
+        <location filename="../src/gui/folder.cpp" line="421"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 ve %n diğer dosya eklendi.</numerusform><numerusform>%1 ve %n diğer dosya eklendi.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="422"/>
+        <location filename="../src/gui/folder.cpp" line="423"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 eklendi.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="427"/>
+        <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>&apos;%1&apos; ve diğer %n dosya güncellendi.</numerusform><numerusform>%1 ve diğer %n dosya güncellendi.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="434"/>
+        <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1, %2 olarak yeniden adlandırıldı ve %n diğer dosyanın adı değiştirildi.</numerusform><numerusform>%1, %2 olarak yeniden adlandırıldı ve %n diğer dosyanın adı değiştirildi.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="441"/>
+        <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1, %2 konumuna taşındı ve %n diğer dosya taşındı.</numerusform><numerusform>%1, %2 konumuna taşındı ve %n diğer dosya taşındı.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="448"/>
+        <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 ve %n diğer dosya eşitleme çakışması bulunduruyor.</numerusform><numerusform>%1 ve %n diğer dosya eşitleme çakışması bulunduruyor.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="450"/>
+        <location filename="../src/gui/folder.cpp" line="451"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 bir eşitleme çakışması bulunduruyor. Lütfen çakışan dosyayı kontrol edin!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="455"/>
+        <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 ve diğer %n dosya hatalar nedeniyle eşlenemedi. Ayrıntılar için ayıt dosyasına bakın.</numerusform><numerusform>%1 ve diğer %n dosya hatalar nedeniyle eşlenemedi. Ayrıntılar için günlük dosyasına bakın.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="457"/>
+        <location filename="../src/gui/folder.cpp" line="458"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 bir hata nedeniyle eşitlenemedi. Ayrıntılar için günlüğe bakın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="463"/>
+        <location filename="../src/gui/folder.cpp" line="464"/>
         <source>Sync Activity</source>
         <translation>Eşitleme Etkinliği</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="799"/>
+        <location filename="../src/gui/folder.cpp" line="800"/>
         <source>Could not read system exclude file</source>
         <translation>Sistem hariç tutulma dosyası okunamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1044"/>
+        <location filename="../src/gui/folder.cpp" line="1045"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB dan büyük yeni klasör eklendi: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1047"/>
+        <location filename="../src/gui/folder.cpp" line="1048"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Harici depolama ünitesinden bir klasör eklendi.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1048"/>
+        <location filename="../src/gui/folder.cpp" line="1049"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>İndirmek isterseniz, lütfen &quot;Ayarlar&quot; bölümünden seçin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1108"/>
+        <location filename="../src/gui/folder.cpp" line="1109"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>%1 klasörü yaratıldı ama daha önce senkronizasyondan hariç tutuldu. İçerik eşitlenmeyecek.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1111"/>
+        <location filename="../src/gui/folder.cpp" line="1112"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 dosyası yaratıldı ama daha önce senkronizasyondan hariç tutuldu, İçerik eşitlenmeyecek.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1122"/>
+        <location filename="../src/gui/folder.cpp" line="1123"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -973,12 +996,12 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
         <translation>Tüm Dosyalar Kaldırılsın mı?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1209"/>
+        <location filename="../src/gui/folder.cpp" line="1210"/>
         <source>Remove all files</source>
         <translation>Tüm dosyaları kaldır</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Keep files</source>
         <translation>Dosyaları koru</translation>
     </message>
@@ -1061,32 +1084,32 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
         <translation>Geçerli klasör seçilmedi!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1380"/>
+        <location filename="../src/gui/folderman.cpp" line="1383"/>
         <source>The selected path does not exist!</source>
         <translation>Seçilen dosya yolu mevcut değil!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1384"/>
+        <location filename="../src/gui/folderman.cpp" line="1387"/>
         <source>The selected path is not a folder!</source>
         <translation>Seçilen yol bir klasör değil!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1388"/>
+        <location filename="../src/gui/folderman.cpp" line="1391"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Seçilen klasöre yazma izniniz yok!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1453"/>
+        <location filename="../src/gui/folderman.cpp" line="1456"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Yerel klasörde bir sunucu senkronizasyonu zaten mevcut. Lütfen başka bir yerel klasör seçin!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1433"/>
+        <location filename="../src/gui/folderman.cpp" line="1436"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>%1 yerel klasörü zaten bir eşitleme klasörü içermektedir. Lütfen farklı bir seçim yapın!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1439"/>
+        <location filename="../src/gui/folderman.cpp" line="1442"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>%1 yerel klasörü zaten bir eşitleme klasörü içindedir. Lütfen farklı bir seçim yapın!</translation>
     </message>
@@ -1094,14 +1117,9 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="47"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add Folder Sync Connection</source>
         <translation>Klasör Eşitleme Bağlantısı Ekle</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="248"/>
-        <source>Synchronizing with local folder</source>
-        <translation>Yerel klasör ile eşitleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="299"/>
@@ -1154,107 +1172,117 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
         <translation>Çözüm gereken eşleşmeler var. Detaylar için tıklayın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="897"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
+        <source>Synchronizing VirtualFiles with local folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="281"/>
+        <source>Synchronizing with local folder</source>
+        <translation>Yerel klasör ile eşitleniyor</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="903"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Uzaktaki &apos;%1&apos; için değişiklikler kontrol ediliyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="901"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="907"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Yereldeki &apos;%1&apos; için değişiklikler kontrol ediliyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="908"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="914"/>
         <source>Reconciling changes</source>
         <translation>Değişikliklerin bağlama kavuşturulması</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="943"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="949"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="946"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="952"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>%1 eşitleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="972"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="978"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>indirme %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="978"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/sn</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/sn</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>gönderme %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3/%4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1015"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>Kalan %5, %1/%2, dosya %3/%4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1023"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1029"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1/%2, %3/%4 dosya</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1030"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1036"/>
         <source>file %1 of %2</source>
         <translation>dosya %1/%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
         <source>Waiting...</source>
         <translation>Bekleniyor...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1078"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Diğer %n klasör bekleniyor...</numerusform><numerusform>Diğer %n klasör bekleniyor...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1084"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1090"/>
         <source>Preparing to sync...</source>
         <translation>Eşitleme için hazırlanıyor...</translation>
     </message>
@@ -1278,12 +1306,12 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="564"/>
+        <location filename="../src/gui/folderwizard.cpp" line="576"/>
         <source>Add Folder Sync Connection</source>
         <translation>Klasör Eşitleme Bağlantısı Ekle</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="566"/>
+        <location filename="../src/gui/folderwizard.cpp" line="578"/>
         <source>Add Sync Connection</source>
         <translation>Eşitleme Bağlantısı Ekle</translation>
     </message>
@@ -1291,17 +1319,17 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
 <context>
     <name>OCC::FolderWizardLocalPath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="68"/>
+        <location filename="../src/gui/folderwizard.cpp" line="69"/>
         <source>Click to select a local folder to sync.</source>
         <translation>Eşitlemek için yerel bir klasör seçmek üzere tıklayın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="75"/>
+        <location filename="../src/gui/folderwizard.cpp" line="76"/>
         <source>Enter the path to the local folder.</source>
         <translation>Yerel klasörün yolunu girin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="136"/>
+        <location filename="../src/gui/folderwizard.cpp" line="137"/>
         <source>Select the source folder</source>
         <translation>Kaynak klasörünü seçin</translation>
     </message>
@@ -1309,52 +1337,52 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="184"/>
+        <location filename="../src/gui/folderwizard.cpp" line="185"/>
         <source>Create Remote Folder</source>
         <translation>Uzak Klasör Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="185"/>
+        <location filename="../src/gui/folderwizard.cpp" line="186"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>&apos;%1&apos; altında oluşturulacak yeni klasörün adını girin:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="215"/>
+        <location filename="../src/gui/folderwizard.cpp" line="216"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Klasör %1 üzerinde başarıyla oluşturuldu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="226"/>
+        <location filename="../src/gui/folderwizard.cpp" line="227"/>
         <source>Authentication failed accessing %1</source>
         <translation>%1 erişimi için giriş başarısız</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="228"/>
+        <location filename="../src/gui/folderwizard.cpp" line="229"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>%1 üzerinde klasör oluşturma başarısız. Lütfen elle denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="246"/>
+        <location filename="../src/gui/folderwizard.cpp" line="247"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Bir klasörün listelenmesi başarısız oldu. Hata: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="327"/>
+        <location filename="../src/gui/folderwizard.cpp" line="328"/>
         <source>Choose this to sync the entire account</source>
         <translation>Tüm hesabı eşitlemek için bunu seçin</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="439"/>
+        <location filename="../src/gui/folderwizard.cpp" line="440"/>
         <source>This folder is already being synced.</source>
         <translation>Bu klasör zaten eşitleniyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="441"/>
+        <location filename="../src/gui/folderwizard.cpp" line="442"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>&lt;i&gt;%1&lt;/i&gt; zaten eşitleniyor. Bu, &lt;i&gt;%2&lt;/i&gt; klasörünün üst klasörü.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="443"/>
+        <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>&lt;i&gt;%2&lt;/i&gt; klasörünün alt klasörü olan &lt;i&gt;%1&lt;/i&gt; klasörünü zaten eşitliyorsunuz.</translation>
     </message>
@@ -1362,25 +1390,30 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="482"/>
+        <location filename="../src/gui/folderwizard.cpp" line="485"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
         <translation>Use virtual files instead of downloading content immediately%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="482"/>
+        <location filename="../src/gui/folderwizard.cpp" line="485"/>
         <source> (experimental)</source>
         <translation> (experimental)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="519"/>
+        <source>Virtual files are not available for the selected folder</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::FormatWarningsWizardPage</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="49"/>
+        <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
         <translation>&lt;b&gt;Uyarı:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="51"/>
+        <location filename="../src/gui/folderwizard.cpp" line="52"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
         <translation>&lt;b&gt;Uyarı:&lt;/b&gt;</translation>
     </message>
@@ -1429,34 +1462,44 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
         <translation>Genel Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="142"/>
+        <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>Sync hidden files</source>
         <translation>Gizli dosyaları eşitle</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="158"/>
+        <location filename="../src/gui/generalsettings.ui" line="109"/>
         <source>Log Settings</source>
         <translation>Log Settings</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="183"/>
+        <location filename="../src/gui/generalsettings.ui" line="136"/>
+        <source>Advanced - Approval of folder sync (Non virtual file mode only)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="196"/>
         <source>Network</source>
         <translation>Ağ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="195"/>
+        <location filename="../src/gui/generalsettings.ui" line="208"/>
         <source>Updates</source>
         <translation>Güncellemeler</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="224"/>
+        <location filename="../src/gui/generalsettings.ui" line="237"/>
         <source>stable</source>
         <translation>stabil</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <location filename="../src/gui/generalsettings.ui" line="242"/>
         <source>beta</source>
         <translation>beta</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="337"/>
+        <source>About</source>
+        <translation>Hakkında</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="65"/>
@@ -1469,18 +1512,18 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
         <translation>Use &amp;Monochrome Icons in the system tray</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="73"/>
+        <location filename="../src/gui/generalsettings.ui" line="144"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Belirtilen boyuttan daha büyük klasörler için onay iste</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="93"/>
+        <location filename="../src/gui/generalsettings.ui" line="164"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="115"/>
+        <location filename="../src/gui/generalsettings.ui" line="186"/>
         <source>Ask for confirmation before synchronizing external storages</source>
         <translation>Harici depolamalardan senkronizasyon yapmadan onay al</translation>
     </message>
@@ -1495,47 +1538,42 @@ Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, d
         <translation>Masaüstü &amp;Bildirimlerini Göster</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="207"/>
+        <location filename="../src/gui/generalsettings.ui" line="220"/>
         <source>&amp;Update Channel</source>
         <translation>Güncelleme Kanalı</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="327"/>
-        <source>•</source>
-        <translation>•</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="151"/>
+        <location filename="../src/gui/generalsettings.ui" line="102"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Yoksayılan &amp;Dosyaları Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="122"/>
+        <location filename="../src/gui/generalsettings.ui" line="73"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
         <translation>&amp;Explorer Navigasyon Panelinde senkronizasyon klasörlerini göster</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="135"/>
+        <location filename="../src/gui/generalsettings.ui" line="93"/>
         <source>S&amp;how crash reporter</source>
         <translation>Ç&amp;ökme bildiricisini göster</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="256"/>
+        <location filename="../src/gui/generalsettings.ui" line="269"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Yeniden Başlat ve Güncelle</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="283"/>
+        <location filename="../src/gui/generalsettings.cpp" line="280"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Otomatik başlatmayı kapatamazsınız, çünkü sistem bütününde aktif edildi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="193"/>
+        <location filename="../src/gui/generalsettings.cpp" line="190"/>
         <source>Change update channel?</source>
         <translation>Güncelleme kanalı değiştirilsin mi?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="194"/>
+        <location filename="../src/gui/generalsettings.cpp" line="191"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1544,12 +1582,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Bunun yalnızca hangi güncelleme kanalından alınacağını seçtiğini ve herhangi bir sürüm indirgeme olmadığını seçtiğini unutmayın. Bu nedenle beta kanalından kararlı kanala geri dönmek genellikle hemen yapılamaz ve bu, şu anda yüklü olan betadan daha yeni kararlı bir sürümü beklemek anlamına gelir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="207"/>
+        <location filename="../src/gui/generalsettings.cpp" line="204"/>
         <source>Change update channel</source>
         <translation>Güncelleme kanalını değiştir</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="208"/>
+        <location filename="../src/gui/generalsettings.cpp" line="205"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -1735,43 +1773,55 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
 <context>
     <name>OCC::LogBrowser</name>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="46"/>
+        <location filename="../src/gui/logbrowser.ui" line="14"/>
         <source>Log Output</source>
         <translation>Günlük Çıktısı</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="52"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.
-If enabled, logs will be written to %1</source>
-        <translation>İstemci geçici bir klasöre hata ayıklama günlükleri yazabilir. Bu günlükler sorunları teşhis etmek için çok faydalıdır.
-Günlük dosyaları büyüyebileceğinden, istemci her eşitleme çalıştırması için yeni bir tane başlatır ve eskilerini sıkıştırır. Çok fazla disk alanı tüketmemek için günlük dosyalarının birkaç saat sonra silinmesinin etkinleştirilmesi de önerilir.
-Etkinleştirilirse, günlükler %1 konumuna yazılır.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.cpp" line="66"/>
+        <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Günlüğü geçici klasöre kaydetmeyi etkinleştir</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="73"/>
-        <source>Log Http traffic (Warning the logs might contain information about your networks setup)</source>
-        <translation>Log Http traffic (Warning the logs might contain information about your networks setup)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.cpp" line="81"/>
+        <location filename="../src/gui/logbrowser.cpp" line="61"/>
         <source>Delete logs older than %1 hours</source>
         <translation>%1 saatten eski günlükleri sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="87"/>
+        <location filename="../src/gui/logbrowser.ui" line="53"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/logbrowser.ui" line="84"/>
+        <source>If enabled, logs will be written to:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/logbrowser.ui" line="91"/>
+        <source>C:/log</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/logbrowser.ui" line="123"/>
+        <source>Log Http traffic </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/logbrowser.ui" line="143"/>
         <source>These settings persist across client restarts.
 Note that using any logging command line options will override the settings.</source>
         <translation>Bu ayarlar istemci yeniden başlatmalarında devam eder.
 Günlüğe kaydetme komut satırı seçeneklerinin kullanılmasının bu ayarları geçersiz kılacağını unutmayın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="94"/>
+        <location filename="../src/gui/logbrowser.ui" line="154"/>
         <source>Open folder</source>
         <translation>Klasörü aç</translation>
     </message>
@@ -1984,68 +2034,68 @@ Günlüğe kaydetme komut satırı seçeneklerinin kullanılmasının bu ayarlar
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="126"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="127"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Sunucudan hata döndü: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="129"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="130"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>&apos;token&apos; uç noktası erişimi sırasında hata meydana geldi: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="133"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="134"/>
         <source>Empty JSON from OAuth2 redirect</source>
         <translation>OAuth2 yönlendirmesinden boş JSON döndü</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="138"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="139"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Sunucudan gelen JSON ayrıştırılamadı: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="141"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="142"/>
         <source>Unsupported token type: %1</source>
         <translation>Unsupported token type: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="143"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="144"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
         <translation>The reply from the server did not contain all expected fields
 :%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="145"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="146"/>
         <source>Unknown Error</source>
         <translation>Unknown Error</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="169"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="170"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;Failed to retrieve user info&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="289"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="295"/>
         <source>	Error: Missing field %1
 </source>
         <translation>	Error: Missing field %1
 </translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="149"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="150"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Sisteme Giriş Hatası&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="200"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="203"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="207"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="206"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="209"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="213"/>
         <source>Error while refreshing the token: %1 : %2</source>
         <translation>Error while refreshing the token: %1 : %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="212"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="218"/>
         <source>The reply from the server did not contain all expected fields
 :%1
 Received data: %2</source>
@@ -2054,7 +2104,7 @@ Received data: %2</source>
 Received data: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="233"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="239"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Yanlış kullanıcı&lt;/h1&gt;&lt;p&gt;Sisteme giriş yapmış olan kullanıcı&lt;em&gt;%1&lt;/em&gt;, ama giriş yapması gereken kullanıcı &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Lütfen, başka bir sekmedeki %3 üzerinden sistemden çıkın, sonra &lt;a href=&apos;%4&apos;&gt;buraya tıklayın &lt;/a&gt; ve %2 olarak giriş yapın&lt;/p&gt;</translation>
     </message>
@@ -2136,38 +2186,43 @@ for additional privileges during the process.</source>
         <translation>Bağlan...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
-        <source>Use &amp;virtual files instead of downloading content immediately</source>
-        <translation>Use &amp;virtual files instead of downloading content immediately</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="88"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
         <source> (experimental)</source>
         <translation> (experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="192"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
+        <source>Use &amp;virtual files instead of downloading content immediately%1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="194"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 klasörü &apos;%2&apos;, yerel &apos;%3&apos; klasörü ile eşitlendi</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="195"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="197"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; klasörünü eşitle</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="200"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="202"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Uyarı:&lt;/strong&gt; Yerel klasör boş değil. Bir çözüm seçin!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="331"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="283"/>
+        <source>Virtual files are not available for the selected folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="343"/>
         <source>Local Sync Folder</source>
         <translation>Yerel Eşitleme Klasörü</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="363"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="395"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="377"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="412"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2304,17 +2359,17 @@ Kullanmanız önerilmez.</translation>
         <translation>%2 üzerinde %1 bağlantısı deneniyor...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="342"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>Sunucuda giriş sırasında istek &apos;%1&apos; adresine yönlendirilmiş. Adres hatalı veya sunucu yanlış ayarlanmış.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="364"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="379"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Yetkilendirilmiş webdav isteği geçersiz bir cevap alındı</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="355"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="370"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Erişim sunucu tarafından yasaklandı. Geçerli erişime sahip olup olmadığınızı doğrulamak için hizmete web tarayıcınızla erişmek üzere &lt;a href=&quot;%1&quot;&gt;buraya tıklayın&lt;/a&gt;.</translation>
     </message>
@@ -2324,104 +2379,104 @@ Kullanmanız önerilmez.</translation>
         <translation>Geçersiz URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="409"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Yerel eşitleme klasörü %1 zaten mevcut, eşitlemek için ayarlanıyor.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="412"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="427"/>
         <source>Creating local sync folder %1...</source>
         <translation>Yerel eşitleme klasörü %1 oluşturuluyor...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="416"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="431"/>
         <source>ok</source>
         <translation>tamam</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="418"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="433"/>
         <source>failed.</source>
         <translation>başarısız.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="420"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="435"/>
         <source>Could not create local folder %1</source>
         <translation>%1 yerel klasörü oluşturulamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="461"/>
         <source>No remote folder specified!</source>
         <translation>Uzak klasör belirtilmemiş!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="467"/>
         <source>Error: %1</source>
         <translation>Hata: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="465"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="480"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>ownCloud üzerinde klasör oluşturuluyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="481"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>%1 uzak klasörü başarıyla oluşturuldu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="483"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Uzak klasör %1 zaten mevcut. Eşitlemek için bağlanılıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="485"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="487"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="500"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="502"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Klasör oluşturma %1 HTTP hata kodu ile sonuçlandı</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="504"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Uzak klasör oluşturması, geçersiz kimlik bilgileri nedeniyle başarısız!&lt;br/&gt;Lütfen geri gidin ve bilgileri denetleyin.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="493"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Uzak klasör oluşturma muhtemelen hatalı kimlik bilgilerinden dolayı başarısız oldu.&lt;/font&gt;&lt;br/&gt;Lütfen geri gidip kimlik bilgilerini doğrulayın.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="499"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="513"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="514"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Uzak klasör %1 oluşturma işlemi &lt;tt&gt;%2&lt;/tt&gt; hatası ile başarısız oldu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="516"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="531"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>%1 kaynaklı %2 uzak dizinine bir eşitleme bağlantısı ayarlandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="521"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="536"/>
         <source>Successfully connected to %1!</source>
         <translation>%1 bağlantısı başarılı!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="528"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>%1 bağlantısı kurulamadı. Lütfen tekrar denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="542"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="557"/>
         <source>Folder rename failed</source>
         <translation>Klasör adlandırma başarısız</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="558"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Klasör veya içerisindeki bir dosya farklı bir program içerisinde açık olduğundan, kaldırma ve yedekleme işlemi yapılamıyor. Lütfen klasör veya dosyayı kapatıp yeniden deneyin veya kurulumu iptal edin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="595"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="610"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Yerel eşitleme klasörü %1 başarıyla oluşturuldu!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -3042,33 +3097,33 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::SettingsDialog</name>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="130"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="196"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="121"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="187"/>
         <source>Activity</source>
         <translation>Etkinlik</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="110"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="176"/>
         <source>Add account</source>
         <translation>Hesap ekle</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="141"/>
-        <location filename="../src/gui/settingsdialog.cpp" line="144"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="207"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="210"/>
         <source>Quit %1</source>
         <translation>%1&apos;tan çık</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="145"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
         <source>Are you sure you want to quit %1?</source>
         <translation>%1 çıkmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="276"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="342"/>
         <source>Account</source>
         <translation>Hesap</translation>
     </message>
@@ -3336,32 +3391,32 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline&quot;&gt;Kişilere gizli bir bağlantı vererek&lt;/span&gt;&lt;/a&gt; bu paylaşılmış dosya veya klasöre yönlendirebilirsiniz.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="210"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="211"/>
         <source>The item is not shared with any users or groups</source>
         <translation>Bu öge hiçbir kullanıcı veya grupla paylaşılmıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="241"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="242"/>
         <source>Open link in browser</source>
         <translation>Bağlantıyı tarayıcıda aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="243"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="244"/>
         <source>Copy link to clipboard</source>
         <translation>Linki panoya kopyala</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="245"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="246"/>
         <source>Send link by email</source>
         <translation>Bağlantıyı e-posta ile gönder</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="255"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="256"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>&apos;%1&apos; için sonuç yok</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="345"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="346"/>
         <source>I shared something with you</source>
         <translation>Seninle bir şey paylaştım</translation>
     </message>
@@ -3395,17 +3450,17 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="365"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="366"/>
         <source>create</source>
         <translation>oluştur</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="369"/>
         <source>change</source>
         <translation>değiştir</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="371"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="372"/>
         <source>delete</source>
         <translation>sil</translation>
     </message>
@@ -3779,12 +3834,12 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <translation>Yerel eşleme veritabanı açılamıyor veya oluşturulamıyor. Eşleme klasöründe yazma iznine sahip olduğunuzdan emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1019"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1035"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Disk alanı az: Boş alanı %1 altına indirecek indirmeler atlandı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1026"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1042"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Bazı yüklemeler için sunucuda yeterli alan yok.</translation>
     </message>
@@ -3819,7 +3874,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <translation>Eşitleme günlüğü açılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1002"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
         <source>Aborted</source>
         <translation>İptal Edildi</translation>
     </message>
@@ -3835,19 +3890,9 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="319"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="326"/>
-        <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Telif hakkı ownCloud GmbH&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/theme.cpp" line="327"/>
-        <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;%1 tarafından dağıtılmış ve GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 ile lisanslanmıştır.&lt;br/&gt;%2 ve %2 logoları ABD ve/veya diğer ülkelerde %1 tescili markalarıdır.&lt;/p&gt;</translation>
+        <location filename="../src/libsync/theme.cpp" line="357"/>
+        <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3869,235 +3914,242 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
     </message>
 </context>
 <context>
+    <name>OCC::Vfs</name>
+    <message>
+        <location filename="../src/common/vfs.cpp" line="72"/>
+        <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="257"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
         <source>Please sign in</source>
         <translation>Lütfen oturum açın</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Folder %1: %2</source>
         <translation>Klasör %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
         <source>There are no sync folders configured.</source>
         <translation>Yapılandırılmış eşitleme klasörü yok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="330"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>Open in browser</source>
         <translation>Tarayıcıda aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="379"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="702"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="796"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="380"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="703"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="797"/>
         <source>Log in...</source>
         <translation>Giriş yap...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="383"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="694"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="798"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="384"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="695"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="799"/>
         <source>Log out</source>
         <translation>Çıkış yap</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="489"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="490"/>
         <source>Recent Changes</source>
         <translation>Son Değişiklikler</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="358"/>
         <source>Managed Folders:</source>
         <translation>Yönetilen Klasörler:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; klasörünü aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="332"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="333"/>
         <source>Open %1 in browser</source>
         <translation>%1&apos;ı tarayıcıda aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="189"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="190"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>%1 hesabındaki sunucu desteklenmeyen %2 sürümünde. Bu istemciyi desteklenmeyen sunucu sürümlerinde kullanmak hem test edilmemiştir hem de tehlikelidir. Kullanmak kendi sorumluluğunuzdadır.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="779"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Unknown status</source>
         <translation>Bilinmeyen durum</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>Settings...</source>
         <translation>Ayarlar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="783"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="784"/>
         <source>Details...</source>
         <translation>Ayrıntılar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="789"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Help</source>
         <translation>Yardım</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="793"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="794"/>
         <source>Quit %1</source>
         <translation>%1&apos;tan çık</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="239"/>
         <source>Disconnected from %1</source>
         <translation>%1 ile bağlantı kesildi</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="188"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="189"/>
         <source>Unsupported Server Version</source>
         <translation>Desteklenmeyen Sunucu Sürümü</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="228"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="229"/>
         <source>Disconnected</source>
         <translation>Bağlantı kesildi</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="230"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="231"/>
         <source>Disconnected from some accounts</source>
         <translation>Bazı hesapların bağlantısı kesildi</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="241"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="242"/>
         <source>Disconnected from accounts:</source>
         <translation>Bu hesapların bağlantıları kesildi:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="243"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="244"/>
         <source>Account %1: %2</source>
         <translation>Hesap %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="259"/>
         <source>Signed out</source>
         <translation>Oturum sonlandırıldı</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="262"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="263"/>
         <source>Account synchronization is disabled</source>
         <translation>Hesap eşitlemesi devre dışı bırakıldı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="263"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="316"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="264"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="317"/>
         <source>Synchronization is paused</source>
         <translation>Eşitleme duraklatıldı</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Unresolved conflicts</source>
         <translation>Çözümlenmemiş çakışma mevcut.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="318"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="319"/>
         <source>Error during synchronization</source>
         <translation>Eşitleme sırasında hata oluştu</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
         <source>No sync folders configured</source>
         <translation>Yapılandırılmış eşitleme klasörü yok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="368"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="369"/>
         <source>Unpause all folders</source>
         <translation>Tüm klasörleri devam ettir</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="373"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="374"/>
         <source>Pause all folders</source>
         <translation>Tüm klasörleri durdur</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="673"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="674"/>
         <source>Unpause all synchronization</source>
         <translation>Tüm eşitlemeleri devam ettir</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="675"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="676"/>
         <source>Unpause synchronization</source>
         <translation>Eşitlemeyi devam ettir</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="683"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
         <source>Pause all synchronization</source>
         <translation>Tüm eşitlemeleri durdur</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="685"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="686"/>
         <source>Pause synchronization</source>
         <translation>Eşitlemeyi durdur</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="693"/>
         <source>Log out of all accounts</source>
         <translation>Tüm hesaplardan çıkış yap</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="700"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="701"/>
         <source>Log in to all accounts...</source>
         <translation>Tüm hesaplara giriş yap...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="783"/>
         <source>New account...</source>
         <translation>Yeni hesap...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1144"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="792"/>
         <source>About %1</source>
         <translation>%1 hakkında</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="824"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="825"/>
         <source>No items synced recently</source>
         <translation>Yakın zamanda eşitlenen öge yok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="846"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="847"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Uzaktaki &apos;%1&apos; için değişiklikler kontrol ediliyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="849"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="850"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Yereldeki &apos;%1&apos; için değişiklikler kontrol ediliyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="864"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="865"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Eşitlenen %1/%2  (%3 kaldı)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="869"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="870"/>
         <source>Syncing %1 of %2</source>
         <translation>%1 / %2 eşitleniyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="878"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="879"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Eşitlenen %1 (%2 kaldı)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="881"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="882"/>
         <source>Syncing %1</source>
         <translation>%1 eşitleniyor</translation>
     </message>
@@ -4107,7 +4159,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Up to date</source>
         <translation>Güncel</translation>
     </message>
@@ -4411,11 +4463,27 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
     </message>
 </context>
 <context>
-    <name>ownCloudTheme::about()</name>
+    <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="298"/>
-        <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; Git gözden geçirmesi ile %3, %4 tarihinde, Qt %5, %6 kullanılarak derlendi.&lt;/small&gt;&lt;/p&gt;</translation>
+        <location filename="../src/libsync/theme.cpp" line="332"/>
+        <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ownCloudTheme::qtVer</name>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="322"/>
+        <source>%1 (Built against Qt %1)</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ownCloudTheme::versionWithSha</name>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="327"/>
+        <source>%1 %2</source>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>
@@ -4574,53 +4642,53 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>utility</name>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="38"/>
+        <location filename="../src/gui/guiutility.cpp" line="39"/>
         <source>Could not open browser</source>
         <translation>Tarayıcı açılamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="39"/>
+        <location filename="../src/gui/guiutility.cpp" line="40"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
         <translation>%1 bağlantısına gitmek için tarayıcı başlatılırken bir hata oluştu. Herhangi bir varsayılan tarayıcı yapılandırılmamış olabilir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="62"/>
+        <location filename="../src/gui/guiutility.cpp" line="63"/>
         <source>Could not open email client</source>
         <translation>E-posta istemcisi açılamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="63"/>
+        <location filename="../src/gui/guiutility.cpp" line="64"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
         <translation>Yeni mesaj oluşturmak için eposta istemcisini çalıştırıken bir hata oluştu. Belki varsayılan eposta istemcisi ayarlanmamıştır? </translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="78"/>
+        <location filename="../src/gui/guiutility.cpp" line="79"/>
         <source>Always available locally</source>
         <translation>Yerel olarak her zaman kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="82"/>
+        <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Some available online only</source>
         <translation>Yalnızca bazıları çevrimiçi kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="84"/>
-        <location filename="../src/gui/guiutility.cpp" line="86"/>
+        <location filename="../src/gui/guiutility.cpp" line="85"/>
+        <location filename="../src/gui/guiutility.cpp" line="87"/>
         <source>Available online only</source>
         <translation>Sadece çevrimiçi kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="80"/>
+        <location filename="../src/gui/guiutility.cpp" line="81"/>
         <source>Currently available locally</source>
         <translation>Şu anda yerel olarak kullanılabilir</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="93"/>
+        <location filename="../src/gui/guiutility.cpp" line="94"/>
         <source>Make always available locally</source>
         <translation>Her zaman yerel olarak erişilebilir yapın</translation>
     </message>
     <message>
-        <location filename="../src/gui/guiutility.cpp" line="98"/>
+        <location filename="../src/gui/guiutility.cpp" line="99"/>
         <source>Free up local space</source>
         <translation>Yerel kapasite alanında yer açın</translation>
     </message>

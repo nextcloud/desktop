@@ -1,9 +1,10 @@
-set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
 if (EXISTS "${OEM_THEME_DIR}/OEM.cmake")
     include("${OEM_THEME_DIR}/OEM.cmake")
 else()
     include ("${CMAKE_CURRENT_LIST_DIR}/OWNCLOUD.cmake")
 endif()
+
+message(STATUS "Branding: ${APPLICATION_NAME}")
 
 # Default suffix if the theme doesn't define one
 if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)
