@@ -1930,7 +1930,7 @@ Logs will be written to %1</source>
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="275"/>
         <source>Limit to</source>
-        <translation>Лимитирај на</translation>
+        <translation>Ограничи на</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
