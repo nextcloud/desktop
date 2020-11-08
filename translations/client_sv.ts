@@ -286,7 +286,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="228"/>
         <source>Remove</source>
-        <translation>Radera</translation>
+        <translation>Ta bort</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -495,7 +495,7 @@ Vänta på en ny synk, sedan kryptera den.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="975"/>
         <source>Remove connection</source>
-        <translation>Radera anslutning</translation>
+        <translation>Ta bort anslutning</translation>
     </message>
 </context>
 <context>
@@ -1087,12 +1087,12 @@ Om denna åtgärd var oavsiktlig kan du återställa förlorade data nu.</transl
     <message>
         <location filename="../src/gui/folder.cpp" line="1100"/>
         <source>Delete all files?</source>
-        <translation>Radera alla filer?</translation>
+        <translation>Ta bort alla filer?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1103"/>
         <source>Delete all files</source>
-        <translation>Radera alla filer</translation>
+        <translation>Ta bort alla filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1104"/>
@@ -2981,7 +2981,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="236"/>
         <source>Delete share link</source>
-        <translation>Radera delad länk</translation>
+        <translation>Ta bort delad länk</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="241"/>
@@ -3209,7 +3209,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
         <source>Delete</source>
-        <translation>Radera</translation>
+        <translation>Ta bort</translation>
     </message>
 </context>
 <context>
@@ -3787,7 +3787,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="712"/>
         <source>Remove connection</source>
-        <translation>Radera anslutning</translation>
+        <translation>Ta bort anslutning</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="713"/>
@@ -4299,7 +4299,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="199"/>
         <source>Remove account</source>
-        <translation>Radera konto</translation>
+        <translation>Ta bort konto</translation>
     </message>
 </context>
 <context>
