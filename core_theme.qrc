@@ -6,8 +6,8 @@
         <file alias="theme/black/state-offline.svg">theme/black/ui-light-plain-monochrom-state-offline.svg</file>
         <file alias="theme/black/state-pause.svg">theme/black/ui-light-plain-monochrom-state-pause.svg</file>
         <file alias="theme/black/state-sync.svg">theme/black/ui-light-plain-monochrom-state-sync.svg</file>
-        <file>theme/colored/oc-image-about.svg</file>
         <file>theme/colored/owncloud-icon.svg</file>
+        <file>theme/colored/oc-image-about.svg</file>
         <file alias="theme/colored/state-ok.svg">theme/colored/ui-light-plain-color-state-checkmark.svg</file>
         <file alias="theme/colored/state-error.svg">theme/colored/ui-light-plain-color-state-error.svg</file>
         <file alias="theme/colored/state-information.svg">theme/colored/ui-light-plain-color-state-info.svg</file>
