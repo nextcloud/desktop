@@ -170,12 +170,7 @@ void OAuth::startAuthentication()
                                 tr("<h1>Login Error</h1><p>Failed to retrieve user info</p>").toUtf8());
                             emit result(Error);
                         } else {
-                            const auto data = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
-                            const QString user = data.value(QStringLiteral("id")).toString();
-                            const QString username = data.value(QStringLiteral("username")).toString();
-                            if (!username.isEmpty()) {
-                                _account->setIdpUserName(username);
-                            }
+                            const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("id")).toString();
                             finalize(socket, accessToken, refreshToken, user, messageUrl);
                         }
                     });
@@ -313,11 +308,14 @@ QUrl OAuth::authorisationLink() const
         { QStringLiteral("prompt"), Theme::instance()->openIdConnectPrompt() },
         { QStringLiteral("state"), QString::fromUtf8(_state) },
         { QStringLiteral("display"), Theme::instance()->appNameGUI() } });
-    if (!_account->idpUserName().isNull()) {
-        query.addQueryItem(QStringLiteral("login_hint"), _account->idpUserName());
+
+    if (!_account->davUser().isNull()) {
+        const QString davUser = _account->davUser().replace(QLatin1Char('+'), QStringLiteral("%2B")); // Issue #7762;
+        // open id connect
+        query.addQueryItem(QStringLiteral("login_hint"), davUser);
+        // oc 10
+        query.addQueryItem(QStringLiteral("user"), davUser);
     }
-    if (!_account->davUser().isNull())
-        query.addQueryItem(QStringLiteral("user"), _account->davUser().replace(QLatin1Char('+'), QStringLiteral("%2B"))); // Issue #7762
     const QUrl url = _authEndpoint.isValid()
         ? Utility::concatUrlPath(_authEndpoint, {}, query)
         : Utility::concatUrlPath(_account->url(), QStringLiteral("/index.php/apps/oauth2/authorize"), query);

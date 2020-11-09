@@ -313,13 +313,8 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     auto userJob = new JsonApiJob(account, QStringLiteral("ocs/v2.php/cloud/user"), this);
     connect(userJob, &JsonApiJob::jsonReceived, this, [account](const QJsonDocument &json, int status) {
         if (status == 200) {
-            const auto data = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
-            const QString userName = data.value(QStringLiteral("username")).toString();
-            const QString displayName = data.value(QStringLiteral("display-name")).toString();
-            account->setDavDisplayName(displayName);
-            if (!userName.isEmpty()) {
-                account->setIdpUserName(userName);
-            }
+            const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("display-name")).toString();
+            account->setDavDisplayName(user);
         }
     });
     userJob->start();
