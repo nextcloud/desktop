@@ -76,28 +76,28 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     painter->save();
 
-    QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
-    QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
-    QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
-    QString pathText = qvariant_cast<QString>(index.data(PathRole));
+    // TODO: implement ActionIconRole
+    const QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
+    const QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
+    const QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
+    const QString pathText = qvariant_cast<QString>(index.data(PathRole));
 
-    QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
-    QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
-    QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
-    bool accountOnline = qvariant_cast<bool>(index.data(AccountConnectedRole));
+    const QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
+    const QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
+    const QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
+    const bool accountOnline = qvariant_cast<bool>(index.data(AccountConnectedRole));
 
     QRect actionIconRect = option.rect;
     QRect userIconRect = option.rect;
 
-    int iconHeight = qRound(fm.height() / 5.0 * 8.0);
-    int iconWidth = iconHeight;
+    const int iconHeight = qRound(fm.height() / 5.0 * 8.0);
 
     actionIconRect.setLeft(option.rect.left() + margin);
-    actionIconRect.setWidth(iconWidth);
+    actionIconRect.setWidth(iconHeight);
     actionIconRect.setHeight(iconHeight);
     actionIconRect.setTop(actionIconRect.top() + margin);
     userIconRect.setLeft(actionIconRect.right() + margin);
-    userIconRect.setWidth(iconWidth);
+    userIconRect.setWidth(iconHeight);
     userIconRect.setHeight(iconHeight);
     userIconRect.setTop(actionIconRect.top());
 
@@ -115,11 +115,10 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     actionTextBox.setRight(timeBox.left() - margin);
 
     /* === start drawing === */
-    QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
-    painter->drawPixmap(QStyle::visualPos(option.direction, option.rect, QPoint(actionIconRect.left(), actionIconRect.top())), pm);
-
-    pm = userIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
-    painter->drawPixmap(QStyle::visualPos(option.direction, option.rect, QPoint(userIconRect.left(), userIconRect.top())), pm);
+    painter->drawPixmap(QStyle::visualPos(option.direction, option.rect, actionIconRect.topLeft()),
+        actionIcon.pixmap(actionIconRect.size()));
+    painter->drawPixmap(QStyle::visualPos(option.direction, option.rect, userIconRect.topLeft()),
+        userIcon.pixmap(userIconRect.size()));
 
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
         ? QPalette::Normal
