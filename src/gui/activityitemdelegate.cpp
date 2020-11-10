@@ -77,7 +77,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->save();
 
     // TODO: implement ActionIconRole
-    const QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
+    //    const QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
     const QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
     const QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
     const QString pathText = qvariant_cast<QString>(index.data(PathRole));
@@ -115,8 +115,8 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     actionTextBox.setRight(timeBox.left() - margin);
 
     /* === start drawing === */
-    painter->drawPixmap(QStyle::visualPos(option.direction, option.rect, actionIconRect.topLeft()),
-        actionIcon.pixmap(actionIconRect.size()));
+    //painter->drawPixmap(QStyle::visualPos(option.direction, option.rect, actionIconRect.topLeft()),
+    //  actionIcon.pixmap(actionIconRect.size()));
     painter->drawPixmap(QStyle::visualPos(option.direction, option.rect, userIconRect.topLeft()),
         userIcon.pixmap(userIconRect.size()));
 
