@@ -46,7 +46,8 @@ public:
     virtual ~SyncJournalDb();
 
     /// Create a journal path for a specific configuration
-    static QString makeDbName(const QUrl &remoteUrl,
+    static QString makeDbName(const QString &localPath,
+        const QUrl &remoteUrl,
         const QString &remotePath,
         const QString &user);
 
