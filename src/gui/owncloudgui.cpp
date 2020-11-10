@@ -658,7 +658,9 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     }
 
     // For https://github.com/owncloud/client/issues/3783
-    _settingsDialog->hide();
+    if (_settingsDialog) {
+        _settingsDialog->hide();
+    }
 
     const auto accountState = folder->accountState();
 
