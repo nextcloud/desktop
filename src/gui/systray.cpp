@@ -93,9 +93,28 @@ Systray::Systray()
     } else {
         contextMenu->addAction(tr("Open main dialog"), this, &Systray::openMainDialog);
     }
+
+    auto pauseAction = contextMenu->addAction(tr("Pause sync"), this, &Systray::slotPauseAllFolders);
+    auto resumeAction = contextMenu->addAction(tr("Resume sync"), this, &Systray::slotUnpauseAllFolders);
     contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
     contextMenu->addAction(tr("Exit %1").arg(Theme::instance()->appNameGUI()), this, &Systray::shutdown);
     setContextMenu(contextMenu);
+
+    connect(contextMenu, &QMenu::aboutToShow, [=] {
+        const auto folders = FolderMan::instance()->map();
+
+        const auto allPaused = std::all_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
+        const auto pauseText = folders.size() > 1 ? tr("Pause sync for all") : tr("Pause sync");
+        pauseAction->setText(pauseText);
+        pauseAction->setVisible(!allPaused);
+        pauseAction->setEnabled(!allPaused);
+
+        const auto anyPaused = std::any_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
+        const auto resumeText = folders.size() > 1 ? tr("Resume sync for all") : tr("Resume sync");
+        resumeAction->setText(resumeText);
+        resumeAction->setVisible(anyPaused);
+        resumeAction->setEnabled(anyPaused);
+    });
 #endif
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
@@ -134,6 +153,41 @@ void Systray::slotNewUserSelected()
 
     // Rebuild App list
     UserAppsModel::instance()->buildAppList();
+}
+
+void Systray::slotUnpauseAllFolders()
+{
+    setPauseOnAllFoldersHelper(false);
+}
+
+void Systray::slotPauseAllFolders()
+{
+    setPauseOnAllFoldersHelper(true);
+}
+
+void Systray::setPauseOnAllFoldersHelper(bool pause)
+{
+    // For some reason we get the raw pointer from Folder::accountState()
+    // that's why we need a list of raw pointers for the call to contains
+    // later on...
+    const auto accounts = [=] {
+        const auto ptrList = AccountManager::instance()->accounts();
+        auto result = QList<AccountState *>();
+        result.reserve(ptrList.size());
+        std::transform(std::cbegin(ptrList), std::cend(ptrList), std::back_inserter(result), [](const AccountStatePtr &account) {
+            return account.data();
+        });
+        return result;
+    }();
+    const auto folders = FolderMan::instance()->map();
+    for (auto f : folders) {
+        if (accounts.contains(f->accountState())) {
+            f->setSyncPaused(pause);
+            if (pause) {
+                f->slotTerminateSync();
+            }
+        }
+    }
 }
 
 bool Systray::isOpen()
@@ -187,10 +241,10 @@ void Systray::pauseResumeSync()
 {
     if (_syncIsPaused) {
         _syncIsPaused = false;
-        emit resumeSync();
+        slotUnpauseAllFolders();
     } else {
         _syncIsPaused = true;
-        emit pauseSync();
+        slotPauseAllFolders();
     }
 }
 

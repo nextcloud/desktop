@@ -108,13 +108,9 @@ public slots:
 private slots:
     void slotLogin();
     void slotLogout();
-    void slotUnpauseAllFolders();
-    void slotPauseAllFolders();
     void slotNewAccountWizard();
 
 private:
-    void setPauseOnAllFoldersHelper(bool pause);
-
     QPointer<Systray> _tray;
     QPointer<SettingsDialog> _settingsDialog;
     QPointer<LogBrowser> _logBrowser;
