@@ -35,7 +35,7 @@
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="165"/>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="227"/>
         <source>No recently changed files</source>
-        <translation>没有最近更改的文件</translation>
+        <translation>没有最近修改的文件</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="181"/>
@@ -55,7 +55,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="232"/>
         <source>Recently changed</source>
-        <translation>最近更改过的</translation>
+        <translation>最近修改过的</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="239"/>
@@ -923,7 +923,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="144"/>
         <source>%1 should be a folder but is not.</source>
-        <translation>%1 应该是一个文件夹，但是它现在不是文件夹</translation>
+        <translation>%1 应该是一个文件夹，但是它现在不是。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="147"/>
@@ -966,7 +966,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 已经更名为 %2，其它 %3 文件也已更名。</numerusform></translation>
+        <translation><numerusform>%1 已经更名为 %2，%n 其它文件也已更名。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="396"/>
@@ -977,7 +977,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 已移动到 %2，其它 %3 文件也已移动。</numerusform></translation>
+        <translation><numerusform>%1 已移动到 %2，%n 其它文件也已移动。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="403"/>
@@ -1007,7 +1007,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 与其他的 %n  个文件目前均已被锁定。</numerusform></translation>
+        <translation><numerusform>%1 与 %n 其他文件目前均已被锁定。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
@@ -1060,9 +1060,9 @@ This can be an issue with your OpenSSL libraries.</source>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>同步文件夹中的更改不能被可靠地追踪。
+        <translation>同步文件夹中的修改不能被可靠地追踪。
 
-这意味着同步客户端可能没有立即上传本地更改，而只是定时扫描并上传（默认每2小时一次）。
+这意味着同步客户端可能没有立即上传本地修改，而只是定时扫描并上传（默认每2小时一次）。
 
 %1</translation>
     </message>
@@ -1428,7 +1428,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="133"/>
         <source>Select the source folder</source>
-        <translation>选择源目录</translation>
+        <translation>选择源文件夹</translation>
     </message>
 </context>
 <context>
@@ -1762,7 +1762,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="94"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation>无法向 &apos;%1&apos; 中写入更改。</translation>
+        <translation>无法向 &apos;%1&apos; 中写入变更。</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="112"/>
@@ -2040,7 +2040,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="129"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;错误的用户&lt;/h1&gt;&lt;p&gt;您必须登录用户&lt;em&gt;%2&lt;/em&gt;，但您登录了用户&lt;em&gt;%1&lt;/em&gt;。&lt;br&gt;请在另一个标签中登出%3，然后&lt;a href=&apos;%4&apos;&gt;点击这里&lt;/a&gt;登录为用户%2&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;错误的用户&lt;/h1&gt;&lt;p&gt;您必须登录用户&lt;em&gt;%2&lt;/em&gt;，但您登录了用户&lt;em&gt;%1&lt;/em&gt;。&lt;br&gt;请在另一个标签中登出 %3，然后&lt;a href=&apos;%4&apos;&gt;点击这里&lt;/a&gt;登录为用户 %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2054,7 +2054,8 @@ Logs will be written to %1</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>新版本&amp;1已经可以更新。更新过程会请求额外的权限。</translation>
+        <translation>新版本 %1 已经可以更新。
+更新过程可能会请求额外的权限。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -2265,13 +2266,13 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
         <source>This URL is secure. You can use it.</source>
-        <translation>此URL是安全的。您可以使用它。</translation>
+        <translation>此 URL 是安全的。您可以使用它。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="176"/>
         <source>This URL is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>此URL没有使用加密，不够安全。
+        <translation>此 URL 没有使用加密，不够安全。
 不建议使用。</translation>
     </message>
     <message>
@@ -2320,7 +2321,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="367"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation>被发送到服务器的认证请求被重定向到&apos;%1&apos;。此 URL 无效，服务器配置错误。</translation>
+        <translation>被发送到服务器的认证请求被重定向到 &apos;%1&apos;。此 URL 无效，服务器配置错误。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
@@ -2375,7 +2376,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>远程目录%1成功创建。</translation>
+        <translation>远程文件夹 %1 成功创建。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
@@ -2527,7 +2528,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="906"/>
         <source>File has changed since discovery</source>
-        <translation>自从发现文件以来，它已经被改变了</translation>
+        <translation>自从发现文件以来，它已经被修改了</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="962"/>
@@ -2576,7 +2577,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation>删除&apos;%1&apos;错误：%2</translation>
+        <translation>删除 &apos;%1&apos; 错误：%2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
@@ -2997,7 +2998,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="465"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;您真的想删除公开共享链接 &lt;i&gt;%1&lt;/i&gt;？注意：此操作无法撤销。&lt;/p&gt;</translation>
+        <translation>您真的想删除公开共享链接 &lt;i&gt;%1&lt;/i&gt;？&lt;p&gt;&lt;p&gt;注意：此操作无法撤销。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="471"/>
@@ -3086,7 +3087,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
         <source>You must sign in as user %1</source>
-        <translation>您必须以用户&apos;%1&apos;身份登录</translation>
+        <translation>您必须以用户 &apos;%1&apos; 身份登录</translation>
     </message>
 </context>
 <context>
@@ -3099,7 +3100,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
         <source>SSL Cipher Debug View</source>
-        <translation>SSL加密调试视图</translation>
+        <translation>SSL 加密调试视图</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -3553,7 +3554,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="524"/>
         <source>Folder hierarchy is too deep</source>
-        <translation>文件夹等级制度太深</translation>
+        <translation>文件夹层级太深</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
@@ -3926,7 +3927,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="368"/>
         <source>Open %1 in browser</source>
-        <translation>在浏览器中打开%1</translation>
+        <translation>在浏览器中打开 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
@@ -3936,7 +3937,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation>打开文件夹“%1”</translation>
+        <translation>打开文件夹 “%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="404"/>
@@ -3971,7 +3972,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="434"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>正在同步 ％2 的 ％1（还剩 ％3）</translation>
+        <translation>正在同步 ％2 的 ％1（剩余 ％3）</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="439"/>
@@ -4534,7 +4535,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>服务器版本已下载，复制并更改本地冲突文件</translation>
+        <translation>服务器版本已下载，复制并修改本地冲突文件</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
