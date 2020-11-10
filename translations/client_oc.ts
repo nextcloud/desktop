@@ -329,7 +329,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="427"/>
         <source>Choose what to sync</source>
-        <translation>Causissètz qué sincronizar</translation>
+        <translation>Causir qué sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="433"/>
@@ -550,7 +550,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Los fichièrs de la lista d’ignorar e los ligams simbolics son pas sincronizats.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
@@ -1222,7 +1222,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="256"/>
         <source>Synchronized with local folder (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizat amb lo dossièr local (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="313"/>
@@ -2732,7 +2732,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="466"/>
         <source>Choose What to Sync</source>
-        <translation>Causissètz qué sincronizar</translation>
+        <translation>Causir qué sincronizar</translation>
     </message>
 </context>
 <context>
@@ -3713,7 +3713,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="386"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Aquesta version es provesida per %1&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3746,7 +3746,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Avètz modificat %1</translation>
     </message>
 </context>
 <context>
@@ -4067,7 +4067,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
         <source>Choose what to sync</source>
-        <translation>Causissètz qué sincronizar</translation>
+        <translation>Causisr qué sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
@@ -4271,12 +4271,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="173"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>Levar compte</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="199"/>
         <source>Remove account</source>
-        <translation type="unfinished"/>
+        <translation>Levar compte</translation>
     </message>
 </context>
 <context>
@@ -4299,7 +4299,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="141"/>
         <source>%L1 B</source>
-        <translation>%L 1 O</translation>
+        <translation>%L1 O</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>

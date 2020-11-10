@@ -1587,7 +1587,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Créer une archive de débogage…</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
