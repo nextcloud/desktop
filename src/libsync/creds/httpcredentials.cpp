@@ -422,6 +422,7 @@ bool HttpCredentials::refreshAccessToken()
             // an error occured, log out
             _retryQueue.clear();
             forgetSensitiveData();
+            _account->handleInvalidCredentials();
             return;
         }
         _refreshToken = refreshToken;
