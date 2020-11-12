@@ -3708,13 +3708,13 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <location filename="../src/gui/systray.cpp" line="97"/>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierung pausieren</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierung fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="96"/>
@@ -3729,12 +3729,12 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierung für alle pausieren</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierung für alle fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="178"/>

@@ -3705,13 +3705,13 @@ Patariama jo nenaudoti.</translation>
         <location filename="../src/gui/systray.cpp" line="97"/>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Pristabdyti sinchronizavimą</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Pratęsti sinchronizavimą</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="96"/>
@@ -4204,7 +4204,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Prisijunkite prie savo %1</translation>
     </message>
 </context>
 <context>
@@ -4279,7 +4279,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Paskyros įrašas</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -4294,7 +4294,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>Paskyra neprijungta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="132"/>
@@ -4424,7 +4424,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="177"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Paskyrų perjungiklis ir nustatymų meniu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="211"/>

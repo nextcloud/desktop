@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при отстранување на &apos;%1&apos;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -668,13 +668,13 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт во синхронизација</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Конфликтни верзии на %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
@@ -690,7 +690,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Кликни за отварање на датотека</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -707,7 +707,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Отвори ја верзијата од компјутер&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -717,38 +717,38 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Отвори ја верзијата од серверот&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Задржи ја означената верзија</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Отвори ја верзијата од компјутер</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Отвори ја верзијата од серверот</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Зачувај ги двете верзии</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Задржи ја верзијата од компјутер</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Задржи ја верзијата од сервер</translation>
     </message>
 </context>
 <context>
@@ -756,17 +756,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Дали си сигурен дека сакаш да ја избришеш папката &lt;i&gt;%1&lt;/i&gt; и целата содржива во неа?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Дали си сигурен дека сакаш да ја избришеш датотеката &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Потврди бришење</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -780,7 +780,9 @@ Wait for the new sync, then encrypt it.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешно преместување на датотека:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -3085,7 +3087,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>Вашата сесија е истечена. Треба да се најавите повторно за да продолжите да го користите клиентот.</translation>
     </message>
 </context>
 <context>
@@ -3094,7 +3096,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="465"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation type="unfinished"/>
+        <translation>Сподели со %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="537"/>
@@ -3104,33 +3106,33 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Избери нова локација ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Споделив нешто со вас</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="707"/>
         <location filename="../src/gui/socketapi.cpp" line="738"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Опции за споделување</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Share via %1</source>
-        <translation type="unfinished"/>
+        <translation>Сподели преку %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="709"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Копирај приватен линк во клипборд</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="710"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Испрати приватен линк преку е-пошта ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="736"/>
@@ -3161,27 +3163,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Реши конфликт ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Премести и преименувај ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Премести, преименувај и прикачи ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Избриши ги локалните измени</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Премести и прикачи ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
@@ -3194,12 +3196,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="88"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Детали за сертификатот&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="91"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>Заедничко име</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="92"/>
@@ -3209,47 +3211,47 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>Организација (O):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="94"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>Организациска единица (OU):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="95"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>Држава/Провинција:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="96"/>
         <source>Country:</source>
-        <translation type="unfinished"/>
+        <translation>Земја:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="97"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Сериски број:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="100"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Издавач&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="103"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>Издавач:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="104"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>Издаден на:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>Истекува на:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
@@ -3259,22 +3261,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="113"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;Забелешка:&lt;/b&gt; Овој сертификат е рачно одобрен&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (самопотпишан)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="139"/>
@@ -3334,7 +3336,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
-        <translation type="unfinished"/>
+        <translation>со сертификат %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="175"/>
@@ -3353,7 +3355,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Unit: %1</source>
-        <translation type="unfinished"/>
+        <translation>Единица: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
@@ -3422,17 +3424,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="138"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>Пристапот е забранет.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>Датотека или папка не е пронајдена:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Се обидувате да креирате папка која веќе постои.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="147"/>
@@ -3452,7 +3454,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Сервисот е моментално недостапен</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="159"/>
@@ -3472,7 +3474,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при читање на папката.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="173"/>
@@ -3682,13 +3684,13 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/systray.cpp" line="97"/>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Паузирај синхронизација</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Продолжи синхронизација</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="96"/>
@@ -3698,7 +3700,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="97"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Излез %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
@@ -3751,22 +3753,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Преименувавте %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Избришавте %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Креиравте %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Изменивте %1</translation>
     </message>
 </context>
 <context>
@@ -4411,7 +4413,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="235"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Додади нова сметка</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="249"/>
