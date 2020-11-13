@@ -1,9 +1,9 @@
-Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
+Changelog for ownCloud Desktop Client [2.7.0] (2020-11-13)
 =======================================
-The following sections list the changes in ownCloud Desktop Client unreleased relevant to
+The following sections list the changes in ownCloud Desktop Client 2.7.0 relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.6.3...master
+[2.7.0]: https://github.com/owncloud/client/compare/v2.6.3...v2.7.0
 
 Summary
 -------
