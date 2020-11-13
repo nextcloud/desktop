@@ -3707,13 +3707,13 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/gui/systray.cpp" line="97"/>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlemeyi duraklat</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlemeyi sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="96"/>
@@ -3728,12 +3728,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Tümü için eşitlemeyi duraklat</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Tümü için eşitlemeyi sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="178"/>
