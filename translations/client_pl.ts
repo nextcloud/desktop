@@ -923,7 +923,7 @@ Może to być problem z bibliotekami OpenSSL.</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="144"/>
         <source>%1 should be a folder but is not.</source>
-        <translation>%1 powinien być folderem, ale nie jest.</translation>
+        <translation>%1 powinien być folderem, ale nim nie jest.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="147"/>
@@ -2123,7 +2123,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>Folder %1 &apos;%2&apos; jest synchronizowany z folderem lokalnym &apos;%3&apos;</translation>
+        <translation>Katalog %1 &apos;%2&apos; jest synchronizowany z folderem lokalnym &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="157"/>
