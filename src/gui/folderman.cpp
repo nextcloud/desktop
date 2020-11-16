@@ -272,7 +272,6 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                     && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
                     qCInfo(lcFolderMan) << "Migrate: From usePlaceholders to PinState::OnlineOnly";
                     f->setRootPinState(PinState::OnlineOnly);
-                    settings.remove(QStringLiteral("usePlaceholders"));
                 }
 
                 // Migration: Mark folders that shall be saved in a backwards-compatible way

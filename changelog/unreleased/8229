@@ -1,0 +1,6 @@
+Bugfix: Fix client forgetting VirtualFiles mode
+
+We fixed a migration issue where 2.5 based settings where the client was
+forgetting the VirtualFiles settings.
+
+https://github.com/owncloud/client/pull/8229
