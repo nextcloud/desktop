@@ -3600,7 +3600,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="931"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation>Non foi posíbel ler a lista negra da base de datos local</translation>
+        <translation>Non foi posíbel ler a lista de bloqueo da base de datos local</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="972"/>
@@ -3621,7 +3621,7 @@ Recomendámoslle que non o use.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="1397"/>
         <location filename="../src/libsync/syncengine.cpp" line="1437"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignorado por mor da lista negra de «escolla que sincronizar»</translation>
+        <translation>Ignorado por mor da lista de bloqueo de «escolla que sincronizar»</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1456"/>
