@@ -1,0 +1,7 @@
+Bugfix: Don't follow redirects on .well-known/openid-configuration
+
+We fixed a bug where the client followed redirects
+for .well-known/openid-configuration.
+
+https://github.com/owncloud/client/pull/8232
+https://github.com/owncloud/openidconnect/issues/20
