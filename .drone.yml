@@ -122,7 +122,7 @@ steps:
 - name: build
   image: nextcloudci/client-debian-ci:client-debian-ci-2
   commands:
-    - /bin/bash -c "./admin/linux/debian/drone-build.sh"
+    - /bin/bash -c "./admin/linux/debian/drone-build.sh" || echo "[WARNING] Debian build failed but this is a non-blocking CI event"
   environment:
     DEBIAN_SECRET_KEY:
       from_secret: DEBIAN_SECRET_KEY
