@@ -427,7 +427,7 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
 
 void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 {
-    QDialog *msgBox = new QDialog;
+    auto msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -436,16 +436,16 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 
     msgBox->setWindowIcon(infoIcon);
 
-    QVBoxLayout *layout = new QVBoxLayout(msgBox);
-    QHBoxLayout *hlayout = new QHBoxLayout;
+    auto layout = new QVBoxLayout(msgBox);
+    auto hlayout = new QHBoxLayout;
     layout->addLayout(hlayout);
 
     msgBox->setWindowTitle(tr("Update Failed"));
 
-    QLabel *ico = new QLabel;
+    auto ico = new QLabel;
     ico->setFixedSize(iconSize, iconSize);
     ico->setPixmap(infoIcon.pixmap(iconSize));
-    QLabel *lbl = new QLabel;
+    auto lbl = new QLabel;
     QString txt = tr("<p>A new version of the %1 Client is available but the updating process failed.</p>"
                      "<p><b>%2</b> has been downloaded. The installed version is %3.</p>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
@@ -458,11 +458,11 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     hlayout->addWidget(ico);
     hlayout->addWidget(lbl);
 
-    QDialogButtonBox *bb = new QDialogButtonBox;
-    QPushButton *skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
-    QPushButton *askagain = bb->addButton(tr("Ask again later"), QDialogButtonBox::ResetRole);
-    QPushButton *retry = bb->addButton(tr("Restart and update"), QDialogButtonBox::AcceptRole);
-    QPushButton *getupdate = bb->addButton(tr("Update manually"), QDialogButtonBox::AcceptRole);
+    auto bb = new QDialogButtonBox;
+    auto skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
+    auto askagain = bb->addButton(tr("Ask again later"), QDialogButtonBox::ResetRole);
+    auto retry = bb->addButton(tr("Restart and update"), QDialogButtonBox::AcceptRole);
+    auto getupdate = bb->addButton(tr("Update manually"), QDialogButtonBox::AcceptRole);
 
     connect(skip, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(askagain, &QAbstractButton::clicked, msgBox, &QDialog::reject);
