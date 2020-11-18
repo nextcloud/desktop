@@ -16,8 +16,7 @@ Window {
 
     width:      Style.trayWindowWidth
     height:     Style.trayWindowHeight
-    color:      "transparent"
-    flags:      Qt.Dialog | Qt.FramelessWindowHint
+    flags:      Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
 
@@ -66,26 +65,10 @@ Window {
         }
     }
 
-    OpacityMask {
-        anchors.fill: parent
-        source: ShaderEffectSource {
-            sourceItem: trayWindowBackground
-            hideSource: true
-        }
-        maskSource: Rectangle {
-            width: trayWindowBackground.width
-            height: trayWindowBackground.height
-            radius: trayWindowBackground.radius
-        }
-    }
-
     Rectangle {
         id: trayWindowBackground
 
         anchors.fill:   parent
-        radius:         Style.trayWindowRadius
-        border.width:   Style.trayWindowBorderWidth
-        border.color:   Style.menuBorder
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
@@ -98,18 +81,6 @@ Window {
             height:         Style.trayWindowHeaderHeight
             width:          Style.trayWindowWidth
             color:          Style.ncBlue
-
-            // The overlay rectangle below eliminates the rounded corners from the bottom of the header
-            // as Qt only allows setting the radius for all corners right now, not specific ones
-            Rectangle {
-                id: trayWindowHeaderButtomHalfBackground
-
-                anchors.left:   trayWindowHeaderBackground.left
-                anchors.bottom: trayWindowHeaderBackground.bottom
-                height:         Style.trayWindowHeaderHeight / 2
-                width:          Style.trayWindowWidth
-                color:          Style.ncBlue
-            }
 
             RowLayout {
                 id: trayWindowHeaderLayout
