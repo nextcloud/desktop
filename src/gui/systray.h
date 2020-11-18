@@ -40,6 +40,7 @@ class Systray
 {
     Q_OBJECT
     Q_PROPERTY(bool windowVisible READ isWindowVisible WRITE setWindowVisible NOTIFY windowVisibleChanged)
+    Q_PROPERTY(bool windowActive READ isWindowActive WRITE setWindowActive NOTIFY windowActiveChanged)
 public:
     static Systray *instance();
     virtual ~Systray() = default;
@@ -51,11 +52,14 @@ public:
     void create();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
     void setToolTip(const QString &tip);
+
     bool isWindowVisible() const;
+    void setWindowVisible(bool value);
+    bool isWindowActive() const;
+    void setWindowActive(bool value);
 
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();
-    void setWindowVisible(bool value);
     Q_INVOKABLE void positionWindow(QQuickWindow *window) const;
 
 signals:
@@ -71,6 +75,7 @@ signals:
     Q_INVOKABLE void openShareDialog(const QString &sharePath, const QString &localPath);
 
     void windowVisibleChanged(bool windowVisible);
+    void windowActiveChanged(bool windowActive);
 
 public slots:
     void slotNewUserSelected();
@@ -94,6 +99,7 @@ private:
     QPoint computeWindowPosition(int width, int height) const;
 
     bool _isWindowVisible = false;
+    bool _isWindowActive = false;
     bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
 };

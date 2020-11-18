@@ -40,6 +40,7 @@ Window {
     }
 
     onActiveChanged: {
+        Systray.windowActive = active
         if (!active) {
             accountMenu.close();
             appsMenu.close();

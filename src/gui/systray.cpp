@@ -205,6 +205,21 @@ void Systray::setWindowVisible(bool value)
     emit windowVisibleChanged(value);
 }
 
+bool Systray::isWindowActive() const
+{
+    return _isWindowActive;
+}
+
+void Systray::setWindowActive(bool value)
+{
+    if (_isWindowActive == value) {
+        return;
+    }
+
+    _isWindowActive = value;
+    emit windowActiveChanged(value);
+}
+
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon)
 {
 #ifdef USE_FDO_NOTIFICATIONS
