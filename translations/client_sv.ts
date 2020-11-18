@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Fel vid borttagning &apos;%1&apos;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -551,7 +551,7 @@ Vänta på en ny synk, sedan kryptera den.</translation>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Filer från ignorerings-listan och symboliska länkar synkroniseras inte.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
@@ -669,29 +669,29 @@ Vänta på en ny synk, sedan kryptera den.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Synk-konflikt</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Versioner med konflikter av %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Vilken version av filen vill du behålla?&lt;br/&gt;Om du väljer båda versionerna kommer den lokala filen att få ett nummer adderat till namnet.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Lokal version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att öppna filen</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -703,12 +703,12 @@ Vänta på en ny synk, sedan kryptera den.</translation>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 byte</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Öppna lokal version&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -718,38 +718,38 @@ Vänta på en ny synk, sedan kryptera den.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Öppna serverversion&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Behåll vald version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Öppna lokal version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Öppna serverversion</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Behåll båda versionerna</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Behåll lokal version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Behåll serverversion</translation>
     </message>
 </context>
 <context>
@@ -757,17 +757,17 @@ Vänta på en ny synk, sedan kryptera den.</translation>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Vill du radera mappen &lt;i&gt;%1&lt;/i&gt; och allt innehåll permanent?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Vill du radera filen &lt;i&gt;%1&lt;/i&gt; permanent?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Bekräfta radering</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -781,7 +781,9 @@ Vänta på en ny synk, sedan kryptera den.</translation>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Misslyckades flytta filen:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1584,7 +1586,7 @@ Om du fortsätter synkroniseringen kommer alla dina filer återställas med en �
     <message>
         <location filename="../src/gui/generalsettings.ui" line="225"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Skapa felsökningsarkiv …</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1620,22 +1622,22 @@ Om du fortsätter synkroniseringen kommer alla dina filer återställas med en �
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Skapa felsökningsarkiv</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="352"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip-arkiv</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Felsökningsarkiv skapat</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="358"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Felsökningsarkiv är skapat på %1</translation>
     </message>
 </context>
 <context>
@@ -2254,12 +2256,12 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Logga in på ditt %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Detta är länken till ditt %1 webbgränssnitt när du öppnar i webbläsaren.&lt;br/&gt;Det ser ut som https://cloud.example.com eller https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
@@ -3127,7 +3129,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Välj ny plats …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3184,27 +3186,27 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Lös konflikt …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Flytta och byt namn …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Flytta, byt namn och ladda upp …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Radera lokala ändringar</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Flytta och ladda upp …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
@@ -3707,13 +3709,13 @@ Det är inte lämpligt att använda den.</translation>
         <location filename="../src/gui/systray.cpp" line="97"/>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Pausa synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Återuppta synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="96"/>
@@ -3728,12 +3730,12 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Pausa synkronisering för alla</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Återuppta synkronisering för alla</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="178"/>
@@ -4186,7 +4188,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Detta är länken till ditt %1 webbgränssnitt när du öppnar i webbläsaren.&lt;br/&gt;Det ser ut som https://cloud.example.com eller https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -4196,7 +4198,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Registrera hos en leverantör</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -4206,7 +4208,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Logga in på ditt %1</translation>
     </message>
 </context>
 <context>
@@ -4281,7 +4283,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Kontoinmatning</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -4296,7 +4298,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="92"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>Konto inte anslutet</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="132"/>
@@ -4406,7 +4408,7 @@ Det är inte lämpligt att använda den.</translation>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="101"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud-klient huvuddialog</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="139"/>
@@ -4426,7 +4428,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="177"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Kontobytare och inställningsmeny</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="211"/>
@@ -4436,7 +4438,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="235"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till nytt konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="249"/>
@@ -4451,7 +4453,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="336"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Nuvarande användaravatar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="368"/>
@@ -4466,12 +4468,12 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="422"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>Öppna lokal mapp för aktuellt konto</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="434"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Öppna Nextcloud Talk i webbläsaren</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="452"/>
@@ -4481,7 +4483,7 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="469"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Appmeny</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="497"/>
@@ -4491,12 +4493,12 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="521"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Aktivitetslista</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="533"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Öppna %1 lokalt</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -4506,17 +4508,17 @@ Det är inte lämpligt att använda den.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="643"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Dela %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="665"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>Öppna Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open Talk %1</source>
-        <translation type="unfinished"/>
+        <translation>Öppna Talk %1</translation>
     </message>
 </context>
 <context>
