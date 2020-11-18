@@ -60,7 +60,6 @@ public:
 
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();
-    Q_INVOKABLE void positionWindow(QQuickWindow *window) const;
 
 signals:
     void currentUserChanged();
@@ -89,14 +88,6 @@ private:
 
     static Systray *_instance;
     Systray();
-
-    QScreen *currentScreen() const;
-    QRect currentScreenRect() const;
-    QPoint computeWindowReferencePoint() const;
-    QPoint calcTrayIconCenter() const;
-    TaskBarPosition taskbarOrientation() const;
-    QRect taskbarGeometry() const;
-    QPoint computeWindowPosition(int width, int height) const;
 
     bool _isWindowVisible = false;
     bool _isWindowActive = false;

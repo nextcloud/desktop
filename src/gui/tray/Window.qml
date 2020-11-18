@@ -61,8 +61,6 @@ Window {
     Connections {
         target: Systray
         onShowWindow: {
-            Systray.positionWindow(trayWindow);
-
             trayWindow.show();
             trayWindow.raise();
             trayWindow.requestActivate();
