@@ -190,19 +190,14 @@ void Systray::setPauseOnAllFoldersHelper(bool pause)
     }
 }
 
-bool Systray::isOpen()
+bool Systray::isWindowVisible() const
 {
-    return _isOpen;
+    return _isWindowVisible;
 }
 
-Q_INVOKABLE void Systray::setOpened()
+Q_INVOKABLE void Systray::setWindowVisible(bool value)
 {
-    _isOpen = true;
-}
-
-Q_INVOKABLE void Systray::setClosed()
-{
-    _isOpen = false;
+    _isWindowVisible = value;
 }
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon)

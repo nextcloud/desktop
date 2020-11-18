@@ -157,7 +157,7 @@ void ownCloudGui::slotOpenSettingsDialog()
 
 void ownCloudGui::slotOpenMainDialog()
 {
-    if (!_tray->isOpen()) {
+    if (!_tray->isWindowVisible()) {
         _tray->showWindow();
     }
 }
@@ -173,7 +173,7 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
                 Q_ASSERT(shareDialog.data());
                 raiseDialog(shareDialog);
             }
-        } else if (_tray->isOpen()) {
+        } else if (_tray->isWindowVisible()) {
             _tray->hideWindow();
         } else {
             if (AccountManager::instance()->accounts().isEmpty()) {

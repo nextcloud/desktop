@@ -50,12 +50,11 @@ public:
     void create();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
     void setToolTip(const QString &tip);
-    bool isOpen();
+    bool isWindowVisible() const;
 
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();
-    Q_INVOKABLE void setOpened();
-    Q_INVOKABLE void setClosed();
+    Q_INVOKABLE void setWindowVisible(bool value);
     Q_INVOKABLE void positionWindow(QQuickWindow *window) const;
 
 signals:
@@ -91,7 +90,7 @@ private:
     QRect taskbarGeometry() const;
     QPoint computeWindowPosition(int width, int height) const;
 
-    bool _isOpen = false;
+    bool _isWindowVisible = false;
     bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
 };
