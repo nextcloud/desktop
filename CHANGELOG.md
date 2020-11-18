@@ -1,3 +1,33 @@
+Changelog for ownCloud Desktop Client [2.7.1] (2020-11-18)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.7.1 relevant to
+ownCloud admins and users.
+
+[2.7.1]: https://github.com/owncloud/client/compare/v2.7.0...v2.7.1
+
+Summary
+-------
+
+* Bugfix - Fix client forgetting VirtualFiles mode: [#8229](https://github.com/owncloud/client/pull/8229)
+* Bugfix - Don't follow redirects on .well-known/openid-configuration: [#8232](https://github.com/owncloud/client/pull/8232)
+
+Details
+-------
+
+* Bugfix - Fix client forgetting VirtualFiles mode: [#8229](https://github.com/owncloud/client/pull/8229)
+
+   We fixed a migration issue where 2.5 based settings where the client was forgetting the
+   VirtualFiles settings.
+
+   https://github.com/owncloud/client/pull/8229
+
+* Bugfix - Don't follow redirects on .well-known/openid-configuration: [#8232](https://github.com/owncloud/client/pull/8232)
+
+   We fixed a bug where the client followed redirects for .well-known/openid-configuration.
+
+   https://github.com/owncloud/openidconnect/issues/20
+   https://github.com/owncloud/client/pull/8232
+
 Changelog for ownCloud Desktop Client [2.7.0] (2020-11-13)
 =======================================
 The following sections list the changes in ownCloud Desktop Client 2.7.0 relevant to
