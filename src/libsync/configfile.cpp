@@ -26,14 +26,16 @@
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
+#include <QWindow>
 #include <QHeaderView>
 #endif
 
-#include <QCoreApplication>
+#include <QGuiApplication>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QLoggingCategory>
+#include <QScreen>
 #include <QSettings>
 #include <QNetworkProxy>
 #include <QStandardPaths>
@@ -140,6 +142,86 @@ bool copy_dir_recursive(QString from_dir, QString to_dir)
         }
     }
 
+    return true;
+}
+
+// Since QWindow has no saveGeometry, let's roll out our own,
+// this is obviously less smart since we can't query the layout system
+QByteArray saveWindowGeometry(QWindow *w)
+{
+    QByteArray array;
+    QDataStream stream(&array, QIODevice::WriteOnly);
+    stream.setVersion(QDataStream::Qt_5_12);
+    const quint32 magicNumber = 0x430A7465;
+    // Version history:
+    // - Nextcloud Client 3.1.0 : Version 1
+    const quint16 version = 1;
+    const int screenNumber = QGuiApplication::screens().indexOf(w->screen());
+    stream << magicNumber
+           << version
+           << w->geometry()
+           << qint32(screenNumber);
+    return array;
+}
+
+// This is almost a straight copy from Qt code
+static void checkRestoredGeometry(const QRect &availableGeometry, QRect *restoredGeometry)
+{
+    const auto frameHeight = 20;
+
+    if (!restoredGeometry->intersects(availableGeometry)) {
+        restoredGeometry->moveBottom(qMin(restoredGeometry->bottom(), availableGeometry.bottom()));
+        restoredGeometry->moveLeft(qMax(restoredGeometry->left(), availableGeometry.left()));
+        restoredGeometry->moveRight(qMin(restoredGeometry->right(), availableGeometry.right()));
+    }
+    restoredGeometry->moveTop(qMax(restoredGeometry->top(), availableGeometry.top() + frameHeight));
+}
+
+// Since QWindow has no restoreGeometry, let's roll out our own,
+// this is obviously less smart since we can't query the layout system
+bool restoreWindowGeometry(QWindow *w, const QByteArray &geometry)
+{
+    if (geometry.size() < 4)
+        return false;
+    QDataStream stream(geometry);
+    stream.setVersion(QDataStream::Qt_5_12);
+
+    const quint32 magicNumber = 0x430A7465;
+    quint32 storedMagicNumber = 0;
+    stream >> storedMagicNumber;
+    if (storedMagicNumber != magicNumber)
+        return false;
+
+    const quint16 currentVersion = 1;
+    quint16 version = 0;
+
+    stream >> version;
+
+    if (version > currentVersion)
+        return false;
+
+    QRect restoredGeometry;
+    qint32 restoredScreenNumber = 0;
+
+    stream >> restoredGeometry
+           >> restoredScreenNumber;
+
+    if (restoredScreenNumber >= qMax(QGuiApplication::screens().size(), 1))
+        restoredScreenNumber = 0;
+    QScreen *restoredScreen = QGuiApplication::screens().value(restoredScreenNumber, nullptr);
+
+    const QRect availableGeometry = restoredScreen ? restoredScreen->availableGeometry()
+                                                   : QRect();
+
+    // Modify the restored geometry if we are about to restore to coordinates
+    // that would make the window "lost". This happens if:
+    // - The restored geometry is completely oustside the available geometry
+    // - The title bar is outside the available geometry.
+
+    checkRestoredGeometry(availableGeometry, &restoredGeometry);
+
+    w->setScreen(restoredScreen);
+    w->setGeometry(restoredGeometry);
     return true;
 }
 
@@ -259,6 +341,24 @@ void ConfigFile::restoreGeometry(QWidget *w)
 {
 #ifndef TOKEN_AUTH_ONLY
     w->restoreGeometry(getValue(geometryC, w->objectName()).toByteArray());
+#endif
+}
+
+void ConfigFile::saveGeometry(QWindow *w)
+{
+#ifndef TOKEN_AUTH_ONLY
+    ASSERT(!w->objectName().isNull());
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup(w->objectName());
+    settings.setValue(QLatin1String(geometryC), saveWindowGeometry(w));
+    settings.sync();
+#endif
+}
+
+void ConfigFile::restoreGeometry(QWindow *w)
+{
+#ifndef TOKEN_AUTH_ONLY
+    restoreWindowGeometry(w, getValue(geometryC, w->objectName()).toByteArray());
 #endif
 }
 

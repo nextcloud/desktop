@@ -24,6 +24,7 @@
 #include <chrono>
 
 class QWidget;
+class QWindow;
 class QHeaderView;
 class ExcludedFiles;
 
@@ -154,6 +155,9 @@ public:
 
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);
+
+    void saveGeometry(QWindow *w);
+    void restoreGeometry(QWindow *w);
 
     // how often the check about new versions runs
     std::chrono::milliseconds updateCheckInterval(const QString &connection = QString()) const;
