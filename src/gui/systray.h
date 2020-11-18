@@ -39,6 +39,7 @@ class Systray
     : public QSystemTrayIcon
 {
     Q_OBJECT
+    Q_PROPERTY(bool windowVisible READ isWindowVisible WRITE setWindowVisible NOTIFY windowVisibleChanged)
 public:
     static Systray *instance();
     virtual ~Systray() = default;
@@ -54,7 +55,7 @@ public:
 
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();
-    Q_INVOKABLE void setWindowVisible(bool value);
+    void setWindowVisible(bool value);
     Q_INVOKABLE void positionWindow(QQuickWindow *window) const;
 
 signals:
@@ -68,6 +69,8 @@ signals:
     Q_INVOKABLE void hideWindow();
     Q_INVOKABLE void showWindow();
     Q_INVOKABLE void openShareDialog(const QString &sharePath, const QString &localPath);
+
+    void windowVisibleChanged(bool windowVisible);
 
 public slots:
     void slotNewUserSelected();

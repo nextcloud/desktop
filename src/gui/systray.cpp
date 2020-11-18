@@ -195,9 +195,14 @@ bool Systray::isWindowVisible() const
     return _isWindowVisible;
 }
 
-Q_INVOKABLE void Systray::setWindowVisible(bool value)
+void Systray::setWindowVisible(bool value)
 {
+    if (_isWindowVisible == value) {
+        return;
+    }
+
     _isWindowVisible = value;
+    emit windowVisibleChanged(value);
 }
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon)

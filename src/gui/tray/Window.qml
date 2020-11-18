@@ -32,7 +32,7 @@ Window {
         userLineInstantiator.active = false;
         userLineInstantiator.active = true;
 
-        Systray.setWindowVisible(visible)
+        Systray.windowVisible = visible
         if (!visible) {
             accountMenu.close();
             appsMenu.close();
