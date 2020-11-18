@@ -35,7 +35,16 @@ Window {
         if (visible) {
             Systray.setOpened()
         } else {
+            accountMenu.close();
+            appsMenu.close();
             Systray.setClosed()
+        }
+    }
+
+    onActiveChanged: {
+        if (!active) {
+            accountMenu.close();
+            appsMenu.close();
         }
     }
 
@@ -53,9 +62,6 @@ Window {
     Connections {
         target: Systray
         onShowWindow: {
-            accountMenu.close();
-            appsMenu.close();
-
             Systray.positionWindow(trayWindow);
 
             trayWindow.show();
