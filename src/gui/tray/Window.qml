@@ -15,8 +15,8 @@ Window {
     id:         trayWindow
     objectName: "TrayWindow"
 
-    width:      Style.trayWindowWidth
-    height:     Style.trayWindowHeight
+    minimumWidth: Style.trayWindowWidth
+    minimumHeight: Style.trayWindowHeight
     flags:      Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
 
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
@@ -87,11 +87,11 @@ Window {
         Rectangle {
             id: trayWindowHeaderBackground
 
-            anchors.left:   trayWindowBackground.left
-            anchors.top:    trayWindowBackground.top
-            height:         Style.trayWindowHeaderHeight
-            width:          Style.trayWindowWidth
-            color:          Style.ncBlue
+            anchors.left: trayWindowBackground.left
+            anchors.right: trayWindowBackground.right
+            anchors.top: trayWindowBackground.top
+            height: Style.trayWindowHeaderHeight
+            color: Style.ncBlue
 
             RowLayout {
                 id: trayWindowHeaderLayout
@@ -479,9 +479,9 @@ Window {
             id: activityListView
 
             anchors.top: trayWindowHeaderBackground.bottom
-            anchors.horizontalCenter: trayWindowBackground.horizontalCenter
-            width:  Style.trayWindowWidth - Style.trayWindowBorderWidth
-            height: Style.trayWindowHeight - Style.trayWindowHeaderHeight
+            anchors.left: trayWindowBackground.left
+            anchors.right: trayWindowBackground.right
+            anchors.bottom: trayWindowBackground.bottom
             clip: true
             ScrollBar.vertical: ScrollBar {
                 id: listViewScrollbar
