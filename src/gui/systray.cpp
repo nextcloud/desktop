@@ -18,6 +18,7 @@
 #include "config.h"
 #include "common/utility.h"
 #include "tray/UserModel.h"
+#include "configfile.h"
 
 #include <QCursor>
 #include <QGuiApplication>
@@ -261,6 +262,18 @@ void Systray::pauseResumeSync()
         _syncIsPaused = true;
         slotPauseAllFolders();
     }
+}
+
+void Systray::saveGeometry(QQuickWindow *window) const
+{
+    ConfigFile cfg;
+    cfg.saveGeometry(window);
+}
+
+void Systray::restoreGeometry(QQuickWindow *window) const
+{
+    ConfigFile cfg;
+    cfg.restoreGeometry(window);
 }
 
 } // namespace OCC

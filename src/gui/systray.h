@@ -61,6 +61,9 @@ public:
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();
 
+    Q_INVOKABLE void saveGeometry(QQuickWindow *window) const;
+    Q_INVOKABLE void restoreGeometry(QQuickWindow *window) const;
+
 signals:
     void currentUserChanged();
     void openAccountWizard();
