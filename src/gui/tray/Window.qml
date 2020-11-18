@@ -13,6 +13,7 @@ import com.nextcloud.desktopclient 1.0
 
 Window {
     id:         trayWindow
+    objectName: "TrayWindow"
 
     width:      Style.trayWindowWidth
     height:     Style.trayWindowHeight
@@ -22,6 +23,9 @@ Window {
 
     Accessible.role: Accessible.Application
     Accessible.name: qsTr("Nextcloud desktop main dialog")
+
+    Component.onCompleted: Systray.restoreGeometry(trayWindow)
+    Component.onDestruction: Systray.saveGeometry(trayWindow)
 
     onVisibleChanged: {
         currentAccountStateIndicator.source = ""
