@@ -826,135 +826,135 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="173"/>
+        <location filename="../src/gui/folder.cpp" line="174"/>
         <source>Local folder %1 does not exist.</source>
         <translation>ローカルフォルダー %1 は存在しません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="176"/>
+        <location filename="../src/gui/folder.cpp" line="177"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 はフォルダーのはずですが、そうではないようです。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="179"/>
+        <location filename="../src/gui/folder.cpp" line="180"/>
         <source>%1 is not readable.</source>
         <translation>%1 は読み込み可能ではありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="416"/>
+        <location filename="../src/gui/folder.cpp" line="417"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 は削除されました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="430"/>
+        <location filename="../src/gui/folder.cpp" line="431"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 が更新されました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="437"/>
+        <location filename="../src/gui/folder.cpp" line="438"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 の名前が %2 に変更されました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="444"/>
+        <location filename="../src/gui/folder.cpp" line="445"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 は %2 に移動しました。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="414"/>
+        <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 とその他 %n 個のファイルが削除されました。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="421"/>
+        <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="423"/>
+        <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="428"/>
+        <location filename="../src/gui/folder.cpp" line="429"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 とその他 %n 個のファイルが更新されました。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="435"/>
+        <location filename="../src/gui/folder.cpp" line="436"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 を %2 にファイル名を変更し、その他 %n 個のファイル名を変更しました。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="442"/>
+        <location filename="../src/gui/folder.cpp" line="443"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 を %2 に移動し、その他 %n 個のファイルを移動しました。</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="449"/>
+        <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 と その他 %n 個のファイルが同期で衝突しました。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="451"/>
+        <location filename="../src/gui/folder.cpp" line="452"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 が同期で衝突しています。コンフリクトファイルを確認してください。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="456"/>
+        <location filename="../src/gui/folder.cpp" line="457"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>エラーにより、%1 と その他 %n 個のファイルが同期できませんでした。ログで詳細を確認してください。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="458"/>
+        <location filename="../src/gui/folder.cpp" line="459"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>エラーにより %1 が未同期です。ログで詳細を確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="464"/>
+        <location filename="../src/gui/folder.cpp" line="465"/>
         <source>Sync Activity</source>
         <translation>同期アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="800"/>
+        <location filename="../src/gui/folder.cpp" line="801"/>
         <source>Could not read system exclude file</source>
         <translation>システム上の除外ファイルを読み込めません</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1045"/>
+        <location filename="../src/gui/folder.cpp" line="1046"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB より大きな新しいフォルダーが追加されました: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1048"/>
+        <location filename="../src/gui/folder.cpp" line="1049"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>外部ストレージからフォルダーが追加されました。
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1049"/>
+        <location filename="../src/gui/folder.cpp" line="1050"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>このフォルダーをダウンロードするには設定画面で選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1109"/>
+        <location filename="../src/gui/folder.cpp" line="1110"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1112"/>
+        <location filename="../src/gui/folder.cpp" line="1113"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1123"/>
+        <location filename="../src/gui/folder.cpp" line="1124"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -963,7 +963,7 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1197"/>
+        <location filename="../src/gui/folder.cpp" line="1198"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -974,7 +974,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 「すべてのファイルを削除」を選択すると、あなたが所有者でない限り、ファイルは使用できなくなります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1202"/>
+        <location filename="../src/gui/folder.cpp" line="1203"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -983,17 +983,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 「ファイルを残す」を選択した場合、ファイルはサーバーから再同期されます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1206"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>Remove All Files?</source>
         <translation>すべてのファイルを削除しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Remove all files</source>
         <translation>すべてのファイルを削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1211"/>
+        <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>Keep files</source>
         <translation>ファイルを残す</translation>
     </message>
@@ -1001,107 +1001,107 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="357"/>
+        <location filename="../src/gui/folderman.cpp" line="356"/>
         <source>Could not reset folder state</source>
         <translation>フォルダーの状態をリセットできませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="358"/>
+        <location filename="../src/gui/folderman.cpp" line="357"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>古い同期ジャーナル  &apos;%1&apos; が見つかりましたが、削除できませんでした。それを現在使用しているアプリケーションが存在しないか確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1146"/>
+        <location filename="../src/gui/folderman.cpp" line="1145"/>
         <source> (backup)</source>
         <translation>(バックアップ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1151"/>
+        <location filename="../src/gui/folderman.cpp" line="1150"/>
         <source> (backup %1)</source>
         <translation>(%1をバックアップ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1329"/>
+        <location filename="../src/gui/folderman.cpp" line="1328"/>
         <source>Undefined State.</source>
         <translation>未定義の状態。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1332"/>
+        <location filename="../src/gui/folderman.cpp" line="1331"/>
         <source>Waiting to start syncing.</source>
         <translation>同期開始を待機中</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1335"/>
+        <location filename="../src/gui/folderman.cpp" line="1334"/>
         <source>Preparing for sync.</source>
         <translation>同期の準備中。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1338"/>
+        <location filename="../src/gui/folderman.cpp" line="1337"/>
         <source>Sync is running.</source>
         <translation>同期を実行中です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1343"/>
+        <location filename="../src/gui/folderman.cpp" line="1342"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1345"/>
+        <location filename="../src/gui/folderman.cpp" line="1344"/>
         <source>Last Sync was successful.</source>
         <translation>最後の同期は成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1351"/>
+        <location filename="../src/gui/folderman.cpp" line="1350"/>
         <source>Setup Error.</source>
         <translation>設定エラー。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1354"/>
+        <location filename="../src/gui/folderman.cpp" line="1353"/>
         <source>User Abort.</source>
         <translation>ユーザーによる中止。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1357"/>
+        <location filename="../src/gui/folderman.cpp" line="1356"/>
         <source>Sync is paused.</source>
         <translation>同期を一時停止しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1363"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (同期を一時停止)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1371"/>
+        <location filename="../src/gui/folderman.cpp" line="1370"/>
         <source>No valid folder selected!</source>
         <translation>有効なフォルダーが選択されていません！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1383"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>The selected path does not exist!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1387"/>
+        <location filename="../src/gui/folderman.cpp" line="1386"/>
         <source>The selected path is not a folder!</source>
         <translation>指定のパスは、フォルダーではありません！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1391"/>
+        <location filename="../src/gui/folderman.cpp" line="1390"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>選択されたフォルダーに書き込み権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1455"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>すでに同期されたフォルダーがあります。別のフォルダーを選択してください！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1436"/>
+        <location filename="../src/gui/folderman.cpp" line="1435"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>ローカルフォルダー %1 にはすでに同期フォルダーとして利用されてるフォルダーを含んでいます。他のフォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1442"/>
+        <location filename="../src/gui/folderman.cpp" line="1441"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>ローカルフォルダー %1 には同期フォルダーとして利用されているフォルダーがあります。他のフォルダーを選択してください。</translation>
     </message>
