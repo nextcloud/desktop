@@ -24,14 +24,6 @@ Window {
     Accessible.role: Accessible.Application
     Accessible.name: qsTr("Nextcloud desktop main dialog")
 
-    // Close tray window when focus is lost (e.g. click somewhere else on the screen)
-    onActiveChanged: {
-        if(!active) {
-            trayWindow.hide();
-            Systray.setClosed();
-        }
-    }
-
     onVisibleChanged: {
         currentAccountStateIndicator.source = ""
         currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
