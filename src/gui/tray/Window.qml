@@ -31,6 +31,12 @@ Window {
         // see also id:accountMenu below
         userLineInstantiator.active = false;
         userLineInstantiator.active = true;
+
+        if (visible) {
+            Systray.setOpened()
+        } else {
+            Systray.setClosed()
+        }
     }
 
     Connections {
@@ -56,12 +62,10 @@ Window {
             trayWindow.raise();
             trayWindow.requestActivate();
 
-            Systray.setOpened();
             UserModel.fetchCurrentActivityModel();
         }
         onHideWindow: {
             trayWindow.hide();
-            Systray.setClosed();
         }
     }
 
