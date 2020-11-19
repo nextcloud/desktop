@@ -49,6 +49,10 @@
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
 
+namespace {
+constexpr quint32 geometrySerializationMagicNumber = 0x430A7465;
+}
+
 namespace OCC {
 
 namespace chrono = std::chrono;
@@ -152,12 +156,11 @@ QByteArray saveWindowGeometry(QWindow *w)
     QByteArray array;
     QDataStream stream(&array, QIODevice::WriteOnly);
     stream.setVersion(QDataStream::Qt_5_12);
-    const quint32 magicNumber = 0x430A7465;
     // Version history:
     // - Nextcloud Client 3.1.0 : Version 1
     const quint16 version = 1;
     const int screenNumber = QGuiApplication::screens().indexOf(w->screen());
-    stream << magicNumber
+    stream << geometrySerializationMagicNumber
            << version
            << w->geometry()
            << qint32(screenNumber);
@@ -186,10 +189,9 @@ bool restoreWindowGeometry(QWindow *w, const QByteArray &geometry)
     QDataStream stream(geometry);
     stream.setVersion(QDataStream::Qt_5_12);
 
-    const quint32 magicNumber = 0x430A7465;
     quint32 storedMagicNumber = 0;
     stream >> storedMagicNumber;
-    if (storedMagicNumber != magicNumber)
+    if (storedMagicNumber != geometrySerializationMagicNumber)
         return false;
 
     const quint16 currentVersion = 1;
