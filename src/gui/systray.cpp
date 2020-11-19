@@ -213,12 +213,19 @@ bool Systray::isWindowActive() const
 
 void Systray::setWindowActive(bool value)
 {
-    if (_isWindowActive == value) {
-        return;
-    }
+    // Using a QTimer as workaround for Windows and Mac sometimes
+    // delivering the focus exit event and the systray click event
+    // out of order so we delay a bit the processing of active change
+    // to make sure it is dealt with only after ownCloudGui::slotTrayClicked
+    // had a chance to decide to raise or hide the window
+    QTimer::singleShot(100, this, [=] {
+        if (_isWindowActive == value) {
+            return;
+        }
 
-    _isWindowActive = value;
-    emit windowActiveChanged(value);
+        _isWindowActive = value;
+        emit windowActiveChanged(value);
+    });
 }
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon)
