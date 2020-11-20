@@ -3108,7 +3108,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation>Oturumunuzun süresi dolmuş. İstemciyi kullanmaya devam etmek için yeniden oturum açmanız gerekiyor.</translation>
+        <translation>Oturumunuzun süresi dolmuş. İstemciyi kullanmayı sürdürmek için yeniden oturum açmanız gerekiyor.</translation>
     </message>
 </context>
 <context>
@@ -3827,7 +3827,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="211"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
-        <translation>&quot;%1&quot; sunucusunun sertifikası geçersiz. Devam etmek ister misiniz?</translation>
+        <translation>&quot;%1&quot; sunucusunun sertifikası geçersiz. İşlemi sürdürmek ister misiniz?</translation>
     </message>
 </context>
 <context>
