@@ -287,7 +287,7 @@ Cette action stoppera toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="610"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Désactiver le support</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="712"/>
@@ -418,7 +418,7 @@ Cette action stoppera toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source>Enable virtual file support%1...</source>
-        <translation type="unfinished"/>
+        <translation>Activer la prise en charge des fichiers virtuels%1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
@@ -453,12 +453,12 @@ Cette action stoppera toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="863"/>
         <source>Obtaining authorization from the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Obtention de l&apos;autorisation du navigateur.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="876"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Erreur de configuration du serveur: %1 à %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="887"/>
@@ -632,7 +632,7 @@ Cette action stoppera toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="369"/>
         <source>Open the activity view for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrez la vue des activités pour plus de détails.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="152"/>
