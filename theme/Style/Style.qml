@@ -28,6 +28,9 @@ QtObject {
     property int currentAccountButtonRadius: 2
     property int currentAccountLabelWidth: 128
 
+    property url stateOnlineImageSource: Theme.stateOnlineImageSource
+    property url stateOfflineImageSource: Theme.stateOfflineImageSource
+
     property int accountAvatarSize: (trayWindowHeaderHeight - 16)
     property int accountAvatarStateIndicatorSize: 16
     property int accountLabelWidth: 128

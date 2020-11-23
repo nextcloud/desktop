@@ -36,6 +36,22 @@
 #undef Mirall
 #endif
 
+namespace {
+
+QUrl imagePathToUrl(const QString &imagePath)
+{
+    if (imagePath.startsWith(':')) {
+        auto url = QUrl();
+        url.setScheme(QStringLiteral("qrc"));
+        url.setPath(imagePath.mid(1));
+        return url;
+    } else {
+        return QUrl::fromLocalFile(imagePath);
+    }
+}
+
+}
+
 namespace OCC {
 
 Theme *Theme::_instance = nullptr;
@@ -104,6 +120,16 @@ QString Theme::appNameGUI() const
 QString Theme::appName() const
 {
     return APPLICATION_SHORTNAME;
+}
+
+QUrl Theme::stateOnlineImageSource() const
+{
+    return imagePathToUrl(themeImagePath("state-ok"));
+}
+
+QUrl Theme::stateOfflineImageSource() const
+{
+    return imagePathToUrl(themeImagePath("state-offline", 16));
 }
 
 QString Theme::version() const
@@ -186,6 +212,25 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
 #endif
 
     return cached;
+}
+
+QString Theme::themeImagePath(const QString &name, int size, bool sysTray) const
+{
+    const auto flavor = (!isBranded() && sysTray) ? systrayIconFlavor(_mono) : QLatin1String("colored");
+
+    // branded client may have several sizes of the same icon
+    const QString filePath = (isBranded() && size > 0)
+            ? QString::fromLatin1(":/client/theme/%1/%2-%3").arg(flavor).arg(name).arg(size)
+            : QString::fromLatin1(":/client/theme/%1/%2").arg(flavor).arg(name);
+
+    const QString brandedImagePath = filePath + ".png";
+
+    // only return branded .png image path if it exists, or fall-back to non-branded .svg otherwise
+    if (isBranded() && QFile::exists(brandedImagePath)) {
+        return brandedImagePath;
+    }
+
+    return filePath + ".svg";
 }
 
 QIcon Theme::uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const

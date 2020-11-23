@@ -81,7 +81,9 @@ MenuItem {
                         }
                         Image {
                             id: accountStateIndicator
-                            source: isConnected ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+                            source: model.isConnected
+                                    ? Style.stateOnlineImageSource
+                                    : Style.stateOfflineImageSource
                             cache: false
                             x: accountStateIndicatorBackground.x + 1
                             y: accountStateIndicatorBackground.y + 1
@@ -89,7 +91,7 @@ MenuItem {
                             sourceSize.height: Style.accountAvatarStateIndicatorSize
 
                             Accessible.role: Accessible.Indicator
-                            Accessible.name: isConnected ? qsTr("Account connected") : qsTr("Account not connected")
+                            Accessible.name: model.isConnected ? qsTr("Account connected") : qsTr("Account not connected")
                         }
                     }
 
@@ -163,11 +165,11 @@ MenuItem {
                     }
 
                     MenuItem {
-                        text: isConnected ? qsTr("Log out") : qsTr("Log in")
+                        text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
                         font.pixelSize: Style.topLinePixelSize
                         hoverEnabled: true
                         onClicked: {
-                            isConnected ? UserModel.logout(index) : UserModel.login(index)
+                            model.isConnected ? UserModel.logout(index) : UserModel.login(index)
                             accountMenu.close()
                         }
 
@@ -182,10 +184,10 @@ MenuItem {
                         }
 
                         Accessible.role: Accessible.Button
-                        Accessible.name: isConnected ? qsTr("Log out") : qsTr("Log in")
+                        Accessible.name: model.isConnected ? qsTr("Log out") : qsTr("Log in")
 
                         onPressed: {
-                            if (isConnected) {
+                            if (model.isConnected) {
                                 UserModel.logout(index)
                             } else {
                                 UserModel.login(index)
@@ -219,6 +221,15 @@ MenuItem {
                         Accessible.onPressAction: removeAccountButton.clicked()
                     }
                 }
+            }
+        }
+
+        Connections {
+            target: UserModel
+            onRefreshCurrentUserGui: {
+                accountStateIndicator.source = model.isConnected
+                        ? Style.stateOnlineImageSource
+                        : Style.stateOfflineImageSource
             }
         }
 }   // MenuItem userLine

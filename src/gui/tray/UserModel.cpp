@@ -41,6 +41,7 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
     connect(_account.data(), &AccountState::stateChanged,
             [=]() { if (isConnected()) {slotRefresh();} });
+    connect(_account.data(), &AccountState::stateChanged, this, &User::accountStateChanged);
     connect(_account.data(), &AccountState::hasFetchedNavigationApps,
         this, &User::slotRebuildNavigationAppList);
     connect(_account->account().data(), &Account::accountChangedDisplayName, this, &User::nameChanged);
@@ -552,6 +553,7 @@ void UserModel::buildUserList()
     }
     if (_init) {
         _users.first()->setCurrentUser(true);
+        connect(_users.first(), &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
         _init = false;
     }
 }
@@ -613,6 +615,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         _users << u;
         if (isCurrent) {
             _currentUserId = _users.indexOf(_users.last());
+            connect(u, &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
         }
 
         endInsertRows();
@@ -665,8 +668,10 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
     if (_users.isEmpty())
         return;
 
+    disconnect(_users[_currentUserId], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
     _users[_currentUserId]->setCurrentUser(false);
     _users[id]->setCurrentUser(true);
+    connect(_users[id], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
     _currentUserId = id;
     emit refreshCurrentUserGui();
     emit newUserSelected();
@@ -708,6 +713,10 @@ Q_INVOKABLE void UserModel::removeAccount(const int &id)
     messageBox.exec();
     if (messageBox.clickedButton() != yesButton) {
         return;
+    }
+
+    if (_users[id]->isCurrentUser()) {
+        disconnect(_users[id], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
     }
 
     if (_users[id]->isCurrentUser() && _users.count() > 1) {
