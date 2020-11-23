@@ -556,7 +556,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>有关更多活动，请打开 “活动” 应用。</translation>
+        <translation>有关更多动态，请打开 “动态” 应用。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
@@ -1017,7 +1017,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
         <source>Sync Activity</source>
-        <translation>同步活动</translation>
+        <translation>同步动态</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="643"/>
@@ -4064,7 +4064,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
-        <translation>查看更多活动…</translation>
+        <translation>查看更多动态…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
