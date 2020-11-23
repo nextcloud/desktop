@@ -4,6 +4,10 @@ set(CMAKE_AUTOMOC TRUE)
 set(CMAKE_AUTOUIC TRUE)
 set(CMAKE_AUTORCC TRUE)
 
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    add_definitions(-DQT_QML_DEBUG)
+endif()
+
 IF(BUILD_UPDATER)
     add_subdirectory(updater)
 endif()
