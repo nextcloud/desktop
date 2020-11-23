@@ -52,6 +52,7 @@ signals:
     void hasLocalFolderChanged();
     void serverHasTalkChanged();
     void avatarChanged();
+    void accountStateChanged(int state);
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);

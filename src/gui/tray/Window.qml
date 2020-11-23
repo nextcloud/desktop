@@ -36,7 +36,9 @@ Window {
 
     onVisibleChanged: {
         currentAccountStateIndicator.source = ""
-        currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+        currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId)
+                ? Style.stateOnlineImageSource
+                : Style.stateOfflineImageSource
 
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
         // see also id:accountMenu below
@@ -48,7 +50,9 @@ Window {
         target: UserModel
         onRefreshCurrentUserGui: {
             currentAccountStateIndicator.source = ""
-            currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+            currentAccountStateIndicator.source = UserModel.isUserConnected(UserModel.currentUserId)
+                    ? Style.stateOnlineImageSource
+                    : Style.stateOfflineImageSource
         }
         onNewUserSelected: {
             accountMenu.close();
@@ -357,7 +361,9 @@ Window {
 
                             Image {
                                 id: currentAccountStateIndicator
-                                source: UserModel.isUserConnected(UserModel.currentUserId) ? "qrc:///client/theme/colored/state-ok.svg" : "qrc:///client/theme/colored/state-offline.svg"
+                                source: UserModel.isUserConnected(UserModel.currentUserId)
+                                        ? Style.stateOnlineImageSource
+                                        : Style.stateOfflineImageSource
                                 cache: false
                                 x: currentAccountStateIndicatorBackground.x + 1
                                 y: currentAccountStateIndicatorBackground.y + 1
