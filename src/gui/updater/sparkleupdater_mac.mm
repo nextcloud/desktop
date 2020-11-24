@@ -21,13 +21,11 @@
 #include "common/utility.h"
 #include "updater/sparkleupdater.h"
 
-// Does not work yet
 @interface DelegateObject : NSObject <SUUpdaterDelegate>
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
 @end
 @implementation DelegateObject //(SUUpdaterDelegateInformalProtocol)
 
-// Only possible in later versions, we're not up to date here.
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
     Q_UNUSED(bundle)
@@ -40,13 +38,14 @@
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
+    qCDebug(OCC::lcUpdater) << "";
 }
 
 // Sent when a valid update is not found.
-// Does not seem to get called ever.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
     Q_UNUSED(update)
+    qCDebug(OCC::lcUpdater) << "";
 }
 
 // Sent immediately before installing the specified update.
@@ -54,16 +53,21 @@
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
+    qCDebug(OCC::lcUpdater) << "";
 }
 
-// Tried implementing those methods, but they never ever seem to get called
-//- (void) updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
-//{
-//}
+- (void) updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
+{
+    Q_UNUSED(updater)
+    qCDebug(OCC::lcUpdater) << error.description;
+}
 
-//- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
-//{
-//}
+- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
+{
+    Q_UNUSED(updater)
+    Q_UNUSED(appcast)
+    qCDebug(OCC::lcUpdater) << "";
+}
 
 
 @end
@@ -79,7 +83,7 @@ class SparkleUpdater::Private
 };
 
 // Delete ~/Library//Preferences/com.owncloud.desktopclient.plist to re-test
-SparkleUpdater::SparkleUpdater(const QString& appCastUrl)
+SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     : Updater()
 {
     d = new Private;
@@ -95,9 +99,7 @@ SparkleUpdater::SparkleUpdater(const QString& appCastUrl)
     [d->updater resetUpdateCycle];
     [d->updater retain];
 
-    NSURL* url = [NSURL URLWithString:
-            [NSString stringWithUTF8String: appCastUrl.toUtf8().data()]];
-    [d->updater setFeedURL: url];
+    setUpdateUrl(appCastUrl);
 
     // Sparkle 1.8 required
     NSString *userAgent = [NSString stringWithUTF8String: Utility::userAgentString().data()];
@@ -110,7 +112,14 @@ SparkleUpdater::~SparkleUpdater()
     delete d;
 }
 
+void SparkleUpdater::setUpdateUrl(const QUrl &url)
+{
+    NSURL* nsurl = [NSURL URLWithString:
+            [NSString stringWithUTF8String: url.toString().toUtf8().data()]];
+    [d->updater setFeedURL: nsurl];
+}
 
+// FIXME: Should be changed to not instanicate the SparkleUpdater at all in this case
 bool autoUpdaterAllowed()
 {
     // See https://github.com/owncloud/client/issues/2931
@@ -137,6 +146,12 @@ void SparkleUpdater::backgroundCheckForUpdate()
     if (autoUpdaterAllowed()) {
         [d->updater checkForUpdatesInBackground];
     }
+}
+
+QString SparkleUpdater::statusString()
+{
+    // FIXME Show the real state depending on the callbacks
+    return QString();
 }
 
 } // namespace OCC

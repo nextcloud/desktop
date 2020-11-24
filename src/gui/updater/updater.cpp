@@ -23,6 +23,7 @@
 #include "theme.h"
 #include "common/utility.h"
 #include "version.h"
+#include "configfile.h"
 
 #include "config.h"
 #include "configfile.h"
@@ -41,39 +42,62 @@ Updater *Updater::instance()
     return _instance;
 }
 
+QUrl Updater::updateUrl()
+{
+    QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
+    if (updateBaseUrl.isEmpty()) {
+        updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
+    }
+    if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
+        return QUrl();
+    }
+
+    auto urlQuery = getQueryParams();
+
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+    urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
+#endif
+
+#if defined(Q_OS_WIN)
+    urlQuery.addQueryItem(QLatin1String("msi"), QLatin1String("true"));
+#endif
+
+    updateBaseUrl.setQuery(urlQuery);
+
+    return updateBaseUrl;
+}
+
 QUrlQuery Updater::getQueryParams()
 {
     QUrlQuery query;
     Theme *theme = Theme::instance();
-    QString platform = QLatin1String("stranger");
+    QString platform = QStringLiteral("stranger");
     if (Utility::isLinux()) {
-        platform = QLatin1String("linux");
+        platform = QStringLiteral("linux");
     } else if (Utility::isBSD()) {
-        platform = QLatin1String("bsd");
+        platform = QStringLiteral("bsd");
     } else if (Utility::isWindows()) {
-        platform = QLatin1String("win32");
+        platform = QStringLiteral("win32");
     } else if (Utility::isMac()) {
-        platform = QLatin1String("macos");
+        platform = QStringLiteral("macos");
     }
 
     QString sysInfo = getSystemInfo();
     if (!sysInfo.isEmpty()) {
-        query.addQueryItem(QLatin1String("client"), sysInfo);
+        query.addQueryItem(QStringLiteral("client"), sysInfo);
     }
-    query.addQueryItem(QLatin1String("version"), clientVersion());
-    query.addQueryItem(QLatin1String("platform"), platform);
-    query.addQueryItem(QLatin1String("oem"), theme->appName());
+    query.addQueryItem(QStringLiteral("version"), clientVersion());
+    query.addQueryItem(QStringLiteral("platform"), platform);
+    query.addQueryItem(QStringLiteral("oem"), theme->appName());
+    query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
+    query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
 
-    QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-    query.addQueryItem(QLatin1String("versionsuffix"), suffix);
-    if (suffix.startsWith("daily")
-            || suffix.startsWith("nightly")
-            || suffix.startsWith("alpha")
-            || suffix.startsWith("rc")
-            || suffix.startsWith("beta")) {
-        query.addQueryItem(QLatin1String("channel"), "beta");
-        // FIXME: Provide a checkbox in UI to enable regular versions to switch
-        // to beta channel
+    QString suffix = QStringLiteral(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    query.addQueryItem(QStringLiteral("versionsuffix"), suffix);
+
+    auto channel = ConfigFile().updateChannel();
+    if (channel != QLatin1String("stable")) {
+        query.addQueryItem(QStringLiteral("channel"), channel);
     }
 
     // updateSegment (see configfile.h)
@@ -105,30 +129,21 @@ QString Updater::getSystemInfo()
 // To test, cmake with -DAPPLICATION_UPDATE_URL="http://127.0.0.1:8080/test.rss"
 Updater *Updater::create()
 {
-    QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
-    if (updateBaseUrl.isEmpty()) {
-        updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
-    }
-    if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
+    auto url = updateUrl();
+    qCDebug(lcUpdater) << url;
+    if (url.isEmpty()) {
         qCWarning(lcUpdater) << "Not a valid updater URL, will not do update check";
         return nullptr;
     }
 
-    auto urlQuery = getQueryParams();
-
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
-#endif
-
-    updateBaseUrl.setQuery(urlQuery);
-
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    return new SparkleUpdater(updateBaseUrl.toString());
+    return new SparkleUpdater(url);
 #elif defined(Q_OS_WIN32)
-    // the best we can do is notify about updates
-    return new NSISUpdater(updateBaseUrl);
+    // Also for MSI
+    return new NSISUpdater(url);
 #else
-    return new PassiveUpdateNotifier(QUrl(updateBaseUrl));
+    // the best we can do is notify about updates
+    return new PassiveUpdateNotifier(url);
 #endif
 }
 

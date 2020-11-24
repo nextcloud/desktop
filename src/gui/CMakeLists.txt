@@ -163,7 +163,7 @@ IF( APPLE )
     if(SPARKLE_FOUND AND BUILD_UPDATER)
        # Define this, we need to check in updater.cpp
        add_definitions( -DHAVE_SPARKLE )
-       list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
+       list(APPEND updater_SRCS updater/sparkleupdater_mac.mm updater/sparkleupdater.h)
    endif()
 ENDIF()
 

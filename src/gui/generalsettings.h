@@ -53,6 +53,7 @@ private slots:
     void slotShowLegalNotice();
 #if defined(BUILD_UPDATER)
     void slotUpdateInfo();
+    void slotUpdateChannelChanged(const QString &channel);
     void slotUpdateCheckNow();
     void slotToggleAutoUpdateCheck();
 #endif
