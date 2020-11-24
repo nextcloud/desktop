@@ -161,7 +161,7 @@ void AbstractNetworkJob::slotFinished()
 
 #if (QT_VERSION >= 0x050800)
     // Qt doesn't yet transparently resend HTTP2 requests, do so here
-    const auto maxHttp2Resends = 5;
+    const auto maxHttp2Resends = 3;
     QByteArray verb = requestVerb(*reply());
     if (_reply->error() == QNetworkReply::ContentReSendError
         && _reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()) {
