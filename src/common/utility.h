@@ -30,7 +30,6 @@
 #include <QMap>
 #include <QUrl>
 #include <QUrlQuery>
-#include <QtQuick/QQuickImageProvider>
 #include <functional>
 #include <memory>
 
