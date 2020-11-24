@@ -33,6 +33,7 @@
 #endif
 
 #include "folder.h"
+#include "filesystem.h"
 
 namespace OCC {
 
@@ -60,7 +61,7 @@ bool FolderWatcher::pathIsIgnored(const QString &path)
         return false;
 
 #ifndef OWNCLOUD_TEST
-    if (_folder->isFileExcludedAbsolute(path)) {
+    if (_folder->isFileExcludedAbsolute(path) && !Utility::isConflictFile(path)) {
         qCDebug(lcFolderWatcher) << "* Ignoring file" << path;
         return true;
     }
@@ -84,6 +85,57 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
             appendSubPaths(dir, subPaths);
         }
     }
+}
+
+void FolderWatcher::startNotificatonTest(const QString &path)
+{
+#ifdef Q_OS_MAC
+    // Testing the folder watcher on OSX is harder because the watcher
+    // automatically discards changes that were performed by our process.
+    // It would still be useful to test but the OSX implementation
+    // is deferred until later.
+    return;
+#endif
+
+    Q_ASSERT(_testNotificationPath.isEmpty());
+    _testNotificationPath = path;
+
+    // Don't do the local file modification immediately:
+    // wait for FolderWatchPrivate::_ready
+    startNotificationTestWhenReady();
+}
+
+void FolderWatcher::startNotificationTestWhenReady()
+{
+    if (!_d->_ready) {
+        QTimer::singleShot(1000, this, &FolderWatcher::startNotificationTestWhenReady);
+        return;
+    }
+
+    auto path = _testNotificationPath;
+    if (QFile::exists(path)) {
+        auto mtime = FileSystem::getModTime(path);
+        FileSystem::setModTime(path, mtime + 1);
+    } else {
+        QFile f(path);
+        f.open(QIODevice::WriteOnly | QIODevice::Append);
+    }
+
+    QTimer::singleShot(5000, this, [this]() {
+        if (!_testNotificationPath.isEmpty())
+            emit becameUnreliable(tr("The watcher did not receive a test notification."));
+        _testNotificationPath.clear();
+    });
+}
+
+
+int FolderWatcher::testLinuxWatchCount() const
+{
+#ifdef Q_OS_LINUX
+    return _d->testWatchCount();
+#else
+    return -1;
+#endif
 }
 
 void FolderWatcher::changeDetected(const QString &path)
@@ -118,6 +170,10 @@ void FolderWatcher::changeDetected(const QStringList &paths)
     // ------- handle ignores:
     for (int i = 0; i < paths.size(); ++i) {
         QString path = paths[i];
+        if (!_testNotificationPath.isEmpty()
+            && Utility::fileNamesEqual(path, _testNotificationPath)) {
+            _testNotificationPath.clear();
+        }
         if (pathIsIgnored(path)) {
             continue;
         }
@@ -133,16 +189,5 @@ void FolderWatcher::changeDetected(const QStringList &paths)
         emit pathChanged(path);
     }
 }
-
-void FolderWatcher::addPath(const QString &path)
-{
-    _d->addPath(path);
-}
-
-void FolderWatcher::removePath(const QString &path)
-{
-    _d->removePath(path);
-}
-
 
 } // namespace OCC

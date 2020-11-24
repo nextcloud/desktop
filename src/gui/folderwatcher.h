@@ -22,7 +22,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
-#include <QTime>
+#include <QElapsedTimer>
 #include <QHash>
 #include <QScopedPointer>
 #include <QSet>
@@ -44,11 +44,6 @@ class Folder;
  * for changes in the local file system. Changes are signalled
  * through the pathChanged() signal.
  *
- * Note that if new folders are created, this folderwatcher class
- * does not automatically add them to the list of monitored
- * dirs. That is the responsibility of the user of this class to
- * call addPath() with the new dir.
- *
  * @ingroup gui
  */
 
@@ -65,14 +60,6 @@ public:
      */
     void init(const QString &root);
 
-    /**
-     * Not all backends are recursive by default.
-     * Those need to be notified when a directory is added or removed while the watcher is disabled.
-     * This is a no-op for backends that are recursive
-     */
-    void addPath(const QString &);
-    void removePath(const QString &);
-
     /* Check if the path is ignored. */
     bool pathIsIgnored(const QString &path);
 
@@ -84,6 +71,17 @@ public:
      * /proc/sys/fs/inotify/max_user_watches is exceeded.
      */
     bool isReliable() const;
+
+    /**
+     * Triggers a change in the path and verifies a notification arrives.
+     *
+     * If no notification is seen, the folderwatcher marks itself as unreliable.
+     * The path must be ignored by the watcher.
+     */
+    void startNotificatonTest(const QString &path);
+
+    /// For testing linux behavior only
+    int testLinuxWatchCount() const;
 
 signals:
     /** Emitted when one of the watched directories or one
@@ -111,17 +109,23 @@ protected slots:
     void changeDetected(const QString &path);
     void changeDetected(const QStringList &paths);
 
+private slots:
+    void startNotificationTestWhenReady();
+
 protected:
     QHash<QString, int> _pendingPathes;
 
 private:
     QScopedPointer<FolderWatcherPrivate> _d;
-    QTime _timer;
+    QElapsedTimer _timer;
     QSet<QString> _lastPaths;
     Folder *_folder;
     bool _isReliable = true;
 
     void appendSubPaths(QDir dir, QStringList& subPaths);
+
+    /** Path of the expected test notification */
+    QString _testNotificationPath;
 
     friend class FolderWatcherPrivate;
 };
