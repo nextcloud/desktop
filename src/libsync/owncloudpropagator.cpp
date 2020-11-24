@@ -365,29 +365,9 @@ quint64 OwncloudPropagator::smallFileSize()
     return smallFileSize;
 }
 
-void OwncloudPropagator::start(const SyncFileItemVector &items,
-                                const bool &hasChange,
-                                const int &lastChangeInstruction,
-                                const bool &hasDelete,
-                                const int &lastDeleteInstruction)
+void OwncloudPropagator::start(const SyncFileItemVector &items)
 {
-    if (!hasChange && !hasDelete) {
-        Q_ASSERT(std::is_sorted(items.begin(), items.end()));
-    } else if (hasChange) {
-        Q_ASSERT(std::is_sorted(items.begin(), items.end(),
-            [](SyncFileItemVector::const_reference &a, SyncFileItemVector::const_reference &b) -> bool {
-                return ((a->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) && (b->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE));
-            }));
-        Q_ASSERT(std::is_sorted(items.begin(), items.begin() + lastChangeInstruction));
-
-        if (hasDelete) {
-            Q_ASSERT(std::is_sorted(items.begin() + (lastChangeInstruction + 1), items.end(),
-                [](SyncFileItemVector::const_reference &a, SyncFileItemVector::const_reference &b) -> bool {
-                    return ((a->_instruction == CSYNC_INSTRUCTION_REMOVE) && (b->_instruction != CSYNC_INSTRUCTION_REMOVE));
-                }));
-            Q_ASSERT(std::is_sorted(items.begin() + (lastChangeInstruction + 1), items.begin() + lastDeleteInstruction));
-        }
-	}
+    Q_ASSERT(std::is_sorted(items.begin(), items.end()));
 
     /* This builds all the jobs needed for the propagation.
      * Each directory is a PropagateDirectory job, which contains the files in it.

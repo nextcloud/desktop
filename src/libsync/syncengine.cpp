@@ -604,6 +604,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         dir = SyncFileItem::None;
         // For directories, metadata-only updates will be done after all their files are propagated.
         if (!isDirectory) {
+
             // Update the database now already:  New remote fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
             // Or a local inode/mtime change
@@ -1080,11 +1081,11 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
 
-    if (csync_walk_local_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, false); }) < 0) {
+    if (csync_walk_local_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, false); } ) < 0) {
         qCWarning(lcEngine) << "Error in local treewalk.";
         walkOk = false;
     }
-    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, true); }) < 0) {
+    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, true); } ) < 0) {
         qCWarning(lcEngine) << "Error in remote treewalk.";
     }
 
@@ -1155,53 +1156,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
-    bool hasChange = false;
-    bool hasDelete = false;
-    int lastChangeInstruction = 0;
-    int lastDeleteInstruction = 0;
-
-    // Only if list is populated, can be empty under certain circumstances
-    // Get CHANGE instructions to the top first
-    if (syncItems.count() > 0) {
-        std::sort(syncItems.begin(), syncItems.end(),
-            [](SyncFileItemVector::const_reference &a, SyncFileItemVector::const_reference &b) -> bool {
-				return ((a->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) && (b->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE));
-            });
-        if (syncItems.at(0)->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
-            hasChange = true;
-            lastChangeInstruction = std::distance(syncItems.begin(), std::find_if(syncItems.begin(), syncItems.end(), [](SyncFileItemVector::const_reference &a) -> bool { return a->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE; }));
-        }
-        if (hasChange) {
-            std::sort(syncItems.begin(), syncItems.begin() + lastChangeInstruction);
-            if (syncItems.count() > lastChangeInstruction) {
-                std::sort(syncItems.begin() + (lastChangeInstruction + 1), syncItems.end(),
-                    [](SyncFileItemVector::const_reference &a, SyncFileItemVector::const_reference &b) -> bool {
-                        return ((a->_instruction == CSYNC_INSTRUCTION_REMOVE) && (b->_instruction != CSYNC_INSTRUCTION_REMOVE));
-                    });
-                if (syncItems.at(lastChangeInstruction + 1)->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-                    hasDelete = true;
-                    lastDeleteInstruction = std::distance(syncItems.begin(), std::find_if(syncItems.begin() + (lastChangeInstruction + 1), syncItems.end(), [](SyncFileItemVector::const_reference &a) -> bool { return a->_instruction != CSYNC_INSTRUCTION_REMOVE; }));
-                    std::sort(syncItems.begin() + (lastChangeInstruction + 1), syncItems.begin() + lastDeleteInstruction);
-                    if (syncItems.count() > lastDeleteInstruction) {
-                        std::sort(syncItems.begin() + (lastDeleteInstruction + 1), syncItems.end());
-                    }
-                } else {
-                    std::sort(syncItems.begin() + (lastChangeInstruction + 1), syncItems.end());
-                }
-            }
-        } else if (syncItems.at(0)->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-            hasDelete = true;
-            lastDeleteInstruction = std::distance(syncItems.begin(), std::find_if(syncItems.begin(), syncItems.end(), [](SyncFileItemVector::const_reference &a) -> bool { return a->_instruction != CSYNC_INSTRUCTION_REMOVE; }));
-            std::sort(syncItems.begin(), syncItems.begin() + lastDeleteInstruction);
-			if (syncItems.count() > lastDeleteInstruction) {
-                std::sort(syncItems.begin() + (lastDeleteInstruction + 1), syncItems.end());
-            }
-        } else {
-            std::sort(syncItems.begin(), syncItems.end());
-        }
-    }
-
-    //std::sort(syncItems.begin(), syncItems.end());
+    // Sort items per destination
+    std::sort(syncItems.begin(), syncItems.end());
 
     // make sure everything is allowed
     checkForPermission(syncItems);
@@ -1259,7 +1215,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (_needsUpdate)
         emit(started());
 
-    _propagator->start(syncItems, hasChange, lastChangeInstruction, hasDelete, lastDeleteInstruction);
+    _propagator->start(syncItems);
 
     qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Post-Reconcile Finished")) << "ms";
 }
@@ -1399,7 +1355,8 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
         const QString path = (*it)->destination() + QLatin1Char('/');
 
         // if reading the selective sync list from db failed, lets ignore all rather than nothing.
-        if (!selectiveListOk || std::binary_search(selectiveSyncBlackList.constBegin(), selectiveSyncBlackList.constEnd(), path)) {
+        if (!selectiveListOk || std::binary_search(selectiveSyncBlackList.constBegin(), selectiveSyncBlackList.constEnd(),
+                                    path)) {
             (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
             (*it)->_status = SyncFileItem::FileIgnored;
             (*it)->_errorString = tr("Ignored because of the \"choose what to sync\" blacklist");
@@ -1594,7 +1551,7 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
             bool sourceOK = true;
             if (!filePerms.isNull()
                 && ((isRename && !filePerms.hasPermission(RemotePermissions::CanRename))
-                    || (!isRename && !filePerms.hasPermission(RemotePermissions::CanMove)))) {
+                       || (!isRename && !filePerms.hasPermission(RemotePermissions::CanMove)))) {
                 // We are not allowed to move or rename this file
                 sourceOK = false;
 
@@ -1744,8 +1701,8 @@ bool SyncEngine::wasFileTouched(const QString &fn) const
     // Start from the end (most recent) and look for our path. Check the time just in case.
     auto begin = _touchedFiles.constBegin();
     for (auto it = _touchedFiles.constEnd(); it != begin; --it) {
-        if ((it - 1).value() == fn)
-            return (it - 1).key().elapsed() <= s_touchedFilesMaxAgeMs;
+        if ((it-1).value() == fn)
+            return (it-1).key().elapsed() <= s_touchedFilesMaxAgeMs;
     }
     return false;
 }
