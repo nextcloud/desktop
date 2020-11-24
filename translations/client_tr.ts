@@ -4289,17 +4289,17 @@ Kullanmanız önerilmez.</translation>
         <translation>Şu hesaba geç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account connected</source>
         <translation>Hesap bağlandı</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account not connected</source>
         <translation>Hesap bağlanmadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="132"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="134"/>
         <source>Account actions</source>
         <translation>Hesap işlemleri</translation>
     </message>
@@ -4319,7 +4319,7 @@ Kullanmanız önerilmez.</translation>
         <translation>Hesabı Sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="199"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="201"/>
         <source>Remove account</source>
         <translation>Hesabı sil</translation>
     </message>
@@ -4404,12 +4404,12 @@ Kullanmanız önerilmez.</translation>
     <name>Window</name>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
-        <location filename="../src/gui/tray/Window.qml" line="101"/>
+        <location filename="../src/gui/tray/Window.qml" line="105"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud masaüstü ana penceresi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="139"/>
+        <location filename="../src/gui/tray/Window.qml" line="143"/>
         <source>Current account</source>
         <translation>Geçerli hesap</translation>
     </message>
@@ -4424,7 +4424,7 @@ Kullanmanız önerilmez.</translation>
         <translation>Tümünü eşitlemeyi duraklat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="177"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
         <source>Account switcher and settings menu</source>
         <translation>Hesap değiştirici ve ayarlar menüsü</translation>
     </message>
@@ -4434,7 +4434,7 @@ Kullanmanız önerilmez.</translation>
         <translation>Hesap ekle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="235"/>
+        <location filename="../src/gui/tray/Window.qml" line="239"/>
         <source>Add new account</source>
         <translation>Hesap ekle</translation>
     </message>
@@ -4449,52 +4449,52 @@ Kullanmanız önerilmez.</translation>
         <translation>Çık</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="336"/>
+        <location filename="../src/gui/tray/Window.qml" line="340"/>
         <source>Current user avatar</source>
         <translation>Geçerli kullanıcı avatarı</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="368"/>
+        <location filename="../src/gui/tray/Window.qml" line="374"/>
         <source>Connected</source>
         <translation>Bağlantı kuruldu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="368"/>
+        <location filename="../src/gui/tray/Window.qml" line="374"/>
         <source>Disconnected</source>
         <translation>Bağlantı kesildi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="422"/>
+        <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open local folder of current account</source>
         <translation>Geçerli hesabın yerel klasörünü aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="434"/>
+        <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Web tarayıcıda Nextcloud Talk uygulamasını aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="452"/>
+        <location filename="../src/gui/tray/Window.qml" line="458"/>
         <source>More apps</source>
         <translation>Diğer uygulamalar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="469"/>
+        <location filename="../src/gui/tray/Window.qml" line="475"/>
         <source>Apps menu</source>
         <translation>Uygulamalar menüsü</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="497"/>
+        <location filename="../src/gui/tray/Window.qml" line="503"/>
         <source>Open %1 in browser</source>
         <translation>%1 ögesini tarayıcıda aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="521"/>
+        <location filename="../src/gui/tray/Window.qml" line="527"/>
         <source>Activity list</source>
         <translation>İşlem listesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="533"/>
+        <location filename="../src/gui/tray/Window.qml" line="539"/>
         <source>Open %1 locally</source>
         <translation>%1 ögesini yerel olarak aç</translation>
     </message>
@@ -4504,17 +4504,17 @@ Kullanmanız önerilmez.</translation>
         <translation>Paylaşma penceresini aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="643"/>
+        <location filename="../src/gui/tray/Window.qml" line="649"/>
         <source>Share %1</source>
         <translation>%1 ögesini paylaş</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="665"/>
+        <location filename="../src/gui/tray/Window.qml" line="671"/>
         <source>Open Talk</source>
         <translation>Talk Uygulamasını Aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="669"/>
+        <location filename="../src/gui/tray/Window.qml" line="675"/>
         <source>Open Talk %1</source>
         <translation>Talk %1 Uygulamasını Aç</translation>
     </message>

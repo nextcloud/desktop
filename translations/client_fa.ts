@@ -4269,17 +4269,17 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account connected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account not connected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="132"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="134"/>
         <source>Account actions</source>
         <translation>اقدامات حساب</translation>
     </message>
@@ -4299,7 +4299,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="199"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="201"/>
         <source>Remove account</source>
         <translation>حذف حساب کاربری</translation>
     </message>
@@ -4384,12 +4384,12 @@ It is not advisable to use it.</source>
     <name>Window</name>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
-        <location filename="../src/gui/tray/Window.qml" line="101"/>
+        <location filename="../src/gui/tray/Window.qml" line="105"/>
         <source>Nextcloud desktop main dialog</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="139"/>
+        <location filename="../src/gui/tray/Window.qml" line="143"/>
         <source>Current account</source>
         <translation>حساب جاری</translation>
     </message>
@@ -4404,7 +4404,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="177"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
         <source>Account switcher and settings menu</source>
         <translation type="unfinished"/>
     </message>
@@ -4414,7 +4414,7 @@ It is not advisable to use it.</source>
         <translation>افزودن حساب کاربری</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="235"/>
+        <location filename="../src/gui/tray/Window.qml" line="239"/>
         <source>Add new account</source>
         <translation type="unfinished"/>
     </message>
@@ -4429,52 +4429,52 @@ It is not advisable to use it.</source>
         <translation>خروج</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="336"/>
+        <location filename="../src/gui/tray/Window.qml" line="340"/>
         <source>Current user avatar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="368"/>
+        <location filename="../src/gui/tray/Window.qml" line="374"/>
         <source>Connected</source>
         <translation>متصل</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="368"/>
+        <location filename="../src/gui/tray/Window.qml" line="374"/>
         <source>Disconnected</source>
         <translation>قطع شده</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="422"/>
+        <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open local folder of current account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="434"/>
+        <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="452"/>
+        <location filename="../src/gui/tray/Window.qml" line="458"/>
         <source>More apps</source>
         <translation>برنامه های بیشتر</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="469"/>
+        <location filename="../src/gui/tray/Window.qml" line="475"/>
         <source>Apps menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="497"/>
+        <location filename="../src/gui/tray/Window.qml" line="503"/>
         <source>Open %1 in browser</source>
         <translation>1% را در مرورگر باز کنید</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="521"/>
+        <location filename="../src/gui/tray/Window.qml" line="527"/>
         <source>Activity list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="533"/>
+        <location filename="../src/gui/tray/Window.qml" line="539"/>
         <source>Open %1 locally</source>
         <translation type="unfinished"/>
     </message>
@@ -4484,17 +4484,17 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="643"/>
+        <location filename="../src/gui/tray/Window.qml" line="649"/>
         <source>Share %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="665"/>
+        <location filename="../src/gui/tray/Window.qml" line="671"/>
         <source>Open Talk</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="669"/>
+        <location filename="../src/gui/tray/Window.qml" line="675"/>
         <source>Open Talk %1</source>
         <translation type="unfinished"/>
     </message>

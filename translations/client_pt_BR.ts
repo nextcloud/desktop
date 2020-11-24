@@ -4291,17 +4291,17 @@ Não é aconselhado usá-la.</translation>
         <translation>Mudar para a conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account connected</source>
         <translation>Conta conectada</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="92"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account not connected</source>
         <translation>Conta não conectada</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="132"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="134"/>
         <source>Account actions</source>
         <translation>Ações da conta</translation>
     </message>
@@ -4321,7 +4321,7 @@ Não é aconselhado usá-la.</translation>
         <translation>Remover conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="199"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="201"/>
         <source>Remove account</source>
         <translation>Excluir a conta</translation>
     </message>
@@ -4406,12 +4406,12 @@ Não é aconselhado usá-la.</translation>
     <name>Window</name>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
-        <location filename="../src/gui/tray/Window.qml" line="101"/>
+        <location filename="../src/gui/tray/Window.qml" line="105"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Diálogo principal do Nextcloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="139"/>
+        <location filename="../src/gui/tray/Window.qml" line="143"/>
         <source>Current account</source>
         <translation>Conta atual</translation>
     </message>
@@ -4426,7 +4426,7 @@ Não é aconselhado usá-la.</translation>
         <translation>Pausar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="177"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
         <source>Account switcher and settings menu</source>
         <translation>Alternador de conta e menu de configurações</translation>
     </message>
@@ -4436,7 +4436,7 @@ Não é aconselhado usá-la.</translation>
         <translation>Adicionar conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="235"/>
+        <location filename="../src/gui/tray/Window.qml" line="239"/>
         <source>Add new account</source>
         <translation>Adicionar nova conta</translation>
     </message>
@@ -4451,52 +4451,52 @@ Não é aconselhado usá-la.</translation>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="336"/>
+        <location filename="../src/gui/tray/Window.qml" line="340"/>
         <source>Current user avatar</source>
         <translation>Avatar do usuário atual</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="368"/>
+        <location filename="../src/gui/tray/Window.qml" line="374"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="368"/>
+        <location filename="../src/gui/tray/Window.qml" line="374"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="422"/>
+        <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open local folder of current account</source>
         <translation>Abrir diretório local da conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="434"/>
+        <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir o Nextcloud Talk no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="452"/>
+        <location filename="../src/gui/tray/Window.qml" line="458"/>
         <source>More apps</source>
         <translation>Mais aplicativos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="469"/>
+        <location filename="../src/gui/tray/Window.qml" line="475"/>
         <source>Apps menu</source>
         <translation>Menu de aplicativos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="497"/>
+        <location filename="../src/gui/tray/Window.qml" line="503"/>
         <source>Open %1 in browser</source>
         <translation>Abrir %1 no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="521"/>
+        <location filename="../src/gui/tray/Window.qml" line="527"/>
         <source>Activity list</source>
         <translation>Lista de atividade</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="533"/>
+        <location filename="../src/gui/tray/Window.qml" line="539"/>
         <source>Open %1 locally</source>
         <translation>Abrir %1 localmente</translation>
     </message>
@@ -4506,17 +4506,17 @@ Não é aconselhado usá-la.</translation>
         <translation>Abrir janela de compartilhamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="643"/>
+        <location filename="../src/gui/tray/Window.qml" line="649"/>
         <source>Share %1</source>
         <translation>Compartilhar %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="665"/>
+        <location filename="../src/gui/tray/Window.qml" line="671"/>
         <source>Open Talk</source>
         <translation>Abrir o Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="669"/>
+        <location filename="../src/gui/tray/Window.qml" line="675"/>
         <source>Open Talk %1</source>
         <translation>Abrir o Talk %1</translation>
     </message>
