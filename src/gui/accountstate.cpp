@@ -45,7 +45,9 @@ AccountState::AccountState(AccountPtr account)
     connect(account.data(), &Account::credentialsAsked,
         this, &AccountState::slotCredentialsAsked);
     connect(account.data(), &Account::unknownConnectionState,
-        this, &AccountState::checkConnectivity);
+        this, [this] {
+            checkConnectivity(true);
+        });
 }
 
 AccountState::~AccountState()
@@ -173,9 +175,9 @@ void AccountState::tagLastSuccessfullETagRequest(const QDateTime &tp)
     _timeOfLastETagCheck = tp;
 }
 
-void AccountState::checkConnectivity()
+void AccountState::checkConnectivity(bool verifyOnly)
 {
-    qCWarning(lcAccountState) << "checkConnectivity";
+    qCWarning(lcAccountState) << "checkConnectivity verifyOnly:" << verifyOnly;
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
     }
@@ -210,7 +212,11 @@ void AccountState::checkConnectivity()
     if (isConnected()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
-        conValidator->checkServerAndAuth();
+        if (verifyOnly) {
+            conValidator->checkServer();
+        } else {
+            conValidator->checkServerAndAuth();
+        }
     } else {
         // Check the server and then the auth.
 
@@ -246,7 +252,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
             qCInfo(lcAccountState) << "AccountState reconnection: delaying for"
                                    << _maintenanceToConnectedDelay << "ms";
             _timeSinceMaintenanceOver.start();
-            QTimer::singleShot(_maintenanceToConnectedDelay + 100, this, &AccountState::checkConnectivity);
+            QTimer::singleShot(_maintenanceToConnectedDelay + 100, this, [this] { AccountState::checkConnectivity(false); });
             return;
         } else if (_timeSinceMaintenanceOver.elapsed() < _maintenanceToConnectedDelay) {
             qCInfo(lcAccountState) << "AccountState reconnection: only"

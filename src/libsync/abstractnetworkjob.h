@@ -148,8 +148,6 @@ protected:
     /// Like makeAccountUrl() but uses the account's dav base path
     QUrl makeDavUrl(const QString &relativePath) const;
 
-    int maxRedirects() const { return 10; }
-
     /** Called at the end of QNetworkReply::finished processing.
      *
      * Returning true triggers a deleteLater() of this job.

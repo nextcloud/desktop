@@ -101,6 +101,7 @@ public:
 
 public slots:
     /// Checks the server and the authentication.
+    void checkServer();
     void checkServerAndAuth();
     void systemProxyLookupDone(const QNetworkProxy &proxy);
 
@@ -139,6 +140,7 @@ private:
     QStringList _errors;
     AccountPtr _account;
     bool _isCheckingServerAndAuth;
+    bool _verifyServerOnly = false;
 };
 }
 

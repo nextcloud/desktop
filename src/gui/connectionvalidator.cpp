@@ -40,6 +40,12 @@ ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
 {
 }
 
+void ConnectionValidator::checkServer()
+{
+    _verifyServerOnly = true;
+    checkServerAndAuth();
+}
+
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
@@ -48,6 +54,7 @@ void ConnectionValidator::checkServerAndAuth()
         return;
     }
     qCDebug(lcConnectionValidator) << "Checking server and authentication";
+    _verifyServerOnly = false;
 
     _isCheckingServerAndAuth = true;
 
@@ -86,7 +93,6 @@ void ConnectionValidator::slotCheckServerAndAuth()
 {
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
     checkJob->setTimeout(timeoutToUseMsec);
-    checkJob->setIgnoreCredentialFailure(true);
     connect(checkJob, &CheckServerJob::instanceFound, this, &ConnectionValidator::slotStatusFound);
     connect(checkJob, &CheckServerJob::instanceNotFound, this, &ConnectionValidator::slotNoStatusFound);
     connect(checkJob, &CheckServerJob::timeout, this, &ConnectionValidator::slotJobTimeout);
@@ -124,8 +130,12 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
         return;
     }
 
-    // now check the authentication
-    QTimer::singleShot(0, this, &ConnectionValidator::checkAuthentication);
+    if (!_verifyServerOnly) {
+        // now check the authentication
+        QTimer::singleShot(0, this, &ConnectionValidator::checkAuthentication);
+    } else {
+        reportResult(Connected);
+    }
 }
 
 // status.php could not be loaded (network or server issue!).
