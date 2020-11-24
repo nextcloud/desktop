@@ -1,0 +1,6 @@
+Bugfix: Correctly detect Windows 10 taskbar theme
+
+We fixed the detection of a dark system try theme on
+Windows.
+
+https://github.com/owncloud/client/issues/8244

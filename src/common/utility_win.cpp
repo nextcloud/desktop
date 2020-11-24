@@ -41,7 +41,14 @@ const QString systemRunPathC() {
 const QString runPathC() {
     return QStringLiteral("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run");
 }
+
+const QString systemThemesC()
+{
+    return QStringLiteral("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
 }
+
+}
+
 namespace OCC {
 
 static void setupFavLink_private(const QString &folder)
@@ -107,7 +114,8 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
 
 static inline bool hasDarkSystray_private()
 {
-    return true;
+    const QSettings settings(systemThemesC(), QSettings::NativeFormat);
+    return !settings.value(QStringLiteral("SystemUsesLightTheme"), false).toBool();
 }
 
 QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName)
