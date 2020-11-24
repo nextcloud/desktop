@@ -34,6 +34,7 @@
 #include <memory>
 
 #ifdef Q_OS_WIN
+#include <QRect>
 #include <windows.h>
 #endif
 
