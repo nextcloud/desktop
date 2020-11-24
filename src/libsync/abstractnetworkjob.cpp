@@ -50,7 +50,6 @@ int AbstractNetworkJob::httpTimeout = qEnvironmentVariableIntValue("OWNCLOUD_TIM
 AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
     : QObject(parent)
     , _timedout(false)
-    , _followRedirects(true)
     , _account(account)
     , _ignoreCredentialFailure(false)
     , _reply(nullptr)
@@ -100,11 +99,6 @@ void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
     _ignoreCredentialFailure = ignore;
 }
 
-void AbstractNetworkJob::setFollowRedirects(bool follow)
-{
-    _followRedirects = follow;
-}
-
 void AbstractNetworkJob::setPath(const QString &path)
 {
     _path = path;
@@ -119,6 +113,9 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
     connect(reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
+    connect(reply, &QNetworkReply::redirected, this, [this, reply](const QUrl &url) {
+        Q_EMIT redirected(reply, url);
+    });
 }
 
 QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
@@ -224,65 +221,13 @@ void AbstractNetworkJob::slotFinished()
     // get the Date timestamp from reply
     _responseTimestamp = _reply->rawHeader("Date");
 
-    QUrl requestedUrl = reply()->request().url();
-    QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    if (_followRedirects && !redirectUrl.isEmpty()) {
-        // Redirects may be relative
-        if (redirectUrl.isRelative())
-            redirectUrl = requestedUrl.resolved(redirectUrl);
-
-        // For POST requests where the target url has query arguments, Qt automatically
-        // moves these arguments to the body if no explicit body is specified.
-        // This can cause problems with redirected requests, because the redirect url
-        // will no longer contain these query arguments.
-        if (reply()->operation() == QNetworkAccessManager::PostOperation
-            && requestedUrl.hasQuery()
-            && !redirectUrl.hasQuery()
-            && !_requestBody) {
-            qCWarning(lcNetworkJob) << "Redirecting a POST request with an implicit body loses that body";
-        }
-
-        // ### some of the qWarnings here should be exported via displayErrors() so they
-        // ### can be presented to the user if the job executor has a GUI
-        if (requestedUrl.scheme() == QLatin1String("https") && redirectUrl.scheme() == QLatin1String("http")) {
-            qCWarning(lcNetworkJob) << this << "HTTPS->HTTP downgrade detected!";
-        } else if (requestedUrl == redirectUrl || _redirectCount + 1 >= maxRedirects()) {
-            qCWarning(lcNetworkJob) << this << "Redirect loop detected!";
-        } else if (_requestBody && _requestBody->isSequential()) {
-            qCWarning(lcNetworkJob) << this << "cannot redirect request with sequential body";
-        } else if (verb.isEmpty()) {
-            qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
-        } else {
-            emit redirected(_reply, redirectUrl, _redirectCount);
-
-            // The signal emission may have changed this value
-            if (_followRedirects) {
-                _redirectCount++;
-
-                // Create the redirected request and send it
-                qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
-                resetTimeout();
-                if (_requestBody) {
-                    if(!_requestBody->isOpen()) {
-                        // Avoid the QIODevice::seek (QBuffer): The device is not open warning message
-                       _requestBody->open(QIODevice::ReadOnly);
-                    }
-                    _requestBody->seek(0);
-                }
-                sendRequest(
-                    verb,
-                    redirectUrl,
-                    reply()->request(),
-                    _requestBody);
-                return;
-            }
-        }
-    }
-
-    AbstractCredentials *creds = _account->credentials();
-    if (!creds->stillValid(_reply) && !_ignoreCredentialFailure) {
+    if (!_account->credentials()->stillValid(_reply) && !_ignoreCredentialFailure) {
         _account->handleInvalidCredentials();
     }
+    if (!reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).isNull()) {
+        Q_EMIT _account->unknownConnectionState();
+    }
+
 
     bool discard = finished();
     if (discard) {

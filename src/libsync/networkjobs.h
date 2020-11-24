@@ -288,7 +288,6 @@ private:
 private slots:
     virtual void metaDataChangedSlot();
     virtual void encryptedSlot();
-    void slotRedirected(QNetworkReply *reply, const QUrl &targetUrl, int redirectCount);
 
 private:
     bool _subdirFallback;
@@ -299,9 +298,6 @@ private:
      * one do not affect this url.
      */
     QUrl _serverUrl;
-
-    /** Keep track of how many permanent redirect were applied. */
-    int _permanentRedirects;
 };
 
 

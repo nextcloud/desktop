@@ -249,6 +249,8 @@ signals:
     void accountChangedAvatar();
     void accountChangedDisplayName();
 
+    void unknownConnectionState();
+
 protected Q_SLOTS:
     void slotCredentialsFetched();
     void slotCredentialsAsked();

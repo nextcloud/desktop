@@ -417,17 +417,19 @@ namespace {
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, statusphpC(), parent)
     , _subdirFallback(false)
-    , _permanentRedirects(0)
 {
     setIgnoreCredentialFailure(true);
-    connect(this, &AbstractNetworkJob::redirected,
-        this, &CheckServerJob::slotRedirected);
 }
 
 void CheckServerJob::start()
 {
     _serverUrl = account()->url();
-    sendRequest("GET", Utility::concatUrlPath(_serverUrl, path()));
+    QNetworkRequest req;
+    // don't authenticate the request to a possibly external service
+    req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+    req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+    req.setRawHeader(QByteArrayLiteral("OC-Connection-Validator"), QByteArrayLiteral("desktop"));
+    sendRequest("GET", Utility::concatUrlPath(_serverUrl, path()), req);
     connect(reply(), &QNetworkReply::metaDataChanged, this, &CheckServerJob::metaDataChangedSlot);
     connect(reply(), &QNetworkReply::encrypted, this, &CheckServerJob::encryptedSlot);
     AbstractNetworkJob::start();
@@ -477,22 +479,6 @@ void CheckServerJob::encryptedSlot()
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 }
 
-void CheckServerJob::slotRedirected(QNetworkReply *reply, const QUrl &targetUrl, int redirectCount)
-{
-    const auto slashStatusPhp = QStringLiteral("/%1").arg(statusphpC());
-
-    int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QString path = targetUrl.path();
-    if ((httpCode == 301 || httpCode == 308) // permanent redirection
-        && redirectCount == _permanentRedirects // don't apply permanent redirects after a temporary one
-        && path.endsWith(slashStatusPhp)) {
-        _serverUrl = targetUrl;
-        _serverUrl.setPath(path.left(path.size() - slashStatusPhp.size()));
-        qCInfo(lcCheckServerJob) << "status.php was permanently redirected to"
-                                 << targetUrl << "new server url is" << _serverUrl;
-        ++_permanentRedirects;
-    }
-}
 
 void CheckServerJob::metaDataChangedSlot()
 {
@@ -503,10 +489,21 @@ void CheckServerJob::metaDataChangedSlot()
 
 bool CheckServerJob::finished()
 {
-    if (reply()->request().url().scheme() == QLatin1String("https")
+    const QUrl targetUrl = [this] {
+        QUrl redirectUrl = reply()->url();
+        if (redirectUrl.isRelative()) {
+            redirectUrl = _serverUrl.resolved(redirectUrl);
+        }
+        redirectUrl.setPath(redirectUrl.path().remove(QStringLiteral("/status.php")));
+        return redirectUrl;
+    }();
+    if (targetUrl.scheme() == QLatin1String("https")
         && reply()->sslConfiguration().sessionTicket().isEmpty()
         && reply()->error() == QNetworkReply::NoError) {
         qCWarning(lcCheckServerJob) << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
+    }
+    if (_serverUrl != targetUrl) {
+        qFatal("TODO: Unhandled redirect %s != %s", qPrintable(_serverUrl.toString()), qPrintable(targetUrl.toString()));
     }
 
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());

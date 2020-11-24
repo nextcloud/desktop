@@ -172,7 +172,6 @@ void OwncloudSetupWizard::slotFindServer()
 
     // Step 1: Check url/status.php
     CheckServerJob *job = new CheckServerJob(account, this);
-    job->setIgnoreCredentialFailure(true);
     connect(job, &CheckServerJob::instanceFound, this, &OwncloudSetupWizard::slotFoundServer);
     connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotFindServerBehindRedirect);
     connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoServerFoundTimeout);
@@ -195,15 +194,18 @@ void OwncloudSetupWizard::slotFindServerBehindRedirect()
 
     // Grab the chain of permanent redirects and adjust the account url
     // accordingly
-    auto permanentRedirects = std::make_shared<int>(0);
     connect(redirectCheckJob, &AbstractNetworkJob::redirected, this,
-        [permanentRedirects, account](QNetworkReply *reply, const QUrl &targetUrl, int count) {
-            int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-            if (count == *permanentRedirects && (httpCode == 301 || httpCode == 308)) {
-                qCInfo(lcWizard) << account->url() << " was redirected to" << targetUrl;
-                account->setUrl(targetUrl);
-                *permanentRedirects += 1;
+        [account](QNetworkReply *reply, const QUrl &targetUrl) {
+            const int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            if ((httpCode == 301 || httpCode == 308)) {
+                if (targetUrl.scheme() == QLatin1String("https") && account->url().host() == targetUrl.host()) {
+                    qCInfo(lcWizard) << account->url() << " was redirected to" << targetUrl;
+                    account->setUrl(targetUrl);
+                }
+                return;
             }
+            qCWarning(lcWizard) << "Redirecting:" << reply->url() << "to" << targetUrl;
+            Q_EMIT reply->redirectAllowed();
         });
 
     // Step 3: When done, start checking status.php.
@@ -297,25 +299,31 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 {
     AccountPtr account = _ocWizard->account();
 
-    auto *job = new PropfindJob(account, "/", this);
-    job->setIgnoreCredentialFailure(true);
-    // There is custom redirect handling in the error handler,
-    // so don't automatically follow redirects.
-    job->setFollowRedirects(false);
-    job->setProperties(QList<QByteArray>() << "getlastmodified");
-    connect(job, &PropfindJob::result, _ocWizard, &OwncloudWizard::successfulStep);
-    connect(job, &PropfindJob::finishedWithError, this, &OwncloudSetupWizard::slotAuthError);
-    job->start();
+    // run CheckServerJob again to follow redirects and gather cookies
+    CheckServerJob *job = new CheckServerJob(account, this);
+    connect(job, &CheckServerJob::instanceFound, this, [this, account] {
+        auto *job = new PropfindJob(account, "/", this);
+        job->setIgnoreCredentialFailure(true);
+        job->setProperties(QList<QByteArray>() << "getlastmodified");
+        connect(job, &PropfindJob::result, _ocWizard, &OwncloudWizard::successfulStep);
+        connect(job, &PropfindJob::finishedWithError, this, &OwncloudSetupWizard::slotAuthError);
+        job->start();
 
-    // get the display name so that the folder we register with the file browser has a pretty name
-    auto userJob = new JsonApiJob(account, QStringLiteral("ocs/v2.php/cloud/user"), this);
-    connect(userJob, &JsonApiJob::jsonReceived, this, [account](const QJsonDocument &json, int status) {
-        if (status == 200) {
-            const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("display-name")).toString();
-            account->setDavDisplayName(user);
-        }
+        // get the display name so that the folder we register with the file browser has a pretty name
+        auto userJob = new JsonApiJob(account, QStringLiteral("ocs/v2.php/cloud/user"), this);
+        connect(userJob, &JsonApiJob::jsonReceived, this, [account](const QJsonDocument &json, int status) {
+            if (status == 200) {
+                const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("display-name")).toString();
+                account->setDavDisplayName(user);
+            }
+        });
+        userJob->start();
     });
-    userJob->start();
+
+    connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotAuthError);
+    connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoServerFoundTimeout);
+    job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
+    job->start();
 }
 
 void OwncloudSetupWizard::slotAuthError()
@@ -333,7 +341,7 @@ void OwncloudSetupWizard::slotAuthError()
     // the updated server URL, similar to redirects on status.php.
     QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (!redirectUrl.isEmpty()) {
-        qCInfo(lcWizard) << "Authed request was redirected to" << redirectUrl.toString();
+        qCInfo(lcWizard) << "Authed request to" << reply->url() << "was redirected to" << redirectUrl.toString();
 
         // strip the expected path
         QString path = redirectUrl.path();

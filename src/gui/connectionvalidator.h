@@ -104,13 +104,12 @@ public slots:
     void checkServerAndAuth();
     void systemProxyLookupDone(const QNetworkProxy &proxy);
 
-    /// Checks authentication only.
-    void checkAuthentication();
-
 signals:
     void connectionResult(ConnectionValidator::Status status, const QStringList &errors);
 
 protected slots:
+    /// Checks authentication only.
+    void checkAuthentication();
     void slotCheckServerAndAuth();
 
     void slotStatusFound(const QUrl &url, const QJsonObject &info);

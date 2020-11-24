@@ -44,6 +44,8 @@ AccountState::AccountState(AccountPtr account)
         this, &AccountState::slotCredentialsFetched);
     connect(account.data(), &Account::credentialsAsked,
         this, &AccountState::slotCredentialsAsked);
+    connect(account.data(), &Account::unknownConnectionState,
+        this, &AccountState::checkConnectivity);
 }
 
 AccountState::~AccountState()
@@ -173,6 +175,7 @@ void AccountState::tagLastSuccessfullETagRequest(const QDateTime &tp)
 
 void AccountState::checkConnectivity()
 {
+    qCWarning(lcAccountState) << "checkConnectivity";
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
     }
@@ -207,7 +210,7 @@ void AccountState::checkConnectivity()
     if (isConnected()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
-        conValidator->checkAuthentication();
+        conValidator->checkServerAndAuth();
     } else {
         // Check the server and then the auth.
 

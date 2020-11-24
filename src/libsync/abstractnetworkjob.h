@@ -56,19 +56,6 @@ public:
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
-    /** Whether to handle redirects transparently.
-     *
-     * If true, a follow-up request is issued automatically when
-     * a redirect is encountered. The finished() function is only
-     * called if there are no more redirects (or there are problems
-     * with the redirect).
-     *
-     * The transparent redirect following may be disabled for some
-     * requests where custom handling is necessary.
-     */
-    void setFollowRedirects(bool follow);
-    bool followRedirects() const { return _followRedirects; }
-
     QByteArray responseTimestamp();
     /* Content of the X-Request-ID header. (Only set after the request is sent) */
     QByteArray requestId();
@@ -117,9 +104,8 @@ signals:
      *
      * \a reply The "please redirect" reply
      * \a targetUrl Where to redirect to
-     * \a redirectCount Counts redirect hops, first is 0.
      */
-    void redirected(QNetworkReply *reply, const QUrl &targetUrl, int redirectCount);
+    void redirected(QNetworkReply *reply, const QUrl &targetUrl);
 
 protected:
     /** Initiate a network request, returning a QNetworkReply.
@@ -178,10 +164,6 @@ protected:
 
     QByteArray _responseTimestamp;
     bool _timedout; // set to true when the timeout slot is received
-
-    // Automatically follows redirects. Note that this only works for
-    // GET requests that don't set up any HTTP body or other flags.
-    bool _followRedirects;
 
     QString replyStatusString();
 
