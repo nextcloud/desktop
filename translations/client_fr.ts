@@ -1394,6 +1394,14 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     </message>
 </context>
 <context>
+    <name>OCC::FolderWatcher</name>
+    <message>
+        <location filename="../src/gui/folderwatcher.cpp" line="126"/>
+        <source>The watcher did not receive a test notification.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::FolderWatcherPrivate</name>
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="85"/>
@@ -1570,6 +1578,21 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <translation>&amp;Vérifier la présence de mises à jour maintenant</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="140"/>
+        <source>&amp;Channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="157"/>
+        <source>stable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="162"/>
+        <source>beta</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Redémarrer &amp;&amp; Mettre à jour</translation>
@@ -1585,7 +1608,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <translation>Modifier les fichiers exclus</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
         <translation>Créer une archive de débogage…</translation>
     </message>
@@ -1621,22 +1644,22 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <translation>Les notifications du serveur requérant votre attention.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>Create Debug Archive</source>
         <translation>Création de l&apos;archive de déboggage</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>Zip Archives</source>
         <translation>Archives Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>Debug Archive Created</source>
         <translation>Archive de déboggage créée</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>Debug archive is created at %1</source>
         <translation>Archive de déboggage créée à %1</translation>
     </message>
@@ -1912,6 +1935,31 @@ Les journaux seront écrits dans %1.</translation>
         <source>Get update</source>
         <translation>Télécharger la version</translation>
     </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
+        <source>Update Failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <source>Ask again later</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
+        <source>Restart and update</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
+        <source>Update manually</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::NetworkSettings</name>
@@ -2069,6 +2117,16 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
         <translation>%1 version %2 disponible. Redémarrez l&apos;application pour commencer la mise à jour.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
+        <source>Downloading %1. Please wait …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
+        <source>%1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>Impossible de télécharger la mise à jour. Veuillez la &lt;a href=&apos;%1&apos;&gt;télécharger manuellement&lt;/a&gt;.</translation>
@@ -2082,6 +2140,11 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
         <translation>Nouvelle version %1 %2 disponible. Cliquez &lt;a href=&apos;%3&apos;&gt;ici&lt;/a&gt; pour télécharger la mise à jour.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>

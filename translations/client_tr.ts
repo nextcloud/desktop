@@ -1391,6 +1391,14 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     </message>
 </context>
 <context>
+    <name>OCC::FolderWatcher</name>
+    <message>
+        <location filename="../src/gui/folderwatcher.cpp" line="126"/>
+        <source>The watcher did not receive a test notification.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::FolderWatcherPrivate</name>
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="85"/>
@@ -1567,6 +1575,21 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
         <translation>&amp;Güncellemeri denetle</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="140"/>
+        <source>&amp;Channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="157"/>
+        <source>stable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="162"/>
+        <source>beta</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Yeniden Başlat ve Güncelle</translation>
@@ -1582,7 +1605,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
         <translation>Yok Sayılan &amp;Dosyaları Düzenle</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
         <translation>Hata Ayıklama Arşivi Oluştur …</translation>
     </message>
@@ -1618,22 +1641,22 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
         <translation>İlgilenmeniz gereken sunucu bildirimleri.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>Create Debug Archive</source>
         <translation>Hata Ayıklama Arşivi Oluştur</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>Zip Archives</source>
         <translation>Zip Arşivleri</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>Debug Archive Created</source>
         <translation>Hata Ayıklama Arşivi Oluşturuldu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>Debug archive is created at %1</source>
         <translation>%1 üzerinde hata ayıklama arşivi oluşturuldu</translation>
     </message>
@@ -1909,6 +1932,31 @@ Günlükler %1 üzerine yazılacak</translation>
         <source>Get update</source>
         <translation>Güncellemeyi al</translation>
     </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
+        <source>Update Failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <source>Ask again later</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
+        <source>Restart and update</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
+        <source>Update manually</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::NetworkSettings</name>
@@ -2066,6 +2114,16 @@ güncelleyici başka izinler isteyebilir.</translation>
         <translation>%1 için %2 sürümü yayınlanmış. Güncellemeyi başlatmak için uygulamayı yeniden başlatın.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
+        <source>Downloading %1. Please wait …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
+        <source>%1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>Güncelleme indirilemedi. Lütfen güncellemeyi elle indirmek için &lt;a href=&apos;%1&apos;&gt;buraya&lt;/a&gt; tıklayın.</translation>
@@ -2079,6 +2137,11 @@ güncelleyici başka izinler isteyebilir.</translation>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
         <translation>%1 için %2 sürümü yayınlanmış. Lütfen indirmek için &lt;a href=&apos;%3&apos;&gt;buraya&lt;/a&gt; tıklayın.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
