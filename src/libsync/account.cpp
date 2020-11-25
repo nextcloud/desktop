@@ -314,6 +314,12 @@ void Account::setUrl(const QUrl &url)
     _url = url;
 }
 
+void Account::setUrlWithUserApproval(const QUrl &url)
+{
+    // TODO: implement a promt...
+    setUrl(url);
+}
+
 QVariant Account::credentialSetting(const QString &key) const
 {
     if (_credentials) {

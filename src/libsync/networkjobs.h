@@ -285,6 +285,8 @@ signals:
      */
     void timeout(const QUrl &url);
 
+    void redirectDetected(const QUrl &old, const QUrl &url);
+
 private:
     bool finished() override;
     void onTimedOut() override;

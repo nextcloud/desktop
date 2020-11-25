@@ -107,6 +107,7 @@ public:
 
     /** Server url of the account */
     void setUrl(const QUrl &url);
+    void setUrlWithUserApproval(const QUrl &url);
     QUrl url() const { return _url; }
 
     /**

@@ -50,7 +50,6 @@ private slots:
     void slotSystemProxyLookupDone(const QNetworkProxy &proxy);
 
     void slotFindServer();
-    void slotFindServerBehindRedirect();
     void slotFoundServer(const QUrl &, const QJsonObject &);
     void slotNoServerFound(QNetworkReply *reply);
     void slotNoServerFoundTimeout(const QUrl &url);
@@ -58,7 +57,6 @@ private slots:
     void slotDetermineAuthType();
 
     void slotConnectToOCUrl(const QString &);
-    void slotAuthError();
 
     void slotCreateLocalAndRemoteFolders(const QString &, const QString &);
     void slotRemoteFolderExists(QNetworkReply *);

@@ -173,52 +173,18 @@ void OwncloudSetupWizard::slotFindServer()
     // Step 1: Check url/status.php
     CheckServerJob *job = new CheckServerJob(account, this);
     connect(job, &CheckServerJob::instanceFound, this, &OwncloudSetupWizard::slotFoundServer);
-    connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotFindServerBehindRedirect);
-    connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoServerFoundTimeout);
+    connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoServerFoundTimeout);    
+    connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotNoServerFound);
+    connect(job, &CheckServerJob::redirectDetected, this, [account](const QUrl &old, const QUrl &targetUrl){
+        qCInfo(lcWizard) << old << " was redirected to" << targetUrl;
+        if (targetUrl.scheme() == QLatin1String("https") && old.host() == targetUrl.host()) {
+            account->setUrl(targetUrl);
+        } else {
+            account->setUrlWithUserApproval(targetUrl);
+        }
+    });
     job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
     job->start();
-
-    // Step 2 and 3 are in slotFindServerBehindRedirect()
-}
-
-void OwncloudSetupWizard::slotFindServerBehindRedirect()
-{
-    AccountPtr account = _ocWizard->account();
-
-    // Step 2: Resolve any permanent redirect chains on the base url
-    auto redirectCheckJob = account->sendRequest("GET", account->url());
-
-    // Use a significantly reduced timeout for this redirect check:
-    // the 5-minute default is inappropriate.
-    redirectCheckJob->setTimeout(qMin(2000ll, redirectCheckJob->timeoutMsec()));
-
-    // Grab the chain of permanent redirects and adjust the account url
-    // accordingly
-    connect(redirectCheckJob, &AbstractNetworkJob::redirected, this,
-        [account](QNetworkReply *reply, const QUrl &targetUrl) {
-            const int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-            if ((httpCode == 301 || httpCode == 308)) {
-                if (targetUrl.scheme() == QLatin1String("https") && account->url().host() == targetUrl.host()) {
-                    qCInfo(lcWizard) << account->url() << " was redirected to" << targetUrl;
-                    account->setUrl(targetUrl);
-                }
-                return;
-            }
-            qCWarning(lcWizard) << "Redirecting:" << reply->url() << "to" << targetUrl;
-            Q_EMIT reply->redirectAllowed();
-        });
-
-    // Step 3: When done, start checking status.php.
-    connect(redirectCheckJob, &SimpleNetworkJob::finishedSignal, this,
-        [this, account]() {
-            CheckServerJob *job = new CheckServerJob(account, this);
-            job->setIgnoreCredentialFailure(true);
-            connect(job, &CheckServerJob::instanceFound, this, &OwncloudSetupWizard::slotFoundServer);
-            connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotNoServerFound);
-            connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoServerFoundTimeout);
-            job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
-            job->start();
-    });
 }
 
 void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &info)
@@ -234,12 +200,6 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
     // Note with newer servers we get the version actually only later in capabilities
     // https://github.com/owncloud/core/pull/27473/files
     _ocWizard->account()->setServerVersion(serverVersion);
-
-    if (url != _ocWizard->account()->url()) {
-        // We might be redirected, update the account
-        _ocWizard->account()->setUrl(url);
-        qCInfo(lcWizard) << " was redirected to" << url.toString();
-    }
 
     slotDetermineAuthType();
 }
@@ -297,94 +257,20 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
 
 void OwncloudSetupWizard::testOwnCloudConnect()
 {
-    AccountPtr account = _ocWizard->account();
-
-    // run CheckServerJob again to follow redirects and gather cookies
-    CheckServerJob *job = new CheckServerJob(account, this);
-    connect(job, &CheckServerJob::instanceFound, this, [this, account] {
-        auto *job = new PropfindJob(account, "/", this);
-        job->setIgnoreCredentialFailure(true);
-        job->setProperties(QList<QByteArray>() << "getlastmodified");
-        connect(job, &PropfindJob::result, _ocWizard, &OwncloudWizard::successfulStep);
-        connect(job, &PropfindJob::finishedWithError, this, &OwncloudSetupWizard::slotAuthError);
-        job->start();
-
-        // get the display name so that the folder we register with the file browser has a pretty name
-        auto userJob = new JsonApiJob(account, QStringLiteral("ocs/v2.php/cloud/user"), this);
-        connect(userJob, &JsonApiJob::jsonReceived, this, [account](const QJsonDocument &json, int status) {
-            if (status == 200) {
-                const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("display-name")).toString();
-                account->setDavDisplayName(user);
-            }
-        });
-        userJob->start();
-    });
-
-    connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotAuthError);
-    connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoServerFoundTimeout);
-    job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
-    job->start();
-}
-
-void OwncloudSetupWizard::slotAuthError()
-{
-    QString errorMsg;
-
-    PropfindJob *job = qobject_cast<PropfindJob *>(sender());
-    if (!job) {
-        qCWarning(lcWizard) << "Can't check for authed redirects. This slot should be invoked from PropfindJob!";
-        return;
-    }
-    QNetworkReply *reply = job->reply();
-
-    // If there were redirects on the *authed* requests, also store
-    // the updated server URL, similar to redirects on status.php.
-    QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    if (!redirectUrl.isEmpty()) {
-        qCInfo(lcWizard) << "Authed request to" << reply->url() << "was redirected to" << redirectUrl.toString();
-
-        // strip the expected path
-        QString path = redirectUrl.path();
-        static QString expectedPath = "/" + _ocWizard->account()->davPath();
-        if (path.endsWith(expectedPath)) {
-            path.chop(expectedPath.size());
-            redirectUrl.setPath(path);
-
-            qCInfo(lcWizard) << "Setting account url to" << redirectUrl.toString();
-            _ocWizard->account()->setUrl(redirectUrl);
-            testOwnCloudConnect();
+    auto job = new ConnectionValidator(_ocWizard->account(), this);
+    connect(job, &ConnectionValidator::connectionResult, this, [this](ConnectionValidator::Status status, const QStringList &errors){
+        qDebug() << status;
+        if (status == ConnectionValidator::Connected) {
+            _ocWizard->successfulStep();
             return;
         }
-        errorMsg = tr("The authenticated request to the server was redirected to "
-                      "'%1'. The URL is bad, the server is misconfigured.")
-                       .arg(Utility::escape(redirectUrl.toString()));
-
-        // A 404 is actually a success: we were authorized to know that the folder does
-        // not exist. It will be created later...
-    } else if (reply->error() == QNetworkReply::ContentNotFoundError) {
-        _ocWizard->successfulStep();
-        return;
-
-        // Provide messages for other errors, such as invalid credentials.
-    } else if (reply->error() != QNetworkReply::NoError) {
-        if (!_ocWizard->account()->credentials()->stillValid(reply)) {
-            errorMsg = tr("Access forbidden by server. To verify that you have proper access, "
-                          "<a href=\"%1\">click here</a> to access the service with your browser.")
-                           .arg(Utility::escape(_ocWizard->account()->url().toString()));
-        } else {
-            errorMsg = job->errorStringParsingBody();
+        _ocWizard->show();
+        if (_ocWizard->currentId() == WizardCommon::Page_OAuthCreds) {
+            _ocWizard->back();
         }
-
-        // Something else went wrong, maybe the response was 200 but with invalid data.
-    } else {
-        errorMsg = tr("There was an invalid response to an authenticated webdav request");
-    }
-
-    _ocWizard->show();
-    if (_ocWizard->currentId() == WizardCommon::Page_OAuthCreds) {
-        _ocWizard->back();
-    }
-    _ocWizard->displayError(errorMsg);
+        _ocWizard->displayError(errors.join(QLatin1Char('\n')));
+    });
+    job->checkServerAndAuth();
 }
 
 void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFolder, const QString &remoteFolder)

@@ -490,13 +490,11 @@ void CheckServerJob::setMaxRedirectsAllowed(int maxRedirectsAllowed)
     _maxRedirectsAllowed = maxRedirectsAllowed;
 }
 
-
 void CheckServerJob::metaDataChangedSlot()
 {
     account()->setSslConfiguration(reply()->sslConfiguration());
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 }
-
 
 bool CheckServerJob::finished()
 {
@@ -514,7 +512,7 @@ bool CheckServerJob::finished()
         qCWarning(lcCheckServerJob) << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
     }
     if (_serverUrl != targetUrl) {
-        qFatal("TODO: Unhandled redirect %s != %s", qPrintable(_serverUrl.toString()), qPrintable(targetUrl.toString()));
+        Q_EMIT redirectDetected(_serverUrl, targetUrl);
     }
 
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
@@ -547,7 +545,7 @@ bool CheckServerJob::finished()
 
         qCInfo(lcCheckServerJob) << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
         if (status.object().contains(QStringLiteral("installed"))) {
-            emit instanceFound(_serverUrl, status.object());
+            emit instanceFound(targetUrl, status.object());
         } else {
             qCWarning(lcCheckServerJob) << "No proper answer on " << reply()->url();
             emit instanceNotFound(reply());
