@@ -1376,6 +1376,14 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     </message>
 </context>
 <context>
+    <name>OCC::FolderWatcher</name>
+    <message>
+        <location filename="../src/gui/folderwatcher.cpp" line="126"/>
+        <source>The watcher did not receive a test notification.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::FolderWatcherPrivate</name>
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="85"/>
@@ -1552,6 +1560,21 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="140"/>
+        <source>&amp;Channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="157"/>
+        <source>stable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="162"/>
+        <source>beta</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation type="unfinished"/>
@@ -1567,7 +1590,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
         <translation type="unfinished"/>
     </message>
@@ -1603,22 +1626,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>Create Debug Archive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>Zip Archives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>Debug Archive Created</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>Debug archive is created at %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1888,6 +1911,31 @@ Logs will be written to %1</source>
         <source>Get update</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
+        <source>Update Failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <source>Ask again later</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
+        <source>Restart and update</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
+        <source>Update manually</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::NetworkSettings</name>
@@ -2044,6 +2092,16 @@ for additional privileges during the process.</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
+        <source>Downloading %1. Please wait …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
+        <source>%1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation type="unfinished"/>
@@ -2056,6 +2114,11 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
         <translation type="unfinished"/>
     </message>
     <message>

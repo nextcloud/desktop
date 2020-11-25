@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка удаления «%1»: %2 </translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -674,12 +674,12 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Конфликт версий файла «%1».</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Какую версию файла следует сохранить? &lt;br/&gt; При выборе обеих версий к имени локального файла будет добавлена цифра.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
@@ -780,7 +780,9 @@ Wait for the new sync, then encrypt it.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось переместить файл:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -838,7 +840,8 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось создать метаданные для расшифровывания папки.
+Причина, возможно, в библиотеках OpenSSL.</translation>
     </message>
 </context>
 <context>
@@ -1386,6 +1389,14 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     </message>
 </context>
 <context>
+    <name>OCC::FolderWatcher</name>
+    <message>
+        <location filename="../src/gui/folderwatcher.cpp" line="126"/>
+        <source>The watcher did not receive a test notification.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::FolderWatcherPrivate</name>
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="85"/>
@@ -1562,6 +1573,21 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>&amp;Проверить наличие обновлений</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="140"/>
+        <source>&amp;Channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="157"/>
+        <source>stable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="162"/>
+        <source>beta</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Перезапуск и обновление</translation>
@@ -1577,9 +1603,9 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Список исключений синхронизации…</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="225"/>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Создать архив с отладочными данными…</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1613,24 +1639,24 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Требующие внимания уведомления, полученные с сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Создать архив с отладочными данными</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="352"/>
+        <location filename="../src/gui/generalsettings.cpp" line="382"/>
         <source>Zip Archives</source>
         <translation>Zip архивы</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Создан архив с отладочными данными</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="358"/>
+        <location filename="../src/gui/generalsettings.cpp" line="388"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Архив с отладочными данными создан: «%1»</translation>
     </message>
 </context>
 <context>
@@ -1903,6 +1929,31 @@ Logs will be written to %1</source>
         <source>Get update</source>
         <translation>Получить обновление</translation>
     </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
+        <source>Update Failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
+        <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <source>Ask again later</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
+        <source>Restart and update</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
+        <source>Update manually</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::NetworkSettings</name>
@@ -2060,6 +2111,16 @@ for additional privileges during the process.</source>
         <translation>%1 версия %2 доступна. Перезагрузите приложение, чтобы запустить обновление.</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
+        <source>Downloading %1. Please wait …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
+        <source>%1 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>Не удалось загрузить обновление. Для скачивания файлов вручную, нажмите &lt;a href=&apos;%1&apos;&gt;здесь&lt;/a&gt;</translation>
@@ -2073,6 +2134,11 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
         <translation>Новая %1 версия %2 доступна. Нажмите &lt;a href=&apos;%3&apos;&gt;здесь&lt;/a&gt; чтобы  скачать обновление.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -2248,7 +2314,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Войти в %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
@@ -3770,22 +3836,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Вы переименовали «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Вы удалили «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Вы создали «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Вы изменили «%1»</translation>
     </message>
 </context>
 <context>
@@ -4200,7 +4266,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Войти в %1</translation>
     </message>
 </context>
 <context>
@@ -4290,7 +4356,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись не подключена</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="134"/>
@@ -4400,7 +4466,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="105"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Основное окно Nextcloud</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="143"/>
@@ -4420,7 +4486,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="181"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Переключение уч. записей и настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="211"/>
@@ -4485,12 +4551,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="527"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>События</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="539"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Открыть «%1» на ПК</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -4500,12 +4566,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="649"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Опубликовать «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="671"/>
         <source>Open Talk</source>
-        <translation type="unfinished"/>
+        <translation>Перейти в Конференции</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="675"/>
