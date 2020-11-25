@@ -262,6 +262,9 @@ public:
     static QString versionString(const QJsonObject &info);
     static bool installed(const QJsonObject &info);
 
+    int maxRedirectsAllowed() const;
+    void setMaxRedirectsAllowed(int maxRedirectsAllowed);
+
 signals:
     /** Emitted when a status.php was successfully read.
      *
@@ -298,6 +301,8 @@ private:
      * one do not affect this url.
      */
     QUrl _serverUrl;
+
+    int _maxRedirectsAllowed = 5;
 };
 
 

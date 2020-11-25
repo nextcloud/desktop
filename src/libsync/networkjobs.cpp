@@ -429,6 +429,7 @@ void CheckServerJob::start()
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     req.setRawHeader(QByteArrayLiteral("OC-Connection-Validator"), QByteArrayLiteral("desktop"));
+    req.setMaximumRedirectsAllowed(_maxRedirectsAllowed);
     sendRequest("GET", Utility::concatUrlPath(_serverUrl, path()), req);
     connect(reply(), &QNetworkReply::metaDataChanged, this, &CheckServerJob::metaDataChangedSlot);
     connect(reply(), &QNetworkReply::encrypted, this, &CheckServerJob::encryptedSlot);
@@ -479,6 +480,16 @@ void CheckServerJob::encryptedSlot()
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 }
 
+int CheckServerJob::maxRedirectsAllowed() const
+{
+    return _maxRedirectsAllowed;
+}
+
+void CheckServerJob::setMaxRedirectsAllowed(int maxRedirectsAllowed)
+{
+    _maxRedirectsAllowed = maxRedirectsAllowed;
+}
+
 
 void CheckServerJob::metaDataChangedSlot()
 {
@@ -518,9 +529,12 @@ bool CheckServerJob::finished()
         return false;
     }
 
-    QByteArray body = reply()->peek(4 * 1024);
-    int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (body.isEmpty() || httpStatus != 200) {
+    const QByteArray body = reply()->peek(4 * 1024);
+    const int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (reply()->error() == QNetworkReply::TooManyRedirectsError) {
+        qCWarning(lcCheckServerJob) << "error:" << reply()->errorString();
+        emit instanceNotFound(reply());
+    } else if (body.isEmpty() || httpStatus != 200) {
         qCWarning(lcCheckServerJob) << "error: status.php replied " << httpStatus << body;
         emit instanceNotFound(reply());
     } else {

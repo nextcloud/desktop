@@ -146,9 +146,10 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
     if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
         reportResult(SslError);
         return;
-    }
-
-    if (!_account->credentials()->stillValid(reply)) {
+    } else if (reply->error() == QNetworkReply::TooManyRedirectsError) {
+        reportResult(MaintenanceMode);
+        return;
+    } else if (!_account->credentials()->stillValid(reply)) {
         // Note: Why would this happen on a status.php request?
         _errors.append(tr("Authentication error: Either username or password are wrong."));
     } else {
