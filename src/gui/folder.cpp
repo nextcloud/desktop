@@ -638,9 +638,9 @@ void Folder::setSupportsVirtualFiles(bool enabled)
         _vfs->unregisterFolder();
 
         _vfs.reset(createVfsFromPlugin(newMode).release());
-        startVfs();
 
         _definition.virtualFilesMode = newMode;
+        startVfs();
         if (newMode != Vfs::Off)
             _saveInFoldersWithPlaceholders = true;
         saveToSettings();
