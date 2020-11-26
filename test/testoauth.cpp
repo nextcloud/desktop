@@ -33,8 +33,6 @@ class FakePostReply : public QNetworkReply
 public:
     std::unique_ptr<QIODevice> payload;
     bool aborted = false;
-    bool redirectToPolicy = false;
-    bool redirectToToken = false;
 
     FakePostReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
                   std::unique_ptr<QIODevice> payload_, QObject *parent)
@@ -51,24 +49,6 @@ public:
     Q_INVOKABLE virtual void respond() {
         if (aborted) {
             setError(OperationCanceledError, "Operation Canceled");
-            emit metaDataChanged();
-            emit finished();
-            return;
-        } else if (redirectToPolicy) {
-            setHeader(QNetworkRequest::LocationHeader, "/my.policy");
-            setAttribute(QNetworkRequest::RedirectionTargetAttribute, "/my.policy");
-            setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 302); // 302 might or might not lose POST data in rfc
-            setHeader(QNetworkRequest::ContentLengthHeader, 0);
-            emit metaDataChanged();
-            emit finished();
-            return;
-        } else if (redirectToToken) {
-            // Redirect to self
-            QVariant destination = QVariant(sOAuthTestServer.toString()+QLatin1String("/index.php/apps/oauth2/api/v1/token"));
-            setHeader(QNetworkRequest::LocationHeader, destination);
-            setAttribute(QNetworkRequest::RedirectionTargetAttribute, destination);
-            setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 307); // 307 explicitly in rfc says to not lose POST data
-            setHeader(QNetworkRequest::ContentLengthHeader, 0);
             emit metaDataChanged();
             emit finished();
             return;
@@ -341,42 +321,8 @@ private slots:
         test.test();
     }
 
-    void testTokenUrlHasRedirect()
-    {
-        struct Test : OAuthTestCase {
-            int redirectsDone = 0;
-            QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest & request) override
-            {
-                OC_ASSERT(browserReply);
-                // Kind of reproduces what we had in https://github.com/owncloud/enterprise/issues/2951 (not 1:1)
-                if (redirectsDone == 0) {
-                    std::unique_ptr<QBuffer> payload(new QBuffer());
-                    payload->setData("");
-                    SlowFakePostReply *reply = new SlowFakePostReply(op, request, std::move(payload), this);
-                    reply->redirectToPolicy = true;
-                    redirectsDone++;
-                    return reply;
-                } else if  (redirectsDone == 1) {
-                    std::unique_ptr<QBuffer> payload(new QBuffer());
-                    payload->setData("");
-                    SlowFakePostReply *reply = new SlowFakePostReply(op, request, std::move(payload), this);
-                    reply->redirectToToken = true;
-                    redirectsDone++;
-                    return reply;
-                } else {
-                    // ^^ This is with a custom reply and not actually HTTP, so we're testing the HTTP redirect code
-                    // we have in AbstractNetworkJob::slotFinished()
-                    redirectsDone++;
-                    return OAuthTestCase::tokenReply(op, request);
-                }
-            }
-        } test;
-        test.test();
-    }
-
     void testWellKnown() {
         struct Test : OAuthTestCase {
-            int redirectsDone = 0;
             QNetworkReply * wellKnownReply(QNetworkAccessManager::Operation op, const QNetworkRequest & req) override {
                 OC_ASSERT(op == QNetworkAccessManager::GetOperation);
                 QJsonDocument jsondata(QJsonObject{
