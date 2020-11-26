@@ -67,7 +67,7 @@ class OCSYNC_EXPORT ExcludedFiles : public QObject
 public:
     typedef std::tuple<int, int, int> Version;
 
-    ExcludedFiles(QString localPath = "/");
+    explicit ExcludedFiles(const QString &localPath = QStringLiteral("/"));
     ~ExcludedFiles();
 
     /**
@@ -102,8 +102,8 @@ public:
      * Primarily used in tests. Patterns added this way are preserved when
      * reloadExcludeFiles() is called.
      */
-    void addManualExclude(const QByteArray &expr);
-    void addManualExclude(const QByteArray &expr, const QByteArray &basePath);
+    void addManualExclude(const QString &expr);
+    void addManualExclude(const QString &expr, const QString &basePath);
 
     /**
      * Removes all manually added exclude patterns.
@@ -147,7 +147,7 @@ public slots:
     /**
      * Loads the exclude patterns from file the registered base paths.
      */
-    bool loadExcludeFile(const QByteArray & basePath, const QString & file);
+    bool loadExcludeFile(const QString &basePath, const QString &file);
 
 private:
     /**
@@ -178,24 +178,19 @@ private:
     CSYNC_EXCLUDE_TYPE fullPatternMatch(const QString &path, ItemType filetype) const;
 
     // Our BasePath need to end with '/'
-    class BasePathByteArray : public QByteArray
+    class BasePathString : public QString
     {
     public:
-        BasePathByteArray(QByteArray && other)
-            : QByteArray(std::move(other))
+        BasePathString(QString &&other)
+            : QString(std::move(other))
         {
-            Q_ASSERT(this->endsWith('/'));
+            Q_ASSERT(endsWith('/'));
         }
 
-        BasePathByteArray(const QByteArray & other)
-            : QByteArray(other)
+        BasePathString(const QString &other)
+            : QString(other)
         {
-            Q_ASSERT(this->endsWith('/'));
-        }
-
-        BasePathByteArray(const char * data, int size = -1)
-            : BasePathByteArray(QByteArray(data, size))
-        {
+            Q_ASSERT(endsWith('/'));
         }
     };
 
@@ -228,28 +223,28 @@ private:
      * full matcher would exclude. Example: "b" is excluded. traversal("b/c")
      * returns not-excluded because "c" isn't a bname activation pattern.
      */
-    void prepare(const BasePathByteArray & basePath);
+    void prepare(const BasePathString &basePath);
 
     void prepare();
 
 
     QString _localPath;
     /// Files to load excludes from
-    QMap<BasePathByteArray, QList<QString>> _excludeFiles;
+    QMap<BasePathString, QStringList> _excludeFiles;
 
     /// Exclude patterns added with addManualExclude()
-    QMap<BasePathByteArray, QList<QByteArray>> _manualExcludes;
+    QMap<BasePathString, QStringList> _manualExcludes;
 
     /// List of all active exclude patterns
-    QMap<BasePathByteArray, QList<QByteArray>> _allExcludes;
+    QMap<BasePathString, QStringList> _allExcludes;
 
     /// see prepare()
-    QMap<BasePathByteArray, QRegularExpression> _bnameTraversalRegexFile;
-    QMap<BasePathByteArray, QRegularExpression> _bnameTraversalRegexDir;
-    QMap<BasePathByteArray, QRegularExpression> _fullTraversalRegexFile;
-    QMap<BasePathByteArray, QRegularExpression> _fullTraversalRegexDir;
-    QMap<BasePathByteArray, QRegularExpression> _fullRegexFile;
-    QMap<BasePathByteArray, QRegularExpression> _fullRegexDir;
+    QMap<BasePathString, QRegularExpression> _bnameTraversalRegexFile;
+    QMap<BasePathString, QRegularExpression> _bnameTraversalRegexDir;
+    QMap<BasePathString, QRegularExpression> _fullTraversalRegexFile;
+    QMap<BasePathString, QRegularExpression> _fullTraversalRegexDir;
+    QMap<BasePathString, QRegularExpression> _fullRegexFile;
+    QMap<BasePathString, QRegularExpression> _fullRegexDir;
 
     bool _excludeConflictFiles = true;
 

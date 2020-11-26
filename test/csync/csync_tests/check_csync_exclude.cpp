@@ -100,16 +100,16 @@ static void check_csync_exclude_add(void **)
     excludedFiles->addManualExclude("/tmp/check_csync1/*");
     assert_int_equal(check_file_full("/tmp/check_csync1/foo"), CSYNC_FILE_EXCLUDE_LIST);
     assert_int_equal(check_file_full("/tmp/check_csync2/foo"), CSYNC_NOT_EXCLUDED);
-    assert_true(excludedFiles->_allExcludes["/"].contains("/tmp/check_csync1/*"));
+    assert_true(excludedFiles->_allExcludes[QStringLiteral("/")].contains("/tmp/check_csync1/*"));
 
-    assert_true(excludedFiles->_fullRegexFile["/"].pattern().contains("csync1"));
-    assert_true(excludedFiles->_fullTraversalRegexFile["/"].pattern().contains("csync1"));
-    assert_false(excludedFiles->_bnameTraversalRegexFile["/"].pattern().contains("csync1"));
+    assert_true(excludedFiles->_fullRegexFile[QStringLiteral("/")].pattern().contains("csync1"));
+    assert_true(excludedFiles->_fullTraversalRegexFile[QStringLiteral("/")].pattern().contains("csync1"));
+    assert_false(excludedFiles->_bnameTraversalRegexFile[QStringLiteral("/")].pattern().contains("csync1"));
 
     excludedFiles->addManualExclude("foo");
-    assert_true(excludedFiles->_bnameTraversalRegexFile["/"].pattern().contains("foo"));
-    assert_true(excludedFiles->_fullRegexFile["/"].pattern().contains("foo"));
-    assert_false(excludedFiles->_fullTraversalRegexFile["/"].pattern().contains("foo"));
+    assert_true(excludedFiles->_bnameTraversalRegexFile[QStringLiteral("/")].pattern().contains("foo"));
+    assert_true(excludedFiles->_fullRegexFile[QStringLiteral("/")].pattern().contains("foo"));
+    assert_false(excludedFiles->_fullTraversalRegexFile[QStringLiteral("/")].pattern().contains("foo"));
 }
 
 static void check_csync_exclude_add_per_dir(void **)
@@ -117,15 +117,15 @@ static void check_csync_exclude_add_per_dir(void **)
     excludedFiles->addManualExclude("*", "/tmp/check_csync1/");
     assert_int_equal(check_file_full("/tmp/check_csync1/foo"), CSYNC_FILE_EXCLUDE_LIST);
     assert_int_equal(check_file_full("/tmp/check_csync2/foo"), CSYNC_NOT_EXCLUDED);
-    assert_true(excludedFiles->_allExcludes["/tmp/check_csync1/"].contains("*"));
+    assert_true(excludedFiles->_allExcludes[QStringLiteral("/tmp/check_csync1/")].contains("*"));
 
     excludedFiles->addManualExclude("foo");
-    assert_true(excludedFiles->_fullRegexFile["/"].pattern().contains("foo"));
+    assert_true(excludedFiles->_fullRegexFile[QStringLiteral("/")].pattern().contains("foo"));
 
     excludedFiles->addManualExclude("foo/bar", "/tmp/check_csync1/");
-    assert_true(excludedFiles->_fullRegexFile["/tmp/check_csync1/"].pattern().contains("bar"));
-    assert_true(excludedFiles->_fullTraversalRegexFile["/tmp/check_csync1/"].pattern().contains("bar"));
-    assert_false(excludedFiles->_bnameTraversalRegexFile["/tmp/check_csync1/"].pattern().contains("foo"));
+    assert_true(excludedFiles->_fullRegexFile[QStringLiteral("/tmp/check_csync1/")].pattern().contains("bar"));
+    assert_true(excludedFiles->_fullTraversalRegexFile[QStringLiteral("/tmp/check_csync1/")].pattern().contains("bar"));
+    assert_false(excludedFiles->_bnameTraversalRegexFile[QStringLiteral("/tmp/check_csync1/")].pattern().contains("foo"));
 }
 
 static void check_csync_excluded(void **)
