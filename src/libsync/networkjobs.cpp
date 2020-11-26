@@ -419,6 +419,7 @@ CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     , _subdirFallback(false)
 {
     setIgnoreCredentialFailure(true);
+    setAuthenticationJob(true);
 }
 
 void CheckServerJob::start()

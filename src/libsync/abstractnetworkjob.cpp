@@ -228,6 +228,15 @@ void AbstractNetworkJob::slotFinished()
         Q_EMIT _account->unknownConnectionState();
         qCWarning(lcNetworkJob) << "Unsupported redirect on" << _reply->url().toString() << "to" << reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toString();
         Q_EMIT networkError(_reply);
+        if (!isAuthenticationJob()) {
+            if (_retryCount++ < _maxRetryCount) {
+                qCWarning(lcNetworkJob) << "Retry Nr:" << _retryCount << _reply->url();
+                QTimer::singleShot(0, this, &AbstractNetworkJob::retry);
+                return;
+            } else {
+                qCWarning(lcNetworkJob) << "Don't retry, too many retries:" << _reply->url();
+            }
+        };
     }
 
 
