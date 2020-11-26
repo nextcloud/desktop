@@ -104,6 +104,17 @@
           </widget>
          </item>
          <item>
+          <widget class="QToolButton" name="more_toolButton">
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../client.qrc">
+             <normaloff>:/client/resources/light/more.svg</normaloff>:/client/resources/light/more.svg</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="urlLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

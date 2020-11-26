@@ -19,6 +19,7 @@
 #include <QTimer>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QMenu>
 #include <QSsl>
 #include <QSslCertificate>
 #include <QNetworkAccessManager>
@@ -29,22 +30,23 @@
 #include "guiutility.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudsetuppage.h"
-#include "wizard/owncloudconnectionmethoddialog.h"
 #include "theme.h"
 #include "account.h"
+
+#include "ui_owncloudsetuppage.h"
 
 namespace OCC {
 
 OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     : QWizardPage()
-    , _ui()
+    , _ui(new Ui_OwncloudSetupPage)
     , _oCUrl()
     , _ocUser()
     , _authTypeKnown(false)
     , _checking(false)
     , _progressIndi(new QProgressIndicator(this))
 {
-    _ui.setupUi(this);
+    _ui->setupUi(this);
     _ocWizard = qobject_cast<OwncloudWizard *>(parent);
 
     Theme *theme = Theme::instance();
@@ -52,53 +54,63 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Setup %1 server").arg(theme->appNameGUI())));
 
     if (theme->overrideServerUrl().isEmpty()) {
-        _ui.leUrl->setPostfix(theme->wizardUrlPostfix());
-        _ui.leUrl->setPlaceholderText(theme->wizardUrlHint());
+        _ui->leUrl->setPostfix(theme->wizardUrlPostfix());
+        _ui->leUrl->setPlaceholderText(theme->wizardUrlHint());
     } else {
-        _ui.leUrl->setEnabled(false);
+        _ui->leUrl->setEnabled(false);
     }
 
 
-    registerField(QLatin1String("OCUrl*"), _ui.leUrl);
+    registerField(QLatin1String("OCUrl*"), _ui->leUrl);
 
-    _ui.resultLayout->addWidget(_progressIndi);
+    _ui->resultLayout->addWidget(_progressIndi);
     stopSpinner();
 
     setupCustomization();
 
     slotUrlChanged(QLatin1String("")); // don't jitter UI
-    connect(_ui.leUrl, &QLineEdit::textChanged, this, &OwncloudSetupPage::slotUrlChanged);
-    connect(_ui.leUrl, &QLineEdit::editingFinished, this, &OwncloudSetupPage::slotUrlEditFinished);
+    connect(_ui->leUrl, &QLineEdit::textChanged, this, &OwncloudSetupPage::slotUrlChanged);
+    connect(_ui->leUrl, &QLineEdit::editingFinished, this, &OwncloudSetupPage::slotUrlEditFinished);
 
     addCertDial = new AddCertificateDialog(this);
     connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
+
+    _ui->more_toolButton->setIcon(Utility::getCoreIcon(QStringLiteral("more")));
+    connect(_ui->more_toolButton, &QToolButton::clicked, this, [this] {
+        auto menu = new QMenu(this);
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+        menu->addAction(tr("Configure client-side cerificate"), [this] {
+            addCertDial->open();
+        });
+        menu->popup(QCursor::pos());
+    });
 }
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
 {
     _oCUrl = newUrl;
     if (_oCUrl.isEmpty()) {
-        _ui.leUrl->clear();
+        _ui->leUrl->clear();
         return;
     }
 
-    _ui.leUrl->setText(_oCUrl);
+    _ui->leUrl->setText(_oCUrl);
 }
 
 void OwncloudSetupPage::setupCustomization()
 {
     // set defaults for the customize labels.
-    _ui.topLabel->hide();
-    _ui.bottomLabel->hide();
+    _ui->topLabel->hide();
+    _ui->bottomLabel->hide();
 
     Theme *theme = Theme::instance();
     QVariant variant = theme->customMedia(Theme::oCSetupTop);
     if (!variant.isNull()) {
-        WizardCommon::setupCustomMedia(variant, _ui.topLabel);
+        WizardCommon::setupCustomMedia(variant, _ui->topLabel);
     }
 
     variant = theme->customMedia(Theme::oCSetupBottom);
-    WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
+    WizardCommon::setupCustomMedia(variant, _ui->bottomLabel);
 }
 
 // slot hit from textChanged of the url entry field.
@@ -123,37 +135,37 @@ void OwncloudSetupPage::slotUrlChanged(const QString &url)
         }
     }
     if (newUrl != url) {
-        _ui.leUrl->setText(newUrl);
+        _ui->leUrl->setText(newUrl);
     }
 
     if (!url.startsWith(QLatin1String("https://"))) {
-        _ui.urlLabel->setPixmap(Utility::getCoreIcon(QStringLiteral("lock-http")).pixmap(_ui.urlLabel->size()));
-        _ui.urlLabel->setToolTip(tr("This url is NOT secure as it is not encrypted.\n"
-                                    "It is not advisable to use it."));
+        _ui->urlLabel->setPixmap(Utility::getCoreIcon(QStringLiteral("lock-http")).pixmap(_ui->urlLabel->size()));
+        _ui->urlLabel->setToolTip(tr("This url is NOT secure as it is not encrypted.\n"
+                                     "It is not advisable to use it."));
     } else {
-        _ui.urlLabel->setPixmap(Utility::getCoreIcon(QStringLiteral("lock-https")).pixmap(_ui.urlLabel->size()));
-        _ui.urlLabel->setToolTip(tr("This url is secure. You can use it."));
+        _ui->urlLabel->setPixmap(Utility::getCoreIcon(QStringLiteral("lock-https")).pixmap(_ui->urlLabel->size()));
+        _ui->urlLabel->setToolTip(tr("This url is secure. You can use it."));
     }
 }
 
 void OwncloudSetupPage::slotUrlEditFinished()
 {
-    QString url = _ui.leUrl->fullText();
+    QString url = _ui->leUrl->fullText();
     if (QUrl(url).isRelative() && !url.isEmpty()) {
         // no scheme defined, set one
         url.prepend("https://");
-        _ui.leUrl->setFullText(url);
+        _ui->leUrl->setFullText(url);
     }
 }
 
 bool OwncloudSetupPage::isComplete() const
 {
-    return !_ui.leUrl->text().isEmpty() && !_checking;
+    return !_ui->leUrl->text().isEmpty() && !_checking;
 }
 
 void OwncloudSetupPage::initializePage()
 {
-    WizardCommon::initErrorLabel(_ui.errorLabel);
+    WizardCommon::initErrorLabel(_ui->errorLabel);
 
     _authTypeKnown = false;
     _checking = false;
@@ -167,7 +179,7 @@ void OwncloudSetupPage::initializePage()
     // we just check the server type and switch to second page
     // immediately.
     if (Theme::instance()->overrideServerUrl().isEmpty()) {
-        _ui.leUrl->setFocus();
+        _ui->leUrl->setFocus();
     } else {
         setCommitPage(true);
         // Hack: setCommitPage() changes caption, but after an error this page could still be visible
@@ -191,7 +203,7 @@ int OwncloudSetupPage::nextId() const
 
 QString OwncloudSetupPage::url() const
 {
-    QString url = _ui.leUrl->fullText().simplified();
+    QString url = _ui->leUrl->fullText().simplified();
     return url;
 }
 
@@ -202,11 +214,11 @@ bool OwncloudSetupPage::validatePage()
         QString u = url();
         QUrl qurl(u);
         if (!qurl.isValid() || qurl.host().isEmpty()) {
-            setErrorString(tr("Invalid URL"), false);
+            setErrorString(tr("Invalid URL"));
             return false;
         }
 
-        setErrorString(QString(), false);
+        setErrorString(QString());
         _checking = true;
         startSpinner();
         emit completeChanged();
@@ -228,44 +240,13 @@ void OwncloudSetupPage::setAuthType(DetermineAuthTypeJob::AuthType type)
     stopSpinner();
 }
 
-void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
+void OwncloudSetupPage::setErrorString(const QString &err)
 {
     if (err.isEmpty()) {
-        _ui.errorLabel->setVisible(false);
+        _ui->errorLabel->setVisible(false);
     } else {
-        if (retryHTTPonly) {
-            QUrl url(_ui.leUrl->fullText());
-            if (url.scheme() == "https") {
-                // Ask the user how to proceed when connecting to a https:// URL fails.
-                // It is possible that the server is secured with client-side TLS certificates,
-                // but that it has no way of informing the owncloud client that this is the case.
-
-                OwncloudConnectionMethodDialog dialog;
-                dialog.setUrl(url);
-                // FIXME: Synchronous dialogs are not so nice because of event loop recursion
-                int retVal = dialog.exec();
-
-                switch (retVal) {
-                case OwncloudConnectionMethodDialog::No_TLS: {
-                    url.setScheme("http");
-                    _ui.leUrl->setFullText(url.toString());
-                    // skip ahead to next page, since the user would expect us to retry automatically
-                    wizard()->next();
-                } break;
-                case OwncloudConnectionMethodDialog::Client_Side_TLS:
-                    addCertDial->show();
-                    break;
-                case OwncloudConnectionMethodDialog::Closed:
-                case OwncloudConnectionMethodDialog::Back:
-                default:
-                    // No-op.
-                    break;
-                }
-            }
-        }
-
-        _ui.errorLabel->setVisible(true);
-        _ui.errorLabel->setText(err);
+        _ui->errorLabel->setVisible(true);
+        _ui->errorLabel->setText(err);
     }
     _checking = false;
     emit completeChanged();
@@ -274,14 +255,14 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
 
 void OwncloudSetupPage::startSpinner()
 {
-    _ui.resultLayout->setEnabled(true);
+    _ui->resultLayout->setEnabled(true);
     _progressIndi->setVisible(true);
     _progressIndi->startAnimation();
 }
 
 void OwncloudSetupPage::stopSpinner()
 {
-    _ui.resultLayout->setEnabled(false);
+    _ui->resultLayout->setEnabled(false);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 }

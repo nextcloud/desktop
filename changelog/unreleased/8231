@@ -1,0 +1,6 @@
+Change: Don't ask the user to switch to http
+
+We no longer recommend to use a http connection if a https url
+was not found.
+
+https://github.com/owncloud/client/issues/8231

@@ -16,19 +16,19 @@
 #ifndef MIRALL_OWNCLOUD_SETUP_PAGE_H
 #define MIRALL_OWNCLOUD_SETUP_PAGE_H
 
+#include <QScopedPointer>
 #include <QWizard>
 
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
 
 #include "../addcertificatedialog.h"
-#include "wizard/owncloudconnectionmethoddialog.h"
-
-#include "ui_owncloudsetupnocredspage.h"
 
 class QLabel;
 class QVariant;
 class QProgressIndicator;
+class QButtonGroup;
+class Ui_OwncloudSetupPage;
 
 namespace OCC {
 
@@ -56,7 +56,7 @@ public:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
 
 public slots:
-    void setErrorString(const QString &, bool retryHTTPonly);
+    void setErrorString(const QString &);
     void startSpinner();
     void stopSpinner();
     void slotCertificateAccepted();
@@ -71,7 +71,7 @@ signals:
     void determineAuthType(const QString &);
 
 private:
-    Ui_OwncloudSetupPage _ui;
+    QScopedPointer<Ui_OwncloudSetupPage> _ui;
 
     QString _oCUrl;
     QString _ocUser;

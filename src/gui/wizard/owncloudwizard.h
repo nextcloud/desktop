@@ -66,7 +66,7 @@ public:
 
     void enableFinishOnResultWidget(bool enable);
 
-    void displayError(const QString &, bool retryHTTPonly);
+    void displayError(const QString &);
     AbstractCredentials *getCredentials() const;
 
     /**

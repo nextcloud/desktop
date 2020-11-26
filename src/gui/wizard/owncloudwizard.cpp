@@ -205,11 +205,11 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
     }
 }
 
-void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
+void OwncloudWizard::displayError(const QString &msg)
 {
     switch (currentId()) {
     case WizardCommon::Page_ServerSetup:
-        _setupPage->setErrorString(msg, retryHTTPonly);
+        _setupPage->setErrorString(msg);
         break;
 
     case WizardCommon::Page_HttpCreds:

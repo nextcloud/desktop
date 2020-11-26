@@ -74,7 +74,6 @@ private:
     void finalizeSetup(bool);
     bool ensureStartFromScratch(const QString &localFolder);
     AccountState *applyAccountChanges();
-    bool checkDowngradeAdvised(QNetworkReply *reply);
 
     OwncloudWizard *_ocWizard;
     QString _initLocalFolder;

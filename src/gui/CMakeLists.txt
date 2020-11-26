@@ -26,10 +26,9 @@ set(client_UI_SRCS
     notificationwidget.ui
     logbrowser.ui
     wizard/owncloudadvancedsetuppage.ui
-    wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
     wizard/owncloudoauthcredspage.ui
-    wizard/owncloudsetupnocredspage.ui
+    wizard/owncloudsetuppage.ui
     wizard/owncloudwizardresultpage.ui
 )
 
@@ -92,7 +91,6 @@ set(client_SRCS
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
-    wizard/owncloudconnectionmethoddialog.cpp
     wizard/owncloudhttpcredspage.cpp
     wizard/owncloudoauthcredspage.cpp
     wizard/owncloudsetuppage.cpp

@@ -256,10 +256,9 @@ void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
                       Utility::escape(_ocWizard->account()->url().toString()),
                       Utility::escape(job->errorString()));
     }
-    bool isDowngradeAdvised = checkDowngradeAdvised(reply);
 
     // Displays message inside wizard and possibly also another message box
-    _ocWizard->displayError(msg, isDowngradeAdvised);
+    _ocWizard->displayError(msg);
 
     // Allow the credentials dialog to pop up again for the same URL.
     // Maybe the user just clicked 'Cancel' by accident or changed his mind.
@@ -270,8 +269,7 @@ void OwncloudSetupWizard::slotNoServerFoundTimeout(const QUrl &url)
 {
     _ocWizard->displayError(
         tr("Timeout while trying to connect to %1 at %2.")
-            .arg(Utility::escape(Theme::instance()->appNameGUI()), Utility::escape(url.toString())),
-                false);
+            .arg(Utility::escape(Theme::instance()->appNameGUI()), Utility::escape(url.toString())));
 }
 
 void OwncloudSetupWizard::slotDetermineAuthType()
@@ -378,30 +376,7 @@ void OwncloudSetupWizard::slotAuthError()
     if (_ocWizard->currentId() == WizardCommon::Page_OAuthCreds) {
         _ocWizard->back();
     }
-    _ocWizard->displayError(errorMsg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
-}
-
-bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply *reply)
-{
-    if (reply->url().scheme() != QLatin1String("https")) {
-        return false;
-    }
-
-    switch (reply->error()) {
-    case QNetworkReply::NoError:
-    case QNetworkReply::ContentNotFoundError:
-    case QNetworkReply::AuthenticationRequiredError:
-    case QNetworkReply::HostNotFoundError:
-        return false;
-    default:
-        break;
-    }
-
-    // Adhere to HSTS, even though we do not parse it properly
-    if (reply->hasRawHeader("Strict-Transport-Security")) {
-        return false;
-    }
-    return true;
+    _ocWizard->displayError(errorMsg);
 }
 
 void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFolder, const QString &remoteFolder)
@@ -427,7 +402,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
         } else {
             res += tr("failed.");
             qCWarning(lcWizard) << "Failed to create " << fi.path();
-            _ocWizard->displayError(tr("Could not create local folder %1").arg(Utility::escape(localFolder)), false);
+            _ocWizard->displayError(tr("Could not create local folder %1").arg(Utility::escape(localFolder)));
             nextStep = false;
         }
         _ocWizard->appendToConfigurationLog(res);
@@ -464,7 +439,7 @@ void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
     }
 
     if (!ok) {
-        _ocWizard->displayError(Utility::escape(error), false);
+        _ocWizard->displayError(Utility::escape(error));
     }
 
     finalizeSetup(ok);
@@ -492,21 +467,20 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply::NetworkE
     } else if (error == 202) {
         _ocWizard->appendToConfigurationLog(tr("The remote folder %1 already exists. Connecting it for syncing.").arg(_remoteFolder));
     } else if (error > 202 && error < 300) {
-        _ocWizard->displayError(tr("The folder creation resulted in HTTP error code %1").arg((int)error), false);
+        _ocWizard->displayError(tr("The folder creation resulted in HTTP error code %1").arg((int)error));
 
         _ocWizard->appendToConfigurationLog(tr("The folder creation resulted in HTTP error code %1").arg((int)error));
     } else if (error == QNetworkReply::OperationCanceledError) {
         _ocWizard->displayError(tr("The remote folder creation failed because the provided credentials "
                                    "are wrong!"
-                                   "<br/>Please go back and check your credentials.</p>"),
-            false);
+                                   "<br/>Please go back and check your credentials.</p>"));
         _ocWizard->appendToConfigurationLog(tr("<p><font color=\"red\">Remote folder creation failed probably because the provided credentials are wrong.</font>"
                                                "<br/>Please go back and check your credentials.</p>"));
         _remoteFolder.clear();
         success = false;
     } else {
         _ocWizard->appendToConfigurationLog(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error));
-        _ocWizard->displayError(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error), false);
+        _ocWizard->displayError(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error));
         _remoteFolder.clear();
         success = false;
     }
