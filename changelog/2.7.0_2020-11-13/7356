@@ -1,5 +1,5 @@
 Change: Detect the Windows 10 theme for the system tray
 
-We now display the system tray icon according to the currrent theme
+We now display the system tray icon according to the current theme
 
 https://github.com/owncloud/client/issues/7356

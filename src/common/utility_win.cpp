@@ -31,9 +31,6 @@
 #include <QFileInfo>
 #include <QLibrary>
 
-#include "common/result.h"
-#include "common/winrthelper/winrthelper.h"
-
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 
 namespace {
@@ -44,34 +41,7 @@ const QString systemRunPathC() {
 const QString runPathC() {
     return QStringLiteral("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run");
 }
-
-const QString rtHelperNameC()
-{
-    return QStringLiteral(APPLICATION_EXECUTABLE "_winrt");
 }
-
-template <typename T>
-static OCC::Result<std::function<T>, nullptr_t> funcLoadHelper(const QString &lib, const char *function)
-{
-    QFileInfo info(lib);
-    if (!info.isAbsolute()) {
-        info.setFile(QStringLiteral("%1/%2.dll").arg(QCoreApplication::instance()->applicationDirPath(), lib));
-    }
-    if (!info.exists()) {
-        qCWarning(OCC::lcUtility) << "Failed to find:" << info.filePath();
-        return nullptr;
-    }
-
-    QLibrary library(info.filePath());
-    QFunctionPointer f = library.resolve(function);
-    if (!f) {
-        qCWarning(OCC::lcUtility) << library.errorString();
-        return nullptr;
-    }
-    return std::function<T> { reinterpret_cast<T *>(f) };
-}
-}
-
 namespace OCC {
 
 static void setupFavLink_private(const QString &folder)
@@ -135,11 +105,9 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     }
 }
 
-
 static inline bool hasDarkSystray_private()
 {
-    static auto func = funcLoadHelper<bool()>(rtHelperNameC(), "hasDarkSystray");
-    return func ? (*func)() : false;
+    return true;
 }
 
 QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName)
