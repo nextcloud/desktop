@@ -149,7 +149,7 @@ if(BUILD_CLIENT)
     OPTION(GUI_TESTING "Build with gui introspection features of socket api" OFF)
 
     if(APPLE)
-        find_package(Sparkle)
+        find_package(Sparkle REQUIRED)
     endif(APPLE)
 
     if(UNIX AND NOT APPLE)

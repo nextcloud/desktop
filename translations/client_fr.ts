@@ -287,7 +287,7 @@ Cette action stoppera toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="610"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Désactiver le support</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="712"/>
@@ -418,7 +418,7 @@ Cette action stoppera toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source>Enable virtual file support%1...</source>
-        <translation type="unfinished"/>
+        <translation>Activer la prise en charge des fichiers virtuels%1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
@@ -453,12 +453,12 @@ Cette action stoppera toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="863"/>
         <source>Obtaining authorization from the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Obtention de l&apos;autorisation du navigateur.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="876"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Erreur de configuration du serveur: %1 à %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="887"/>
@@ -617,22 +617,22 @@ Cette action stoppera toute synchronisation en cours.</translation>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="358"/>
         <source>%n notifications(s) for %1.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notification(s) pour %1.</numerusform><numerusform>%n notification(s) pour %1.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="364"/>
         <source>%n notifications(s) for %1 and %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n notification(s) pour %1 and %2.</numerusform><numerusform>%n notification(s) pour %1 and %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="366"/>
         <source>New notifications for %1, %2 and other accounts.</source>
-        <translation type="unfinished"/>
+        <translation>Nouvelles notifications pour %1, %2 et d&apos;autres comptes.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="369"/>
         <source>Open the activity view for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrez la vue des activités pour plus de détails.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="152"/>
@@ -670,7 +670,7 @@ Cette action stoppera toute synchronisation en cours.</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Un bundle pkcs12 chiffré est fortement recommandé car une copie sera stockée dans le fichier de configuration.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -1175,7 +1175,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="279"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation de VirtualFiles avec le dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="281"/>
@@ -1293,7 +1293,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="112"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;observateur n&apos;a pas reçu de notification de test.</translation>
     </message>
 </context>
 <context>
@@ -1385,7 +1385,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Vous synchronisez déjà &lt;i&gt;%1&lt;/i&gt;, qui est un sous-dossier de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1393,7 +1393,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="485"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Utilisez des fichiers virtuels au lieu de télécharger du contenu immédiatement%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="485"/>
@@ -1403,7 +1403,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="519"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Les fichiers virtuels ne sont pas disponibles pour le dossier sélectionné</translation>
     </message>
 </context>
 <context>
@@ -1434,7 +1434,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Nous avons reçu un téléchargement inattendu Content-Length.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
@@ -1470,12 +1470,12 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="109"/>
         <source>Log Settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres du journal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="136"/>
         <source>Advanced - Approval of folder sync (Non virtual file mode only)</source>
-        <translation type="unfinished"/>
+        <translation>Avancé - Approbation de la synchronisation des dossiers (mode fichier non virtuel uniquement)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="196"/>
@@ -1510,7 +1510,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Use &amp;Monochrome Icons in the system tray</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser les icônes &amp;Monochrome dans la barre d&apos;état système</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="144"/>
@@ -1541,7 +1541,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.ui" line="220"/>
         <source>&amp;Update Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Mettre à jour la chaîne</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="102"/>
@@ -1566,7 +1566,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="280"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Vous ne pouvez pas désactiver le démarrage automatique parce que le démarrage automatique à l&apos;échelle du système est activé.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="190"/>
@@ -1779,7 +1779,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Activer la journalisation dans le dossier temporaire</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="61"/>
@@ -1789,7 +1789,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Les journaux contiennent des informations sensibles que vous ne devez pas rendre publiques&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="71"/>
@@ -1800,7 +1800,7 @@ Since log files can get large, the client will start a new one for each sync run
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
         <source>If enabled, logs will be written to:</source>
-        <translation type="unfinished"/>
+        <translation>Si activé, les journaux seront écrits dans:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="91"/>
@@ -1810,7 +1810,7 @@ Since log files can get large, the client will start a new one for each sync run
     <message>
         <location filename="../src/gui/logbrowser.ui" line="123"/>
         <source>Log Http traffic </source>
-        <translation type="unfinished"/>
+        <translation>Journaliser le trafic HTTP</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="143"/>
@@ -1937,7 +1937,7 @@ Veuillez noter qu’utiliser les options de journalisation en ligne de commande 
     <message>
         <location filename="../src/gui/networksettings.ui" line="180"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Remarque: les paramètres de proxy n&apos;ont aucun effet sur les comptes localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="201"/>
@@ -2045,7 +2045,7 @@ Veuillez noter qu’utiliser les options de journalisation en ligne de commande 
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="134"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>Vider le JSON de la redirection OAuth2</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="139"/>
@@ -2055,13 +2055,14 @@ Veuillez noter qu’utiliser les options de journalisation en ligne de commande 
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="142"/>
         <source>Unsupported token type: %1</source>
-        <translation type="unfinished"/>
+        <translation>Type de jeton non pris en charge: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="144"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
-        <translation type="unfinished"/>
+        <translation>La réponse du serveur ne contenait pas tous les champs attendus
+:%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="146"/>
@@ -2071,13 +2072,14 @@ Veuillez noter qu’utiliser les options de journalisation en ligne de commande 
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="170"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;Failed to retrieve user info&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Erreur d&apos;identification&lt;/h1&gt;&lt;p&gt;Échec de la récupération des informations sur l&apos;utilisateur&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="290"/>
         <source>	Error: Missing field %1
 </source>
-        <translation type="unfinished"/>
+        <translation>	Erreur: champ %1 manquant
+</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="150"/>
@@ -2089,14 +2091,16 @@ Veuillez noter qu’utiliser les options de journalisation en ligne de commande 
         <location filename="../src/libsync/creds/oauth.cpp" line="204"/>
         <location filename="../src/libsync/creds/oauth.cpp" line="208"/>
         <source>Error while refreshing the token: %1 : %2</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de l&apos;actualisation du jeton: %1 : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="213"/>
         <source>The reply from the server did not contain all expected fields
 :%1
 Received data: %2</source>
-        <translation type="unfinished"/>
+        <translation>La réponse du serveur ne contenait pas tous les champs attendus
+:%1
+Données reçues: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="234"/>
@@ -2189,7 +2193,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser des &amp;fichiers virtuels au lieu de télécharger le contenu immédiatement%1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="194"/>
@@ -2209,7 +2213,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="283"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Les fichiers virtuels ne sont pas disponibles pour le dossier sélectionné</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="343"/>
@@ -2492,7 +2496,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="271"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Activer le mode placeholder expérimental</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="258"/>
@@ -2602,12 +2606,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="285"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Le nom de fichier est sur la liste noire sur le serveur.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="338"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier a une extension réservée aux fichiers virtuels.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="400"/>
@@ -2627,7 +2631,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="406"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>identifiant de fichier</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="410"/>
@@ -4485,7 +4489,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Remplacé par un fichier virtuel</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
@@ -4658,7 +4662,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Certains sont disponibles uniquement en ligne </translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="85"/>
