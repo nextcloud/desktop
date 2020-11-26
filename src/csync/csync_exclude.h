@@ -137,7 +137,7 @@ public:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, ItemType filetype);
+    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const QString &path, ItemType filetype);
 
 public slots:
     /**
@@ -175,7 +175,7 @@ private:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    CSYNC_EXCLUDE_TYPE fullPatternMatch(const char *path, ItemType filetype) const;
+    CSYNC_EXCLUDE_TYPE fullPatternMatch(const QString &path, ItemType filetype) const;
 
     // Our BasePath need to end with '/'
     class BasePathByteArray : public QByteArray

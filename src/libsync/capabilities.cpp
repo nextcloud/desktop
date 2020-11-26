@@ -195,7 +195,7 @@ QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 
 QString Capabilities::invalidFilenameRegex() const
 {
-    return _capabilities["dav"].toMap()["invalidFilenameRegex"].toString();
+    return _capabilities[QStringLiteral("dav")].toMap()[QStringLiteral("invalidFilenameRegex")].toString();
 }
 
 bool Capabilities::uploadConflictFiles() const
@@ -205,7 +205,7 @@ bool Capabilities::uploadConflictFiles() const
     if (envIsSet)
         return envValue != 0;
 
-    return _capabilities["uploadConflictFiles"].toBool();
+    return _capabilities[QStringLiteral("uploadConflictFiles")].toBool();
 }
 
 /*-------------------------------------------------------------------------------------*/
