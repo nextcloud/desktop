@@ -12,6 +12,7 @@
 #include "filesystem.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
+#include "csync_exclude.h"
 
 #include <QDir>
 #include <QNetworkReply>
@@ -920,6 +921,8 @@ public:
 
         _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + "._sync_test.db");
         _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), "", _journalDb.get());
+        // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
+        _syncEngine->excludedFiles().addManualExclude("]*.~*");
 
         // A new folder will update the local file state database on first sync.
         // To have a state matching what users will encounter, we have to a sync
