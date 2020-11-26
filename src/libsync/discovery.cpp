@@ -313,7 +313,7 @@ static bool computeLocalChecksum(const QByteArray &header, const QString &path, 
     auto type = parseChecksumHeaderType(header);
     if (!type.isEmpty()) {
         // TODO: compute async?
-        QByteArray checksum = ComputeChecksum::computeNow(path, type);
+        QByteArray checksum = ComputeChecksum::computeNowOnFile(path, type);
         if (!checksum.isEmpty()) {
             item->_checksumHeader = makeChecksumHeader(type, checksum);
             return true;
