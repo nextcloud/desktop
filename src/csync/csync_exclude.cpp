@@ -317,17 +317,20 @@ bool ExcludedFiles::loadExcludeFile(const QByteArray & basePath, const QString &
     if (!f.open(QIODevice::ReadOnly))
         return false;
 
+    QList<QByteArray> patterns;
     while (!f.atEnd()) {
         QByteArray line = f.readLine().trimmed();
         if (line.isEmpty() || line.startsWith('#'))
             continue;
         csync_exclude_expand_escapes(line);
-        _allExcludes[basePath].append(line);
+        patterns.append(line);
     }
+    _allExcludes.insert(basePath, patterns);
 
     // nothing to prepare if the user decided to not exclude anything
-    if(_allExcludes.size())
+    if (!_allExcludes.value(basePath).isEmpty()){
         prepare(basePath);
+    }
 
     return true;
 }
@@ -411,10 +414,12 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemTy
 
     // Directories are guaranteed to be visited before their files
     if (filetype == ItemTypeDirectory) {
-        QFileInfo fi = QFileInfo(_localPath + path + "/.sync-exclude.lst");
+        const auto basePath = QString(_localPath + path + QLatin1Char('/')).toUtf8();
+        const auto fi = QFileInfo(basePath + QStringLiteral(".sync-exclude.lst"));
+
         if (fi.isReadable()) {
             addInTreeExcludeFilePath(fi.absoluteFilePath());
-            loadExcludeFile(fi.absolutePath().toUtf8(), fi.absoluteFilePath());
+            loadExcludeFile(basePath, fi.absoluteFilePath());
         }
     }
 
