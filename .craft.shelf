@@ -5,18 +5,6 @@ blueprintrepositories = https://invent.kde.org/packaging/craft-blueprints-kde.gi
 [core/cacert]
 version = 2020-10-14
 
-[craft/craft-blueprints-kde]
-version = master
-revision = 7c3e785c
-
-[craft/craft-blueprints-owncloud]
-version = master
-revision = 5d203b4
-
-[craft/craft-core]
-version = master
-revision = e7631043e
-
 [dev-utils/autoconf]
 version = 2.69
 
@@ -28,6 +16,7 @@ version = 3.3.2
 
 [dev-utils/breakpad-tools]
 version = cmake
+revision = e2a857c4
 
 [dev-utils/cmake]
 version = latest
@@ -68,11 +57,11 @@ version = 1.10.0
 [dev-utils/packagesdev]
 version = 1.2.7
 
-[dev-utils/patch]
-version = 2.5.9
-
 [dev-utils/perl]
 version = 5.28.1
+
+[dev-utils/pkg-config]
+version = 0.29.2
 
 [dev-utils/python2]
 version = 2
@@ -87,13 +76,25 @@ version = 2.2.0
 version = 1.18
 
 [kde/frameworks/extra-cmake-modules]
-version = 5.71.0
+version = 5.75.0
 
 [libs/d3dcompiler]
 version = master
 
 [libs/gettext]
 version = 0.19.8.1
+
+[libs/glib]
+version = 2.49.4
+
+[libs/libbzip2]
+version = 1.0.6
+
+[libs/libffi]
+version = 3.2.1
+
+[libs/libjpeg-turbo]
+version = 1.5.3
 
 [libs/liblzma]
 version = 5.2.3
@@ -104,32 +105,44 @@ version = 1.6.37
 [libs/libxml2]
 version = 2.9.7
 
+[libs/libzstd]
+version = 1.4.5
+
 [libs/openssl]
 version = 1.1.1g
 
+[libs/pcre]
+version = 8.41
+
+[libs/pcre2]
+version = 10.35
+
 [libs/qt5/qtbase]
-version = 5.12.9
+version = 5.12.10
 
 [libs/qt5/qtdeclarative]
-version = 5.12.9
+version = 5.12.10
 
 [libs/qt5/qtmacextras]
-version = 5.12.9
+version = 5.12.10
 
 [libs/qt5/qtsvg]
-version = 5.12.9
+version = 5.12.10
 
 [libs/qt5/qttools]
-version = 5.12.9
+version = 5.12.10
 
 [libs/qt5/qttranslations]
-version = 5.12.9
+version = 5.12.10
 
 [libs/qt5/qtxmlpatterns]
-version = 5.12.9
+version = 5.12.10
 
 [libs/runtime]
 version = 15
+
+[libs/sparkle]
+version = 1.24.0
 
 [libs/sqlite]
 version = 3.31.1
