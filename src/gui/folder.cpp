@@ -221,6 +221,11 @@ bool Folder::isBusy() const
     return _engine->isSyncRunning();
 }
 
+bool Folder::isSyncRunning() const
+{
+    return _engine->isSyncRunning();
+}
+
 QString Folder::remotePath() const
 {
     return _definition.targetPath;
