@@ -215,7 +215,7 @@ void AccountState::checkConnectivity(bool verifyOnly)
         if (verifyOnly) {
             conValidator->checkServer();
         } else {
-            conValidator->checkServerAndAuth();
+            conValidator->checkServerAndUpdate();
         }
     } else {
         // Check the server and then the auth.
@@ -233,7 +233,7 @@ void AccountState::checkConnectivity(bool verifyOnly)
         // ssl config that does not have a sensible certificate chain.
         account()->setSslConfiguration(QSslConfiguration());
         //#endif
-        conValidator->checkServerAndAuth();
+        conValidator->checkServerAndUpdate();
     }
 }
 

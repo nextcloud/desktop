@@ -270,7 +270,7 @@ void OwncloudSetupWizard::testOwnCloudConnect()
         }
         _ocWizard->displayError(errors.join(QLatin1Char('\n')));
     });
-    job->checkServerAndAuth();
+    job->checkServerAndUpdate();
 }
 
 void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFolder, const QString &remoteFolder)

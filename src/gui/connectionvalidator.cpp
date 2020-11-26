@@ -36,17 +36,16 @@ static qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingI
 ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
     : QObject(parent)
     , _account(account)
-    , _isCheckingServerAndAuth(false)
 {
 }
 
 void ConnectionValidator::checkServer()
 {
-    _verifyServerOnly = true;
-    checkServerAndAuth();
+    _updateConfig = false;
+    checkServerAndUpdate();
 }
 
-void ConnectionValidator::checkServerAndAuth()
+void ConnectionValidator::checkServerAndUpdate()
 {
     if (!_account) {
         _errors << tr("No ownCloud account configured");
@@ -54,9 +53,6 @@ void ConnectionValidator::checkServerAndAuth()
         return;
     }
     qCDebug(lcConnectionValidator) << "Checking server and authentication";
-    _verifyServerOnly = false;
-
-    _isCheckingServerAndAuth = true;
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
     if (ClientProxy::isUsingSystemDefault()) {
@@ -130,12 +126,8 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
         return;
     }
 
-    if (!_verifyServerOnly) {
-        // now check the authentication
-        QTimer::singleShot(0, this, &ConnectionValidator::checkAuthentication);
-    } else {
-        reportResult(Connected);
-    }
+    // now check the authentication
+    QTimer::singleShot(0, this, &ConnectionValidator::checkAuthentication);
 }
 
 // status.php could not be loaded (network or server issue!).
@@ -181,6 +173,7 @@ void ConnectionValidator::checkAuthentication()
     // continue in slotAuthCheck here :-)
     qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
     PropfindJob *job = new PropfindJob(_account, "/", this);
+    job->setAuthenticationJob(true); // don't retry
     job->setTimeout(timeoutToUseMsec);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, &PropfindJob::result, this, &ConnectionValidator::slotAuthSuccess);
@@ -220,10 +213,11 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 void ConnectionValidator::slotAuthSuccess()
 {
     _errors.clear();
-    if (!_isCheckingServerAndAuth) {
+    if (!_updateConfig) {
         reportResult(Connected);
         return;
     }
+
     checkServerCapabilities();
 }
 

@@ -102,7 +102,7 @@ public:
 public slots:
     /// Checks the server and the authentication.
     void checkServer();
-    void checkServerAndAuth();
+    void checkServerAndUpdate();
     void systemProxyLookupDone(const QNetworkProxy &proxy);
 
 signals:
@@ -139,8 +139,7 @@ private:
 
     QStringList _errors;
     AccountPtr _account;
-    bool _isCheckingServerAndAuth;
-    bool _verifyServerOnly = false;
+    bool _updateConfig = true;
 };
 }
 
