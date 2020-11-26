@@ -49,7 +49,6 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     SyncJournalFileRecord parentRec;
     bool ok = propagator->_journal->getFileRecord(parentPath, &parentRec);
     if (!ok) {
-        done(SyncFileItem::NormalError);
         return;
     }
 
