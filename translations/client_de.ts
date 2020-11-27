@@ -1099,17 +1099,17 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
         <translation>Sie haben keine Schreibberechtigung für den ausgewählten Ordner!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1455"/>
+        <location filename="../src/gui/folderman.cpp" line="1457"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Es existiert bereits eine Synchronisation vom Server zu diesem lokalen Ordner. Bitte wählen Sie ein anderes lokales Verzeichnis!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Der lokale Ordner %1 liegt innerhalb eines synchronisierten Ordners. Bitte wählen Sie einen anderen aus!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1443"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Der lokale Ordner %1 liegt in einem Ordner, der bereits synchronisiert wird. Bitte wählen Sie einen anderen aus!</translation>
     </message>

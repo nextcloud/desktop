@@ -1086,17 +1086,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Du har inga skrivrättigheter till den valda mappen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1455"/>
+        <location filename="../src/gui/folderman.cpp" line="1457"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Det pågår redan en synkronisering från servern till denna lokala mappen. Vänligen välj en annan lokal mapp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokala mappen %1 innehåller redan en mapp som synkas. Var god välj en annan!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1443"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokala mappen %1 finns redan inuti en mapp som synkas. Var god välj en annan!</translation>
     </message>

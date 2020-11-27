@@ -1098,17 +1098,17 @@ Jeśli to był wypadek i zdecydujesz się zatrzymać pliki, zostaną one zsynchr
         <translation>Nie masz uprawnień, aby zapisywać w tym  katalogu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1455"/>
+        <location filename="../src/gui/folderman.cpp" line="1457"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Istnieje już synchronizacja z serwera do tego lokalnego folderu. Proszę wybrać inny folder lokalny!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Lokalny folder %1 już zawiera folder użyty na potrzeby synchronizacji. Proszę wybrać inny folder lokalny.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1443"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Lokalny folder %1 już zawiera folder użyty na potrzeby synchronizacji. Proszę wybrać inny folder lokalny.</translation>
     </message>

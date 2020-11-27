@@ -1097,17 +1097,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Voce não tem permissão para escrita na pasta selecionada!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1455"/>
+        <location filename="../src/gui/folderman.cpp" line="1457"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Já existe uma sincronização do servidor para esta pasta local. Por favor, escolha uma outra pasta local!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>A pasta local %1 já contém uma pasta utilizada numa ligação de sincronização de pasta. Por favor, escolha outra!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1443"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>A pasta local %1 já está contida em uma pasta usada em uma conexão de sincronização de pastas. Por favor, escolha outra!</translation>
     </message>

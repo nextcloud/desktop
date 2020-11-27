@@ -1094,17 +1094,17 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
         <translation>U heeft geen permissie om te schrijven naar de geselecteerde map!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1455"/>
+        <location filename="../src/gui/folderman.cpp" line="1457"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Er wordt vanaf de server al naar deze lokale map gesynchroniseerd. Kies een andere lokale map!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Lokale map %1 bevat al een map die wordt gebruikt voor een map-synchronisatie verbinding. Kies een andere!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1443"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Lokale map %1 zit al in een map die wordt gebruikt voor een map-synchronisatie verbinding. Kies een andere!</translation>
     </message>

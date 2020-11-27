@@ -1091,17 +1091,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>選択されたフォルダーに書き込み権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1455"/>
+        <location filename="../src/gui/folderman.cpp" line="1457"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>すでに同期されたフォルダーがあります。別のフォルダーを選択してください！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>ローカルフォルダー %1 にはすでに同期フォルダーとして利用されてるフォルダーを含んでいます。他のフォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1443"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>ローカルフォルダー %1 には同期フォルダーとして利用されているフォルダーがあります。他のフォルダーを選択してください。</translation>
     </message>

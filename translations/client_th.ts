@@ -1098,17 +1098,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>คุณมีสิทธิ์เขียนโฟลเดอร์ที่เลือกนี้!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1455"/>
+        <location filename="../src/gui/folderman.cpp" line="1457"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>โฟลเดอร์นี้ได้ถูกประสานข้อมูลกับเซิร์ฟเวอร์แล้ว โปรดเลือกโฟลเดอร์อื่นๆ!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาโฟลเดอร์ในเครื่อง %1 ได้ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1443"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาของโฟลเดอร์ในเครื่อง %1 ไดถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>

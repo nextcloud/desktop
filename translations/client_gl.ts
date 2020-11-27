@@ -1100,17 +1100,17 @@ Se fose un accidente e decide manter os seus ficheiros, volverán ser sincroniza
         <translation>Vostede non ten permiso para escribir neste cartafol!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1455"/>
+        <location filename="../src/gui/folderman.cpp" line="1457"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Xa existe unha tarefa de sincronización entre o servidor e este cartafol. Escolla outro cartafol local!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>O cartafol local %1 xa contén un cartafol usado nunha conexión de sincronización de cartafoles. Escolla outro!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1443"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>O cartafol local %1 está dentro dun cartafol usado nunha conexión de sincronización de cartafoles. Escolla outro!</translation>
     </message>

@@ -1090,17 +1090,17 @@ Hvis det var et uhell og du velger å beholde filene, vil de bli synkronisert ti
         <translation>Du har ikke skrivetilgang til den valgte mappen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1455"/>
+        <location filename="../src/gui/folderman.cpp" line="1457"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Det er allerede en synkronisering fra serveren til denne lokale mappen. Velg en annen mappe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1435"/>
+        <location filename="../src/gui/folderman.cpp" line="1437"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokale mappen %1 inneholder allerede en mappe brukt i en mappe-synkronisering. Velg en annen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1441"/>
+        <location filename="../src/gui/folderman.cpp" line="1443"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokale mappen %1 er allerede en undermappe av en mappe brukt i en mappe-synkronisering. Velg en annen!</translation>
     </message>
