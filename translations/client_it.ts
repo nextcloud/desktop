@@ -1646,7 +1646,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Vuoi cambiare il canale di aggiornamento?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="304"/>
@@ -1658,12 +1658,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Cambia il canale di aggiornamento</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annulla</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
