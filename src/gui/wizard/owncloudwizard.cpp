@@ -330,7 +330,7 @@ void OwncloudWizard::bringToTop()
     ownCloudGui::raiseDialog(this);
 }
 
-void OwncloudWizard::askExperimentalVirtualFilesFeature(const std::function<void(bool enable)> &callback)
+void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback)
 {
     const auto bestVfsMode = bestAvailableVfsMode();
     QMessageBox *msgBox = nullptr;
@@ -369,7 +369,8 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(const std::function<void
         msgBox->addButton(tr("Enable experimental placeholder mode"), QMessageBox::AcceptRole);
         msgBox->addButton(tr("Stay safe"), QMessageBox::RejectRole);
     }
-    connect(msgBox, &QMessageBox::finished, msgBox, [callback, msgBox](int result) {
+    msgBox->setParent(receiver);
+    connect(msgBox, &QMessageBox::finished, receiver, [callback, msgBox](int result) {
         callback(result == QMessageBox::AcceptRole);
         msgBox->deleteLater();
     });
