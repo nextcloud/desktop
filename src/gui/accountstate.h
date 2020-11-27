@@ -42,6 +42,7 @@ class AccountState : public QObject, public QSharedData
     Q_PROPERTY(AccountPtr account MEMBER _account)
 
 public:
+    static void updateUrlDialog(AccountPtr account, const QUrl &url, std::function<void()> callback = {});
     enum State {
         /// Not even attempting to connect, most likely because the
         /// user explicitly signed out or cancelled a credential dialog.

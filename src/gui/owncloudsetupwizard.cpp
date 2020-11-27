@@ -175,14 +175,6 @@ void OwncloudSetupWizard::slotFindServer()
     connect(job, &CheckServerJob::instanceFound, this, &OwncloudSetupWizard::slotFoundServer);
     connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoServerFoundTimeout);    
     connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotNoServerFound);
-    connect(job, &CheckServerJob::redirectDetected, this, [account](const QUrl &old, const QUrl &targetUrl){
-        qCInfo(lcWizard) << old << " was redirected to" << targetUrl;
-        if (targetUrl.scheme() == QLatin1String("https") && old.host() == targetUrl.host()) {
-            account->setUrl(targetUrl);
-        } else {
-            account->setUrlWithUserApproval(targetUrl);
-        }
-    });
     job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
     job->start();
 }
@@ -200,11 +192,20 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
     // Note with newer servers we get the version actually only later in capabilities
     // https://github.com/owncloud/core/pull/27473/files
     _ocWizard->account()->setServerVersion(serverVersion);
-
+    const auto oldUrl = _ocWizard->account()->url();
+    if (oldUrl != url) {
+        qCInfo(lcWizard) << oldUrl << " was redirected to" << url;
+        if (url.scheme() == QLatin1String("https") && oldUrl.host() == url.host()) {
+            _ocWizard->account()->setUrl(url);
+        } else {
+            AccountState::updateUrlDialog(_ocWizard->account(), url, [this] { slotDetermineAuthType(); });
+            return;
+        }
+    }
     slotDetermineAuthType();
 }
 
-void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
+void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *)
 {
     auto job = qobject_cast<CheckServerJob *>(sender());
 

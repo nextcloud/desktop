@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "application.h"
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "account.h"
@@ -19,7 +20,9 @@
 #include "creds/httpcredentials.h"
 #include "logger.h"
 #include "configfile.h"
+#include "settingsdialog.h"
 
+#include <QMessageBox>
 #include <QSettings>
 #include <QTimer>
 #include <qfontmetrics.h>
@@ -27,6 +30,26 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountState, "gui.account.state", QtInfoMsg)
+
+void AccountState::updateUrlDialog(AccountPtr account, const QUrl &newUrl, std::function<void()> callback)
+{
+    auto diag = new QMessageBox(QMessageBox::Warning, tr("Url update requested for %1").arg(account->displayName()),
+        tr("The url for %1 changed from %2 to %3, do you want to accept the changed url").arg(account->displayName(), account->url().toString(), newUrl.toString()),
+        QMessageBox::NoButton, ocApp()->gui()->settingsDialog());
+    diag->setAttribute(Qt::WA_DeleteOnClose);
+    auto yes = diag->addButton(tr("Change url permanently to %1").arg(newUrl.toString()), QMessageBox::AcceptRole);
+    diag->addButton(tr("Reject"), QMessageBox::RejectRole);
+    QObject::connect(diag, &QMessageBox::finished, account.data(), [diag, yes, newUrl, account, callback] {
+        if (diag->clickedButton() == yes) {
+            account->setUrl(newUrl);
+            Q_EMIT account->wantsAccountSaved(account.data());
+        }
+        if (callback) {
+            callback();
+        }
+    });
+    diag->show();
+}
 
 AccountState::AccountState(AccountPtr account)
     : QObject()
@@ -48,6 +71,9 @@ AccountState::AccountState(AccountPtr account)
         this, [this] {
             checkConnectivity(true);
         });
+    connect(account.data(), &Account::requestUrlUpdate, this, [this](const QUrl &newUrl) {
+        updateUrlDialog(_account, newUrl, [this] { checkConnectivity(); });
+    });
 }
 
 AccountState::~AccountState()
