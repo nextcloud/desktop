@@ -1579,17 +1579,17 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kanal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="157"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stabilni</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>preizkusni</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
@@ -1645,7 +1645,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Ali želite zamenjati kanal za posodobitve?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="304"/>
@@ -1657,12 +1657,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Spremeni kanal posodobitev</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Prekliči</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -1957,7 +1957,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Posodobitev je spodletela</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
@@ -1967,17 +1967,17 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Znova vprašaj kasneje</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Ponovno zaženi in posodobi</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Posodobi ročno</translation>
     </message>
 </context>
 <context>
@@ -2138,7 +2138,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Poteka prejemanje različice %1. Počakajte …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
@@ -3792,13 +3792,13 @@ Uporaba možnosti ni priporočljiva.</translation>
         <location filename="../src/gui/systray.cpp" line="97"/>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Ustavi usklajevanja</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Nadaljuj z usklajevanjem</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="96"/>
@@ -3813,12 +3813,12 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Ustavi usklajevanje za vse</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Nadaljuj z usklajevanjem za vse</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="178"/>
@@ -4281,7 +4281,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Prijava prek ponudnika</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
