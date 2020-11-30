@@ -171,7 +171,7 @@ private:
     void fetchNavigationApps();
 
 signals:
-    void stateChanged(int state);
+    void stateChanged(State state);
     void isConnectedChanged();
     void hasFetchedNavigationApps();
 
