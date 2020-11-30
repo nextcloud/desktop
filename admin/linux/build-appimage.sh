@@ -21,11 +21,11 @@ if [ $SUFFIX != "master" ]; then
     SUFFIX="PR-$SUFFIX"
 fi
 
-#QtKeyChain master
+#QtKeyChain v0.10.0
 cd /build
 git clone https://github.com/frankosterfeld/qtkeychain.git
 cd qtkeychain
-git checkout master
+git checkout v0.10.0
 mkdir build
 cd build
 cmake -D CMAKE_INSTALL_PREFIX=/usr ../
