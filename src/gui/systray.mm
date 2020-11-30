@@ -1,4 +1,5 @@
 #include <QString>
+#include <QWindow>
 #import <Cocoa/Cocoa.h>
 
 @interface NotificationCenterDelegate : NSObject
@@ -39,6 +40,15 @@ void sendOsXUserNotification(const QString &title, const QString &message)
 
     [userNotificationCenter deliverNotification:notification];
     [notification release];
+}
+
+void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window)
+{
+    NSView *nativeView = (NSView *)window->winId();
+    NSWindow *nativeWindow = (NSWindow *)[nativeView window];
+    [nativeWindow setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces | NSWindowCollectionBehaviorIgnoresCycle |
+                  NSWindowCollectionBehaviorTransient];
+    [nativeWindow setLevel:NSMainMenuWindowLevel];
 }
 
 }

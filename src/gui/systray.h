@@ -23,12 +23,14 @@
 class QScreen;
 class QQmlApplicationEngine;
 class QQuickWindow;
+class QWindow;
 
 namespace OCC {
 
 #ifdef Q_OS_OSX
 bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
+void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 #endif
 
 /**
