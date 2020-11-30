@@ -264,7 +264,7 @@ void ExcludedFiles::addManualExclude(const QString &expr)
 void ExcludedFiles::addManualExclude(const QString &expr, const QString &basePath)
 {
 #if defined(Q_OS_WIN)
-    Q_ASSERT(basePath.size() >= 2 && basePath.at(1) == ':');
+    Q_ASSERT(basePath.size() >= 2 && basePath.at(1) == QLatin1Char(':'));
 #else
     Q_ASSERT(basePath.startsWith(QLatin1Char('/')));
 #endif

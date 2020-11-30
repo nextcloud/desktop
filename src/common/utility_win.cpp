@@ -102,8 +102,8 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
 static inline bool hasDarkSystray_private()
 {
     if(Utility::registryGetKeyValue(    HKEY_CURRENT_USER,
-                                        R"(Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)",
-                                        "SystemUsesLightTheme" ) == 1) {
+                                        QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)"),
+                                        QStringLiteral("SystemUsesLightTheme") ) == 1) {
         return false;
     }
     else {
