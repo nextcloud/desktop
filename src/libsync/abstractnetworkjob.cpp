@@ -113,9 +113,6 @@ void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
     connect(reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
     connect(reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
-    connect(reply, &QNetworkReply::redirected, this, [this, reply](const QUrl &url) {
-        Q_EMIT redirected(reply, url);
-    });
 }
 
 QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)

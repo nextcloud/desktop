@@ -285,8 +285,6 @@ signals:
      */
     void timeout(const QUrl &url);
 
-    void redirectDetected(const QUrl &old, const QUrl &url);
-
 private:
     bool finished() override;
     void onTimedOut() override;
@@ -305,6 +303,13 @@ private:
     QUrl _serverUrl;
 
     int _maxRedirectsAllowed = 5;
+
+    /** we only got permanent redirects */
+    bool _redirectDistinct = true;
+    /** only retry once, the first try might give us needed cookies
+        the second is supposed to succeed
+    */
+    bool _firstTry = true;
 };
 
 

@@ -92,9 +92,6 @@ void ConnectionValidator::slotCheckServerAndAuth()
     connect(checkJob, &CheckServerJob::instanceFound, this, &ConnectionValidator::slotStatusFound);
     connect(checkJob, &CheckServerJob::instanceNotFound, this, &ConnectionValidator::slotNoStatusFound);
     connect(checkJob, &CheckServerJob::timeout, this, &ConnectionValidator::slotJobTimeout);
-    connect(checkJob, &CheckServerJob::redirectDetected, this, [this](const QUrl &, const QUrl &targetUrl) {
-        Q_EMIT _account->requestUrlUpdate(targetUrl);
-    });
     checkJob->start();
 }
 
@@ -113,7 +110,8 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
 
     // Update server url in case of redirection
     if (_account->url() != url) {
-        qCInfo(lcConnectionValidator()) << "status.php was redirected to" << url.toString();
+        qCInfo(lcConnectionValidator()) << "status.php was redirected to" << url.toString() << "asking user to accept and abort for now";
+        Q_EMIT _account->requestUrlUpdate(url);
         reportResult(StatusNotFound);
         return;
     }

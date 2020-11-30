@@ -434,6 +434,12 @@ void CheckServerJob::start()
     sendRequest("GET", Utility::concatUrlPath(_serverUrl, path()), req);
     connect(reply(), &QNetworkReply::metaDataChanged, this, &CheckServerJob::metaDataChangedSlot);
     connect(reply(), &QNetworkReply::encrypted, this, &CheckServerJob::encryptedSlot);
+    connect(reply(), &QNetworkReply::redirected, this, [this] {
+        const auto code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        if (code == 302 || code == 307) {
+            _redirectDistinct = false;
+        }
+    });
     AbstractNetworkJob::start();
 }
 
@@ -501,9 +507,6 @@ bool CheckServerJob::finished()
 {
     const QUrl targetUrl = [this] {
         QUrl redirectUrl = reply()->url();
-        if (redirectUrl.isRelative()) {
-            redirectUrl = _serverUrl.resolved(redirectUrl);
-        }
         redirectUrl.setPath(redirectUrl.path().remove(QStringLiteral("/status.php")));
         return redirectUrl;
     }();
@@ -513,7 +516,21 @@ bool CheckServerJob::finished()
         qCWarning(lcCheckServerJob) << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
     }
     if (_serverUrl != targetUrl) {
-        Q_EMIT redirectDetected(_serverUrl, targetUrl);
+        if (_redirectDistinct) {
+            _serverUrl = targetUrl;
+        } else {
+            if (_firstTry) {
+                qCWarning(lcCheckServerJob) << "Server might have moved, retry";
+                _firstTry = false;
+                _redirectDistinct = true;
+                start();
+                return false;
+            } else {
+                qCWarning(lcCheckServerJob) << "We got a temporary moved server aborting";
+                emit instanceNotFound(reply());
+                return true;
+            }
+        }
     }
 
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
@@ -546,7 +563,7 @@ bool CheckServerJob::finished()
 
         qCInfo(lcCheckServerJob) << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
         if (status.object().contains(QStringLiteral("installed"))) {
-            emit instanceFound(targetUrl, status.object());
+            emit instanceFound(_serverUrl, status.object());
         } else {
             qCWarning(lcCheckServerJob) << "No proper answer on " << reply()->url();
             emit instanceNotFound(reply());
