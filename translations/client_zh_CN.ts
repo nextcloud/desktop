@@ -1652,7 +1652,9 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>更新通道确定将提供哪些客户端更新来进行安装。“稳定版”通道仅包含被认为可靠的升级，而“测试版”频道中的版本可能包含较新的功能和错误修正，但尚未经过全面测试。 
+
+请注意，这只会选择从何种中池升级，并且没有降级：因此，通常无法立即从测试版通道返回到稳定版通道，这意味着您需要等待比当前安装的测试版更新的稳定版。 </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
