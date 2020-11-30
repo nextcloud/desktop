@@ -161,6 +161,11 @@ void ProcessDirectoryJob::process()
             }
         }
 
+        // On the server the path is mangled in case of E2EE
+        if (!e.serverEntry.e2eMangledName.isEmpty()) {
+            path._server = e.serverEntry.e2eMangledName;
+        }
+
         // If the filename starts with a . we consider it a hidden file
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
@@ -306,7 +311,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
                               << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
                               << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/"
-                              << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile);
+                              << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
+                              << " | e2ee: " << dbEntry._isE2eEncrypted << "/" << serverEntry.isE2eEncrypted
+                              << " | e2eeMangledName: " << dbEntry._e2eMangledName << "/" << serverEntry.e2eMangledName;
 
     if (_discoveryData->isRenamed(path._original)) {
         qCDebug(lcDisco) << "Ignoring renamed";
@@ -391,6 +398,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_etag = serverEntry.etag;
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
+    item->_encryptedFileName = serverEntry.e2eMangledName;
 
     // Check for missing server data
     {

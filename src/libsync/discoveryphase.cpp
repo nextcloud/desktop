@@ -16,6 +16,8 @@
 #include "discovery.h"
 
 #include "account.h"
+#include "clientsideencryptionjobs.h"
+
 #include "common/asserts.h"
 #include "common/checksums.h"
 
@@ -332,6 +334,7 @@ DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &accou
     , _ignoredFirst(false)
     , _isRootPath(false)
     , _isExternalStorage(false)
+    , _isE2eEncrypted(false)
 {
 }
 
@@ -355,6 +358,9 @@ void DiscoverySingleDirectoryJob::start()
     if (_account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
         // Server older than 10.0 have performances issue if we ask for the share-types on every PROPFIND
         props << "http://owncloud.org/ns:share-types";
+    }
+    if (_account->capabilities().clientSideEncryptionAvailable()) {
+        props << "http://nextcloud.org/ns:is-encrypted";
     }
 
     lsColJob->setProperties(props);
@@ -416,6 +422,8 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
                 // Piggy back on the persmission field
                 result.remotePerm.setPermission(RemotePermissions::IsShared);
             }
+        } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
+            result.isE2eEncrypted = true;
         }
     }
 }
@@ -436,6 +444,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
                 // Placeholder that means that the server supports the feature even if it did not set one.
                 _dataFingerprint = "[empty]";
             }
+        }
+        if (map.contains("id")) {
+            _fileId = map.value("id").toUtf8();
+        }
+        if (map.contains("is-encrypted") && map.value("is-encrypted") == QStringLiteral("1")) {
+            _isE2eEncrypted = true;
+            Q_ASSERT(!_fileId.isEmpty());
         }
     } else {
 
@@ -483,6 +498,9 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         emit finished(HttpError{ 0, _error });
         deleteLater();
         return;
+    } else if (_isE2eEncrypted) {
+        fetchE2eMetadata();
+        return;
     }
     emit etag(_firstEtag);
     emit finished(_results);
@@ -500,6 +518,59 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
     }
     emit finished(HttpError{ httpCode, msg });
+    deleteLater();
+}
+
+void DiscoverySingleDirectoryJob::fetchE2eMetadata()
+{
+    auto job = new GetMetadataApiJob(_account, _fileId);
+    connect(job, &GetMetadataApiJob::jsonReceived,
+            this, &DiscoverySingleDirectoryJob::metadataReceived);
+    connect(job, &GetMetadataApiJob::error,
+            this, &DiscoverySingleDirectoryJob::metadataError);
+    job->start();
+}
+
+void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, int statusCode)
+{
+    qCDebug(lcDiscovery) << "Metadata received, applying it to the result list";
+    Q_ASSERT(_subPath.startsWith('/'));
+
+    const auto metadata = FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode);
+    const auto encryptedFiles = metadata.files();
+
+    const auto findEncryptedFile = [=](const QString &name) {
+        const auto it = std::find_if(std::cbegin(encryptedFiles), std::cend(encryptedFiles), [=](const EncryptedFile &file) {
+            return file.encryptedFilename == name;
+        });
+        if (it == std::cend(encryptedFiles)) {
+            return Optional<EncryptedFile>();
+        } else {
+            return Optional<EncryptedFile>(*it);
+        }
+    };
+
+    std::transform(std::cbegin(_results), std::cend(_results), std::begin(_results), [=](const RemoteInfo &info) {
+        auto result = info;
+        const auto encryptedFileInfo = findEncryptedFile(result.name);
+        if (encryptedFileInfo) {
+            result.isE2eEncrypted = true;
+            result.e2eMangledName = _subPath.mid(1) + QLatin1Char('/') + result.name;
+            result.name = encryptedFileInfo->originalFilename;
+        }
+        return result;
+    });
+
+    emit etag(_firstEtag);
+    emit finished(_results);
+    deleteLater();
+}
+
+void DiscoverySingleDirectoryJob::metadataError(const QByteArray &fileId, int httpReturnCode)
+{
+    qCWarning(lcDiscovery) << "E2EE Metadata job error. Trying to proceed without it." << fileId << httpReturnCode;
+    emit etag(_firstEtag);
+    emit finished(_results);
     deleteLater();
 }
 }

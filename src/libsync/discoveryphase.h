@@ -56,6 +56,9 @@ struct RemoteInfo
     time_t modtime = 0;
     int64_t size = 0;
     bool isDirectory = false;
+    bool isE2eEncrypted = false;
+    QString e2eMangledName;
+
     bool isValid() const { return !name.isNull(); }
 
     QString directDownloadUrl;
@@ -130,11 +133,15 @@ private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
     void lsJobFinishedWithErrorSlot(QNetworkReply *);
+    void fetchE2eMetadata();
+    void metadataReceived(const QJsonDocument &json, int statusCode);
+    void metadataError(const QByteArray& fileId, int httpReturnCode);
 
 private:
     QVector<RemoteInfo> _results;
     QString _subPath;
     QString _firstEtag;
+    QByteArray _fileId;
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.
     // This flag is true if it was already ignored.
@@ -143,6 +150,8 @@ private:
     bool _isRootPath;
     // If this directory is an external storage (The first item has 'M' in its permission)
     bool _isExternalStorage;
+    // If this directory is e2ee
+    bool _isE2eEncrypted;
     // If set, the discovery will finish with an error
     QString _error;
     QPointer<LsColJob> _lsColJob;
