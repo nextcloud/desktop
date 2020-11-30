@@ -31,7 +31,7 @@ def getCommitVersion(commit):
     try:
         for line in subprocess.check_output(["git", "show",
                                              commit + ":VERSION.cmake"]).splitlines():
-            m = re.match("set\( MIRALL_VERSION_([A-Z]+) +([0-9])+ *\)", line)
+            m = re.match("set\( MIRALL_VERSION_([A-Z]+) +([0-9]+) *\)", line)
             if m is not None:
                 kind=m.group(1)
                 version=m.group(2)
@@ -48,7 +48,7 @@ def getCommitVersion(commit):
     except:
         return None
 
-def collectEntries(baseCommit, baseVersion, kind, finalRevDate, config):
+def collectEntries(baseCommit, baseVersion, kind, finalBaseVersion, finalRevDate, config):
 
     newVersionCommit = None
     newVersionTag = None
@@ -89,7 +89,6 @@ def collectEntries(baseCommit, baseVersion, kind, finalRevDate, config):
                 newVersionOrigTag = lastVersionTag
                 (baseVersion, _kind) = result
 
-
         version=getCommitVersion(commit)
         if version and version!=lastCMAKEVersion:
             tag = "v" + version
@@ -119,6 +118,8 @@ def collectEntries(baseCommit, baseVersion, kind, finalRevDate, config):
             revdate = datetime.datetime.now().strftime("%Y%m%d.%H%M%S")+ "." + commit
         else:
             revdate = finalRevDate
+        if finalBaseVersion is not None:
+            baseVersion = finalBaseVersion
         entries[-1] = (commit, name, email, date, revdate, subject, baseVersion, kind)
 
     entries.reverse()
@@ -167,8 +168,10 @@ if __name__ == "__main__":
 
     distribution = sys.argv[2]
     finalRevDate = sys.argv[3] if len(sys.argv)>3 else None
+    finalBaseVersion = sys.argv[4] if len(sys.argv)>4 else None
 
-    entries = collectEntries(baseCommit, baseVersion, "alpha", finalRevDate, config)
+    entries = collectEntries(baseCommit, baseVersion, "alpha",
+                             finalBaseVersion, finalRevDate, config)
 
     with open(sys.argv[1], "wt") as f:
         (baseVersion, revdate, kind) = genChangeLogEntries(f, entries, distribution)

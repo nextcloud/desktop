@@ -76,7 +76,7 @@ for distribution in ${UBUNTU_DISTRIBUTIONS} ${DEBIAN_DISTRIBUTIONS}; do
 
     git merge ${DRONE_COMMIT}
 
-    admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog ${distribution} ${revdate}
+    admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog ${distribution} ${revdate} ${basever}
     cat /tmp/tmpchangelog debian/changelog > debian/changelog.new
     mv debian/changelog.new debian/changelog
 
