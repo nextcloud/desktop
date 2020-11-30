@@ -1393,7 +1393,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Наблюдатель не получил тестового уведомления.</translation>
     </message>
 </context>
 <context>
@@ -1580,12 +1580,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="157"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>стабильный</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>бета</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="169"/>
@@ -1641,7 +1641,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Сменить канал обновлений?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="304"/>
@@ -1653,12 +1653,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Сменить канал обновлений</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -1954,27 +1954,27 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Сбой обновления</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Новая версия %1 клиента доступна, но произошёл сбой в процессе обновления.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; был загружен. Установлена версия %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Спросить позже</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Перезагрузить и обновить</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Обновить вручную</translation>
     </message>
 </context>
 <context>
@@ -2135,12 +2135,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Загрузка %1. Пожалуйста ожидайте ...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 доступно. Перезагрузите приложение для начала процесса обновления.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -2160,7 +2160,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Новый %1 доступен. Пожалуйста нажмите &lt;a href=&apos;%2&apos;&gt;здесь&lt;/a&gt; чтобы загрузить обновление.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -2341,7 +2341,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Это ссылка для входа в веб интерфейс вашего %1.&lt;br/&gt;Она выглядит как https://cloud.example.com или https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
@@ -4268,7 +4268,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Это ссылка для входа в веб интерфейс вашего %1. Она выглядит как https://cloud.example.com или https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
