@@ -74,8 +74,9 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
 {
-    if (reply)
+    if (reply) {
         reply->setProperty("doNotHandleAuth", true);
+    }
 
     QNetworkReply *old = _reply;
     _reply = reply;
