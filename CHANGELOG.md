@@ -1,3 +1,24 @@
+Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
+=======================================
+The following sections list the changes in ownCloud Desktop Client unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/client/compare/v2.7.1...master
+
+Summary
+-------
+
+* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+
+Details
+-------
+
+* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+
+   We no longer recommend to use a http connection if a https url was not found.
+
+   https://github.com/owncloud/client/issues/8231
+
 Changelog for ownCloud Desktop Client [2.7.1] (2020-11-18)
 =======================================
 The following sections list the changes in ownCloud Desktop Client 2.7.1 relevant to
