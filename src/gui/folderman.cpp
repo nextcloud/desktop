@@ -1416,8 +1416,10 @@ static QString canonicalPath(const QString &path)
 QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl) const
 {
     QString recursiveValidity = checkPathValidityRecursive(path);
-    if (!recursiveValidity.isEmpty())
+    if (!recursiveValidity.isEmpty()) {
+        qCDebug(lcFolderMan) << path << recursiveValidity;
         return recursiveValidity;
+    }
 
     // check if the local directory isn't used yet in another ownCloud sync
     Qt::CaseSensitivity cs = Qt::CaseSensitive;

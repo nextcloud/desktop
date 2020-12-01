@@ -141,7 +141,7 @@ private:
     void setState(State state);
 
 signals:
-    void stateChanged(int state);
+    void stateChanged(State state);
     void isConnectedChanged();
 
 protected Q_SLOTS:

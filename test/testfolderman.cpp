@@ -47,6 +47,9 @@ class TestFolderMan: public QObject
 private slots:
     void testCheckPathValidityForNewFolder()
     {
+#ifdef Q_OS_WIN
+        Utility::NtfsPermissionLookupRAII ntfs_perm;
+#endif
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
         QVERIFY(dir.isValid());
