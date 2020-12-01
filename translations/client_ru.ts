@@ -1011,7 +1011,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
         <source>%1 is currently locked.</source>
-        <translation>файл %1 заблокирован.</translation>
+        <translation>файл «%1» заблокирован.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="432"/>
@@ -1506,7 +1506,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="188"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Мы получили другой E-Tag для возобновления. Повторите попытку позже.</translation>
+        <translation>Получена отличающаяся метка возобновления, будет произведена ещё одна попытка.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
@@ -1575,7 +1575,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Канал</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="157"/>
@@ -1648,7 +1648,9 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Канал обновления позволяет выбрать версию клиента для установки. Стабильный канал предлагает только проверенные обновления. В канале «Бета» публикуются версии приложения с новыми возможностями и исправлениями ошибок, которые ещё не были тщательно проверены.
+
+Обратите внимание, что смена канала возможна переход только при увеличения внутренней версии приложения: переход со стабильного на бета-канал происходит моментально, а переход с бета-канала на стабильный потребует времени, пока стабильная версия станет новее установленной бета-версии.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
@@ -3805,7 +3807,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="97"/>
         <source>Exit %1</source>
-        <translation>Выход %1</translation>
+        <translation>Закрыть %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
@@ -4278,7 +4280,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Подключиться через поставщика услуги</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -4363,7 +4365,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -4598,7 +4600,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="675"/>
         <source>Open Talk %1</source>
-        <translation type="unfinished"/>
+        <translation>Открыть Конференции %1</translation>
     </message>
 </context>
 <context>
