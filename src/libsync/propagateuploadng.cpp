@@ -316,7 +316,7 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    const QString fileName = propagator()->fullLocalPath(_fileToUpload._file);
+    const QString fileName = _fileToUpload._path;
     auto device = std::make_unique<UploadDevice>(
             fileName, _currentChunk, _currentChunkSize, &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {

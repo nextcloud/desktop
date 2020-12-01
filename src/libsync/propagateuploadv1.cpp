@@ -122,7 +122,7 @@ void PropagateUploadFileV1::startNextChunk()
         headers[checkSumHeaderC] = _transmissionChecksumHeader;
     }
 
-    const QString fileName = propagator()->fullLocalPath(_fileToUpload._file);
+    const QString fileName = _fileToUpload._path;
     auto device = std::make_unique<UploadDevice>(
             fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {

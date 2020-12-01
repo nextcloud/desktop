@@ -370,7 +370,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
         this, &PropagateUploadFileCommon::slotComputeTransmissionChecksum);
     connect(computeChecksum, &ComputeChecksum::done,
         computeChecksum, &QObject::deleteLater);
-    computeChecksum->start(filePath);
+    computeChecksum->start(_fileToUpload._path);
 }
 
 void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray &contentChecksumType, const QByteArray &contentChecksum)
@@ -397,8 +397,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
         this, &PropagateUploadFileCommon::slotStartUpload);
     connect(computeChecksum, &ComputeChecksum::done,
         computeChecksum, &QObject::deleteLater);
-    const QString filePath = propagator()->fullLocalPath(_item->_file);
-    computeChecksum->start(filePath);
+    computeChecksum->start(_fileToUpload._path);
 }
 
 void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum)
@@ -414,7 +413,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         _item->_checksumHeader = _transmissionChecksumHeader;
     }
 
-    const QString fullFilePath = propagator()->fullLocalPath(_fileToUpload._file);
+    const QString fullFilePath = _fileToUpload._path;
     const QString originalFilePath = propagator()->fullLocalPath(_item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
@@ -439,9 +438,8 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         return;
     }
 
-    qint64 fileSize = FileSystem::getSize(fullFilePath);
-    _item->_size = fileSize;
-    _fileToUpload._size = fileSize;
+    _fileToUpload._size = FileSystem::getSize(fullFilePath);
+    _item->_size = FileSystem::getSize(originalFilePath);
 
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
