@@ -505,11 +505,7 @@ void CheckServerJob::metaDataChangedSlot()
 
 bool CheckServerJob::finished()
 {
-    const QUrl targetUrl = [this] {
-        QUrl redirectUrl = reply()->url();
-        redirectUrl.setPath(redirectUrl.path().remove(QStringLiteral("/status.php")));
-        return redirectUrl;
-    }();
+    const QUrl targetUrl = reply()->url().adjusted(QUrl::RemoveFilename);
     if (targetUrl.scheme() == QLatin1String("https")
         && reply()->sslConfiguration().sessionTicket().isEmpty()
         && reply()->error() == QNetworkReply::NoError) {
