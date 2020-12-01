@@ -399,6 +399,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
     item->_encryptedFileName = serverEntry.e2eMangledName;
+    item->_isEncrypted = serverEntry.isE2eEncrypted;
 
     // Check for missing server data
     {

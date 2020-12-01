@@ -184,6 +184,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   }
 
   _item->_encryptedFileName = _remoteParentPath + QLatin1Char('/') + encryptedFile.encryptedFilename;
+  _item->_isEncrypted = true;
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 

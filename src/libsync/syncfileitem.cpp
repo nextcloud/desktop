@@ -44,6 +44,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._serverHasIgnoredFiles = _serverHasIgnoredFiles;
     rec._checksumHeader = _checksumHeader;
     rec._e2eMangledName = _encryptedFileName.toUtf8();
+    rec._isE2eEncrypted = _isEncrypted;
 
     // Update the inode if possible
     rec._inode = _inode;
@@ -73,6 +74,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_serverHasIgnoredFiles = rec._serverHasIgnoredFiles;
     item->_checksumHeader = rec._checksumHeader;
     item->_encryptedFileName = QString::fromUtf8(rec._e2eMangledName);
+    item->_isEncrypted = rec._isE2eEncrypted;
     return item;
 }
 
