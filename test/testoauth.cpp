@@ -92,7 +92,11 @@ class OAuthTestCase : public QObject
     Q_OBJECT
     DesktopServiceHook desktopServiceHook;
 public:
-    enum State { StartState, BrowserOpened, TokenAsked, CustomState } state = StartState;
+    enum State { StartState,
+        StatusPhpState,
+        BrowserOpened,
+        TokenAsked,
+        CustomState } state = StartState;
     Q_ENUM(State);
     bool replyToBrowserOk = false;
     bool gotAuthOk = false;
@@ -112,9 +116,12 @@ public:
         account->setUrl(sOAuthTestServer);
         account->setCredentials(new FakeCredentials{fakeQnam});
         fakeQnam->setParent(this);
-        fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device)  {
-            if (req.url().path().endsWith(".well-known/openid-configuration"))
+        fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
+            if (req.url().path().endsWith(".well-known/openid-configuration")) {
                 return this->wellKnownReply(op, req);
+            } else if (req.url().path().endsWith("status.php")) {
+                return this->statusPhpReply(op, req);
+            }
             OC_ASSERT(device);
             OC_ASSERT(device->bytesAvailable() > 0); // OAuth2 always sends around POST data.
             return this->tokenReply(op, req);
@@ -130,7 +137,7 @@ public:
     }
 
     virtual void openBrowserHook(const QUrl &url) {
-        QCOMPARE(state, StartState);
+        QCOMPARE(state, StatusPhpState);
         state = BrowserOpened;
         QCOMPARE(url.path(), QString(sOAuthTestServer.path() + "/index.php/apps/oauth2/authorize"));
         QVERIFY(url.toString().startsWith(sOAuthTestServer.toString()));
@@ -170,6 +177,18 @@ public:
         return new FakePostReply(op, req, std::move(payload), fakeQnam);
     }
 
+    virtual QNetworkReply *statusPhpReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req)
+    {
+        OC_ASSERT(state == StartState);
+        state = StatusPhpState;
+        OC_ASSERT(op == QNetworkAccessManager::GetOperation);
+        OC_ASSERT(req.url().toString().startsWith(sOAuthTestServer.toString()));
+        OC_ASSERT(req.url().path() == sOAuthTestServer.path() + "/status.php");
+        std::unique_ptr<QBuffer> payload(new QBuffer());
+        payload->setData(statusPhpPayload());
+        return new FakePostReply(op, req, std::move(payload), fakeQnam);
+    }
+
     virtual QNetworkReply *wellKnownReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req)
     {
         return new FakeErrorReply(op, req, fakeQnam, 404);
@@ -184,6 +203,19 @@ public:
                 { "user_id", "admin" },
                 { "token_type", "Bearer" }
         });
+        return jsondata.toJson();
+    }
+
+    virtual QByteArray statusPhpPayload() const
+    {
+        QJsonDocument jsondata(QJsonObject {
+            { "installed", true },
+            { "maintenance", false },
+            { "needsDbUpgrade", false },
+            { "version", "10.5.0.10" },
+            { "versionstring", "10.5.0" },
+            { "edition", "Enterprise" },
+            { "productname", "ownCloud" } });
         return jsondata.toJson();
     }
 
