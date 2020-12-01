@@ -8,10 +8,17 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Correctly detect Windows 10 taskbar theme: [#8244](https://github.com/owncloud/client/issues/8244)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
 Details
 -------
+
+* Bugfix - Correctly detect Windows 10 taskbar theme: [#8244](https://github.com/owncloud/client/issues/8244)
+
+   We fixed the detection of a dark system try theme on Windows.
+
+   https://github.com/owncloud/client/issues/8244
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
@@ -190,7 +197,7 @@ Details
 
 * Change - Detect the Windows 10 theme for the system tray: [#7356](https://github.com/owncloud/client/issues/7356)
 
-   We now display the system tray icon according to the currrent theme
+   We now display the system tray icon according to the current theme
 
    https://github.com/owncloud/client/issues/7356
 
