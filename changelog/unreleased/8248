@@ -1,0 +1,6 @@
+Bugfix: Sync small plaintext files with Windows VFS
+
+We fixed a bug where small plaintext files where not synced 
+due to a broken interity check.
+
+https://github.com/owncloud/client/issues/8248
