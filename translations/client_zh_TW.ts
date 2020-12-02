@@ -1431,12 +1431,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>在復原時收到了不同的 E-Tag，將在下一次重新嘗試取得</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="197"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="198"/>
         <source>We received an unexpected download Content-Length.</source>
         <translation>們收到了意外下載的Content-Length。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="224"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="225"/>
         <source>Server returned wrong content-range</source>
         <translation>伺服器回應錯誤的內容長度</translation>
     </message>
@@ -1444,7 +1444,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::GETJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="334"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="335"/>
         <source>Connection Timeout</source>
         <translation>連線逾時</translation>
     </message>
@@ -1563,17 +1563,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>重新啟動並更新 (&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="280"/>
+        <location filename="../src/gui/generalsettings.cpp" line="279"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>您無法停用自動啟動，因為啟用了系統範圍的自動已啟用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="190"/>
+        <location filename="../src/gui/generalsettings.cpp" line="188"/>
         <source>Change update channel?</source>
         <translation>更改更新頻道？</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="191"/>
+        <location filename="../src/gui/generalsettings.cpp" line="189"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1582,12 +1582,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 請注意，這只會選擇從中進行池升級的版本，並且不會降級：因此，通常無法立即從Beta通道返回到穩定通道，這意味著要等待比當前安裝的Beta更新的穩定版本 版。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="204"/>
+        <location filename="../src/gui/generalsettings.cpp" line="202"/>
         <source>Change update channel</source>
         <translation>更改更新頻道</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="205"/>
+        <location filename="../src/gui/generalsettings.cpp" line="203"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -2698,48 +2698,48 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="452"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="453"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>檔案 %1 無法被下載，因為本地端的檔案名稱已毀損!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="503"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="504"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>下載將減少可用的本地端磁盤空間，使其低於限制</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="507"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="508"/>
         <source>Free space on disk is less than %1</source>
         <translation>可用的硬碟空間已經少於 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="630"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="631"/>
         <source>File was deleted from server</source>
         <translation>檔案已從伺服器被刪除</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="697"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="698"/>
         <source>The file could not be downloaded completely.</source>
         <translation>檔案下載無法完成。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="704"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="705"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>儘管伺服器宣布它應該已經下載，但下載的檔案為空 %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="884"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="885"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>檔案 %1 無法存檔，因為本地端的檔案名稱已毀損!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="363"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="929"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="930"/>
         <source>File has changed since discovery</source>
         <translation>尋找的過程中檔案已經被更改</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="995"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="996"/>
         <source>Error writing metadata to the database</source>
         <translation>寫入後設資料(metadata) 時發生錯誤</translation>
     </message>
