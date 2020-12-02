@@ -267,6 +267,14 @@ void Systray::forceWindowInit(QQuickWindow *window) const
     // this shouldn't flicker
     window->show();
     window->hide();
+    
+#ifdef Q_OS_MAC
+    // On macOS we need to designate the tray window as visible on all spaces and
+    // at the menu bar level, otherwise showing it can cause the current spaces to
+    // change, or the window could be obscured by another window that shouldn't
+    // normally cover a menu.
+    OCC::setTrayWindowLevelAndVisibleOnAllSpaces(window);
+#endif
 }
 
 QScreen *Systray::currentScreen() const
