@@ -2886,7 +2886,7 @@ Nie zaleca się korzystania z niego.</translation>
     <message>
         <location filename="../src/gui/tray/NotificationHandler.cpp" line="139"/>
         <source>Dismiss</source>
-        <translation>Anuluj</translation>
+        <translation>Odrzuć</translation>
     </message>
 </context>
 <context>
