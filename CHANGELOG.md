@@ -3,13 +3,36 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.7.1...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.7.2...master
+
+Summary
+-------
+
+* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+
+Details
+-------
+
+* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+
+   We no longer recommend to use a http connection if a https url was not found.
+
+   https://github.com/owncloud/client/issues/8231
+
+Changelog for ownCloud Desktop Client [2.7.2] (2020-12-02)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.7.2 relevant to
+ownCloud admins and users.
+
+[2.7.2]: https://github.com/owncloud/client/compare/v2.7.1...v2.7.2
 
 Summary
 -------
 
 * Bugfix - Correctly detect Windows 10 taskbar theme: [#8244](https://github.com/owncloud/client/issues/8244)
-* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+* Bugfix - Sync small plaintext files with Windows VFS: [#8248](https://github.com/owncloud/client/issues/8248)
+* Bugfix - Update "Sync hidden files" button: [#8258](https://github.com/owncloud/client/issues/8258)
+* Bugfix - Pause sync when displaying remove all dialog: [#8263](https://github.com/owncloud/client/issues/8263)
 
 Details
 -------
@@ -20,11 +43,24 @@ Details
 
    https://github.com/owncloud/client/issues/8244
 
-* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+* Bugfix - Sync small plaintext files with Windows VFS: [#8248](https://github.com/owncloud/client/issues/8248)
 
-   We no longer recommend to use a http connection if a https url was not found.
+   We fixed a bug where small plaintext files where not synced due to a broken interity check.
 
-   https://github.com/owncloud/client/issues/8231
+   https://github.com/owncloud/client/issues/8248
+
+* Bugfix - Update "Sync hidden files" button: [#8258](https://github.com/owncloud/client/issues/8258)
+
+   We fixed a bug that prevented the "Sync hidden files" from displaying the correct value.
+
+   https://github.com/owncloud/client/issues/8258
+
+* Bugfix - Pause sync when displaying remove all dialog: [#8263](https://github.com/owncloud/client/issues/8263)
+
+   We now pause the syn process when the all files where removed dialog is displayed. This prevents
+   multiple dialogs from being displayed.
+
+   https://github.com/owncloud/client/issues/8263
 
 Changelog for ownCloud Desktop Client [2.7.1] (2020-11-18)
 =======================================
