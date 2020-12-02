@@ -5,5 +5,6 @@
         <file>src/gui/tray/HeaderButton.qml</file>
         <file>theme/Style/Style.qml</file>
         <file>theme/Style/qmldir</file>
+        <file>src/gui/tray/ActivityActionButton.qml</file>
     </qresource>
 </RCC>

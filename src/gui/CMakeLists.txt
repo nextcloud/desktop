@@ -43,6 +43,7 @@ set(client_UI_SRCS
     addcertificatedialog.ui
     proxyauthdialog.ui
     mnemonicdialog.ui
+    tray/ActivityActionButton.qml
     tray/Window.qml
     tray/UserLine.qml
     wizard/flow2authwidget.ui

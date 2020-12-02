@@ -53,6 +53,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ActionRole] = "type";
     roles[ActionIconRole] = "icon";
     roles[ActionTextRole] = "subject";
+    roles[ActionsLinksRole] = "links";
     roles[ActionTextColorRole] = "activityTextTitleColor";
     roles[ObjectTypeRole] = "objectType";
     roles[PointInTimeRole] = "dateTime";
@@ -139,10 +140,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     }
     case ActionsLinksRole: {
         QList<QVariant> customList;
-        foreach (ActivityLink customItem, a._links) {
-            QVariant customVariant;
-            customVariant.setValue(customItem);
-            customList << customVariant;
+        foreach (ActivityLink activityLink, a._links) {
+            customList << QVariant::fromValue(activityLink);
         }
         return customList;
     }
@@ -418,17 +417,17 @@ void ActivityListModel::removeActivityFromActivityList(Activity activity)
     }
 }
 
-void ActivityListModel::triggerActionAtIndex(int id) const
+void ActivityListModel::triggerDefaultAction(int activityIndex) const
 {
-    if (id < 0 || id >= _finalList.size()) {
-        qCWarning(lcActivity) << "Couldn't trigger action at index" << id << "/ final list size:" << _finalList.size();
+    if (activityIndex < 0 || activityIndex >= _finalList.size()) {
+        qCWarning(lcActivity) << "Couldn't trigger default action at index" << activityIndex << "/ final list size:" << _finalList.size();
         return;
     }
 
-    const auto modelIndex = index(id);
+    const auto modelIndex = index(activityIndex);
     const auto path = data(modelIndex, PathRole).toUrl();
 
-    const auto activity = _finalList.at(id);
+    const auto activity = _finalList.at(activityIndex);
     if (activity._status == SyncFileItem::Conflict) {
         Q_ASSERT(!activity._file.isEmpty());
         Q_ASSERT(!activity._folder.isEmpty());
@@ -459,6 +458,30 @@ void ActivityListModel::triggerActionAtIndex(int id) const
         const auto link = data(modelIndex, LinkRole).toUrl();
         QDesktopServices::openUrl(link);
     }
+}
+
+void ActivityListModel::triggerAction(int activityIndex, int actionIndex)
+{
+    if (activityIndex < 0 || activityIndex >= _finalList.size()) {
+        qCWarning(lcActivity) << "Couldn't trigger action on activity at index" << activityIndex << "/ final list size:" << _finalList.size();
+        return;
+    }
+
+    const auto activity = _finalList[activityIndex];
+
+    if (actionIndex < 0 || actionIndex >= activity._links.size()) {
+        qCWarning(lcActivity) << "Couldn't trigger action at index" << actionIndex << "/ actions list size:" << activity._links.size();
+        return;
+    }
+
+    const auto action = activity._links[actionIndex];
+
+    if (action._verb == "WEB") {
+        QDesktopServices::openUrl(QUrl(action._link));
+        return;
+    }
+
+    emit sendNotificationRequest(activity._accName, action._link, action._verb, activityIndex);
 }
 
 void ActivityListModel::combineActivityLists()

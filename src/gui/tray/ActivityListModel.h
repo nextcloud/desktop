@@ -74,7 +74,8 @@ public:
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(Activity activity);
 
-    Q_INVOKABLE void triggerActionAtIndex(int id) const;
+    Q_INVOKABLE void triggerDefaultAction(int activityIndex) const;
+    Q_INVOKABLE void triggerAction(int activityIndex, int actionIndex);
 
 public slots:
     void slotRefreshActivity();
@@ -86,6 +87,7 @@ private slots:
 
 signals:
     void activityJobStatusCode(int statusCode);
+    void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
 protected:
     QHash<int, QByteArray> roleNames() const override;
