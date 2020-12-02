@@ -1,0 +1,6 @@
+Bugfix: Update "Sync hidden files" button
+
+We fixed a bug that prevented the "Sync hidden files" from 
+displaying the correct value.
+
+https://github.com/owncloud/client/issues/8258

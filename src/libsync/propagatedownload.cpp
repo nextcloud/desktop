@@ -190,8 +190,9 @@ void GETFileJob::slotMetaDataChanged()
         return;
     }
 
-    _contentLength = reply()->header(QNetworkRequest::ContentLengthHeader).toLongLong();
-    if (_expectedContentLength != -1 && _contentLength != _expectedContentLength) {
+    bool ok;
+    _contentLength = reply()->header(QNetworkRequest::ContentLengthHeader).toLongLong(&ok);
+    if (ok && _expectedContentLength != -1 && _contentLength != _expectedContentLength) {
         qCWarning(lcGetJob) << "We received a different content length than expected!"
                             << _expectedContentLength << "vs" << _contentLength;
         _errorString = tr("We received an unexpected download Content-Length.");

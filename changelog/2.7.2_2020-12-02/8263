@@ -1,0 +1,6 @@
+Bugfix: Pause sync when displaying remove all dialog
+
+We now pause the syn process when the all files where removed dialog is
+displayed. This prevents multiple dialogs from being displayed.
+
+https://github.com/owncloud/client/issues/8263

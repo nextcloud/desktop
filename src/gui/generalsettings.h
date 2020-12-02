@@ -55,7 +55,7 @@ protected:
     void showEvent(QShowEvent *event) override;
 
 private:
-    void updateAutoStartInfo();
+    void reloadConfig();
 
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;

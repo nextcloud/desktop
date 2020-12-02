@@ -52,11 +52,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
-    updateAutoStartInfo();
+    reloadConfig();
     loadMiscSettings();
     slotUpdateInfo();
-
-    _ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());
 
     // misc
     connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
@@ -144,7 +142,7 @@ void GeneralSettings::loadMiscSettings()
 
 void GeneralSettings::showEvent(QShowEvent *)
 {
-    updateAutoStartInfo();
+    reloadConfig();
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -272,8 +270,9 @@ void GeneralSettings::slotIgnoreFilesEditor()
     }
 }
 
-void GeneralSettings::updateAutoStartInfo()
+void GeneralSettings::reloadConfig()
 {
+    _ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());
     if (Utility::hasSystemLaunchOnStartup(Theme::instance()->appName())) {
         _ui->autostartCheckBox->setChecked(true);
         _ui->autostartCheckBox->setDisabled(true);
