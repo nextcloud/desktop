@@ -71,8 +71,8 @@ public slots:
     void slotUpdateQuota(qint64 total, qint64 used);
     void slotAccountStateChanged();
     void slotStyleChanged();
-
     AccountState *accountsState() { return _accountState; }
+    void slotHideSelectiveSyncWidget();
 
 protected slots:
     void slotAddFolder();
@@ -102,6 +102,9 @@ protected slots:
     void slotShowMnemonic(const QString &mnemonic);
     void slotNewMnemonicGenerated();
     void slotEncryptFolderFinished(int status);
+
+    void slotSelectiveSyncChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
+                                  const QVector<int> &roles);
 
 private:
     void showConnectionLabel(const QString &message,

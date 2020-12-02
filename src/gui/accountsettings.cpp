@@ -170,6 +170,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     addAction(syncNowWithRemoteDiscovery);
 
 
+    slotHideSelectiveSyncWidget();
+    _ui->bigFolderUi->setVisible(false);
+    connect(_model, &QAbstractItemModel::dataChanged, this, &AccountSettings::slotSelectiveSyncChanged);
+    connect(_ui->selectiveSyncApply, &QAbstractButton::clicked, this, &AccountSettings::slotHideSelectiveSyncWidget);
+    connect(_ui->selectiveSyncCancel, &QAbstractButton::clicked, this, &AccountSettings::slotHideSelectiveSyncWidget);
+
     connect(_ui->selectiveSyncApply, &QAbstractButton::clicked, _model, &FolderStatusModel::slotApplySelectiveSync);
     connect(_ui->selectiveSyncCancel, &QAbstractButton::clicked, _model, &FolderStatusModel::resetFolders);
     connect(_ui->bigFolderApply, &QAbstractButton::clicked, _model, &FolderStatusModel::slotApplySelectiveSync);
@@ -213,7 +219,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     customizeStyle();
 }
-
 
 void AccountSettings::slotNewMnemonicGenerated()
 {
@@ -888,13 +893,71 @@ AccountSettings::~AccountSettings()
     delete _ui;
 }
 
+void AccountSettings::slotHideSelectiveSyncWidget()
+{
+    _ui->selectiveSyncApply->setEnabled(false);
+    _ui->selectiveSyncStatus->setVisible(false);
+    _ui->selectiveSyncButtons->setVisible(false);
+    _ui->selectiveSyncLabel->hide();
+}
+
+void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
+                                               const QModelIndex &bottomRight,
+                                               const QVector<int> &roles)
+{
+    Q_UNUSED(bottomRight);
+    if (!roles.contains(Qt::CheckStateRole)) {
+        return;
+    }
+
+    const auto info = _model->infoForIndex(topLeft);
+    if (!info) {
+        return;
+    }
+
+    const bool showWarning = _model->isDirty() && _accountState->isConnected() && info->_checked == Qt::Unchecked;
+
+    // FIXME: the model is not precise enough to handle extra cases
+    // e.g. the user clicked on the same checkbox 2x without applying the change in between.
+    // We don't know which checkbox changed to be able to toggle the selectiveSyncLabel display.
+    if (showWarning) {
+        _ui->selectiveSyncLabel->show();
+    }
+
+    const bool shouldBeVisible = _model->isDirty();
+    const bool wasVisible = _ui->selectiveSyncStatus->isVisible();
+    if (shouldBeVisible) {
+        _ui->selectiveSyncStatus->setVisible(true);
+    }
+
+    _ui->selectiveSyncApply->setEnabled(true);
+    _ui->selectiveSyncButtons->setVisible(true);
+
+    if (shouldBeVisible != wasVisible) {
+        const auto hint = _ui->selectiveSyncStatus->sizeHint();
+
+        if (shouldBeVisible) {
+            _ui->selectiveSyncStatus->setMaximumHeight(0);
+        }
+
+        const auto anim = new QPropertyAnimation(_ui->selectiveSyncStatus, "maximumHeight", _ui->selectiveSyncStatus);
+        anim->setEndValue(_model->isDirty() ? hint.height() : 0);
+        anim->start(QAbstractAnimation::DeleteWhenStopped);
+        connect(anim, &QPropertyAnimation::finished, [this, shouldBeVisible]() {
+            _ui->selectiveSyncStatus->setMaximumHeight(QWIDGETSIZE_MAX);
+            if (!shouldBeVisible) {
+                _ui->selectiveSyncStatus->hide();
+            }
+        });
+    }
+}
+
 void AccountSettings::refreshSelectiveSyncStatus()
 {
-    bool shouldBeVisible = _model->isDirty() && _accountState->isConnected();
-
     QString msg;
     int cnt = 0;
     const auto folders = FolderMan::instance()->map().values();
+    _ui->bigFolderUi->setVisible(false);
     for (Folder *folder : folders) {
         if (folder->accountState() != _accountState) {
             continue;
@@ -923,40 +986,16 @@ void AccountSettings::refreshSelectiveSyncStatus()
         }
     }
 
-    if (msg.isEmpty()) {
-        _ui->selectiveSyncButtons->setVisible(true);
-        _ui->bigFolderUi->setVisible(false);
-    } else {
+    if (!msg.isEmpty()) {
         ConfigFile cfg;
         QString info = !cfg.confirmExternalStorage()
-            ? tr("There are folders that were not synchronized because they are too big: ")
-            : !cfg.newBigFolderSizeLimit().first
-                ? tr("There are folders that were not synchronized because they are external storages: ")
-                : tr("There are folders that were not synchronized because they are too big or external storages: ");
+                ? tr("There are folders that were not synchronized because they are too big: ")
+                : !cfg.newBigFolderSizeLimit().first
+                  ? tr("There are folders that were not synchronized because they are external storages: ")
+                  : tr("There are folders that were not synchronized because they are too big or external storages: ");
 
         _ui->selectiveSyncNotification->setText(info + msg);
-        _ui->selectiveSyncButtons->setVisible(false);
         _ui->bigFolderUi->setVisible(true);
-        shouldBeVisible = true;
-    }
-
-    _ui->selectiveSyncApply->setEnabled(_model->isDirty() || !msg.isEmpty());
-    bool wasVisible = !_ui->selectiveSyncStatus->isHidden();
-    if (wasVisible != shouldBeVisible) {
-        QSize hint = _ui->selectiveSyncStatus->sizeHint();
-        if (shouldBeVisible) {
-            _ui->selectiveSyncStatus->setMaximumHeight(0);
-            _ui->selectiveSyncStatus->setVisible(true);
-        }
-        auto anim = new QPropertyAnimation(_ui->selectiveSyncStatus, "maximumHeight", _ui->selectiveSyncStatus);
-        anim->setEndValue(shouldBeVisible ? hint.height() : 0);
-        anim->start(QAbstractAnimation::DeleteWhenStopped);
-        connect(anim, &QPropertyAnimation::finished, [this, shouldBeVisible]() {
-            _ui->selectiveSyncStatus->setMaximumHeight(QWIDGETSIZE_MAX);
-            if (!shouldBeVisible) {
-                _ui->selectiveSyncStatus->hide();
-            }
-        });
     }
 }
 
