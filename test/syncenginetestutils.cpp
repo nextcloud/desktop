@@ -277,7 +277,7 @@ FileInfo *FileInfo::findInvalidatingEtags(PathComponents pathComponents)
 }
 
 FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
 {
     setRequest(request);
     setUrl(request.url());
@@ -375,7 +375,7 @@ qint64 FakePropfindReply::readData(char *data, qint64 maxlen)
 }
 
 FakePutReply::FakePutReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QByteArray &putPayload, QObject *parent)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
 {
     setRequest(request);
     setUrl(request.url());
@@ -421,7 +421,7 @@ void FakePutReply::abort()
 }
 
 FakeMkcolReply::FakeMkcolReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
 {
     setRequest(request);
     setUrl(request.url());
@@ -448,7 +448,7 @@ void FakeMkcolReply::respond()
 }
 
 FakeDeleteReply::FakeDeleteReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
 {
     setRequest(request);
     setUrl(request.url());
@@ -469,7 +469,7 @@ void FakeDeleteReply::respond()
 }
 
 FakeMoveReply::FakeMoveReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
 {
     setRequest(request);
     setUrl(request.url());
@@ -492,7 +492,7 @@ void FakeMoveReply::respond()
 }
 
 FakeGetReply::FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
 {
     setRequest(request);
     setUrl(request.url());
@@ -550,7 +550,7 @@ qint64 FakeGetReply::readData(char *data, qint64 maxlen)
 }
 
 FakeGetWithDataReply::FakeGetWithDataReply(FileInfo &remoteRootFileInfo, const QByteArray &data, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
 {
     setRequest(request);
     setUrl(request.url());
@@ -617,7 +617,7 @@ qint64 FakeGetWithDataReply::readData(char *data, qint64 maxlen)
 }
 
 FakeChunkMoveReply::FakeChunkMoveReply(FileInfo &uploadsFileInfo, FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
 {
     setRequest(request);
     setUrl(request.url());
@@ -715,7 +715,7 @@ void FakeChunkMoveReply::abort()
 }
 
 FakePayloadReply::FakePayloadReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QByteArray &body, QObject *parent)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
     , _body(body)
 {
     setRequest(request);
@@ -749,7 +749,7 @@ qint64 FakePayloadReply::bytesAvailable() const
 }
 
 FakeErrorReply::FakeErrorReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent, int httpErrorCode, const QByteArray &body)
-    : QNetworkReply { parent }
+    : FakeReply { parent }
     , _body(body)
 {
     setRequest(request);
@@ -788,6 +788,15 @@ qint64 FakeErrorReply::bytesAvailable() const
     return _body.size();
 }
 
+FakeHangingReply::FakeHangingReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
+    : FakeReply(parent)
+{
+    setRequest(request);
+    setUrl(request.url());
+    setOperation(op);
+    open(QIODevice::ReadOnly);
+}
+
 void FakeHangingReply::abort()
 {
     // Follow more or less the implementation of QNetworkReplyImpl::abort
@@ -819,25 +828,27 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
     FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
     auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
+    FakeReply *reply;
     if (verb == QLatin1String("PROPFIND"))
         // Ignore outgoingData always returning somethign good enough, works for now.
-        return new FakePropfindReply { info, op, request, this };
+        reply = new FakePropfindReply { info, op, request, this };
     else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation)
-        return new FakeGetReply { info, op, request, this };
+        reply = new FakeGetReply { info, op, request, this };
     else if (verb == QLatin1String("PUT") || op == QNetworkAccessManager::PutOperation)
-        return new FakePutReply { info, op, request, outgoingData->readAll(), this };
+        reply = new FakePutReply { info, op, request, outgoingData->readAll(), this };
     else if (verb == QLatin1String("MKCOL"))
-        return new FakeMkcolReply { info, op, request, this };
+        reply = new FakeMkcolReply { info, op, request, this };
     else if (verb == QLatin1String("DELETE") || op == QNetworkAccessManager::DeleteOperation)
-        return new FakeDeleteReply { info, op, request, this };
+        reply = new FakeDeleteReply { info, op, request, this };
     else if (verb == QLatin1String("MOVE") && !isUpload)
-        return new FakeMoveReply { info, op, request, this };
+        reply = new FakeMoveReply { info, op, request, this };
     else if (verb == QLatin1String("MOVE") && isUpload)
-        return new FakeChunkMoveReply { info, _remoteRootFileInfo, op, request, this };
+        reply = new FakeChunkMoveReply { info, _remoteRootFileInfo, op, request, this };
     else {
         qDebug() << verb << outgoingData;
         Q_UNREACHABLE();
     }
+    return reply;
 }
 
 FakeFolder::FakeFolder(const FileInfo &fileTemplate)
@@ -1034,4 +1045,14 @@ OCC::SyncFileItemPtr ItemCompletedSpy::findItem(const QString &path) const
             return item;
     }
     return OCC::SyncFileItemPtr::create();
+}
+
+FakeReply::FakeReply(QObject *parent)
+    : QNetworkReply(parent)
+{
+    setRawHeader(QByteArrayLiteral("Date"), QDateTime::currentDateTimeUtc().toString(Qt::RFC2822Date).toUtf8());
+}
+
+FakeReply::~FakeReply()
+{
 }

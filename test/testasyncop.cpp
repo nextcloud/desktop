@@ -11,14 +11,14 @@
 
 using namespace OCC;
 
-class FakeAsyncReply : public QNetworkReply
+class FakeAsyncReply : public FakeReply
 {
     Q_OBJECT
     QByteArray _pollLocation;
 
 public:
     FakeAsyncReply(const QByteArray &pollLocation, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-        : QNetworkReply{ parent }
+        : FakeReply { parent }
         , _pollLocation(pollLocation)
     {
         setRequest(request);
