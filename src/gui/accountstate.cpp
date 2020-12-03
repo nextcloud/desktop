@@ -238,7 +238,7 @@ void AccountState::checkConnectivity(bool verifyOnly)
     // if the last successful etag check job is not so long ago.
     const auto polltime = std::chrono::duration_cast<std::chrono::seconds>(ConfigFile().remotePollInterval());
     const auto elapsed = _timeOfLastETagCheck.secsTo(QDateTime::currentDateTimeUtc());
-    if (isConnected() && _timeOfLastETagCheck.isValid()
+    if (!verifyOnly && isConnected() && _timeOfLastETagCheck.isValid()
         && elapsed <= polltime.count()) {
         qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() << "s (" << elapsed << "s). No connection check needed!";
         return;
