@@ -24,7 +24,6 @@
 #include "capabilities.h"
 #include "guiutility.h"
 #include "thumbnailjob.h"
-#include "sharee.h"
 #include "sharemanager.h"
 #include "theme.h"
 
@@ -85,6 +84,16 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     _completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     _ui->shareeLineEdit->setCompleter(_completer);
 
+    auto searchGloballyAction = new QAction(_ui->shareeLineEdit);
+    searchGloballyAction->setIcon(QIcon(":/client/theme/magnifying-glass.svg"));
+    searchGloballyAction->setToolTip(tr("Search globally"));
+
+    connect(searchGloballyAction, &QAction::triggered, this, [this]() {
+        searchForSharees(ShareeModel::GlobalSearch);
+    });
+
+    _ui->shareeLineEdit->addAction(searchGloballyAction, QLineEdit::LeadingPosition);
+
     _manager = new ShareManager(_account, this);
     connect(_manager, &ShareManager::sharesFetched, this, &ShareUserGroupWidget::slotSharesFetched);
     connect(_manager, &ShareManager::shareCreated, this, &ShareUserGroupWidget::getShares);
@@ -104,7 +113,9 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     connect(_ui->shareeLineEdit, &QLineEdit::textEdited,
         this, &ShareUserGroupWidget::slotLineEditTextEdited, Qt::QueuedConnection);
     _ui->shareeLineEdit->installEventFilter(this);
-    connect(&_completionTimer, &QTimer::timeout, this, &ShareUserGroupWidget::searchForSharees);
+    connect(&_completionTimer, &QTimer::timeout, this, [this]() {
+        searchForSharees(ShareeModel::LocalSearch);
+    });
     _completionTimer.setSingleShot(true);
     _completionTimer.setInterval(600);
 
@@ -163,9 +174,13 @@ void ShareUserGroupWidget::slotLineEditReturn()
     _completionTimer.start();
 }
 
-
-void ShareUserGroupWidget::searchForSharees()
+void ShareUserGroupWidget::searchForSharees(ShareeModel::LookupMode lookupMode)
 {
+    if (_ui->shareeLineEdit->text().isEmpty()) {
+        return;
+    }
+
+    _ui->shareeLineEdit->setEnabled(false);
     _completionTimer.stop();
     _pi_sharee.startAnimation();
     ShareeModel::ShareeSet blacklist;
@@ -178,7 +193,7 @@ void ShareUserGroupWidget::searchForSharees()
         blacklist << sw->share()->getShareWith();
     }
     _ui->errorLabel->hide();
-    _completerModel->fetch(_ui->shareeLineEdit->text(), blacklist);
+    _completerModel->fetch(_ui->shareeLineEdit->text(), blacklist, lookupMode);
 }
 
 void ShareUserGroupWidget::getShares()
@@ -246,7 +261,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     scrollArea->setWidget(newViewPort);
 
     _disableCompleterActivated = false;
-    _ui->shareeLineEdit->setEnabled(true);
+    activateShareeLineEdit();
 }
 
 void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
@@ -275,11 +290,14 @@ void ShareUserGroupWidget::slotPrivateLinkShare()
 
 void ShareUserGroupWidget::slotShareesReady()
 {
+    activateShareeLineEdit();
+
     _pi_sharee.stopAnimation();
     if (_completerModel->rowCount() == 0) {
         displayError(0, tr("No results for '%1'").arg(_completerModel->currentSearch()));
-        return;
     }
+
+    // if no rows are present in the model - complete() will hide the completer
     _completer->complete();
 }
 
@@ -349,7 +367,7 @@ void ShareUserGroupWidget::displayError(int code, const QString &message)
     qCWarning(lcSharing) << "Sharing error from server" << code << message;
     _ui->errorLabel->setText(message);
     _ui->errorLabel->show();
-    _ui->shareeLineEdit->setEnabled(true);
+    activateShareeLineEdit();
 }
 
 void ShareUserGroupWidget::slotPrivateLinkOpenBrowser()
@@ -387,6 +405,12 @@ void ShareUserGroupWidget::customizeStyle()
     foreach (auto pi, _parentScrollArea->findChildren<QProgressIndicator *>()) {
         pi->setColor(QGuiApplication::palette().color(QPalette::Text));;
     }
+}
+
+void ShareUserGroupWidget::activateShareeLineEdit()
+{
+    _ui->shareeLineEdit->setEnabled(true);
+    _ui->shareeLineEdit->setFocus();
 }
 
 ShareUserLine::ShareUserLine(QSharedPointer<Share> share,

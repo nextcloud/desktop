@@ -17,6 +17,7 @@
 
 #include "accountfwd.h"
 #include "sharepermissions.h"
+#include "sharee.h"
 #include "QProgressIndicator.h"
 #include <QDialog>
 #include <QWidget>
@@ -40,9 +41,7 @@ namespace Ui {
 class AbstractCredentials;
 class SyncResult;
 class Share;
-class Sharee;
 class ShareManager;
-class ShareeModel;
 
 /**
  * @brief The ShareDialog (user/group) class
@@ -73,7 +72,7 @@ private slots:
     void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
 
     void on_shareeLineEdit_textChanged(const QString &text);
-    void searchForSharees();
+    void searchForSharees(ShareeModel::LookupMode lookupMode);
     void slotLineEditTextEdited(const QString &text);
 
     void slotLineEditReturn();
@@ -90,6 +89,8 @@ private slots:
 
 private:
     void customizeStyle();
+
+    void activateShareeLineEdit();
 
     Ui::ShareUserGroupWidget *_ui;
     QScrollArea *_parentScrollArea;
