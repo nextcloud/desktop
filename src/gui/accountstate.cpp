@@ -44,7 +44,6 @@ AccountState::AccountState(AccountPtr account)
         this, &AccountState::slotCredentialsFetched);
     connect(account.data(), &Account::credentialsAsked,
         this, &AccountState::slotCredentialsAsked);
-    _timeSinceLastETagCheck.invalidate();
 }
 
 AccountState::~AccountState()
@@ -167,9 +166,9 @@ bool AccountState::isConnected() const
     return _state == Connected;
 }
 
-void AccountState::tagLastSuccessfullETagRequest()
+void AccountState::tagLastSuccessfullETagRequest(const QDateTime &tp)
 {
-    _timeSinceLastETagCheck.start();
+    _timeOfLastETagCheck = tp;
 }
 
 void AccountState::checkConnectivity()
@@ -193,12 +192,11 @@ void AccountState::checkConnectivity()
 
     // IF the account is connected the connection check can be skipped
     // if the last successful etag check job is not so long ago.
-    ConfigFile cfg;
-    std::chrono::milliseconds polltime = cfg.remotePollInterval();
-
-    if (isConnected() && _timeSinceLastETagCheck.isValid()
-        && !_timeSinceLastETagCheck.hasExpired(polltime.count())) {
-        qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() / 1000 << " secs. No connection check needed!";
+    const auto polltime = std::chrono::duration_cast<std::chrono::seconds>(ConfigFile().remotePollInterval());
+    const auto elapsed = _timeOfLastETagCheck.secsTo(QDateTime::currentDateTimeUtc());
+    if (isConnected() && _timeOfLastETagCheck.isValid()
+        && elapsed <= polltime.count()) {
+        qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() << "s (" << elapsed << "s). No connection check needed!";
         return;
     }
 

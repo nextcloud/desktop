@@ -378,8 +378,8 @@ private slots:
     void slotItemCompleted(const SyncFileItemPtr &);
 
     void slotRunEtagJob();
-    void etagRetreived(const QString &);
-    void etagRetreivedFromSyncEngine(const QString &);
+    void etagRetreived(const QString &, const QDateTime &tp);
+    void etagRetrievedFromSyncEngine(const QString &, const QDateTime &time);
 
     void slotEmitFinishedDelayed();
 

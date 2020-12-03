@@ -485,7 +485,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         deleteLater();
         return;
     }
-    emit etag(_firstEtag);
+    emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
     emit finished(_results);
     deleteLater();
 }

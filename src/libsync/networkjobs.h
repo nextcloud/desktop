@@ -316,7 +316,7 @@ public:
     void start() override;
 
 signals:
-    void etagRetreived(const QString &etag);
+    void etagRetreived(const QString &etag, const QDateTime &time);
     void finishedWithResult(const HttpResult<QString> &etag);
 
 private slots:

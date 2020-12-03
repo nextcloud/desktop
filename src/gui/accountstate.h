@@ -130,7 +130,7 @@ public:
      *  the server to validate the connection if the last successful etag job
      *  was not so long ago.
      */
-    void tagLastSuccessfullETagRequest();
+    void tagLastSuccessfullETagRequest(const QDateTime &tp);
 
 public slots:
     /// Triggers a ping to the server to update state and
@@ -156,7 +156,7 @@ private:
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;
     bool _waitingForNewCredentials;
-    QElapsedTimer _timeSinceLastETagCheck;
+    QDateTime _timeOfLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
 
     /**

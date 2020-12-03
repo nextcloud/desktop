@@ -124,7 +124,7 @@ public:
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(RemotePermissions);
-    void etag(const QString &);
+    void etag(const QString &, const QDateTime &time);
     void finished(const HttpResult<QVector<RemoteInfo>> &result);
 
 private slots:

@@ -596,12 +596,12 @@ void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
     emit transmissionProgress(*_progressInfo);
 }
 
-void SyncEngine::slotRootEtagReceived(const QString &e)
+void SyncEngine::slotRootEtagReceived(const QString &e, const QDateTime &time)
 {
     if (_remoteRootEtag.isEmpty()) {
         qCDebug(lcEngine) << "Root etag:" << e;
         _remoteRootEtag = e;
-        emit rootEtag(_remoteRootEtag);
+        emit rootEtag(_remoteRootEtag, time);
     }
 }
 
