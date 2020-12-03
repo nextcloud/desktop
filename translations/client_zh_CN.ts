@@ -1,5 +1,13 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.1">
 <context>
+    <name>ActivityActionButton</name>
+    <message>
+        <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
+        <source>Activity action button</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CloudProviderWrapper</name>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
@@ -4498,7 +4506,7 @@ It is not advisable to use it.</source>
         <translation>Nextcloud 桌面主对话框</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="143"/>
+        <location filename="../src/gui/tray/Window.qml" line="131"/>
         <source>Current account</source>
         <translation>当前账号</translation>
     </message>
@@ -4513,7 +4521,7 @@ It is not advisable to use it.</source>
         <translation>全部暂停同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
         <source>Account switcher and settings menu</source>
         <translation>账号切换器和设置菜单</translation>
     </message>
@@ -4523,7 +4531,7 @@ It is not advisable to use it.</source>
         <translation>添加账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="239"/>
+        <location filename="../src/gui/tray/Window.qml" line="227"/>
         <source>Add new account</source>
         <translation>添加新账号</translation>
     </message>
@@ -4538,54 +4546,60 @@ It is not advisable to use it.</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="340"/>
+        <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Current user avatar</source>
         <translation>当前用户头像</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="374"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="374"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Disconnected</source>
         <translation>连接已断开</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="428"/>
+        <location filename="../src/gui/tray/Window.qml" line="416"/>
         <source>Open local folder of current account</source>
         <translation>打开当前账号的本地文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>在浏览器中打开 Nextcloud Talk </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="458"/>
+        <location filename="../src/gui/tray/Window.qml" line="446"/>
         <source>More apps</source>
         <translation>更多的应用程序</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="475"/>
+        <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Apps menu</source>
         <translation>应用菜单</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="503"/>
+        <location filename="../src/gui/tray/Window.qml" line="491"/>
         <source>Open %1 in browser</source>
         <translation>在浏览器中打开%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="527"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Activity list</source>
         <translation>动态列表</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="539"/>
+        <location filename="../src/gui/tray/Window.qml" line="532"/>
         <source>Open %1 locally</source>
         <translation>本地打开 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="689"/>
+        <location filename="../src/gui/tray/Window.qml" line="692"/>
+        <source>Show more actions</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -4593,19 +4607,9 @@ It is not advisable to use it.</source>
         <translation>打开共享对话框</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="649"/>
+        <location filename="../src/gui/tray/Window.qml" line="785"/>
         <source>Share %1</source>
         <translation>共享 %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="671"/>
-        <source>Open Talk</source>
-        <translation>打开 Talk</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="675"/>
-        <source>Open Talk %1</source>
-        <translation>打开 Talk %1</translation>
     </message>
 </context>
 <context>
