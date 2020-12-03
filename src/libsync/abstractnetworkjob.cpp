@@ -222,7 +222,7 @@ void AbstractNetworkJob::slotFinished()
     if (!_account->credentials()->stillValid(_reply) && !_ignoreCredentialFailure) {
         _account->handleInvalidCredentials();
     }
-    if (!reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).isNull()) {
+    if (!reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).isNull() && !reply()->request().hasRawHeader(QByteArrayLiteral("OC-Connection-Validator"))) {
         Q_EMIT _account->unknownConnectionState();
         qCWarning(lcNetworkJob) << "Unsupported redirect on" << _reply->url().toString() << "to" << reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toString();
         Q_EMIT networkError(_reply);
