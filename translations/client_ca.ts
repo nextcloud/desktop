@@ -1,5 +1,13 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="ca" version="2.1">
 <context>
+    <name>ActivityActionButton</name>
+    <message>
+        <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
+        <source>Activity action button</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CloudProviderWrapper</name>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
@@ -4473,7 +4481,7 @@ It is not advisable to use it.</source>
         <translation>Quadre de diàleg principal del client d&apos;escriptori del Nextcloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="143"/>
+        <location filename="../src/gui/tray/Window.qml" line="131"/>
         <source>Current account</source>
         <translation>Compte actual</translation>
     </message>
@@ -4488,7 +4496,7 @@ It is not advisable to use it.</source>
         <translation>Atura la sincronització de tot</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
         <source>Account switcher and settings menu</source>
         <translation>Canvi de compte i menú de paràmetres</translation>
     </message>
@@ -4498,7 +4506,7 @@ It is not advisable to use it.</source>
         <translation>Afegeix un compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="239"/>
+        <location filename="../src/gui/tray/Window.qml" line="227"/>
         <source>Add new account</source>
         <translation>Afegeix un compte</translation>
     </message>
@@ -4513,53 +4521,59 @@ It is not advisable to use it.</source>
         <translation>Surt</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="340"/>
+        <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Current user avatar</source>
         <translation>Avatar de l&apos;usuari actual</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="374"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Connected</source>
         <translation>Connectat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="374"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Disconnected</source>
         <translation>Desconnectat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="428"/>
+        <location filename="../src/gui/tray/Window.qml" line="416"/>
         <source>Open local folder of current account</source>
         <translation>Obre la carpeta local del compte actual</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Obre l&apos;aplicació Converses del Nextcloud al navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="458"/>
+        <location filename="../src/gui/tray/Window.qml" line="446"/>
         <source>More apps</source>
         <translation>Més aplicacions</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="475"/>
+        <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Apps menu</source>
         <translation>Menú d&apos;aplicacions</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="503"/>
+        <location filename="../src/gui/tray/Window.qml" line="491"/>
         <source>Open %1 in browser</source>
         <translation>Obre %1 en el navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="527"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Activity list</source>
         <translation>Llista d&apos;activitat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="539"/>
+        <location filename="../src/gui/tray/Window.qml" line="532"/>
         <source>Open %1 locally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="689"/>
+        <location filename="../src/gui/tray/Window.qml" line="692"/>
+        <source>Show more actions</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4568,18 +4582,8 @@ It is not advisable to use it.</source>
         <translation>Obre el quadre de diàleg de compartició</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="649"/>
+        <location filename="../src/gui/tray/Window.qml" line="785"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="671"/>
-        <source>Open Talk</source>
-        <translation>Obre l&apos;aplicació Converses</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="675"/>
-        <source>Open Talk %1</source>
         <translation type="unfinished"/>
     </message>
 </context>

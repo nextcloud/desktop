@@ -1,5 +1,13 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.1">
 <context>
+    <name>ActivityActionButton</name>
+    <message>
+        <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
+        <source>Activity action button</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CloudProviderWrapper</name>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
@@ -4500,7 +4508,7 @@ Het is niet te adviseren om het te gebruiken.</translation>
         <translation>Nextcloud desktop hoofddialoog</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="143"/>
+        <location filename="../src/gui/tray/Window.qml" line="131"/>
         <source>Current account</source>
         <translation>Huidige account</translation>
     </message>
@@ -4515,7 +4523,7 @@ Het is niet te adviseren om het te gebruiken.</translation>
         <translation>Synchronisatie voor iedereen onderbreken</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
         <source>Account switcher and settings menu</source>
         <translation>Accountswitcher en instellingenmenu</translation>
     </message>
@@ -4525,7 +4533,7 @@ Het is niet te adviseren om het te gebruiken.</translation>
         <translation>Account toevoegen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="239"/>
+        <location filename="../src/gui/tray/Window.qml" line="227"/>
         <source>Add new account</source>
         <translation>Nieuw account toevoegen</translation>
     </message>
@@ -4540,54 +4548,60 @@ Het is niet te adviseren om het te gebruiken.</translation>
         <translation>Afsluiten</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="340"/>
+        <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Current user avatar</source>
         <translation>Huidige gebruikersavatar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="374"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Connected</source>
         <translation>Verbonden</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="374"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Disconnected</source>
         <translation>Niet verbonden</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="428"/>
+        <location filename="../src/gui/tray/Window.qml" line="416"/>
         <source>Open local folder of current account</source>
         <translation>Open lokale map van huidig account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Open Nextcloud Talk in browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="458"/>
+        <location filename="../src/gui/tray/Window.qml" line="446"/>
         <source>More apps</source>
         <translation>Meer apps</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="475"/>
+        <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Apps menu</source>
         <translation>Apps menu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="503"/>
+        <location filename="../src/gui/tray/Window.qml" line="491"/>
         <source>Open %1 in browser</source>
         <translation>Open %1 in browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="527"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Activity list</source>
         <translation>Activiteitlijst</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="539"/>
+        <location filename="../src/gui/tray/Window.qml" line="532"/>
         <source>Open %1 locally</source>
         <translation>%1 lokaal openen</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="689"/>
+        <location filename="../src/gui/tray/Window.qml" line="692"/>
+        <source>Show more actions</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -4595,19 +4609,9 @@ Het is niet te adviseren om het te gebruiken.</translation>
         <translation>Open het dialoogvenster voor delen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="649"/>
+        <location filename="../src/gui/tray/Window.qml" line="785"/>
         <source>Share %1</source>
         <translation>Deel %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="671"/>
-        <source>Open Talk</source>
-        <translation>Open Talk</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="675"/>
-        <source>Open Talk %1</source>
-        <translation>Open Talk %1</translation>
     </message>
 </context>
 <context>

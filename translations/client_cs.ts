@@ -1,5 +1,13 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="cs_CZ" version="2.1">
 <context>
+    <name>ActivityActionButton</name>
+    <message>
+        <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
+        <source>Activity action button</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CloudProviderWrapper</name>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
@@ -4495,7 +4503,7 @@ Nedoporučuje se jí používat.</translation>
         <translation>Hlavní dialog Nextcloud desktop</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="143"/>
+        <location filename="../src/gui/tray/Window.qml" line="131"/>
         <source>Current account</source>
         <translation>Stávající účet</translation>
     </message>
@@ -4510,7 +4518,7 @@ Nedoporučuje se jí používat.</translation>
         <translation>Pozastavit synchronizaci u všeho</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="169"/>
         <source>Account switcher and settings menu</source>
         <translation>Přepínání účtů a nabídka nastavení</translation>
     </message>
@@ -4520,7 +4528,7 @@ Nedoporučuje se jí používat.</translation>
         <translation>Přidat účet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="239"/>
+        <location filename="../src/gui/tray/Window.qml" line="227"/>
         <source>Add new account</source>
         <translation>Přidat nový účet</translation>
     </message>
@@ -4535,54 +4543,60 @@ Nedoporučuje se jí používat.</translation>
         <translation>Konec</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="340"/>
+        <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Current user avatar</source>
         <translation>Zástupný obrázek stávajícího uživatele</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="374"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Connected</source>
         <translation>Připojeno</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="374"/>
+        <location filename="../src/gui/tray/Window.qml" line="362"/>
         <source>Disconnected</source>
         <translation>Odpojeno</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="428"/>
+        <location filename="../src/gui/tray/Window.qml" line="416"/>
         <source>Open local folder of current account</source>
         <translation>Otevřít místní složku stávajícího účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Otevřít Nextcloud Talk v probhlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="458"/>
+        <location filename="../src/gui/tray/Window.qml" line="446"/>
         <source>More apps</source>
         <translation>Více aplikací</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="475"/>
+        <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Apps menu</source>
         <translation>Nabídka aplikací</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="503"/>
+        <location filename="../src/gui/tray/Window.qml" line="491"/>
         <source>Open %1 in browser</source>
         <translation>Otevřít %1 v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="527"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Activity list</source>
         <translation>Seznam aktivit</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="539"/>
+        <location filename="../src/gui/tray/Window.qml" line="532"/>
         <source>Open %1 locally</source>
         <translation>Otevřít %1 lokálně</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="689"/>
+        <location filename="../src/gui/tray/Window.qml" line="692"/>
+        <source>Show more actions</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -4590,19 +4604,9 @@ Nedoporučuje se jí používat.</translation>
         <translation>Otevřít dialog sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="649"/>
+        <location filename="../src/gui/tray/Window.qml" line="785"/>
         <source>Share %1</source>
         <translation>Sdílet %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="671"/>
-        <source>Open Talk</source>
-        <translation>Otevřít Talk</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="675"/>
-        <source>Open Talk %1</source>
-        <translation>Otevřít Talk %1</translation>
     </message>
 </context>
 <context>
