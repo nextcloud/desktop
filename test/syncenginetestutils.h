@@ -167,7 +167,18 @@ public:
     }
 };
 
-class FakePropfindReply : public QNetworkReply
+class FakeReply : public QNetworkReply
+{
+    Q_OBJECT
+public:
+    FakeReply(QObject *parent);
+    virtual ~FakeReply();
+
+    // useful to be public for testing
+    using QNetworkReply::setRawHeader;
+};
+
+class FakePropfindReply : public FakeReply
 {
     Q_OBJECT
 public:
@@ -185,7 +196,7 @@ public:
     qint64 readData(char *data, qint64 maxlen) override;
 };
 
-class FakePutReply : public QNetworkReply
+class FakePutReply : public FakeReply
 {
     Q_OBJECT
     FileInfo *fileInfo;
@@ -200,7 +211,7 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
-class FakeMkcolReply : public QNetworkReply
+class FakeMkcolReply : public FakeReply
 {
     Q_OBJECT
     FileInfo *fileInfo;
@@ -213,7 +224,7 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
-class FakeDeleteReply : public QNetworkReply
+class FakeDeleteReply : public FakeReply
 {
     Q_OBJECT
 public:
@@ -225,7 +236,7 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
-class FakeMoveReply : public QNetworkReply
+class FakeMoveReply : public FakeReply
 {
     Q_OBJECT
 public:
@@ -237,7 +248,7 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
-class FakeGetReply : public QNetworkReply
+class FakeGetReply : public FakeReply
 {
     Q_OBJECT
 public:
@@ -254,12 +265,9 @@ public:
     qint64 bytesAvailable() const override;
 
     qint64 readData(char *data, qint64 maxlen) override;
-
-    // useful to be public for testing
-    using QNetworkReply::setRawHeader;
 };
 
-class FakeGetWithDataReply : public QNetworkReply
+class FakeGetWithDataReply : public FakeReply
 {
     Q_OBJECT
 public:
@@ -276,12 +284,9 @@ public:
     qint64 bytesAvailable() const override;
 
     qint64 readData(char *data, qint64 maxlen) override;
-
-    // useful to be public for testing
-    using QNetworkReply::setRawHeader;
 };
 
-class FakeChunkMoveReply : public QNetworkReply
+class FakeChunkMoveReply : public FakeReply
 {
     Q_OBJECT
     FileInfo *fileInfo;
@@ -301,8 +306,7 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
-
-class FakePayloadReply : public QNetworkReply
+class FakePayloadReply : public FakeReply
 {
     Q_OBJECT
 public:
@@ -318,7 +322,7 @@ public:
 };
 
 
-class FakeErrorReply : public QNetworkReply
+class FakeErrorReply : public FakeReply
 {
     Q_OBJECT
 public:
@@ -343,18 +347,11 @@ public:
 };
 
 // A reply that never responds
-class FakeHangingReply : public QNetworkReply
+class FakeHangingReply : public FakeReply
 {
     Q_OBJECT
 public:
-    FakeHangingReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-        : QNetworkReply(parent)
-    {
-        setRequest(request);
-        setUrl(request.url());
-        setOperation(op);
-        open(QIODevice::ReadOnly);
-    }
+    FakeHangingReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
 
     void abort() override;
     qint64 readData(char *, qint64) override { return 0; }
