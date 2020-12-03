@@ -136,7 +136,7 @@ public:
      *  the server to validate the connection if the last successful etag job
      *  was not so long ago.
      */
-    void tagLastSuccessfullETagRequest();
+    void tagLastSuccessfullETagRequest(const QDateTime &tp);
 
     /** Saves the ETag Response header from the last Notifications api
      * request with statusCode 200.
@@ -195,7 +195,7 @@ private:
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;
     bool _waitingForNewCredentials;
-    QElapsedTimer _timeSinceLastETagCheck;
+    QDateTime _timeOfLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
     QByteArray _notificationsEtagResponseHeader;
     QByteArray _navigationAppsEtagResponseHeader;

@@ -138,7 +138,7 @@ public:
 
 signals:
     // During update, before reconcile
-    void rootEtag(QString);
+    void rootEtag(const QString &, const QDateTime &);
 
     // after the above signals. with the items that actually need propagating
     void aboutToPropagate(SyncFileItemVector &);
@@ -172,7 +172,7 @@ signals:
 
 private slots:
     void slotFolderDiscovered(bool local, const QString &folder);
-    void slotRootEtagReceived(const QString &);
+    void slotRootEtagReceived(const QString &, const QDateTime &time);
 
     /** When the discovery phase discovers an item */
     void slotItemDiscovered(const SyncFileItemPtr &item);

@@ -129,7 +129,7 @@ bool RequestEtagJob::finished()
                 }
             }
         }
-        emit etagRetrieved(etag);
+        emit etagRetrieved(etag, QDateTime::fromString(QString::fromUtf8(_responseTimestamp), Qt::RFC2822Date));
         emit finishedWithResult(etag);
     } else {
         emit finishedWithResult(HttpError{ httpCode, errorString() });

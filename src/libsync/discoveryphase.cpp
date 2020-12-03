@@ -499,10 +499,11 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         deleteLater();
         return;
     } else if (_isE2eEncrypted) {
+        emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
         fetchE2eMetadata();
         return;
     }
-    emit etag(_firstEtag);
+    emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
     emit finished(_results);
     deleteLater();
 }
@@ -561,7 +562,6 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
         return result;
     });
 
-    emit etag(_firstEtag);
     emit finished(_results);
     deleteLater();
 }
@@ -569,7 +569,6 @@ void DiscoverySingleDirectoryJob::metadataReceived(const QJsonDocument &json, in
 void DiscoverySingleDirectoryJob::metadataError(const QByteArray &fileId, int httpReturnCode)
 {
     qCWarning(lcDiscovery) << "E2EE Metadata job error. Trying to proceed without it." << fileId << httpReturnCode;
-    emit etag(_firstEtag);
     emit finished(_results);
     deleteLater();
 }

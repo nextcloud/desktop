@@ -277,6 +277,6 @@ private:
 signals:
     void finished();
     // The root etag of this directory was fetched
-    void etag(const QString &);
+    void etag(const QString &, const QDateTime &time);
 };
 }

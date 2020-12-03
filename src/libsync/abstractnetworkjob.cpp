@@ -282,6 +282,7 @@ void AbstractNetworkJob::slotFinished()
 
 QByteArray AbstractNetworkJob::responseTimestamp()
 {
+    ASSERT(!_responseTimestamp.isEmpty());
     return _responseTimestamp;
 }
 
