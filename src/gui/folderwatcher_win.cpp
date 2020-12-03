@@ -141,6 +141,8 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
 
             if (!skip) {
                 emit changed(longfile);
+            } else {
+                qCDebug(lcFolderWatcher) << "Skipping syncing of" << longfile;
             }
 
             if (curEntry->NextEntryOffset == 0) {
