@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
         <source>Activity action button</source>
-        <translation type="unfinished"/>
+        <translation>Pulsante di azione dell&apos;attività</translation>
     </message>
 </context>
 <context>
@@ -1406,7 +1406,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;osservatore non ha ricevuto una notifica di prova.</translation>
     </message>
 </context>
 <context>
@@ -4597,7 +4597,7 @@ Non è consigliabile utilizzarlo.</translation>
         <location filename="../src/gui/tray/Window.qml" line="689"/>
         <location filename="../src/gui/tray/Window.qml" line="692"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Mostra altre azioni</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
