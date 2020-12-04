@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
         <source>Activity action button</source>
-        <translation type="unfinished"/>
+        <translation>动态操作按钮按钮</translation>
     </message>
 </context>
 <context>
@@ -4599,7 +4599,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/tray/Window.qml" line="689"/>
         <location filename="../src/gui/tray/Window.qml" line="692"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>显示更多操作</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
