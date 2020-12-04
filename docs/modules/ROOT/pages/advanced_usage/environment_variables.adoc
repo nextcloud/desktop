@@ -133,4 +133,9 @@ Set to -1 to never require full local discovery.
 | `OWNCLOUD_UPLOAD_CONFLICT_FILES`
 | unset
 | Set to "1" to enable uploading conflict files to the server.
+
+
+| `QT_LOGGING_RULES`
+| unset
+| Set to "sync.httplogger=true" to enable verbose http logging. See also troubleshooting.adoc for more.
 |===
