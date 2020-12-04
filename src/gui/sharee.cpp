@@ -38,10 +38,14 @@ QString Sharee::format() const
 
     if (_type == Type::Group) {
         formatted += QLatin1String(" (group)");
+    } else if (_type == Type::Email) {
+        formatted += QLatin1String(" (email)");
     } else if (_type == Type::Federated) {
         formatted += QLatin1String(" (remote)");
     } else if (_type == Type::Circle) {
         formatted += QLatin1String(" (circle)");
+    } else if (_type == Type::Room) {
+        formatted += QLatin1String(" (conversation)");
     }
 
     return formatted;
@@ -81,59 +85,22 @@ void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
 
 void ShareeModel::shareesFetched(const QJsonDocument &reply)
 {
-    auto data = reply.object().value("ocs").toObject().value("data").toObject();
-
     QVector<QSharedPointer<Sharee>> newSharees;
 
-    /*
-     * Todo properly loop all of this
-     */
-    auto exact = data.value("exact").toObject();
     {
-        auto users = exact.value("users").toArray();
-        foreach (auto user, users) {
-            newSharees.append(parseSharee(user.toObject()));
-        }
+        const QStringList shareeTypes {"users", "groups", "emails", "remotes", "circles", "rooms"};
 
-        auto groups = exact.value("groups").toArray();
-        foreach (auto group, groups) {
-            newSharees.append(parseSharee(group.toObject()));
-        }
+        const auto appendSharees = [this, &shareeTypes](const QJsonObject &data, QVector<QSharedPointer<Sharee>>& out) {
+            for (const auto &shareeType : shareeTypes) {
+                const auto category = data.value(shareeType).toArray();
+                for (const auto &sharee : category) {
+                    out.append(parseSharee(sharee.toObject()));
+                }
+            }
+        };
 
-        auto remotes = exact.value("remotes").toArray();
-        foreach (auto remote, remotes) {
-            newSharees.append(parseSharee(remote.toObject()));
-        }
-
-        auto circles = exact.value("circles").toArray();
-        foreach (auto circle, circles) {
-            newSharees.append(parseSharee(circle.toObject()));
-        }
-    }
-
-    {
-        auto users = data.value("users").toArray();
-        foreach (auto user, users) {
-            newSharees.append(parseSharee(user.toObject()));
-        }
-    }
-    {
-        auto groups = data.value("groups").toArray();
-        foreach (auto group, groups) {
-            newSharees.append(parseSharee(group.toObject()));
-        }
-    }
-    {
-        auto remotes = data.value("remotes").toArray();
-        foreach (auto remote, remotes) {
-            newSharees.append(parseSharee(remote.toObject()));
-        }
-    }
-    {
-        auto circles = data.value("circles").toArray();
-        foreach (auto circle, circles) {
-            newSharees.append(parseSharee(circle.toObject()));
-        }
+        appendSharees(reply.object().value("ocs").toObject().value("data").toObject(), newSharees);
+        appendSharees(reply.object().value("ocs").toObject().value("data").toObject().value("exact").toObject(), newSharees);
     }
 
     // Filter sharees that we have already shared with
