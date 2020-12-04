@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
         <source>Activity action button</source>
-        <translation type="unfinished"/>
+        <translation>Gumb dejanj</translation>
     </message>
 </context>
 <context>
@@ -688,7 +688,7 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Katero različico datoteke želite ohraniti? &lt;br/&gt;Če izberete obe različici, bo k imenu datoteke krajevne različicei dodatna še številka.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
@@ -765,7 +765,7 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Ali želite trajno izbrisati mapo &lt;i&gt;%1&lt;/i&gt; skupaj z vso vsebino mape?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
@@ -1405,7 +1405,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Prejeto ni še nobeno preizkusno obvestilo.</translation>
     </message>
 </context>
 <context>
@@ -1665,7 +1665,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
         <source>Change update channel</source>
-        <translation>Spremeni kanal posodobitev</translation>
+        <translation>Spreminjanje kanala posodobitev</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
@@ -1768,7 +1768,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation>Ta vnos je ponujen pri &apos;%1&apos; in ga v tem pogledu ni mogoče spreminjati.</translation>
+        <translation>Ta vnos je ponujen pri »%1« in ga v tem pogledu ni mogoče spreminjati.</translation>
     </message>
 </context>
 <context>
@@ -1970,7 +1970,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Na voljo je nova različica programa %1, vendar je posodobitev spodletela.&lt;/p&gt;&lt;p&gt;Program &lt;b&gt;%2&lt;/b&gt; je že prejet. Nameščena je različica %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
@@ -2151,7 +2151,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Na voljo je %1. Ponovno zaženite program za uveljavitev posodobitve.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -2171,7 +2171,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Na voljo je različica %1. Kliknite na &lt;a href=&apos;%2&apos;&gt;povezavo&lt;/a&gt; za prejem posodobitve.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -3928,7 +3928,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="162"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>Prijava v oblak %1 z uporabniškimi podatki %2 je prekinjena. Prijaviti se je treba znova.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="186"/>
@@ -4595,7 +4595,7 @@ Uporaba možnosti ni priporočljiva.</translation>
         <location filename="../src/gui/tray/Window.qml" line="689"/>
         <location filename="../src/gui/tray/Window.qml" line="692"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Pokaži več možnosti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
