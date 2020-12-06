@@ -1587,12 +1587,12 @@ Doorgaan met deze synchronisatie overschrijft al je bestanden door een eerdere v
     <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kanaal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="157"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stabiel</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
@@ -1660,7 +1660,9 @@ Doorgaan met deze synchronisatie overschrijft al je bestanden door een eerdere v
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Het updatekanaal bepaalt welke clientupdates worden aangeboden voor installatie. Het &quot;stabiele&quot; kanaal bevat alleen upgrades die als betrouwbaar worden beschouwd, terwijl de versies in het &quot;betakanaal&quot; mogelijk nieuwere functies en bugfixes bevatten, die nog niet grondig zijn getest.
+
+Merk op dat dit alleen selecteert van welke pool upgrades worden overgenomen en dat er geen downgrades zijn: teruggaan van het betakanaal naar het stabiele kanaal kan meestal niet onmiddellijk worden gedaan en dat betekent wachten op een stabiele versie die nieuwer is dan de momenteel geïnstalleerde betaversie.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
@@ -1670,7 +1672,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -1976,7 +1978,7 @@ Logs worden geschreven naar %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Er is een nieuwe versie van de %1 Client beschikbaar, maar update is mislukt.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is gedownload. De geïnstalleerde versie is %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
@@ -4601,7 +4603,7 @@ Het is niet te adviseren om het te gebruiken.</translation>
         <location filename="../src/gui/tray/Window.qml" line="689"/>
         <location filename="../src/gui/tray/Window.qml" line="692"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Toon meer acties</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
