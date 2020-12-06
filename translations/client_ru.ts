@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
         <source>Activity action button</source>
-        <translation type="unfinished"/>
+        <translation>Кнопка действий</translation>
     </message>
 </context>
 <context>
@@ -4594,7 +4594,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/tray/Window.qml" line="689"/>
         <location filename="../src/gui/tray/Window.qml" line="692"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Дополнительные действия</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
