@@ -1653,7 +1653,9 @@ Veuillez noter que cela sélectionne seulement la zone de mises à jour, et qu&a
         <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Les fichiers ou dossiers correspondant au motif ne seront pas synchronisés. Les changements prendront effet à la prochaine synchronisation des dossiers.
+
+Les éléments dont la suppression est autorisée seront supprimés s&apos;ils empêchent un dossier d&apos;être supprimé. Cela est utile pour les métadonnées.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
@@ -1795,7 +1797,8 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Le client peut écrire des journaux de déboguage dans un dossier temporaire. Ces journaux sont utiles pour diagnostiquer des problèmes.
+Depuis que le journal peut être plus grand, le client démarrera un nouveau journal pour chaque synchronisation lancée et compresse les anciens journaux. Il est recommandé d&apos;activer la suppression des fichiers journaux après plusieurs heures afin d&apos;éviter qu&apos;ils n&apos;occupent trop d&apos;espace mémoire.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
@@ -2507,7 +2510,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Lorsque le mode &quot;fichiers virtuels&quot; est activé, aucun fichier ne sera initialement téléchargé. À la place, un minuscule fichier &quot;%1&quot; sera créé pour chaque fichier qui existe sur le serveur. Les contenus pourront être téléchargés en lançant ces fichiers ou en ouvrant leur menu contextuel.
+
+Le mode fichiers virtuels est mutuellement exclusif avec une synchronisation sélective. Les dossiers qui ne sont actuellement pas sélectionnés seront traduits en dossiers en ligne et vos paramètres de synchronisation seront réinitialisés.
+
+Passer à ce mode annulera toute les synchronisations actuellement en cours d&apos;exécution.
+
+Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;utiliser, merci de signaler toute anomalie qui pourrait se produire.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="272"/>
@@ -2626,7 +2635,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>etag</source>
-        <translation type="unfinished"/>
+        <translation>etag</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="406"/>
@@ -3500,7 +3509,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous vraiment supprimer définitivement le fichier &lt;i&gt;%1&lt;/i&gt; ?</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="807"/>
@@ -3517,7 +3526,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Le déplacement du fichier a échoué :
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="825"/>
@@ -3549,7 +3560,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="867"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Le repartage de ce dossier n&apos;est pas autorisé</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="879"/>
@@ -3565,7 +3576,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="980"/>
         <source>Show file versions in browser</source>
-        <translation type="unfinished"/>
+        <translation>Montrer les versions du fichier dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1003"/>
@@ -3575,7 +3586,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1006"/>
         <source>Rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Renommer et téléverser...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1011"/>
@@ -3585,17 +3596,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1014"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Déplacer, renommer et téléverser...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1017"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer les changements locaux</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1022"/>
         <source>Move and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Déplacer et téléverser...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1023"/>
@@ -3720,7 +3731,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="245"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>La connexion n&apos;est pas sécurisée</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="178"/>
@@ -3844,12 +3855,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="351"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de mettre à jour les métadonnées du fichier virtuel : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="498"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Utilisation d&apos;un fichier virtuel avec un suffixe qui n&apos;a pas été défini</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
