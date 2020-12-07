@@ -134,31 +134,7 @@ void PropagateLocalMkdir::start()
     if (propagator()->_abortRequested)
         return;
 
-    const auto rootPath = [=]() {
-        const auto result = propagator()->remotePath();
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
-    const auto remotePath = QString(rootPath + _item->_file);
-    const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
-
-    const auto account = propagator()->account();
-    if (!account->capabilities().clientSideEncryptionAvailable() ||
-        !account->e2e()->isFolderEncrypted(remoteParentPath + '/')) {
-        startLocalMkdir();
-    } else {
-        const auto relativeRemotePath = _item->_file;
-        const auto slashPosition = relativeRemotePath.lastIndexOf('/');
-        const auto relativeRemoteParentPath = slashPosition >= 0 ? relativeRemotePath.left(slashPosition) : QString();
-
-        SyncJournalFileRecord parentRec;
-        propagator()->_journal->getFileRecordByE2eMangledName(relativeRemoteParentPath, &parentRec);
-        const auto parentPath = parentRec.isValid() ? parentRec._path : relativeRemoteParentPath;
-        startDemanglingName(parentPath);
-    }
+    startLocalMkdir();
 }
 
 void PropagateLocalMkdir::setDeleteExistingFile(bool enabled)
@@ -221,24 +197,6 @@ void PropagateLocalMkdir::startLocalMkdir()
         ? SyncFileItem::Conflict
         : SyncFileItem::Success;
     done(resultStatus);
-}
-
-void PropagateLocalMkdir::startDemanglingName(const QString &parentPath)
-{
-    auto downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, _item, this);
-    connect(downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusEncrypted,
-            this, &PropagateLocalMkdir::startLocalMkdir);
-    connect(downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusNotEncrypted, this, [this] {
-        // We were wrong after all? Actually might happen due to legacy clients creating broken encrypted folders
-        qCDebug(lcPropagateLocalMkdir) << "Parent of" << _item->_file << "wasn't encrypted, creating with the original name";
-        startLocalMkdir();
-    });
-    connect(downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, [this] {
-        // This also might happen due to legacy clients creating broken encrypted folders...
-        qCDebug(lcPropagateLocalMkdir) << "Directory" << _item->_file << "doesn't exist in its parent metadata, creating with the original name";
-        startLocalMkdir();
-    });
-    downloadEncryptedHelper->start();
 }
 
 void PropagateLocalRename::start()

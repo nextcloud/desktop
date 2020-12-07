@@ -384,12 +384,9 @@ void PropagateDownloadFile::start()
         !account->e2e()->isFolderEncrypted(remoteParentPath + '/')) {
         startAfterIsEncryptedIsChecked();
     } else {
-        const auto slashPosition = remoteFilename.lastIndexOf('/');
-        const auto relativeRemoteParentPath = slashPosition >= 0 ? remoteFilename.left(slashPosition) : QString();
-
-        SyncJournalFileRecord parentRec;
-        propagator()->_journal->getFileRecordByE2eMangledName(relativeRemoteParentPath, &parentRec);
-        const auto parentPath = parentRec.isValid() ? parentRec._path : relativeRemoteParentPath;
+        const auto path = _item->_file;
+        const auto slashPosition = path.lastIndexOf('/');
+        const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
 
         _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, _item, this);
         connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusNotEncrypted, [this] {
