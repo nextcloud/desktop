@@ -113,8 +113,6 @@ public:
     // Whether we are using OAuth
     bool isUsingOAuth() const { return _authType == DetermineAuthTypeJob::AuthType::OAuth; }
 
-    bool retryIfNeeded(AbstractNetworkJob *) override;
-
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply *, QAuthenticator *);
 
@@ -177,8 +175,6 @@ protected:
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
-
-    QVector<QPointer<AbstractNetworkJob>> _retryQueue; // Jobs we need to retry once the auth token is fetched
 };
 
 

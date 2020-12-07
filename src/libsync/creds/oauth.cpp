@@ -16,10 +16,12 @@
 #include <QNetworkReply>
 #include <QTimer>
 #include <QBuffer>
+#include <networkjobs.h>
 #include "account.h"
 #include "creds/oauth.h"
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <networkjobs.h>
 #include "theme.h"
 #include "networkjobs.h"
 #include "creds/httpcredentials.h"
@@ -169,6 +171,7 @@ void OAuth::startAuthentication()
                         }
                     });
                 });
+                job->start();
             });
         }
     });
@@ -216,6 +219,7 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
             }
             Q_EMIT refreshFinished(accessToken, newRefreshToken);
         });
+        job->start();
     });
     fetchWellKnown();
 }
@@ -263,9 +267,10 @@ SimpleNetworkJob *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &
 
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
 
-    auto job = _account->sendRequest("POST", requestTokenUrl, req, requestBody);
-    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+    auto job = new SimpleNetworkJob(_account->sharedFromThis(), this);
     job->setAuthenticationJob(true);
+    job->prepareRequest("POST", requestTokenUrl, req, requestBody);
+    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
     return job;
 }
 
@@ -341,10 +346,10 @@ void OAuth::fetchWellKnown()
             _wellKnownFinished = true;
             Q_EMIT fetchWellKnownFinished();
         } else {
-            QUrl wellKnownUrl = Utility::concatUrlPath(_account->url(), QStringLiteral("/.well-known/openid-configuration"));
-            QNetworkRequest req;
-            auto job = _account->sendRequest("GET", wellKnownUrl);
+            auto job = new SimpleNetworkJob(_account->sharedFromThis(), this);
             job->setAuthenticationJob(true);
+            QUrl wellKnownUrl = Utility::concatUrlPath(_account->url(), QStringLiteral("/.well-known/openid-configuration"));
+            job->prepareRequest("GET", wellKnownUrl);
             job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
             QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
                 _wellKnownFinished = true;
@@ -371,6 +376,7 @@ void OAuth::fetchWellKnown()
                 }
                 Q_EMIT fetchWellKnownFinished();
             });
+            job->start();
         }
     });
     checkServer->start();

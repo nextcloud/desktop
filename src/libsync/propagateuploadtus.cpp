@@ -84,7 +84,9 @@ SimpleNetworkJob *PropagateUploadFileTUS::makeCreationWithUploadJob(QNetworkRequ
     qCDebug(lcPropagateUploadTUS) << "FullPath:" << propagator()->fullRemotePath(_item->_file);
     request->setRawHeader(QByteArrayLiteral("Upload-Metadata"), "filename " + propagator()->fullRemotePath(_item->_file).toUtf8().toBase64() + ",checksum " + checkSum);
     request->setRawHeader(QByteArrayLiteral("Upload-Length"), QByteArray::number(_item->_size));
-    return propagator()->account()->sendRequest("POST", uploadURL(propagator()->account()), *request, device);
+    auto job = new SimpleNetworkJob(propagator()->account(), this);
+    job->prepareRequest("POST", uploadURL(propagator()->account()), *request, device);
+    return job;
 }
 
 QNetworkRequest PropagateUploadFileTUS::prepareRequest(const quint64 &chunkSize)
@@ -135,7 +137,8 @@ void PropagateUploadFileTUS::startNextChunk()
     SimpleNetworkJob *job;
     if (_currentOffset != 0) {
         qCDebug(lcPropagateUploadTUS) << "Starting to patch upload:" << propagator()->fullRemotePath(_item->_file);
-        job = propagator()->account()->sendRequest("PATCH", _location, req, device);
+        job = new SimpleNetworkJob(propagator()->account(), this);
+        job->prepareRequest("PATCH", _location, req, device);
     } else {
         OC_ASSERT(_location.isEmpty());
         qCDebug(lcPropagateUploadTUS) << "Starting creation with upload:" << propagator()->fullRemotePath(_item->_file);
@@ -174,7 +177,8 @@ void PropagateUploadFileTUS::slotChunkFinished()
             qCWarning(lcPropagateUploadTUS) << propagator()->fullRemotePath(_item->_file) << "Encountered a timeout -> get progrss for" << _location;
             QNetworkRequest req;
             setTusVersionHeader(req);
-            auto updateJob = propagator()->account()->sendRequest("HEAD", _location, req);
+            auto updateJob = new SimpleNetworkJob(propagator()->account(), this);
+            updateJob->prepareRequest("HEAD", _location, req);
             _jobs.append(updateJob);
             connect(updateJob, &SimpleNetworkJob::finishedSignal, this, &PropagateUploadFileTUS::slotChunkFinished);
             connect(updateJob, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);

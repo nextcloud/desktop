@@ -390,7 +390,7 @@ private:
  * @brief Checks with auth type to use for a server
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public QObject
+class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
@@ -402,12 +402,12 @@ public:
     Q_ENUM(AuthType)
 
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = nullptr);
-    void start();
+    void start() override;
 signals:
     void authType(AuthType);
 
-private:
-    AccountPtr _account;
+protected Q_SLOTS:
+    bool finished() override;
 };
 
 /**
@@ -422,14 +422,22 @@ class OWNCLOUDSYNC_EXPORT SimpleNetworkJob : public AbstractNetworkJob
 public:
     explicit SimpleNetworkJob(AccountPtr account, QObject *parent = nullptr);
 
-    QNetworkReply *startRequest(const QByteArray &verb, const QUrl &url,
+    void prepareRequest(const QByteArray &verb, const QUrl &url,
         QNetworkRequest req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
+
+    void start() override;
 
 signals:
     void finishedSignal(QNetworkReply *reply);
 private slots:
     bool finished() override;
+
+private:
+    QByteArray _simpleVerb;
+    QUrl _simpleUrl;
+    QIODevice *_simpleBody;
+    QNetworkRequest _simpleRequest;
 };
 
 /**
@@ -448,5 +456,6 @@ void OWNCLOUDSYNC_EXPORT fetchPrivateLinkUrl(AccountPtr account, const QString &
     std::function<void(const QString &url)> targetFun);
 
 } // namespace OCC
+
 
 #endif // NETWORKJOBS_H

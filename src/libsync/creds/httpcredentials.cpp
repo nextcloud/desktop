@@ -48,7 +48,6 @@ namespace {
     const QString clientCertificatePEMC() { return QStringLiteral("_clientCertificatePEM"); }
     const QString clientKeyPEMC() { return QStringLiteral("_clientKeyPEM"); }
     const char authenticationFailedC[]  = "owncloud-authentication-failed";
-    const char needRetryC[] = "owncloud-need-retry";
 } // ns
 
 class HttpCredentialsAccessManager : public AccessManager
@@ -88,15 +87,7 @@ protected:
             req.setSslConfiguration(sslConfiguration);
         }
 
-        auto *reply = AccessManager::createRequest(op, req, outgoingData);
-
-        if (_cred->_isRenewingOAuthToken) {
-            // We know this is going to fail, but we have no way to queue it there, so we will
-            // simply restart the job after the failure.
-            reply->setProperty(needRetryC, true);
-        }
-
-        return reply;
+        return AccessManager::createRequest(op, req, outgoingData);
     }
 
 private:
@@ -420,9 +411,9 @@ bool HttpCredentials::refreshAccessToken()
         _isRenewingOAuthToken = false;
         if (refreshToken.isEmpty()) {
             // an error occured, log out
-            _retryQueue.clear();
             forgetSensitiveData();
             _account->handleInvalidCredentials();
+            Q_EMIT authenticationFailed();
             return;
         }
         _refreshToken = refreshToken;
@@ -432,15 +423,11 @@ bool HttpCredentials::refreshAccessToken()
             _password = accessToken;
             persist();
         }
-        for (const auto &job : _retryQueue) {
-            if (job)
-                job->retry();
-        }
-        _retryQueue.clear();
         emit fetched();
     });
     oauth->refreshAuthentication(_refreshToken);
     _isRenewingOAuthToken = true;
+    Q_EMIT authenticationStarted();
     return true;
 }
 
@@ -611,26 +598,10 @@ void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *a
     qCWarning(lcHttpCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
 
-    if (_isRenewingOAuthToken) {
-        reply->setProperty(needRetryC, true);
-    } else if (isUsingOAuth() && !reply->property(needRetryC).toBool()) {
-        reply->setProperty(needRetryC, true);
+    if (!_isRenewingOAuthToken && isUsingOAuth()) {
         qCInfo(lcHttpCredentials) << "Refreshing token";
         refreshAccessToken();
     }
-}
-
-bool HttpCredentials::retryIfNeeded(AbstractNetworkJob *job)
-{
-    auto *reply = job->reply();
-    if (!reply || !reply->property(needRetryC).toBool())
-        return false;
-    if (_isRenewingOAuthToken) {
-        _retryQueue.append(job);
-    } else {
-        job->retry();
-    }
-    return true;
 }
 
 bool HttpCredentials::unpackClientCertBundle()

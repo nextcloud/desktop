@@ -82,6 +82,7 @@ AccountState::AccountState(AccountPtr account)
         this, &AccountState::slotCredentialsAsked);
     connect(account.data(), &Account::unknownConnectionState,
         this, [this] {
+            _account->jobQueue()->setBlocked(true);
             checkConnectivity(true);
         });
     connect(account.data(), &Account::requestUrlUpdate, this, [this](const QUrl &newUrl) {
@@ -134,6 +135,7 @@ void AccountState::setState(State state)
         if (_state == SignedOut) {
             _connectionStatus = ConnectionValidator::Undefined;
             _connectionErrors.clear();
+            _account->jobQueue()->clear();
         } else if (oldState == SignedOut && _state == Disconnected) {
             // If we stop being voluntarily signed-out, try to connect and
             // auth right now!
@@ -147,6 +149,7 @@ void AccountState::setState(State state)
         }
         if (oldState == Connected || _state == Connected) {
             emit isConnectedChanged();
+            _account->jobQueue()->setBlocked(false);
         }
     }
 

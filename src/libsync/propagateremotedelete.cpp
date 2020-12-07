@@ -43,10 +43,6 @@ void DeleteJob::start()
     } else {
         sendRequest("DELETE", makeDavUrl(path()), req);
     }
-
-    if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcDeleteJob) << " Network error: " << reply()->errorString();
-    }
     AbstractNetworkJob::start();
 }
 

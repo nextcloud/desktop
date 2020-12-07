@@ -89,15 +89,13 @@ public:
 
     static QString keychainKey(const QString &url, const QString &user, const QString &accountId);
 
-    /** If the job need to be restarted or queue, this does it and returns true. */
-    virtual bool retryIfNeeded(AbstractNetworkJob *) { return false; }
-
 Q_SIGNALS:
     /** Emitted when fetchFromKeychain() is done.
      *
      * Note that ready() can be true or false, depending on whether there was useful
      * data in the keychain.
      */
+    // TODO: rename
     void fetched();
 
     /** Emitted when askFromUser() is done.
@@ -106,6 +104,9 @@ Q_SIGNALS:
      * data or not.
      */
     void asked();
+
+    void authenticationStarted();
+    void authenticationFailed();
 
 protected:
     Account *_account;

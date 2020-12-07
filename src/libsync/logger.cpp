@@ -241,7 +241,9 @@ void Logger::setLogRules(const QSet<QString> &rules)
 {
     static const QString defaultRule = qEnvironmentVariable("QT_LOGGING_RULES").replace(QLatin1Char(';'), QLatin1Char('\n'));
     _logRules = rules;
-    QLoggingCategory::setFilterRules(rules.toList().join(QLatin1Char('\n')) + QLatin1Char('\n') + defaultRule);
+    const QString tmp = rules.toList().join(QLatin1Char('\n')) + QLatin1Char('\n') + defaultRule;
+    qDebug() << tmp;
+    QLoggingCategory::setFilterRules(tmp);
 }
 
 static bool compressLog(const QString &originalName, const QString &targetName)

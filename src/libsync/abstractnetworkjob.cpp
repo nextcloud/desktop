@@ -74,10 +74,6 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
 
 void AbstractNetworkJob::setReply(QNetworkReply *reply)
 {
-    if (reply) {
-        reply->setProperty("doNotHandleAuth", true);
-    }
-
     QNetworkReply *old = _reply;
     _reply = reply;
     delete old;
@@ -132,16 +128,21 @@ void AbstractNetworkJob::setAuthenticationJob(bool b)
     _isAuthenticationJob = b;
 }
 
-QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
+void AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
     QNetworkRequest req, QIODevice *requestBody)
 {
-    auto reply = _account->sendRawRequest(verb, url, req, requestBody);
+    _verb = verb;
+    _request = req;
+    _request.setUrl(url);
     _requestBody = requestBody;
+    if (!isAuthenticationJob() && _account->jobQueue()->enqueue(this)) {
+        return;
+    }
+    auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     if (_requestBody) {
         _requestBody->setParent(reply);
     }
     adoptRequest(reply);
-    return reply;
 }
 
 void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
@@ -201,7 +202,7 @@ void AbstractNetworkJob::slotFinished()
     }
 
     if (_reply->error() != QNetworkReply::NoError) {
-        if (!isAuthenticationJob() && _account->credentials()->retryIfNeeded(this)) {
+        if (_account->jobQueue()->retry(this)) {
             qCDebug(lcNetworkJob) << "Queuing: " << _reply->url() << " for retry";
             return;
         }
@@ -227,18 +228,12 @@ void AbstractNetworkJob::slotFinished()
         qCWarning(lcNetworkJob) << "Unsupported redirect on" << _reply->url().toString() << "to" << reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toString();
         Q_EMIT networkError(_reply);
         if (!isAuthenticationJob()) {
-#if 0
-            if (_retryCount++ < _maxRetryCount) {
+            if (_account->jobQueue()->retry(this)) {
                 qCWarning(lcNetworkJob) << "Retry Nr:" << _retryCount << _reply->url();
-                QTimer::singleShot(0, this, &AbstractNetworkJob::retry);
                 return;
             } else {
-                qCWarning(lcNetworkJob) << "Don't retry, too many retries:" << _reply->url();
+                qCWarning(lcNetworkJob) << "Don't retry:" << _reply->url();
             }
-#else
-            // TODO: implement proper retry queue
-            qCWarning(lcNetworkJob) << "Don't retry, retry queue is not implemented yet:" << _reply->url();
-#endif
         };
     }
 
@@ -320,11 +315,7 @@ void AbstractNetworkJob::slotTimeout()
 
 void AbstractNetworkJob::onTimedOut()
 {
-    if (reply()) {
-        reply()->abort();
-    } else {
-        deleteLater();
-    }
+    abort();
 }
 
 QString AbstractNetworkJob::replyStatusString() {
@@ -402,18 +393,23 @@ QString networkReplyErrorString(const QNetworkReply &reply)
 
 void AbstractNetworkJob::retry()
 {
-    OC_ENFORCE(_reply);
-    auto req = _reply->request();
-    QUrl requestedUrl = req.url();
-    QByteArray verb = HttpLogger::requestVerb(*_reply);
-    qCInfo(lcNetworkJob) << "Restarting" << verb << requestedUrl;
+    OC_ENFORCE(!_verb.isEmpty());
+    _retryCount++;
+    qCInfo(lcNetworkJob) << "Restarting" << _verb << _request.url() << "for the" << _retryCount << "time";
     resetTimeout();
     if (_requestBody) {
         _requestBody->seek(0);
     }
-    // The cookie will be added automatically, we don't want AccessManager::createRequest to duplicate them
-    req.setRawHeader("cookie", QByteArray());
-    sendRequest(verb, requestedUrl, req, _requestBody);
+    sendRequest(_verb, _request.url(), _request, _requestBody);
+}
+
+void AbstractNetworkJob::abort()
+{
+    if (_reply) {
+        _reply->abort();
+    } else {
+        deleteLater();
+    }
 }
 
 } // namespace OCC

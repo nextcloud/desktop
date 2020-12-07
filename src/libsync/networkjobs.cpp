@@ -93,10 +93,6 @@ void RequestEtagJob::start()
     buf->open(QIODevice::ReadOnly);
     // assumes ownership
     sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
-
-    if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcEtagJob) << "request network error: " << reply()->errorString();
-    }
     AbstractNetworkJob::start();
 }
 
@@ -887,9 +883,10 @@ bool JsonApiJob::finished()
 }
 
 DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
-    : QObject(parent)
-    , _account(account)
+    : AbstractNetworkJob(account, QString(), parent)
 {
+    setAuthenticationJob(true);
+    setIgnoreCredentialFailure(true);
 }
 
 void DetermineAuthTypeJob::start()
@@ -901,22 +898,22 @@ void DetermineAuthTypeJob::start()
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     // Don't reuse previous auth credentials
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
+    sendRequest("PROPFIND", _account->davUrl(), req);
+    AbstractNetworkJob::start();
+}
 
-    auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
-    propfind->setTimeout(30 * 1000);
-    propfind->setIgnoreCredentialFailure(true);
-    connect(propfind, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
-        auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
-        auto result = AuthType::Basic;
-        if (authChallenge.contains("bearer ")) {
-            result = AuthType::OAuth;
-        } else if (authChallenge.isEmpty()) {
-            qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
-        }
-        qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
-        emit this->authType(result);
-        this->deleteLater();
-    });
+bool DetermineAuthTypeJob::finished()
+{
+    auto authChallenge = reply()->rawHeader("WWW-Authenticate").toLower();
+    auto result = AuthType::Basic;
+    if (authChallenge.contains("bearer ")) {
+        result = AuthType::OAuth;
+    } else if (authChallenge.isEmpty()) {
+        qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+    }
+    qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
+    emit this->authType(result);
+    return true;
 }
 
 SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, QObject *parent)
@@ -924,12 +921,19 @@ SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, QObject *parent)
 {
 }
 
-QNetworkReply *SimpleNetworkJob::startRequest(const QByteArray &verb, const QUrl &url,
+void SimpleNetworkJob::start()
+{
+    sendRequest(_simpleVerb, _simpleUrl, _simpleRequest, _simpleBody);
+    AbstractNetworkJob::start();
+}
+
+void SimpleNetworkJob::prepareRequest(const QByteArray &verb, const QUrl &url,
     QNetworkRequest req, QIODevice *requestBody)
 {
-    auto reply = sendRequest(verb, url, req, requestBody);
-    start();
-    return reply;
+    _simpleVerb = verb;
+    _simpleUrl = url;
+    _simpleRequest = req;
+    _simpleBody = requestBody;
 }
 
 bool SimpleNetworkJob::finished()
