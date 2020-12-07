@@ -307,7 +307,7 @@ void AccountSettings::slotMarkSubfolderEncrypted(const FolderStatusModel::SubFol
     // But EncryptFolderJob expects directory path Foo/Bar convention
     const auto path = folderInfo->_path.chopped(1);
 
-    auto job = new OCC::EncryptFolderJob(accountsState()->account(), path, folderInfo->_fileId, this);
+    auto job = new OCC::EncryptFolderJob(accountsState()->account(), folderInfo->_folder->journalDb(), path, folderInfo->_fileId, this);
     connect(job, &OCC::EncryptFolderJob::finished, this, &AccountSettings::slotEncryptFolderFinished);
     job->start();
 }

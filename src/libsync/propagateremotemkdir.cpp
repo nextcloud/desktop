@@ -242,7 +242,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         // But encryption job expect it in Foo/Bar/ convention
         const auto path = _job->path().mid(1);
 
-        auto job = new OCC::EncryptFolderJob(propagator()->account(), path, _item->_fileId, this);
+        auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, path, _item->_fileId, this);
         connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
         job->start();
     }
@@ -252,6 +252,7 @@ void PropagateRemoteMkdir::slotEncryptFolderFinished()
 {
     qCDebug(lcPropagateRemoteMkdir) << "Success making the new folder encrypted";
     propagator()->_activeJobList.removeOne(this);
+    _item->_isEncrypted = true;
     success();
 }
 

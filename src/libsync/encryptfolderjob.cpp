@@ -14,6 +14,7 @@
 
 #include "encryptfolderjob.h"
 
+#include "common/syncjournaldb.h"
 #include "clientsideencryptionjobs.h"
 
 #include <QLoggingCategory>
@@ -22,9 +23,10 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEncryptFolderJob, "nextcloud.sync.propagator.encryptfolder", QtInfoMsg)
 
-EncryptFolderJob::EncryptFolderJob(const AccountPtr &account, const QString &path, const QByteArray &fileId, QObject *parent)
+EncryptFolderJob::EncryptFolderJob(const AccountPtr &account, SyncJournalDb *journal, const QString &path, const QByteArray &fileId, QObject *parent)
     : QObject(parent)
     , _account(account)
+    , _journal(journal)
     , _path(path)
     , _fileId(fileId)
 {
@@ -46,6 +48,13 @@ QString EncryptFolderJob::errorString() const
 void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
 {
     _account->e2e()->setFolderEncryptedStatus(_path + '/', true);
+
+    SyncJournalFileRecord rec;
+    _journal->getFileRecord(_path, &rec);
+    if (rec.isValid()) {
+        rec._isE2eEncrypted = true;
+        _journal->setFileRecord(rec);
+    }
 
     auto lockJob = new LockEncryptFolderApiJob(_account, fileId, this);
     connect(lockJob, &LockEncryptFolderApiJob::success,
