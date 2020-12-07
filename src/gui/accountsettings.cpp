@@ -375,8 +375,8 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
     if (acc->capabilities().clientSideEncryptionAvailable()) {
         // Verify if the folder is empty before attempting to encrypt.
 
-        bool isEncrypted = acc->e2e()->isFolderEncrypted(info->_path);
-        bool isParentEncrypted = acc->e2e()->isAnyParentFolderEncrypted(info->_path);
+        bool isEncrypted = info->_isEncrypted;
+        bool isParentEncrypted = _model->isAnyAncestorEncrypted(index);
 
         if (!isEncrypted && !isParentEncrypted) {
             ac = menu.addAction(tr("Encrypt"));

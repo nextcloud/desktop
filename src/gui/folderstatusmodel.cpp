@@ -155,12 +155,9 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::CheckStateRole:
             return x._checked;
         case Qt::DecorationRole: {
-            Q_ASSERT(x._folder->remotePath().startsWith('/'));
-            const auto rootPath = x._folder->remotePath().mid(1);
-            const auto absoluteRemotePath = rootPath.isEmpty() ? x._path : rootPath + '/' + x._path;
-            if (_accountState->account()->e2e()->isFolderEncrypted(absoluteRemotePath)) {
+            if (x._isEncrypted) {
                 return QIcon(QLatin1String(":/client/theme/lock-https.svg"));
-            } else if (x._size > 0 && _accountState->account()->e2e()->isAnyParentFolderEncrypted(absoluteRemotePath)) {
+            } else if (x._size > 0 && isAnyAncestorEncrypted(index)) {
                 return QIcon(QLatin1String(":/client/theme/lock-broken.svg"));
             }
             return QFileIconProvider().icon(x._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
@@ -416,6 +413,20 @@ FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIn
         }
         return const_cast<SubFolderInfo *>(&_folders[index.row()]);
     }
+}
+
+bool FolderStatusModel::isAnyAncestorEncrypted(const QModelIndex &index) const
+{
+    auto parentIndex = parent(index);
+    while (parentIndex.isValid()) {
+        const auto info = infoForIndex(parentIndex);
+        if (info->_isEncrypted) {
+            return true;
+        }
+        parentIndex = parent(parentIndex);
+    }
+
+    return false;
 }
 
 QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) const
