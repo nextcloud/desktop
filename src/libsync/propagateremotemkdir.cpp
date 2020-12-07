@@ -52,12 +52,11 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
         return;
     }
 
-    const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
-    const auto absoluteRemoteParentPath = remoteParentPath.isEmpty() ? rootPath : rootPath + remoteParentPath + '/';
     const auto account = propagator->account();
 
     if (account->capabilities().clientSideEncryptionAvailable() &&
-        account->e2e()->isFolderEncrypted(absoluteRemoteParentPath)) {
+        parentRec.isValid() &&
+        parentRec._isE2eEncrypted) {
         _parallelism = WaitForFinished;
     }
 }
@@ -162,18 +161,27 @@ void PropagateRemoteMkdir::slotMkdir()
         return;
     }
 
-    const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
-    const auto absoluteRemoteParentPath = remoteParentPath.isEmpty() ? rootPath : rootPath + remoteParentPath + '/';
-    const auto account = propagator()->account();
+    const auto hasEncryptedAncestor = [=] {
+        auto pathComponents = parentPath.split('/');
+        while (!pathComponents.isEmpty()) {
+            SyncJournalFileRecord rec;
+            propagator()->_journal->getFileRecord(pathComponents.join('/'), &rec);
+            if (rec.isValid() && rec._isE2eEncrypted) {
+                return true;
+            }
+            pathComponents.removeLast();
+        }
+        return false;
+    }();
 
-    if (!account->capabilities().clientSideEncryptionAvailable() ||
-        (!account->e2e()->isFolderEncrypted(absoluteRemoteParentPath) &&
-         !account->e2e()->isAnyParentFolderEncrypted(absoluteRemoteParentPath))) {
+    const auto account = propagator()->account();
+    if (!account->capabilities().clientSideEncryptionAvailable() || !hasEncryptedAncestor) {
         slotStartMkcolJob();
         return;
     }
 
     // We should be encrypted as well since our parent is
+    const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
     _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
       this, &PropagateRemoteMkdir::slotStartMkcolJob);

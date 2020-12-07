@@ -196,14 +196,6 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     , _uploadEncryptedHelper(nullptr)
     , _uploadingEncrypted(false)
 {
-    const auto rootPath = [=]() {
-        const auto result = propagator->remotePath();
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
@@ -214,12 +206,11 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
         return;
     }
 
-    const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
-    const auto absoluteRemoteParentPath = remoteParentPath.isEmpty() ? rootPath : rootPath + remoteParentPath + '/';
     const auto account = propagator->account();
 
     if (account->capabilities().clientSideEncryptionAvailable() &&
-        account->e2e()->isFolderEncrypted(absoluteRemoteParentPath)) {
+        parentRec.isValid() &&
+        parentRec._isE2eEncrypted) {
         _parallelism = WaitForFinished;
     }
 }
@@ -236,14 +227,6 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 
 void PropagateUploadFileCommon::start()
 {
-    const auto rootPath = [=]() {
-        const auto result = propagator()->remotePath();
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
@@ -255,16 +238,16 @@ void PropagateUploadFileCommon::start()
         return;
     }
 
-    const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
-    const auto absoluteRemoteParentPath = remoteParentPath.isEmpty() ? rootPath : rootPath + remoteParentPath + '/';
     const auto account = propagator()->account();
 
     if (!account->capabilities().clientSideEncryptionAvailable() ||
-        !account->e2e()->isFolderEncrypted(absoluteRemoteParentPath)) {
+        !parentRec.isValid() ||
+        !parentRec._isE2eEncrypted) {
         setupUnencryptedFile();
         return;
     }
 
+    const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
     _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
             this, &PropagateUploadFileCommon::setupUnencryptedFile);

@@ -367,27 +367,19 @@ void PropagateDownloadFile::start()
 
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
 
-    const auto rootPath = [=]() {
-        const auto result = propagator()->remotePath();
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
-    const auto remoteFilename = _item->_encryptedFileName.isEmpty() ? _item->_file : _item->_encryptedFileName;
-    const auto remotePath = QString(rootPath + remoteFilename);
-    const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
+    const auto path = _item->_file;
+    const auto slashPosition = path.lastIndexOf('/');
+    const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+
+    SyncJournalFileRecord parentRec;
+    propagator()->_journal->getFileRecord(parentPath, &parentRec);
 
     const auto account = propagator()->account();
     if (!account->capabilities().clientSideEncryptionAvailable() ||
-        !account->e2e()->isFolderEncrypted(remoteParentPath + '/')) {
+        !parentRec.isValid() ||
+        !parentRec._isE2eEncrypted) {
         startAfterIsEncryptedIsChecked();
     } else {
-        const auto path = _item->_file;
-        const auto slashPosition = path.lastIndexOf('/');
-        const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
-
         _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, _item, this);
         connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusNotEncrypted, [this] {
           startAfterIsEncryptedIsChecked();
