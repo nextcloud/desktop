@@ -153,10 +153,42 @@ Saving Files Directly
 
 The Nextcloud client enables you to save log files directly to a predefined file
 or directory.  This is a useful option for troubleshooting sporadic issues as
-it enables you to log large amounts of data and bypasses the limited buffer
+it enables you to log large amounts of data and bypass the limited buffer
 settings associated with the log window.
 
-To save log files to a file or a directory:
+To enable logging to a directory, stop the client and add the following to the General section in the configuration file:
+
+```
+[General]
+logDebug=true
+logExpire=<hours>
+logDir=<dir>
+```
+
+  .. note:: Independent of platform you must use slash (/) as a path reparator:
+
+  * Correct: C:/Temp
+  * Not correct: C:\Temp
+
+As an example, to keep log data for two days in a directory called temp:
+
+```
+[General]
+logDebug=true
+logExpire=48
+logDir=C:/Temp
+```
+
+Once you restart the client, you will find the log file in the ``<dir>`` defined in ``logDir``.
+
+  .. note:: You will find the configuration file in the following locations:
+
+   * Microsoft Windows systems: ``%APPDATA%\Nextcloud\nextcloud.cfg``
+   * macOS systems: ``$HOME/Library/Preferences/Nextcloud/nextcloud.cfg``
+   * Linux distributions: ``$HOME/.config/Nextcloud/nextcloud.cfg``
+
+
+Alternatively, you can start the client in the command line with parameters:
 
 1. To save to a file, start the client using the ``--logfile <file>`` command,
    where ``<file>`` is the filename to which you want to save the file.
@@ -176,21 +208,6 @@ issue the following command:
 ```
 nextcloud --logdir /tmp/nextcloud_logs --logexpire 48
 ```
-
-Alternatively, you can add the following to the configuration file:
-```
-logDebug=true
-logExpire=<hours>
-logDir=<dir>
-```
-
-Once you restart the client, you will find the log file in the ``<dir>`` defined in ``logDir``.
-
-  .. note:: You will find the configuration file in the following locations:
-
-   * Microsoft Windows systems: ``%APPDATA%\Nextcloud\nextcloud.cfg``
-   * macOS systems: ``$HOME/Library/Preferences/Nextcloud/nextcloud.cfg``
-   * Linux distributions: ``$HOME/.config/Nextcloud/nextcloud.cfg``
 
 Nextcloud server Log File
 ~~~~~~~~~~~~~~~~~~~~~~~~~
