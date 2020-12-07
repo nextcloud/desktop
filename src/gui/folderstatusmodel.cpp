@@ -32,6 +32,7 @@ Q_LOGGING_CATEGORY(lcFolderStatus, "nextcloud.gui.folder.model", QtInfoMsg)
 
 static const char propertyParentIndexC[] = "oc_parentIndex";
 static const char propertyPermissionMap[] = "oc_permissionMap";
+static const char propertyEncryptionMap[] = "nc_encryptionMap";
 
 static QString removeTrailingSlash(const QString &s)
 {
@@ -581,10 +582,14 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 
     auto *job = new LsColJob(_accountState->account(), path, this);
     info->_fetchingJob = job;
-    job->setProperties(QList<QByteArray>() << "resourcetype"
-                                           << "http://owncloud.org/ns:size"
-                                           << "http://owncloud.org/ns:permissions"
-                                           << "http://owncloud.org/ns:fileid");
+    auto props = QList<QByteArray>() << "resourcetype"
+                                     << "http://owncloud.org/ns:size"
+                                     << "http://owncloud.org/ns:permissions"
+                                     << "http://owncloud.org/ns:fileid";
+    if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
+        props << "http://nextcloud.org/ns:is-encrypted";
+    }
+    job->setProperties(props);
 
     job->setTimeout(60 * 1000);
     connect(job, &LsColJob::directoryListingSubfolders,
@@ -593,6 +598,8 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         this, &FolderStatusModel::slotLscolFinishedWithError);
     connect(job, &LsColJob::directoryListingIterated,
         this, &FolderStatusModel::slotGatherPermissions);
+    connect(job, &LsColJob::directoryListingIterated,
+            this, &FolderStatusModel::slotGatherEncryptionStatus);
 
     job->start();
 
@@ -623,6 +630,20 @@ void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QS
     ASSERT(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
     permissionMap[href] = *it;
     job->setProperty(propertyPermissionMap, permissionMap);
+}
+
+void FolderStatusModel::slotGatherEncryptionStatus(const QString &href, const QMap<QString, QString> &properties)
+{
+    auto it = properties.find("is-encrypted");
+    if (it == properties.end())
+        return;
+
+    auto job = sender();
+    auto encryptionMap = job->property(propertyEncryptionMap).toMap();
+    job->setProperty(propertyEncryptionMap, QVariant()); // avoid a detach of the map while it is modified
+    ASSERT(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
+    encryptionMap[href] = *it;
+    job->setProperty(propertyEncryptionMap, encryptionMap);
 }
 
 void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
@@ -676,6 +697,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         }
     }
     const auto permissionMap = job->property(propertyPermissionMap).toMap();
+    const auto encryptionMap = job->property(propertyEncryptionMap).toMap();
 
     QStringList sortedSubfolders = list;
     if (!sortedSubfolders.isEmpty())
@@ -697,6 +719,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
         newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
+        newInfo._isEncrypted = encryptionMap.value(removeTrailingSlash(path)).toString() == QStringLiteral("1");
         newInfo._path = relativePath;
 
         SyncJournalFileRecord rec;

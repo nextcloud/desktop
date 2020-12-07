@@ -66,6 +66,7 @@ public:
         QVector<SubFolderInfo> _subs;
         qint64 _size = 0;
         bool _isExternal = false;
+        bool _isEncrypted = false;
 
         bool _fetched = false; // If we did the LSCOL for this folder already
         QPointer<LsColJob> _fetchingJob; // Currently running LsColJob
@@ -126,6 +127,7 @@ public slots:
 private slots:
     void slotUpdateDirectories(const QStringList &);
     void slotGatherPermissions(const QString &name, const QMap<QString, QString> &properties);
+    void slotGatherEncryptionStatus(const QString &href, const QMap<QString, QString> &properties);
     void slotLscolFinishedWithError(QNetworkReply *r);
     void slotFolderSyncStateChange(Folder *f);
     void slotFolderScheduleQueueChanged();
