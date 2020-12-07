@@ -302,7 +302,12 @@ void AccountSettings::slotMarkSubfolderEncrypted(const FolderStatusModel::SubFol
         return;
     }
 
-    auto job = new OCC::EncryptFolderJob(accountsState()->account(), folderInfo->_path, folderInfo->_fileId, this);
+    // Folder info have directory paths in Foo/Bar/ convention...
+    Q_ASSERT(!folderInfo->_path.startsWith('/') && folderInfo->_path.endsWith('/'));
+    // But EncryptFolderJob expects directory path Foo/Bar convention
+    const auto path = folderInfo->_path.chopped(1);
+
+    auto job = new OCC::EncryptFolderJob(accountsState()->account(), path, folderInfo->_fileId, this);
     connect(job, &OCC::EncryptFolderJob::finished, this, &AccountSettings::slotEncryptFolderFinished);
     job->start();
 }

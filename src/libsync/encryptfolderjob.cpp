@@ -45,7 +45,7 @@ QString EncryptFolderJob::errorString() const
 
 void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
 {
-    _account->e2e()->setFolderEncryptedStatus(_path, true);
+    _account->e2e()->setFolderEncryptedStatus(_path + '/', true);
 
     auto lockJob = new LockEncryptFolderApiJob(_account, fileId, this);
     connect(lockJob, &LockEncryptFolderApiJob::success,
