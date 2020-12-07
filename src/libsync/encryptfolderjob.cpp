@@ -63,7 +63,7 @@ void EncryptFolderJob::slotEncryptionFlagError(const QByteArray &fileId, int htt
 
 void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, const QByteArray &token)
 {
-    _account->e2e()->setTokenForFolder(fileId, token);
+    _folderToken = token;
 
     FolderMetadata emptyMetadata(_account);
     auto encryptedMetadata = emptyMetadata.encryptedMetadata();
@@ -85,8 +85,7 @@ void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, co
 
 void EncryptFolderJob::slotUploadMetadataSuccess(const QByteArray &folderId)
 {
-    const auto token = _account->e2e()->tokenForFolder(folderId);
-    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, token, this);
+    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, this);
     connect(unlockJob, &UnlockEncryptFolderApiJob::success,
                     this, &EncryptFolderJob::slotUnlockFolderSuccess);
     connect(unlockJob, &UnlockEncryptFolderApiJob::error,
@@ -98,8 +97,7 @@ void EncryptFolderJob::slotUpdateMetadataError(const QByteArray &folderId, int h
 {
     Q_UNUSED(httpReturnCode);
 
-    const auto token = _account->e2e()->tokenForFolder(folderId);
-    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, token, this);
+    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, this);
     connect(unlockJob, &UnlockEncryptFolderApiJob::success,
                     this, &EncryptFolderJob::slotUnlockFolderSuccess);
     connect(unlockJob, &UnlockEncryptFolderApiJob::error,

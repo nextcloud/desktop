@@ -51,6 +51,7 @@ private:
     AccountPtr _account;
     QString _path;
     QByteArray _fileId;
+    QByteArray _folderToken;
     QString _errorString;
 };
 }
