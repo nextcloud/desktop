@@ -170,3 +170,7 @@ FakesAssemblies/
 # This exclusion needs to be added at the end, after any previous
 # reference to "build"
 !building.adoc
+
+# squish test
+test/suite_oc-desktop/config.ini
+*/**/__pycache__/
