@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
         <source>Activity action button</source>
-        <translation type="unfinished"/>
+        <translation>Boton d’accion activitat</translation>
     </message>
 </context>
 <context>
@@ -112,12 +112,12 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Error de supression « %1 » : %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Supression impossibla del dossièr « %1 »</translation>
     </message>
 </context>
 <context>
@@ -412,7 +412,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="748"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>Per ara i a pas cap d’informacion sus l’utilizacion de l’espaci d’emmaganizatge.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="751"/>
