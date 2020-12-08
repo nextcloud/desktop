@@ -44,8 +44,10 @@ public:
         TypeUser = Sharee::User,
         TypeGroup = Sharee::Group,
         TypeLink = 3,
+        TypeEmail = Sharee::Email,
         TypeRemote = Sharee::Federated,
-        TypeCircle = Sharee::Circle
+        TypeCircle = Sharee::Circle,
+        TypeRoom = Sharee::Room
     };
 
     using Permissions = SharePermissions;

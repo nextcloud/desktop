@@ -40,8 +40,10 @@ public:
     enum Type {
         User = 0,
         Group = 1,
+        Email = 4,
         Federated = 6,
-        Circle = 7
+        Circle = 7,
+        Room = 10
     };
 
     explicit Sharee(const QString shareWith,
