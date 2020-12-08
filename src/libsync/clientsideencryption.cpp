@@ -830,12 +830,6 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming) {
     job->start();
 }
 
-void ClientSideEncryption::setFolderEncryptedStatus(const QString& folder, bool status)
-{
-    qCDebug(lcCse) << "Setting folder" << folder << "as encrypted" << status;
-    _folder2encryptedStatus[folder] = status;
-}
-
 void ClientSideEncryption::privateKeyFetched(Job *incoming) {
     auto *readJob = static_cast<ReadPasswordJob *>(incoming);
 
@@ -1089,17 +1083,6 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
         qCInfo(lcCse()) << retCode;
     });
     job->start();
-}
-
-void ClientSideEncryption::setTokenForFolder(const QByteArray& folderId, const QByteArray& token)
-{
-    _folder2token[folderId] = token;
-}
-
-QByteArray ClientSideEncryption::tokenForFolder(const QByteArray& folderId) const
-{
-    Q_ASSERT(_folder2token.contains(folderId));
-    return _folder2token[folderId];
 }
 
 void ClientSideEncryption::encryptPrivateKey()
@@ -1546,29 +1529,6 @@ void FolderMetadata::removeEncryptedFile(const EncryptedFile &f)
 
 QVector<EncryptedFile> FolderMetadata::files() const {
     return _files;
-}
-
-bool ClientSideEncryption::isFolderEncrypted(const QString& path) const {
-  auto it = _folder2encryptedStatus.constFind(path);
-  if (it == _folder2encryptedStatus.constEnd())
-    return false;
-  return (*it);
-}
-
-bool ClientSideEncryption::isAnyParentFolderEncrypted(const QString &path) const
-{
-    int slashPosition = 0;
-
-    while ((slashPosition = path.indexOf("/", slashPosition + 1)) != -1) {
-        // Ignore the last slash
-        if (slashPosition == path.length() - 1) break;
-
-        if (isFolderEncrypted(path.left(slashPosition + 1))) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray& returnTag)

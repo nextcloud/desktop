@@ -47,8 +47,6 @@ QString EncryptFolderJob::errorString() const
 
 void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
 {
-    _account->e2e()->setFolderEncryptedStatus(_path + '/', true);
-
     SyncJournalFileRecord rec;
     _journal->getFileRecord(_path, &rec);
     if (rec.isValid()) {

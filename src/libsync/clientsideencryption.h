@@ -80,14 +80,7 @@ public:
     void generateKeyPair();
     void generateCSR(EVP_PKEY *keyPair);
     void encryptPrivateKey();
-    void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
-    QByteArray tokenForFolder(const QByteArray& folder) const;
     void fetchFolderEncryptedStatus();
-
-    // to be used together with FolderStatusModel::FolderInfo::_path.
-    bool isFolderEncrypted(const QString& path) const;
-    bool isAnyParentFolderEncrypted(const QString &path) const;
-    void setFolderEncryptedStatus(const QString& path, bool status);
 
     void forgetSensitiveData();
 
@@ -126,7 +119,6 @@ private:
     bool isInitialized = false;
     bool _refreshingEncryptionStatus = false;
     //TODO: Save this on disk.
-    QHash<QByteArray, QByteArray> _folder2token;
     QHash<QString, bool> _folder2encryptedStatus;
     QVector<GetFolderEncryptStatusJob*> _folderStatusJobs;
 
