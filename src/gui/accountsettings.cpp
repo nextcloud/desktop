@@ -59,6 +59,10 @@
 
 #include "account.h"
 
+namespace {
+constexpr auto propertyFolderInfo = "folderInfo";
+}
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountSettings, "nextcloud.gui.account.settings", QtInfoMsg)
@@ -239,6 +243,13 @@ void AccountSettings::slotEncryptFolderFinished(int status)
     if (!job->errorString().isEmpty()) {
         QMessageBox::warning(nullptr, tr("Warning"), job->errorString());
     }
+
+    const auto folderInfo = job->property(propertyFolderInfo).value<FolderStatusModel::SubFolderInfo*>();
+    Q_ASSERT(folderInfo);
+    const auto index = _model->indexForPath(folderInfo->_folder, folderInfo->_path);
+    Q_ASSERT(index.isValid());
+    _model->resetAndFetch(index.parent());
+
     job->deleteLater();
 }
 
@@ -297,7 +308,7 @@ bool AccountSettings::canEncryptOrDecrypt (const FolderStatusModel::SubFolderInf
     return true;
 }
 
-void AccountSettings::slotMarkSubfolderEncrypted(const FolderStatusModel::SubFolderInfo* folderInfo)
+void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInfo* folderInfo)
 {
     if (!canEncryptOrDecrypt(folderInfo)) {
         return;
@@ -309,6 +320,7 @@ void AccountSettings::slotMarkSubfolderEncrypted(const FolderStatusModel::SubFol
     const auto path = folderInfo->_path.chopped(1);
 
     auto job = new OCC::EncryptFolderJob(accountsState()->account(), folderInfo->_folder->journalDb(), path, folderInfo->_fileId, this);
+    job->setProperty(propertyFolderInfo, QVariant::fromValue(folderInfo));
     connect(job, &OCC::EncryptFolderJob::finished, this, &AccountSettings::slotEncryptFolderFinished);
     job->start();
 }

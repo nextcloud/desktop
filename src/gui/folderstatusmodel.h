@@ -163,4 +163,6 @@ signals:
 
 } // namespace OCC
 
+Q_DECLARE_METATYPE(OCC::FolderStatusModel::SubFolderInfo*)
+
 #endif // FOLDERSTATUSMODEL_H
