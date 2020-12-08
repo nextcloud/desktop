@@ -63,7 +63,7 @@ signals:
     void folderChanged();
     void openFolderAlias(const QString &);
     void showIssuesList(AccountState *account);
-    void requesetMnemonic();
+    void requestMnemonic();
     void removeAccountFolders(AccountState *account);
     void styleChanged();
 

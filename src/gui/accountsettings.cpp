@@ -201,7 +201,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         this, &AccountSettings::slotUpdateQuota);
 
     // Connect E2E stuff
-    connect(this, &AccountSettings::requesetMnemonic, _accountState->account()->e2e(), &ClientSideEncryption::slotRequestMnemonic);
+    connect(this, &AccountSettings::requestMnemonic, _accountState->account()->e2e(), &ClientSideEncryption::slotRequestMnemonic);
     connect(_accountState->account()->e2e(), &ClientSideEncryption::showMnemonic, this, &AccountSettings::slotShowMnemonic);
 
     connect(_accountState->account()->e2e(), &ClientSideEncryption::mnemonicGenerated, this, &AccountSettings::slotNewMnemonicGenerated);
@@ -211,7 +211,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
 
         auto *mnemonic = new QAction(tr("Display mnemonic"), this);
-        connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
+        connect(mnemonic, &QAction::triggered, this, &AccountSettings::requestMnemonic);
         _ui->encryptionMessage->addAction(mnemonic);
         _ui->encryptionMessage->hide();
     }
@@ -224,7 +224,7 @@ void AccountSettings::slotNewMnemonicGenerated()
     _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
 
     auto *mnemonic = new QAction(tr("Enable encryption"), this);
-    connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
+    connect(mnemonic, &QAction::triggered, this, &AccountSettings::requestMnemonic);
     connect(mnemonic, &QAction::triggered, _ui->encryptionMessage, &KMessageWidget::hide);
 
     _ui->encryptionMessage->addAction(mnemonic);
@@ -270,7 +270,8 @@ void AccountSettings::doExpand()
     }
 }
 
-void AccountSettings::slotShowMnemonic(const QString &mnemonic) {
+void AccountSettings::slotShowMnemonic(const QString &mnemonic)
+{
     AccountManager::instance()->displayMnemonic(mnemonic);
 }
 
