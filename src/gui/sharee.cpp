@@ -73,14 +73,14 @@ ShareeModel::ShareeModel(const AccountPtr &account, const QString &type, QObject
 {
 }
 
-void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
+void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist, LookupMode lookupMode)
 {
     _search = search;
     _shareeBlacklist = blacklist;
     auto *job = new OcsShareeJob(_account);
     connect(job, &OcsShareeJob::shareeJobFinished, this, &ShareeModel::shareesFetched);
     connect(job, &OcsJob::ocsError, this, &ShareeModel::displayErrorMessage);
-    job->getSharees(_search, _type, 1, 50);
+    job->getSharees(_search, _type, 1, 50, lookupMode == GlobalSearch ? true : false);
 }
 
 void ShareeModel::shareesFetched(const QJsonDocument &reply)

@@ -163,5 +163,6 @@
         <file>theme/add.svg</file>
         <file>theme/share.svg</file>
         <file>theme/reply.svg</file>
+        <file>theme/magnifying-glass.svg</file>
     </qresource>
 </RCC>
