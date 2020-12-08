@@ -96,6 +96,7 @@ protected slots:
     void slotHandleMkdirNetworkError(QNetworkReply *);
     void slotHandleLsColNetworkError(QNetworkReply *);
     void slotUpdateDirectories(const QStringList &);
+    void slotGatherEncryptedPaths(const QString &, const QMap<QString, QString> &);
     void slotRefreshFolders();
     void slotItemExpanded(QTreeWidgetItem *);
     void slotCurrentItemChanged(QTreeWidgetItem *);
@@ -111,6 +112,7 @@ private:
     bool _warnWasVisible;
     AccountPtr _account;
     QTimer _lscolTimer;
+    QStringList _encryptedPaths;
 };
 
 /**

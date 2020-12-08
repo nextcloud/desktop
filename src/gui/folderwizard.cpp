@@ -332,8 +332,10 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
         path.remove(webdavFolder);
 
         // Don't allow to select subfolders of encrypted subfolders
-        if (_account->capabilities().clientSideEncryptionAvailable() &&
-            _account->e2e()->isAnyParentFolderEncrypted(path)) {
+        const auto isAnyAncestorEncrypted = std::any_of(std::cbegin(_encryptedPaths), std::cend(_encryptedPaths), [=](const QString &encryptedPath) {
+            return path.size() > encryptedPath.size() && path.startsWith(encryptedPath);
+        });
+        if (isAnyAncestorEncrypted) {
             continue;
         }
 
@@ -345,8 +347,21 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
     root->setExpanded(true);
 }
 
+void FolderWizardRemotePath::slotGatherEncryptedPaths(const QString &path, const QMap<QString, QString> &properties)
+{
+    const auto it = properties.find("is-encrypted");
+    if (it == properties.cend() || *it != QStringLiteral("1")) {
+        return;
+    }
+
+    const auto webdavFolder = QUrl(_account->davUrl()).path();
+    Q_ASSERT(path.startsWith(webdavFolder));
+    _encryptedPaths << path.mid(webdavFolder.size());
+}
+
 void FolderWizardRemotePath::slotRefreshFolders()
 {
+    _encryptedPaths.clear();
     runLsColJob("/");
     _ui.folderTreeWidget->clear();
     _ui.folderEntry->clear();
@@ -364,8 +379,7 @@ void FolderWizardRemotePath::slotCurrentItemChanged(QTreeWidgetItem *item)
         QString dir = item->data(0, Qt::UserRole).toString();
 
         // We don't want to allow creating subfolders in encrypted folders outside of the sync logic
-        const auto encrypted = _account->capabilities().clientSideEncryptionAvailable() &&
-                _account->e2e()->isFolderEncrypted(dir + '/');
+        const auto encrypted = _encryptedPaths.contains(dir);
         _ui.addFolderButton->setEnabled(!encrypted);
 
         if (!dir.startsWith(QLatin1Char('/'))) {
@@ -413,11 +427,17 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
 LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
 {
     auto *job = new LsColJob(_account, path, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype");
+    auto props = QList<QByteArray>() << "resourcetype";
+    if (_account->capabilities().clientSideEncryptionAvailable()) {
+        props << "http://nextcloud.org/ns:is-encrypted";
+    }
+    job->setProperties(props);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotUpdateDirectories);
     connect(job, &LsColJob::finishedWithError,
         this, &FolderWizardRemotePath::slotHandleLsColNetworkError);
+    connect(job, &LsColJob::directoryListingIterated,
+        this, &FolderWizardRemotePath::slotGatherEncryptedPaths);
     job->start();
 
     return job;

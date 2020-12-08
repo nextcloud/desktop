@@ -106,13 +106,21 @@ QSize SelectiveSyncWidget::sizeHint() const
 
 void SelectiveSyncWidget::refreshFolders()
 {
+    _encryptedPaths.clear();
+
     auto *job = new LsColJob(_account, _folderPath, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype"
-                                           << "http://owncloud.org/ns:size");
+    auto props = QList<QByteArray>() << "resourcetype"
+                                     << "http://owncloud.org/ns:size";
+    if (_account->capabilities().clientSideEncryptionAvailable()) {
+        props << "http://nextcloud.org/ns:is-encrypted";
+    }
+    job->setProperties(props);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &SelectiveSyncWidget::slotUpdateDirectories);
     connect(job, &LsColJob::finishedWithError,
         this, &SelectiveSyncWidget::slotLscolFinishedWithError);
+    connect(job, &LsColJob::directoryListingIterated,
+        this, &SelectiveSyncWidget::slotGatherEncryptedPaths);
     job->start();
     _folderTree->clear();
     _loading->show();
@@ -250,8 +258,10 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
         path.remove(pathToRemove);
 
         // Don't allow to select subfolders of encrypted subfolders
-        if (_account->capabilities().clientSideEncryptionAvailable() &&
-            _account->e2e()->isAnyParentFolderEncrypted(_rootName + '/' + path)) {
+        const auto isAnyAncestorEncrypted = std::any_of(std::cbegin(_encryptedPaths), std::cend(_encryptedPaths), [=](const QString &encryptedPath) {
+            return path.size() > encryptedPath.size() && path.startsWith(encryptedPath);
+        });
+        if (isAnyAncestorEncrypted) {
             continue;
         }
 
@@ -286,6 +296,19 @@ void SelectiveSyncWidget::slotLscolFinishedWithError(QNetworkReply *r)
         _loading->setText(tr("An error occurred while loading the list of sub folders."));
     }
     _loading->resize(_loading->sizeHint()); // because it's not in a layout
+}
+
+void SelectiveSyncWidget::slotGatherEncryptedPaths(const QString &path, const QMap<QString, QString> &properties)
+{
+    const auto it = properties.find("is-encrypted");
+    if (it == properties.cend() || *it != QStringLiteral("1")) {
+        return;
+    }
+
+    const auto webdavFolder = QUrl(_account->davUrl()).path();
+    Q_ASSERT(path.startsWith(webdavFolder));
+    // This dialog use the postfix / convention for folder paths
+    _encryptedPaths << path.mid(webdavFolder.size()) + '/';
 }
 
 void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
