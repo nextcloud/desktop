@@ -249,8 +249,6 @@ void PropagateUploadFileCommon::start()
 
     const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
     _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
-    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
-            this, &PropagateUploadFileCommon::setupUnencryptedFile);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
             this, &PropagateUploadFileCommon::setupEncryptedFile);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,

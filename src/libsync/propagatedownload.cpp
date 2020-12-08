@@ -381,10 +381,7 @@ void PropagateDownloadFile::start()
         startAfterIsEncryptedIsChecked();
     } else {
         _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, _item, this);
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusNotEncrypted, [this] {
-          startAfterIsEncryptedIsChecked();
-        });
-        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusEncrypted, [this] {
+        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::fileMetadataFound, [this] {
           _isEncrypted = true;
           startAfterIsEncryptedIsChecked();
         });

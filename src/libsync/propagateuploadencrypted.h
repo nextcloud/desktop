@@ -42,8 +42,6 @@ public:
   QByteArray _folderId;
 
 private slots:
-    void slotFolderEncryptedStatusFetched(const QString &folder, bool isEncrypted);
-    void slotFolderEncryptedStatusError(int error);
     void slotFolderEncryptedIdReceived(const QStringList &list);
     void slotFolderEncryptedIdError(QNetworkReply *r);
     void slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token);
@@ -58,9 +56,6 @@ signals:
     // Emmited after the file is encrypted and everythign is setup.
     void finalized(const QString& path, const QString& filename, quint64 size);
     void error();
-
-    // Emited if the file is not in a encrypted folder.
-    void folderNotEncrypted();
 
 private:
   OwncloudPropagator *_propagator;

@@ -15,11 +15,7 @@ PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propa
 {
 }
 
-void PropagateDownloadEncrypted::start() {
-  checkFolderEncryptedStatus();
-}
-
-void PropagateDownloadEncrypted::checkFolderEncryptedStatus()
+void PropagateDownloadEncrypted::start()
 {
     const auto rootPath = [=]() {
         const auto result = _propagator->remotePath();
@@ -33,37 +29,14 @@ void PropagateDownloadEncrypted::checkFolderEncryptedStatus()
     const auto remotePath = QString(rootPath + remoteFilename);
     const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
 
-  auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), remoteParentPath, this);
-  connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
-          this, &PropagateDownloadEncrypted::folderStatusReceived);
-
-  connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
-          this, &PropagateDownloadEncrypted::folderStatusError);
-
-  getEncryptedStatus->start();
-}
-
-void PropagateDownloadEncrypted::folderStatusError(int statusCode)
-{
-  qCDebug(lcPropagateDownloadEncrypted) << "Failed to get encrypted status of folder" << statusCode;
-}
-
-void PropagateDownloadEncrypted::folderStatusReceived(const QString &folder, bool isEncrypted)
-{
-  qCDebug(lcPropagateDownloadEncrypted) << "Get Folder is Encrypted Received" << folder << isEncrypted;
-  if (!isEncrypted) {
-      emit folderStatusNotEncrypted();
-      return;
-  }
-
-  // Is encrypted Now we need the folder-id
-  auto job = new LsColJob(_propagator->account(), folder, this);
-  job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
-  connect(job, &LsColJob::directoryListingSubfolders,
-          this, &PropagateDownloadEncrypted::checkFolderId);
-  connect(job, &LsColJob::finishedWithError,
-          this, &PropagateDownloadEncrypted::folderIdError);
-  job->start();
+    // Is encrypted Now we need the folder-id
+    auto job = new LsColJob(_propagator->account(), remoteParentPath, this);
+    job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
+    connect(job, &LsColJob::directoryListingSubfolders,
+            this, &PropagateDownloadEncrypted::checkFolderId);
+    connect(job, &LsColJob::finishedWithError,
+            this, &PropagateDownloadEncrypted::folderIdError);
+    job->start();
 }
 
 void PropagateDownloadEncrypted::folderIdError()
@@ -101,7 +74,7 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
       _encryptedInfo = file;
 
       qCDebug(lcPropagateDownloadEncrypted) << "Found matching encrypted metadata for file, starting download";
-      emit folderStatusEncrypted();
+      emit fileMetadataFound();
       return;
     }
   }

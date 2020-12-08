@@ -183,8 +183,6 @@ void PropagateRemoteMkdir::slotMkdir()
     // We should be encrypted as well since our parent is
     const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
     _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), remoteParentPath, _item, this);
-    connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folderNotEncrypted,
-      this, &PropagateRemoteMkdir::slotStartMkcolJob);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
       this, &PropagateRemoteMkdir::slotStartEncryptedMkcolJob);
     connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
