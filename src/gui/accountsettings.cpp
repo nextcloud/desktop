@@ -192,14 +192,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     /*QColor color = palette().highlight().color();
      _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));*/
 
-    _ui->connectLabel->setText(tr("No account configured."));
-
-    connect(_accountState, &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
-    slotAccountStateChanged();
-
-    connect(&_userInfo, &UserInfo::quotaUpdated,
-        this, &AccountSettings::slotUpdateQuota);
-
     // Connect E2E stuff
     connect(this, &AccountSettings::requestMnemonic, _accountState->account()->e2e(), &ClientSideEncryption::slotRequestMnemonic);
     connect(_accountState->account()->e2e(), &ClientSideEncryption::showMnemonic, this, &AccountSettings::slotShowMnemonic);
@@ -215,6 +207,14 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         _ui->encryptionMessage->addAction(mnemonic);
         _ui->encryptionMessage->hide();
     }
+
+    _ui->connectLabel->setText(tr("No account configured."));
+
+    connect(_accountState, &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
+    slotAccountStateChanged();
+
+    connect(&_userInfo, &UserInfo::quotaUpdated,
+        this, &AccountSettings::slotUpdateQuota);
 
     customizeStyle();
 }
