@@ -90,9 +90,8 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     }
 #endif
 
-    HttpLogger::logRequest(newRequest, op, outgoingData);
     const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
-    HttpLogger::logReplyOnFinished(reply);
+    HttpLogger::logRequest(reply, op, outgoingData);
     return reply;
 }
 

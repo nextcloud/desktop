@@ -85,24 +85,9 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
 
 namespace OCC {
 
-
-void HttpLogger::logReplyOnFinished(const QNetworkReply *reply)
+void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operation operation, QIODevice *device)
 {
-    if (!lcNetworkHttp().isInfoEnabled()) {
-        return;
-    }
-    QObject::connect(reply, &QNetworkReply::finished, reply, [reply] {
-        logHttp(requestVerb(*reply),
-            reply->url().toString(),
-            reply->request().rawHeader(XRequestId()),
-            reply->header(QNetworkRequest::ContentTypeHeader).toString(),
-            reply->rawHeaderPairs(),
-            const_cast<QNetworkReply *>(reply));
-    });
-}
-
-void HttpLogger::logRequest(const QNetworkRequest &request, QNetworkAccessManager::Operation operation, QIODevice *device)
-{
+    const auto request = reply->request();
     if (!lcNetworkHttp().isInfoEnabled()) {
         return;
     }
@@ -118,6 +103,15 @@ void HttpLogger::logRequest(const QNetworkRequest &request, QNetworkAccessManage
         request.header(QNetworkRequest::ContentTypeHeader).toString(),
         header,
         device);
+
+    QObject::connect(reply, &QNetworkReply::finished, reply, [reply] {
+        logHttp(requestVerb(*reply),
+            reply->url().toString(),
+            reply->request().rawHeader(XRequestId()),
+            reply->header(QNetworkRequest::ContentTypeHeader).toString(),
+            reply->rawHeaderPairs(),
+            reply);
+    });
 }
 
 QByteArray HttpLogger::requestVerb(QNetworkAccessManager::Operation operation, const QNetworkRequest &request)
