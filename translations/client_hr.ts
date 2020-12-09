@@ -3115,6 +3115,11 @@ Nije preporučljivo koristiti ga.</translation>
         <translation>Dijelite s korisnicima ili grupama...</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
+        <source>Search globally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation>Kopiraj poveznicu</translation>

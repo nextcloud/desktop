@@ -1652,7 +1652,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Změnit kanál aktualizací?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="304"/>
@@ -1664,7 +1664,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Změnit kanál aktualizací</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
@@ -3114,6 +3114,11 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/shareusergroupwidget.ui" line="59"/>
         <source>Share with users or groups …</source>
         <translation>Sdílet s uživateli nebo skupinami…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
+        <source>Search globally</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>

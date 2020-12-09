@@ -3095,6 +3095,11 @@ Sen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Jaa käyttäjien tai ryhmien kanssa…</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
+        <source>Search globally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation>Kopioi linkki</translation>
