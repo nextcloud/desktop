@@ -105,6 +105,10 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
     if (!_accountState) {
         return {};
     }
+
+    const auto info = infoForIndex(index);
+    const auto supportsSelectiveSync = info && info->_folder && info->_folder->supportsSelectiveSync();
+
     switch (classify(index)) {
     case AddButton: {
         Qt::ItemFlags ret;
@@ -119,7 +123,11 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
     case RootFolder:
         return Qt::ItemIsEnabled;
     case SubFolder:
-        return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
+        if (supportsSelectiveSync) {
+            return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable;
+        } else {
+            return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+        }
     }
     return {};
 }
@@ -146,6 +154,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     }
     case SubFolder: {
         const auto &x = static_cast<SubFolderInfo *>(index.internalPointer())->_subs.at(index.row());
+        const auto supportsSelectiveSync = x._folder && x._folder->supportsSelectiveSync();
+
         switch (role) {
         case Qt::DisplayRole:
             //: Example text: "File.txt (23KB)"
@@ -153,7 +163,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:
             return QString(QLatin1String("<qt>") + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size))) + QLatin1String("</qt>"));
         case Qt::CheckStateRole:
-            return x._checked;
+            if (supportsSelectiveSync) {
+                return x._checked;
+            } else {
+                return QVariant();
+            }
         case Qt::DecorationRole: {
             if (x._isEncrypted) {
                 return QIcon(QLatin1String(":/client/theme/lock-https.svg"));
@@ -294,6 +308,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
 {
     if (role == Qt::CheckStateRole) {
         auto info = infoForIndex(index);
+        Q_ASSERT(info->_folder && info->_folder->supportsSelectiveSync());
         auto checked = static_cast<Qt::CheckState>(value.toInt());
 
         if (info && info->_checked != checked) {
@@ -543,9 +558,6 @@ bool FolderStatusModel::hasChildren(const QModelIndex &parent) const
     if (!info)
         return false;
 
-    if (info->_folder && !info->_folder->supportsSelectiveSync())
-        return false;
-
     if (!info->_fetched)
         return true;
 
@@ -569,10 +581,6 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
         return false;
     if (info->_hasError) {
         // Keep showing the error to the user, it will be hidden when the account reconnects
-        return false;
-    }
-    if (info->_folder && !info->_folder->supportsSelectiveSync()) {
-        // Selective sync is hidden in that case
         return false;
     }
     return true;
@@ -664,9 +672,6 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
     auto parentInfo = infoForIndex(idx);
     if (!parentInfo) {
-        return;
-    }
-    if (!parentInfo->_folder->supportsSelectiveSync()) {
         return;
     }
     ASSERT(parentInfo->_fetchingJob == job);
