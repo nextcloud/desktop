@@ -223,11 +223,7 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
 {
     auto serverVersion = CheckServerJob::version(info);
 
-    _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
-                                            .arg(Utility::escape(url.toString()),
-                                                Utility::escape(Theme::instance()->appNameGUI()),
-                                                Utility::escape(CheckServerJob::versionString(info)),
-                                                Utility::escape(serverVersion)));
+    qCDebug(lcWizard) << "Successfully connected to" << url.toString() << "version" << CheckServerJob::versionString(info) << "(" << serverVersion << ")";
 
     // Note with newer servers we get the version actually only later in capabilities
     // https://github.com/owncloud/core/pull/27473/files
@@ -288,10 +284,8 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
     AbstractCredentials *creds = _ocWizard->getCredentials();
     _ocWizard->account()->setCredentials(creds);
     _ocWizard->setField(QLatin1String("OCUrl"), url);
-    _ocWizard->appendToConfigurationLog(tr("Trying to connect to %1 at %2...")
-                                            .arg(Theme::instance()->appNameGUI())
-                                            .arg(url));
 
+    qCDebug(lcWizard) << "Trying to connect to" << url;
     testOwnCloudConnect();
 }
 
@@ -415,22 +409,19 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
         Utility::setupFavLink(localFolder);
         // there is an existing local folder. If its non empty, it can only be synced if the
         // ownCloud is newly created.
-        _ocWizard->appendToConfigurationLog(
-            tr("Local sync folder %1 already exists, setting it up for sync.<br/><br/>")
-                .arg(Utility::escape(localFolder)));
+        qCDebug(lcWizard) << "Local sync folder" << localFolder << "already exists, setting it up for sync.";
     } else {
-        QString res = tr("Creating local sync folder %1...").arg(localFolder);
+        bool ok = true;
         if (fi.mkpath(localFolder)) {
             FileSystem::setFolderMinimumPermissions(localFolder);
             Utility::setupFavLink(localFolder);
-            res += tr("ok");
         } else {
-            res += tr("failed.");
+            ok = false;
             qCWarning(lcWizard) << "Failed to create " << fi.path();
             _ocWizard->displayError(tr("Could not create local folder %1").arg(Utility::escape(localFolder)), false);
             nextStep = false;
         }
-        _ocWizard->appendToConfigurationLog(res);
+        qCDebug(lcWizard) << "Creating local sync folder" << localFolder << "success:" << ok;
     }
     if (nextStep) {
         EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), Utility::concatUrlPath(_ocWizard->account()->davPath(), remoteFolder).path(), this);
@@ -472,7 +463,7 @@ void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
 
 void OwncloudSetupWizard::createRemoteFolder()
 {
-    _ocWizard->appendToConfigurationLog(tr("creating folder on ownCloud: %1").arg(_remoteFolder));
+    qCDebug(lcWizard) << "creating folder on ownCloud:" << _remoteFolder;
 
     MkColJob *job = new MkColJob(_ocWizard->account(), _remoteFolder, this);
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)), SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
@@ -488,24 +479,23 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished(QNetworkReply::NetworkE
     bool success = true;
 
     if (error == QNetworkReply::NoError) {
-        _ocWizard->appendToConfigurationLog(tr("Remote folder %1 created successfully.").arg(_remoteFolder));
+        qCDebug(lcWizard) << "Remote folder" << _remoteFolder << "created successfully.";
     } else if (error == 202) {
-        _ocWizard->appendToConfigurationLog(tr("The remote folder %1 already exists. Connecting it for syncing.").arg(_remoteFolder));
+        qCDebug(lcWizard) << "The remote folder" << _remoteFolder << "already exists. Connecting it for syncing.";
     } else if (error > 202 && error < 300) {
         _ocWizard->displayError(tr("The folder creation resulted in HTTP error code %1").arg((int)error), false);
 
-        _ocWizard->appendToConfigurationLog(tr("The folder creation resulted in HTTP error code %1").arg((int)error));
+        qCDebug(lcWizard) << "The folder creation resulted in HTTP error code" << error;
     } else if (error == QNetworkReply::OperationCanceledError) {
         _ocWizard->displayError(tr("The remote folder creation failed because the provided credentials "
                                    "are wrong!"
                                    "<br/>Please go back and check your credentials.</p>"),
             false);
-        _ocWizard->appendToConfigurationLog(tr("<p><font color=\"red\">Remote folder creation failed probably because the provided credentials are wrong.</font>"
-                                               "<br/>Please go back and check your credentials.</p>"));
+        qCDebug(lcWizard) << "Remote folder creation failed probably because the provided credentials are wrong. Please go back and check your credentials.";
         _remoteFolder.clear();
         success = false;
     } else {
-        _ocWizard->appendToConfigurationLog(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error));
+        qCDebug(lcWizard) << "Remote folder" << _remoteFolder << "creation failed with error" << error;
         _ocWizard->displayError(tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error), false);
         _remoteFolder.clear();
         success = false;
@@ -522,22 +512,13 @@ void OwncloudSetupWizard::finalizeSetup(bool success)
     const QString localFolder = _ocWizard->property("localFolder").toString();
     if (success) {
         if (!(localFolder.isEmpty() || _remoteFolder.isEmpty())) {
-            _ocWizard->appendToConfigurationLog(
-                tr("A sync connection from %1 to remote directory %2 was set up.")
-                    .arg(localFolder, _remoteFolder));
+            qCDebug(lcWizard) << "A sync connection from" << localFolder << "to remote directory" << _remoteFolder << "was set up.";
         }
-        _ocWizard->appendToConfigurationLog(QLatin1String(" "));
-        _ocWizard->appendToConfigurationLog(QLatin1String("<p><font color=\"green\"><b>")
-            + tr("Successfully connected to %1!")
-                  .arg(Theme::instance()->appNameGUI())
-            + QLatin1String("</b></font></p>"));
+        qCDebug(lcWizard) << "Successfully connected";
         _ocWizard->successfulStep();
     } else {
         // ### this is not quite true, pass in the real problem as optional parameter
-        _ocWizard->appendToConfigurationLog(QLatin1String("<p><font color=\"red\">")
-            + tr("Connection to %1 could not be established. Please check again.")
-                  .arg(Theme::instance()->appNameGUI())
-            + QLatin1String("</font></p>"));
+        qCDebug(lcWizard) << "Connection could not be established. Please check again.";
     }
 }
 
@@ -602,7 +583,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
                         QStringList() << QLatin1String("/"));
                 }
             }
-            _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+            qCDebug(lcWizard) << "Local sync folder" << localFolder << "successfully created!";
         }
     }
 
