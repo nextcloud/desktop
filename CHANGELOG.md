@@ -8,10 +8,17 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Log the final http request: [#8289](https://github.com/owncloud/client/pull/8289)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
 Details
 -------
+
+* Bugfix - Log the final http request: [#8289](https://github.com/owncloud/client/pull/8289)
+
+   We fixed a bug where the http log did not include all headers of a request.
+
+   https://github.com/owncloud/client/pull/8289
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
