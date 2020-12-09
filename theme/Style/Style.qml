@@ -31,6 +31,11 @@ QtObject {
     property url stateOnlineImageSource: Theme.stateOnlineImageSource
     property url stateOfflineImageSource: Theme.stateOfflineImageSource
 
+    property url appsButtonImageSource: "qrc:///client/theme/white/more-apps.svg"
+    property url localFolderButtonImageSource: "qrc:///client/theme/white/folder.svg"
+    property url talkButtonImageSource: "qrc:///client/theme/white/talk-app.svg"
+    property url dropDownCaretImageSource: "qrc:///client/theme/white/caret-down.svg"
+
     property int accountAvatarSize: (trayWindowHeaderHeight - 16)
     property int accountAvatarStateIndicatorSize: 16
     property int accountLabelWidth: 128

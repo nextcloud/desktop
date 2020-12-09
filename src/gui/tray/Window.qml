@@ -392,7 +392,7 @@ Window {
                             Layout.alignment: Qt.AlignRight
                             verticalAlignment: Qt.AlignCenter
                             Layout.margins: Style.accountDropDownCaretMargin
-                            source: "qrc:///client/theme/white/caret-down.svg"
+                            source: Style.dropDownCaretImageSource
                             sourceSize.width: Style.accountDropDownCaretSize
                             sourceSize.height: Style.accountDropDownCaretSize
                         }
@@ -409,7 +409,7 @@ Window {
                     id: openLocalFolderButton
 
                     visible: UserModel.currentUser.hasLocalFolder
-                    icon.source: "qrc:///client/theme/white/folder.svg"
+                    icon.source: Style.localFolderButtonImageSource
                     onClicked: UserModel.openCurrentAccountLocalFolder()
 
                     Accessible.role: Accessible.Button
@@ -421,7 +421,7 @@ Window {
                     id: trayWindowTalkButton
 
                     visible: UserModel.currentUser.serverHasTalk
-                    icon.source: "qrc:///client/theme/white/talk-app.svg"
+                    icon.source: Style.talkButtonImageSource
                     onClicked: UserModel.openCurrentAccountTalk()
 
                     Accessible.role: Accessible.Button
@@ -431,7 +431,7 @@ Window {
 
                 HeaderButton {
                     id: trayWindowAppsButton
-                    icon.source: "qrc:///client/theme/white/more-apps.svg"
+                    icon.source: Style.appsButtonImageSource
                     onClicked: {
                         if(appsMenu.count <= 0) {
                             UserModel.openCurrentAccountServer()
