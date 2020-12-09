@@ -3114,6 +3114,11 @@ It is not advisable to use it.</source>
         <translation>Поделиться с пользователями или группами…</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
+        <source>Search globally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation>Скопировать ссылку</translation>

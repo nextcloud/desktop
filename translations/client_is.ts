@@ -3109,6 +3109,11 @@ Ekki er mælt með því að hún sé notuð.
         <translation>Deila með notendum eða hópum ...</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
+        <source>Search globally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation>Afrita tengil</translation>
