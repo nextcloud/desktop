@@ -1,0 +1,5 @@
+Bugfix: Log the final http request
+
+We fixed a bug where the http log did not include all headers of a request.
+
+https://github.com/owncloud/client/pull/8289

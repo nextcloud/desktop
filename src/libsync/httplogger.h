@@ -20,8 +20,7 @@
 
 namespace OCC {
 namespace HttpLogger {
-    void OWNCLOUDSYNC_EXPORT logReplyOnFinished(const QNetworkReply *reply);
-    void OWNCLOUDSYNC_EXPORT logRequest(const QNetworkRequest &request, QNetworkAccessManager::Operation operation, QIODevice *device);
+    void OWNCLOUDSYNC_EXPORT logRequest(QNetworkReply *reply, QNetworkAccessManager::Operation operation, QIODevice *device);
 
     /**
     * Helper to construct the HTTP verb used in the request
