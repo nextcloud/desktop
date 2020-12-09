@@ -1653,7 +1653,9 @@ Veuillez noter que cela sélectionne seulement la zone de mises à jour, et qu&a
         <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Les fichiers ou dossiers correspondant au motif ne seront pas synchronisés. Les changements prendront effet à la prochaine synchronisation des dossiers.
+
+Les éléments dont la suppression est autorisée seront supprimés s&apos;ils empêchent un dossier d&apos;être supprimé. Cela est utile pour les métadonnées.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
@@ -1795,7 +1797,8 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation type="unfinished"/>
+        <translation>Le client peut écrire des journaux de déboguage dans un dossier temporaire. Ces journaux sont utiles pour diagnostiquer des problèmes.
+Depuis que le journal peut être plus grand, le client démarrera un nouveau journal pour chaque synchronisation lancée et compresse les anciens journaux. Il est recommandé d&apos;activer la suppression des fichiers journaux après plusieurs heures afin d&apos;éviter qu&apos;ils n&apos;occupent trop d&apos;espace mémoire.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
@@ -2507,7 +2510,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Lorsque le mode &quot;fichiers virtuels&quot; est activé, aucun fichier ne sera initialement téléchargé. À la place, un minuscule fichier &quot;%1&quot; sera créé pour chaque fichier qui existe sur le serveur. Les contenus pourront être téléchargés en lançant ces fichiers ou en ouvrant leur menu contextuel.
+
+Le mode fichiers virtuels est mutuellement exclusif avec une synchronisation sélective. Les dossiers qui ne sont actuellement pas sélectionnés seront traduits en dossiers en ligne et vos paramètres de synchronisation seront réinitialisés.
+
+Passer à ce mode annulera toute les synchronisations actuellement en cours d&apos;exécution.
+
+Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;utiliser, merci de signaler toute anomalie qui pourrait se produire.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="272"/>
@@ -2626,7 +2635,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="404"/>
         <source>etag</source>
-        <translation type="unfinished"/>
+        <translation>etag</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="406"/>
@@ -2636,12 +2645,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur n&apos;a pas reporté de %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1244"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Déplacé vers une cible invalide, restauration</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1257"/>
@@ -2676,7 +2685,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1428"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur a répondu avec une erreur durant la lecture du répertoire &apos;%1&apos; : %2</translation>
     </message>
 </context>
 <context>
@@ -2796,7 +2805,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="260"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la modification de l&apos;état de l&apos;épingle</translation>
     </message>
 </context>
 <context>
@@ -2841,7 +2850,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="233"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de la modification de l&apos;état de l&apos;épingle</translation>
     </message>
 </context>
 <context>
@@ -3114,7 +3123,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="211"/>
         <source>Are you sure you want to quit %1?</source>
-        <translation type="unfinished"/>
+        <translation>Êtes-vous sûr de vouloir quitter %1 ?</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="342"/>
@@ -3124,7 +3133,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"/>
+        <translation>FenêtrePrincipale</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
@@ -3230,7 +3239,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="283"/>
         <source>&amp;Create</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Créer</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="336"/>
@@ -3383,7 +3392,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can direct people to this shared file or folder &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline&quot;&gt;by giving them a private link&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez rediriger des personnes vers ce fichier ou dossier partagé &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline&quot;&gt;en leur donnant un lien privé&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="211"/>
@@ -3480,12 +3489,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="591"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Partage du menu contextuel</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="596"/>
         <source>Context menu share %1</source>
-        <translation type="unfinished"/>
+        <translation>Partage du menu contextuel %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="765"/>
@@ -3500,7 +3509,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous vraiment supprimer définitivement le fichier &lt;i&gt;%1&lt;/i&gt; ?</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="807"/>
@@ -3517,7 +3526,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Le déplacement du fichier a échoué :
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="825"/>
@@ -3549,7 +3560,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="867"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Le repartage de ce dossier n&apos;est pas autorisé</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="879"/>
@@ -3565,7 +3576,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="980"/>
         <source>Show file versions in browser</source>
-        <translation type="unfinished"/>
+        <translation>Montrer les versions du fichier dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1003"/>
@@ -3575,7 +3586,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1006"/>
         <source>Rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Renommer et téléverser...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1011"/>
@@ -3585,17 +3596,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1014"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Déplacer, renommer et téléverser...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1017"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer les changements locaux</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1022"/>
         <source>Move and upload...</source>
-        <translation type="unfinished"/>
+        <translation>Déplacer et téléverser...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="1023"/>
@@ -3720,7 +3731,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="245"/>
         <source>The connection is not secure</source>
-        <translation type="unfinished"/>
+        <translation>La connexion n&apos;est pas sécurisée</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="178"/>
@@ -3844,12 +3855,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="351"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de mettre à jour les métadonnées du fichier virtuel : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="498"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Utilisation d&apos;un fichier virtuel avec un suffixe qui n&apos;a pas été défini</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="510"/>
@@ -3885,7 +3896,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="382"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %1. Pour plus d&apos;informations, visitez &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Pour voir les problèmes connus et obtenir de l&apos;aide, merci de visiter : &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Par Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, et d&apos;autres.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distribué par %4 et sous licence GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 et le logo %5 sont une une marqué déposée de %4 aux États-Unis, d&apos;autres pays, ou les deux.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3903,7 +3914,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="361"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier téléchargé ne correspond pas au checksum, il va être retéléchargé. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -3911,7 +3922,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="72"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>La fonctionnalité de système de fichiers virtuels nécessite un système de fichier NTFS, %1 utilise un système %2</translation>
     </message>
 </context>
 <context>
@@ -3973,7 +3984,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="190"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur du compte %1 utilise une version non-supportée %2. Utiliser ce client avec cette version non supportée du serveur n&apos;a pas été testée et est potentiellement dangereux. Continuez à vos risques et périls.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
@@ -4213,12 +4224,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="272"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="275"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lorsque cette option est sélectionnée, l&apos;assistant se fermera sans rien synchroniser. Vous pouvez utiliser l&apos;option &amp;quot;Ajouter un dossier connecté de synchronisation&amp;quot; depuis les paramètres du compte pour choisir quels dossiers parmi les locaux et les distants vous souhaitez synchroniser&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="278"/>
         <source>Manually create folder sync connections </source>
-        <translation type="unfinished"/>
+        <translation>Créer manuellement un dossier de synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
@@ -4238,7 +4249,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>Tout s&amp;ynchroniser depuis le serveur (recommandé)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="498"/>
@@ -4460,7 +4471,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="360"/>
         <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3 %4%8%9Librairies Qt %5, %6%8Utilisant le plug-in de fichiers virtuels : %7</translation>
     </message>
 </context>
 <context>
@@ -4468,7 +4479,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="350"/>
         <source>%1 (Built against Qt %1)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Construit pour Qt %1)</translation>
     </message>
 </context>
 <context>
