@@ -365,7 +365,7 @@ void OAuth::fetchWellKnown()
                     if (!tokenEp.isEmpty())
                         this->_tokenEndpoint = QUrl::fromEncoded(tokenEp.toUtf8());
                 } else if (jsonParseError.error == QJsonParseError::IllegalValue) {
-                    qCDebug(lcOauth) << ".well-known did not return json, the server most does not support oidc";
+                    qCDebug(lcOauth) << ".well-known did not return json, the server most probably does not support oidc";
                 } else {
                     qCWarning(lcOauth) << "Json parse error in well-known: " << jsonParseError.errorString();
                 }
