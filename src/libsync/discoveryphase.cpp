@@ -385,9 +385,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
             result.isDirectory = value.contains(QLatin1String("collection"));
         } else if (property == QLatin1String("getlastmodified")) {
             const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
-            if (date.isValid()) {
-                qCCritical(lcDiscovery) << "Failed to parse getlastmodified:" << value;
-            }
+            Q_ASSERT(date.isValid());
             result.modtime = date.toTime_t();
         } else if (property == QLatin1String("getcontentlength")) {
             // See #4573, sometimes negative size values are returned
