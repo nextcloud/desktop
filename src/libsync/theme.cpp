@@ -132,6 +132,29 @@ QUrl Theme::stateOfflineImageSource() const
     return imagePathToUrl(themeImagePath("state-offline", 16));
 }
 
+QString Theme::trayHeaderThemeImagePath(const QString &iconName) const {
+    const QString iconColor = isDarkColor(wizardHeaderBackgroundColor())? "white" : "black";
+    const QString imagePath = QString::fromLatin1(":/client/theme/%1/%2.svg").arg(iconColor).arg(iconName);
+    return imagePath;
+}
+
+QUrl Theme::trayHeaderMoreAppsImageSource() const {
+    return imagePathToUrl(trayHeaderThemeImagePath("more-apps"));
+}
+
+QUrl Theme::trayHeaderFolderImageSource() const {
+    return imagePathToUrl(trayHeaderThemeImagePath("folder"));
+}
+
+QUrl Theme::trayHeaderTalkAppImageSource() const {
+    return imagePathToUrl(trayHeaderThemeImagePath("talk-app"));
+}
+
+QUrl Theme::trayHeaderCaretDownImageSource() const {
+    return imagePathToUrl(trayHeaderThemeImagePath("caret-down"));
+}
+
+
 QString Theme::version() const
 {
     return MIRALL_VERSION_STRING;
@@ -517,7 +540,17 @@ QIcon Theme::folderOfflineIcon(bool sysTray) const
 
 QColor Theme::wizardHeaderTitleColor() const
 {
-    return {APPLICATION_WIZARD_HEADER_TITLE_COLOR};
+    QColor fontColor = {APPLICATION_WIZARD_HEADER_TITLE_COLOR};
+
+    if (isDarkColor(wizardHeaderBackgroundColor()) &&
+            isDarkColor({APPLICATION_WIZARD_HEADER_TITLE_COLOR})){
+        fontColor = {"#ffffff"};
+    } else if (!isDarkColor(wizardHeaderBackgroundColor()) &&
+            !isDarkColor({APPLICATION_WIZARD_HEADER_TITLE_COLOR})){
+        fontColor = {"#000000"};
+    }
+
+    return fontColor;
 }
 
 QColor Theme::wizardHeaderBackgroundColor() const

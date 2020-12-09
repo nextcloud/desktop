@@ -42,6 +42,10 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QString appName READ appName CONSTANT)
     Q_PROPERTY(QUrl stateOnlineImageSource READ stateOnlineImageSource CONSTANT)
     Q_PROPERTY(QUrl stateOfflineImageSource READ stateOfflineImageSource CONSTANT)
+    Q_PROPERTY(QUrl trayHeaderMoreAppsImageSource READ trayHeaderMoreAppsImageSource CONSTANT)
+    Q_PROPERTY(QUrl trayHeaderFolderImageSource READ trayHeaderFolderImageSource CONSTANT)
+    Q_PROPERTY(QUrl trayHeaderTalkAppImageSource READ trayHeaderTalkAppImageSource CONSTANT)
+    Q_PROPERTY(QUrl trayHeaderCaretDownImageSource READ trayHeaderCaretDownImageSource CONSTANT)
 #ifndef TOKEN_AUTH_ONLY
     Q_PROPERTY(QIcon folderDisabledIcon READ folderDisabledIcon CONSTANT)
     Q_PROPERTY(QIcon folderOfflineIcon READ folderOfflineIcon CONSTANT)
@@ -122,6 +126,36 @@ public:
      * @return QUrl full path to an icon
      */
     QUrl stateOfflineImageSource() const;
+
+    /**
+     * @brief Returns full path to a themed icon for the tray window header
+     * @return QString full path to a themed icon
+     */
+    QString trayHeaderThemeImagePath(const QString &iconName) const;
+
+    /**
+     * @brief Returns the resource path of the more apps icon
+     * @return QUrl of more apps icon
+     */
+    QUrl trayHeaderMoreAppsImageSource() const;
+
+    /**
+     * @brief Returns the resource path of the folder icon
+     * @return QUrl of folder icon
+     */
+    QUrl trayHeaderFolderImageSource() const;
+
+    /**
+     * @brief Returns the resource path of the talk app icon
+     * @return QUrl of talk app icon
+     */
+    QUrl trayHeaderTalkAppImageSource() const;
+
+    /**
+     * @brief Returns the resource path of the caret down icon
+     * @return QUrl of talk app icon
+     */
+    QUrl trayHeaderCaretDownImageSource() const;
 
     /**
      * @brief configFileName
@@ -402,15 +436,15 @@ public:
      * important dependency versions.
      */
     virtual QString versionSwitchOutput() const;
-	
-	/**
+
+    /**
     * @brief Request suitable QIcon resource depending on the background colour of the parent widget.
     *
-    * This should be replaced (TODO) by a real theming implementation for the client UI 
+    * This should be replaced (TODO) by a real theming implementation for the client UI
     * (actually 2019/09/13 only systray theming).
     */
-	virtual QIcon uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const;
-    
+    virtual QIcon uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const;
+
     /**
      * @brief Perform a calculation to check if a colour is dark or light and accounts for different sensitivity of the human eye.
      *
@@ -419,7 +453,7 @@ public:
      * 2019/12/08: Moved here from SettingsDialog.
      */
     static bool isDarkColor(const QColor &color);
-    
+
     /**
      * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette or given colour (Dark-/Light-Mode switching).
      *
@@ -428,7 +462,7 @@ public:
      * 2019/12/08: Implemented for the Dark Mode on macOS, because the app palette can not account for that (Qt 5.12.5).
      */
     static QColor getBackgroundAwareLinkColor(const QColor &backgroundColor);
-    
+
     /**
      * @brief Return the colour to be used for HTML links (e.g. used in QLabel), based on the current app palette (Dark-/Light-Mode switching).
      *
