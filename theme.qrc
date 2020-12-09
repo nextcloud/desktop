@@ -164,5 +164,8 @@
         <file>theme/share.svg</file>
         <file>theme/reply.svg</file>
         <file>theme/magnifying-glass.svg</file>
+        <file>theme/black/talk-app.svg</file>
+        <file>theme/black/more-apps.svg</file>
+        <file>theme/black/folder.svg</file>
     </qresource>
 </RCC>
