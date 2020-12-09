@@ -3112,6 +3112,11 @@ Használata nem ajánlott.</translation>
         <translation>Megosztás felhasználókkal vagy csoportokkal …</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
+        <source>Search globally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation>Hivatkozás másolása</translation>

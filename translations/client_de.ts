@@ -3118,6 +3118,11 @@ Es wird davon abgeraten sie zu verwenden.</translation>
         <translation>Mit Benutzern oder Gruppen teilen …</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
+        <source>Search globally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation>Link kopieren</translation>

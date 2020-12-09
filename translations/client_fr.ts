@@ -3119,6 +3119,11 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Partager avec des utilisateurs ou des groupes ...</translation>
     </message>
     <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
+        <source>Search globally</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>Copy link</source>
         <translation>Copier le lien</translation>
