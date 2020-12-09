@@ -35,9 +35,7 @@
 
 #include <QString>
 #include <QFileInfo>
-#include <QFile>
 #include <QDir>
-
 
 /** Expands C-like escape sequences (in place)
  */
@@ -238,16 +236,15 @@ ExcludedFiles::~ExcludedFiles() = default;
 
 void ExcludedFiles::addExcludeFilePath(const QString &path)
 {
-    auto &excludeFilesLocalPath = _excludeFiles[_localPath];
+    const QFileInfo excludeFileInfo(path);
+    const auto fileName = excludeFileInfo.fileName();
+    const auto basePath = fileName.compare(QStringLiteral("sync-exclude.lst"), Qt::CaseInsensitive) == 0
+                                                                    ? _localPath
+                                                                    : leftIncludeLast(path, QLatin1Char('/'));
+    auto &excludeFilesLocalPath = _excludeFiles[basePath];
     if (std::find(excludeFilesLocalPath.cbegin(), excludeFilesLocalPath.cend(), path) == excludeFilesLocalPath.cend()) {
         excludeFilesLocalPath.append(path);
     }
-}
-
-void ExcludedFiles::addInTreeExcludeFilePath(const QString &path)
-{
-    BasePathString basePath = leftIncludeLast(path, QLatin1Char('/'));
-    _excludeFiles[basePath].append(path);
 }
 
 void ExcludedFiles::setExcludeConflictFiles(bool onoff)
@@ -287,32 +284,26 @@ void ExcludedFiles::setClientVersion(ExcludedFiles::Version version)
     _clientVersion = version;
 }
 
-bool ExcludedFiles::loadExcludeFile(const QString &basePath, const QString & file)
+void ExcludedFiles::loadExcludeFilePatterns(const QString &basePath, QFile &file)
 {
-    QFile f(file);
-    if (!f.open(QIODevice::ReadOnly))
-        return false;
-
     QStringList patterns;
-    while (!f.atEnd()) {
-        QByteArray line = f.readLine().trimmed();
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine().trimmed();
         if (line.startsWith("#!version")) {
             if (!versionDirectiveKeepNextLine(line))
-                f.readLine();
+                file.readLine();
         }
         if (line.isEmpty() || line.startsWith('#'))
             continue;
         csync_exclude_expand_escapes(line);
         patterns.append(QString::fromUtf8(line));
     }
-    _allExcludes.insert(basePath, patterns);
+    _allExcludes[basePath].append(patterns);
 
     // nothing to prepare if the user decided to not exclude anything
     if (!_allExcludes.value(basePath).isEmpty()){
         prepare(basePath);
     }
-
-    return true;
 }
 
 bool ExcludedFiles::reloadExcludeFiles()
@@ -329,8 +320,14 @@ bool ExcludedFiles::reloadExcludeFiles()
     bool success = true;
     const auto keys = _excludeFiles.keys();
     for (const auto& basePath : keys) {
-        for (const auto& file : _excludeFiles.value(basePath)) {
-            success = loadExcludeFile(basePath, file);
+        for (const auto &excludeFile : _excludeFiles.value(basePath)) {
+            QFile file(excludeFile);
+            if (file.exists() && file.open(QIODevice::ReadOnly)) {
+                loadExcludeFilePatterns(basePath, file);
+            } else {
+                success = false;
+                qWarning() << "System exclude list file could not be opened:" << excludeFile;
+            }
         }
     }
 
@@ -421,11 +418,14 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
     // Directories are guaranteed to be visited before their files
     if (filetype == ItemTypeDirectory) {
         const auto basePath = QString(_localPath + path + QLatin1Char('/'));
-        const auto fi = QFileInfo(basePath + QStringLiteral(".sync-exclude.lst"));
+        const QString absolutePath = basePath + QStringLiteral(".sync-exclude.lst");
+        QFileInfo excludeFileInfo(absolutePath);
 
-        if (fi.isReadable()) {
-            addInTreeExcludeFilePath(fi.absoluteFilePath());
-            loadExcludeFile(basePath, fi.absoluteFilePath());
+        if (excludeFileInfo.isReadable()) {
+            addExcludeFilePath(absolutePath);
+            reloadExcludeFiles();
+        } else {
+            qWarning() << "System exclude list file could not be read:" << absolutePath;
         }
     }
 

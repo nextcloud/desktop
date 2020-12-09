@@ -265,7 +265,7 @@ private slots:
         QCOMPARE(excludeList.write("bar"), 3);
         excludeList.close();
 
-        excludedFiles->addInTreeExcludeFilePath(fooExcludeList);
+        excludedFiles->addExcludeFilePath(fooExcludeList);
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_file_full(QByteArray(fooDir.toUtf8() + "/bar")), CSYNC_FILE_EXCLUDE_LIST);
         QCOMPARE(check_file_full(QByteArray(fooDir.toUtf8() + "/baz")), CSYNC_NOT_EXCLUDED);

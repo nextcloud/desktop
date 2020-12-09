@@ -48,6 +48,7 @@ enum CSYNC_EXCLUDE_TYPE {
 };
 
 class ExcludedFilesTest;
+class QFile;
 
 /**
  * Manages file/directory exclusion.
@@ -77,7 +78,6 @@ public:
      * Does not load the file. Use reloadExcludeFiles() afterwards.
      */
     void addExcludeFilePath(const QString &path);
-    void addInTreeExcludeFilePath(const QString &path);
 
     /**
      * Whether conflict files shall be excluded.
@@ -148,7 +148,7 @@ public slots:
     /**
      * Loads the exclude patterns from file the registered base paths.
      */
-    bool loadExcludeFile(const QString &basePath, const QString &file);
+    void loadExcludeFilePatterns(const QString &basePath, QFile &file);
 
 private:
     /**
