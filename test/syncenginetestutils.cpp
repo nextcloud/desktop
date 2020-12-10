@@ -8,6 +8,10 @@
 #include "syncenginetestutils.h"
 
 
+#include <memory>
+
+
+
 PathComponents::PathComponents(const char *path)
     : PathComponents { QString::fromUtf8(path) }
 {
@@ -374,7 +378,7 @@ FileInfo *FakePutReply::perform(FileInfo &remoteRootFileInfo, const QNetworkRequ
         fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.at(0));
     }
     fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-    remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
+    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
     return fileInfo;
 }
 
@@ -612,7 +616,7 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
     QString source = getFilePathFromUrl(request.url());
     Q_ASSERT(!source.isEmpty());
     Q_ASSERT(source.endsWith(QLatin1String("/.file")));
-    source = source.left(source.length() - qstrlen("/.file"));
+    source = source.left(source.length() - static_cast<int>(qstrlen("/.file")));
 
     auto sourceFolder = uploadsFileInfo.find(source);
     Q_ASSERT(sourceFolder);
@@ -657,7 +661,7 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
         fileInfo = remoteRootFileInfo.create(fileName, size, payload);
     }
     fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
-    remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
+    remoteRootFileInfo.find(fileName, /*invalidateEtags=*/true);
 
     return fileInfo;
 }
@@ -800,7 +804,7 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
     FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
     auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
-    FakeReply *reply;
+    FakeReply *reply = nullptr;
     if (verb == QLatin1String("PROPFIND"))
         // Ignore outgoingData always returning somethign good enough, works for now.
         reply = new FakePropfindReply { info, op, request, this };
@@ -841,8 +845,8 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate)
     _account->setDavDisplayName(QStringLiteral("fakename"));
     _account->setServerVersion(QStringLiteral("10.0.0"));
 
-    _journalDb.reset(new OCC::SyncJournalDb(localPath() + QStringLiteral(".sync_test.db")));
-    _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), QString(), _journalDb.get()));
+    _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + QStringLiteral(".sync_test.db"));
+    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), QString(), _journalDb.get());
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 
@@ -1026,5 +1030,4 @@ FakeReply::FakeReply(QObject *parent)
 }
 
 FakeReply::~FakeReply()
-{
-}
+= default;

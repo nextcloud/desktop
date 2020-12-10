@@ -62,7 +62,7 @@ QString RemotePermissions::toString() const
 RemotePermissions RemotePermissions::fromDbValue(const QByteArray &value)
 {
     if (value.isEmpty())
-        return RemotePermissions();
+        return {};
     RemotePermissions perm;
     perm.fromArray(value.constData());
     return perm;

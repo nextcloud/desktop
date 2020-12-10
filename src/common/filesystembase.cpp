@@ -518,9 +518,9 @@ QString FileSystem::pathtoUNC(const QString &str)
 
     /* replace all occurences of / with the windows native \ */
 
-    for (auto it = longStr.begin(); it != longStr.end(); ++it) {
-        if (*it == QLatin1Char('/')) {
-            *it = QLatin1Char('\\');
+    for (auto &c : longStr) {
+        if (c == QLatin1Char('/')) {
+            c = QLatin1Char('\\');
         }
     }
     return longStr;

@@ -706,7 +706,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal(QStringLiteral("update database structure: add path index"));
     }
 
-    if (1) {
+    if (true) {
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_parent ON metadata(parent_hash(path));");
         if (!query.exec()) {

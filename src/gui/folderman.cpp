@@ -1007,7 +1007,7 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
     if (!vfs) {
         qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
-        return 0;
+        return nullptr;
     }
 
     auto folder = addFolderInternal(definition, accountState, std::move(vfs));

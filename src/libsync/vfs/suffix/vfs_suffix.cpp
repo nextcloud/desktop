@@ -27,9 +27,7 @@ VfsSuffix::VfsSuffix(QObject *parent)
 {
 }
 
-VfsSuffix::~VfsSuffix()
-{
-}
+VfsSuffix::~VfsSuffix() = default;
 
 Vfs::Mode VfsSuffix::mode() const
 {

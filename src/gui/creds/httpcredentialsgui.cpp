@@ -113,7 +113,7 @@ void HttpCredentialsGui::showDialog()
             + QLatin1String("<br>");
     }
 
-    QInputDialog *dialog = new QInputDialog();
+    auto *dialog = new QInputDialog();
     dialog->setAttribute(Qt::WA_DeleteOnClose, true);
     dialog->setWindowTitle(tr("Enter Password"));
     dialog->setLabelText(msg);

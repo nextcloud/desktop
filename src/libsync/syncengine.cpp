@@ -563,7 +563,7 @@ void SyncEngine::startSync()
         // files with names that contain these.
         // It's important to respect the capability also for older servers -- the
         // version check doesn't make sense for custom servers.
-        invalidFilenamePattern = "[\\\\:?*\"<>|]";
+        invalidFilenamePattern = R"([\\:?*"<>|])";
     }
     if (!invalidFilenamePattern.isEmpty())
         _discoveryPhase->_invalidFilenameRx = QRegExp(invalidFilenamePattern);
@@ -589,12 +589,10 @@ void SyncEngine::startSync()
 void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
 {
     // Don't wanna overload the UI
-    if (!_lastUpdateProgressCallbackCall.isValid()) {
-        _lastUpdateProgressCallbackCall.start(); // first call
-    } else if (_lastUpdateProgressCallbackCall.elapsed() < 200) {
-        return;
+    if (!_lastUpdateProgressCallbackCall.isValid() || _lastUpdateProgressCallbackCall.elapsed() >= 200) {
+        _lastUpdateProgressCallbackCall.start(); // first call or enough elapsed time
     } else {
-        _lastUpdateProgressCallbackCall.start();
+        return;
     }
 
     if (local) {
@@ -1014,7 +1012,7 @@ void SyncEngine::abort()
     } else if (_discoveryPhase) {
         // Delete the discovery and all child jobs after ensuring
         // it can't finish and start the propagator
-        disconnect(_discoveryPhase.data(), 0, this, 0);
+        disconnect(_discoveryPhase.data(), nullptr, this, nullptr);
         _discoveryPhase.take()->deleteLater();
 
         syncError(tr("Aborted"));

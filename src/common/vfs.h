@@ -25,12 +25,12 @@
 #include "syncfilestatus.h"
 #include "pinstate.h"
 
-typedef struct csync_file_stat_s csync_file_stat_t;
+using csync_file_stat_t = struct csync_file_stat_s;
 
 namespace OCC {
 
 class Account;
-typedef QSharedPointer<Account> AccountPtr;
+using AccountPtr = QSharedPointer<Account>;
 class SyncJournalDb;
 class VfsPrivate;
 class SyncFileItem;
@@ -329,7 +329,7 @@ OCSYNC_EXPORT std::unique_ptr<Vfs> createVfsFromPlugin(Vfs::Mode mode);
     namespace { \
     void initPlugin() \
     { \
-        OCC::Vfs::registerPlugin(QStringLiteral(name), []() -> OCC::Vfs * { return new Type; }); \
+        OCC::Vfs::registerPlugin(QStringLiteral(name), []() -> OCC::Vfs * { return new (Type); }); \
     } \
     Q_COREAPP_STARTUP_FUNCTION(initPlugin) \
     }

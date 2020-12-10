@@ -205,7 +205,7 @@ void GETFileJob::slotMetaDataChanged()
         return;
     }
 
-    bool ok;
+    bool ok = false;
     _contentLength = reply()->header(QNetworkRequest::ContentLengthHeader).toLongLong(&ok);
     if (ok && _expectedContentLength != -1 && _contentLength != _expectedContentLength) {
         qCWarning(lcGetJob) << "We received a different content length than expected!"

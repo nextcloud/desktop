@@ -24,7 +24,7 @@
 namespace OCC {
 
 class SyncFileItem;
-typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
+using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
 
 /**
  * @brief Tracks files that must be rediscovered locally

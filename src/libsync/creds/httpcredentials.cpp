@@ -201,7 +201,7 @@ void HttpCredentials::fetchFromKeychainHelper()
     if (!_clientCertBundle.isEmpty()) {
         // New case (>=2.6): We have a bundle in the settings and read the password from
         // the keychain
-        ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+        auto job = new ReadPasswordJob(Theme::instance()->appName());
         addSettingsToJob(_account, job);
         job->setInsecureFallback(false);
         job->setKey(keychainKey(_account->url().toString(), _user + clientCertPasswordC, _account->id()));
@@ -263,7 +263,7 @@ void HttpCredentials::slotReadClientCertPasswordJobDone(QKeychain::Job *job)
     if (keychainUnavailableRetryLater(job))
         return;
 
-    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(job);
+    auto readJob = static_cast<ReadPasswordJob *>(job);
     if (readJob->error() == NoError) {
         _clientCertPassword = readJob->binaryData();
     } else {

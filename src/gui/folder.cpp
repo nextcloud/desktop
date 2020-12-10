@@ -648,8 +648,8 @@ void Folder::setVirtualFilesEnabled(bool enabled)
         _vfs->stop();
         _vfs->unregisterFolder();
 
-        disconnect(_vfs.data(), 0, this, 0);
-        disconnect(&_engine->syncFileStatusTracker(), 0, _vfs.data(), 0);
+        disconnect(_vfs.data(), nullptr, this, nullptr);
+        disconnect(&_engine->syncFileStatusTracker(), nullptr, _vfs.data(), nullptr);
 
         _vfs.reset(createVfsFromPlugin(newMode).release());
 

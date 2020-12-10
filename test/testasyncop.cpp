@@ -113,7 +113,7 @@ private slots:
         auto successCallback = [](TestCase *tc, const QNetworkRequest &request) {
             tc->pollRequest = [](TestCase *, const QNetworkRequest &) -> QNetworkReply * { std::abort(); }; // shall no longer be called
             FileInfo *info = tc->perform();
-            QByteArray body = "{ \"status\":\"finished\", \"ETag\":\"\\\"" + info->etag + "\\\"\", \"fileId\":\"" + info->fileId + "\"}\n";
+            QByteArray body = R"({ "status":"finished", "ETag":"\")" + info->etag + R"(\"", "fileId":")" + info->fileId + "\"}\n";
             return new FakePayloadReply(QNetworkAccessManager::GetOperation, request, body, nullptr);
         };
         // Callback that never finishes
@@ -139,7 +139,7 @@ private slots:
         };
 
         // Create a testcase by creating a file of a given size locally and assigning it a callback
-        auto insertFile = [&](const QString &file, int size, TestCase::PollRequest_t cb) {
+        auto insertFile = [&](const QString &file, qint64 size, TestCase::PollRequest_t cb) {
             fakeFolder.localModifier().insert(file, size);
             testCases[file] = { std::move(cb) };
         };

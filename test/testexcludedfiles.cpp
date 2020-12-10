@@ -666,7 +666,7 @@ private slots:
     {
         extern void csync_exclude_expand_escapes(QByteArray &input);
 
-        QByteArray line = "keep \\' \\\" \\? \\\\ \\a \\b \\f \\n \\r \\t \\v \\z \\#";
+        QByteArray line = R"(keep \' \" \? \\ \a \b \f \n \r \t \v \z \#)";
         csync_exclude_expand_escapes(line);
         QVERIFY(0 == strcmp(line.constData(), "keep ' \" ? \\\\ \a \b \f \n \r \t \v \\z #"));
 

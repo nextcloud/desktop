@@ -1296,9 +1296,8 @@ auto ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const 
     bool destinationOK = true;
     bool destinationNewOK = true;
     if (destPerms.isNull()) {
-    } else if (isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
-        destinationNewOK = false;
-    } else if (!isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddFile)) {
+    } else if ((isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories)) ||
+              (!isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddFile))) {
         destinationNewOK = false;
     }
     if (!isRename && !destinationNewOK) {

@@ -66,7 +66,7 @@ class OCSYNC_EXPORT ExcludedFiles : public QObject
 {
     Q_OBJECT
 public:
-    typedef std::tuple<int, int, int> Version;
+    using Version = std::tuple<int, int, int>;
 
     explicit ExcludedFiles(const QString &localPath = QStringLiteral("/"));
     ~ExcludedFiles();

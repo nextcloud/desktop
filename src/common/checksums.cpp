@@ -121,7 +121,7 @@ QByteArray calcAdler32(QIODevice *device)
     QByteArray buf(BUFSIZE, Qt::Uninitialized);
 
     unsigned int adler = adler32(0L, Z_NULL, 0);
-    qint64 size;
+    qint64 size = 0;
     while (!device->atEnd()) {
         size = device->read(buf.data(), BUFSIZE);
         if (size > 0)
@@ -204,9 +204,7 @@ ComputeChecksum::ComputeChecksum(QObject *parent)
 {
 }
 
-ComputeChecksum::~ComputeChecksum()
-{
-}
+ComputeChecksum::~ComputeChecksum() = default;
 
 void ComputeChecksum::setChecksumType(const QByteArray &type)
 {

@@ -73,10 +73,10 @@ private:
 
     // Bandwidth manager related
     QPointer<BandwidthManager> _bandwidthManager;
-    qint64 _bandwidthQuota;
-    qint64 _readWithProgress;
-    bool _bandwidthLimited; // if _bandwidthQuota will be used
-    bool _choked; // if upload is paused (readData() will return 0)
+    qint64 _bandwidthQuota = 0;
+    qint64 _readWithProgress = 0;
+    bool _bandwidthLimited = false; // if _bandwidthQuota will be used
+    bool _choked = false; // if upload is paused (readData() will return 0)
     friend class BandwidthManager;
 public slots:
     void slotJobUploadProgress(qint64 sent, qint64 t);

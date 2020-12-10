@@ -310,14 +310,14 @@ private slots:
                 if (redirectsDone == 0) {
                     std::unique_ptr<QBuffer> payload(new QBuffer());
                     payload->setData("");
-                    SlowFakePostReply *reply = new SlowFakePostReply(op, request, std::move(payload), this);
+                    auto *reply = new SlowFakePostReply(op, request, std::move(payload), this);
                     reply->redirectToPolicy = true;
                     redirectsDone++;
                     return reply;
                 } else if  (redirectsDone == 1) {
                     std::unique_ptr<QBuffer> payload(new QBuffer());
                     payload->setData("");
-                    SlowFakePostReply *reply = new SlowFakePostReply(op, request, std::move(payload), this);
+                    auto *reply = new SlowFakePostReply(op, request, std::move(payload), this);
                     reply->redirectToToken = true;
                     redirectsDone++;
                     return reply;

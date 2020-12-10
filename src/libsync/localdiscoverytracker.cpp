@@ -22,9 +22,7 @@ using namespace OCC;
 
 Q_LOGGING_CATEGORY(lcLocalDiscoveryTracker, "sync.localdiscoverytracker", QtInfoMsg)
 
-LocalDiscoveryTracker::LocalDiscoveryTracker()
-{
-}
+LocalDiscoveryTracker::LocalDiscoveryTracker() = default;
 
 void LocalDiscoveryTracker::addTouchedPath(const QString &relativePath)
 {

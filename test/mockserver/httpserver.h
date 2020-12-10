@@ -18,7 +18,7 @@ class HttpServer : public QTcpServer
  {
      Q_OBJECT
  public:
-    HttpServer(qint16 port, QObject* parent = 0);
+    HttpServer(qint16 port, QObject* parent = nullptr);
     void incomingConnection(int socket);
 
  private slots:

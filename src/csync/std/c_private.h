@@ -39,7 +39,7 @@
 #include <unistd.h>
 #endif
 
-#include <errno.h>  // NOLINT this is sometimes compiled in C mode
+#include <cerrno>
 
 #ifdef __MINGW32__
 #ifndef S_IRGRP
@@ -74,10 +74,10 @@
 
 
 #ifdef _WIN32
-typedef struct stat64 csync_stat_t; // NOLINT this is sometimes compiled in C mode
+using csync_stat_t = struct stat64;
 #define _FILE_OFFSET_BITS 64
 #else
-typedef struct stat csync_stat_t; // NOLINT this is sometimes compiled in C mode
+using csync_stat_t = struct stat;
 #endif
 
 #ifndef O_NOATIME
@@ -94,7 +94,7 @@ typedef struct stat csync_stat_t; // NOLINT this is sometimes compiled in C mode
 #endif
 
 #if defined _WIN32 && defined _UNICODE
-typedef  wchar_t         mbchar_t; // NOLINT this is sometimes compiled in C mode
+using mbchar_t = wchar_t;
 #define _topen           _wopen
 #define _tdirent         _wdirent
 #define _topendir        _wopendir
@@ -115,7 +115,7 @@ typedef  wchar_t         mbchar_t; // NOLINT this is sometimes compiled in C mod
 #define _tchdir          _wchdir
 #define _tgetcwd         _wgetcwd
 #else
-typedef char           mbchar_t; // NOLINT this is sometimes compiled in C mode
+using mbchar_t = char;
 #define _tdirent       dirent
 #define _topen         open
 #define _topendir      opendir

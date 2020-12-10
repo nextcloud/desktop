@@ -79,7 +79,6 @@ QString Utility::vfsCurrentAvailabilityText(VfsItemAvailability availability)
     case VfsItemAvailability::Mixed:
         return QCoreApplication::translate("utility", "Some available online only");
     case VfsItemAvailability::AllDehydrated:
-        return QCoreApplication::translate("utility", "Available online only");
     case VfsItemAvailability::OnlineOnly:
         return QCoreApplication::translate("utility", "Available online only");
     }
