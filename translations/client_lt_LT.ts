@@ -4598,7 +4598,7 @@ Patariama jo nenaudoti.</translation>
         <location filename="../src/gui/tray/Window.qml" line="689"/>
         <location filename="../src/gui/tray/Window.qml" line="692"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti daugiau veiksmų</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>

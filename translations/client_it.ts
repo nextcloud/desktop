@@ -3119,7 +3119,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Cerca globalmente</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>

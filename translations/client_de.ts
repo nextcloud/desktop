@@ -3120,7 +3120,7 @@ Es wird davon abgeraten sie zu verwenden.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Global suchen</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
