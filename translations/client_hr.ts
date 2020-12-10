@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Pogreška pri uklanjanju ‘%1’: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>Display mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Prikaži mnemoničku oznaku</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="220"/>
@@ -559,7 +559,7 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="347"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
+        <translation>Ne sinkroniziraju se datoteke s popisa za zanemarivanje kao ni simboličke poveznice.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="449"/>
@@ -677,29 +677,29 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Nepodudaranje tijekom sinkronizacije</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodudarne inačice %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Koju inačicu datoteke želite zadržati?&lt;br/&gt;Ako odaberete obje inačice, lokalnoj će se datoteci dodati broj.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Lokalna inačica</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Kliknite za otvaranje datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -711,12 +711,12 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 bajta</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=“%1“&gt;Otvori lokalnu inačicu&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -726,38 +726,38 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=“%1“&gt;Otvori inačicu s poslužitelja&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Zadrži odabranu inačicu</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Otvori lokalnu inačicu</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Otvori inačicu s poslužitelja</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Zadrži obje inačice</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Zadrži lokalnu inačicu</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Zadrži inačicu s poslužitelja</translation>
     </message>
 </context>
 <context>
@@ -765,17 +765,17 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Želite li trajno izbrisati direktorij &lt;i&gt;%1&lt;/i&gt; i sav njegov sadržaj?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Želite li trajno izbrisati datoteku &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Potvrdi brisanje</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -789,7 +789,9 @@ Pričekajte novu sinkronizaciju, a zatim je šifrirajte.</translation>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Premještanje datoteke nije uspjelo:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1615,7 +1617,7 @@ Nastavljanje sinkronizacije uzrokovat će zamjenu svih vaših datoteka starijim 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Stvori arhivu otklanjanja pogrešaka…</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="242"/>
@@ -1673,22 +1675,22 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Stvori arhivu otklanjanja pogrešaka</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip arhive</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Arhiva otklanjanja pogrešaka je stvorena</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Arhiva otklanjanja pogrešaka je stvorena na %1</translation>
     </message>
 </context>
 <context>
@@ -2347,12 +2349,12 @@ dodatne ovlasti tijekom postupka.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Prijavite se u svoj %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Ovo je poveznica do vašeg web sučelja %1 kada ga otvorite u pregledniku.&lt;br/&gt;Izgleda kao https://cloud.example.com ili https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="180"/>
@@ -3225,7 +3227,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="752"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi novu lokaciju…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="694"/>
@@ -3282,27 +3284,27 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="914"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Riješi nepodudaranje…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="918"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Premjesti i preimenuj…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="921"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Premjesti, preimenuj i otpremi…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši lokalne promjene</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="929"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Premjesti i otpremi…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="930"/>
@@ -3869,27 +3871,27 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="374"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizirano %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="376"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Preimenovali ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="378"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Izbrisali ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="380"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Stvorili ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="382"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Promijenili ste %1</translation>
     </message>
 </context>
 <context>
@@ -4284,7 +4286,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="245"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Ovo je poveznica do vašeg web sučelja %1 kada ga otvorite u pregledniku.&lt;br/&gt;Izgleda kao https://cloud.example.com ili https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="343"/>
@@ -4294,7 +4296,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="359"/>
         <source>Sign up with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Prijavite se kod davatelja usluga</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="365"/>
@@ -4304,7 +4306,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="381"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Prijavite se u svoj %1</translation>
     </message>
 </context>
 <context>
@@ -4379,7 +4381,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="15"/>
         <source>Account entry</source>
-        <translation type="unfinished"/>
+        <translation>Unos računa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="32"/>
@@ -4394,7 +4396,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
         <source>Account not connected</source>
-        <translation type="unfinished"/>
+        <translation>Račun nije povezan</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="134"/>
@@ -4504,7 +4506,7 @@ Nije preporučljivo koristiti ga.</translation>
         <location filename="../src/gui/tray/Window.qml" line="25"/>
         <location filename="../src/gui/tray/Window.qml" line="105"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Glavni dijaloški okvir Nextclouda</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="131"/>
@@ -4524,7 +4526,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="169"/>
         <source>Account switcher and settings menu</source>
-        <translation type="unfinished"/>
+        <translation>Izmjenjivač računa i izbornik postavki</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="211"/>
@@ -4534,7 +4536,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="227"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj novi račun</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="249"/>
@@ -4549,7 +4551,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Current user avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar trenutnog korisnika</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="362"/>
@@ -4564,12 +4566,12 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="416"/>
         <source>Open local folder of current account</source>
-        <translation type="unfinished"/>
+        <translation>Otvori lokalnu mapu trenutnog računa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="428"/>
         <source>Open Nextcloud Talk in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvori Nextcloud Talk u pregledniku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="446"/>
@@ -4579,7 +4581,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="463"/>
         <source>Apps menu</source>
-        <translation type="unfinished"/>
+        <translation>Izbornik aplikacija</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="491"/>
@@ -4589,12 +4591,12 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Popis aktivnosti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="532"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Otvori %1 lokalno</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="689"/>
@@ -4610,7 +4612,7 @@ Nije preporučljivo koristiti ga.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="785"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Dijeli %1</translation>
     </message>
 </context>
 <context>
