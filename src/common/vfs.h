@@ -14,6 +14,7 @@
 #pragma once
 
 #include <QObject>
+#include <QCoreApplication>
 #include <QScopedPointer>
 #include <QSharedPointer>
 
@@ -111,6 +112,9 @@ public:
     using AvailabilityResult = Result<VfsItemAvailability, AvailabilityError>;
 
 public:
+    using Factory = Vfs* (*)();
+    static void registerPlugin(const QString &name, Factory factory);
+
     explicit Vfs(QObject* parent = nullptr);
     virtual ~Vfs();
 
@@ -319,3 +323,13 @@ OCSYNC_EXPORT Vfs::Mode bestAvailableVfsMode();
 OCSYNC_EXPORT std::unique_ptr<Vfs> createVfsFromPlugin(Vfs::Mode mode);
 
 } // namespace OCC
+
+#define OCC_DEFINE_VFS_FACTORY(name, Type) \
+    static_assert (std::is_base_of<OCC::Vfs, Type>::value, "Please define VFS factories only for OCC::Vfs subclasses"); \
+    namespace { \
+    void initPlugin() \
+    { \
+        OCC::Vfs::registerPlugin(QStringLiteral(name), []() -> OCC::Vfs * { return new Type; }); \
+    } \
+    Q_COREAPP_STARTUP_FUNCTION(initPlugin) \
+    }

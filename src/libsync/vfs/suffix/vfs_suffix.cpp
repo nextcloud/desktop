@@ -152,3 +152,5 @@ Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath)
 }
 
 } // namespace OCC
+
+OCC_DEFINE_VFS_FACTORY("suffix", OCC::VfsSuffix)

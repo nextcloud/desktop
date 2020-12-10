@@ -58,6 +58,7 @@ set(libsync_SRCS
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
     creds/keychainchunk.cpp
+    vfs/suffix/vfs_suffix.cpp
 )
 
 if(TOKEN_AUTH_ONLY)
@@ -138,6 +139,3 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
 endif()
-
-
-add_subdirectory(vfs)
