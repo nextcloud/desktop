@@ -9,7 +9,7 @@ macro(nextcloud_add_test test_class additional_cpp)
     set_target_properties(${OWNCLOUD_TEST_CLASS}Test PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
-        ${APPLICATION_EXECUTABLE}sync
+        ${APPLICATION_EXECUTABLE}sync syncenginetestutils
         Qt5::Core Qt5::Test Qt5::Xml Qt5::Network Qt5::Qml Qt5::Quick
     )
 
@@ -37,7 +37,7 @@ macro(nextcloud_add_benchmark test_class additional_cpp)
     set_target_properties(${OWNCLOUD_TEST_CLASS}Bench PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Bench
-        ${APPLICATION_EXECUTABLE}sync
+        ${APPLICATION_EXECUTABLE}sync syncenginetestutils
         Qt5::Core Qt5::Test Qt5::Xml Qt5::Network
     )
 

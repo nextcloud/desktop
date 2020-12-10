@@ -171,7 +171,7 @@ private slots:
             QCOMPARE(counter, 4);
 
             if (remote)
-                QCOMPARE(journalRecord(fakeFolder, "A")._etag, fakeFolder.currentRemoteState().find("A")->etag.toUtf8());
+                QCOMPARE(journalRecord(fakeFolder, "A")._etag, fakeFolder.currentRemoteState().find("A")->etag);
         }
         cleanup();
 
