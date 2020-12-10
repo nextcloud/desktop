@@ -45,11 +45,6 @@ class OwncloudWizard : public QWizard
 {
     Q_OBJECT
 public:
-    enum LogType {
-        LogPlain,
-        LogParagraph
-    };
-
     OwncloudWizard(QWidget *parent = nullptr);
 
     void setAccount(AccountPtr account);
@@ -88,7 +83,6 @@ public:
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
     void setRemoteFolder(const QString &);
-    void appendToConfigurationLog(const QString &msg, LogType type = LogParagraph);
     void slotCurrentPageChanged(int);
     void successfulStep();
 

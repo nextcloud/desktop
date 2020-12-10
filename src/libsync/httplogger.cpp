@@ -53,7 +53,8 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
     for (const auto &it : header) {
         stream << it.first << ": ";
         if (it.first == "Authorization") {
-            stream << "[redacted]";
+            stream << (it.second.startsWith("Bearer ") ? "Bearer" : "Basic");
+            stream << " [redacted]";
         } else {
             stream << it.second;
         }
