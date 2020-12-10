@@ -82,7 +82,6 @@ private:
     Ui::SettingsDialog *const _ui;
 
     QActionGroup *_actionGroup;
-    QAction *_actionBefore;
     // Maps the actions from the action group to the corresponding widgets
     QHash<QAction *, QWidget *> _actionGroupWidgets;
 

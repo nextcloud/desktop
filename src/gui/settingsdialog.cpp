@@ -112,9 +112,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->setExclusive(true);
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
-    _actionBefore = new QAction(this);
-    _toolBar->addAction(_actionBefore);
-
     // Adds space between users + activities and general + network actions
     auto *spacer = new QWidget();
     spacer->setMinimumWidth(10);
@@ -252,7 +249,7 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction->setIconText(shortDisplayNameForSettings(s->account().data(), height * buttonSizeRatio));
     }
 
-    _toolBar->insertAction(_actionBefore, accountAction);
+    _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
     QString objectName = QLatin1String("accountSettings_");
     objectName += s->account()->displayName();
