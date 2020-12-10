@@ -89,6 +89,7 @@ protected slots:
     void slotEnableVfsCurrentFolder();
     void slotDisableVfsCurrentFolder();
     void slotSetCurrentFolderAvailability(PinState state);
+    void slotSetSubFolderAvailability(Folder *folder, const QString &path, PinState state);
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotDeleteAccount();

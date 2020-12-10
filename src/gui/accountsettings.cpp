@@ -403,6 +403,39 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
     ac = menu.addAction(tr("Edit Ignored Files"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotEditCurrentLocalIgnoredFiles);
 
+    const auto folder = info->_folder;
+    if (folder && folder->virtualFilesEnabled()) {
+        auto availabilityMenu = menu.addMenu(tr("Availability"));
+
+        // Has '/' suffix convention for paths here but VFS and
+        // sync engine expects no such suffix
+        Q_ASSERT(info->_path.endsWith('/'));
+        const auto remotePath = info->_path.chopped(1);
+
+        // It might be an E2EE mangled path, so let's try to demangle it
+        const auto journal = folder->journalDb();
+        SyncJournalFileRecord rec;
+        journal->getFileRecordByE2eMangledName(remotePath, &rec);
+
+        const auto path = rec.isValid() ? rec._path : remotePath;
+
+        auto availability = folder->vfs().availability(path);
+        if (availability) {
+            ac = availabilityMenu->addAction(Utility::vfsCurrentAvailabilityText(*availability));
+            ac->setEnabled(false);
+        }
+
+        ac = availabilityMenu->addAction(Utility::vfsPinActionText());
+        ac->setEnabled(!availability || *availability != VfsItemAvailability::AlwaysLocal);
+        connect(ac, &QAction::triggered, this, [this, folder, path] { slotSetSubFolderAvailability(folder, path, PinState::AlwaysLocal); });
+
+        ac = availabilityMenu->addAction(Utility::vfsFreeSpaceActionText());
+        ac->setEnabled(!availability
+                || !(*availability == VfsItemAvailability::OnlineOnly
+                    || *availability == VfsItemAvailability::AllDehydrated));
+        connect(ac, &QAction::triggered, this, [this, folder, path] { slotSetSubFolderAvailability(folder, path, PinState::OnlineOnly); });
+    }
+
     menu.exec(QCursor::pos());
 }
 
@@ -812,6 +845,19 @@ void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
 
     // similar to socket api: sets pin state recursively and sync
     folder->setRootPinState(state);
+    folder->scheduleThisFolderSoon();
+}
+
+void AccountSettings::slotSetSubFolderAvailability(Folder *folder, const QString &path, PinState state)
+{
+    Q_ASSERT(folder && folder->virtualFilesEnabled());
+    Q_ASSERT(!path.endsWith('/'));
+
+    // Update the pin state on all items
+    folder->vfs().setPinState(path, state);
+
+    // Trigger sync
+    folder->schedulePathForLocalDiscovery(path);
     folder->scheduleThisFolderSoon();
 }
 
