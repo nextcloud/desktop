@@ -18,7 +18,7 @@ Button {
 
     icon.width: Style.headerButtonIconSize
     icon.height: Style.headerButtonIconSize
-    icon.color: "transparent"
+    icon.color: Style.ncTextColor
 
     Layout.alignment: Qt.AlignRight
     Layout.preferredWidth:  Style.trayWindowHeaderHeight
