@@ -1,0 +1,7 @@
+Bugfix: Fix handling of errors with the Windows Cloud Filter API
+
+We fixed a bug where errors during the creation of placeholder files where
+not correctly handled. The missing files where than falsely detected as deleted
+and thus removed from the server.
+
+https://github.com/owncloud/client/issues/8294
