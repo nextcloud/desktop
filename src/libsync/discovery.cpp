@@ -1421,7 +1421,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             if (!serverJob->_dataFingerprint.isEmpty() && _discoveryData->_dataFingerprint.isEmpty())
                 _discoveryData->_dataFingerprint = serverJob->_dataFingerprint;
             if (_localQueryDone)
-                process();
+                this->process();
         } else {
             auto code = results.error().code;
             qCWarning(lcDisco) << "Server error in directory" << _currentFolder._server << code;
@@ -1436,7 +1436,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 // Similarly, the server might also return 404 or 50x in case of bugs. #7199 #7586
                 _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
                 _dirItem->_errorString = results.error().message;
-                emit finished();
+                emit this->finished();
             } else {
                 // Fatal for the root job since it has no SyncFileItem, or for the network errors
                 emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
