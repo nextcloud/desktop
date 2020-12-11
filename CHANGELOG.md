@@ -3,7 +3,7 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.7.2...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.7.3...master
 
 Summary
 -------
@@ -25,6 +25,29 @@ Details
    We no longer recommend to use a http connection if a https url was not found.
 
    https://github.com/owncloud/client/issues/8231
+
+Changelog for ownCloud Desktop Client [2.7.3] (2020-12-11)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.7.3 relevant to
+ownCloud admins and users.
+
+[2.7.3]: https://github.com/owncloud/client/compare/v2.7.2...v2.7.3
+
+Summary
+-------
+
+* Bugfix - Fix handling of errors with the Windows Cloud Filter API: [#8294](https://github.com/owncloud/client/issues/8294)
+
+Details
+-------
+
+* Bugfix - Fix handling of errors with the Windows Cloud Filter API: [#8294](https://github.com/owncloud/client/issues/8294)
+
+   We fixed a bug where errors during the creation of placeholder files where not correctly
+   handled. The missing files where than falsely detected as deleted and thus removed from the
+   server.
+
+   https://github.com/owncloud/client/issues/8294
 
 Changelog for ownCloud Desktop Client [2.7.2] (2020-12-02)
 =======================================
