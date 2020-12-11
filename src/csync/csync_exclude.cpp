@@ -263,11 +263,6 @@ void ExcludedFiles::addManualExclude(const QString &expr)
 
 void ExcludedFiles::addManualExclude(const QString &expr, const QString &basePath)
 {
-#if defined(Q_OS_WIN)
-    Q_ASSERT(basePath.size() >= 2 && basePath.at(1) == QLatin1Char(':'));
-#else
-    Q_ASSERT(basePath.startsWith(QLatin1Char('/')));
-#endif
     Q_ASSERT(basePath.endsWith(QLatin1Char('/')));
 
     auto key = basePath;
@@ -503,8 +498,8 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const QString &p, ItemType fi
     // `path` seems to always be relative to `_localPath`, the tests however have not been
     // written that way... this makes the tests happy for now. TODO Fix the tests at some point
     QString path = p;
-    if (path[0] == QLatin1Char('/'))
-        path = path.mid(1);
+    if (path.startsWith(_localPath))
+        path = path.mid(_localPath.size());
 
     QString basePath(_localPath + path);
     while (basePath.size() > _localPath.size()) {

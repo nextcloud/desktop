@@ -234,45 +234,41 @@ private slots:
 
     void check_csync_excluded_per_dir()
     {
-        setup();
+        const auto tempDir = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+        excludedFiles.reset(new ExcludedFiles(tempDir + "/"));
+        excludedFiles->setWildcardsMatchSlash(false);
         excludedFiles->addManualExclude("A");
         excludedFiles->reloadExcludeFiles();
 
         QCOMPARE(check_file_full("A"), CSYNC_FILE_EXCLUDE_LIST);
 
         excludedFiles->clearManualExcludes();
-        excludedFiles->addManualExclude("A", "/B/");
+        excludedFiles->addManualExclude("A", tempDir + "/B/");
         excludedFiles->reloadExcludeFiles();
 
         QCOMPARE(check_file_full("A"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_full("B/A"), CSYNC_FILE_EXCLUDE_LIST);
 
         excludedFiles->clearManualExcludes();
-        excludedFiles->addManualExclude("A/a1", "/B/");
+        excludedFiles->addManualExclude("A/a1", tempDir + "/B/");
         excludedFiles->reloadExcludeFiles();
 
         QCOMPARE(check_file_full("A"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_full("B/A/a1"), CSYNC_FILE_EXCLUDE_LIST);
 
-    #define FOO_DIR "/tmp/check_csync1/foo"
-    #define FOO_EXCLUDE_LIST FOO_DIR "/.sync-exclude.lst"
-        int rc = 0;
-        rc = system("mkdir -p " FOO_DIR);
-        QCOMPARE(rc, 0);
-        FILE *fh = fopen(FOO_EXCLUDE_LIST, "w");
-        QVERIFY(fh != nullptr);
-        rc = fprintf(fh, "bar");
-        QVERIFY(rc != 0);
-        rc = fclose(fh);
-        QCOMPARE(rc, 0);
+        const auto fooDir = QStringLiteral("check_csync1/foo");
+        QVERIFY(QDir(tempDir).mkpath(fooDir));
 
-        excludedFiles->addInTreeExcludeFilePath(FOO_EXCLUDE_LIST);
+        const auto fooExcludeList = QString(tempDir + '/' + fooDir + "/.sync-exclude.lst");
+        QFile excludeList(fooExcludeList);
+        QVERIFY(excludeList.open(QFile::WriteOnly));
+        QCOMPARE(excludeList.write("bar"), 3);
+        excludeList.close();
+
+        excludedFiles->addInTreeExcludeFilePath(fooExcludeList);
         excludedFiles->reloadExcludeFiles();
-        QCOMPARE(check_file_full(FOO_DIR), CSYNC_NOT_EXCLUDED);
-        QCOMPARE(check_file_full(FOO_DIR "/bar"), CSYNC_FILE_EXCLUDE_LIST);
-        QCOMPARE(check_file_full(FOO_DIR "/baz"), CSYNC_NOT_EXCLUDED);
-    #undef FOO_DIR
-    #undef FOO_EXCLUDE_LIST
+        QCOMPARE(check_file_full(QByteArray(fooDir.toUtf8() + "/bar")), CSYNC_FILE_EXCLUDE_LIST);
+        QCOMPARE(check_file_full(QByteArray(fooDir.toUtf8() + "/baz")), CSYNC_NOT_EXCLUDED);
     }
 
     void check_csync_excluded_traversal_per_dir()
