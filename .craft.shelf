@@ -109,7 +109,7 @@ version = 2.9.7
 version = 1.4.5
 
 [libs/openssl]
-version = 1.1.1g
+version = 1.1.1i
 
 [libs/pcre]
 version = 8.41
