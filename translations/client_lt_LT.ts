@@ -342,7 +342,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="433"/>
         <source>Force sync now</source>
-        <translation>Inicijuoti sinchronizavimą dabar.</translation>
+        <translation>Priverstinai sinchronizuoti dabar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="435"/>
@@ -1509,7 +1509,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Patikrinkite Proxy/Gateway, iš serverio negautas E-Tag.</translation>
+        <translation>Iš serverio negauta „E-Tag“ žymė, patikrinkite įgaliotąjį serverį/tinklų sietuvą.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="188"/>
@@ -1558,7 +1558,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>Paleisti startuojant kompiuteriui</translation>
+        <translation>&amp;Paleisti įjungiant kompiuterį</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -1997,22 +1997,22 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>Nėra įgaliotojo serverio (proxy)</translation>
+        <translation>Be įgaliotojo serverio</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>Naudoti įgaliotąjį serverį (proxy)</translation>
+        <translation>Naudoti sistemos įgaliotąjį serverį</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation>Rankiniu būdu nurodykite tarpinį serverį kaip</translation>
+        <translation>Nurodyti įgaliotąjį serverį rankiniu būdu kaip</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation>Įrenginys</translation>
+        <translation>Serveris</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
@@ -2022,7 +2022,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Atsisiuntimo pralaidumas</translation>
+        <translation>Atsisiuntimo siuntimo sparta</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
@@ -2046,7 +2046,7 @@ Logs will be written to %1</source>
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation>Apriboti iki 3/4 apskaičiuoto pralaidumo</translation>
+        <translation>Apriboti iki 3/4 apskaičiuotos siuntimo spartos</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
@@ -2057,7 +2057,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
         <source>Upload Bandwidth</source>
-        <translation>Įkėlimo pralaidumas</translation>
+        <translation>Įkėlimo siuntimo sparta</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
@@ -2834,7 +2834,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>Tarpiniam serveriui reikia naudotojo vardo ir slaptažodžio.</translation>
+        <translation>Įgaliotasis serveris reikalauja naudotojo vardo ir slaptažodžio.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2860,7 +2860,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Nuimkite pažymėjimą nuo aplankų, kurie nebus sinchronizuojami.</translation>
+        <translation>Nuimkite žymėjimą nuo aplankų, kurių nenorite sinchronizuoti.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -3705,7 +3705,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1035"/>
         <source>Cannot open the sync journal</source>
-        <translation>Nepavyko atverti sinchronizavimo žurnalo</translation>
+        <translation>Nepavyksta atverti sinchronizavimo žurnalo</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
@@ -3844,7 +3844,7 @@ Patariama jo nenaudoti.</translation>
         <location filename="../src/libsync/theme.cpp" line="414"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation>&lt;p&gt;%1 Darbastalio klientas&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;%1 darbalaukio kliento programa&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="417"/>
@@ -3868,7 +3868,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuota %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="381"/>
@@ -4613,7 +4613,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="785"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Bendrinti %1</translation>
     </message>
 </context>
 <context>
