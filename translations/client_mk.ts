@@ -586,7 +586,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат &amp; Клуч (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -692,7 +692,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Локална верзија</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
@@ -1577,12 +1577,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="157"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>стабилна</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>бета</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="189"/>
@@ -1638,7 +1638,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Промена на каналот за ажурирање?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="304"/>
@@ -1650,12 +1650,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Промена на каналот за ажурирање</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Откажи</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -1665,7 +1665,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip Архиви</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
@@ -1683,12 +1683,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Потребна е лозинка за споделувањето</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Внесете лозинка за да линкот кој го споделувате:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="587"/>
@@ -1967,7 +1967,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Рачно ажурирање</translation>
     </message>
 </context>
 <context>
@@ -1995,12 +1995,12 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Сервер</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Потребна е автентификацијата на proxy серверот</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -2045,17 +2045,17 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Proxy сервер</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Корисничко име за proxy серверот</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Лозинка за proxy серверот</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
@@ -2106,7 +2106,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Ново %1 ажурирање</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
@@ -2122,17 +2122,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 верзија %2 е достапна. Рестартиајте ја апликацијата за да започне ажурирањето.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>Преземање %1. Ве милиме почекајте …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 е достапна. Рестартиајте ја апликацијата за да започне ажурирањето.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
@@ -2147,12 +2147,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Нова %1 верзија %2 е достапна. Кликнете &lt;a href=&apos;%3&apos;&gt;овде&lt;/a&gt; за да го преземете ажурирањето.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 is available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Нова %1 е достапна. Кликнете &lt;a href=&apos;%3&apos;&gt;овде&lt;/a&gt; за да го преземете ажурирањето.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
@@ -2172,7 +2172,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>Проверка за ажурирање</translation>
     </message>
 </context>
 <context>
@@ -2190,7 +2190,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
         <source>Connect …</source>
-        <translation type="unfinished"/>
+        <translation>Поврзи …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -2328,7 +2328,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Најави се на твојот %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
@@ -2359,7 +2359,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="422"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Неможе да се вчита сертификатот. Можеби погрешна лозинка?</translation>
     </message>
 </context>
 <context>
@@ -2828,7 +2828,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="466"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>Изберете што да се синхронизира</translation>
     </message>
 </context>
 <context>
@@ -2916,7 +2916,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="82"/>
         <source>Nextcloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud патека:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="113"/>
@@ -2931,12 +2931,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>Папка: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1 Споделување</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="294"/>
@@ -2946,12 +2946,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="335"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Потребна е лозинка за споделувањето</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="336"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>Внесете лозинка за да линкот кој го споделувате:</translation>
     </message>
 </context>
 <context>
@@ -3163,7 +3163,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>Мора да сте најавени како корисник %1</translation>
     </message>
 </context>
 <context>
@@ -3355,7 +3355,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;Отпечатоци&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
@@ -3386,13 +3386,15 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslbutton.cpp" line="174"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Оваа врска е криприрана со користење на %1 бита %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Оваа врска НЕ е безбедна и не е криптирана.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="191"/>
@@ -3465,27 +3467,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Отпечатоци (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Отпечатоци (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Отпечатоци (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Effective Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ефективен датум: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Датум на истекување: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
@@ -3804,12 +3806,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Паузирај ја синхронизацијата за сите</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Продолжи ја синхронизацијата за сите</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="232"/>
@@ -3847,7 +3849,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизирано %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="381"/>
@@ -4495,13 +4497,13 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/tray/Window.qml" line="143"/>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Продолжи ја синхронизацијата за сите</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="143"/>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Паузирај ја синхронизацијата за сите</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="169"/>
@@ -4646,7 +4648,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Игнорирана</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
