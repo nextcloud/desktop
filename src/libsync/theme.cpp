@@ -361,7 +361,7 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
         "%1 %2 %3 %4%8"
         "%9"
         "Libraries Qt %5, %6%8"
-        "Using virtual files plugin: %7")
+        "Using virtual files plugin: %7%8")
         .arg(appName(),
             _version,
             QStringLiteral(__DATE__),
