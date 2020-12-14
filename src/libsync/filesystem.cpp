@@ -46,22 +46,17 @@ bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)
     }
 
     const int BufferSize = 16 * 1024;
-    char buffer1[BufferSize];
-    char buffer2[BufferSize];
-    do {
-        int r = f1.read(buffer1, BufferSize);
-        if (f2.read(buffer2, BufferSize) != r) {
-            // this should normally not happen: the files are supposed to have the same size.
+    QByteArray buffer1(BufferSize, 0);
+    QByteArray buffer2(BufferSize, 0);
+    // the files have the same size, compare all of it
+    while(!f1.atEnd()){
+        f1.read(buffer1.data(), BufferSize);
+        f2.read(buffer2.data(), BufferSize);
+        if (buffer1 != buffer2) {
             return false;
         }
-        if (r <= 0) {
-            return true;
-        }
-        if (memcmp(buffer1, buffer2, r) != 0) {
-            return false;
-        }
-    } while (true);
-    return false;
+    };
+    return true;
 }
 
 time_t FileSystem::getModTime(const QString &filename)
