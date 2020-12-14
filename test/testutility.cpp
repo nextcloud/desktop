@@ -119,7 +119,7 @@ private slots:
             qDebug() << "Version of installed ownCloud Binary: " << ver;
             QVERIFY(!ver.isEmpty());
 
-            QRegExp rx("ownCloud \\d+\\.\\d+\\.\\d+.*");
+            QRegExp rx(APPLICATION_SHORTNAME " \\d+\\.\\d+\\.\\d+.*");
             QVERIFY(rx.exactMatch(ver));
         } else {
             QVERIFY(versionOfInstalledBinary().isEmpty());
