@@ -34,9 +34,6 @@ owncloud_add_test(RemoteDiscovery)
 owncloud_add_test(Permissions)
 owncloud_add_test(SelectiveSync)
 owncloud_add_test(DatabaseError)
-# For unknown reasons the DatabaseErrorTest occasionally aborts during drone execution
-set_tests_properties(DatabaseErrorTest PROPERTIES LABELS "nodrone" )
-
 owncloud_add_test(LockedFiles)
 
 owncloud_add_test(FolderWatcher)
