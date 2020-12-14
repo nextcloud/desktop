@@ -109,22 +109,22 @@ private slots:
 
     void testVersionOfInstalledBinary()
     {
-	if( isLinux() ) {
-            if ( qgetenv("DISPLAY").isEmpty() ) {
+        if(isLinux()) {
+            if (qgetenv("DISPLAY").isEmpty()) {
                 // Current requires an X-Server
                 return;
             }
             // pass the binary name owncloud to the next call. This brakes branding,
             // but branding is not supposed to work with this.
             QString ver = versionOfInstalledBinary(OWNCLOUD_BIN_PATH+QLatin1String("/owncloud"));
-	    qDebug() << "Version of installed ownCloud Binary: " << ver;
-	    QVERIFY( !ver.isEmpty());
+            qDebug() << "Version of installed ownCloud Binary: " << ver;
+            QVERIFY(!ver.isEmpty());
 
-	    QRegExp rx( "ownCloud version \\d+\\.\\d+\\.\\d+.*" );
-            QVERIFY( rx.exactMatch(ver));
-	} else {
-	    QVERIFY( versionOfInstalledBinary().isEmpty());
-	}
+            QRegExp rx("ownCloud version \\d+\\.\\d+\\.\\d+.*");
+            QVERIFY(rx.exactMatch(ver));
+        } else {
+            QVERIFY(versionOfInstalledBinary().isEmpty());
+        }
     }
 
     void testTimeAgo()
