@@ -8,6 +8,7 @@
 #include <QTemporaryDir>
 
 #include "common/utility.h"
+#include "config.h"
 
 using namespace OCC::Utility;
 
@@ -110,13 +111,11 @@ private slots:
     void testVersionOfInstalledBinary()
     {
         if(isLinux()) {
-            if (qgetenv("DISPLAY").isEmpty()) {
-                // Current requires an X-Server
-                return;
-            }
-            // pass the binary name owncloud to the next call. This brakes branding,
-            // but branding is not supposed to work with this.
-            QString ver = versionOfInstalledBinary(OWNCLOUD_BIN_PATH+QLatin1String("/owncloud"));
+            // pass the cmd client from our build dir
+            // this is a bit inaccurate as it does not test the "real thing"
+            // but cmd and gui have the same --version handler by now
+            // and cmd works without X in CI
+            QString ver = versionOfInstalledBinary(QStringLiteral(OWNCLOUD_BIN_PATH  "/" APPLICATION_EXECUTABLE "cmd"));
             qDebug() << "Version of installed ownCloud Binary: " << ver;
             QVERIFY(!ver.isEmpty());
 
