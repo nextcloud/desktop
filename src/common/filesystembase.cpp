@@ -497,33 +497,26 @@ bool FileSystem::isJunction(const QString &filename)
 #endif
 }
 
-QString FileSystem::pathtoUNC(const QString &str)
+#ifdef Q_OS_WIN
+QString FileSystem::pathtoUNC(const QString &_str)
 {
-    int len = 0;
-    QString longStr;
-
-    len = str.length();
-    longStr.reserve(len + 4);
-
-    // prepend \\?\ and convert '/' => '\' to support long names
-    if (str[0] == QLatin1Char('/') || str[0] == QLatin1Char('\\')) {
-        // Don't prepend if already UNC
-        if (!(len > 1 && (str[1] == QLatin1Char('/') || str[1] == QLatin1Char('\\')))) {
-            longStr.append(QStringLiteral("\\\\?"));
-        }
-    } else {
-        longStr.append(QStringLiteral("\\\\?\\")); // prepend string by this four magic chars.
+    if (_str.isEmpty()) {
+        return _str;
     }
-    longStr += str;
+    const QString str = QDir::toNativeSeparators(_str);
+    const QLatin1Char sep('\\');
 
-    /* replace all occurences of / with the windows native \ */
-
-    for (auto it = longStr.begin(); it != longStr.end(); ++it) {
-        if (*it == QLatin1Char('/')) {
-            *it = QLatin1Char('\\');
-        }
+    // we already have a unc path
+    if (str.startsWith(sep + sep)) {
+        return str;
     }
-    return longStr;
+    // prepend \\?\ and to support long names
+
+    if (str.at(0) == sep) {
+        return QStringLiteral("\\\\?") + str;
+    }
+    return QStringLiteral("\\\\?\\") + str;
 }
+#endif
 
 } // namespace OCC

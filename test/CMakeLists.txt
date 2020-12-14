@@ -45,6 +45,11 @@ if( UNIX AND NOT APPLE )
     owncloud_add_test(InotifyWatcher)
 endif(UNIX AND NOT APPLE)
 
+
+if (WIN32)
+    owncloud_add_test(LongWinPath)
+endif()
+
 owncloud_add_benchmark(LargeSync)
 
 owncloud_add_test(FolderMan)

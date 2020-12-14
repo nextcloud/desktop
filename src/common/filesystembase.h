@@ -128,6 +128,19 @@ namespace FileSystem {
      * Returns the file system used at the given path.
      */
     QString fileSystemForPath(const QString &path);
+
+    /*
+     * This function takes a path and converts it to a UNC representation of the
+     * string. That means that it prepends a \\?\ (unless already UNC) and converts
+     * all slashes to backslashes.
+     *
+     * Note the following:
+     *  - The string must be absolute.
+     *  - it needs to contain a drive character to be a valid UNC
+     *  - A conversion is only done if the path len is larger than 245. Otherwise
+     *    the windows API functions work with the normal "unixoid" representation too.
+     */
+    QString OCSYNC_EXPORT pathtoUNC(const QString &str);
 #endif
 
     /**
@@ -144,19 +157,6 @@ namespace FileSystem {
      * Returns whether the file is a junction (windows only)
      */
     bool OCSYNC_EXPORT isJunction(const QString &filename);
-
-    /*
-     * This function takes a path and converts it to a UNC representation of the
-     * string. That means that it prepends a \\?\ (unless already UNC) and converts
-     * all slashes to backslashes.
-     *
-     * Note the following:
-     *  - The string must be absolute.
-     *  - it needs to contain a drive character to be a valid UNC
-     *  - A conversion is only done if the path len is larger than 245. Otherwise
-     *    the windows API functions work with the normal "unixoid" representation too.
-     */
-    QString OCSYNC_EXPORT pathtoUNC(const QString &str);
 }
 
 /** @} */
