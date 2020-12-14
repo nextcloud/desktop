@@ -4606,7 +4606,7 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/tray/Window.qml" line="689"/>
         <location filename="../src/gui/tray/Window.qml" line="692"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Zobrazit další akce</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="781"/>
