@@ -129,7 +129,7 @@ qint64 FileSystem::getSize(const QString &filename)
 {
 #ifdef Q_OS_WIN
     if (isLnkFile(filename)) {
-        // Use csync to get the file size. Qt seems unable to get at it.
+        // Qt handles .lnk as symlink... https://doc.qt.io/qt-5/qfileinfo.html#details
         return getSizeWithCsync(filename);
     }
 #endif
