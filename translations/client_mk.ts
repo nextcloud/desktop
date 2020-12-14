@@ -1047,7 +1047,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="937"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Одете во параметрите и изберете ја ако сакате да ја преземете.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="992"/>
@@ -1544,7 +1544,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Користи &amp;Монохроматски икони</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -2634,7 +2634,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="184"/>
         <source>could not delete file %1, error: %2</source>
-        <translation type="unfinished"/>
+        <translation>неможе да се избрише датотеката %1, грешка: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="199"/>
@@ -3675,7 +3675,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/syncengine.cpp" line="805"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Достапно е %1, потребно е %2 за почеток</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="840"/>
