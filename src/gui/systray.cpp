@@ -119,6 +119,8 @@ Systray::Systray()
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
         this, &Systray::slotNewUserSelected);
+    connect(UserModel::instance(), &UserModel::addAccount,
+            this, &Systray::openAccountWizard);
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Systray::showWindow);
