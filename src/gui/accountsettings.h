@@ -89,7 +89,6 @@ protected slots:
     void slotFolderWizardRejected();
     void slotDeleteAccount();
     void slotToggleSignInState();
-    void slotOpenAccountWizard();
     void refreshSelectiveSyncStatus();
     void slotMarkSubfolderEncrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
     void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);

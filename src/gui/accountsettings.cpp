@@ -208,9 +208,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
         _ui->encryptionMessage->hide();
     }
 
-    connect(UserModel::instance(), &UserModel::addAccount,
-         this, &AccountSettings::slotOpenAccountWizard);
-
     customizeStyle();
 }
 
@@ -244,17 +241,6 @@ QString AccountSettings::selectedFolderAlias() const
     if (!selected.isValid())
         return "";
     return _model->data(selected, FolderStatusDelegate::FolderAliasRole).toString();
-}
-
-void AccountSettings::slotOpenAccountWizard()
-{
-    // We can't call isSystemTrayAvailable with appmenu-qt5 because it breaks the systemtray
-    // (issue #4693, #4944)
-    if (qgetenv("QT_QPA_PLATFORMTHEME") == "appmenu-qt5" || QSystemTrayIcon::isSystemTrayAvailable()) {
-        topLevelWidget()->close();
-    }
-
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), nullptr);
 }
 
 void AccountSettings::slotToggleSignInState()
