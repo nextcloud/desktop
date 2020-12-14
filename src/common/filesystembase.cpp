@@ -372,6 +372,7 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
 
 bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 {
+    // TODO: Qt 5.15 bool QFile::moveToTrash()
 #if defined Q_OS_UNIX && !defined Q_OS_MAC
     QString trashPath, trashFilePath, trashInfoPath;
     QString xdgDataHome = QFile::decodeName(qgetenv("XDG_DATA_HOME"));
