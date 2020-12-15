@@ -60,16 +60,21 @@ private Q_SLOTS:
         FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
 
         JobQueue *queue = fakeFolder.account()->jobQueue();
+        QVERIFY(!queue->isBlocked());
 
         TestJob *job = new TestJob(fakeFolder.account());
         QVERIFY(!queue->enqueue(job));
         QCOMPARE(queue->size(), 0);
         queue->setBlocked(true);
+        QVERIFY(queue->isBlocked());
         job->start();
         QCOMPARE(queue->size(), 1);
         queue->setBlocked(false);
+        QVERIFY(!queue->isBlocked());
         QCOMPARE(queue->size(), 0);
         QCOMPARE(job->retryCount(), 1);
+        queue->setBlocked(false);
+        QVERIFY(!queue->isBlocked());
     }
 
     void testMultiBlock()

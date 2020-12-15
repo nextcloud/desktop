@@ -31,9 +31,10 @@ void JobQueue::setBlocked(bool block)
 {
     if (block) {
         _blocked++;
-    } else {
+    } else if (_blocked > 0) {
         _blocked--;
     }
+    qCDebug(lcJobQUeue) << "Set blocked:" << block << _blocked;
     if (_blocked == 0) {
         auto tmp = std::move(_jobs);
         for (auto job : tmp) {
