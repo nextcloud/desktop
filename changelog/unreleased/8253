@@ -1,0 +1,9 @@
+Change: Remove support for http redirects
+
+We no longer follow redirects, when a redirect is detected we will start
+a connection validation process that does follow redirects.
+This change improves the support of APM solutions which apply special
+redirects to provide cookie sessions to the client.
+
+https://github.com/owncloud/client/pull/8293
+https://github.com/owncloud/client/pull/8253
