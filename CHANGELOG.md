@@ -8,11 +8,19 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Fix crash when a download is cancelled: [#4329](https://github.com/owncloud/enterprise/issues/4329)
 * Bugfix - Log the final http request: [#8289](https://github.com/owncloud/client/pull/8289)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
 Details
 -------
+
+* Bugfix - Fix crash when a download is cancelled: [#4329](https://github.com/owncloud/enterprise/issues/4329)
+
+   We fixed a crash, on Windows, when a user cancelled a download of a VirtualFile using the Windows
+   explorer.
+
+   https://github.com/owncloud/enterprise/issues/4329
 
 * Bugfix - Log the final http request: [#8289](https://github.com/owncloud/client/pull/8289)
 
