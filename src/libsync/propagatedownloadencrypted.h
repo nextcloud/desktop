@@ -17,20 +17,16 @@ class PropagateDownloadEncrypted : public QObject {
 public:
   PropagateDownloadEncrypted(OwncloudPropagator *propagator, const QString &localParentPath, SyncFileItemPtr item, QObject *parent = nullptr);
   void start();
-  void checkFolderId(const QStringList &list);
   bool decryptFile(QFile& tmpFile);
   QString errorString() const;
 
 public slots:
-  void checkFolderEncryptedStatus();
-
+  void checkFolderId(const QStringList &list);
   void checkFolderEncryptedMetadata(const QJsonDocument &json);
-  void folderStatusReceived(const QString &folder, bool isEncrypted);
-  void folderStatusError(int httpErrorCode);
   void folderIdError();
+
 signals:
-  void folderStatusEncrypted();
-  void folderStatusNotEncrypted();
+  void fileMetadataFound();
   void failed();
 
   void decryptionFinished();

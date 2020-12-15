@@ -67,6 +67,7 @@ public:
     QString ocUrl() const;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
+    bool useVirtualFileSync() const;
     bool isConfirmBigFolderChecked() const;
 
     void enableFinishOnResultWidget(bool enable);
@@ -76,10 +77,19 @@ public:
 
     void bringToTop();
 
+    /**
+     * Shows a dialog explaining the virtual files mode and warning about it
+     * being experimental. Calles the callback with true if enabling was
+     * chosen.
+     */
+    static void askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback);
+
     // FIXME: Can those be local variables?
     // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
-    QSslKey _clientSslKey;
-    QSslCertificate _clientSslCertificate;
+    QByteArray _clientCertBundle; // raw, potentially encrypted pkcs12 bundle provided by the user
+    QByteArray _clientCertPassword; // password for the pkcs12
+    QSslKey _clientSslKey; // key extracted from pkcs12
+    QSslCertificate _clientSslCertificate; // cert extracted from pkcs12
     QList<QSslCertificate> _clientSslCaCertificates;
 
 public slots:

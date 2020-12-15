@@ -21,8 +21,6 @@
 
 namespace OCC {
 
-SyncJournalFileRecord::SyncJournalFileRecord() = default;
-
 QByteArray SyncJournalFileRecord::numericFileId() const
 {
     // Use the id up until the first non-numeric character

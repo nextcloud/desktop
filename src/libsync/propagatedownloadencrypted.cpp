@@ -15,14 +15,10 @@ PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propa
 {
 }
 
-void PropagateDownloadEncrypted::start() {
-  checkFolderEncryptedStatus();
-}
-
-void PropagateDownloadEncrypted::checkFolderEncryptedStatus()
+void PropagateDownloadEncrypted::start()
 {
     const auto rootPath = [=]() {
-        const auto result = _propagator->_remoteFolder;
+        const auto result = _propagator->remotePath();
         if (result.startsWith('/')) {
             return result.mid(1);
         } else {
@@ -33,37 +29,14 @@ void PropagateDownloadEncrypted::checkFolderEncryptedStatus()
     const auto remotePath = QString(rootPath + remoteFilename);
     const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
 
-  auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), remoteParentPath, this);
-  connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
-          this, &PropagateDownloadEncrypted::folderStatusReceived);
-
-  connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
-          this, &PropagateDownloadEncrypted::folderStatusError);
-
-  getEncryptedStatus->start();
-}
-
-void PropagateDownloadEncrypted::folderStatusError(int statusCode)
-{
-  qCDebug(lcPropagateDownloadEncrypted) << "Failed to get encrypted status of folder" << statusCode;
-}
-
-void PropagateDownloadEncrypted::folderStatusReceived(const QString &folder, bool isEncrypted)
-{
-  qCDebug(lcPropagateDownloadEncrypted) << "Get Folder is Encrypted Received" << folder << isEncrypted;
-  if (!isEncrypted) {
-      emit folderStatusNotEncrypted();
-      return;
-  }
-
-  // Is encrypted Now we need the folder-id
-  auto job = new LsColJob(_propagator->account(), folder, this);
-  job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
-  connect(job, &LsColJob::directoryListingSubfolders,
-          this, &PropagateDownloadEncrypted::checkFolderId);
-  connect(job, &LsColJob::finishedWithError,
-          this, &PropagateDownloadEncrypted::folderIdError);
-  job->start();
+    // Is encrypted Now we need the folder-id
+    auto job = new LsColJob(_propagator->account(), remoteParentPath, this);
+    job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
+    connect(job, &LsColJob::directoryListingSubfolders,
+            this, &PropagateDownloadEncrypted::checkFolderId);
+    connect(job, &LsColJob::finishedWithError,
+            this, &PropagateDownloadEncrypted::folderIdError);
+    job->start();
 }
 
 void PropagateDownloadEncrypted::folderIdError()
@@ -89,29 +62,19 @@ void PropagateDownloadEncrypted::checkFolderId(const QStringList &list)
 
 void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocument &json)
 {
-  qCDebug(lcPropagateDownloadEncrypted) << "Metadata Received reading" <<
-                                           csync_instruction_str(_item->_instruction) << _item->_file << _item->_encryptedFileName;
+  qCDebug(lcPropagateDownloadEncrypted) << "Metadata Received reading"
+                                        << _item->_instruction << _item->_file << _item->_encryptedFileName;
   const QString filename = _info.fileName();
   auto meta = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
   const QVector<EncryptedFile> files = meta->files();
 
-  const QString encryptedFilename = _item->_instruction == CSYNC_INSTRUCTION_NEW ?
-              _item->_file.section(QLatin1Char('/'), -1) :
-              _item->_encryptedFileName.section(QLatin1Char('/'), -1);
+  const QString encryptedFilename = _item->_encryptedFileName.section(QLatin1Char('/'), -1);
   for (const EncryptedFile &file : files) {
     if (encryptedFilename == file.encryptedFilename) {
       _encryptedInfo = file;
-      if (_item->_encryptedFileName.isEmpty()) {
-        _item->_encryptedFileName = _item->_file;
-      }
-      if (!_localParentPath.isEmpty()) {
-          _item->_file = _localParentPath + QLatin1Char('/') + _encryptedInfo.originalFilename;
-      } else {
-          _item->_file = _encryptedInfo.originalFilename;
-      }
 
       qCDebug(lcPropagateDownloadEncrypted) << "Found matching encrypted metadata for file, starting download";
-      emit folderStatusEncrypted();
+      emit fileMetadataFound();
       return;
     }
   }
@@ -129,7 +92,7 @@ bool PropagateDownloadEncrypted::decryptFile(QFile& tmpFile)
     qCDebug(lcPropagateDownloadEncrypted) << "Content Checksum Computed starting decryption" << tmpFileName;
 
     tmpFile.close();
-    QFile _tmpOutput(_propagator->getFilePath(tmpFileName), this);
+    QFile _tmpOutput(_propagator->fullLocalPath(tmpFileName), this);
     EncryptionHelper::fileDecryption(_encryptedInfo.encryptionKey,
                                      _encryptedInfo.initializationVector,
                                      &tmpFile,

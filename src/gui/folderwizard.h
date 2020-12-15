@@ -25,6 +25,8 @@
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
 
+class QCheckBox;
+
 namespace OCC {
 
 class SelectiveSyncWidget;
@@ -94,13 +96,13 @@ protected slots:
     void slotHandleMkdirNetworkError(QNetworkReply *);
     void slotHandleLsColNetworkError(QNetworkReply *);
     void slotUpdateDirectories(const QStringList &);
+    void slotGatherEncryptedPaths(const QString &, const QMap<QString, QString> &);
     void slotRefreshFolders();
     void slotItemExpanded(QTreeWidgetItem *);
     void slotCurrentItemChanged(QTreeWidgetItem *);
     void slotFolderEntryEdited(const QString &text);
     void slotLsColFolderEntry();
     void slotTypedPathFound(const QStringList &subpaths);
-    void slotTypedPathError(QNetworkReply *reply);
 
 private:
     LsColJob *runLsColJob(const QString &path);
@@ -110,6 +112,7 @@ private:
     bool _warnWasVisible;
     AccountPtr _account;
     QTimer _lscolTimer;
+    QStringList _encryptedPaths;
 };
 
 /**
@@ -128,8 +131,12 @@ public:
     void initializePage() override;
     void cleanupPage() override;
 
+private slots:
+    void virtualFilesCheckboxClicked();
+
 private:
     SelectiveSyncWidget *_selectiveSync;
+    QCheckBox *_virtualFilesCheckBox = nullptr;
 };
 
 /**

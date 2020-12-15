@@ -23,8 +23,6 @@ class ReadPasswordJob;
 
 namespace OCC {
 
-class GetFolderEncryptStatusJob;
-
 QString baseUrl();
 
 namespace EncryptionHelper {
@@ -80,14 +78,6 @@ public:
     void generateKeyPair();
     void generateCSR(EVP_PKEY *keyPair);
     void encryptPrivateKey();
-    void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
-    QByteArray tokenForFolder(const QByteArray& folder) const;
-    void fetchFolderEncryptedStatus();
-
-    // to be used together with FolderStatusModel::FolderInfo::_path.
-    bool isFolderEncrypted(const QString& path) const;
-    bool isAnyParentFolderEncrypted(const QString &path) const;
-    void setFolderEncryptedStatus(const QString& path, bool status);
 
     void forgetSensitiveData();
 
@@ -97,9 +87,6 @@ public slots:
     void slotRequestMnemonic();
 
 private slots:
-    void folderEncryptedStatusFetched(const QHash<QString, bool> &values);
-    void folderEncryptedStatusError(int error);
-
     void publicKeyFetched(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
     void mnemonicKeyFetched(QKeychain::Job *incoming);
@@ -108,10 +95,8 @@ signals:
     void initializationFinished();
     void mnemonicGenerated(const QString& mnemonic);
     void showMnemonic(const QString& mnemonic);
-    void folderEncryptedStatusFetchDone(const QHash<QString, bool> &values);
 
 private:
-    void scheduleFolderEncryptedStatusJob(const QString &path);
     void getPrivateKeyFromServer();
     void getPublicKeyFromServer();
     void decryptPrivateKey(const QByteArray &key);
@@ -124,11 +109,6 @@ private:
 
     AccountPtr _account;
     bool isInitialized = false;
-    bool _refreshingEncryptionStatus = false;
-    //TODO: Save this on disk.
-    QHash<QByteArray, QByteArray> _folder2token;
-    QHash<QString, bool> _folder2encryptedStatus;
-    QVector<GetFolderEncryptStatusJob*> _folderStatusJobs;
 
 public:
     //QSslKey _privateKey;

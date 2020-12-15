@@ -17,29 +17,11 @@
 
 #include "owncloudpropagator.h"
 #include "syncfileitem.h"
+#include "networkjobs.h"
 #include <QLoggingCategory>
 #include <QNetworkReply>
 
 namespace OCC {
-
-inline QByteArray parseEtag(const char *header)
-{
-    if (!header)
-        return QByteArray();
-    QByteArray arr = header;
-
-    // Weak E-Tags can appear when gzip compression is on, see #3946
-    if (arr.startsWith("W/"))
-        arr = arr.mid(2);
-
-    // https://github.com/owncloud/client/issues/1195
-    arr.replace("-gzip", "");
-
-    if (arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
-        arr = arr.mid(1, arr.length() - 2);
-    }
-    return arr;
-}
 
 inline QByteArray getEtagFromReply(QNetworkReply *reply)
 {
@@ -59,8 +41,7 @@ inline QByteArray getEtagFromReply(QNetworkReply *reply)
  * Given an error from the network, map to a SyncFileItem::Status error
  */
 inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
-    int httpCode,
-    bool *anotherSyncNeeded = nullptr)
+    int httpCode, bool *anotherSyncNeeded = nullptr, const QByteArray &errorBody = QByteArray())
 {
     Q_ASSERT(nerror != QNetworkReply::NoError); // we should only be called when there is an error
 
@@ -76,9 +57,15 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
     }
 
     if (httpCode == 503) {
-        // "Service unavailable"
-        // Happens for maintenance mode and other temporary outages
-        return SyncFileItem::FatalError;
+        // When the server is in maintenance mode, we want to exit the sync immediatly
+        // so that we do not flood the server with many requests
+        // BUG: This relies on a translated string and is thus unreliable.
+        //      In the future it should return a NormalError and trigger a status.php
+        //      check that detects maintenance mode reliably and will terminate the sync run.
+        auto probablyMaintenance =
+                errorBody.contains(R"(>Sabre\DAV\Exception\ServiceUnavailable<)")
+                && !errorBody.contains("Storage is temporarily not available");
+        return probablyMaintenance ? SyncFileItem::FatalError : SyncFileItem::NormalError;
     }
 
     if (httpCode == 412) {

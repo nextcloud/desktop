@@ -33,7 +33,6 @@ set(client_UI_SRCS
     ignorelisteditor.ui
     ignorelisttablewidget.ui
     networksettings.ui
-    synclogdialog.ui
     settingsdialog.ui
     sharedialog.ui
     sharelinkwidget.ui
@@ -104,7 +103,6 @@ set(client_SRCS
     authenticationdialog.cpp
     proxyauthhandler.cpp
     proxyauthdialog.cpp
-    synclogdialog.cpp
     tooltipupdater.cpp
     notificationconfirmjob.cpp
     guiutility.cpp
@@ -324,9 +322,6 @@ endif()
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
-# Only relevant for Linux? On OS X it by default properly checks in the bundle directory next to the exe
-set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-        INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::GuiPrivate Qt5::Svg Qt5::Network Qt5::Xml Qt5::Qml Qt5::Quick Qt5::QuickControls2 Qt5::WebEngineWidgets)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
@@ -430,5 +425,15 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
     configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
                    ${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.desktop)
     install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${LINUX_APPLICATION_ID}.desktop DESTINATION ${DATADIR}/applications )
+
+    configure_file(owncloud.xml.in ${APPLICATION_EXECUTABLE}.xml)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.xml DESTINATION ${DATADIR}/mime/packages )
+
+    find_package(ECM 1.2.0 CONFIG)
+    set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+    find_package(SharedMimeInfo)
+    if(SharedMimeInfo_FOUND)
+        update_xdg_mimetypes( ${DATADIR}/mime/packages )
+    endif(SharedMimeInfo_FOUND)
 endif()
 

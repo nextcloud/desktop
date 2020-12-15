@@ -34,7 +34,7 @@
 #define SQLITE_DO(A)                                         \
     if (1) {                                                 \
         _errId = (A);                                        \
-        if (_errId != SQLITE_OK && _errId != SQLITE_DONE) {  \
+        if (_errId != SQLITE_OK && _errId != SQLITE_DONE && _errId != SQLITE_ROW) {  \
             _error = QString::fromUtf8(sqlite3_errmsg(_db)); \
         }                                                    \
     }
@@ -108,7 +108,7 @@ SqlDatabase::CheckDbResult SqlDatabase::checkDb()
 
     quick_check.next();
     QString result = quick_check.stringValue(0);
-    if (result != "ok") {
+    if (result != QLatin1String("ok")) {
         qCWarning(lcSql) << "quick_check returned failure:" << result;
         return CheckDbResult::NotOk;
     }
@@ -334,16 +334,35 @@ bool SqlQuery::exec()
     return true;
 }
 
-bool SqlQuery::next()
+auto SqlQuery::next() -> NextResult
 {
-    SQLITE_DO(sqlite3_step(_stmt));
-    return _errId == SQLITE_ROW;
+    const bool firstStep = !sqlite3_stmt_busy(_stmt);
+
+    int n = 0;
+    forever {
+        _errId = sqlite3_step(_stmt);
+        if (n < SQLITE_REPEAT_COUNT && firstStep && (_errId == SQLITE_LOCKED || _errId == SQLITE_BUSY)) {
+            sqlite3_reset(_stmt); // not necessary after sqlite version 3.6.23.1
+            n++;
+            OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+        } else {
+            break;
+        }
+    }
+
+    NextResult result;
+    result.ok = _errId == SQLITE_ROW || _errId == SQLITE_DONE;
+    result.hasData = _errId == SQLITE_ROW;
+    if (!result.ok) {
+        _error = QString::fromUtf8(sqlite3_errmsg(_db));
+        qCWarning(lcSql) << "Sqlite step statement error:" << _errId << _error << "in" << _sql;
+    }
+
+    return result;
 }
 
-void SqlQuery::bindValue(int pos, const QVariant &value)
+void SqlQuery::bindValueInternal(int pos, const QVariant &value)
 {
-    qCDebug(lcSql) << "SQL bind" << pos << value;
-
     int res = -1;
     if (!_stmt) {
         ASSERT(false);
@@ -365,14 +384,14 @@ void SqlQuery::bindValue(int pos, const QVariant &value)
         break;
     case QVariant::DateTime: {
         const QDateTime dateTime = value.toDateTime();
-        const QString str = dateTime.toString(QLatin1String("yyyy-MM-ddThh:mm:ss.zzz"));
+        const QString str = dateTime.toString(QStringLiteral("yyyy-MM-ddThh:mm:ss.zzz"));
         res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
             str.size() * static_cast<int>(sizeof(ushort)), SQLITE_TRANSIENT);
         break;
     }
     case QVariant::Time: {
         const QTime time = value.toTime();
-        const QString str = time.toString(QLatin1String("hh:mm:ss.zzz"));
+        const QString str = time.toString(QStringLiteral("hh:mm:ss.zzz"));
         res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
             str.size() * static_cast<int>(sizeof(ushort)), SQLITE_TRANSIENT);
         break;
@@ -443,7 +462,7 @@ int SqlQuery::errorId() const
     return _errId;
 }
 
-QString SqlQuery::lastQuery() const
+const QByteArray &SqlQuery::lastQuery() const
 {
     return _sql;
 }

@@ -51,6 +51,7 @@ class FolderStatusModel;
 class AccountSettings : public QWidget
 {
     Q_OBJECT
+    Q_PROPERTY(AccountState* accountState MEMBER _accountState)
 
 public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
@@ -62,7 +63,7 @@ signals:
     void folderChanged();
     void openFolderAlias(const QString &);
     void showIssuesList(AccountState *account);
-    void requesetMnemonic();
+    void requestMnemonic();
     void removeAccountFolders(AccountState *account);
     void styleChanged();
 
@@ -76,7 +77,7 @@ public slots:
 
 protected slots:
     void slotAddFolder();
-    void slotEnableCurrentFolder();
+    void slotEnableCurrentFolder(bool terminate = false);
     void slotScheduleCurrentFolder();
     void slotScheduleCurrentFolderForceRemoteDiscovery();
     void slotForceSyncCurrentFolder();
@@ -85,12 +86,16 @@ protected slots:
     void slotOpenCurrentLocalSubFolder(); // selected subfolder in sync folder
     void slotEditCurrentIgnoredFiles();
     void slotEditCurrentLocalIgnoredFiles();
+    void slotEnableVfsCurrentFolder();
+    void slotDisableVfsCurrentFolder();
+    void slotSetCurrentFolderAvailability(PinState state);
+    void slotSetSubFolderAvailability(Folder *folder, const QString &path, PinState state);
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotDeleteAccount();
     void slotToggleSignInState();
     void refreshSelectiveSyncStatus();
-    void slotMarkSubfolderEncrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
+    void slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInfo *folderInfo);
     void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);

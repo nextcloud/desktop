@@ -150,7 +150,9 @@ QList<QByteArray> Capabilities::supportedChecksumTypes() const
 
 QByteArray Capabilities::preferredUploadChecksumType() const
 {
-    return _capabilities["checksums"].toMap()["preferredUploadType"].toByteArray();
+    return qEnvironmentVariable("OWNCLOUD_CONTENT_CHECKSUM_TYPE",
+                                _capabilities.value(QStringLiteral("checksums")).toMap()
+                                .value(QStringLiteral("preferredUploadType"), QStringLiteral("SHA1")).toString()).toUtf8();
 }
 
 QByteArray Capabilities::uploadChecksumType() const
@@ -195,7 +197,7 @@ QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 
 QString Capabilities::invalidFilenameRegex() const
 {
-    return _capabilities["dav"].toMap()["invalidFilenameRegex"].toString();
+    return _capabilities[QStringLiteral("dav")].toMap()[QStringLiteral("invalidFilenameRegex")].toString();
 }
 
 bool Capabilities::uploadConflictFiles() const
@@ -205,7 +207,12 @@ bool Capabilities::uploadConflictFiles() const
     if (envIsSet)
         return envValue != 0;
 
-    return _capabilities["uploadConflictFiles"].toBool();
+    return _capabilities[QStringLiteral("uploadConflictFiles")].toBool();
+}
+
+QStringList Capabilities::blacklistedFiles() const
+{
+    return _capabilities["files"].toMap()["blacklisted_files"].toStringList();
 }
 
 /*-------------------------------------------------------------------------------------*/

@@ -41,6 +41,8 @@
 
 #include "owncloudsetupwizard.h"
 #include "version.h"
+#include "csync_exclude.h"
+#include "common/vfs.h"
 
 #include "config.h"
 
@@ -70,6 +72,7 @@ namespace {
         "Options:\n"
         "  --help, -h           : show this help screen.\n"
         "  --version, -v        : show version information.\n"
+        "  -q --quit            : quit the running instance\n"
         "  --logwindow, -l      : open a window to show log output.\n"
         "  --logfile <filename> : write log output to file <filename>.\n"
         "  --logdir <name>      : write each sync log output in a new file\n"
@@ -100,6 +103,71 @@ namespace {
 }
 
 // ----------------------------------------------------------------------------------
+
+bool Application::configVersionMigration()
+{
+    QStringList deleteKeys, ignoreKeys;
+    AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
+    FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
+
+    ConfigFile configFile;
+
+    // Did the client version change?
+    // (The client version is adjusted further down)
+    bool versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+
+    // We want to message the user either for destructive changes,
+    // or if we're ignoring something and the client version changed.
+    bool warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
+
+    if (!versionChanged && !warningMessage)
+        return true;
+
+    const auto backupFile = configFile.backup();
+
+    if (warningMessage) {
+        QString boldMessage;
+        if (!deleteKeys.isEmpty()) {
+            boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
+        } else {
+            boldMessage = tr("Continuing will mean <b>ignoring these settings</b>.");
+        }
+
+        QMessageBox box(
+            QMessageBox::Warning,
+            APPLICATION_SHORTNAME,
+            tr("Some settings were configured in newer versions of this client and "
+               "use features that are not available in this version.<br>"
+               "<br>"
+               "%1<br>"
+               "<br>"
+               "The current configuration file was already backed up to <i>%2</i>.")
+                .arg(boldMessage, backupFile));
+        box.addButton(tr("Quit"), QMessageBox::AcceptRole);
+        auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
+
+        box.exec();
+        if (box.clickedButton() != continueBtn) {
+            QTimer::singleShot(0, qApp, SLOT(quit()));
+            return false;
+        }
+
+        auto settings = ConfigFile::settingsWithGroup("foo");
+        settings->endGroup();
+
+        // Wipe confusing keys from the future, ignore the others
+        for (const auto &badKey : deleteKeys)
+            settings->remove(badKey);
+    }
+
+    configFile.setClientVersionString(MIRALL_VERSION_STRING);
+    return true;
+}
+
+ownCloudGui *Application::gui() const
+{
+    return _gui;
+}
 
 Application::Application(int &argc, char **argv)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
@@ -139,11 +207,8 @@ Application::Application(int &argc, char **argv)
 
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
-    setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
-    auto confDir = ConfigFile().configPath();
-    if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
-    if (!QFileInfo(confDir).isDir()) {
+    if (!ConfigFile().exists()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
 #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
@@ -158,9 +223,23 @@ Application::Application(int &argc, char **argv)
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
+            auto confDir = ConfigFile().configPath();
+            if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
             qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+
             if (!QFile::rename(oldDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config file to its new location (" << oldDir << "to" << confDir << ")";
+                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+
+                // Try to move the files one by one
+                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+                    const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
+                    for (const auto &name : filesList) {
+                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                        }
+                    }
+                }
             } else {
 #ifndef Q_OS_WIN
                 // Create a symbolic link so a downgrade of the client would still find the config.
@@ -175,21 +254,46 @@ Application::Application(int &argc, char **argv)
     if (_helpOnly || _versionOnly)
         return;
 
+    if (_quitInstance) {
+        QTimer::singleShot(0, qApp, &QApplication::quit);
+        return;
+    }
+
     if (isRunning())
         return;
 
 #if defined(WITH_CRASHREPORTER)
-    if (ConfigFile().crashReporter())
-        _crashHandler.reset(new CrashReporter::Handler(QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE));
+    if (ConfigFile().crashReporter()) {
+        auto reporter = QStringLiteral(CRASHREPORTER_EXECUTABLE);
+#ifdef Q_OS_WIN
+        if (!reporter.endsWith(QLatin1String(".exe"))) {
+            reporter.append(QLatin1String(".exe"));
+        }
+#endif
+        _crashHandler.reset(new CrashReporter::Handler(QDir::tempPath(), true, reporter));
+    }
 #endif
 
     setupLogging();
     setupTranslations();
 
-    // The timeout is initialized with an environment variable, if not, override with the value from the config
+    if (!configVersionMigration()) {
+        return;
+    }
+
     ConfigFile cfg;
+    // The timeout is initialized with an environment variable, if not, override with the value from the config
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
+
+    // Check vfs plugins
+    if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
+        qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
+    }
+    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+        qCInfo(lcApplication) << "VFS windows plugin is available";
+    if (isVfsPluginAvailable(Vfs::WithSuffix))
+        qCInfo(lcApplication) << "VFS suffix plugin is available";
 
     _folderManager.reset(new FolderMan);
 
@@ -307,7 +411,7 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
     }
 
     // if there is no more account, show the wizard.
-    if (AccountManager::instance()->accounts().isEmpty()) {
+    if (_gui && AccountManager::instance()->accounts().isEmpty()) {
         // allow to add a new account if there is non any more. Always think
         // about single account theming!
         OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
@@ -433,8 +537,16 @@ void Application::slotParseMessage(const QString &msg, QObject *)
     if (msg.startsWith(QLatin1String("MSG_PARSEOPTIONS:"))) {
         const int lengthOfMsgPrefix = 17;
         QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
+        _showLogWindow = false;
         parseOptions(options);
         setupLogging();
+        if (_showLogWindow) {
+            _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+        }
+        if (_quitInstance) {
+            qApp->quit();
+        }
+
     } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
@@ -459,6 +571,8 @@ void Application::parseOptions(const QStringList &options)
         if (option == QLatin1String("--help") || option == QLatin1String("-h")) {
             setHelp();
             break;
+        } else if (option == QLatin1String("--quit") || option == QLatin1String("-q")) {
+            _quitInstance = true;
         } else if (option == QLatin1String("--logwindow") || option == QLatin1String("-l")) {
             _showLogWindow = true;
         } else if (option == QLatin1String("--logfile")) {
@@ -499,6 +613,9 @@ void Application::parseOptions(const QStringList &options)
             _backgroundMode = true;
         } else if (option == QLatin1String("--version") || option == QLatin1String("-v")) {
             _versionOnly = true;
+        } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
+            // virtual file, open it after the Folder were created (if the app is not terminated)
+            QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
         } else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
         }
@@ -672,6 +789,51 @@ void Application::showMainDialog()
 void Application::slotGuiIsShowingSettings()
 {
     emit isShowingSettingsDialog();
+}
+
+void Application::openVirtualFile(const QString &filename)
+{
+    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    if (!filename.endsWith(virtualFileExt)) {
+        qWarning(lcApplication) << "Can only handle file ending in .owncloud. Unable to open" << filename;
+        return;
+    }
+    auto folder = FolderMan::instance()->folderForPath(filename);
+    if (!folder) {
+        qWarning(lcApplication) << "Can't find sync folder for" << filename;
+        // TODO: show a QMessageBox for errors
+        return;
+    }
+    QString relativePath = QDir::cleanPath(filename).mid(folder->cleanPath().length() + 1);
+    folder->implicitlyHydrateFile(relativePath);
+    QString normalName = filename.left(filename.size() - virtualFileExt.size());
+    auto con = QSharedPointer<QMetaObject::Connection>::create();
+    *con = connect(folder, &Folder::syncFinished, folder, [folder, con, normalName] {
+        folder->disconnect(*con);
+        if (QFile::exists(normalName)) {
+            QDesktopServices::openUrl(QUrl::fromLocalFile(normalName));
+        }
+    });
+}
+
+void Application::tryTrayAgain()
+{
+    qCInfo(lcApplication) << "Trying tray icon, tray available:" << QSystemTrayIcon::isSystemTrayAvailable();
+    _gui->hideAndShowTray();
+}
+
+bool Application::event(QEvent *event)
+{
+#ifdef Q_OS_MAC
+    if (event->type() == QEvent::FileOpen) {
+        QFileOpenEvent *openEvent = static_cast<QFileOpenEvent *>(event);
+        qCDebug(lcApplication) << "QFileOpenEvent" << openEvent->file();
+        // virtual file, open it after the Folder were created (if the app is not terminated)
+        QString fn = openEvent->file();
+        QTimer::singleShot(0, this, [this, fn] { openVirtualFile(fn); });
+    }
+#endif
+    return SharedTools::QtSingleApplication::event(event);
 }
 
 } // namespace OCC

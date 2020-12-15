@@ -45,12 +45,13 @@ class ownCloudGui;
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
+    Q_PROPERTY(QWidget* currentPage READ currentPage)
 
 public:
     explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
     ~SettingsDialog();
 
-    void addAccount(const QString &title, QWidget *widget);
+    QWidget* currentPage();
 
 public slots:
     void showFirstPage();
@@ -81,7 +82,6 @@ private:
     Ui::SettingsDialog *const _ui;
 
     QActionGroup *_actionGroup;
-    QAction *_actionBefore;
     // Maps the actions from the action group to the corresponding widgets
     QHash<QAction *, QWidget *> _actionGroupWidgets;
 

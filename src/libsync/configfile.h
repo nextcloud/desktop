@@ -48,6 +48,13 @@ public:
     QString excludeFile(Scope scope) const;
     static QString excludeFileFromSystem(); // doesn't access config dir
 
+    /**
+     * Creates a backup of the file
+     *
+     * Returns the path of the new backup.
+     */
+    QString backup() const;
+
     bool exists();
 
     QString defaultConnection() const;
@@ -57,10 +64,6 @@ public:
     void setCaCerts(const QByteArray &);
 
     bool passwordStorageAllowed(const QString &connection = QString());
-
-    // max count of lines in the log window
-    int maxLogLines() const;
-    void setMaxLogLines(int);
 
     /* Server poll interval in milliseconds */
     std::chrono::milliseconds remotePollInterval(const QString &connection = QString()) const;
@@ -104,6 +107,9 @@ public:
     bool logFlush() const;
     void setLogFlush(bool enabled);
 
+    // Whether experimental UI options should be shown
+    bool showExperimentalOptions() const;
+
     // proxy settings
     void setProxyType(int proxyType,
         const QString &host = QString(),
@@ -129,8 +135,8 @@ public:
     void setUploadLimit(int kbytes);
     void setDownloadLimit(int kbytes);
     /** [checked, size in MB] **/
-    QPair<bool, quint64> newBigFolderSizeLimit() const;
-    void setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes);
+    QPair<bool, qint64> newBigFolderSizeLimit() const;
+    void setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes);
     bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
 
@@ -147,9 +153,9 @@ public:
     void setShowInExplorerNavigationPane(bool show);
 
     int timeout() const;
-    quint64 chunkSize() const;
-    quint64 maxChunkSize() const;
-    quint64 minChunkSize() const;
+    qint64 chunkSize() const;
+    qint64 maxChunkSize() const;
+    qint64 minChunkSize() const;
     std::chrono::milliseconds targetChunkUploadDuration() const;
 
     void saveGeometry(QWidget *w);
@@ -181,6 +187,11 @@ public:
     void setCertificatePath(const QString &cPath);
     QString certificatePasswd() const;
     void setCertificatePasswd(const QString &cPasswd);
+
+    /** The client version that last used this settings file.
+        Updated by configVersionMigration() at client startup. */
+    QString clientVersionString() const;
+    void setClientVersionString(const QString &version);
 
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */

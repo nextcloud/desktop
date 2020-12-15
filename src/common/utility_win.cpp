@@ -17,14 +17,21 @@
  */
 
 #include "asserts.h"
+#include "utility.h"
+
+#include <comdef.h>
+#include <shlguid.h>
 #include <shlobj.h>
+#include <string>
 #include <winbase.h>
 #include <windows.h>
 #include <winerror.h>
-#include <shlguid.h>
-#include <string>
+
 #include <QLibrary>
 
+extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
+
+static const char systemRunPathC[] = R"(HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run)";
 static const char runPathC[] = R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run)";
 
 namespace OCC {
@@ -67,6 +74,12 @@ static void setupFavLink_private(const QString &folder)
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
 }
 
+bool hasSystemLaunchOnStartup_private(const QString &appName)
+{
+    QString runPath = QLatin1String(systemRunPathC);
+    QSettings settings(runPath, QSettings::NativeFormat);
+    return settings.contains(appName);
+}
 
 bool hasLaunchOnStartup_private(const QString &appName)
 {
@@ -81,7 +94,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     QString runPath = QLatin1String(runPathC);
     QSettings settings(runPath, QSettings::NativeFormat);
     if (enable) {
-        settings.setValue(appName, QCoreApplication::applicationFilePath().replace('/', '\\'));
+        settings.setValue(appName, QCoreApplication::applicationFilePath().replace(QLatin1Char('/'), QLatin1Char('\\')));
     } else {
         settings.remove(appName);
     }
@@ -91,8 +104,8 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
 static inline bool hasDarkSystray_private()
 {
     if(Utility::registryGetKeyValue(    HKEY_CURRENT_USER,
-                                        R"(Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)",
-                                        "SystemUsesLightTheme" ) == 1) {
+                                        QStringLiteral(R"(Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)"),
+                                        QStringLiteral("SystemUsesLightTheme") ) == 1) {
         return false;
     }
     else {
@@ -161,7 +174,7 @@ QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, cons
                 // If the data has the REG_SZ, REG_MULTI_SZ or REG_EXPAND_SZ type, the string may not have been stored with
                 // the proper terminating null characters. Therefore, even if the function returns ERROR_SUCCESS,
                 // the application should ensure that the string is properly terminated before using it; otherwise, it may overwrite a buffer.
-                if (string.at(newCharSize - 1) == QChar('\0'))
+                if (string.at(newCharSize - 1) == QLatin1Char('\0'))
                     string.resize(newCharSize - 1);
                 value = string;
             }
@@ -305,6 +318,43 @@ DWORD Utility::convertSizeToDWORD(size_t &convertVar)
         convertVar = UINT_MAX; // intentionally default to wrong value here to not crash: exception handling TBD
     }
     return static_cast<DWORD>(convertVar);
+}
+
+void Utility::UnixTimeToFiletime(time_t t, FILETIME *filetime)
+{
+    LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
+    filetime->dwLowDateTime = (DWORD) ll;
+    filetime->dwHighDateTime = ll >>32;
+}
+
+void Utility::FiletimeToLargeIntegerFiletime(FILETIME *filetime, LARGE_INTEGER *hundredNSecs)
+{
+    hundredNSecs->LowPart = filetime->dwLowDateTime;
+    hundredNSecs->HighPart = filetime->dwHighDateTime;
+}
+
+void Utility::UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs)
+{
+    LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
+    hundredNSecs->LowPart = (DWORD) ll;
+    hundredNSecs->HighPart = ll >>32;
+}
+
+
+QString Utility::formatWinError(long errorCode)
+{
+    return QStringLiteral("WindowsError: %1: %2").arg(QString::number(errorCode, 16), QString::fromWCharArray(_com_error(errorCode).ErrorMessage()));
+}
+
+
+Utility::NtfsPermissionLookupRAII::NtfsPermissionLookupRAII()
+{
+    qt_ntfs_permission_lookup++;
+}
+
+Utility::NtfsPermissionLookupRAII::~NtfsPermissionLookupRAII()
+{
+    qt_ntfs_permission_lookup--;
 }
 
 } // namespace OCC

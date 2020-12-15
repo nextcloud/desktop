@@ -62,16 +62,9 @@ int main(int argc, char **argv)
 
     // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
 
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 #ifdef Q_OS_WIN
-// If the font size ratio is set on Windows, we need to
-// enable the auto pixelRatio in Qt since we don't
-// want to use sizes relative to the font size everywhere.
-// This is automatic on OS X, but opt-in on Windows and Linux
-// https://doc-snapshots.qt.io/qt5-5.6/highdpi.html#qt-support
-// We do not define it on linux so the behaviour is kept the same
-// as other Qt apps in the desktop environment. (which may or may
-// not set this envoronment variable)
-    qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #endif // !Q_OS_WIN
 
 #ifdef Q_OS_MAC
@@ -149,12 +142,12 @@ int main(int argc, char **argv)
             QString msg = args.join(QLatin1String("|"));
             if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg))
                 return -1;
-        }
-        if (!app.backgroundMode() && !app.sendMessage(QLatin1String("MSG_SHOWMAINDIALOG"))) {
+        } else if (!app.backgroundMode() && !app.sendMessage(QLatin1String("MSG_SHOWMAINDIALOG"))) {
             return -1;
         }
         return 0;
     }
+
     // We can't call isSystemTrayAvailable with appmenu-qt5 begause it hides the systemtray
     // (issue #4693)
     if (qgetenv("QT_QPA_PLATFORMTHEME") != "appmenu-qt5")
@@ -163,27 +156,36 @@ int main(int argc, char **argv)
             // If the systemtray is not there, we will wait one second for it to maybe start
             // (eg boot time) then we show the settings dialog if there is still no systemtray.
             // On XFCE however, we show a message box with explainaition how to install a systemtray.
+            qCInfo(lcApplication) << "System tray is not available, waiting...";
             Utility::sleep(1);
+
             auto desktopSession = qgetenv("XDG_CURRENT_DESKTOP").toLower();
             if (desktopSession.isEmpty()) {
                 desktopSession = qgetenv("DESKTOP_SESSION").toLower();
             }
             if (desktopSession == "xfce") {
                 int attempts = 0;
-                forever {
-                    if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-                        Utility::sleep(1);
-                        attempts++;
-                        if (attempts < 30)
-                            continue;
-                    } else {
+                while (!QSystemTrayIcon::isSystemTrayAvailable()) {
+                    attempts++;
+                    if (attempts >= 30) {
+                        qCWarning(lcApplication) << "System tray unavailable (xfce)";
+                        warnSystray();
                         break;
                     }
-                    warnSystray();
+                    Utility::sleep(1);
                 }
             }
-            if (!app.backgroundMode() && !QSystemTrayIcon::isSystemTrayAvailable() && desktopSession != "ubuntu") {
-                app.showMainDialog();
+
+            if (QSystemTrayIcon::isSystemTrayAvailable()) {
+                app.tryTrayAgain();
+            } else if (!app.backgroundMode()) {
+                if (desktopSession != "ubuntu") {
+                    qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
+                    app.showMainDialog();
+                    QTimer::singleShot(10000, &app, &Application::tryTrayAgain);
+                } else {
+                    qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
+                }
             }
         }
     }

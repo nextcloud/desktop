@@ -7,6 +7,7 @@
 
 #include <QtTest>
 #include "syncenginetestutils.h"
+#include "csync_exclude.h"
 
 using namespace OCC;
 
@@ -221,19 +222,19 @@ private slots:
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusWarning));
-        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusExcluded));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusExcluded));
         QEXPECT_FAIL("", "csync will stop at ignored directories without traversing children, so we don't currently push the status for newly ignored children of an ignored directory.", Continue);
-        QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusExcluded));
 
         fakeFolder.execUntilFinished();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusWarning));
-        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusExcluded));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusExcluded));
         QEXPECT_FAIL("", "csync will stop at ignored directories without traversing children, so we don't currently push the status for newly ignored children of an ignored directory.", Continue);
-        QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusExcluded));
         QEXPECT_FAIL("", "csync will stop at ignored directories without traversing children, so we don't currently push the status for newly ignored children of an ignored directory.", Continue);
-        QCOMPARE(statusSpy.statusOf("B/b2"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B/b2"), SyncFileStatus(SyncFileStatus::StatusExcluded));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         statusSpy.clear();
@@ -270,12 +271,12 @@ private slots:
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus(""), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A/a1"), SyncFileStatus(SyncFileStatus::StatusError));
-        QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("B"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("B"), SyncFileStatus(SyncFileStatus::StatusExcluded));
 
         // Should still get the status for different casing on macOS and Windows.
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("a"), SyncFileStatus(Utility::fsCasePreserving() ? SyncFileStatus::StatusWarning : SyncFileStatus::StatusNone));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A/A1"), SyncFileStatus(Utility::fsCasePreserving() ? SyncFileStatus::StatusError : SyncFileStatus::StatusNone));
-        QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("b"), SyncFileStatus(Utility::fsCasePreserving() ? SyncFileStatus::StatusWarning : SyncFileStatus::StatusNone));
+        QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("b"), SyncFileStatus(Utility::fsCasePreserving() ? SyncFileStatus::StatusExcluded : SyncFileStatus::StatusNone));
     }
 
     void parentsGetWarningStatusForError() {
@@ -464,6 +465,50 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void renameError() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.serverErrorPaths().append("A/a1");
+        fakeFolder.localModifier().rename("A/a1", "A/a1m");
+        fakeFolder.localModifier().rename("B/b1", "B/b1m");
+        StatusPushSpy statusSpy(fakeFolder.syncEngine());
+
+        fakeFolder.scheduleSync();
+        fakeFolder.execUntilBeforePropagation();
+
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+
+        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
+        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusSync));
+        QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusSync));
+
+        fakeFolder.execUntilFinished();
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusError));
+        QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
+        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        statusSpy.clear();
+
+        QVERIFY(!fakeFolder.syncOnce());
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        statusSpy.clear();
+        QVERIFY(!fakeFolder.syncOnce());
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        QCOMPARE(statusSpy.statusOf("A/a1m"), SyncFileStatus(SyncFileStatus::StatusError));
+        QCOMPARE(statusSpy.statusOf("A/a1"), statusSpy.statusOf("A/a1notexist"));
+        QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusNone));
+        QCOMPARE(statusSpy.statusOf("B/b1m"), SyncFileStatus(SyncFileStatus::StatusNone));
+        statusSpy.clear();
+    }
+
 };
 
 QTEST_GUILESS_MAIN(TestSyncFileStatusTracker)

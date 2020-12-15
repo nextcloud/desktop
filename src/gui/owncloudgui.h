@@ -65,6 +65,8 @@ public:
 #endif
     void createTray();
 
+    void hideAndShowTray();
+
 signals:
     void setupProxy();
     void serverError(int code, const QString &message);

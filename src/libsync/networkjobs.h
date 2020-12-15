@@ -18,6 +18,8 @@
 
 #include "abstractnetworkjob.h"
 
+#include "common/result.h"
+
 #include <QBuffer>
 #include <QUrlQuery>
 #include <functional>
@@ -26,6 +28,18 @@ class QUrl;
 class QJsonObject;
 
 namespace OCC {
+
+/** Strips quotes and gzip annotations */
+OWNCLOUDSYNC_EXPORT QByteArray parseEtag(const char *header);
+
+struct HttpError
+{
+    int code; // HTTP error code
+    QString message;
+};
+
+template <typename T>
+using HttpResult = Result<T, HttpError>;
 
 /**
  * @brief The EntityExistsJob class
@@ -334,7 +348,8 @@ public:
     void start() override;
 
 signals:
-    void etagRetrieved(const QString &etag);
+    void etagRetrieved(const QString &etag, const QDateTime &time);
+    void finishedWithResult(const HttpResult<QString> &etag);
 
 private slots:
     bool finished() override;
@@ -428,6 +443,7 @@ public:
         WebViewFlow,
         LoginFlowV2
     };
+    Q_ENUM(AuthType)
 
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = nullptr);
     void start();

@@ -24,6 +24,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include "accountfwd.h"
+#include "common/asserts.h"
 
 class QUrl;
 
@@ -69,6 +70,8 @@ public:
     bool followRedirects() const { return _followRedirects; }
 
     QByteArray responseTimestamp();
+    /* Content of the X-Request-ID header. (Only set after the request is sent) */
+    QByteArray requestId();
 
     qint64 timeoutMsec() const { return _timer.interval(); }
     bool timedOut() const { return _timedout; }
@@ -87,6 +90,9 @@ public:
      * Warning: Needs to call reply()->readAll().
      */
     QString errorStringParsingBody(QByteArray *body = nullptr);
+
+    /** Make a new request */
+    void retry();
 
     /** static variable the HTTP timeout (in seconds). If set to 0, the default will be used
      */
@@ -189,9 +195,7 @@ private:
     QString _path;
     QTimer _timer;
     int _redirectCount = 0;
-#if (QT_VERSION >= 0x050800)
     int _http2ResendCount = 0;
-#endif
 
     // Set by the xyzRequest() functions and needed to be able to redirect
     // requests, should it be required.
@@ -225,12 +229,6 @@ QString OWNCLOUDSYNC_EXPORT extractErrorMessage(const QByteArray &errorResponse)
 
 /** Builds a error message based on the error and the reply body. */
 QString OWNCLOUDSYNC_EXPORT errorMessage(const QString &baseError, const QByteArray &body);
-
-/** Helper to construct the HTTP verb used in the request
- *
- * Returns an empty QByteArray for UnknownOperation.
- */
-QByteArray OWNCLOUDSYNC_EXPORT requestVerb(const QNetworkReply &reply);
 
 /** Nicer errorString() for QNetworkReply
  *

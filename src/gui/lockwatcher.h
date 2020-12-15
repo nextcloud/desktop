@@ -22,6 +22,8 @@
 #include <QSet>
 #include <QTimer>
 
+#include <chrono>
+
 namespace OCC {
 
 /**
@@ -50,6 +52,12 @@ public:
      * emitted once.
      */
     void addFile(const QString &path);
+
+    /** Adjusts the default interval for checking whether the lock is still present */
+    void setCheckInterval(std::chrono::milliseconds interval);
+
+    /** Whether the path is being watched for lock-changes */
+    bool contains(const QString &path);
 
 signals:
     /** Emitted when one of the watched files is no longer

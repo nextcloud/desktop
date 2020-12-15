@@ -56,13 +56,12 @@ QByteArray localFileIdFromFullId(const QByteArray &id)
  */
 bool PropagateLocalRemove::removeRecursively(const QString &path)
 {
-    auto folderDir = propagator()->_localDir;
-    QString absolute = folderDir + _item->_file + path;
+    QString absolute = propagator()->fullLocalPath(_item->_file + path);
     QStringList errors;
     QList<QPair<QString, bool>> deleted;
     bool success = FileSystem::removeRecursively(
         absolute,
-        [this, &deleted](const QString &path, bool isDir) {
+        [&deleted](const QString &path, bool isDir) {
             // by prepending, a folder deletion may be followed by content deletions
             deleted.prepend(qMakePair(path, isDir));
         },
@@ -73,14 +72,14 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         // Do it while avoiding redundant delete calls to the journal.
         QString deletedDir;
         foreach (const auto &it, deleted) {
-            if (!it.first.startsWith(folderDir))
+            if (!it.first.startsWith(propagator()->localPath()))
                 continue;
             if (!deletedDir.isEmpty() && it.first.startsWith(deletedDir))
                 continue;
             if (it.second) {
                 deletedDir = it.first;
             }
-            propagator()->_journal->deleteFileRecord(it.first.mid(folderDir.size()), it.second);
+            propagator()->_journal->deleteFileRecord(it.first.mid(propagator()->localPath().size()), it.second);
         }
 
         _error = errors.join(", ");
@@ -92,11 +91,10 @@ void PropagateLocalRemove::start()
 {
     _moveToTrash = propagator()->syncOptions()._moveFilesToTrash;
 
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
-    QString filename = propagator()->_localDir + _item->_file;
-
+    const QString filename = propagator()->fullLocalPath(_item->_file);
     qCDebug(lcPropagateLocalRemove) << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {
@@ -133,34 +131,10 @@ void PropagateLocalRemove::start()
 
 void PropagateLocalMkdir::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
-    const auto rootPath = [=]() {
-        const auto result = propagator()->_remoteFolder;
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
-    const auto remotePath = QString(rootPath + _item->_file);
-    const auto remoteParentPath = remotePath.left(remotePath.lastIndexOf('/'));
-
-    const auto account = propagator()->account();
-    if (!account->capabilities().clientSideEncryptionAvailable() ||
-        !account->e2e()->isFolderEncrypted(remoteParentPath + '/')) {
-        startLocalMkdir();
-    } else {
-        const auto relativeRemotePath = _item->_file;
-        const auto slashPosition = relativeRemotePath.lastIndexOf('/');
-        const auto relativeRemoteParentPath = slashPosition >= 0 ? relativeRemotePath.left(slashPosition) : QString();
-
-        SyncJournalFileRecord parentRec;
-        propagator()->_journal->getFileRecordByE2eMangledName(relativeRemoteParentPath, &parentRec);
-        const auto parentPath = parentRec.isValid() ? parentRec._path : relativeRemoteParentPath;
-        startDemanglingName(parentPath);
-    }
+    startLocalMkdir();
 }
 
 void PropagateLocalMkdir::setDeleteExistingFile(bool enabled)
@@ -170,7 +144,7 @@ void PropagateLocalMkdir::setDeleteExistingFile(bool enabled)
 
 void PropagateLocalMkdir::startLocalMkdir()
 {
-    QDir newDir(propagator()->getFilePath(_item->_file));
+    QDir newDir(propagator()->fullLocalPath(_item->_file));
     QString newDirStr = QDir::toNativeSeparators(newDir.path());
 
     // When turning something that used to be a file into a directory
@@ -200,7 +174,7 @@ void PropagateLocalMkdir::startLocalMkdir()
         return;
     }
     emit propagator()->touchedFile(newDirStr);
-    QDir localDir(propagator()->_localDir);
+    QDir localDir(propagator()->localPath());
     if (!localDir.mkpath(_item->_file)) {
         done(SyncFileItem::NormalError, tr("could not create folder %1").arg(newDirStr));
         return;
@@ -211,9 +185,9 @@ void PropagateLocalMkdir::startLocalMkdir()
     // Adding an entry with a dummy etag to the database still makes sense here
     // so the database is aware that this folder exists even if the sync is aborted
     // before the correct etag is stored.
-    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(newDirStr);
-    record._etag = "_invalid_";
-    if (!propagator()->_journal->setFileRecord(record)) {
+    SyncFileItem newItem(*_item);
+    newItem._etag = "_invalid_";
+    if (!propagator()->updateMetadata(newItem)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
@@ -225,31 +199,13 @@ void PropagateLocalMkdir::startLocalMkdir()
     done(resultStatus);
 }
 
-void PropagateLocalMkdir::startDemanglingName(const QString &parentPath)
-{
-    auto downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), parentPath, _item, this);
-    connect(downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusEncrypted,
-            this, &PropagateLocalMkdir::startLocalMkdir);
-    connect(downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusNotEncrypted, this, [this] {
-        // We were wrong after all? Actually might happen due to legacy clients creating broken encrypted folders
-        qCDebug(lcPropagateLocalMkdir) << "Parent of" << _item->_file << "wasn't encrypted, creating with the original name";
-        startLocalMkdir();
-    });
-    connect(downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, [this] {
-        // This also might happen due to legacy clients creating broken encrypted folders...
-        qCDebug(lcPropagateLocalMkdir) << "Directory" << _item->_file << "doesn't exist in its parent metadata, creating with the original name";
-        startLocalMkdir();
-    });
-    downloadEncryptedHelper->start();
-}
-
 void PropagateLocalRename::start()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
-    QString existingFile = propagator()->getFilePath(_item->_file);
-    QString targetFile = propagator()->getFilePath(_item->_renameTarget);
+    QString existingFile = propagator()->fullLocalPath(propagator()->adjustRenamedPath(_item->_file));
+    QString targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
@@ -284,26 +240,32 @@ void PropagateLocalRename::start()
     propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
-    // store the rename file name in the item.
-    const auto oldFile = _item->_file;
-    _item->_file = _item->_renameTarget;
+    auto &vfs = propagator()->syncOptions()._vfs;
+    auto pinState = vfs->pinState(_item->_originalFile);
+    vfs->setPinState(_item->_originalFile, PinState::Inherited);
 
-    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(targetFile);
-    record._path = _item->_renameTarget.toUtf8();
-    if (oldRecord.isValid()) {
-        record._checksumHeader = oldRecord._checksumHeader;
-    }
+    const auto oldFile = _item->_file;
 
     if (!_item->isDirectory()) { // Directories are saved at the end
-        if (!propagator()->_journal->setFileRecord(record)) {
+        SyncFileItem newItem(*_item);
+        if (oldRecord.isValid()) {
+            newItem._checksumHeader = oldRecord._checksumHeader;
+        }
+        if (!propagator()->updateMetadata(newItem)) {
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;
         }
     } else {
+        propagator()->_renamedDirectories.insert(oldFile, _item->_renameTarget);
         if (!PropagateRemoteMove::adjustSelectiveSync(propagator()->_journal, oldFile, _item->_renameTarget)) {
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;
         }
+    }
+    if (pinState && *pinState != PinState::Inherited
+        && !vfs->setPinState(_item->_renameTarget, *pinState)) {
+        done(SyncFileItem::NormalError, tr("Error setting pin state"));
+        return;
     }
 
     propagator()->_journal->commit("localRename");

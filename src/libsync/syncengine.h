@@ -13,8 +13,7 @@
  * for more details.
  */
 
-#ifndef CSYNCTHREAD_H
-#define CSYNCTHREAD_H
+#pragma once
 
 #include <cstdint>
 
@@ -26,11 +25,6 @@
 #include <QStringList>
 #include <QSharedPointer>
 #include <set>
-
-#include <csync.h>
-
-// when do we go away with this private/public separation?
-#include <csync_private.h>
 
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
@@ -47,6 +41,7 @@ namespace OCC {
 class SyncJournalFileRecord;
 class SyncJournalDb;
 class OwncloudPropagator;
+class ProcessDirectoryJob;
 
 enum AnotherSyncNeeded {
     NoFollowUpSync,
@@ -66,8 +61,6 @@ public:
         const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine();
 
-    static QString csyncErrorToString(CSYNC_STATUS);
-
     Q_INVOKABLE void startSync();
     void setNetworkLimits(int upload, int download);
 
@@ -76,9 +69,10 @@ public:
 
     bool isSyncRunning() const { return _syncRunning; }
 
+    SyncOptions syncOptions() const { return _syncOptions; }
     void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
-    bool ignoreHiddenFiles() const { return _csync_ctx->ignore_hidden_files; }
-    void setIgnoreHiddenFiles(bool ignore) { _csync_ctx->ignore_hidden_files = ignore; }
+    bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
+    void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
 
     ExcludedFiles &excludedFiles() { return *_excludedFiles; }
     Utility::StopWatch &stopWatch() { return _stopWatch; }
@@ -93,12 +87,17 @@ public:
     SyncJournalDb *journal() const { return _journal; }
     QString localPath() const { return _localPath; }
 
-    /**
-     * Minimum age, in milisecond, of a file that can be uploaded.
-     * Files more recent than that are not going to be uploaeded as they are considered
-     * too young and possibly still changing
+    /** Duration in ms that uploads should be delayed after a file change
+     *
+     * In certain situations a file can be written to very regularly over a large
+     * amount of time. Copying a large file could take a while. A logfile could be
+     * updated every second.
+     *
+     * In these cases it isn't desirable to attempt to upload the "unfinished" file.
+     * To avoid that, uploads of files where the distance between the mtime and the
+     * current time is less than this duration are skipped.
      */
-    static qint64 minimumFileAgeForUpload; // in ms
+    static std::chrono::milliseconds minimumFileAgeForUpload;
 
     /**
      * Control whether local discovery should read from filesystem or db.
@@ -111,7 +110,7 @@ public:
      * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
      * sync's style.
      */
-    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths = {});
+    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths = {});
 
     /**
      * Returns whether the given folder-relative path should be locally discovered
@@ -120,16 +119,26 @@ public:
      * Example: If path is 'foo/bar' and style is DatabaseAndFilesystem and dirs contains
      *     'foo/bar/touched_file', then the result will be true.
      */
-    bool shouldDiscoverLocally(const QByteArray &path) const;
+    bool shouldDiscoverLocally(const QString &path) const;
 
     /** Access the last sync run's local discovery style */
     LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
 
-signals:
-    void csyncUnavailable();
+    /** Removes all virtual file db entries and dehydrated local placeholders.
+     *
+     * Particularly useful when switching off vfs mode or switching to a
+     * different kind of vfs.
+     *
+     * Note that *hydrated* placeholder files might still be left. These will
+     * get cleaned up by Vfs::unregisterFolder().
+     */
+    static void wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
+    auto getPropagator() { return _propagator; } // for the test
+
+signals:
     // During update, before reconcile
-    void rootEtag(QString);
+    void rootEtag(const QString &, const QDateTime &);
 
     // after the above signals. with the items that actually need propagating
     void aboutToPropagate(SyncFileItemVector &);
@@ -140,7 +149,7 @@ signals:
     void transmissionProgress(const ProgressInfo &progress);
 
     /// We've produced a new sync error of a type.
-    void syncError(const QString &message, ErrorCategory category);
+    void syncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
 
     void finished(bool success);
     void started();
@@ -150,13 +159,7 @@ signals:
      * This usually happen when the server was reset or something.
      * Set *cancel to true in a slot connected from this signal to abort the sync.
      */
-    void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
-    /**
-     * Emited when the sync engine detects that all the files are changed to dates in the past.
-     * This usually happen when a backup was restored on the server from an earlier date.
-     * Set *restore to true in a slot connected from this signal to re-upload all files.
-     */
-    void aboutToRestoreBackup(bool *restore);
+    void aboutToRemoveAllFiles(SyncFileItem::Direction direction, std::function<void(bool)> f);
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
@@ -168,11 +171,11 @@ signals:
     void seenLockedFile(const QString &fileName);
 
 private slots:
-    void onFolderEncryptedStatusFetchDone(const QHash<QString, bool> &values);
-    void slotStartDiscovery();
-
     void slotFolderDiscovered(bool local, const QString &folder);
-    void slotRootEtagReceived(const QString &);
+    void slotRootEtagReceived(const QString &, const QDateTime &time);
+
+    /** When the discovery phase discovers an item */
+    void slotItemDiscovered(const SyncFileItemPtr &item);
 
     /** Called when a SyncFileItem gets accepted for a sync.
      *
@@ -183,9 +186,9 @@ private slots:
     void slotNewItem(const SyncFileItemPtr &item);
 
     void slotItemCompleted(const SyncFileItemPtr &item);
-    void slotFinished(bool success);
-    void slotProgress(const SyncFileItem &item, quint64 curent);
-    void slotDiscoveryJobFinished(int updateResult);
+    void slotDiscoveryFinished();
+    void slotPropagationFinished(bool success);
+    void slotProgress(const SyncFileItem &item, qint64 curent);
     void slotCleanPollsJobAborted(const QString &error);
 
     /** Records that a file was touched by a job. */
@@ -201,12 +204,6 @@ private slots:
     void slotInsufficientRemoteStorage();
 
 private:
-    void handleSyncError(CSYNC *ctx, const char *state);
-    void csyncError(const QString &message);
-
-    QString journalDbFilePath() const;
-
-    int treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, bool);
     bool checkErrorBlacklisting(SyncFileItem &item);
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
@@ -228,44 +225,26 @@ private:
     static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
     // Must only be acessed during update and reconcile
-    QMap<QString, SyncFileItemPtr> _syncItemMap;
+    QVector<SyncFileItemPtr> _syncItems;
 
     AccountPtr _account;
-    QScopedPointer<CSYNC> _csync_ctx;
     bool _needsUpdate;
     bool _syncRunning;
     QString _localPath;
     QString _remotePath;
     QString _remoteRootEtag;
     SyncJournalDb *_journal;
-    QPointer<DiscoveryMainThread> _discoveryMainThread;
+    QScopedPointer<DiscoveryPhase> _discoveryPhase;
     QSharedPointer<OwncloudPropagator> _propagator;
 
-    // After a sync, only the syncdb entries whose filenames appear in this
-    // set will be kept. See _temporarilyUnavailablePaths.
-    QSet<QString> _seenFiles;
-
-    // Some paths might be temporarily unavailable on the server, for
-    // example due to 503 Storage not available. Deleting information
-    // about the files from the database in these cases would lead to
-    // incorrect synchronization.
-    // Therefore all syncdb entries whose filename starts with one of
-    // the paths in this set will be kept.
-    // The specific case that fails otherwise is deleting a local file
-    // while the remote says storage not available.
-    QSet<QString> _temporarilyUnavailablePaths;
-
-    QThread _thread;
+    // List of all files with conflicts
+    QSet<QString> _seenConflictFiles;
 
     QScopedPointer<ProgressInfo> _progressInfo;
 
     QScopedPointer<ExcludedFiles> _excludedFiles;
     QScopedPointer<SyncFileStatusTracker> _syncFileStatusTracker;
     Utility::StopWatch _stopWatch;
-
-    // maps the origin and the target of the folders that have been renamed
-    QHash<QString, QString> _renamedFolders;
-    QString adjustRenamedPath(const QString &original);
 
     /**
      * check if we are allowed to propagate everything, and if we are not, adjust the instructions
@@ -285,24 +264,20 @@ private:
     // true if there is at leasr one file with instruction REMOVE
     bool _hasRemoveFile;
 
-    // true if there is at least one file from the server that goes forward in time
-    bool _hasForwardInTimeFiles;
-
-    // number of files which goes back in time from the server
-    int _backInTimeFiles;
+    // If ignored files should be ignored
+    bool _ignore_hidden_files = false;
 
 
     int _uploadLimit;
     int _downloadLimit;
     SyncOptions _syncOptions;
 
-    /// Hook for computing checksums from csync_update
-    CSyncChecksumHook _checksum_hook;
-
     AnotherSyncNeeded _anotherSyncNeeded;
 
     /** Stores the time since a job touched a file. */
     QMultiMap<QElapsedTimer, QString> _touchedFiles;
+
+    QElapsedTimer _lastUpdateProgressCallbackCall;
 
     /** For clearing the _touchedFiles variable after sync finished */
     QTimer _clearTouchedFilesTimer;
@@ -313,8 +288,7 @@ private:
     /** The kind of local discovery the last sync run used */
     LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
-    std::set<QByteArray> _localDiscoveryPaths;
+    std::set<QString> _localDiscoveryPaths;
 };
 }
 
-#endif // CSYNCTHREAD_H

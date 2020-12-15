@@ -28,7 +28,7 @@ PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagato
 void PropagateUploadEncrypted::start()
 {
     const auto rootPath = [=]() {
-        const auto result = _propagator->_remoteFolder;
+        const auto result = _propagator->remotePath();
         if (result.startsWith('/')) {
             return result.mid(1);
         } else {
@@ -44,47 +44,23 @@ void PropagateUploadEncrypted::start()
     }();
 
 
-  /* If the file is in a encrypted-enabled nextcloud instance, we need to
-      * do the long road: Fetch the folder status of the encrypted bit,
-      * if it's encrypted, find the ID of the folder.
-      * lock the folder using it's id.
-      * download the metadata
-      * update the metadata
-      * upload the file
-      * upload the metadata
-      * unlock the folder.
-      *
-      * If the folder is unencrypted we just follow the old way.
-      */
-      qCDebug(lcPropagateUploadEncrypted) << "Starting to send an encrypted file!";
-      auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), absoluteRemoteParentPath, this);
-
-      connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
-              this, &PropagateUploadEncrypted::slotFolderEncryptedStatusFetched);
-      connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
-             this, &PropagateUploadEncrypted::slotFolderEncryptedStatusError);
-      getEncryptedStatus->start();
+    /* If the file is in a encrypted folder, which we know, we wouldn't be here otherwise,
+     * we need to do the long road:
+     * find the ID of the folder.
+     * lock the folder using it's id.
+     * download the metadata
+     * update the metadata
+     * upload the file
+     * upload the metadata
+     * unlock the folder.
+     */
+    qCDebug(lcPropagateUploadEncrypted) << "Folder is encrypted, let's get the Id from it.";
+    auto job = new LsColJob(_propagator->account(), absoluteRemoteParentPath, this);
+    job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
+    connect(job, &LsColJob::directoryListingSubfolders, this, &PropagateUploadEncrypted::slotFolderEncryptedIdReceived);
+    connect(job, &LsColJob::finishedWithError, this, &PropagateUploadEncrypted::slotFolderEncryptedIdError);
+    job->start();
 }
-
-void PropagateUploadEncrypted::slotFolderEncryptedStatusFetched(const QString &folder, bool isEncrypted)
-{
-  qCDebug(lcPropagateUploadEncrypted) << "Encrypted Status Fetched" << folder << isEncrypted;
-
-  /* We are inside an encrypted folder, we need to find it's Id. */
-  if (isEncrypted) {
-      qCDebug(lcPropagateUploadEncrypted) << "Folder is encrypted, let's get the Id from it.";
-      auto job = new LsColJob(_propagator->account(), folder, this);
-      job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
-      connect(job, &LsColJob::directoryListingSubfolders, this, &PropagateUploadEncrypted::slotFolderEncryptedIdReceived);
-      connect(job, &LsColJob::finishedWithError, this, &PropagateUploadEncrypted::slotFolderEncryptedIdError);
-      job->start();
-  } else {
-    qCDebug(lcPropagateUploadEncrypted) << "Folder is not encrypted, getting back to default.";
-    emit folderNotEncrypted();
-  }
-}
-
-
 
 /* We try to lock a folder, if it's locked we try again in one second.
  * if it's still locked we try again in one second. looping untill one minute.
@@ -147,7 +123,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   // Encrypt File!
   _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
 
-  QFileInfo info(_propagator->_localDir + QDir::separator() + _item->_file);
+  QFileInfo info(_propagator->fullLocalPath(_item->_file));
   const QString fileName = info.fileName();
 
   // Find existing metadata for this file
@@ -184,6 +160,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   }
 
   _item->_encryptedFileName = _remoteParentPath + QLatin1Char('/') + encryptedFile.encryptedFilename;
+  _item->_isEncrypted = true;
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 
@@ -283,11 +260,6 @@ void PropagateUploadEncrypted::slotFolderEncryptedIdError(QNetworkReply *r)
 {
     Q_UNUSED(r);
     qCDebug(lcPropagateUploadEncrypted) << "Error retrieving the Id of the encrypted folder.";
-}
-
-void PropagateUploadEncrypted::slotFolderEncryptedStatusError(int error)
-{
-    qCDebug(lcPropagateUploadEncrypted) << "Failed to retrieve the status of the folders." << error;
 }
 
 void PropagateUploadEncrypted::unlockFolder()

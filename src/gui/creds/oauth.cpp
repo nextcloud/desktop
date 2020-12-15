@@ -22,6 +22,7 @@
 #include <QJsonDocument>
 #include "theme.h"
 #include "networkjobs.h"
+#include "creds/httpcredentials.h"
 
 namespace OCC {
 
@@ -83,6 +84,8 @@ void OAuth::start()
                 QString basicAuth = QString("%1:%2").arg(
                     Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
                 req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
+                // We just added the Authorization header, don't let HttpCredentialsAccessManager tamper with it
+                req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
                 auto requestBody = new QBuffer;
                 QUrlQuery arguments(QString(
@@ -102,7 +105,7 @@ void OAuth::start()
                     QUrl messageUrl = json["message_url"].toString();
 
                     if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
-                        || json.isEmpty() || refreshToken.isEmpty() || accessToken.isEmpty()
+                        || jsonData.isEmpty() || json.isEmpty() || refreshToken.isEmpty() || accessToken.isEmpty()
                         || json["token_type"].toString() != QLatin1String("Bearer")) {
                         QString errorReason;
                         QString errorFromJson = json["error"].toString();
@@ -112,6 +115,12 @@ void OAuth::start()
                         } else if (reply->error() != QNetworkReply::NoError) {
                             errorReason = tr("There was an error accessing the 'token' endpoint: <br><em>%1</em>")
                                               .arg(reply->errorString().toHtmlEscaped());
+                        } else if (jsonData.isEmpty()) {
+                            // Can happen if a funky load balancer strips away POST data, e.g. BigIP APM my.policy
+                            errorReason = tr("Empty JSON from OAuth2 redirect");
+                            // We explicitly have this as error case since the json qcWarning output below is misleading,
+                            // it will show a fake json will null values that actually never was received like this as
+                            // soon as you access json["whatever"] the debug output json will claim to have "whatever":null
                         } else if (jsonParseError.error != QJsonParseError::NoError) {
                             errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
                                               .arg(jsonParseError.errorString());

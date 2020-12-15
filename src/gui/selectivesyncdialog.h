@@ -59,6 +59,7 @@ private slots:
     void slotItemExpanded(QTreeWidgetItem *);
     void slotItemChanged(QTreeWidgetItem *, int);
     void slotLscolFinishedWithError(QNetworkReply *);
+    void slotGatherEncryptedPaths(const QString &, const QMap<QString, QString> &);
 
 private:
     void refreshFolders();
@@ -78,6 +79,8 @@ private:
     // During account setup we want to filter out excluded folders from the
     // view without having a Folder.SyncEngine.ExcludedFiles instance.
     ExcludedFiles _excludedFiles;
+
+    QStringList _encryptedPaths;
 };
 
 /**

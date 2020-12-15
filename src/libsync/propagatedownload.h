@@ -30,11 +30,13 @@ class PropagateDownloadEncrypted;
 class GETFileJob : public AbstractNetworkJob
 {
     Q_OBJECT
-    QFile *_device;
+    QIODevice *_device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QByteArray _expectedEtagForResume;
-    quint64 _resumeStart;
+    qint64 _expectedContentLength;
+    qint64 _contentLength;
+    qint64 _resumeStart;
     SyncFileItem::Status _errorStatus;
     QUrl _directDownloadUrl;
     QByteArray _etag;
@@ -50,13 +52,13 @@ class GETFileJob : public AbstractNetworkJob
 
 public:
     // DOES NOT take ownership of the device.
-    explicit GETFileJob(AccountPtr account, const QString &path, QFile *device,
+    explicit GETFileJob(AccountPtr account, const QString &path, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = nullptr);
+        qint64 resumeStart, QObject *parent = nullptr);
     // For directDownloadUrl:
-    explicit GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
+    explicit GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = nullptr);
+        qint64 resumeStart, QObject *parent = nullptr);
     virtual ~GETFileJob()
     {
         if (_bandwidthManager) {
@@ -67,7 +69,7 @@ public:
     void start() override;
     bool finished() override
     {
-        if (reply()->bytesAvailable()) {
+        if (_saveBodyToFile && reply()->bytesAvailable()) {
             return false;
         } else {
             if (_bandwidthManager) {
@@ -98,9 +100,12 @@ public:
     void onTimedOut() override;
 
     QByteArray &etag() { return _etag; }
-    quint64 resumeStart() { return _resumeStart; }
+    qint64 resumeStart() { return _resumeStart; }
     time_t lastModified() { return _lastModified; }
 
+    qint64 contentLength() const { return _contentLength; }
+    qint64 expectedContentLength() const { return _expectedContentLength; }
+    void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
 signals:
     void finishedSignal();
@@ -200,7 +205,7 @@ private:
     void startAfterIsEncryptedIsChecked();
     void deleteExistingFolder();
 
-    quint64 _resumeStart;
+    qint64 _resumeStart;
     qint64 _downloadProgress;
     QPointer<GETFileJob> _job;
     QFile _tmpFile;

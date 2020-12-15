@@ -28,11 +28,17 @@
 
 #include "account.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
-#include "creds/httpcredentials.h"
+#ifdef TOKEN_AUTH_ONLY
+# include "creds/tokencredentials.h"
+#else
+# include "creds/httpcredentials.h"
+#endif
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
 #include "config.h"
+#include "csync_exclude.h"
+
 
 #include "cmd.h"
 
@@ -126,6 +132,7 @@ QString queryPassword(const QString &user)
     return QString::fromStdString(s);
 }
 
+#ifndef TOKEN_AUTH_ONLY
 class HttpCredentialsText : public HttpCredentials
 {
 public:
@@ -157,6 +164,7 @@ public:
 private:
     bool _sslTrusted;
 };
+#endif /* TOKEN_AUTH_ONLY */
 
 void help()
 {
@@ -295,7 +303,7 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
         auto blackListSet = newList.toSet();
         const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         for (const auto &it : changes) {
-            journal->avoidReadFromDbOnNextSync(it);
+            journal->schedulePathForRemoteDiscovery(it);
         }
 
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);
@@ -439,13 +447,18 @@ int main(int argc, char **argv)
 
     auto *sslErrorHandler = new SimpleSslErrorHandler;
 
+#ifdef TOKEN_AUTH_ONLY
+    auto *cred = new TokenCredentials(user, password, "");
+    account->setCredentials(cred);
+#else
     auto *cred = new HttpCredentialsText(user, password);
-
+    account->setCredentials(cred);
     if (options.trustSSL) {
         cred->setSSLTrusted(true);
     }
+#endif
+
     account->setUrl(url);
-    account->setCredentials(cred);
     account->setSslErrorHandler(sslErrorHandler);
 
     // Perform a call to get the capabilities.
@@ -461,20 +474,30 @@ int main(int argc, char **argv)
             auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
             qDebug() << "Server capabilities" << caps;
             account->setCapabilities(caps.toVariantMap());
+            account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
             loop.quit();
         });
         job->start();
-
         loop.exec();
 
         if (job->reply()->error() != QNetworkReply::NoError){
             std::cout<<"Error connecting to server\n";
             return EXIT_FAILURE;
         }
+
+        job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"));
+        QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+            const QJsonObject data = json.object().value("ocs").toObject().value("data").toObject();
+            account->setDavUser(data.value("id").toString());
+            account->setDavDisplayName(data.value("display-name").toString());
+            loop.quit();
+        });
+        job->start();
+        loop.exec();
     }
 
     // much lower age than the default since this utility is usually made to be run right after a change in the tests
-    SyncEngine::minimumFileAgeForUpload = 0;
+    SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
 
     int restartCount = 0;
 restart_sync:
@@ -512,6 +535,8 @@ restart_sync:
     QObject::connect(&engine, &SyncEngine::finished,
         [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
     QObject::connect(&engine, &SyncEngine::transmissionProgress, &cmd, &Cmd::transmissionProgressSlot);
+    QObject::connect(&engine, &SyncEngine::syncError,
+        [](const QString &error) { qWarning() << "Sync error:" << error; });
 
 
     // Exclude lists

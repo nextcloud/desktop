@@ -19,6 +19,7 @@
 #ifndef OWNSQL_H
 #define OWNSQL_H
 
+#include <QLoggingCategory>
 #include <QObject>
 #include <QVariant>
 
@@ -28,6 +29,7 @@ struct sqlite3;
 struct sqlite3_stmt;
 
 namespace OCC {
+OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcSql)
 
 class SqlQuery;
 
@@ -128,14 +130,36 @@ public:
     bool isSelect();
     bool isPragma();
     bool exec();
-    bool next();
-    void bindValue(int pos, const QVariant &value);
-    QString lastQuery() const;
+
+    struct NextResult
+    {
+        bool ok = false;
+        bool hasData = false;
+    };
+    NextResult next();
+
+    template<class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
+    void bindValue(int pos, const T &value)
+    {
+        qCDebug(lcSql) << "SQL bind" << pos << value;
+        bindValueInternal(pos, static_cast<int>(value));
+    }
+
+    template<class T, typename std::enable_if<!std::is_enum<T>::value, int>::type = 0>
+    void bindValue(int pos, const T &value)
+    {
+        qCDebug(lcSql) << "SQL bind" << pos << value;
+        bindValueInternal(pos, value);
+    }
+
+    const QByteArray &lastQuery() const;
     int numRowsAffected();
     void reset_and_clear_bindings();
     void finish();
 
 private:
+    void bindValueInternal(int pos, const QVariant &value);
+
     SqlDatabase *_sqldb = nullptr;
     sqlite3 *_db = nullptr;
     sqlite3_stmt *_stmt = nullptr;

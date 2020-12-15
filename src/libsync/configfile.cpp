@@ -16,6 +16,7 @@
 
 #include "configfile.h"
 #include "theme.h"
+#include "version.h"
 #include "common/utility.h"
 #include "common/asserts.h"
 #include "version.h"
@@ -80,6 +81,8 @@ static const char logDirC[] = "logDir";
 static const char logDebugC[] = "logDebug";
 static const char logExpireC[] = "logExpire";
 static const char logFlushC[] = "logFlush";
+static const char showExperimentalOptionsC[] = "showExperimentalOptions";
+static const char clientVersionC[] = "clientVersion";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -98,7 +101,6 @@ static const char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 static const char confirmExternalStorageC[] = "confirmExternalStorage";
 static const char moveToTrashC[] = "moveToTrash";
 
-static const char maxLogLinesC[] = "Logging/maxLogLines";
 
 const char certPath[] = "http_certificatePath";
 const char certPasswd[] = "http_certificatePasswd";
@@ -215,19 +217,19 @@ int ConfigFile::timeout() const
     return settings.value(QLatin1String(timeoutC), 300).toInt(); // default to 5 min
 }
 
-quint64 ConfigFile::chunkSize() const
+qint64 ConfigFile::chunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(chunkSizeC), 10 * 1000 * 1000).toLongLong(); // default to 10 MB
 }
 
-quint64 ConfigFile::maxChunkSize() const
+qint64 ConfigFile::maxChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(maxChunkSizeC), 100 * 1000 * 1000).toLongLong(); // default to 100 MB
 }
 
-quint64 ConfigFile::minChunkSize() const
+qint64 ConfigFile::minChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(minChunkSizeC), 1000 * 1000).toLongLong(); // default to 1 MB
@@ -296,14 +298,14 @@ QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &de
     if (Utility::isWindows()) {
         // check for policies first and return immediately if a value is found.
         QSettings userPolicy(QString::fromLatin1(R"(HKEY_CURRENT_USER\Software\Policies\%1\%2)")
-                                 .arg(APPLICATION_VENDOR, Theme::instance()->appName()),
+                                 .arg(APPLICATION_VENDOR, Theme::instance()->appNameGUI()),
             QSettings::NativeFormat);
         if (userPolicy.contains(setting)) {
             return userPolicy.value(setting);
         }
 
         QSettings machinePolicy(QString::fromLatin1(R"(HKEY_LOCAL_MACHINE\Software\Policies\%1\%2)")
-                                    .arg(APPLICATION_VENDOR, APPLICATION_NAME),
+                                    .arg(APPLICATION_VENDOR, Theme::instance()->appNameGUI()),
             QSettings::NativeFormat);
         if (machinePolicy.contains(setting)) {
             return machinePolicy.value(setting);
@@ -408,6 +410,28 @@ QString ConfigFile::excludeFileFromSystem()
 #endif
 
     return fi.absoluteFilePath();
+}
+
+QString ConfigFile::backup() const
+{
+    QString baseFile = configFile();
+    auto versionString = clientVersionString();
+    if (!versionString.isEmpty())
+        versionString.prepend('_');
+    QString backupFile =
+        QString("%1.backup_%2%3")
+            .arg(baseFile)
+            .arg(QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"))
+            .arg(versionString);
+
+    // If this exact file already exists it's most likely that a backup was
+    // already done. (two backup calls directly after each other, potentially
+    // even with source alterations in between!)
+    if (!QFile::exists(backupFile)) {
+        QFile f(baseFile);
+        f.copy(backupFile);
+    }
+    return backupFile;
 }
 
 QString ConfigFile::configFile() const
@@ -648,19 +672,6 @@ void ConfigFile::setUpdateChannel(const QString &channel)
     settings.setValue(QLatin1String(updateChannelC), channel);
 }
 
-int ConfigFile::maxLogLines() const
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(maxLogLinesC), DEFAULT_MAX_LOG_LINES).toInt();
-}
-
-void ConfigFile::setMaxLogLines(int lines)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(maxLogLinesC), lines);
-    settings.sync();
-}
-
 void ConfigFile::setProxyType(int proxyType,
     const QString &host,
     int port, bool needsAuth,
@@ -714,7 +725,7 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
         systemSetting = systemSettings.value(param, defaultValue);
     } else { // Windows
         QSettings systemSettings(QString::fromLatin1(R"(HKEY_LOCAL_MACHINE\Software\%1\%2)")
-                                     .arg(APPLICATION_VENDOR, Theme::instance()->appName()),
+                                     .arg(APPLICATION_VENDOR, Theme::instance()->appNameGUI()),
             QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
@@ -836,15 +847,15 @@ void ConfigFile::setDownloadLimit(int kbytes)
     setValue(downloadLimitC, kbytes);
 }
 
-QPair<bool, quint64> ConfigFile::newBigFolderSizeLimit() const
+QPair<bool, qint64> ConfigFile::newBigFolderSizeLimit() const
 {
     auto defaultValue = Theme::instance()->newBigFolderSizeLimit();
     qint64 value = getValue(newBigFolderSizeLimitC, QString(), defaultValue).toLongLong();
     bool use = value >= 0 && getValue(useNewBigFolderSizeLimitC, QString(), true).toBool();
-    return qMakePair(use, quint64(qMax<qint64>(0, value)));
+    return qMakePair(use, qMax<qint64>(0, value));
 }
 
-void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes)
+void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes)
 {
     setValue(newBigFolderSizeLimitC, mbytes);
     setValue(useNewBigFolderSizeLimitC, isChecked);
@@ -972,6 +983,12 @@ void ConfigFile::setLogFlush(bool enabled)
     settings.setValue(QLatin1String(logFlushC), enabled);
 }
 
+bool ConfigFile::showExperimentalOptions() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(showExperimentalOptionsC), false).toBool();
+}
+
 QString ConfigFile::certificatePath() const
 {
     return retrieveData(QString(), QLatin1String(certPath)).toString();
@@ -994,6 +1011,18 @@ void ConfigFile::setCertificatePasswd(const QString &cPasswd)
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(certPasswd), cPasswd);
     settings.sync();
+}
+
+QString ConfigFile::clientVersionString() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(clientVersionC), QString()).toString();
+}
+
+void ConfigFile::setClientVersionString(const QString &version)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(clientVersionC), version);
 }
 
 Q_GLOBAL_STATIC(QString, g_configFileName)

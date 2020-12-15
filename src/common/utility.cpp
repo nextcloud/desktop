@@ -97,7 +97,7 @@ QString Utility::formatFingerprint(const QByteArray &fmhash, bool colonSeparated
 
     QString fp = QString::fromLatin1(hash.trimmed());
     if (colonSeparated) {
-        fp.replace(QChar(' '), QChar(':'));
+        fp.replace(QLatin1Char(' '), QLatin1Char(':'));
     }
 
     return fp;
@@ -170,24 +170,21 @@ static QLatin1String platform()
 #elif defined(Q_OS_SOLARIS)
     return QLatin1String("Solaris");
 #else
-    return QLatin1String("Unknown OS");
+    return QSysInfo::productType();
 #endif
 }
 
 QByteArray Utility::userAgentString()
 {
-    QString re = QString::fromLatin1("Mozilla/5.0 (%1) mirall/%2")
-                     .arg(platform(), QLatin1String(MIRALL_VERSION_STRING));
-
-    QLatin1String appName(APPLICATION_SHORTNAME);
-
-    // this constant "ownCloud" is defined in the default OEM theming
-    // that is used for the standard client. If it is changed there,
-    // it needs to be adjusted here.
-    if (appName != QLatin1String("ownCloud")) {
-        re += QString(" (%1)").arg(appName);
-    }
-    return re.toLatin1();
+    return QStringLiteral("Mozilla/5.0 (%1) mirall/%2 (%3, %4-%5 ClientArchitecture: %6 OsArchitecture: %7)")
+        .arg(platform(),
+            QStringLiteral(MIRALL_VERSION_STRING),
+            qApp->applicationName(),
+            QSysInfo::productType(),
+            QSysInfo::kernelVersion(),
+            QSysInfo::buildCpuArchitecture(),
+            QSysInfo::currentCpuArchitecture())
+        .toLatin1();
 }
 
 QByteArray Utility::friendlyUserAgentString()
@@ -195,6 +192,16 @@ QByteArray Utility::friendlyUserAgentString()
     const auto pattern = QStringLiteral("%1 (Desktop Client - %2)");
     const auto userAgent = pattern.arg(QSysInfo::machineHostName(), platform());
     return userAgent.toUtf8();
+}
+
+bool Utility::hasSystemLaunchOnStartup(const QString &appName)
+{
+#if defined(Q_OS_WIN)
+    return hasSystemLaunchOnStartup_private(appName);
+#else
+    Q_UNUSED(appName)
+    return false;
+#endif
 }
 
 bool Utility::hasLaunchOnStartup(const QString &appName)
@@ -234,7 +241,7 @@ QString Utility::compactFormatDouble(double value, int prec, const QString &unit
     QLocale locale = QLocale::system();
     QChar decPoint = locale.decimalPoint();
     QString str = locale.toString(value, 'f', prec);
-    while (str.endsWith('0') || str.endsWith(decPoint)) {
+    while (str.endsWith(QLatin1Char('0')) || str.endsWith(decPoint)) {
         if (str.endsWith(decPoint)) {
             str.chop(1);
             break;
@@ -361,7 +368,7 @@ QString Utility::fileNameForGuiUse(const QString &fName)
 {
     if (isMac()) {
         QString n(fName);
-        return n.replace(QChar(':'), QChar('/'));
+        return n.replace(QLatin1Char(':'), QLatin1Char('/'));
     }
     return fName;
 }
@@ -439,12 +446,12 @@ QByteArray Utility::versionOfInstalledBinary(const QString &command)
             binary = qApp->arguments()[0];
         }
         QStringList params;
-        params << QLatin1String("--version");
+        params << QStringLiteral("--version");
         QProcess process;
         process.start(binary, params);
         process.waitForFinished(); // sets current thread to sleep and waits for pingProcess end
         re = process.readAllStandardOutput();
-        int newline = re.indexOf(QChar('\n'));
+        int newline = re.indexOf('\n');
         if (newline > 0) {
             re.truncate(newline);
         }
@@ -567,10 +574,10 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
     QString path = url.path();
     if (!concatPath.isEmpty()) {
         // avoid '//'
-        if (path.endsWith('/') && concatPath.startsWith('/')) {
+        if (path.endsWith(QLatin1Char('/')) && concatPath.startsWith(QLatin1Char('/'))) {
             path.chop(1);
         } // avoid missing '/'
-        else if (!path.endsWith('/') && !concatPath.startsWith('/')) {
+        else if (!path.endsWith(QLatin1Char('/')) && !concatPath.startsWith(QLatin1Char('/'))) {
             path += QLatin1Char('/');
         }
         path += concatPath; // put the complete path together
@@ -587,9 +594,9 @@ QString Utility::makeConflictFileName(
 {
     QString conflictFileName(fn);
     // Add conflict tag before the extension.
-    int dotLocation = conflictFileName.lastIndexOf('.');
+    int dotLocation = conflictFileName.lastIndexOf(QLatin1Char('.'));
     // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-    if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
+    if (dotLocation <= conflictFileName.lastIndexOf(QLatin1Char('/')) + 1) {
         dotLocation = conflictFileName.size();
     }
 
@@ -597,12 +604,10 @@ QString Utility::makeConflictFileName(
     if (!user.isEmpty()) {
         // Don't allow parens in the user name, to ensure
         // we can find the beginning and end of the conflict tag.
-        const auto userName = sanitizeForFileName(user).replace('(', '_').replace(')', '_');
-        conflictMarker.append(userName);
-        conflictMarker.append(' ');
+        const auto userName = sanitizeForFileName(user).replace(QLatin1Char('('), QLatin1Char('_')).replace(QLatin1Char(')'), QLatin1Char('_'));;
+        conflictMarker += userName + QLatin1Char(' ');
     }
-    conflictMarker.append(dt.toString("yyyy-MM-dd hhmmss"));
-    conflictMarker.append(')');
+    conflictMarker += dt.toString(QStringLiteral("yyyy-MM-dd hhmmss")) + QLatin1Char(')');
 
     conflictFileName.insert(dotLocation, conflictMarker);
     return conflictFileName;
@@ -630,7 +635,7 @@ bool Utility::isConflictFile(const char *name)
 
 bool Utility::isConflictFile(const QString &name)
 {
-    auto bname = name.midRef(name.lastIndexOf('/') + 1);
+    auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
 
     if (bname.contains(QStringLiteral("_conflict-")))
         return true;

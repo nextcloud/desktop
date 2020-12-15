@@ -150,9 +150,27 @@ void OwncloudSetupWizard::slotCheckServer(const QString &urlString)
     }
     AccountPtr account = _ocWizard->account();
     account->setUrl(url);
+
     // Reset the proxy which might had been determined previously in ConnectionValidator::checkServerAndAuth()
     // when there was a previous account.
     account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
+
+    // And also reset the QSslConfiguration, for the same reason (#6832)
+    // Here the client certificate is added, if any. Later it'll be in HttpCredentials
+    account->setSslConfiguration(QSslConfiguration());
+    auto sslConfiguration = account->getOrCreateSslConfig(); // let Account set defaults
+    if (!_ocWizard->_clientSslCertificate.isNull()) {
+        sslConfiguration.setLocalCertificate(_ocWizard->_clientSslCertificate);
+        sslConfiguration.setPrivateKey(_ocWizard->_clientSslKey);
+    }
+    // Be sure to merge the CAs
+    auto ca = sslConfiguration.systemCaCertificates();
+    ca.append(_ocWizard->_clientSslCaCertificates);
+    sslConfiguration.setCaCertificates(ca);
+    account->setSslConfiguration(sslConfiguration);
+
+    // Make sure TCP connections get re-established
+    account->networkAccessManager()->clearAccessCache();
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
     if (ClientProxy::isUsingSystemDefault()) {
@@ -269,7 +287,6 @@ void OwncloudSetupWizard::slotFoundServer(const QUrl &url, const QJsonObject &in
 void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
 {
     auto job = qobject_cast<CheckServerJob *>(sender());
-    QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
 
     // Do this early because reply might be deleted in message box event loop
     QString msg;
@@ -633,11 +650,17 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
             folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+            if (_ocWizard->useVirtualFileSync()) {
+                folderDefinition.virtualFilesMode = bestAvailableVfsMode();
+            }
             if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
                 folderDefinition.navigationPaneClsid = QUuid::createUuid();
 
             auto f = folderMan->addFolder(account, folderDefinition);
             if (f) {
+                if (folderDefinition.virtualFilesMode != Vfs::Off && _ocWizard->useVirtualFileSync())
+                    f->setRootPinState(PinState::OnlineOnly);
+
                 f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                     _ocWizard->selectiveSyncBlacklist());
                 if (!_ocWizard->isConfirmBigFolderChecked()) {

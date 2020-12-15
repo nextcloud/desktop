@@ -16,16 +16,21 @@
 
 #include "owncloudlib.h"
 #include <QString>
+#include <QSharedPointer>
 #include <chrono>
-
+#include "common/vfs.h"
 
 namespace OCC {
 
 /**
  * Value class containing the options given to the sync engine
  */
-struct SyncOptions
+struct OWNCLOUDSYNC_EXPORT SyncOptions
 {
+    SyncOptions()
+        : _vfs(new VfsOff)
+    {}
+
     /** Maximum size (in Bytes) a folder can have without asking for confirmation.
      * -1 means infinite */
     qint64 _newBigFolderSizeLimit = -1;
@@ -36,6 +41,9 @@ struct SyncOptions
     /** If remotely deleted files are needed to move to trash */
     bool _moveFilesToTrash = false;
 
+    /** Create a virtual file for new files instead of downloading. May not be null */
+    QSharedPointer<Vfs> _vfs;
+
     /** The initial un-adjusted chunk size in bytes for chunked uploads, both
      * for old and new chunking algorithm, which classifies the item to be chunked
      *
@@ -43,13 +51,13 @@ struct SyncOptions
      * starting value and is then gradually adjusted within the
      * minChunkSize / maxChunkSize bounds.
      */
-    quint64 _initialChunkSize = 10 * 1000 * 1000; // 10MB
+    qint64 _initialChunkSize = 10 * 1000 * 1000; // 10MB
 
     /** The minimum chunk size in bytes for chunked uploads */
-    quint64 _minChunkSize = 1 * 1000 * 1000; // 1MB
+    qint64 _minChunkSize = 1 * 1000 * 1000; // 1MB
 
     /** The maximum chunk size in bytes for chunked uploads */
-    quint64 _maxChunkSize = 100 * 1000 * 1000; // 100MB
+    qint64 _maxChunkSize = 100 * 1000 * 1000; // 100MB
 
     /** The target duration of chunk uploads for dynamic chunk sizing.
      *
@@ -57,8 +65,8 @@ struct SyncOptions
      */
     std::chrono::milliseconds _targetChunkUploadDuration = std::chrono::minutes(1);
 
-    /** Whether parallel network jobs are allowed. */
-    bool _parallelNetworkJobs = true;
+    /** The maximum number of active jobs in parallel  */
+    int _parallelNetworkJobs = 6;
 };
 
 

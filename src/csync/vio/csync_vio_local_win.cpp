@@ -31,11 +31,13 @@
 
 #include "c_private.h"
 #include "c_lib.h"
-#include "c_utf8.h"
-#include "csync_util.h"
-#include "csync_vio.h"
-
+#include "csync.h"
 #include "vio/csync_vio_local.h"
+#include "common/filesystembase.h"
+
+#include <QtCore/QLoggingCategory>
+
+#include "common/vfs.h"
 
 Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "nextcloud.sync.csync.vio_local", QtInfoMsg)
 
@@ -43,81 +45,54 @@ Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "nextcloud.sync.csync.vio_local", QtInfoMsg)
  * directory functions
  */
 
-struct dhandle_t {
+struct csync_vio_handle_t {
   WIN32_FIND_DATA ffd;
   HANDLE hFind;
   int firstFind;
-  mbchar_t *path; // Always ends with '\'
+  QString path; // Always ends with '\'
 };
 
 static int _csync_vio_local_stat_mb(const mbchar_t *uri, csync_file_stat_t *buf);
 
-csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
-  dhandle_t *handle = nullptr;
-  mbchar_t *dirname = nullptr;
+csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
 
-  handle = (dhandle_t*)c_malloc(sizeof(dhandle_t));
+    QScopedPointer<csync_vio_handle_t> handle(new csync_vio_handle_t{});
 
-  // the file wildcard has to be attached
-  size_t len_name = strlen(name);
-  if( len_name ) {
-      char *h = nullptr;
+    // the file wildcard has to be attached
+    QString dirname = OCC::FileSystem::longWinPath(name + QLatin1String("/*"));
 
-      // alloc an enough large buffer to take the name + '/*' + the closing zero.
-      h = (char*)c_malloc(len_name+3);
-      strncpy( h, name, 1+len_name);
-      strncat(h, "/*", 2);
+    handle->hFind = FindFirstFile(reinterpret_cast<const wchar_t *>(dirname.utf16()), &(handle->ffd));
 
-      dirname = c_utf8_path_to_locale(h);
-      SAFE_FREE(h);
-  }
+    if (handle->hFind == INVALID_HANDLE_VALUE) {
+        int retcode = GetLastError();
+        if( retcode == ERROR_FILE_NOT_FOUND ) {
+            errno = ENOENT;
+        } else {
+            errno = EACCES;
+        }
+        return nullptr;
+    }
 
-  if( dirname ) {
-      handle->hFind = FindFirstFile(dirname, &(handle->ffd));
-  }
+    handle->firstFind = 1; // Set a flag that there first fileinfo is available.
 
-  if (!dirname || handle->hFind == INVALID_HANDLE_VALUE) {
-      c_free_locale_string(dirname);
-      int retcode = GetLastError();
-      if( retcode == ERROR_FILE_NOT_FOUND ) {
-          errno = ENOENT;
-      } else {
-          errno = EACCES;
-      }
-      SAFE_FREE(handle);
-      return nullptr;
-  }
-
-  handle->firstFind = 1; // Set a flag that there first fileinfo is available.
-
-  dirname[std::wcslen(dirname) - 1] = L'\0'; // remove the *
-  handle->path = dirname;
-
-  return (csync_vio_handle_t *) handle;
+    dirname.chop(1); // remove the *
+    handle->path = std::move(dirname);
+    return handle.take();
 }
 
 int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
-  dhandle_t *handle = nullptr;
-  int rc = -1;
+    Q_ASSERT(dhandle);
+    int rc = -1;
 
-  if (!dhandle) {
-    errno = EBADF;
-    return -1;
-  }
-
-  handle = (dhandle_t *) dhandle;
-  // FindClose returns non-zero on success
-  if( FindClose(handle->hFind) != 0 ) {
-      rc = 0;
-  } else {
-      // error case, set errno
-      errno = EBADF;
-  }
-
-  c_free_locale_string(handle->path);
-  SAFE_FREE(handle);
-
-  return rc;
+    // FindClose returns non-zero on success
+    if( FindClose(dhandle->hFind) != 0 ) {
+        rc = 0;
+    } else {
+        // error case, set errno
+        errno = EBADF;
+    }
+    delete dhandle;
+    return rc;
 }
 
 
@@ -139,13 +114,10 @@ static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
     }
 }
 
-std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
+std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *handle, OCC::Vfs *vfs) {
 
-  dhandle_t *handle = nullptr;
   std::unique_ptr<csync_file_stat_t> file_stat;
   DWORD rem;
-
-  handle = (dhandle_t *) dhandle;
 
   errno = 0;
 
@@ -164,14 +136,16 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
           return nullptr;
       }
   }
-  auto path = c_utf8_from_locale(handle->ffd.cFileName);
-  if (path == "." || path == "..")
-      return csync_vio_local_readdir(dhandle);
+  auto path = QString::fromWCharArray(handle->ffd.cFileName);
+  if (path == QLatin1String(".") || path == QLatin1String(".."))
+      return csync_vio_local_readdir(handle, vfs);
 
   file_stat = std::make_unique<csync_file_stat_t>();
-  file_stat->path = path;
+  file_stat->path = path.toUtf8();
 
-  if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
+    if (vfs && vfs->statTypeVirtualFile(file_stat.get(), &handle->ffd)) {
+      // all good
+    } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
       // Detect symlinks, and treat junctions as symlinks too.
       if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
           || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
@@ -201,8 +175,8 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
     file_stat->modtime = FileTimeToUnixTime(&handle->ffd.ftLastWriteTime, &rem);
 
     std::wstring fullPath;
-    fullPath.reserve(std::wcslen(handle->path) + std::wcslen(handle->ffd.cFileName));
-    fullPath += handle->path; // path always ends with '\', by construction
+    fullPath.reserve(handle->path.size() + std::wcslen(handle->ffd.cFileName));
+    fullPath += handle->path.toStdWString(); // path always ends with '\', by construction
     fullPath += handle->ffd.cFileName;
 
     if (_csync_vio_local_stat_mb(fullPath.data(), file_stat.get()) < 0) {
@@ -214,11 +188,10 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
 }
 
 
-int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf)
+int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
 {
-    mbchar_t *wuri = c_utf8_path_to_locale(uri);
-    int rc = _csync_vio_local_stat_mb(wuri, buf);
-    c_free_locale_string(wuri);
+    const std::wstring wuri = uri.toStdWString();
+    int rc = _csync_vio_local_stat_mb(wuri.data(), buf);
     return rc;
 }
 

@@ -23,7 +23,6 @@
 #include <qmutex.h>
 
 #include "common/utility.h"
-#include "logger.h"
 #include "owncloudlib.h"
 
 namespace OCC {
@@ -58,8 +57,6 @@ public:
     void postGuiLog(const QString &title, const QString &message);
     void postOptionalGuiLog(const QString &title, const QString &message);
     void postGuiMessage(const QString &title, const QString &message);
-
-    void setLogWindowActivated(bool activated);
 
     QString logFile() const;
     void setLogFile(const QString &name);
@@ -105,7 +102,6 @@ private:
     ~Logger();
     QList<Log> _logs;
     bool _showTime = true;
-    bool _logWindowActivated = false;
     QFile _logFile;
     bool _doFileFlush = false;
     int _logExpire = 0;

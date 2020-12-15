@@ -22,9 +22,11 @@ set(libsync_SRCS
     capabilities.cpp
     clientproxy.cpp
     cookiejar.cpp
+    discovery.cpp
     discoveryphase.cpp
     encryptfolderjob.cpp
     filesystem.cpp
+    httplogger.cpp
     logger.cpp
     accessmanager.cpp
     configfile.cpp
@@ -46,8 +48,8 @@ set(libsync_SRCS
     propagatedownloadencrypted.cpp
     syncengine.cpp
     syncfileitem.cpp
-    syncfilestatus.cpp
     syncfilestatustracker.cpp
+    localdiscoverytracker.cpp
     syncresult.cpp
     theme.cpp
     clientsideencryption.cpp
@@ -56,6 +58,7 @@ set(libsync_SRCS
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
     creds/keychainchunk.cpp
+    vfs/suffix/vfs_suffix.cpp
 )
 
 if(TOKEN_AUTH_ONLY)
@@ -93,7 +96,7 @@ ENDIF(NOT APPLE)
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
 target_link_libraries(${synclib_NAME}
-    ocsync
+    "${csync_NAME}"
     OpenSSL::Crypto
     OpenSSL::SSL
     ${OS_SPECIFIC_LINK_LIBRARIES}
@@ -126,8 +129,6 @@ set_target_properties( ${synclib_NAME}  PROPERTIES
 	SOVERSION ${MIRALL_SOVERSION}
 	RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
-set_target_properties( ${synclib_NAME} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS ${synclib_NAME}
@@ -138,5 +139,3 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
 endif()
-
-

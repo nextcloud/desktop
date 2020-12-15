@@ -18,6 +18,7 @@
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/asserts.h"
+#include "csync_exclude.h"
 
 #include <QLoggingCategory>
 
@@ -88,7 +89,7 @@ SyncFileStatus::SyncFileStatusTag SyncFileStatusTracker::lookupProblem(const QSt
  * icon as the problem is most likely going to resolve itself quickly and
  * automatically.
  */
-static inline bool showErrorInSocketApi(const SyncFileItem &item)
+static inline bool hasErrorStatus(const SyncFileItem &item)
 {
     const auto status = item._status;
     return item._instruction == CSYNC_INSTRUCTION_ERROR
@@ -99,7 +100,7 @@ static inline bool showErrorInSocketApi(const SyncFileItem &item)
         || item._hasBlacklistEntry;
 }
 
-static inline bool showWarningInSocketApi(const SyncFileItem &item)
+static inline bool hasExcludedStatus(const SyncFileItem &item)
 {
     const auto status = item._status;
     return item._instruction == CSYNC_INSTRUCTION_IGNORE
@@ -136,10 +137,12 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
     // update the exclude list at runtime and doing it statically here removes
     // our ability to notify changes through the fileStatusChanged signal,
     // it's an acceptable compromize to treat all exclude types the same.
+    // Update: This extra check shouldn't hurt even though silently excluded files
+    // are now available via slotAddSilentlyExcluded().
     if (_syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + relativePath,
             _syncEngine->localPath(),
             _syncEngine->ignoreHiddenFiles())) {
-        return SyncFileStatus::StatusWarning;
+        return SyncFileStatus::StatusExcluded;
     }
 
     if (_dirtyPaths.contains(relativePath))
@@ -164,6 +167,12 @@ void SyncFileStatusTracker::slotPathTouched(const QString &fileName)
     _dirtyPaths.insert(localPath);
 
     emit fileStatusChanged(fileName, SyncFileStatus::StatusSync);
+}
+
+void SyncFileStatusTracker::slotAddSilentlyExcluded(const QString &folderPath)
+{
+    _syncProblems[folderPath] = SyncFileStatus::StatusExcluded;
+    emit fileStatusChanged(getSystemDestination(folderPath), resolveSyncAndErrorStatus(folderPath, NotShared));
 }
 
 void SyncFileStatusTracker::incSyncCountAndEmitStatusChanged(const QString &relativePath, SharedFlag sharedFlag)
@@ -220,11 +229,11 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
         qCDebug(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction;
         _dirtyPaths.remove(item->destination());
 
-        if (showErrorInSocketApi(*item)) {
-            _syncProblems[item->_file] = SyncFileStatus::StatusError;
+        if (hasErrorStatus(*item)) {
+            _syncProblems[item->destination()] = SyncFileStatus::StatusError;
             invalidateParentPaths(item->destination());
-        } else if (showWarningInSocketApi(*item)) {
-            _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
+        } else if (hasExcludedStatus(*item)) {
+            _syncProblems[item->destination()] = SyncFileStatus::StatusExcluded;
         }
 
         SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
@@ -264,13 +273,13 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
 {
     qCDebug(lcStatusTracker) << "Item completed" << item->destination() << item->_status << item->_instruction;
 
-    if (showErrorInSocketApi(*item)) {
-        _syncProblems[item->_file] = SyncFileStatus::StatusError;
+    if (hasErrorStatus(*item)) {
+        _syncProblems[item->destination()] = SyncFileStatus::StatusError;
         invalidateParentPaths(item->destination());
-    } else if (showWarningInSocketApi(*item)) {
-        _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
+    } else if (hasExcludedStatus(*item)) {
+        _syncProblems[item->destination()] = SyncFileStatus::StatusExcluded;
     } else {
-        _syncProblems.erase(item->_file);
+        _syncProblems.erase(item->destination());
     }
 
     SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;

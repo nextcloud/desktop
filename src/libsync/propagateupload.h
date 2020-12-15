@@ -25,6 +25,8 @@ namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcPutJob)
 Q_DECLARE_LOGGING_CATEGORY(lcPropagateUpload)
+Q_DECLARE_LOGGING_CATEGORY(lcPropagateUploadV1)
+Q_DECLARE_LOGGING_CATEGORY(lcPropagateUploadNG)
 
 class BandwidthManager;
 
@@ -36,11 +38,11 @@ class UploadDevice : public QIODevice
 {
     Q_OBJECT
 public:
-    UploadDevice(BandwidthManager *bwm);
+    UploadDevice(const QString &fileName, qint64 start, qint64 size, BandwidthManager *bwm);
     ~UploadDevice();
 
-    /** Reads the data from the file and opens the device */
-    bool prepareAndOpen(const QString &fileName, qint64 start, qint64 size);
+    bool open(QIODevice::OpenMode mode) override;
+    void close() override;
 
     qint64 writeData(const char *, qint64) override;
     qint64 readData(char *data, qint64 maxlen) override;
@@ -59,17 +61,22 @@ public:
 signals:
 
 private:
-    // The file data
-    QByteArray _data;
-    // Position in the data
-    qint64 _read;
+    /// The local file to read data from
+    QFile _file;
+
+    /// Start of the file data to use
+    qint64 _start = 0;
+    /// Amount of file data after _start to use
+    qint64 _size = 0;
+    /// Position between _start and _start+_size
+    qint64 _read = 0;
 
     // Bandwidth manager related
     QPointer<BandwidthManager> _bandwidthManager;
-    qint64 _bandwidthQuota;
-    qint64 _readWithProgress;
-    bool _bandwidthLimited; // if _bandwidthQuota will be used
-    bool _choked; // if upload is paused (readData() will return 0)
+    qint64 _bandwidthQuota = 0;
+    qint64 _readWithProgress = 0;
+    bool _bandwidthLimited = false; // if _bandwidthQuota will be used
+    bool _choked = false; // if upload is paused (readData() will return 0)
     friend class BandwidthManager;
 public slots:
     void slotJobUploadProgress(qint64 sent, qint64 t);
@@ -117,16 +124,7 @@ public:
 
     void start() override;
 
-    bool finished() override
-    {
-        qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                         << replyStatusString()
-                         << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
-                         << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-
-        emit finishedSignal();
-        return true;
-    }
+    bool finished() override;
 
     QIODevice *device()
     {
@@ -152,8 +150,8 @@ signals:
 /**
  * @brief This job implements the asynchronous PUT
  *
- * If the server replies to a PUT with a OC-Finish-Poll url, we will query this url until the server
- * replies with an etag. https://github.com/owncloud/core/issues/12097
+ * If the server replies to a PUT with a OC-JobStatus-Location path, we will query this url until the server
+ * replies with an etag.
  * @ingroup libsync
  */
 class PollJob : public AbstractNetworkJob
@@ -212,6 +210,13 @@ protected:
     bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
     bool _deleteExisting BITFIELD(1);
 
+    /** Whether an abort is currently ongoing.
+     *
+     * Important to avoid duplicate aborts since each finishing PUTFileJob might
+     * trigger an abort on error.
+     */
+    bool _aborting BITFIELD(1);
+
     /* This is a minified version of the SyncFileItem,
      * that holds only the specifics about the file that's
      * being uploaded.
@@ -222,7 +227,7 @@ protected:
     struct UploadFileInfo {
       QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
       QString _path; /// the full path on disk.
-      quint64 _size;
+      qint64 _size;
     };
     UploadFileInfo _fileToUpload;
     QByteArray _transmissionChecksumHeader;
@@ -301,9 +306,9 @@ protected:
      *
      * See #6527, enterprise#2480
      */
-    static void adjustLastJobTimeout(AbstractNetworkJob *job, quint64 fileSize);
+    static void adjustLastJobTimeout(AbstractNetworkJob *job, qint64 fileSize);
 
-    // Bases headers that need to be sent with every chunk
+    /** Bases headers that need to be sent on the PUT, or in the MOVE for chunking-ng */
     QMap<QByteArray, QByteArray> headers();
 private:
   PropagateUploadEncrypted *_uploadEncryptedHelper;
@@ -334,9 +339,9 @@ private:
      */
     int _currentChunk = 0;
     int _chunkCount = 0; /// Total number of chunks for this file
-    quint64 _transferId = 0; /// transfer id (part of the url)
+    uint _transferId = 0; /// transfer id (part of the url)
 
-    quint64 chunkSize() const {
+    qint64 chunkSize() const {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,
         // thus this value should be used as the one classifing item to be chunked
         return propagator()->syncOptions()._initialChunkSize;
@@ -367,20 +372,20 @@ class PropagateUploadFileNG : public PropagateUploadFileCommon
 {
     Q_OBJECT
 private:
-    quint64 _sent = 0; /// amount of data (bytes) that was already sent
+    qint64 _sent = 0; /// amount of data (bytes) that was already sent
     uint _transferId = 0; /// transfer id (part of the url)
     int _currentChunk = 0; /// Id of the next chunk that will be sent
-    quint64 _currentChunkSize = 0; /// current chunk size
+    qint64 _currentChunkSize = 0; /// current chunk size
     bool _removeJobError = false; /// If not null, there was an error removing the job
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
     struct ServerChunkInfo
     {
-        quint64 size;
+        qint64 size;
         QString originalName;
     };
-    QMap<int, ServerChunkInfo> _serverChunks;
+    QMap<qint64, ServerChunkInfo> _serverChunks;
 
     /**
      * Return the URL of a chunk.

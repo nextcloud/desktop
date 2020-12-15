@@ -11,16 +11,6 @@
 
 using namespace OCC;
 
-SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
-{
-    for (const QList<QVariant> &args : spy) {
-        auto item = args[0].value<SyncFileItemPtr>();
-        if (item->destination() == path)
-            return item;
-    }
-    return SyncFileItemPtr(new SyncFileItem);
-}
-
 SyncJournalFileRecord journalRecord(FakeFolder &folder, const QByteArray &path)
 {
     SyncJournalFileRecord rec;
@@ -46,12 +36,14 @@ private slots:
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        ItemCompletedSpy completeSpy(fakeFolder);
 
         auto &modifier = remote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
 
         int counter = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) -> QNetworkReply * {
+        QByteArray reqId;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) -> QNetworkReply * {
+            reqId = req.rawHeader("X-Request-ID");
             if (!remote && op == QNetworkAccessManager::PutOperation)
                 ++counter;
             if (remote && op == QNetworkAccessManager::GetOperation)
@@ -71,7 +63,7 @@ private slots:
         fakeFolder.serverErrorPaths().append("A/new", 500); // will be blacklisted
         QVERIFY(!fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::NormalError); // initial error visible
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW);
@@ -82,6 +74,7 @@ private slots:
             QCOMPARE(entry._retryCount, 1);
             QCOMPARE(counter, 1);
             QVERIFY(entry._ignoreDuration > 0);
+            QCOMPARE(entry._requestId, reqId);
 
             if (remote)
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
@@ -91,7 +84,7 @@ private slots:
         // Ignored during the second run - but soft errors are also errors
         QVERIFY(!fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::BlacklistedError);
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_IGNORE); // no retry happened!
@@ -102,6 +95,7 @@ private slots:
             QCOMPARE(entry._retryCount, 1);
             QCOMPARE(counter, 1);
             QVERIFY(entry._ignoreDuration > 0);
+            QCOMPARE(entry._requestId, reqId);
 
             if (remote)
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
@@ -117,7 +111,7 @@ private slots:
         }
         QVERIFY(!fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::BlacklistedError); // blacklisted as it's just a retry
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW); // retry!
@@ -128,6 +122,7 @@ private slots:
             QCOMPARE(entry._retryCount, 2);
             QCOMPARE(counter, 2);
             QVERIFY(entry._ignoreDuration > 0);
+            QCOMPARE(entry._requestId, reqId);
 
             if (remote)
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
@@ -138,7 +133,7 @@ private slots:
         modifier.appendByte("A/new");
         QVERIFY(!fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::BlacklistedError);
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW); // retry!
@@ -149,6 +144,7 @@ private slots:
             QCOMPARE(entry._retryCount, 3);
             QCOMPARE(counter, 3);
             QVERIFY(entry._ignoreDuration > 0);
+            QCOMPARE(entry._requestId, reqId);
 
             if (remote)
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
@@ -165,7 +161,7 @@ private slots:
         }
         QVERIFY(fakeFolder.syncOnce());
         {
-            auto it = findItem(completeSpy, "A/new");
+            auto it = completeSpy.findItem("A/new");
             QVERIFY(it);
             QCOMPARE(it->_status, SyncFileItem::Success);
             QCOMPARE(it->_instruction, CSYNC_INSTRUCTION_NEW);
@@ -175,7 +171,7 @@ private slots:
             QCOMPARE(counter, 4);
 
             if (remote)
-                QCOMPARE(journalRecord(fakeFolder, "A")._etag, fakeFolder.currentRemoteState().find("A")->etag.toUtf8());
+                QCOMPARE(journalRecord(fakeFolder, "A")._etag, fakeFolder.currentRemoteState().find("A")->etag);
         }
         cleanup();
 

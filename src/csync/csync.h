@@ -59,7 +59,10 @@ class SyncJournalFileRecord;
 #define BITFIELD(size) :size
 #endif
 
-enum CSYNC_STATUS {
+namespace CSyncEnums {
+OCSYNC_EXPORT Q_NAMESPACE
+
+enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 
   CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
@@ -94,40 +97,32 @@ enum CSYNC_STATUS {
     CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE,
     CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE
 };
-
-#ifndef likely
-# define likely(x) (x)
-#endif
-#ifndef unlikely
-# define unlikely(x) (x)
-#endif
-
-#define CSYNC_STATUS_IS_OK(x) (likely((x) == CSYNC_STATUS_OK))
-#define CSYNC_STATUS_IS_ERR(x) (unlikely((x) >= CSYNC_STATUS_ERROR))
-#define CSYNC_STATUS_IS_EQUAL(x, y) ((x) == (y))
+Q_ENUM_NS(csync_status_codes_e)
 
 /**
   * Instruction enum. In the file traversal structure, it describes
   * the csync state of a file.
   */
-enum csync_instructions_e {
-  CSYNC_INSTRUCTION_NONE            = 0x00000000,  /* Nothing to do (UPDATE|RECONCILE) */
-  CSYNC_INSTRUCTION_EVAL            = 0x00000001,  /* There was changed compared to the DB (UPDATE) */
-  CSYNC_INSTRUCTION_REMOVE          = 0x00000002,  /* The file need to be removed (RECONCILE) */
-  CSYNC_INSTRUCTION_RENAME          = 0x00000004,  /* The file need to be renamed (RECONCILE) */
-  CSYNC_INSTRUCTION_EVAL_RENAME     = 0x00000800,  /* The file is new, it is the destination of a rename (UPDATE) */
-  CSYNC_INSTRUCTION_NEW             = 0x00000008,  /* The file is new compared to the db (UPDATE) */
-  CSYNC_INSTRUCTION_CONFLICT        = 0x00000010,  /* The file need to be downloaded because it is a conflict (RECONCILE) */
-  CSYNC_INSTRUCTION_IGNORE          = 0x00000020,  /* The file is ignored (UPDATE|RECONCILE) */
-  CSYNC_INSTRUCTION_SYNC            = 0x00000040,  /* The file need to be pushed to the other remote (RECONCILE) */
-  CSYNC_INSTRUCTION_STAT_ERROR      = 0x00000080,
-  CSYNC_INSTRUCTION_ERROR           = 0x00000100,
-  CSYNC_INSTRUCTION_TYPE_CHANGE     = 0x00000200,  /* Like NEW, but deletes the old entity first (RECONCILE)
-                                                      Used when the type of something changes from directory to file
-                                                      or back. */
-  CSYNC_INSTRUCTION_UPDATE_METADATA = 0x00000400,  /* If the etag has been updated and need to be writen to the db,
-                                                      but without any propagation (UPDATE|RECONCILE) */
+enum SyncInstructions {
+    CSYNC_INSTRUCTION_NONE            = 0,       /* Nothing to do (UPDATE|RECONCILE) */
+    CSYNC_INSTRUCTION_EVAL            = 1 << 0,  /* There was changed compared to the DB (UPDATE) */
+    CSYNC_INSTRUCTION_REMOVE          = 1 << 1,  /* The file need to be removed (RECONCILE) */
+    CSYNC_INSTRUCTION_RENAME          = 1 << 2,  /* The file need to be renamed (RECONCILE) */
+    CSYNC_INSTRUCTION_EVAL_RENAME     = 1 << 11, /* The file is new, it is the destination of a rename (UPDATE) */
+    CSYNC_INSTRUCTION_NEW             = 1 << 3,  /* The file is new compared to the db (UPDATE) */
+    CSYNC_INSTRUCTION_CONFLICT        = 1 << 4,  /* The file need to be downloaded because it is a conflict (RECONCILE) */
+    CSYNC_INSTRUCTION_IGNORE          = 1 << 5,  /* The file is ignored (UPDATE|RECONCILE) */
+    CSYNC_INSTRUCTION_SYNC            = 1 << 6,  /* The file need to be pushed to the other remote (RECONCILE) */
+    CSYNC_INSTRUCTION_STAT_ERROR      = 1 << 7,
+    CSYNC_INSTRUCTION_ERROR           = 1 << 8,
+    CSYNC_INSTRUCTION_TYPE_CHANGE     = 1 << 9,  /* Like NEW, but deletes the old entity first (RECONCILE)
+                                                    Used when the type of something changes from directory to file
+                                                    or back. */
+    CSYNC_INSTRUCTION_UPDATE_METADATA = 1 << 10, /* If the etag has been updated and need to be writen to the db,
+                                                    but without any propagation (UPDATE|RECONCILE) */
 };
+
+Q_ENUM_NS(SyncInstructions)
 
 // This enum is used with BITFIELD(3) and BITFIELD(4) in several places.
 // Also, this value is stored in the database, so beware of value changes.
@@ -135,16 +130,44 @@ enum ItemType {
     ItemTypeFile = 0,
     ItemTypeSoftLink = 1,
     ItemTypeDirectory = 2,
-    ItemTypeSkip = 3
+    ItemTypeSkip = 3,
+
+    /** The file is a dehydrated placeholder, meaning data isn't available locally */
+    ItemTypeVirtualFile = 4,
+
+    /** A ItemTypeVirtualFile that wants to be hydrated.
+     *
+     * Actions may put this in the db as a request to a future sync, such as
+     * implicit hydration (when the user wants to access file data) when using
+     * suffix vfs. For pin-state driven hydrations changing the database is
+     * not necessary.
+     *
+     * For some vfs plugins the placeholder files on disk may be marked for
+     * (de-)hydration (like with a file attribute) and then the local discovery
+     * will return this item type.
+     *
+     * The discovery will also use this item type to mark entries for hydration
+     * if an item's pin state mandates it, such as when encountering a AlwaysLocal
+     * file that is dehydrated.
+     */
+    ItemTypeVirtualFileDownload = 5,
+
+    /** A ItemTypeFile that wants to be dehydrated.
+     *
+     * Similar to ItemTypeVirtualFileDownload, but there's currently no situation
+     * where it's stored in the database since there is no action that triggers a
+     * file dehydration without changing the pin state.
+     */
+    ItemTypeVirtualFileDehydration = 6,
 };
+Q_ENUM_NS(ItemType)
+}
 
+using namespace CSyncEnums;
+using CSYNC_STATUS = CSyncEnums::csync_status_codes_e;
+typedef struct csync_file_stat_s csync_file_stat_t;
 
-#define FILE_ID_BUF_SIZE 36
-
-// currently specified at https://github.com/owncloud/core/issues/8322 are 9 to 10
-#define REMOTE_PERM_BUF_SIZE 15
-
-struct OCSYNC_EXPORT csync_file_stat_t {
+struct OCSYNC_EXPORT csync_file_stat_s {
   time_t modtime = 0;
   int64_t size = 0;
   uint64_t inode = 0;
@@ -173,156 +196,16 @@ struct OCSYNC_EXPORT csync_file_stat_t {
 
   CSYNC_STATUS error_status = CSYNC_STATUS_OK;
 
-  enum csync_instructions_e instruction = CSYNC_INSTRUCTION_NONE; /* u32 */
+  SyncInstructions instruction = CSYNC_INSTRUCTION_NONE; /* u32 */
 
-  csync_file_stat_t()
+  csync_file_stat_s()
     : type(ItemTypeSkip)
     , child_modified(false)
     , has_ignored_files(false)
     , is_hidden(false)
     , isE2eEncrypted(false)
   { }
-
-  static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec);
 };
-
-/**
- * csync handle
- */
-using CSYNC = struct csync_s;
-
-using csync_auth_callback = int (*)(const char *prompt, char *buf, size_t len, int echo, int verify, void *userdata);
-
-using csync_update_callback = void (*)(bool local, const char *dirUrl, void *userdata);
-
-using csync_vio_handle_t = void;
-using csync_vio_opendir_hook = csync_vio_handle_t *(*)(const char *url, void *userdata);
-using csync_vio_readdir_hook = std::unique_ptr<csync_file_stat_t> (*)(csync_vio_handle_t *dhandle, void *userdata);
-using csync_vio_closedir_hook = void (*)(csync_vio_handle_t *dhandle, void *userdata);
-
-/* Compute the checksum of the given \a checksumTypeId for \a path. */
-using csync_checksum_hook = QByteArray (*)(const QByteArray &path, const QByteArray &otherChecksumHeader, void *userdata);
-
-/**
- * @brief Update detection
- *
- * @param ctx  The context to run the update detection on.
- *
- * @return  0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_update(CSYNC *ctx);
-
-/**
- * @brief Reconciliation
- *
- * @param ctx  The context to run the reconciliation on.
- *
- * @return  0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_reconcile(CSYNC *ctx);
-
-/**
- * @brief Get the userdata saved in the context.
- *
- * @param ctx           The csync context.
- *
- * @return              The userdata saved in the context, \c nullptr if an error
- *                      occurred.
- */
-void *csync_get_userdata(CSYNC *ctx);
-
-/**
- * @brief Save userdata to the context which is passed to the auth
- * callback function.
- *
- * @param ctx           The csync context.
- *
- * @param userdata      The userdata to be stored in the context.
- *
- * @return              0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_set_userdata(CSYNC *ctx, void *userdata);
-
-/**
- * @brief Get the authentication callback set.
- *
- * @param ctx           The csync context.
- *
- * @return              The authentication callback set or \c nullptr if an error
- *                      occurred.
- */
-csync_auth_callback OCSYNC_EXPORT csync_get_auth_callback(CSYNC *ctx);
-
-/**
- * @brief Set the authentication callback.
- *
- * @param ctx           The csync context.
- *
- * @param cb            The authentication callback.
- *
- * @return              0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
-
-/* Used for special modes or debugging */
-CSYNC_STATUS OCSYNC_EXPORT csync_get_status(CSYNC *ctx);
-
-/* Used for special modes or debugging */
-int OCSYNC_EXPORT csync_set_status(CSYNC *ctx, int status);
-
-using csync_treewalk_visit_func = std::function<int(csync_file_stat_t *cur, csync_file_stat_t *other)>;
-
-/**
- * @brief Walk the local file tree and call a visitor function for each file.
- *
- * @param ctx           The csync context.
- * @param visitor       A callback function to handle the file info.
- *
- * @return              0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_walk_local_tree(CSYNC *ctx, const csync_treewalk_visit_func &visitor);
-
-/**
- * @brief Walk the remote file tree and call a visitor function for each file.
- *
- * @param ctx           The csync context.
- * @param visitor       A callback function to handle the file info.
- *
- * @return              0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_walk_remote_tree(CSYNC *ctx, const csync_treewalk_visit_func &visitor);
-
-/**
- * @brief Get the csync status string.
- *
- * @param ctx            The csync context.
- *
- * @return               A const pointer to a string with more precise status info.
- */
-const char OCSYNC_EXPORT *csync_get_status_string(CSYNC *ctx);
-
-/**
- * @brief Aborts the current sync run as soon as possible. Can be called from another thread.
- *
- * @param ctx           The csync context.
- */
-void OCSYNC_EXPORT csync_request_abort(CSYNC *ctx);
-
-/**
- * @brief Clears the abort flag. Can be called from another thread.
- *
- * @param ctx           The csync context.
- */
-void OCSYNC_EXPORT csync_resume(CSYNC *ctx);
-
-/**
- * @brief Checks for the abort flag, to be used from the modules.
- *
- * @param ctx           The csync context.
- */
-int  OCSYNC_EXPORT csync_abort_requested(CSYNC *ctx);
-
-time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
 
 /**
  * }@

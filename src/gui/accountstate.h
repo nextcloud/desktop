@@ -42,6 +42,8 @@ using AccountAppList = QList<AccountApp *>;
 class AccountState : public QObject, public QSharedData
 {
     Q_OBJECT
+    Q_PROPERTY(AccountPtr account MEMBER _account)
+
 public:
     enum State {
         /// Not even attempting to connect, most likely because the
@@ -134,7 +136,7 @@ public:
      *  the server to validate the connection if the last successful etag job
      *  was not so long ago.
      */
-    void tagLastSuccessfullETagRequest();
+    void tagLastSuccessfullETagRequest(const QDateTime &tp);
 
     /** Saves the ETag Response header from the last Notifications api
      * request with statusCode 200.
@@ -169,7 +171,7 @@ private:
     void fetchNavigationApps();
 
 signals:
-    void stateChanged(int state);
+    void stateChanged(State state);
     void isConnectedChanged();
     void hasFetchedNavigationApps();
 
@@ -193,7 +195,7 @@ private:
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;
     bool _waitingForNewCredentials;
-    QElapsedTimer _timeSinceLastETagCheck;
+    QDateTime _timeOfLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
     QByteArray _notificationsEtagResponseHeader;
     QByteArray _navigationAppsEtagResponseHeader;

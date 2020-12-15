@@ -3,7 +3,13 @@ set(CMAKE_CXX_STANDARD 14)
 
 project(client)
 
+if(UNIT_TESTING)
+    include(CTest)
+    enable_testing()
+endif()
+
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
 
 set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
 if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
@@ -11,6 +17,12 @@ if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
 else ()
      include ( ${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake )
 endif()
+
+# Default suffix if the theme doesn't define one
+if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)
+    set(APPLICATION_VIRTUALFILE_SUFFIX "${APPLICATION_SHORTNAME}_virtual" CACHE STRING "Virtual file suffix (not including the .)")
+endif()
+
 # need this logic to not mess with re/uninstallations via macosx.pkgproj
 if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")
     set(APPLICATION_REV_DOMAIN_INSTALLER "com.ownCloud.client")
@@ -36,6 +48,9 @@ set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 if(NOT CRASHREPORTER_EXECUTABLE)
     set(CRASHREPORTER_EXECUTABLE "${APPLICATION_EXECUTABLE}_crash_reporter")
 endif()
+
+set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
+set(csync_NAME "${APPLICATION_EXECUTABLE}_csync")
 
 include(Warnings)
 
@@ -150,22 +165,15 @@ option(BUILD_CLIENT "BUILD_CLIENT" ON)
 # this option creates only libocsync and libowncloudsync (NOTE: BUILD_CLIENT needs to be on)
 option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 
+# build the GUI component, when disabled only nextcloudcmd is built
+option(BUILD_GUI "BUILD_GUI" ON)
+
 # When this option is enabled, 5xx errors are not added to the blacklist
 # Normally you don't want to enable this option because if a particular file
 # triggers a bug on the server, you want the file to be blacklisted.
 option(OWNCLOUD_5XX_NO_BLACKLIST "OWNCLOUD_5XX_NO_BLACKLIST" OFF)
 if(OWNCLOUD_5XX_NO_BLACKLIST)
     add_definitions(-DOWNCLOUD_5XX_NO_BLACKLIST=1)
-endif()
-
-# When this option is enabled, a rename that is not allowed will be renamed back
-# do the original as a restoration step.  Withut this option, the restoration will
-# re-download the file instead.
-# The default is off because we don't want to rename the files back behind the user's back
-# Added for IL issue #550
-option(OWNCLOUD_RESTORE_RENAME "OWNCLOUD_RESTORE_RENAME" OFF)
-if(OWNCLOUD_RESTORE_RENAME)
-    add_definitions(-DOWNCLOUD_RESTORE_RENAME=1)
 endif()
 
 # Disable shibboleth.
@@ -181,6 +189,8 @@ if(APPLE)
 endif()
 
 if(BUILD_CLIENT)
+    OPTION(GUI_TESTING "Build with gui introspection features of socket api" OFF)
+
     if(APPLE AND BUILD_UPDATER)
         find_package(Sparkle)
     endif()
@@ -212,8 +222,9 @@ if( WIN32 )
 add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
 add_definitions( -DNOMINMAX )
 # Get APIs from from Vista onwards.
-add_definitions( -D_WIN32_WINNT=0x0601 )
-add_definitions( -DWINVER=0x0601 )
+add_definitions(-D_WIN32_WINNT=0x0601)
+add_definitions(-DWINVER=0x0601)
+add_definitions(-DNTDDI_VERSION=0x0A000004)
     if( MSVC )
     # Use automatic overload for suitable CRT safe-functions
     # See https://docs.microsoft.com/de-de/cpp/c-runtime-library/security-features-in-the-crt?view=vs-2019
@@ -250,11 +261,11 @@ if(BUILD_SHELL_INTEGRATION)
     add_subdirectory(shell_integration)
 endif()
 
-if(UNIT_TESTING)
-    include(CTest)
+include(CTest)
+if(BUILD_TESTING)
     enable_testing()
     add_subdirectory(test)
-endif(UNIT_TESTING)
+endif()
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)

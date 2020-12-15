@@ -21,7 +21,6 @@
 #include "configfile.h"
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
-#include "synclogdialog.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/updater.h"
@@ -157,8 +156,14 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->showInExplorerNavigationPaneCheckBox->setText(txt);
 #endif
 
-    _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
-    connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
+    if(Utility::hasSystemLaunchOnStartup(Theme::instance()->appName())) {
+        _ui->autostartCheckBox->setChecked(true);
+        _ui->autostartCheckBox->setDisabled(true);
+        _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
+    } else {
+        _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
+        connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
+    }
 
     // setup about section
     QString about = Theme::instance()->about();
@@ -224,7 +229,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 GeneralSettings::~GeneralSettings()
 {
     delete _ui;
-    delete _syncLogDialog;
 }
 
 QSize GeneralSettings::sizeHint() const
@@ -314,11 +318,11 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
            "version."),
         QMessageBox::NoButton,
         this);
-    msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
+    auto acceptButton = msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
-    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox](int result) {
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox, acceptButton] {
         msgBox->deleteLater();
-        if (result == QMessageBox::AcceptRole) {
+        if (msgBox->clickedButton() == acceptButton) {
             ConfigFile().setUpdateChannel(channel);
             if (auto updater = qobject_cast<OCUpdater *>(Updater::instance())) {
                 updater->setUpdateUrl(Updater::updateUrl());

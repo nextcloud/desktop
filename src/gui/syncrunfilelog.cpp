@@ -28,67 +28,6 @@ QString SyncRunFileLog::dateTimeStr(const QDateTime &dt)
     return dt.toString(Qt::ISODate);
 }
 
-QString SyncRunFileLog::directionToStr(SyncFileItem::Direction dir)
-{
-    QString re("N");
-    if (dir == SyncFileItem::Up) {
-        re = QLatin1String("Up");
-    } else if (dir == SyncFileItem::Down) {
-        re = QLatin1String("Down");
-    }
-    return re;
-}
-
-QString SyncRunFileLog::instructionToStr(csync_instructions_e inst)
-{
-    QString re;
-
-    switch (inst) {
-    case CSYNC_INSTRUCTION_NONE:
-        re = "INST_NONE";
-        break;
-    case CSYNC_INSTRUCTION_EVAL:
-        re = "INST_EVAL";
-        break;
-    case CSYNC_INSTRUCTION_REMOVE:
-        re = "INST_REMOVE";
-        break;
-    case CSYNC_INSTRUCTION_RENAME:
-        re = "INST_RENAME";
-        break;
-    case CSYNC_INSTRUCTION_EVAL_RENAME:
-        re = "INST_EVAL_RENAME";
-        break;
-    case CSYNC_INSTRUCTION_NEW:
-        re = "INST_NEW";
-        break;
-    case CSYNC_INSTRUCTION_CONFLICT:
-        re = "INST_CONFLICT";
-        break;
-    case CSYNC_INSTRUCTION_IGNORE:
-        re = "INST_IGNORE";
-        break;
-    case CSYNC_INSTRUCTION_SYNC:
-        re = "INST_SYNC";
-        break;
-    case CSYNC_INSTRUCTION_STAT_ERROR:
-        re = "INST_STAT_ERR";
-        break;
-    case CSYNC_INSTRUCTION_ERROR:
-        re = "INST_ERROR";
-        break;
-    case CSYNC_INSTRUCTION_TYPE_CHANGE:
-        re = "INST_TYPE_CHANGE";
-        break;
-    case CSYNC_INSTRUCTION_UPDATE_METADATA:
-        re = "INST_METADATA";
-        break;
-    }
-
-    return re;
-}
-
-
 void SyncRunFileLog::start(const QString &folderPath)
 {
     const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
@@ -145,8 +84,7 @@ void SyncRunFileLog::start(const QString &folderPath)
         // We are creating a new file, add the note.
         _out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
                 "size | fileId | status | errorString | http result code | "
-                "other size | other modtime | other etag | other fileId | "
-                "other instruction"
+                "other size | other modtime | X-Request-ID"
              << endl;
 
         FileSystem::setFileHidden(filename, true);
@@ -176,12 +114,12 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     _out << ts << L;
     _out << L;
     if (item._instruction != CSYNC_INSTRUCTION_RENAME) {
-        _out << item._file << L;
+        _out << item.destination() << L;
     } else {
         _out << item._file << QLatin1String(" -> ") << item._renameTarget << L;
     }
-    _out << instructionToStr(item._instruction) << L;
-    _out << directionToStr(item._direction) << L;
+    _out << item._instruction << L;
+    _out << item._direction << L;
     _out << QString::number(item._modtime) << L;
     _out << item._etag << L;
     _out << QString::number(item._size) << L;
@@ -191,9 +129,7 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     _out << QString::number(item._httpErrorCode) << L;
     _out << QString::number(item._previousSize) << L;
     _out << QString::number(item._previousModtime) << L;
-    _out /* << other etag (removed) */ << L;
-    _out /* << other fileId (removed) */ << L;
-    _out /* << other instruction (removed) */ << L;
+    _out << item._requestId << L;
 
     _out << endl;
 }

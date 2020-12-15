@@ -14,6 +14,7 @@
  */
 
 #include "account.h"
+#include "config.h"
 #include "configfile.h"
 #include "theme.h"
 #include "owncloudgui.h"
@@ -30,10 +31,14 @@
 #include "wizard/webviewpage.h"
 #include "wizard/flow2authcredspage.h"
 
+#include "common/vfs.h"
+
 #include "QProgressIndicator.h"
 
 #include <QtCore>
 #include <QtGui>
+#include <QMessageBox>
+#include <owncloudgui.h>
 
 #include <cstdlib>
 
@@ -55,6 +60,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _resultPage(new OwncloudWizardResultPage)
     , _webViewPage(new WebViewPage(this))
 {
+    setObjectName("owncloudWizard");
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
@@ -131,6 +138,11 @@ QStringList OwncloudWizard::selectiveSyncBlacklist() const
     return _advancedSetupPage->selectiveSyncBlacklist();
 }
 
+bool OwncloudWizard::useVirtualFileSync() const
+{
+    return _advancedSetupPage->useVirtualFileSync();
+}
+
 bool OwncloudWizard::isConfirmBigFolderChecked() const
 {
     return _advancedSetupPage->isConfirmBigFolderChecked();
@@ -201,6 +213,7 @@ void OwncloudWizard::successfulStep()
         break;
     }
 
+    ownCloudGui::raiseDialog(this);
     next();
 }
 
@@ -317,6 +330,47 @@ void OwncloudWizard::bringToTop()
 {
     // bring wizard to top
     ownCloudGui::raiseDialog(this);
+}
+
+void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const std::function<void(bool enable)> &callback)
+{
+    const auto bestVfsMode = bestAvailableVfsMode();
+    QMessageBox *msgBox = nullptr;
+    QPushButton *acceptButton = nullptr;
+    switch (bestVfsMode)
+    {
+    case Vfs::WindowsCfApi:
+        callback(true);
+        return;
+    case Vfs::WithSuffix:
+        msgBox = new QMessageBox(
+            QMessageBox::Warning,
+            tr("Enable experimental feature?"),
+            tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
+               "Instead, a tiny \"%1\" file will be created for each file that exists on the server. "
+               "The contents can be downloaded by running these files or by using their context menu."
+               "\n\n"
+               "The virtual files mode is mutually exclusive with selective sync. "
+               "Currently unselected folders will be translated to online-only folders "
+               "and your selective sync settings will be reset."
+               "\n\n"
+               "Switching to this mode will abort any currently running synchronization."
+               "\n\n"
+               "This is a new, experimental mode. If you decide to use it, please report any "
+               "issues that come up.")
+                .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX), QMessageBox::NoButton, receiver);
+        acceptButton = msgBox->addButton(tr("Enable experimental placeholder mode"), QMessageBox::AcceptRole);
+        msgBox->addButton(tr("Stay safe"), QMessageBox::RejectRole);
+        break;
+    case Vfs::Off:
+        Q_UNREACHABLE();
+    }
+
+    connect(msgBox, &QMessageBox::accepted, receiver, [callback, msgBox, acceptButton] {
+        callback(msgBox->clickedButton() == acceptButton);
+        msgBox->deleteLater();
+    });
+    msgBox->open();
 }
 
 } // end namespace

@@ -43,8 +43,6 @@ public:
 protected:
 private:
     QString dateTimeStr(const QDateTime &dt);
-    QString instructionToStr(csync_instructions_e inst);
-    QString directionToStr(SyncFileItem::Direction dir);
 
     QScopedPointer<QFile> _file;
     QTextStream _out;

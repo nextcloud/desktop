@@ -27,6 +27,9 @@ class TestFolderMan: public QObject
 private slots:
     void testCheckPathValidityForNewFolder()
     {
+#ifdef Q_OS_WIN
+        Utility::NtfsPermissionLookupRAII ntfs_perm;
+#endif
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
         QVERIFY(dir.isValid());
@@ -122,6 +125,19 @@ private slots:
         // Should not have the rights
         QVERIFY(!folderman->checkPathValidityForNewFolder("/").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder("/usr/bin/somefolder").isNull());
+#endif
+
+#ifdef Q_OS_WIN // drive-letter tests
+        if (!QFileInfo("v:/").exists()) {
+            QVERIFY(!folderman->checkPathValidityForNewFolder("v:").isNull());
+            QVERIFY(!folderman->checkPathValidityForNewFolder("v:/").isNull());
+            QVERIFY(!folderman->checkPathValidityForNewFolder("v:/foo").isNull());
+        }
+        if (QFileInfo("c:/").isWritable()) {
+            QVERIFY(folderman->checkPathValidityForNewFolder("c:").isNull());
+            QVERIFY(folderman->checkPathValidityForNewFolder("c:/").isNull());
+            QVERIFY(folderman->checkPathValidityForNewFolder("c:/foo").isNull());
+        }
 #endif
 
         // Invalid paths

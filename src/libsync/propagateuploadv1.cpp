@@ -37,17 +37,17 @@ namespace OCC {
 
 void PropagateUploadFileV1::doStartUpload()
 {
-    _chunkCount = std::ceil(_fileToUpload._size / double(chunkSize()));
+    _chunkCount = int(std::ceil(_fileToUpload._size / double(chunkSize())));
     _startChunk = 0;
-    _transferId = qrand() ^ _item->_modtime ^ (_fileToUpload._size << 16);
+    _transferId = uint(qrand()) ^ uint(_item->_modtime) ^ (uint(_fileToUpload._size) << 16);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == qint64(_item->_size)
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == _item->_size
         && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
-        qCInfo(lcPropagateUpload) << _item->_file << ": Resuming from chunk " << _startChunk;
+        qCInfo(lcPropagateUploadV1) << _item->_file << ": Resuming from chunk " << _startChunk;
     } else if (_chunkCount <= 1 && !_item->_checksumHeader.isEmpty()) {
         // If there is only one chunk, write the checksum in the database, so if the PUT is sent
         // to the server, but the connection drops before we get the etag, we can check the checksum
@@ -72,7 +72,7 @@ void PropagateUploadFileV1::doStartUpload()
 
 void PropagateUploadFileV1::startNextChunk()
 {
-    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested)
         return;
 
     if (!_jobs.isEmpty() && _currentChunk + _startChunk >= _chunkCount - 1) {
@@ -83,27 +83,26 @@ void PropagateUploadFileV1::startNextChunk()
         // is sent last.
         return;
     }
-    quint64 fileSize = _fileToUpload._size;
+    qint64 fileSize = _fileToUpload._size;
     auto headers = PropagateUploadFileCommon::headers();
-    headers["OC-Total-Length"] = QByteArray::number(fileSize);
-    headers["OC-Chunk-Size"] = QByteArray::number(quint64(chunkSize()));
+    headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
+    headers[QByteArrayLiteral("OC-Chunk-Size")] = QByteArray::number(chunkSize());
 
     QString path = _fileToUpload._file;
 
-    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
     qint64 chunkStart = 0;
     qint64 currentChunkSize = fileSize;
     bool isFinalChunk = false;
     if (_chunkCount > 1) {
         int sendingChunk = (_currentChunk + _startChunk) % _chunkCount;
         // XOR with chunk size to make sure everything goes well if chunk size changes between runs
-        uint transid = _transferId ^ chunkSize();
-        qCInfo(lcPropagateUpload) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
+        uint transid = _transferId ^ uint(chunkSize());
+        qCInfo(lcPropagateUploadV1) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
         path += QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
 
-        headers["OC-Chunked"] = "1";
+        headers[QByteArrayLiteral("OC-Chunked")] = QByteArrayLiteral("1");
 
-        chunkStart = chunkSize() * quint64(sendingChunk);
+        chunkStart = chunkSize() * sendingChunk;
         currentChunkSize = chunkSize();
         if (sendingChunk == _chunkCount - 1) { // last chunk
             currentChunkSize = (fileSize % chunkSize());
@@ -116,17 +115,18 @@ void PropagateUploadFileV1::startNextChunk()
         // if there's only one chunk, it's the final one
         isFinalChunk = true;
     }
-    qCDebug(lcPropagateUpload) << _chunkCount << isFinalChunk << chunkStart << currentChunkSize;
+    qCDebug(lcPropagateUploadV1) << _chunkCount << isFinalChunk << chunkStart << currentChunkSize;
 
     if (isFinalChunk && !_transmissionChecksumHeader.isEmpty()) {
-        qCInfo(lcPropagateUpload) << propagator()->_remoteFolder + path << _transmissionChecksumHeader;
+        qCInfo(lcPropagateUploadV1) << propagator()->fullRemotePath(path) << _transmissionChecksumHeader;
         headers[checkSumHeaderC] = _transmissionChecksumHeader;
     }
 
     const QString fileName = _fileToUpload._path;
-    qDebug() << "Trying to upload" << fileName;
-    if (!device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
-        qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
+    auto device = std::make_unique<UploadDevice>(
+            fileName, chunkStart, currentChunkSize, &propagator()->_bandwidthManager);
+    if (!device->open(QIODevice::ReadOnly)) {
+        qCWarning(lcPropagateUploadV1) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
@@ -140,7 +140,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     auto devicePtr = device.get(); // for connections later
-    auto *job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, std::move(device), headers, _currentChunk, this);
+    auto *job = new PUTFileJob(propagator()->account(), propagator()->fullRemotePath(path), std::move(device), headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileV1::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
@@ -201,6 +201,8 @@ void PropagateUploadFileV1::slotPutFinished()
     }
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
         commonErrorHandling(job);
@@ -209,7 +211,7 @@ void PropagateUploadFileV1::slotPutFinished()
 
     // The server needs some time to process the request and provide us with a poll URL
     if (_item->_httpErrorCode == 202) {
-        QString path = QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
+        QString path = QString::fromUtf8(job->reply()->rawHeader("OC-JobStatus-Location"));
         if (path.isEmpty()) {
             done(SyncFileItem::NormalError, tr("Poll URL missing"));
             return;
@@ -231,11 +233,8 @@ void PropagateUploadFileV1::slotPutFinished()
     QByteArray etag = getEtagFromReply(job->reply());
     _finished = etag.length() > 0;
 
-    /* Check if the file still exists,
-     * but we could be operating in a temporary file, so check both if
-     * the file to upload is different than the file on disk
-     */
-    const QString fullFilePath(propagator()->getFilePath(_item->_file));
+    // Check if the file still exists
+    const QString fullFilePath(propagator()->fullLocalPath(_item->_file));
     if (!FileSystem::fileExists(fullFilePath)) {
         if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
@@ -299,22 +298,18 @@ void PropagateUploadFileV1::slotPutFinished()
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if (!fid.isEmpty()) {
         if (!_item->_fileId.isEmpty() && _item->_fileId != fid) {
-            qCWarning(lcPropagateUpload) << "File ID changed!" << _item->_fileId << fid;
+            qCWarning(lcPropagateUploadV1) << "File ID changed!" << _item->_fileId << fid;
         }
         _item->_fileId = fid;
     }
 
     _item->_etag = etag;
 
-    _item->_responseTimeStamp = job->responseTimestamp();
-
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {
         // X-OC-MTime is supported since owncloud 5.0.   But not when chunking.
         // Normally Owncloud 6 always puts X-OC-MTime
-        qCWarning(lcPropagateUpload) << "Server does not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
+        qCWarning(lcPropagateUploadV1) << "Server does not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
         // Well, the mtime was not set
-        done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
-        return;
     }
 
     finalize();
@@ -339,7 +334,7 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
     // not including this one.
     // FIXME: this assumes all chunks have the same size, which is true only if the last chunk
     // has not been finished (which should not happen because the last chunk is sent sequentially)
-    quint64 amount = progressChunk * chunkSize();
+    qint64 amount = progressChunk * chunkSize();
 
     sender()->setProperty("byteWritten", sent);
     if (_jobs.count() > 1) {

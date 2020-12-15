@@ -15,15 +15,14 @@
 #include "filesystem.h"
 #include "propagatorjobs.h"
 
-
 using namespace OCC;
+using namespace OCC::Utility;
 
     class TestChecksumValidator : public QObject
     {
         Q_OBJECT
-
     private:
-        QString _root;
+        QTemporaryDir _root;
         QString _testfile;
         QString _expectedError;
         QByteArray     _expected;
@@ -44,19 +43,72 @@ using namespace OCC;
     }
 
     void slotDownError( const QString& errMsg ) {
-         QVERIFY(_expectedError == errMsg );
+         QCOMPARE(_expectedError, errMsg);
          _errorSeen = true;
+    }
+
+    static QByteArray shellSum( const QByteArray& cmd, const QString& file )
+    {
+        QProcess md5;
+        QStringList args;
+        args.append(file);
+        md5.start(cmd, args);
+        QByteArray sumShell;
+        qDebug() << "File: "<< file;
+
+        if( md5.waitForFinished()  ) {
+
+            sumShell = md5.readAll();
+            sumShell = sumShell.left( sumShell.indexOf(' '));
+        }
+        return sumShell;
     }
 
     private slots:
 
     void initTestCase() {
-        _root = QDir::tempPath() + "/" + "test_" + QString::number(qrand());
-        QDir rootDir(_root);
-
-        rootDir.mkpath(_root );
-        _testfile = _root+"/csFile";
+        _testfile = _root.path()+"/csFile";
         Utility::writeRandomFile( _testfile);
+    }
+
+    void testMd5Calc()
+    {
+        QString file( _root.path() + "/file_a.bin");
+        QVERIFY(writeRandomFile(file));
+        QFileInfo fi(file);
+        QVERIFY(fi.exists());
+
+        QFile fileDevice(file);
+        fileDevice.open(QIODevice::ReadOnly);
+        QByteArray sum = calcMd5(&fileDevice);
+        fileDevice.close();
+
+        QByteArray sSum = shellSum("md5sum", file);
+        if (sSum.isEmpty())
+            QSKIP("Couldn't execute md5sum to calculate checksum, executable missing?", SkipSingle);
+
+        QVERIFY(!sum.isEmpty());
+        QCOMPARE(sSum, sum);
+    }
+
+    void testSha1Calc()
+    {
+        QString file( _root.path() + "/file_b.bin");
+        writeRandomFile(file);
+        QFileInfo fi(file);
+        QVERIFY(fi.exists());
+
+        QFile fileDevice(file);
+        fileDevice.open(QIODevice::ReadOnly);
+        QByteArray sum = calcSha1(&fileDevice);
+        fileDevice.close();
+
+        QByteArray sSum = shellSum("sha1sum", file);
+        if (sSum.isEmpty())
+            QSKIP("Couldn't execute sha1sum to calculate checksum, executable missing?", SkipSingle);
+
+        QVERIFY(!sum.isEmpty());
+        QCOMPARE(sSum, sum);
     }
 
     void testUploadChecksummingAdler() {
@@ -69,7 +121,9 @@ using namespace OCC;
 
         connect(vali, SIGNAL(done(QByteArray,QByteArray)), SLOT(slotUpValidated(QByteArray,QByteArray)));
 
-        _expected = FileSystem::calcAdler32( _testfile );
+        auto file = new QFile(_testfile, vali);
+        file->open(QIODevice::ReadOnly);
+        _expected = calcAdler32(file);
         qDebug() << "XX Expected Checksum: " << _expected;
         vali->start(_testfile);
 
@@ -88,7 +142,9 @@ using namespace OCC;
         vali->setChecksumType(_expectedType);
         connect(vali, SIGNAL(done(QByteArray,QByteArray)), this, SLOT(slotUpValidated(QByteArray,QByteArray)));
 
-        _expected = FileSystem::calcMd5( _testfile );
+        auto file = new QFile(_testfile, vali);
+        file->open(QIODevice::ReadOnly);
+        _expected = calcMd5(file);
         vali->start(_testfile);
 
         QEventLoop loop;
@@ -105,7 +161,9 @@ using namespace OCC;
         vali->setChecksumType(_expectedType);
         connect(vali, SIGNAL(done(QByteArray,QByteArray)), this, SLOT(slotUpValidated(QByteArray,QByteArray)));
 
-        _expected = FileSystem::calcSha1( _testfile );
+        auto file = new QFile(_testfile, vali);
+        file->open(QIODevice::ReadOnly);
+        _expected = calcSha1(file);
 
         vali->start(_testfile);
 
@@ -120,25 +178,33 @@ using namespace OCC;
 #ifndef ZLIB_FOUND
         QSKIP("ZLIB not found.", SkipSingle);
 #else
-        QByteArray adler =  checkSumAdlerC;
-        adler.append(":");
-        adler.append(FileSystem::calcAdler32( _testfile ));
-        _successDown = false;
-
         auto *vali = new ValidateChecksumHeader(this);
         connect(vali, SIGNAL(validated(QByteArray,QByteArray)), this, SLOT(slotDownValidated()));
         connect(vali, SIGNAL(validationFailed(QString)), this, SLOT(slotDownError(QString)));
+
+        auto file = new QFile(_testfile, vali);
+        file->open(QIODevice::ReadOnly);
+        _expected = calcAdler32(file);
+
+        QByteArray adler = checkSumAdlerC;
+        adler.append(":");
+        adler.append(_expected);
+
+        file->seek(0);
+        _successDown = false;
         vali->start(_testfile, adler);
 
         QTRY_VERIFY(_successDown);
 
-        _expectedError = QLatin1String("The downloaded file does not match the checksum, it will be resumed.");
+        _expectedError = QStringLiteral("The downloaded file does not match the checksum, it will be resumed. '543345' != '%1'").arg(QString::fromUtf8(_expected));
         _errorSeen = false;
+        file->seek(0);
         vali->start(_testfile, "Adler32:543345");
         QTRY_VERIFY(_errorSeen);
 
         _expectedError = QLatin1String("The checksum header contained an unknown checksum type 'Klaas32'");
         _errorSeen = false;
+        file->seek(0);
         vali->start(_testfile, "Klaas32:543345");
         QTRY_VERIFY(_errorSeen);
 

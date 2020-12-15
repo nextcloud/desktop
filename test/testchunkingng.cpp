@@ -13,14 +13,14 @@ using namespace OCC;
 
 /* Upload a 1/3 of a file of given size.
  * fakeFolder needs to be synchronized */
-static void partialUpload(FakeFolder &fakeFolder, const QString &name, int size)
+static void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 size)
 {
     QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     QCOMPARE(fakeFolder.uploadState().children.count(), 0); // The state should be clean
 
     fakeFolder.localModifier().insert(name, size);
     // Abort when the upload is at 1/3
-    int sizeWhenAbort = -1;
+    qint64 sizeWhenAbort = -1;
     auto con = QObject::connect(&fakeFolder.syncEngine(),  &SyncEngine::transmissionProgress,
                                     [&](const ProgressInfo &progress) {
                 if (progress.completedSize() > (progress.totalSize() /3 )) {
@@ -41,7 +41,7 @@ static void partialUpload(FakeFolder &fakeFolder, const QString &name, int size)
 }
 
 // Reduce max chunk size a bit so we get more chunks
-static void setChunkSize(SyncEngine &engine, quint64 size)
+static void setChunkSize(SyncEngine &engine, qint64 size)
 {
     SyncOptions options;
     options._maxChunkSize = size;
@@ -86,7 +86,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
         QVERIFY(uploadedSize > 2 * 1000 * 1000); // at least 2 MB
 
         // Add a fake chunk to make sure it gets deleted
@@ -95,7 +95,7 @@ private slots:
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
                 // Test that we properly resuming and are not sending past data again.
-                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toULongLong() >= uploadedSize);
+                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toLongLong() >= uploadedSize);
             } else if (op == QNetworkAccessManager::DeleteOperation) {
                 Q_ASSERT(request.url().path().endsWith("/10000"));
             }
@@ -121,7 +121,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
         QVERIFY(uploadedSize > 2 * 1000 * 1000); // at least 50 MB
         QVERIFY(chunkMap.size() >= 3); // at least three chunks
 
@@ -177,12 +177,12 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
         QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
 
         // Add a chunk that makes the file completely uploaded
         fakeFolder.uploadState().children.first().insert(
-            QString::number(chunkMap.size()).rightJustified(8, '0'), size - uploadedSize);
+            QString::number(chunkMap.size()).rightJustified(16, '0'), size - uploadedSize);
 
         bool sawPut = false;
         bool sawDelete = false;
@@ -222,12 +222,12 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
         QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
 
         // Add a chunk that makes the file more than completely uploaded
         fakeFolder.uploadState().children.first().insert(
-            QString::number(chunkMap.size()).rightJustified(8, '0'), size - uploadedSize + 100);
+            QString::number(chunkMap.size()).rightJustified(16, '0'), size - uploadedSize + 100);
 
         QVERIFY(fakeFolder.syncOnce());
 
@@ -248,15 +248,15 @@ private slots:
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
-        auto parent = new QObject;
+        QObject parent;
         QByteArray moveChecksumHeader;
         int nGET = 0;
         int responseDelay = 100000; // bigger than abort-wait timeout
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
-                QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
+                QTimer::singleShot(50, &parent, [&]() { fakeFolder.syncEngine().abort(); });
                 moveChecksumHeader = request.rawHeader("OC-Checksum");
-                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, parent);
+                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, &parent);
             } else if (op == QNetworkAccessManager::GetOperation) {
                 nGET++;
             }
@@ -275,7 +275,7 @@ private slots:
             QCOMPARE(items[0]->_file, QLatin1String("A"));
             SyncJournalFileRecord record;
             QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("A/a0"), &record));
-            QCOMPARE(record._etag, fakeFolder.remoteModifier().find("A/a0")->etag.toUtf8());
+            QCOMPARE(record._etag, fakeFolder.remoteModifier().find("A/a0")->etag);
         };
         auto connection = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkEtagUpdated);
         QVERIFY(fakeFolder.syncOnce());
@@ -332,12 +332,12 @@ private slots:
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
-        auto parent = new QObject;
+        QObject parent;
         int responseDelay = 200; // smaller than abort-wait timeout
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
-                QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
-                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, parent);
+                QTimer::singleShot(50, &parent, [&]() { fakeFolder.syncEngine().abort(); });
+                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, &parent);
             }
             return nullptr;
         });
@@ -575,6 +575,52 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nGET, 0);
     }
+
+    void testPercentEncoding() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        const int size = 5 * 1000 * 1000;
+        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+
+        fakeFolder.localModifier().insert("A/file % \u20ac", size);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Only the second upload contains an "If" header
+        fakeFolder.localModifier().appendByte("A/file % \u20ac");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // Test uploading large files (2.5GiB)
+    void testVeryBigFiles() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        const qint64 size = 2.5 * 1024 * 1024 * 1024; // 2.5 GiB
+
+        // Partial upload of big files
+        partialUpload(fakeFolder, "A/a0", size);
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        auto chunkingId = fakeFolder.uploadState().children.first().name;
+
+        // Now resume
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+
+        // The same chunk id was re-used
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
+
+
+        // Upload another file again, this time without interruption
+        fakeFolder.localModifier().appendByte("A/a0");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size + 1);
+    }
+
+
 };
 
 QTEST_GUILESS_MAIN(TestChunkingNG)

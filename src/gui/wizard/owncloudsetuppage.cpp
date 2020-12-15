@@ -24,6 +24,7 @@
 #include <QNetworkAccessManager>
 #include <QPropertyAnimation>
 #include <QGraphicsPixmapItem>
+#include <QBuffer>
 
 #include "QProgressIndicator.h"
 
@@ -68,6 +69,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     connect(_ui.leUrl, &QLineEdit::editingFinished, this, &OwncloudSetupPage::slotUrlEditFinished);
 
     addCertDial = new AddCertificateDialog(this);
+    connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
 
 #ifdef WITH_PROVIDERS
     connect(_ui.loginButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotLogin);
@@ -197,8 +199,8 @@ void OwncloudSetupPage::slotUrlEditFinished()
     if (QUrl(url).isRelative() && !url.isEmpty()) {
         // no scheme defined, set one
         url.prepend("https://");
+        _ui.leUrl->setFullText(url);
     }
-    _ui.leUrl->setFullText(url);
 }
 
 bool OwncloudSetupPage::isComplete() const
@@ -237,30 +239,6 @@ void OwncloudSetupPage::initializePage()
     wizard()->resize(wizard()->sizeHint());
 }
 
-bool OwncloudSetupPage::urlHasChanged()
-{
-    bool change = false;
-    const QChar slash('/');
-
-    QUrl currentUrl(url());
-    QUrl initialUrl(_oCUrl);
-
-    QString currentPath = currentUrl.path();
-    QString initialPath = initialUrl.path();
-
-    // add a trailing slash.
-    if (!currentPath.endsWith(slash))
-        currentPath += slash;
-    if (!initialPath.endsWith(slash))
-        initialPath += slash;
-
-    if (currentUrl.host() != initialUrl.host() || currentUrl.port() != initialUrl.port() || currentPath != initialPath) {
-        change = true;
-    }
-
-    return change;
-}
-
 int OwncloudSetupPage::nextId() const
 {
     switch (_authType) {
@@ -287,6 +265,7 @@ QString OwncloudSetupPage::url() const
 bool OwncloudSetupPage::validatePage()
 {
     if (!_authTypeKnown) {
+        slotUrlEditFinished();
         QString u = url();
         QUrl qurl(u);
         if (!qurl.isValid() || qurl.host().isEmpty()) {
@@ -343,7 +322,6 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
                 } break;
                 case OwncloudConnectionMethodDialog::Client_Side_TLS:
                     addCertDial->show();
-                    connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
                     break;
                 case OwncloudConnectionMethodDialog::Closed:
                 case OwncloudConnectionMethodDialog::Back:
@@ -389,34 +367,20 @@ void OwncloudSetupPage::slotCertificateAccepted()
 {
     QFile certFile(addCertDial->getCertificatePath());
     certFile.open(QFile::ReadOnly);
-    if (QSslCertificate::importPkcs12(
-            &certFile,
-            &_ocWizard->_clientSslKey,
-            &_ocWizard->_clientSslCertificate,
-            &_ocWizard->_clientSslCaCertificates,
-            addCertDial->getCertificatePasswd().toLocal8Bit())) {
-        AccountPtr acc = _ocWizard->account();
+    QByteArray certData = certFile.readAll();
+    QByteArray certPassword = addCertDial->getCertificatePasswd().toLocal8Bit();
 
-        // to re-create the session ticket because we added a key/cert
-        acc->setSslConfiguration(QSslConfiguration());
-        QSslConfiguration sslConfiguration = acc->getOrCreateSslConfig();
-
-        // We're stuffing the certificate into the configuration form here. Later the
-        // cert will come via the HttpCredentials
-        sslConfiguration.setLocalCertificate(_ocWizard->_clientSslCertificate);
-        sslConfiguration.setPrivateKey(_ocWizard->_clientSslKey);
-
-        // Be sure to merge the CAs
-        auto ca = sslConfiguration.systemCaCertificates();
-        ca.append(_ocWizard->_clientSslCaCertificates);
-        sslConfiguration.setCaCertificates(ca);
-
-        acc->setSslConfiguration(sslConfiguration);
-
-        // Make sure TCP connections get re-established
-        acc->networkAccessManager()->clearAccessCache();
+    QBuffer certDataBuffer(&certData);
+    certDataBuffer.open(QIODevice::ReadOnly);
+    if (QSslCertificate::importPkcs12(&certDataBuffer,
+            &_ocWizard->_clientSslKey, &_ocWizard->_clientSslCertificate,
+            &_ocWizard->_clientSslCaCertificates, certPassword)) {
+        _ocWizard->_clientCertBundle = certData;
+        _ocWizard->_clientCertPassword = certPassword;
 
         addCertDial->reinit(); // FIXME: Why not just have this only created on use?
+
+        // The extracted SSL key and cert gets added to the QSslConfiguration in checkServer()
         validatePage();
     } else {
         addCertDial->showErrorMessage(tr("Could not load certificate. Maybe wrong password?"));

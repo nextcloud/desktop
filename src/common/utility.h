@@ -58,6 +58,15 @@ namespace Utility {
     OCSYNC_EXPORT QString octetsToString(qint64 octets);
     OCSYNC_EXPORT QByteArray userAgentString();
     OCSYNC_EXPORT QByteArray friendlyUserAgentString();
+    /**
+      * @brief Return whether launch on startup is enabled system wide.
+      *
+      * If this returns true, the checkbox for user specific launch
+      * on startup will be hidden.
+      *
+      * Currently only implemented on Windows.
+      */
+    OCSYNC_EXPORT bool hasSystemLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, bool launch);
     OCSYNC_EXPORT uint convertSizeToUint(size_t &convertVar);
@@ -234,6 +243,32 @@ namespace Utility {
     OCSYNC_EXPORT bool registryDeleteKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
     OCSYNC_EXPORT bool registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const std::function<void(HKEY, const QString &)> &callback);
     OCSYNC_EXPORT QRect getTaskbarDimensions();
+
+    // Possibly refactor to share code with UnixTimevalToFileTime in c_time.c
+    OCSYNC_EXPORT void UnixTimeToFiletime(time_t t, FILETIME *filetime);
+    OCSYNC_EXPORT void FiletimeToLargeIntegerFiletime(FILETIME *filetime, LARGE_INTEGER *hundredNSecs);
+    OCSYNC_EXPORT void UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs);
+
+    OCSYNC_EXPORT QString formatWinError(long error);
+    inline QString formatLastWinError() {
+        return formatWinError(GetLastError());
+    };
+
+    class OCSYNC_EXPORT NtfsPermissionLookupRAII
+    {
+    public:
+        /**
+         * NTFS permissions lookup is diabled by default for performance reasons
+         * Enable it and disable it again once we leave the scope
+         * https://doc.qt.io/Qt-5/qfileinfo.html#ntfs-permissions
+         */
+        NtfsPermissionLookupRAII();
+        ~NtfsPermissionLookupRAII();
+
+    private:
+        Q_DISABLE_COPY(NtfsPermissionLookupRAII);
+    };
+
 #endif
 }
 /** @} */ // \addtogroup

@@ -57,7 +57,7 @@ private slots:
         record._type = ItemTypeDirectory;
         record._etag = "789789";
         record._fileId = "abcd";
-        record._remotePerm = RemotePermissions("RW");
+        record._remotePerm = RemotePermissions::fromDbValue("RW");
         record._fileSize = 213089055;
         record._checksumHeader = "MD5:mychecksum";
         QVERIFY(_db.setFileRecord(record));
@@ -79,9 +79,9 @@ private slots:
         record._type = ItemTypeFile;
         record._etag = "789FFF";
         record._fileId = "efg";
-        record._remotePerm = RemotePermissions("NV");
+        record._remotePerm = RemotePermissions::fromDbValue("NV");
         record._fileSize = 289055;
-        _db.setFileRecordMetadata(record);
+        _db.setFileRecord(record);
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
@@ -96,7 +96,7 @@ private slots:
         {
             SyncJournalFileRecord record;
             record._path = "foo-checksum";
-            record._remotePerm = RemotePermissions("RW");
+            record._remotePerm = RemotePermissions::fromDbValue(" ");
             record._checksumHeader = "MD5:mychecksum";
             record._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
             QVERIFY(_db.setFileRecord(record));
@@ -117,7 +117,7 @@ private slots:
         {
             SyncJournalFileRecord record;
             record._path = "foo-nochecksum";
-            record._remotePerm = RemotePermissions("RWN");
+            record._remotePerm = RemotePermissions();
             record._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
 
             QVERIFY(_db.setFileRecord(record));
@@ -236,7 +236,7 @@ private slots:
         makeEntry("foodir/subdir/subsubdir/file", ItemTypeFile);
         makeEntry("foodir/subdir/otherdir", ItemTypeDirectory);
 
-        _db.avoidReadFromDbOnNextSync(QByteArray("foodir/subdir"));
+        _db.schedulePathForRemoteDiscovery(QByteArray("foodir/subdir"));
 
         // Direct effects of parent directories being set to _invalid_
         QCOMPARE(getEtag("foodir"), invalidEtag);
@@ -318,6 +318,139 @@ private slots:
         _db.deleteFileRecord("foo%bar", true);
         elements.removeAll("foo%bar");
         QVERIFY(checkElements());
+    }
+
+    void testPinState()
+    {
+        auto make = [&](const QByteArray &path, PinState state) {
+            _db.internalPinStates().setForPath(path, state);
+            auto pinState = _db.internalPinStates().rawForPath(path);
+            QVERIFY(pinState);
+            QCOMPARE(*pinState, state);
+        };
+        auto get = [&](const QByteArray &path) -> PinState {
+            auto state = _db.internalPinStates().effectiveForPath(path);
+            if (!state) {
+                QTest::qFail("couldn't read pin state", __FILE__, __LINE__);
+                return PinState::Inherited;
+            }
+            return *state;
+        };
+        auto getRecursive = [&](const QByteArray &path) -> PinState {
+            auto state = _db.internalPinStates().effectiveForPathRecursive(path);
+            if (!state) {
+                QTest::qFail("couldn't read pin state", __FILE__, __LINE__);
+                return PinState::Inherited;
+            }
+            return *state;
+        };
+        auto getRaw = [&](const QByteArray &path) -> PinState {
+            auto state = _db.internalPinStates().rawForPath(path);
+            if (!state) {
+                QTest::qFail("couldn't read pin state", __FILE__, __LINE__);
+                return PinState::Inherited;
+            }
+            return *state;
+        };
+
+        _db.internalPinStates().wipeForPathAndBelow("");
+        auto list = _db.internalPinStates().rawList();
+        QCOMPARE(list->size(), 0);
+
+        // Make a thrice-nested setup
+        make("", PinState::AlwaysLocal);
+        make("local", PinState::AlwaysLocal);
+        make("online", PinState::OnlineOnly);
+        make("inherit", PinState::Inherited);
+        for (auto base : {"local/", "online/", "inherit/"}) {
+            make(QByteArray(base) + "inherit", PinState::Inherited);
+            make(QByteArray(base) + "local", PinState::AlwaysLocal);
+            make(QByteArray(base) + "online", PinState::OnlineOnly);
+
+            for (auto base2 : {"local/", "online/", "inherit/"}) {
+                make(QByteArray(base) + base2 + "inherit", PinState::Inherited);
+                make(QByteArray(base) + base2 + "local", PinState::AlwaysLocal);
+                make(QByteArray(base) + base2 + "online", PinState::OnlineOnly);
+            }
+        }
+
+        list = _db.internalPinStates().rawList();
+        QCOMPARE(list->size(), 4 + 9 + 27);
+
+        // Baseline direct checks (the fallback for unset root pinstate is AlwaysLocal)
+        QCOMPARE(get(""), PinState::AlwaysLocal);
+        QCOMPARE(get("local"), PinState::AlwaysLocal);
+        QCOMPARE(get("online"), PinState::OnlineOnly);
+        QCOMPARE(get("inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/local"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/online"), PinState::OnlineOnly);
+        QCOMPARE(get("inherit/local"), PinState::AlwaysLocal);
+        QCOMPARE(get("inherit/online"), PinState::OnlineOnly);
+        QCOMPARE(get("inherit/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("inherit/nonexistant"), PinState::AlwaysLocal);
+
+        // Inheriting checks, level 1
+        QCOMPARE(get("local/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/inherit"), PinState::OnlineOnly);
+        QCOMPARE(get("online/nonexistant"), PinState::OnlineOnly);
+
+        // Inheriting checks, level 2
+        QCOMPARE(get("local/inherit/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/local/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/local/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/online/inherit"), PinState::OnlineOnly);
+        QCOMPARE(get("local/online/nonexistant"), PinState::OnlineOnly);
+        QCOMPARE(get("online/inherit/inherit"), PinState::OnlineOnly);
+        QCOMPARE(get("online/local/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/local/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/online/inherit"), PinState::OnlineOnly);
+        QCOMPARE(get("online/online/nonexistant"), PinState::OnlineOnly);
+
+        // Spot check the recursive variant
+        QCOMPARE(getRecursive(""), PinState::Inherited);
+        QCOMPARE(getRecursive("local"), PinState::Inherited);
+        QCOMPARE(getRecursive("online"), PinState::Inherited);
+        QCOMPARE(getRecursive("inherit"), PinState::Inherited);
+        QCOMPARE(getRecursive("online/local"), PinState::Inherited);
+        QCOMPARE(getRecursive("online/local/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(getRecursive("inherit/inherit/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(getRecursive("inherit/online/inherit"), PinState::OnlineOnly);
+        QCOMPARE(getRecursive("inherit/online/local"), PinState::AlwaysLocal);
+        make("local/local/local/local", PinState::AlwaysLocal);
+        QCOMPARE(getRecursive("local/local/local"), PinState::AlwaysLocal);
+        QCOMPARE(getRecursive("local/local/local/local"), PinState::AlwaysLocal);
+
+        // Check changing the root pin state
+        make("", PinState::OnlineOnly);
+        QCOMPARE(get("local"), PinState::AlwaysLocal);
+        QCOMPARE(get("online"), PinState::OnlineOnly);
+        QCOMPARE(get("inherit"), PinState::OnlineOnly);
+        QCOMPARE(get("nonexistant"), PinState::OnlineOnly);
+        make("", PinState::AlwaysLocal);
+        QCOMPARE(get("local"), PinState::AlwaysLocal);
+        QCOMPARE(get("online"), PinState::OnlineOnly);
+        QCOMPARE(get("inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("nonexistant"), PinState::AlwaysLocal);
+
+        // Wiping
+        QCOMPARE(getRaw("local/local"), PinState::AlwaysLocal);
+        _db.internalPinStates().wipeForPathAndBelow("local/local");
+        QCOMPARE(getRaw("local"), PinState::AlwaysLocal);
+        QCOMPARE(getRaw("local/local"), PinState::Inherited);
+        QCOMPARE(getRaw("local/local/local"), PinState::Inherited);
+        QCOMPARE(getRaw("local/local/online"), PinState::Inherited);
+        list = _db.internalPinStates().rawList();
+        QCOMPARE(list->size(), 4 + 9 + 27 - 4);
+
+        // Wiping everything
+        _db.internalPinStates().wipeForPathAndBelow("");
+        QCOMPARE(getRaw(""), PinState::Inherited);
+        QCOMPARE(getRaw("local"), PinState::Inherited);
+        QCOMPARE(getRaw("online"), PinState::Inherited);
+        list = _db.internalPinStates().rawList();
+        QCOMPARE(list->size(), 0);
     }
 
 private:

@@ -24,55 +24,40 @@
 #include <cerrno>
 #include <cstdio>
 
-#include "csync_private.h"
-#include "std/c_utf8.h"
-#include "vio/csync_vio.h"
+#include "csync.h"
+#include "vio/csync_vio_local.h"
 
-#ifdef _WIN32
-#include <windows.h>
+#include <QDir>
 
-#define CSYNC_TEST_DIR "C:/tmp/csync_test"
-#else
-#define CSYNC_TEST_DIR "/tmp/csync_test"
-#endif
-#define MKDIR_MASK (S_IRWXU |S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH)
+static const auto CSYNC_TEST_DIR = []{ return QStringLiteral("%1/csync_test").arg(QDir::tempPath());}();
 
 #include "torture.h"
 
+namespace {
+int oc_mkdir(const QString &path)
+{
+    return QDir(path).mkpath(path) ? 0 : -1;
+}
+
+}
 #define WD_BUFFER_SIZE 255
 
 static mbchar_t wd_buffer[WD_BUFFER_SIZE];
 
-struct statevar {
-    CSYNC *csync;
-    char  *result;
-    char *ignored_dir;
-};
+typedef struct {
+    QByteArray result;
+    QByteArray ignored_dir;
+} statevar;
 
 /* remove the complete test dir */
 static int wipe_testdir()
 {
-  int rc = 0;
-
-#ifdef _WIN32
-   /* The windows system call to rd bails out if the dir is not existing
-    * Check first.
-    */
-   WIN32_FIND_DATA FindFileData;
-
-   mbchar_t *dir = c_utf8_path_to_locale(CSYNC_TEST_DIR);
-   HANDLE handle = FindFirstFile(dir, &FindFileData);
-   c_free_locale_string(dir);
-   int found = handle != INVALID_HANDLE_VALUE;
-
-   if(found) {
-       FindClose(handle);
-       rc = system("rd /s /q C:\\tmp\\csync_test");
-   }
-#else
-    rc = system("rm -rf /tmp/csync_test/");
-#endif
-    return rc;
+  QDir tmp(CSYNC_TEST_DIR);
+  if (tmp.exists())
+  {
+      return tmp.removeRecursively() ? 0 : 1;
+  }
+  return 0;
 }
 
 static int setup_testenv(void **state) {
@@ -81,52 +66,34 @@ static int setup_testenv(void **state) {
     rc = wipe_testdir();
     assert_int_equal(rc, 0);
 
-    mbchar_t *dir = c_utf8_path_to_locale(CSYNC_TEST_DIR);
-
-    rc = _tmkdir(dir, MKDIR_MASK);
+    auto dir = CSYNC_TEST_DIR;
+    rc = oc_mkdir(dir);
     assert_int_equal(rc, 0);
 
     assert_non_null(_tgetcwd(wd_buffer, WD_BUFFER_SIZE));
 
-    rc = _tchdir(dir);
+#ifdef Q_OS_WIN
+    rc  = _tchdir(dir.toStdWString().data());
+#else
+    rc  = _tchdir(dir.toLocal8Bit().constData());
+#endif
     assert_int_equal(rc, 0);
 
-    c_free_locale_string(dir);
-
     /* --- initialize csync */
-    auto *mystate = (statevar*)malloc( sizeof(statevar) );
-    mystate->result = nullptr;
-
-    mystate->csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
-
-    mystate->csync->current = LOCAL_REPLICA;
-
+    auto mystate = new statevar;
     *state = mystate;
     return 0;
 }
 
 static void output( const char *text )
 {
-    mbchar_t *wtext = c_utf8_string_to_locale(text);
-
-    #ifdef _WIN32
-    wprintf(L"OOOO %ls (%ld)\n", wtext, strlen(text));
-    #else
-    printf("%s\n", wtext);
-    #endif
-    c_free_locale_string(wtext);
+    printf("%s\n", text);
 }
 
 static int teardown(void **state) {
-    auto *sv = (statevar*) *state;
-    CSYNC *csync = sv->csync;
-    int rc = 0;
+    int rc = -1;
 
     output("================== Tearing down!\n");
-
-    auto statedb = csync->statedb;
-    delete csync;
-    delete statedb;
 
     rc = _tchdir(wd_buffer);
     assert_int_equal(rc, 0);
@@ -134,7 +101,7 @@ static int teardown(void **state) {
     rc = wipe_testdir();
     assert_int_equal(rc, 0);
 
-    *state = nullptr;
+    delete reinterpret_cast<statevar*>(*state);
     return 0;
 }
 
@@ -143,14 +110,11 @@ static int teardown(void **state) {
  */
 static void create_dirs( const char *path )
 {
-  int rc = 0;
-  char *mypath = (char*)c_malloc( 2+strlen(CSYNC_TEST_DIR)+strlen(path));
-  *mypath = '\0';
-  strcat(mypath, CSYNC_TEST_DIR);
-  strcat(mypath, "/");
-  strcat(mypath, path);
+  int rc = -1;
+  auto _mypath = QStringLiteral("%1/%2").arg(CSYNC_TEST_DIR, QString::fromUtf8(path)).toUtf8();
+  char *mypath = _mypath.data();
 
-  char *p = mypath+strlen(CSYNC_TEST_DIR)+1; /* start behind the offset */
+  char *p = mypath + CSYNC_TEST_DIR.size() + 1; /* start behind the offset */
   int i = 0;
 
   assert_non_null(path);
@@ -159,17 +123,17 @@ static void create_dirs( const char *path )
     if( *(p+i) == '/' ) {
       p[i] = '\0';
 
-      mbchar_t *mb_dir = c_utf8_path_to_locale(mypath);
-      /* wprintf(L"OOOO %ls (%ld)\n", mb_dir, strlen(mypath)); */
-      rc = _tmkdir(mb_dir, MKDIR_MASK);
-      c_free_locale_string(mb_dir);
-
+      auto mb_dir = QString::fromUtf8(mypath);
+      rc = oc_mkdir(mb_dir);
+      if(rc)
+      {
+          rc = errno;
+      }
       assert_int_equal(rc, 0);
       p[i] = '/';
     }
     i++;
   }
-  SAFE_FREE(mypath);
 }
 
 /*
@@ -183,128 +147,68 @@ static void create_dirs( const char *path )
  * whole tree.
  *
  */
-static void traverse_dir(void **state, const char *dir, int *cnt)
+static void traverse_dir(void **state, const QString &dir, int *cnt)
 {
     csync_vio_handle_t *dh = nullptr;
     std::unique_ptr<csync_file_stat_t> dirent;
-    auto *sv = (statevar*) *state;
-    CSYNC *csync = sv->csync;
-    char *subdir = nullptr;
-    char *subdir_out = nullptr;
-    int rc = 0;
+    auto sv = (statevar*) *state;
+    QByteArray subdir;
+    QByteArray subdir_out;
+    int rc = -1;
     int is_dir = 0;
 
-    /* Format: Smuggle in the C: for unix platforms as its urgently needed
-     * on Windows and the test can be nicely cross platform this way. */
-#ifdef _WIN32
-    const char *format_str = "%s %s";
-#else
-    const char *format_str = "%s C:%s";
-#endif
-
-    dh = csync_vio_opendir(csync, dir);
+    dh = csync_vio_local_opendir(dir);
     assert_non_null(dh);
 
-    while( (dirent = csync_vio_readdir(csync, dh)) ) {
+    OCC::Vfs *vfs = nullptr;
+    while( (dirent = csync_vio_local_readdir(dh, vfs)) ) {
         assert_non_null(dirent.get());
         if (!dirent->original_path.isEmpty()) {
-            sv->ignored_dir = c_strdup(dirent->original_path);
+            sv->ignored_dir = dirent->original_path;
             continue;
         }
 
         assert_false(dirent->path.isEmpty());
 
-        if( c_streq( dirent->path, "..") || c_streq( dirent->path, "." )) {
+        if( dirent->path == ".." || dirent->path == "." ) {
           continue;
         }
 
         is_dir = (dirent->type == ItemTypeDirectory) ? 1:0;
 
-        assert_int_not_equal( asprintf( &subdir, "%s/%s", dir, dirent->path.constData() ), -1 );
-
-        assert_int_not_equal( asprintf( &subdir_out, format_str,
-                                        is_dir ? "<DIR>":"     ",
-                                        subdir), -1 );
+        subdir = dir.toUtf8() + "/" + dirent->path;
+        subdir_out = (is_dir ? "<DIR> ":"      ") + subdir;
 
         if( is_dir ) {
-            if( !sv->result ) {
-                sv->result = c_strdup( subdir_out);
+            if( sv->result.isNull() ) {
+               sv->result = subdir_out;
             } else {
-                const auto newlen = 1 + strlen(sv->result)+strlen(subdir_out);
-                char *tmp = sv->result;
-                sv->result = (char*)c_malloc(newlen);
-                strcpy( sv->result, tmp);
-                SAFE_FREE(tmp);
-
-                strcat( sv->result, subdir_out );
+               sv->result += subdir_out;
             }
         } else {
             *cnt = *cnt +1;
         }
-        output(subdir_out);
+        output(subdir_out.constData());
         if( is_dir ) {
-          traverse_dir( state, subdir, cnt);
+            traverse_dir(state, QString::fromUtf8(subdir), cnt);
         }
-
-        SAFE_FREE(subdir);
-        SAFE_FREE(subdir_out);
     }
 
-    rc = csync_vio_closedir(csync, dh);
+    rc = csync_vio_local_closedir(dh);
     assert_int_equal(rc, 0);
 
 }
 
 static void create_file( const char *path, const char *name, const char *content)
 {
-#ifdef _WIN32
-
-  char *filepath = c_malloc( 2+strlen(CSYNC_TEST_DIR)+strlen(path) + strlen(name) );
-  *filepath = '\0';
-  strcpy(filepath, CSYNC_TEST_DIR);
-  strcat(filepath, "/");
-  strcat(filepath, path);
-  strcat(filepath, name);
-
-  DWORD dwWritten; // number of bytes written to file
-  HANDLE hFile;
-
-  mbchar_t *w_fname = c_utf8_path_to_locale(filepath);
-
-  hFile=CreateFile(w_fname, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, 0,
-                            CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-
-  assert_int_equal( 0, hFile==INVALID_HANDLE_VALUE );
-
-  int len = strlen(content);
-  mbchar_t *dst = nullptr;
-
-  dst = c_utf8_string_to_locale(content);
-  WriteFile(hFile, dst, len * sizeof(mbchar_t), &dwWritten, 0);
-
-  CloseHandle(hFile);
-  SAFE_FREE(dst);
-  c_free_locale_string(w_fname);
-#else
-   char *filepath = (char*)c_malloc( 1+strlen(path) + strlen(name) );
-   *filepath = '\0';
-
-   strcpy(filepath, path);
-   strcat(filepath, name);
-
-   FILE *sink = nullptr;
-   sink = fopen(filepath,"w");
-
-   fprintf (sink, "we got: %s",content);
-   fclose(sink);
-   SAFE_FREE(filepath);
-#endif
-
+    QFile file(QStringLiteral("%1/%2%3").arg(CSYNC_TEST_DIR, QString::fromUtf8(path), QString::fromUtf8(name)));
+    assert_int_equal(1, file.open(QIODevice::WriteOnly | QIODevice::NewOnly));
+    file.write(content);
 }
 
 static void check_readdir_shorttree(void **state)
 {
-    auto *sv = (statevar*) *state;
+    auto sv = (statevar*) *state;
 
     const char *t1 = "alibaba/und/die/vierzig/räuber/";
     create_dirs( t1 );
@@ -312,18 +216,21 @@ static void check_readdir_shorttree(void **state)
     
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
 
-    assert_string_equal( sv->result,
-                         "<DIR> C:/tmp/csync_test/alibaba"
-                         "<DIR> C:/tmp/csync_test/alibaba/und"
-                         "<DIR> C:/tmp/csync_test/alibaba/und/die"
-                         "<DIR> C:/tmp/csync_test/alibaba/und/die/vierzig"
-                         "<DIR> C:/tmp/csync_test/alibaba/und/die/vierzig/räuber" );
+    assert_string_equal(sv->result.constData(),
+        QString::fromUtf8("<DIR> %1/alibaba"
+                          "<DIR> %1/alibaba/und"
+                          "<DIR> %1/alibaba/und/die"
+                          "<DIR> %1/alibaba/und/die/vierzig"
+                          "<DIR> %1/alibaba/und/die/vierzig/räuber")
+            .arg(CSYNC_TEST_DIR)
+            .toUtf8()
+            .constData());
     assert_int_equal(files_cnt, 0);
 }
 
 static void check_readdir_with_content(void **state)
 {
-    auto *sv = (statevar*) *state;
+    auto sv = (statevar*) *state;
     int files_cnt = 0;
 
     const char *t1 = "warum/nur/40/Räuber/";
@@ -335,19 +242,22 @@ static void check_readdir_with_content(void **state)
 
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
 
-    assert_string_equal( sv->result,
-                         "<DIR> C:/tmp/csync_test/warum"
-                         "<DIR> C:/tmp/csync_test/warum/nur"
-                         "<DIR> C:/tmp/csync_test/warum/nur/40"
-                         "<DIR> C:/tmp/csync_test/warum/nur/40/Räuber");
-    /*                   "      C:/tmp/csync_test/warum/nur/40/Räuber/Räuber Max.txt"
-                         "      C:/tmp/csync_test/warum/nur/40/Räuber/пя́тница.txt"); */
+    assert_string_equal(sv->result.constData(),
+        QString::fromUtf8("<DIR> %1/warum"
+                          "<DIR> %1/warum/nur"
+                          "<DIR> %1/warum/nur/40"
+                          "<DIR> %1/warum/nur/40/Räuber")
+            .arg(CSYNC_TEST_DIR)
+            .toUtf8()
+            .constData());
+    /*                   "      %1/warum/nur/40/Räuber/Räuber Max.txt"
+                         "      %1/warum/nur/40/Räuber/пя́тница.txt"; */
     assert_int_equal(files_cnt, 2); /* Two files in the sub dir */
 }
 
 static void check_readdir_longtree(void **state)
 {
-    auto *sv = (statevar*) *state;
+    auto sv = (statevar*) *state;
 
     /* Strange things here: Compilers only support strings with length of 4k max.
      * The expected result string is longer, so it needs to be split up in r1, r2 and r3
@@ -357,98 +267,88 @@ static void check_readdir_longtree(void **state)
     const char *t1 = "vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI/Butteln/VOLL RUM/";
     create_dirs( t1 );
 
-    const char  *r1 =
-"<DIR> C:/tmp/csync_test/vierzig"
-"<DIR> C:/tmp/csync_test/vierzig/mann"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum";
+    const auto r1 = QString::fromUtf8(
+"<DIR> %1/vierzig"
+"<DIR> %1/vierzig/mann"
+"<DIR> %1/vierzig/mann/auf"
+"<DIR> %1/vierzig/mann/auf/des"
+"<DIR> %1/vierzig/mann/auf/des/toten"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum").arg(CSYNC_TEST_DIR);
 
 
-    const char *r2 =
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH";
+    const auto r2 = QString::fromUtf8(
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH").arg(CSYNC_TEST_DIR);
 
 
-    const char *r3 =
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI/Butteln"
-"<DIR> C:/tmp/csync_test/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI/Butteln/VOLL RUM";
+    const auto r3 = QString::fromUtf8(
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI/Butteln"
+"<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI/Butteln/VOLL RUM").arg(CSYNC_TEST_DIR);
 
     /* assemble the result string ... */
-    const auto overall_len = 1 + strlen(r1) + strlen(r2) + strlen(r3);
+    const auto result = (r1 + r2 + r3).toUtf8();
     int files_cnt = 0;
-    char *result = (char*)c_malloc(overall_len);
-    *result = '\0';
-
-    strcat(result, r1);
-    strcat(result, r2);
-    strcat(result, r3);
-
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
     assert_int_equal(files_cnt, 0);
     /* and compare. */
-    assert_string_equal( sv->result, result);
+    assert_string_equal(sv->result.constData(), result.constData());
 }
 
 // https://github.com/owncloud/client/issues/3128 https://github.com/owncloud/client/issues/2777
 static void check_readdir_bigunicode(void **state)
 {
-    auto *sv = (statevar*) *state;
+    auto sv = (statevar*) *state;
 //    1: ? ASCII: 239 - EF
 //    2: ? ASCII: 187 - BB
 //    3: ? ASCII: 191 - BF
 //    4: ASCII: 32    - 20
 
-    char *p = nullptr;
-    asprintf( &p, "%s/%s", CSYNC_TEST_DIR, "goodone/" );
-    int rc = _tmkdir(p, MKDIR_MASK);
+    QString p = QStringLiteral("%1/%2").arg(CSYNC_TEST_DIR, QStringLiteral("goodone/"));
+    int rc = oc_mkdir(p);
     assert_int_equal(rc, 0);
-    SAFE_FREE(p);
 
-    const char *t1 = "goodone/ugly\xEF\xBB\xBF\x32" ".txt"; // file with encoding error
-    asprintf( &p, "%s/%s", CSYNC_TEST_DIR, t1 );
-    rc = _tmkdir(p, MKDIR_MASK);
-    SAFE_FREE(p);
+    p = QStringLiteral("%1/goodone/ugly\xEF\xBB\xBF\x32.txt").arg(CSYNC_TEST_DIR); // file with encoding error
+
+    rc = oc_mkdir(p);
 
     assert_int_equal(rc, 0);
 
     int files_cnt = 0;
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
-    const char *expected_result =  "<DIR> C:/tmp/csync_test/goodone"
-                                   "<DIR> C:/tmp/csync_test/goodone/ugly\xEF\xBB\xBF\x32" ".txt"
-                                   ;
-    assert_string_equal( sv->result, expected_result);
+    const auto expected_result = QStringLiteral("<DIR> %1/goodone"
+                                                "<DIR> %1/goodone/ugly\xEF\xBB\xBF\x32.txt")
+                                     .arg(CSYNC_TEST_DIR);
+    assert_string_equal(sv->result.constData(), expected_result.toUtf8().constData());
 
     assert_int_equal(files_cnt, 0);
 }

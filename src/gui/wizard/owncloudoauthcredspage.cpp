@@ -112,7 +112,7 @@ AbstractCredentials *OwncloudOAuthCredsPage::getCredentials() const
     auto *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
     return new HttpCredentialsGui(_user, _token, _refreshToken,
-        ocWizard->_clientSslCertificate, ocWizard->_clientSslKey);
+        ocWizard->_clientCertBundle, ocWizard->_clientCertPassword);
 }
 
 bool OwncloudOAuthCredsPage::isComplete() const
@@ -124,6 +124,8 @@ void OwncloudOAuthCredsPage::slotOpenBrowser()
 {
     if (_ui.errorLabel)
         _ui.errorLabel->hide();
+
+    qobject_cast<OwncloudWizard *>(wizard())->account()->clearCookieJar(); // #6574
 
     if (_asyncAuth)
         _asyncAuth->openBrowser();

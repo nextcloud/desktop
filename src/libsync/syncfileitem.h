@@ -23,6 +23,8 @@
 
 #include <csync.h>
 
+#include <owncloudlib.h>
+
 namespace OCC {
 
 class SyncFileItem;
@@ -33,14 +35,16 @@ using SyncFileItemPtr = QSharedPointer<SyncFileItem>;
  * @brief The SyncFileItem class
  * @ingroup libsync
  */
-class SyncFileItem
+class OWNCLOUDSYNC_EXPORT SyncFileItem
 {
+    Q_GADGET
 public:
     enum Direction {
         None = 0,
         Up,
         Down
     };
+    Q_ENUM(Direction)
 
     enum Status { // stored in 4 bits
         NoStatus,
@@ -82,8 +86,9 @@ public:
          */
         BlacklistedError
     };
+    Q_ENUM(Status)
 
-    SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName);
+    SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
 
     /** Creates a basic SyncFileItem from a DB record
      *
@@ -101,6 +106,8 @@ public:
         , _errorMayBeBlacklisted(false)
         , _status(NoStatus)
         , _isRestoration(false)
+        , _isSelectiveSync(false)
+        , _isEncrypted(false)
     {
     }
 
@@ -185,19 +192,36 @@ public:
      */
     bool showInProtocolTab() const
     {
-        return !showInIssuesTab()
+        return (!showInIssuesTab() || _status == SyncFileItem::Restoration)
             // Don't show conflicts that were resolved as "not a conflict after all"
             && !(_instruction == CSYNC_INSTRUCTION_CONFLICT && _status == SyncFileItem::Success);
     }
 
     // Variables useful for everybody
+
+    /** The syncfolder-relative filesystem path that the operation is about
+     *
+     * For rename operation this is the rename source and the target is in _renameTarget.
+     */
     QString _file;
+
+    /** for renames: the name _file should be renamed to
+     * for dehydrations: the name _file should become after dehydration (like adding a suffix)
+     * otherwise empty. Use destination() to find the sync target.
+     */
     QString _renameTarget;
+
+    /** The db-path of this item.
+     *
+     * This can easily differ from _file and _renameTarget if parts of the path were renamed.
+     */
+    QString _originalFile;
 
     /// Whether there's end to end encryption on this file.
     /// If the file is encrypted, the _encryptedFilename is
     /// the encrypted name on the server.
     QString _encryptedFileName;
+
     ItemType _type BITFIELD(3);
     Direction _direction BITFIELD(3);
     bool _serverHasIgnoredFiles BITFIELD(1);
@@ -217,19 +241,21 @@ public:
     // Variables useful to report to the user
     Status _status BITFIELD(4);
     bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
+    bool _isSelectiveSync BITFIELD(1); // The file is removed or ignored because it is in the selective sync list
+    bool _isEncrypted BITFIELD(1); // The file is E2EE or the content of the directory should be E2EE
     quint16 _httpErrorCode = 0;
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
     QByteArray _responseTimeStamp;
+    QByteArray _requestId; // X-Request-Id of the failed request
     quint32 _affectedItems = 1; // the number of affected items by the operation on this item.
     // usually this value is 1, but for removes on dirs, it might be much higher.
 
     // Variables used by the propagator
-    csync_instructions_e _instruction = CSYNC_INSTRUCTION_NONE;
-    QString _originalFile; // as it is in the csync tree
+    SyncInstructions _instruction = CSYNC_INSTRUCTION_NONE;
     time_t _modtime = 0;
     QByteArray _etag;
-    quint64 _size = 0;
+    qint64 _size = 0;
     quint64 _inode = 0;
     QByteArray _fileId;
 
@@ -242,7 +268,7 @@ public:
     QByteArray _checksumHeader;
 
     // The size and modtime of the file getting overwritten (on the disk for downloads, on the server for uploads).
-    quint64 _previousSize = 0;
+    qint64 _previousSize = 0;
     time_t _previousModtime = 0;
 
     QString _directDownloadUrl;

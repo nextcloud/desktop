@@ -76,6 +76,11 @@ public:
 class OWNCLOUDSYNC_EXPORT Account : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString id MEMBER _id)
+    Q_PROPERTY(QString davUser MEMBER _davUser)
+    Q_PROPERTY(QString displayName MEMBER _displayName)
+    Q_PROPERTY(QUrl url MEMBER _url)
+
 public:
     static AccountPtr create();
     ~Account();
@@ -218,10 +223,6 @@ public:
      * This function returns true if the server is beyond the weak limit.
      */
     bool serverVersionUnsupported() const;
-
-    // Fixed from 8.1 https://github.com/owncloud/client/issues/3730
-    /** Detects a specific bug in older server versions */
-    bool rootEtagChangesNotOnlySubFolderEtags();
 
     /** True when the server connection is using HTTP2  */
     bool isHttp2Supported() { return _http2Supported; }

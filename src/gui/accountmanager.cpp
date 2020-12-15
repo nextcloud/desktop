@@ -16,6 +16,7 @@
 #include "configfile.h"
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
+#include "common/asserts.h"
 #include <theme.h>
 #include <creds/credentialsfactory.h>
 #include <creds/abstractcredentials.h>
@@ -32,10 +33,15 @@ static const char urlC[] = "url";
 static const char authTypeC[] = "authType";
 static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
+static const char davUserC[] = "dav_user";
 static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
 static const char versionC[] = "version";
 static const char serverVersionC[] = "serverVersion";
+
+// The maximum versions that this client can read
+static const int maxAccountsVersion = 2;
+static const int maxAccountVersion = 1;
 }
 
 
@@ -51,11 +57,20 @@ AccountManager *AccountManager::instance()
 
 bool AccountManager::restore()
 {
+    QStringList skipSettingsKeys;
+    backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
+
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     if (settings->status() != QSettings::NoError || !settings->isWritable()) {
         qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName()
                                     << settings->status();
         return false;
+    }
+
+    if (skipSettingsKeys.contains(settings->group())) {
+        // Should not happen: bad container keys should have been deleted
+        qCWarning(lcAccountManager) << "Accounts structure is too new, ignoring";
+        return true;
     }
 
     // If there are no accounts, check the old format.
@@ -67,16 +82,43 @@ bool AccountManager::restore()
 
     for (const auto &accountId : settings->childGroups()) {
         settings->beginGroup(accountId);
-        if (auto acc = loadAccountHelper(*settings)) {
-            acc->_id = accountId;
-            if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
-                addAccountState(accState);
+        if (!skipSettingsKeys.contains(settings->group())) {
+            if (auto acc = loadAccountHelper(*settings)) {
+                acc->_id = accountId;
+                if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
+                    auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
+                    ASSERT(jar);
+                    if (jar)
+                        jar->restore(acc->cookieJarPath());
+                    addAccountState(accState);
+                }
             }
+        } else {
+            qCInfo(lcAccountManager) << "Account" << accountId << "is too new, ignoring";
+            _additionalBlockedAccountIds.insert(accountId);
         }
         settings->endGroup();
     }
 
     return true;
+}
+
+void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)
+{
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    const int accountsVersion = settings->value(QLatin1String(versionC)).toInt();
+    if (accountsVersion <= maxAccountsVersion) {
+        foreach (const auto &accountId, settings->childGroups()) {
+            settings->beginGroup(accountId);
+            const int accountVersion = settings->value(QLatin1String(versionC), 1).toInt();
+            if (accountVersion > maxAccountVersion) {
+                ignoreKeys->append(settings->group());
+            }
+            settings->endGroup();
+        }
+    } else {
+        deleteKeys->append(settings->group());
+    }
 }
 
 bool AccountManager::restoreFromLegacySettings()
@@ -139,7 +181,7 @@ bool AccountManager::restoreFromLegacySettings()
 void AccountManager::save(bool saveCredentials)
 {
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    settings->setValue(QLatin1String(versionC), 2);
+    settings->setValue(QLatin1String(versionC), maxAccountsVersion);
     for (const auto &acc : qAsConst(_accounts)) {
         settings->beginGroup(acc->account()->id());
         saveAccountHelper(acc->account().data(), *settings, saveCredentials);
@@ -153,31 +195,33 @@ void AccountManager::save(bool saveCredentials)
 
 void AccountManager::saveAccount(Account *a)
 {
-    qCInfo(lcAccountManager) << "Saving account" << a->url().toString();
+    qCDebug(lcAccountManager) << "Saving account" << a->url().toString();
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->id());
     saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
 
     settings->sync();
-    qCInfo(lcAccountManager) << "Saved account settings, status:" << settings->status();
+    qCDebug(lcAccountManager) << "Saved account settings, status:" << settings->status();
 }
 
 void AccountManager::saveAccountState(AccountState *a)
 {
-    qCInfo(lcAccountManager) << "Saving account state" << a->account()->url().toString();
+    qCDebug(lcAccountManager) << "Saving account state" << a->account()->url().toString();
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->account()->id());
     a->writeToSettings(*settings);
     settings->endGroup();
 
     settings->sync();
-    qCInfo(lcAccountManager) << "Saved account state settings, status:" << settings->status();
+    qCDebug(lcAccountManager) << "Saved account state settings, status:" << settings->status();
 }
 
 void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
 {
+    settings.setValue(QLatin1String(versionC), maxAccountVersion);
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
+    settings.setValue(QLatin1String(davUserC), acc->_davUser);
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     if (acc->_credentials) {
         if (saveCredentials) {
@@ -214,7 +258,10 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         auto *jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
         if (jar) {
             qCInfo(lcAccountManager) << "Saving cookies." << acc->cookieJarPath();
-            jar->save(acc->cookieJarPath());
+            if (!jar->save(acc->cookieJarPath()))
+            {
+                qCWarning(lcAccountManager) << "Failed to save cookies to" << acc->cookieJarPath();
+            }
         }
     }
 }
@@ -270,6 +317,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
+    acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
@@ -284,7 +332,9 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String("General"));
-    acc->setApprovedCerts(QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray()));
+    const auto certs = QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray());
+    qCInfo(lcAccountManager) << "Restored: " << certs.count() << " unknown certs.";
+    acc->setApprovedCerts(certs);
     settings.endGroup();
 
     return acc;
@@ -370,8 +420,16 @@ void AccountManager::shutdown()
     }
 }
 
+QList<AccountStatePtr> AccountManager::accounts() const
+{
+     return _accounts;
+}
+
 bool AccountManager::isAccountIdAvailable(const QString &id) const
 {
+    if (_additionalBlockedAccountIds.contains(id))
+        return false;
+
     return std::none_of(_accounts.cbegin(), _accounts.cend(), [id](const auto &acc) {
         return acc->account()->id() == id;
     });

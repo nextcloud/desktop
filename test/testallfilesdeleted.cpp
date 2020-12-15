@@ -61,11 +61,11 @@ private slots:
         auto initialState = fakeFolder.currentLocalState();
         int aboutToRemoveAllFilesCalled = 0;
         QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
-            [&](SyncFileItem::Direction dir, bool *cancel) {
+            [&](SyncFileItem::Direction dir, std::function<void(bool)> callback) {
                 QCOMPARE(aboutToRemoveAllFilesCalled, 0);
                 aboutToRemoveAllFilesCalled++;
                 QCOMPARE(dir, deleteOnRemote ? SyncFileItem::Down : SyncFileItem::Up);
-                *cancel = true;
+                callback(true);
                 fakeFolder.syncEngine().journal()->clearFileTable(); // That's what Folder is doing
             });
 
@@ -102,11 +102,11 @@ private slots:
 
         int aboutToRemoveAllFilesCalled = 0;
         QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
-            [&](SyncFileItem::Direction dir, bool *cancel) {
+            [&](SyncFileItem::Direction dir, std::function<void(bool)> callback) {
                 QCOMPARE(aboutToRemoveAllFilesCalled, 0);
                 aboutToRemoveAllFilesCalled++;
                 QCOMPARE(dir, deleteOnRemote ? SyncFileItem::Down : SyncFileItem::Up);
-                *cancel = false;
+                callback(false);
             });
 
         auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
@@ -155,6 +155,38 @@ private slots:
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
 
+    void testResetServer()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        int aboutToRemoveAllFilesCalled = 0;
+        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
+            [&](SyncFileItem::Direction dir, std::function<void(bool)> callback) {
+                QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+                aboutToRemoveAllFilesCalled++;
+                QCOMPARE(dir, SyncFileItem::Down);
+                callback(false);
+            });
+
+        // Some small changes
+        fakeFolder.localModifier().mkdir("Q");
+        fakeFolder.localModifier().insert("Q/q1");
+        fakeFolder.localModifier().appendByte("B/b1");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+
+        // Do some change localy
+        fakeFolder.localModifier().appendByte("A/a1");
+
+        // reset the server.
+        fakeFolder.remoteModifier() = FileInfo::A12_B12_C12_S12();
+
+        // Now, aboutToRemoveAllFiles with down as a direction
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 1);
+
+    }
+
     void testDataFingetPrint_data()
     {
         QTest::addColumn<bool>("hasInitialFingerPrint");
@@ -175,7 +207,24 @@ private slots:
             //Server support finger print, but none is set.
             fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint></oc:data-fingerprint>";
         }
+
+        int fingerprintRequests = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation, const QNetworkRequest &request, QIODevice *stream) -> QNetworkReply * {
+            auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
+            if (verb == "PROPFIND") {
+                auto data = stream->readAll();
+                if (data.contains("data-fingerprint")) {
+                    if (request.url().path().endsWith("webdav/"))
+                        ++fingerprintRequests;
+                    else
+                        fingerprintRequests = -10000; // fingerprint queried on incorrect path
+                }
+            }
+            return nullptr;
+        });
+
         QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fingerprintRequests, 1);
         // First sync, we did not change the finger print, so the file should be downloaded as normal
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(fakeFolder.currentRemoteState().find("C/c1")->contentChar, 'N');
@@ -201,6 +250,7 @@ private slots:
         fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>new_finger_print</oc:data-fingerprint>";
 
         QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fingerprintRequests, 2);
         auto currentState = fakeFolder.currentLocalState();
         // Altough the local file is kept as a conflict, the server file is downloaded
         QCOMPARE(currentState.find("A/a1")->contentChar, 'O');
@@ -224,6 +274,56 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testSingleFileRenamed() {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        int aboutToRemoveAllFilesCalled = 0;
+        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
+            [&](SyncFileItem::Direction , std::function<void(bool)> ) {
+                aboutToRemoveAllFilesCalled++;
+                QFAIL("should not be called");
+            });
+
+        // add a single file
+        fakeFolder.localModifier().insert("hello.txt");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // rename it
+        fakeFolder.localModifier().rename("hello.txt", "goodbye.txt");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testSelectiveSyncNoPopup() {
+        // Unselecting all folder should not cause the popup to be shown
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        int aboutToRemoveAllFilesCalled = 0;
+        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
+            [&](SyncFileItem::Direction , std::function<void(bool)>) {
+                aboutToRemoveAllFilesCalled++;
+                QFAIL("should not be called");
+            });
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+            QStringList() << "A/" << "B/" << "C/" << "S/");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), FileInfo{}); // all files should be one localy
+        QCOMPARE(fakeFolder.currentRemoteState(), FileInfo::A12_B12_C12_S12()); // Server not changed
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0); // But we did not show the popup
+    }
+
+
 };
 
 QTEST_GUILESS_MAIN(TestAllFilesDeleted)

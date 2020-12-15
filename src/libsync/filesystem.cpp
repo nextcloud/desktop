@@ -21,13 +21,9 @@
 #include <QDirIterator>
 #include <QCoreApplication>
 
-// We use some internals of csync:
-extern "C" int c_utimes(const char *, const struct timeval *);
-
 #include "csync.h"
 #include "vio/csync_vio_local.h"
-#include "std/c_string.h"
-#include "std/c_utf8.h"
+#include "std/c_time.h"
 
 namespace OCC {
 
@@ -68,7 +64,7 @@ time_t FileSystem::getModTime(const QString &filename)
 {
     csync_file_stat_t stat;
     qint64 result = -1;
-    if (csync_vio_local_stat(filename.toUtf8().data(), &stat) != -1
+    if (csync_vio_local_stat(filename, &stat) != -1
         && (stat.modtime != 0)) {
         result = stat.modtime;
     } else {
@@ -84,7 +80,7 @@ bool FileSystem::setModTime(const QString &filename, time_t modTime)
     struct timeval times[2];
     times[0].tv_sec = times[1].tv_sec = modTime;
     times[0].tv_usec = times[1].tv_usec = 0;
-    int rc = c_utimes(filename.toUtf8().data(), times);
+    int rc = c_utimes(filename, times);
     if (rc != 0) {
         qCWarning(lcFileSystem) << "Error setting mtime for" << filename
                                 << "failed: rc" << rc << ", errno:" << errno;
@@ -121,7 +117,7 @@ static qint64 getSizeWithCsync(const QString &filename)
 {
     qint64 result = 0;
     csync_file_stat_t stat;
-    if (csync_vio_local_stat(filename.toUtf8().data(), &stat) != -1) {
+    if (csync_vio_local_stat(filename, &stat) != -1) {
         result = stat.size;
     } else {
         qCWarning(lcFileSystem) << "Could not get size for" << filename << "with csync";
@@ -187,6 +183,16 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
         }
     }
     return allRemoved;
+}
+
+bool FileSystem::getInode(const QString &filename, quint64 *inode)
+{
+    csync_file_stat_t fs;
+    if (csync_vio_local_stat(filename, &fs) == 0) {
+        *inode = fs.inode;
+        return true;
+    }
+    return false;
 }
 
 

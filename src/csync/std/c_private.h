@@ -39,11 +39,9 @@
 #include <unistd.h>
 #endif
 
-#include <errno.h>  // NOLINT this is sometimes compiled in C mode
+#include <cerrno>
 
 #ifdef __MINGW32__
-#define EDQUOT 0
-#define ENODATA 0
 #ifndef S_IRGRP
 #define S_IRGRP 0
 #endif
@@ -74,32 +72,16 @@
 #include <fcntl.h>
 #endif
 
-#ifndef ENODATA
-#define ENODATA EPIPE
-#endif
-
 
 #ifdef _WIN32
-typedef struct stat64 csync_stat_t; // NOLINT this is sometimes compiled in C mode
+using csync_stat_t = struct stat64;
 #define _FILE_OFFSET_BITS 64
 #else
-typedef struct stat csync_stat_t; // NOLINT this is sometimes compiled in C mode
+using csync_stat_t = struct stat;
 #endif
 
 #ifndef O_NOATIME
 #define O_NOATIME 0
-#endif
-
-#ifndef ENODATA
-#define ENODATA EBADF
-#endif
-
-#if !defined(HAVE_ASPRINTF)
-#if defined(HAVE___MINGW_ASPRINTF)
-#define asprintf __mingw_asprintf
-#else
-#include "asprintf.h"
-#endif
 #endif
 
 #ifndef HAVE_LSTAT
@@ -112,7 +94,7 @@ typedef struct stat csync_stat_t; // NOLINT this is sometimes compiled in C mode
 #endif
 
 #if defined _WIN32 && defined _UNICODE
-typedef  wchar_t         mbchar_t; // NOLINT this is sometimes compiled in C mode
+using mbchar_t = wchar_t;
 #define _topen           _wopen
 #define _tdirent         _wdirent
 #define _topendir        _wopendir
@@ -133,7 +115,7 @@ typedef  wchar_t         mbchar_t; // NOLINT this is sometimes compiled in C mod
 #define _tchdir          _wchdir
 #define _tgetcwd         _wgetcwd
 #else
-typedef char           mbchar_t; // NOLINT this is sometimes compiled in C mode
+using mbchar_t = char;
 #define _tdirent       dirent
 #define _topen         open
 #define _topendir      opendir

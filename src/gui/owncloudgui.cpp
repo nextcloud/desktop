@@ -42,9 +42,6 @@
 #include <QtDBus/QDBusInterface>
 #endif
 
-#if defined(Q_OS_X11)
-#include <QX11Info>
-#endif
 
 #include <QQmlEngine>
 #include <QQmlComponent>
@@ -228,7 +225,7 @@ void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
     if (account->serverVersionUnsupported()) {
         slotShowTrayMessage(
             tr("Unsupported Server Version"),
-            tr("The server on account %1 runs an old and unsupported version %2. "
+            tr("The server on account %1 runs an unsupported version %2. "
                "Using this client with unsupported server versions is untested and "
                "potentially dangerous. Proceed at your own risk.")
                 .arg(account->displayName(), account->serverVersion()));
@@ -245,7 +242,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         // FIXME: So this doesn't do anything? Needs to be revisited
         Q_UNUSED(text)
         // Don't overwrite the status if we're currently syncing
-        if (FolderMan::instance()->currentSyncFolder())
+        if (FolderMan::instance()->isAnySyncRunning())
             return;
         //_actionStatus->setText(text);
     };
@@ -367,6 +364,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 }
 
+void ownCloudGui::hideAndShowTray()
+{
+    _tray->hide();
+    _tray->show();
+}
+
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
 {
     if (_tray)
@@ -426,8 +429,8 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
     }
 
     if (progress.totalSize() == 0) {
-        quint64 currentFile = progress.currentFile();
-        quint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
+        qint64 currentFile = progress.currentFile();
+        qint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
         QString msg;
         if (progress.trustEta()) {
             msg = tr("Syncing %1 of %2 (%3 left)")
@@ -586,28 +589,21 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
         raiseWidget->showNormal();
         raiseWidget->raise();
         raiseWidget->activateWindow();
-
-#if defined(Q_OS_X11)
-        WId wid = widget->winId();
-        NETWM::init();
-
-        XEvent e;
-        e.xclient.type = ClientMessage;
-        e.xclient.message_type = NETWM::NET_ACTIVE_WINDOW;
-        e.xclient.display = QX11Info::display();
-        e.xclient.window = wid;
-        e.xclient.format = 32;
-        e.xclient.data.l[0] = 2;
-        e.xclient.data.l[1] = QX11Info::appTime();
-        e.xclient.data.l[2] = 0;
-        e.xclient.data.l[3] = 0l;
-        e.xclient.data.l[4] = 0l;
-        Display *display = QX11Info::display();
-        XSendEvent(display,
-            RootWindow(display, DefaultScreen(display)),
-            False, // propagate
-            SubstructureRedirectMask | SubstructureNotifyMask,
-            &e);
+#ifdef Q_OS_WIN
+        // Windows disallows raising a Window when you're not the active application.
+        // Use a common hack to attach to the active application
+        const auto activeProcessId = GetWindowThreadProcessId(GetForegroundWindow(), nullptr);
+        if (activeProcessId != qApp->applicationPid()) {
+            const auto threadId = GetCurrentThreadId();
+            // don't step here with a debugger...
+            if (AttachThreadInput(threadId, activeProcessId, true))
+            {
+                const auto hwnd = reinterpret_cast<HWND>(raiseWidget->winId());
+                SetForegroundWindow(hwnd);
+                SetWindowPos(hwnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+                AttachThreadInput(threadId, activeProcessId, false);
+            }
+        }
 #endif
     }
 }
@@ -619,11 +615,6 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     if (!folder) {
         qCWarning(lcApplication) << "Could not open share dialog for" << localPath << "no responsible folder found";
         return;
-    }
-
-    // For https://github.com/owncloud/client/issues/3783
-    if (_settingsDialog) {
-        _settingsDialog->hide();
     }
 
     const auto accountState = folder->accountState();
