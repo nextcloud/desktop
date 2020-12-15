@@ -711,7 +711,9 @@ void SocketApi::command_RESOLVE_CONFLICT(const QString &localFile, SocketListene
     dialog.setBaseFilename(baseName);
     dialog.setLocalVersionFilename(conflictedPath);
     dialog.setRemoteVersionFilename(basePath);
-    dialog.exec();
+    if (dialog.exec() == ConflictDialog::Accepted) {
+        fileData.folder->scheduleThisFolderSoon();
+    }
 #endif
 }
 

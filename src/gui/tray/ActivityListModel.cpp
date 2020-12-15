@@ -448,7 +448,9 @@ void ActivityListModel::triggerDefaultAction(int activityIndex) const
         dialog.setBaseFilename(baseName);
         dialog.setLocalVersionFilename(conflictedPath);
         dialog.setRemoteVersionFilename(basePath);
-        dialog.exec();
+        if (dialog.exec() == ConflictDialog::Accepted) {
+            folder->scheduleThisFolderSoon();
+        }
         return;
     }
 
