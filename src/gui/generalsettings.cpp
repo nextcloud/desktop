@@ -278,7 +278,10 @@ void GeneralSettings::reloadConfig()
         _ui->autostartCheckBox->setDisabled(true);
         _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
     } else {
-        _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
+        const bool hasAutoStart = Utility::hasLaunchOnStartup(Theme::instance()->appName());
+        // make sure the binary location is correctly set
+        slotToggleLaunchOnStartup(hasAutoStart);
+        _ui->autostartCheckBox->setChecked(hasAutoStart);
         connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
     }
 }

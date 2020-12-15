@@ -1,0 +1,6 @@
+Bugfix: Update Windows launch on start entry
+
+We fixed a bug where launch on start did not work after a re install
+to a new location.
+
+https://github.com/owncloud/client/issues/7672
