@@ -572,7 +572,7 @@ Q_INVOKABLE int UserModel::currentUserId() const
 
 Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
 {
-    if (_users.isEmpty())
+    if (id < 0 || id >= _users.size())
         return false;
 
     return _users[id]->isConnected();
@@ -580,7 +580,7 @@ Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
 
 QImage UserModel::avatarById(const int &id)
 {
-    if (_users.isEmpty())
+    if (id < 0 || id >= _users.size())
         return {};
 
     return _users[id]->avatar();
@@ -588,7 +588,7 @@ QImage UserModel::avatarById(const int &id)
 
 Q_INVOKABLE QString UserModel::currentUserServer()
 {
-    if (_users.isEmpty())
+    if (_currentUserId < 0 || _currentUserId >= _users.size())
         return {};
 
     return _users[_currentUserId]->server();
@@ -634,7 +634,7 @@ int UserModel::currentUserIndex()
 
 Q_INVOKABLE void UserModel::openCurrentAccountLocalFolder()
 {
-    if (_users.isEmpty())
+    if (_currentUserId < 0 || _currentUserId >= _users.size())
         return;
 
     _users[_currentUserId]->openLocalFolder();
@@ -655,7 +655,7 @@ Q_INVOKABLE void UserModel::openCurrentAccountTalk()
 
 Q_INVOKABLE void UserModel::openCurrentAccountServer()
 {
-    if (_users.isEmpty())
+    if (_currentUserId < 0 || _currentUserId >= _users.size())
         return;
 
     QString url = _users[_currentUserId]->server(false);
@@ -667,7 +667,7 @@ Q_INVOKABLE void UserModel::openCurrentAccountServer()
 
 Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
 {
-    if (_users.isEmpty())
+    if (_currentUserId < 0 || _currentUserId >= _users.size())
         return;
 
     disconnect(_users[_currentUserId], &User::accountStateChanged, this, &UserModel::refreshCurrentUserGui);
@@ -681,7 +681,7 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
 
 Q_INVOKABLE void UserModel::login(const int &id)
 {
-    if (_users.isEmpty())
+    if (id < 0 || id >= _users.size())
         return;
 
     _users[id]->login();
@@ -690,7 +690,7 @@ Q_INVOKABLE void UserModel::login(const int &id)
 
 Q_INVOKABLE void UserModel::logout(const int &id)
 {
-    if (_users.isEmpty())
+    if (id < 0 || id >= _users.size())
         return;
 
     _users[id]->logout();
@@ -699,7 +699,7 @@ Q_INVOKABLE void UserModel::logout(const int &id)
 
 Q_INVOKABLE void UserModel::removeAccount(const int &id)
 {
-    if (_users.isEmpty())
+    if (id < 0 || id >= _users.size())
         return;
 
     QMessageBox messageBox(QMessageBox::Question,
@@ -777,7 +777,7 @@ QHash<int, QByteArray> UserModel::roleNames() const
 
 ActivityListModel *UserModel::currentActivityModel()
 {
-    if (_users.isEmpty())
+    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
         return nullptr;
 
     return _users[currentUserIndex()]->getActivityModel();
@@ -785,7 +785,7 @@ ActivityListModel *UserModel::currentActivityModel()
 
 bool UserModel::currentUserHasActivities()
 {
-    if (_users.isEmpty())
+    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
         return false;
 
     return _users[currentUserIndex()]->hasActivities();
@@ -793,7 +793,7 @@ bool UserModel::currentUserHasActivities()
 
 bool UserModel::currentUserHasLocalFolder()
 {
-    if (_users.isEmpty())
+    if (currentUserIndex() < 0 || currentUserIndex() >= _users.size())
         return false;
 
     return _users[currentUserIndex()]->getFolder() != nullptr;
@@ -801,21 +801,23 @@ bool UserModel::currentUserHasLocalFolder()
 
 void UserModel::fetchCurrentActivityModel()
 {
-    if (!_users.isEmpty())
-        _users[currentUserId()]->slotRefresh();
+    if (currentUserId() < 0 || currentUserId() >= _users.size())
+        return;
+
+    _users[currentUserId()]->slotRefresh();
 }
 
 AccountAppList UserModel::appList() const
 {
-    if (_users.isEmpty())
-        return AccountAppList();
+    if (_currentUserId < 0 || _currentUserId >= _users.size())
+        return {};
 
     return _users[_currentUserId]->appList();
 }
 
 User *UserModel::currentUser() const
 {
-    if (_users.isEmpty())
+    if (currentUserId() < 0 || currentUserId() >= _users.size())
         return nullptr;
 
     return _users[currentUserId()];
