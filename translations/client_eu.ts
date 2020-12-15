@@ -223,24 +223,9 @@
         <translation>Desmarkatutako karpetak zure bertako fitxategi sistematik &lt;b&gt;ezabatuko&lt;/b&gt; dira eta ez dira gehiago ordenagailu honekin sinkronizatuko</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="77"/>
-        <source>Synchronize all</source>
-        <translation>Sinkronizatu dena</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.ui" line="84"/>
-        <source>Synchronize none</source>
-        <translation>Ez sinkronizatu ezer</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.ui" line="91"/>
-        <source>Apply manual changes</source>
-        <translation>Aplikatu eskuzko aldaketak</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
-        <location filename="../src/gui/accountsettings.cpp" line="577"/>
-        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <location filename="../src/gui/accountsettings.cpp" line="563"/>
+        <location filename="../src/gui/accountsettings.cpp" line="963"/>
         <source>Cancel</source>
         <translation>Ezeztatu</translation>
     </message>
@@ -260,13 +245,28 @@
         <translation>Biltegiratze ahalmena: ...</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.ui" line="77"/>
+        <source>Synchronize all</source>
+        <translation>Sinkronizatu dena</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="84"/>
+        <source>Synchronize none</source>
+        <translation>Ez sinkronizatu ezer</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="91"/>
+        <source>Apply manual changes</source>
+        <translation>Aplikatu eskuzko aldaketak</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="187"/>
         <source>No account configured.</source>
         <translation>Ez da konturik konfiguratu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="203"/>
-        <location filename="../src/gui/accountsettings.cpp" line="220"/>
+        <location filename="../src/gui/accountsettings.cpp" line="217"/>
         <source>This account supports end-to-end encryption</source>
         <translation>Kontu honek onartzen du muturretik muturrerako zifratzea</translation>
     </message>
@@ -281,7 +281,7 @@
         <translation>Gehitu berria</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="222"/>
+        <location filename="../src/gui/accountsettings.cpp" line="219"/>
         <source>Enable encryption</source>
         <translation>Gaitu zifratzea</translation>
     </message>
@@ -302,7 +302,7 @@
         <translation>Kontua</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="236"/>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <source>Warning</source>
         <translation>Abisua</translation>
     </message>
@@ -312,161 +312,161 @@
         <translation>Erakutsi E2E mnemoteknikoa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="293"/>
+        <location filename="../src/gui/accountsettings.cpp" line="279"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Ezin da edukidun karpeta enkriptatu, kendu fitxategiak.
 Itxaron berriro sinkronizatu arte, ondoren enkriptatu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="362"/>
-        <location filename="../src/gui/accountsettings.cpp" line="420"/>
+        <location filename="../src/gui/accountsettings.cpp" line="348"/>
+        <location filename="../src/gui/accountsettings.cpp" line="406"/>
         <source>Open folder</source>
         <translation>Ireki karpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="379"/>
+        <location filename="../src/gui/accountsettings.cpp" line="365"/>
         <source>Encrypt</source>
         <translation>Zifratu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="387"/>
-        <location filename="../src/gui/accountsettings.cpp" line="423"/>
+        <location filename="../src/gui/accountsettings.cpp" line="373"/>
+        <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>Edit Ignored Files</source>
         <translation>Editatu baztertutako fitxategiak</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="427"/>
+        <location filename="../src/gui/accountsettings.cpp" line="413"/>
         <source>Choose what to sync</source>
         <translation>Hautatu zer sinkronizatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="433"/>
+        <location filename="../src/gui/accountsettings.cpp" line="419"/>
         <source>Force sync now</source>
         <translation>Behartu orain sinkronizatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="435"/>
+        <location filename="../src/gui/accountsettings.cpp" line="421"/>
         <source>Restart sync</source>
         <translation>Berrabiarazi sinkronizazioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="441"/>
+        <location filename="../src/gui/accountsettings.cpp" line="427"/>
         <source>Resume sync</source>
         <translation>Berrekin sinkronizazioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="441"/>
+        <location filename="../src/gui/accountsettings.cpp" line="427"/>
         <source>Pause sync</source>
         <translation>Gelditu sinkronizazioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="444"/>
+        <location filename="../src/gui/accountsettings.cpp" line="430"/>
         <source>Remove folder sync connection</source>
         <translation>Ezabatu karpeta honen konexioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="515"/>
+        <location filename="../src/gui/accountsettings.cpp" line="501"/>
         <source>Folder creation failed</source>
         <translation>Karpeta sortzeak huts egin du</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="516"/>
+        <location filename="../src/gui/accountsettings.cpp" line="502"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ezin izan da &lt;i&gt;%1&lt;/i&gt; bertako karpeta sortu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="569"/>
+        <location filename="../src/gui/accountsettings.cpp" line="555"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Baieztatu Karpetaren Konexioaren Ezabatzea</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="570"/>
+        <location filename="../src/gui/accountsettings.cpp" line="556"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ziur zaude &lt;i&gt;%1&lt;/i&gt;karpetaren sinkronizazioa gelditu nahi duzula?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt; Honek &lt;b&gt;ez&lt;/b&gt; du fitxategirik ezabatuko.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="576"/>
+        <location filename="../src/gui/accountsettings.cpp" line="562"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Ezabatu Karpeta Honen Konexioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="661"/>
+        <location filename="../src/gui/accountsettings.cpp" line="647"/>
         <source>Sync Running</source>
         <translation>Sinkronizazioa martxan da</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="662"/>
+        <location filename="../src/gui/accountsettings.cpp" line="648"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sinkronizazio martxan da.&lt;br/&gt;Bukatu nahi al duzu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="738"/>
+        <location filename="../src/gui/accountsettings.cpp" line="724"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%2-tik %1 (%3%) erabiltzen ari da. Zenbait karpetek, sarean muntatutako edo partekatutako karpetak barne, muga desberdinak izan ditzakete.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="739"/>
+        <location filename="../src/gui/accountsettings.cpp" line="725"/>
         <source>%1 of %2 in use</source>
         <translation>%2tik %1 erabilita</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="748"/>
+        <location filename="../src/gui/accountsettings.cpp" line="734"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Orain ez dago eskuragarri biltegiratze erabileraren informazioa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="751"/>
+        <location filename="../src/gui/accountsettings.cpp" line="737"/>
         <source>%1 in use</source>
         <translation>%1 erabiltzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="778"/>
+        <location filename="../src/gui/accountsettings.cpp" line="764"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1  &lt;i&gt;%2&lt;/i&gt; gisa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="784"/>
+        <location filename="../src/gui/accountsettings.cpp" line="770"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
         <translation>Zerbitzariaren bertsioa %1 zaharra eta euskarririk gabekoa da! Zure ardurapean aritu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="786"/>
+        <location filename="../src/gui/accountsettings.cpp" line="772"/>
         <source>Connected to %1.</source>
         <translation>%1ra konektatuta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="788"/>
+        <location filename="../src/gui/accountsettings.cpp" line="774"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>%1 zerbitzaria ez dago orain eskuragarri</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="790"/>
+        <location filename="../src/gui/accountsettings.cpp" line="776"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>%1 zerbitzaria une honetan mantenu lanetan dago.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="792"/>
+        <location filename="../src/gui/accountsettings.cpp" line="778"/>
         <source>Signed out from %1.</source>
         <translation>%1etik saioa itxita.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="801"/>
+        <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Nabigatzailearen baimena eskuratzen. Egin &lt;a href= &apos;%1&apos;&gt;klik hemen&lt;/a&gt; nabigatzailea berrabiarazteko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="805"/>
+        <location filename="../src/gui/accountsettings.cpp" line="791"/>
         <source>Connecting to %1 …</source>
         <translation>%1(e)ra konektatzen …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="808"/>
+        <location filename="../src/gui/accountsettings.cpp" line="794"/>
         <source>No connection to %1 at %2.</source>
         <translation>Konexiorik ez %1-ekin %2-etan</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="814"/>
+        <location filename="../src/gui/accountsettings.cpp" line="800"/>
         <source>No %1 connection configured.</source>
         <translation>Ez dago %1 konexiorik konfiguratuta.</translation>
     </message>
@@ -476,32 +476,32 @@ Itxaron berriro sinkronizatu arte, ondoren enkriptatu.</translation>
         <translation>Hasi saioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="932"/>
+        <location filename="../src/gui/accountsettings.cpp" line="918"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Hainbat karpeta ez dira sinkronizatu handiegiak direlako:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="934"/>
+        <location filename="../src/gui/accountsettings.cpp" line="920"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Hainbat karpeta ez dira sinkronizatu kanpoko biltegietan daudelako:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="935"/>
+        <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Hainbat karpeta ez dira sinkronizatu handiegiak direlako edo kanpoko biltegietan daudelako:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="969"/>
+        <location filename="../src/gui/accountsettings.cpp" line="955"/>
         <source>Confirm Account Removal</source>
         <translation>Baieztatu Kontuaren Ezabatzea</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="970"/>
+        <location filename="../src/gui/accountsettings.cpp" line="956"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ziur zaude  &lt;i&gt;%1&lt;/i&gt;kontuaren konexioa kendu nahi duzula?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt; Honek&lt;b&gt;ez&lt;/b&gt; du fitxategirik ezabatuko.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="976"/>
+        <location filename="../src/gui/accountsettings.cpp" line="962"/>
         <source>Remove connection</source>
         <translation>Ezabatu konexioa</translation>
     </message>
@@ -3835,7 +3835,7 @@ Ez da gomendagarria erabiltzea.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="232"/>
+        <location filename="../src/gui/systray.cpp" line="234"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>

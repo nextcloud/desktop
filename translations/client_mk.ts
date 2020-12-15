@@ -223,24 +223,9 @@
         <translation>Одселектираните папки ќе бидат &lt;b&gt;избришани&lt;/b&gt; од вашиот локален систем и нема да бидат синхронизирани со овој компјутер повеќе</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="77"/>
-        <source>Synchronize all</source>
-        <translation>Синхронизирај се</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.ui" line="84"/>
-        <source>Synchronize none</source>
-        <translation>Не синхронизирај ништо</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.ui" line="91"/>
-        <source>Apply manual changes</source>
-        <translation>Примени рачни измени</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
-        <location filename="../src/gui/accountsettings.cpp" line="577"/>
-        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <location filename="../src/gui/accountsettings.cpp" line="563"/>
+        <location filename="../src/gui/accountsettings.cpp" line="963"/>
         <source>Cancel</source>
         <translation>Откажи</translation>
     </message>
@@ -260,13 +245,28 @@
         <translation>Простор на складиштето: ...</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.ui" line="77"/>
+        <source>Synchronize all</source>
+        <translation>Синхронизирај се</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="84"/>
+        <source>Synchronize none</source>
+        <translation>Не синхронизирај ништо</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="91"/>
+        <source>Apply manual changes</source>
+        <translation>Примени рачни измени</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="187"/>
         <source>No account configured.</source>
         <translation>Нема конфигурирано сметка.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="203"/>
-        <location filename="../src/gui/accountsettings.cpp" line="220"/>
+        <location filename="../src/gui/accountsettings.cpp" line="217"/>
         <source>This account supports end-to-end encryption</source>
         <translation>На оваа сметка е овозможена крај-до-крај енкрипција</translation>
     </message>
@@ -281,7 +281,7 @@
         <translation>Додади ново</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="222"/>
+        <location filename="../src/gui/accountsettings.cpp" line="219"/>
         <source>Enable encryption</source>
         <translation>Овозможи енкрипција</translation>
     </message>
@@ -302,7 +302,7 @@
         <translation>Сметка</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="236"/>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <source>Warning</source>
         <translation>Предупредување</translation>
     </message>
@@ -312,160 +312,160 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="293"/>
+        <location filename="../src/gui/accountsettings.cpp" line="279"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="362"/>
-        <location filename="../src/gui/accountsettings.cpp" line="420"/>
+        <location filename="../src/gui/accountsettings.cpp" line="348"/>
+        <location filename="../src/gui/accountsettings.cpp" line="406"/>
         <source>Open folder</source>
         <translation>Отвори папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="379"/>
+        <location filename="../src/gui/accountsettings.cpp" line="365"/>
         <source>Encrypt</source>
         <translation>Енкриптирај</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="387"/>
-        <location filename="../src/gui/accountsettings.cpp" line="423"/>
+        <location filename="../src/gui/accountsettings.cpp" line="373"/>
+        <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>Edit Ignored Files</source>
         <translation>Измени ги датотеките што се игнорирани</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="427"/>
+        <location filename="../src/gui/accountsettings.cpp" line="413"/>
         <source>Choose what to sync</source>
         <translation>Изберете што да се синхронизира</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="433"/>
+        <location filename="../src/gui/accountsettings.cpp" line="419"/>
         <source>Force sync now</source>
         <translation>Прислино синхронизирај сега</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="435"/>
+        <location filename="../src/gui/accountsettings.cpp" line="421"/>
         <source>Restart sync</source>
         <translation>Рестартирај синхронизација</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="441"/>
+        <location filename="../src/gui/accountsettings.cpp" line="427"/>
         <source>Resume sync</source>
         <translation>Продолжи синхронизација</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="441"/>
+        <location filename="../src/gui/accountsettings.cpp" line="427"/>
         <source>Pause sync</source>
         <translation>Паузирај синхронизација</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="444"/>
+        <location filename="../src/gui/accountsettings.cpp" line="430"/>
         <source>Remove folder sync connection</source>
         <translation>Отстрани папка од синхронизација</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="515"/>
+        <location filename="../src/gui/accountsettings.cpp" line="501"/>
         <source>Folder creation failed</source>
         <translation>Неуспешно креирање на папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="516"/>
+        <location filename="../src/gui/accountsettings.cpp" line="502"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Неможе да се креира локална папка &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="569"/>
+        <location filename="../src/gui/accountsettings.cpp" line="555"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Потврди отстранување на папка за синхронизација</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="570"/>
+        <location filename="../src/gui/accountsettings.cpp" line="556"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Дали сте сигурни дека сакате да ја стопирате синхронизацијата на папката &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Забелешка:&lt;/b&gt; Ова &lt;b&gt;нема&lt;/b&gt; да избрише ниту една датотека.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="576"/>
+        <location filename="../src/gui/accountsettings.cpp" line="562"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Отстрани папка од синхронизација</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="661"/>
+        <location filename="../src/gui/accountsettings.cpp" line="647"/>
         <source>Sync Running</source>
         <translation>Синхронизацијата е стартувана</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="662"/>
+        <location filename="../src/gui/accountsettings.cpp" line="648"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Синхронизацијата е стартувана.&lt;br/&gt;Дали сакате да ја прекинете?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="738"/>
+        <location filename="../src/gui/accountsettings.cpp" line="724"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>Искористено %1 (%3%) од %2. Некој папки, вклучувајќи ги и мрежно монтираните или споделените папки, може да имаат различен лимит.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="739"/>
+        <location filename="../src/gui/accountsettings.cpp" line="725"/>
         <source>%1 of %2 in use</source>
         <translation>Искористено %1 од %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="748"/>
+        <location filename="../src/gui/accountsettings.cpp" line="734"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Моментално нема информации за искористениот простор.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="751"/>
+        <location filename="../src/gui/accountsettings.cpp" line="737"/>
         <source>%1 in use</source>
         <translation>Искористено %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="778"/>
+        <location filename="../src/gui/accountsettings.cpp" line="764"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 како &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="784"/>
+        <location filename="../src/gui/accountsettings.cpp" line="770"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
         <translation>Верзијата %1 на серверот е застарена и не е поддржана! Продолжете на сопствен ризик.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="786"/>
+        <location filename="../src/gui/accountsettings.cpp" line="772"/>
         <source>Connected to %1.</source>
         <translation>Поврзан со %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="788"/>
+        <location filename="../src/gui/accountsettings.cpp" line="774"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Серверот %1 е моментално недостапен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="790"/>
+        <location filename="../src/gui/accountsettings.cpp" line="776"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Серверот %1 е моментално во мод за одржување.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="792"/>
+        <location filename="../src/gui/accountsettings.cpp" line="778"/>
         <source>Signed out from %1.</source>
         <translation>Одјавен од %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="801"/>
+        <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Добивање на авторизација од прелистувач. &lt;a href=&apos;%1&apos;&gt;Кликни тука&lt;/a&gt; за да го отворите повторно прелистувачот.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="805"/>
+        <location filename="../src/gui/accountsettings.cpp" line="791"/>
         <source>Connecting to %1 …</source>
         <translation>Поврзување со %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="808"/>
+        <location filename="../src/gui/accountsettings.cpp" line="794"/>
         <source>No connection to %1 at %2.</source>
         <translation>Нема врска со  %1 на %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="814"/>
+        <location filename="../src/gui/accountsettings.cpp" line="800"/>
         <source>No %1 connection configured.</source>
         <translation>Нема конфигурирано %1 врска.</translation>
     </message>
@@ -475,32 +475,32 @@ Wait for the new sync, then encrypt it.</source>
         <translation>Најава</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="932"/>
+        <location filename="../src/gui/accountsettings.cpp" line="918"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Има папки кој не се синхронизирани бидејќи се премногу големи:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="934"/>
+        <location filename="../src/gui/accountsettings.cpp" line="920"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Има папки кој не се синхронизирани бидејќи тие се надворешни складишта:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="935"/>
+        <location filename="../src/gui/accountsettings.cpp" line="921"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Има папки кој не се синхронизирани бидејќи се премногу големи или се надворешни складишта:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="969"/>
+        <location filename="../src/gui/accountsettings.cpp" line="955"/>
         <source>Confirm Account Removal</source>
         <translation>Потврди отстранување на сметка</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="970"/>
+        <location filename="../src/gui/accountsettings.cpp" line="956"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Дали сте сигурни дека сакате да ја отстраните врската со сметката &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Забелешка:&lt;/b&gt; Ова &lt;b&gt;нема&lt;/b&gt; да избрише ниту една датотека.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="976"/>
+        <location filename="../src/gui/accountsettings.cpp" line="962"/>
         <source>Remove connection</source>
         <translation>Отстрани врска</translation>
     </message>
@@ -3823,7 +3823,7 @@ It is not advisable to use it.</source>
         <translation>Продолжи ја синхронизацијата за сите</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="232"/>
+        <location filename="../src/gui/systray.cpp" line="234"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
