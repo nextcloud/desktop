@@ -55,6 +55,9 @@ owncloud_add_test(OAuth)
 
 configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
 
+
+owncloud_add_test(JobQueue)
+
 find_package(CMocka)
 if (CMOCKA_FOUND)
     include(AddCMockaTest)
