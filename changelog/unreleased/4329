@@ -1,0 +1,6 @@
+Bugfix: Fix crash when a download is cancelled
+
+We fixed a crash, on Windows, when a user cancelled a download of
+a VirtualFile using the Windows explorer.
+
+https://github.com/owncloud/enterprise/issues/4329
