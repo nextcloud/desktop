@@ -779,7 +779,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
         QMessageBox::Question,
         tr("Disable virtual file support?"),
         tr("This action will disable virtual file support. As a consequence contents of folders that "
-           "are currently marked as 'available online only' will be downloaded."
+           "are currently marked as \"available online only\" will be downloaded."
            "\n\n"
            "The only advantage of disabling virtual file support is that the selective sync feature "
            "will become available again."
