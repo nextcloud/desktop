@@ -8,197 +8,20 @@ GenericName=Folder Sync
 Icon=@APPLICATION_ICON_NAME@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-GNOME-Autostart-Delay=3
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
+MimeType=application/vnd.@APPLICATION_EXECUTABLE@;
+Actions=Quit;
 
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
 # Translations
 
 
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
+[Desktop Action Quit]
+Exec=@APPLICATION_EXECUTABLE@ --quit
+Name=Quit @APPLICATION_NAME@
+Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[de]=@APPLICATION_ICON_NAME@
-Name[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-Comment[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-GenericName[de]=Synchronisierungsordner
+Icon[de_DE]=@APPLICATION_ICON_NAME@
+Name[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
+Comment[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
+GenericName[de_DE]=Ordnersynchronisierung
