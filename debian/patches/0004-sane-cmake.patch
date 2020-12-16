@@ -5,14 +5,6 @@ Last-Update: 2019-11-17
 
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -11,6 +11,7 @@ if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
- else ()
-      include ( ${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake )
- endif()
-+
- # need this logic to not mess with re/uninstallations via macosx.pkgproj
- if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")
-     set(APPLICATION_REV_DOMAIN_INSTALLER "com.ownCloud.client")
 @@ -61,29 +109,12 @@ include(GNUInstallDirs)
  include(DefineInstallationPaths)
  include(GenerateExportHeader)
@@ -43,7 +35,7 @@ Last-Update: 2019-11-17
  set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
  set(DATADIR ${DATA_INSTALL_DIR})
  if(WIN32)
-@@ -195,16 +226,57 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
+@@ -195,7 +226,47 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
      set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
  endif()
  
@@ -92,26 +84,6 @@ Last-Update: 2019-11-17
  
  add_definitions(-DUNICODE)
  add_definitions(-D_UNICODE)
- if( WIN32 )
--add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
--add_definitions( -DNOMINMAX )
--# Get APIs from from Vista onwards.
--add_definitions( -D_WIN32_WINNT=0x0601 )
--add_definitions( -DWINVER=0x0601 )
-+    add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
-+    add_definitions( -DNOMINMAX )
-+
-+    # Get APIs from from Vista onwards.
-+    add_definitions( -D_WIN32_WINNT=0x0601 )
-+    add_definitions( -DWINVER=0x0601 )
-     if( MSVC )
-     # Use automatic overload for suitable CRT safe-functions
-     # See https://docs.microsoft.com/de-de/cpp/c-runtime-library/security-features-in-the-crt?view=vs-2019
-@@ -255,3 +333,4 @@ elseif(BUILD_CLIENT)
-     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
-     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
- endif()
-+
 --- a/NextcloudCPack.cmake
 +++ /dev/null
 @@ -1,67 +0,0 @@
