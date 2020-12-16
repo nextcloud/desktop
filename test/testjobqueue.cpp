@@ -59,21 +59,22 @@ private Q_SLOTS:
     {
         FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
 
-        JobQueue *queue = fakeFolder.account()->jobQueue();
+        auto queue = fakeFolder.account()->jobQueue();
+        JobQueueGuard queueGuard(queue);
         QVERIFY(!queue->isBlocked());
 
         TestJob *job = new TestJob(fakeFolder.account());
         QVERIFY(!queue->enqueue(job));
         QCOMPARE(queue->size(), 0);
-        queue->setBlocked(true);
+        QVERIFY(queueGuard.block());
         QVERIFY(queue->isBlocked());
         job->start();
         QCOMPARE(queue->size(), 1);
-        queue->setBlocked(false);
+        QVERIFY(queueGuard.unblock());
         QVERIFY(!queue->isBlocked());
         QCOMPARE(queue->size(), 0);
         QCOMPARE(job->retryCount(), 1);
-        queue->setBlocked(false);
+        QVERIFY(!queueGuard.unblock());
         QVERIFY(!queue->isBlocked());
     }
 
@@ -81,20 +82,51 @@ private Q_SLOTS:
     {
         FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
 
-        JobQueue *queue = fakeFolder.account()->jobQueue();
+        auto queue = fakeFolder.account()->jobQueue();
+        JobQueueGuard queueGuard(queue);
 
         TestJob *job = new TestJob(fakeFolder.account());
         QVERIFY(!queue->enqueue(job));
         QCOMPARE(queue->size(), 0);
-        queue->setBlocked(true);
-        queue->setBlocked(true);
+        QVERIFY(queueGuard.block());
+        QVERIFY(!queueGuard.block());
         job->start();
         QCOMPARE(queue->size(), 1);
-        queue->setBlocked(false);
-        QCOMPARE(queue->size(), 1);
-        queue->setBlocked(false);
+        QVERIFY(queueGuard.unblock());
         QCOMPARE(queue->size(), 0);
+        QVERIFY(!queueGuard.unblock());
         QCOMPARE(job->retryCount(), 1);
+    }
+
+    void testMultiBlock2()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+
+        auto queue = fakeFolder.account()->jobQueue();
+        JobQueueGuard queueGuard1(queue);
+
+        TestJob *job = new TestJob(fakeFolder.account());
+        {
+            JobQueueGuard queueGuard2(queue);
+            QVERIFY(!queue->enqueue(job));
+            QCOMPARE(queue->size(), 0);
+            QVERIFY(queueGuard1.block());
+            QVERIFY(queueGuard2.block());
+            job->start();
+            QVERIFY(queue->isBlocked());
+            QCOMPARE(queue->size(), 1);
+            QVERIFY(queueGuard1.unblock());
+            QVERIFY(queue->isBlocked());
+            QCOMPARE(queue->size(), 1);
+            QVERIFY(queueGuard2.unblock());
+            QVERIFY(!queue->isBlocked());
+            QCOMPARE(queue->size(), 0);
+            QCOMPARE(job->retryCount(), 1);
+
+            QVERIFY(queueGuard2.block());
+            QVERIFY(queue->isBlocked());
+        }
+        QVERIFY(!queue->isBlocked());
     }
 };
 

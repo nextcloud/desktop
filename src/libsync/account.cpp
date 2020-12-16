@@ -43,6 +43,7 @@ Account::Account(QObject *parent)
     , _capabilities(QVariantMap())
     , _davPath(Theme::instance()->webDavPath())
     , _jobQueue(this)
+    , _queueGuard(&_jobQueue)
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
 }
@@ -176,10 +177,10 @@ void Account::setCredentials(AbstractCredentials *cred)
     connect(_credentials.data(), &AbstractCredentials::asked,
         this, &Account::slotCredentialsAsked);
     connect(_credentials.data(), &AbstractCredentials::authenticationStarted, this, [this] {
-        _jobQueue.setBlocked(true);
+        _queueGuard.block();
     });
     connect(_credentials.data(), &AbstractCredentials::authenticationFailed, this, [this] {
-        _jobQueue.clear();
+        _queueGuard.clear();
     });
 }
 
@@ -408,7 +409,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
 void Account::slotCredentialsFetched()
 {
     emit credentialsFetched(_credentials.data());
-    _jobQueue.setBlocked(false);
+    _queueGuard.unblock();
 }
 
 void Account::slotCredentialsAsked()

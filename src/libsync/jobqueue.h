@@ -29,9 +29,8 @@ public:
     JobQueue(Account *account);
 
     /**
-     * Set whether jobs need to be enqued
+     * whether jobs need to be enqued
      */
-    void setBlocked(bool block);
     bool isBlocked() const;
 
     /**
@@ -46,19 +45,38 @@ public:
      */
     bool enqueue(AbstractNetworkJob *job);
 
-    /**
-     * Clear the queue and abort all jobs
-     */
-    void clear();
-
     size_t size() const;
 
 private:
     bool needsRetry(AbstractNetworkJob *job) const;
 
+
+    void block();
+    void unblock();
+    /**
+     * Clear the queue and abort all jobs
+     */
+    void clear();
+
     Account *_account;
     int _blocked = 0;
     std::vector<QPointer<AbstractNetworkJob>> _jobs;
+
+    friend class JobQueueGuard;
 };
 
+class OWNCLOUDSYNC_EXPORT JobQueueGuard
+{
+public:
+    JobQueueGuard(JobQueue *queue);
+    ~JobQueueGuard();
+
+    bool block();
+    bool unblock();
+    bool clear();
+
+private:
+    JobQueue *_queue;
+    bool _blocked = false;
+};
 }

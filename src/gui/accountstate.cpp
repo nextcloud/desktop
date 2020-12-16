@@ -67,6 +67,7 @@ void AccountState::updateUrlDialog(AccountPtr account, const QUrl &newUrl, std::
 AccountState::AccountState(AccountPtr account)
     : QObject()
     , _account(account)
+    , _queueGuard(_account->jobQueue())
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
@@ -134,7 +135,7 @@ void AccountState::setState(State state)
         if (_state == SignedOut) {
             _connectionStatus = ConnectionValidator::Undefined;
             _connectionErrors.clear();
-            _account->jobQueue()->clear();
+            _queueGuard.clear();
         } else if (oldState == SignedOut && _state == Disconnected) {
             // If we stop being voluntarily signed-out, try to connect and
             // auth right now!
@@ -148,13 +149,12 @@ void AccountState::setState(State state)
         }
         if (oldState == Connected || _state == Connected) {
             emit isConnectedChanged();
-            _account->jobQueue()->setBlocked(false);
         }
     }
 
     // might not have changed but the underlying _connectionErrors might have
     if (_state == Connected) {
-        _account->jobQueue()->setBlocked(false);
+        _queueGuard.unblock();
     }
     // don't anounce a state change from connected to connected
     // https://github.com/owncloud/client/commit/2c6c21d7532f0cbba4b768fde47810f6673ed931
@@ -253,9 +253,8 @@ void AccountState::checkConnectivity(bool verifyServerState)
         return;
     }
 
-
     if (verifyServerState) {
-        _account->jobQueue()->setBlocked(true);
+        _queueGuard.block();
     }
     ConnectionValidator *conValidator = new ConnectionValidator(account());
     _connectionValidator = conValidator;

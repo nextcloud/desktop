@@ -282,6 +282,7 @@ private:
 
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
     JobQueue _jobQueue;
+    JobQueueGuard _queueGuard;
     friend class AccountManager;
 };
 }

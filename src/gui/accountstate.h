@@ -16,6 +16,8 @@
 #ifndef ACCOUNTINFO_H
 #define ACCOUNTINFO_H
 
+#include "jobqueue.h"
+
 #include <QByteArray>
 #include <QElapsedTimer>
 #include <QPointer>
@@ -154,6 +156,7 @@ protected Q_SLOTS:
 
 private:
     AccountPtr _account;
+    JobQueueGuard _queueGuard;
     State _state;
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;

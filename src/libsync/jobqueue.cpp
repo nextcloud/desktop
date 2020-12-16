@@ -33,14 +33,17 @@ JobQueue::JobQueue(Account *account)
 {
 }
 
-void JobQueue::setBlocked(bool block)
+void JobQueue::block()
 {
-    if (block) {
-        _blocked++;
-    } else if (_blocked > 0) {
-        _blocked--;
-    }
-    qCDebug(lcJobQUeue) << "Set blocked:" << block << _blocked << _account->displayName();
+    _blocked++;
+    qCDebug(lcJobQUeue) << "block:" << _blocked << _account->displayName();
+}
+
+void JobQueue::unblock()
+{
+    _blocked--;
+    qCDebug(lcJobQUeue) << "unblock:" << _blocked << _account->displayName();
+    OC_ENFORCE(_blocked >= 0);
     if (_blocked == 0) {
         auto tmp = std::move(_jobs);
         for (auto job : tmp) {
@@ -123,4 +126,43 @@ bool JobQueue::needsRetry(AbstractNetworkJob *job) const
     return false;
 }
 
+JobQueueGuard::JobQueueGuard(JobQueue *queue)
+    : _queue(queue)
+{
+}
+
+JobQueueGuard::~JobQueueGuard()
+{
+    unblock();
+}
+
+bool JobQueueGuard::block()
+{
+    if (!_blocked) {
+        _blocked = true;
+        _queue->block();
+        return true;
+    }
+    return false;
+}
+
+bool JobQueueGuard::unblock()
+{
+    if (_blocked) {
+        _blocked = false;
+        _queue->unblock();
+        return true;
+    }
+    return false;
+}
+
+bool JobQueueGuard::clear()
+{
+    if (_blocked) {
+        _blocked = false;
+        _queue->clear();
+        return true;
+    }
+    return false;
+}
 }
