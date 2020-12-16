@@ -42,6 +42,7 @@ Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
     , _davPath(Theme::instance()->webDavPath())
+    , _jobQueue(this)
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
 }

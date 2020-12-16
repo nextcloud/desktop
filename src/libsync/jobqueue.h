@@ -15,16 +15,18 @@
 
 #include "owncloudlib.h"
 
-#include <QObject>
+#include <QPointer>
+#include <vector>
 
 namespace OCC {
 
 class AbstractNetworkJob;
+class Account;
 
 class OWNCLOUDSYNC_EXPORT JobQueue
 {
 public:
-    JobQueue() = default;
+    JobQueue(Account *account);
 
     /**
      * Set whether jobs need to be enqued
@@ -54,6 +56,7 @@ public:
 private:
     bool needsRetry(AbstractNetworkJob *job) const;
 
+    Account *_account;
     int _blocked = 0;
     std::vector<QPointer<AbstractNetworkJob>> _jobs;
 };

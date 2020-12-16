@@ -15,6 +15,7 @@
 #include "jobqueue.h"
 
 #include "abstractnetworkjob.h"
+#include "account.h"
 
 #include <QLoggingCategory>
 
@@ -27,6 +28,11 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcJobQUeue, "sync.networkjob.jobqueue", QtDebugMsg)
 
+JobQueue::JobQueue(Account *account)
+    : _account(account)
+{
+}
+
 void JobQueue::setBlocked(bool block)
 {
     if (block) {
@@ -34,7 +40,7 @@ void JobQueue::setBlocked(bool block)
     } else if (_blocked > 0) {
         _blocked--;
     }
-    qCDebug(lcJobQUeue) << "Set blocked:" << block << _blocked;
+    qCDebug(lcJobQUeue) << "Set blocked:" << block << _blocked << _account->displayName();
     if (_blocked == 0) {
         auto tmp = std::move(_jobs);
         for (auto job : tmp) {
@@ -78,7 +84,7 @@ bool JobQueue::enqueue(AbstractNetworkJob *job)
 
 void JobQueue::clear()
 {
-    _blocked = false;
+    _blocked = 0;
     auto tmp = std::move(_jobs);
     for (auto job : tmp) {
         if (job) {
