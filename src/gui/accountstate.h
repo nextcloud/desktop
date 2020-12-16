@@ -136,7 +136,8 @@ public:
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
-    void checkConnectivity(bool verifyOnly = false);
+    /// verifyServerState indicates that we must check the server
+    void checkConnectivity(bool verifyServerState = false);
 
 private:
     void setState(State state);

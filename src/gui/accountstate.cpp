@@ -82,7 +82,6 @@ AccountState::AccountState(AccountPtr account)
         this, &AccountState::slotCredentialsAsked);
     connect(account.data(), &Account::unknownConnectionState,
         this, [this] {
-            _account->jobQueue()->setBlocked(true);
             checkConnectivity(true);
         });
     connect(account.data(), &Account::requestUrlUpdate, this, [this](const QUrl &newUrl) {
@@ -126,10 +125,10 @@ AccountState::State AccountState::state() const
 
 void AccountState::setState(State state)
 {
+    const State oldState = _state;
     if (_state != state) {
         qCInfo(lcAccountState) << "AccountState state change: "
                                << stateString(_state) << "->" << stateString(state);
-        State oldState = _state;
         _state = state;
 
         if (_state == SignedOut) {
@@ -154,7 +153,14 @@ void AccountState::setState(State state)
     }
 
     // might not have changed but the underlying _connectionErrors might have
-    emit stateChanged(_state);
+    if (_state == Connected) {
+        _account->jobQueue()->setBlocked(false);
+    }
+    // don't anounce a state change from connected to connected
+    // https://github.com/owncloud/client/commit/2c6c21d7532f0cbba4b768fde47810f6673ed931
+    if (oldState != state || state != Connected) {
+        emit stateChanged(_state);
+    }
 }
 
 QString AccountState::stateString(State state)
@@ -217,9 +223,9 @@ void AccountState::tagLastSuccessfullETagRequest(const QDateTime &tp)
     _timeOfLastETagCheck = tp;
 }
 
-void AccountState::checkConnectivity(bool verifyOnly)
+void AccountState::checkConnectivity(bool verifyServerState)
 {
-    qCWarning(lcAccountState) << "checkConnectivity verifyOnly:" << verifyOnly;
+    qCWarning(lcAccountState) << "checkConnectivity verifyOnly:" << verifyServerState;
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
     }
@@ -241,12 +247,16 @@ void AccountState::checkConnectivity(bool verifyOnly)
     // if the last successful etag check job is not so long ago.
     const auto polltime = std::chrono::duration_cast<std::chrono::seconds>(ConfigFile().remotePollInterval());
     const auto elapsed = _timeOfLastETagCheck.secsTo(QDateTime::currentDateTimeUtc());
-    if (!verifyOnly && isConnected() && _timeOfLastETagCheck.isValid()
+    if (!verifyServerState && isConnected() && _timeOfLastETagCheck.isValid()
         && elapsed <= polltime.count()) {
         qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() << "s (" << elapsed << "s). No connection check needed!";
         return;
     }
 
+
+    if (verifyServerState) {
+        _account->jobQueue()->setBlocked(true);
+    }
     ConnectionValidator *conValidator = new ConnectionValidator(account());
     _connectionValidator = conValidator;
     connect(conValidator, &ConnectionValidator::connectionResult,
@@ -254,7 +264,7 @@ void AccountState::checkConnectivity(bool verifyOnly)
     if (isConnected()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
-        if (verifyOnly) {
+        if (verifyServerState) {
             conValidator->checkServer();
         } else {
             conValidator->checkServerAndUpdate();
@@ -313,9 +323,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
 
     switch (status) {
     case ConnectionValidator::Connected:
-        if (_state != Connected) {
-            setState(Connected);
-        }
+        setState(Connected);
         break;
     case ConnectionValidator::Undefined:
     case ConnectionValidator::NotConfigured:
