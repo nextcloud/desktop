@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Fix crash when a download is cancelled: [#4329](https://github.com/owncloud/enterprise/issues/4329)
+* Bugfix - Update Windows launch on start entry: [#7672](https://github.com/owncloud/client/issues/7672)
 * Bugfix - Log the final http request: [#8289](https://github.com/owncloud/client/pull/8289)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
@@ -21,6 +22,12 @@ Details
    explorer.
 
    https://github.com/owncloud/enterprise/issues/4329
+
+* Bugfix - Update Windows launch on start entry: [#7672](https://github.com/owncloud/client/issues/7672)
+
+   We fixed a bug where launch on start did not work after a re install to a new location.
+
+   https://github.com/owncloud/client/issues/7672
 
 * Bugfix - Log the final http request: [#8289](https://github.com/owncloud/client/pull/8289)
 
