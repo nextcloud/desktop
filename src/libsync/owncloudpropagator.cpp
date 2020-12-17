@@ -751,7 +751,9 @@ QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
 bool OwncloudPropagator::updateMetadata(const SyncFileItem &item, const QString &localFolderPath, SyncJournalDb &journal, Vfs &vfs)
 {
     QString fsPath = localFolderPath + item.destination();
-    vfs.convertToPlaceholder(fsPath, item);
+    if (!vfs.convertToPlaceholder(fsPath, item)) {
+        return false;
+    }
     auto record = item.toSyncJournalFileRecordWithInode(fsPath);
     return journal.setFileRecord(record);
 }

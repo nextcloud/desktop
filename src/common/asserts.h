@@ -3,6 +3,13 @@
 
 #include <qglobal.h>
 
+#if 0 && defined(Q_CC_MSVC)
+// requires c++2017
+#define OC_REQUIRED_RESULT [[nodiscard]]
+#else
+#define OC_REQUIRED_RESULT Q_REQUIRED_RESULT
+#endif
+
 #if defined(QT_FORCE_ASSERTS) || !defined(QT_NO_DEBUG)
 #define OC_ASSERT_MSG qFatal
 #else
