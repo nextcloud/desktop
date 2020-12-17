@@ -124,9 +124,10 @@ Result<void, QString> VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
     return {};
 }
 
-void VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
+Result<void, QString> VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
 {
     // Nothing necessary
+    return {};
 }
 
 bool VfsSuffix::isDehydratedPlaceholder(const QString &filePath)

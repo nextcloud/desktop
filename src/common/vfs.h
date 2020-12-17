@@ -186,7 +186,7 @@ public:
      * new placeholder shall supersede, for rename-replace actions with new downloads,
      * for example.
      */
-    virtual void convertToPlaceholder(
+    virtual Result<void, QString> convertToPlaceholder(
         const QString &filename,
         const SyncFileItem &item,
         const QString &replacesFile = QString()) = 0;
@@ -292,7 +292,7 @@ public:
     Result<void, QString> updateMetadata(const QString &, time_t, qint64, const QByteArray &) override { return {}; }
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
     Result<void, QString> dehydratePlaceholder(const SyncFileItem &) override { return {}; }
-    void convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override {}
+    Result<void, QString> convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override { return {}; }
 
     bool needsMetadataUpdate(const SyncFileItem &) override { return false; }
     bool isDehydratedPlaceholder(const QString &) override { return false; }
