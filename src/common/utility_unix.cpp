@@ -18,6 +18,7 @@
  */
 
 #include <QStandardPaths>
+#include <QtGlobal>
 
 namespace OCC {
 
@@ -71,12 +72,18 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
             qCWarning(lcUtility) << "Could not write auto start entry" << desktopFileLocation;
             return;
         }
+        // When running inside an AppImage, we need to set the path to the
+        // AppImage instead of the path to the executable
+        const QString appImagePath = qEnvironmentVariable("APPIMAGE");
+        const bool runningInsideAppImage = !appImagePath.isNull() && QFile::exists(appImagePath);
+        const QString executablePath = runningInsideAppImage ? appImagePath : QCoreApplication::applicationFilePath();
+
         QTextStream ts(&iniFile);
         ts.setCodec("UTF-8");
         ts << QLatin1String("[Desktop Entry]") << endl
            << QLatin1String("Name=") << guiName << endl
            << QLatin1String("GenericName=") << QLatin1String("File Synchronizer") << endl
-           << QLatin1String("Exec=") << QCoreApplication::applicationFilePath() << " --background" << endl
+           << QLatin1String("Exec=\"") << executablePath << "\" --background" << endl
            << QLatin1String("Terminal=") << "false" << endl
            << QLatin1String("Icon=") << APPLICATION_ICON_NAME << endl
            << QLatin1String("Categories=") << QLatin1String("Network") << endl
