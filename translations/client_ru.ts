@@ -1771,11 +1771,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Проверять наличие о&amp;бновлений</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
-        <source>&amp;Check for Update now</source>
-        <translation>&amp;Проверить наличие обновлений</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>&amp;Channel</source>
         <translation>&amp;Канал</translation>
@@ -1796,19 +1791,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>&amp;Перезапуск и обновление</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <source>&amp;Check for Update now</source>
+        <translation>&amp;Проверить наличие обновлений</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="214"/>
         <source>Advanced</source>
         <translation>Дополнительно</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>Edit &amp;Ignored Files</source>
-        <translation>Список исключений синхронизации…</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Create Debug Archive …</source>
-        <translation>Создать архив с отладочными данными…</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="253"/>
@@ -1835,6 +1825,16 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.ui" line="325"/>
         <source>S&amp;how crash reporter</source>
         <translation>Показать отчёты об ошибках</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>Edit &amp;Ignored Files</source>
+        <translation>Список исключений синхронизации…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Create Debug Archive …</source>
+        <translation>Создать архив с отладочными данными…</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -3331,6 +3331,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
         <translation>Параметры</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="105"/>
+        <source>%1 Settings</source>
+        <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>

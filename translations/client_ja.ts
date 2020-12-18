@@ -1770,11 +1770,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>自動的にアップデートを確認(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
-        <source>&amp;Check for Update now</source>
-        <translation>今すぐアップデートを確認(&amp;C)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>&amp;Channel</source>
         <translation type="unfinished"/>
@@ -1795,19 +1790,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>再起動してアップデート(&amp;R)</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <source>&amp;Check for Update now</source>
+        <translation>今すぐアップデートを確認(&amp;C)</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="214"/>
         <source>Advanced</source>
         <translation>詳細設定</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>Edit &amp;Ignored Files</source>
-        <translation>除外ファイルリストを編集(&amp;I)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="253"/>
@@ -1834,6 +1824,16 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.ui" line="325"/>
         <source>S&amp;how crash reporter</source>
         <translation>クラッシュ報告を表示(&amp;H)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>Edit &amp;Ignored Files</source>
+        <translation>除外ファイルリストを編集(&amp;I)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Create Debug Archive …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -3326,6 +3326,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
         <translation>設定</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="105"/>
+        <source>%1 Settings</source>
+        <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>

@@ -1762,11 +1762,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
-        <source>&amp;Check for Update now</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>&amp;Channel</source>
         <translation type="unfinished"/>
@@ -1787,19 +1782,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>&amp;Reiniciar e Atualizar</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <source>&amp;Check for Update now</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="214"/>
         <source>Advanced</source>
         <translation>Avançada</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>Edit &amp;Ignored Files</source>
-        <translation>Editar Ficheiros &amp;Ignorados</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="253"/>
@@ -1826,6 +1816,16 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.ui" line="325"/>
         <source>S&amp;how crash reporter</source>
         <translation>M&amp;ostrar relatório de crache</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>Edit &amp;Ignored Files</source>
+        <translation>Editar Ficheiros &amp;Ignorados</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Create Debug Archive …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -3316,6 +3316,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
         <translation>Definições</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="105"/>
+        <source>%1 Settings</source>
+        <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
