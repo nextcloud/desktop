@@ -1,0 +1,6 @@
+Bugfix: Fix potential crashes with the remove all dialog
+
+We fixed a bug a dialog window belonging to a removed account could still
+be visible. User action on that dialog would then cause a crash.
+
+https://github.com/owncloud/client/pull/8314

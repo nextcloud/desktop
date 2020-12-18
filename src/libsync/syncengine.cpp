@@ -732,10 +732,11 @@ void SyncEngine::slotDiscoveryFinished()
         }
 
         QPointer<QObject> guard = new QObject();
-        auto callback = [this, finish, guard](bool cancel) -> void {
+        QPointer<QObject> self = this;
+        auto callback = [this, self, finish, guard](bool cancel) -> void {
             // use a guard to ensure its only called once...
-            if (!guard)
-            {
+            // qpointer to self to ensure we still exist
+            if (!guard || !self) {
                 return;
             }
             guard->deleteLater();
