@@ -1773,11 +1773,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>&amp;Аутоматски проверавај за ажурирања</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="123"/>
-        <source>&amp;Check for Update now</source>
-        <translation>&amp;Провери ажурирања сад</translation>
-    </message>
-    <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>&amp;Channel</source>
         <translation type="unfinished"/>
@@ -1798,19 +1793,14 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>&amp;Поново покрени и ажурирај</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="123"/>
+        <source>&amp;Check for Update now</source>
+        <translation>&amp;Провери ажурирања сад</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="214"/>
         <source>Advanced</source>
         <translation>Напредно</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="222"/>
-        <source>Edit &amp;Ignored Files</source>
-        <translation>Уреди фајлове за &amp;игнорисање</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="229"/>
-        <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="253"/>
@@ -1837,6 +1827,16 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.ui" line="325"/>
         <source>S&amp;how crash reporter</source>
         <translation>П&amp;рикажи извештавач о грешкама</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="222"/>
+        <source>Edit &amp;Ignored Files</source>
+        <translation>Уреди фајлове за &amp;игнорисање</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="229"/>
+        <source>Create Debug Archive …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -3332,6 +3332,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
         <translation>Поставке</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="105"/>
+        <source>%1 Settings</source>
+        <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
