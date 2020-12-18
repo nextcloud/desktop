@@ -1260,6 +1260,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
         }
         setSyncPaused(oldPaused);
     });
+    connect(this, &Folder::destroyed, msgBox, &QMessageBox::deleteLater);
     msgBox->open();
 }
 
