@@ -61,6 +61,12 @@ set(libsync_SRCS
     vfs/suffix/vfs_suffix.cpp
 )
 
+if (WIN32)
+    set (libsync_SRCS ${libsync_SRCS} vfs/cfapi/vfs_cfapi.cpp)
+    add_definitions(-D_WIN32_WINNT=_WIN32_WINNT_WIN10)
+    list(APPEND OS_SPECIFIC_LINK_LIBRARIES cldapi)
+endif()
+
 if(TOKEN_AUTH_ONLY)
     set (libsync_SRCS ${libsync_SRCS} creds/tokencredentials.cpp)
 else()

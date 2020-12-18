@@ -73,6 +73,10 @@ if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher "${FolderWatcher_SRC}")
 endif(UNIX AND NOT APPLE)
 
+if (WIN32)
+    nextcloud_add_test(SyncCfApi "")
+endif()
+
 nextcloud_add_benchmark(LargeSync "")
 
 SET(FolderMan_SRC ../src/gui/folderman.cpp)
