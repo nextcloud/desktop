@@ -684,12 +684,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Daissar</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="147"/>
         <source>Continue</source>
-        <translation type="unfinished"/>
+        <translation>Contunhar</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="207"/>
@@ -784,7 +784,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
         <location filename="../src/gui/conflictdialog.ui" line="204"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>uèi</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
@@ -1853,7 +1853,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Anullar</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -2064,7 +2064,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Dobrir lo dorsièr</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
@@ -2893,7 +2893,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>talha</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="410"/>
@@ -4213,7 +4213,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1018"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Anullat</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
@@ -4306,7 +4306,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 sincronizat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="381"/>

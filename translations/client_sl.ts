@@ -374,12 +374,12 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Disable virtual file support...</source>
-        <translation>Onemogoči navidezno podporo datotek ...</translation>
+        <translation>Onemogoči podporo navideznih datotek ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Enable virtual file support%1...</source>
-        <translation>Omogoči navidezno podporo datotek %1 ...</translation>
+        <translation>Omogoči podporo navideznih datotek %1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
@@ -414,7 +414,7 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="780"/>
         <source>Disable virtual file support?</source>
-        <translation>Ali želite onemogočiti navidezno podporo datotek?</translation>
+        <translation>Ali želite onemogočiti podporo navideznih datotek?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="781"/>
@@ -674,12 +674,12 @@ S tem dejanjem prav tako prekinete vsa trenutno potekajoča usklajevanja.</trans
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Nadaljevanje pomeni &lt;b&gt;brisanje teh nastavitev&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Nadaljevanje pomeni, da bodo &lt;b&gt;nastavitve prezrte&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
@@ -922,7 +922,7 @@ S tem dejanjem prav tako prekinete vsa trenutno potekajoča usklajevanja.</trans
         <location filename="../src/libsync/discoveryphase.cpp" line="497"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="522"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Napaka strežnika: odziv PROPFIND ni zapisan kot XML!</translation>
     </message>
 </context>
 <context>
@@ -930,7 +930,7 @@ S tem dejanjem prav tako prekinete vsa trenutno potekajoča usklajevanja.</trans
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Prišlo je do napake med odpiranjem mape %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
@@ -940,17 +940,17 @@ S tem dejanjem prav tako prekinete vsa trenutno potekajoča usklajevanja.</trans
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Mape ni mogoče najti: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Kodiranje imena datoteke ni veljavno</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Prišlo je do napake med branjem mape %1</translation>
     </message>
 </context>
 <context>
@@ -1073,13 +1073,13 @@ Morda je napaka v knjužnicah OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila posodobljena.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili posodobljeni.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile posodobljene.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo posodobljenih.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Dodana je datoteka %1.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
@@ -1260,14 +1260,19 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke zato prepisane s starej�
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Vse datoteke v usklajevani mapi »%1« so bile na strežniku izbrisane.
+Sprememba bo usklajena tudi s krajevno mapo na disku, zato bodo te datoteke, če ni ustreznih dovoljenj za obnovitev, izgubljene. 
+V kolikor se odločite te datoteke ohraniti, in so na voljo ustrezna dovoljenja, bodo spet usklajene s strežnikom.
+Nasprotno, če potrdite izbris in niste lastnik datotek, te ne bodo več na voljo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1240"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>All the files in your local sync folder &apos;%1&apos; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
+Are you sure you want to sync those actions with the server?
+If this was an accident and you decide to keep your files, they will be re-synced from the server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1244"/>
@@ -1448,7 +1453,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation>Navidezna podpora datotek je omogočena.</translation>
+        <translation>Podpora za navidezne datoteke je omogočena.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
@@ -1458,12 +1463,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje NavideznihDatotek s krajevno mapo</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje s krajevno mapo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
@@ -1668,7 +1673,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Mapa &lt;i&gt;%1&lt;/i&gt; se že usklajuje, ker je podrejena mapi &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1676,7 +1681,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Uporabite navidezne datoteke namesto prejemanja celotne vsebine %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
@@ -1686,7 +1691,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Navidezne datoteke niso na voljo za izbrano mapo</translation>
     </message>
 </context>
 <context>
@@ -2073,7 +2078,7 @@ If enabled, logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Omogoči beleženje v začasno mapo</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -2452,12 +2457,12 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Uporabite $navidezne datoteke namesto prejemanja celotne vsebine %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(preizkusno)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -2482,7 +2487,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Navidezne datoteke niso na voljo za izbrano mapo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
@@ -2795,7 +2800,7 @@ Uporaba možnosti ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="348"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Ali želite omogočiti preizkusne možnosti?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="349"/>
@@ -2806,12 +2811,18 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Ko je omogočen način »navideznih datotek«, datoteke niso prejete na napravo. Namesto teh je za vsako datoteko, ki obstaja na strežniku, ustvarjena datoteka »%1«. Vsebino je mogoče prejeti z zagonom teh datotek oziroma z uporabo vsebinskega menija.
+
+Način navideznih datotek se izključuje z možnostjo izbirnega usklajevanja. Trenutno so neizbrane mape prevedene v mape, ki obstajajo le na spletu, nastavitev izbirnega usklajevanja pa je ponastavljena.
+
+Preklop v ta način prekine vsa trenutno dejavna usklajevanja.
+
+To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o težavah, na katere naletite.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="362"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Omogoči preizkusni način vsebnikov</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="363"/>
@@ -2850,72 +2861,72 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="237"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje simbolnih povezav ni podprto.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="245"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka je na seznamu neusklajevanih datotek.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="249"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Imena datotek, ki vsebujejo končno piko, na tem sistemu niso podprta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="259"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Imena datotek, ki vsebujejo znak »%1«, na tem sistemu niso podprta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="263"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke vsebuje vsaj en neveljaven znak.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke je na tem sistemu zadržano za sistemsko datoteko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="270"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka vsebuje pripete presledne znake.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="273"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke je predolgo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka/Mapa ni usklajevana, ker je skrita.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Določanje stanja je spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Spor: prejeta je strežniška različica, krajevna je preimenovana, a ne tudi poslana v oblak. </translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="286"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Zapisa imena datoteke na tem datotečnem sistemu ni mogoče kodirati.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="289"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke je na črnem seznamu strežnika.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="344"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka ima predpono, ki je zadržana za navidezne datoteke.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
@@ -3143,7 +3154,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="142"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče preimenovati %1 v %2, napaka: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
@@ -3211,7 +3222,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Preveri manjkajoči naslov URL</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
@@ -3341,7 +3352,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nastavitve %1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
@@ -4067,7 +4078,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="357"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče posodobiti metapodatkov navidezne datoteke: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="536"/>
@@ -4175,7 +4186,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="509"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>V uporabi so navidezne datoteke s pripono, a ta ni nastavljena.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
@@ -4240,7 +4251,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1018"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Preklicano</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
@@ -4384,7 +4395,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="80"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>Navidezni datotečni sistem zahteva uporabo NTFS, Na %1 pa je v uporabi %2.</translation>
     </message>
 </context>
 <context>
@@ -5130,12 +5141,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Ustvarjena je navidezna datoteka</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Zamenjano z navidezno datoteko</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
@@ -5302,27 +5313,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Vedno omogoči krajevno</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="78"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Trenutno je omogočeno krajevno</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Nekatere so na voljo le na omrežju</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Na voljo je na omrežju</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Nastavi kot vedno na voljo krajevno</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="95"/>
