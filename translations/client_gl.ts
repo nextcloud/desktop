@@ -3782,7 +3782,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="346"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel actualizar o ficheiro: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="356"/>
@@ -4403,7 +4403,7 @@ Este é un modo novo e experimental. Se decide usalo, informe de calquera proble
     <message>
         <location filename="../src/libsync/theme.cpp" line="360"/>
         <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7%8</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3 %4%8%9Bibliotecas Qt %5, %6%8Usando un complemento de ficheiros virtuais: %7%8</translation>
     </message>
 </context>
 <context>
