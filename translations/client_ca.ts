@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
         <source>Activity action button</source>
-        <translation type="unfinished"/>
+        <translation>Botó d&apos;acció d&apos;activitat</translation>
     </message>
 </context>
 <context>
@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation>No s&apos;han pogut crear directoris a la paperera</translation>
+        <translation>No s&apos;han pogut crear carpetes en la paperera</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation>Error eliminant &apos;%1&apos;: %2</translation>
+        <translation>Error en suprimir «%1»: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -338,7 +338,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="408"/>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Disponibilitat</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="413"/>
@@ -373,17 +373,17 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Disable virtual file support...</source>
-        <translation type="unfinished"/>
+        <translation>Inhabilita la compatibilitat amb els fitxers virtuals...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Enable virtual file support%1...</source>
-        <translation type="unfinished"/>
+        <translation>Habilita la compatibilitat amb els fitxers virtuals%1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation> (experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -413,7 +413,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="780"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Voleu inhabilitar la compatibilitat amb els fitxers virtuals?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="781"/>
@@ -422,12 +422,16 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Aquesta acció inhabilitarà la compatibilitat amb els fitxers virtuals. Com a conseqüència, es baixarà el contingut de les carpetes marcades actualment com a «Disponible només en línia».
+
+L&apos;únic avantatge d&apos;inhabilitar la compatibilitat amb els fitxers virtuals és que la característica de sincronització selectiva tornarà a estar disponible.
+
+Aquesta acció anul·larà qualsevol sincronització en execució.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Inhabilita la compatibilitat</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="647"/>
@@ -472,7 +476,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1034"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>La versió del servidor (%1) ha quedat obsoleta. Continueu sota la vostra responsabilitat.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="772"/>
@@ -517,7 +521,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1070"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Error de configuració del servidor: %1 a %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="800"/>
@@ -651,7 +655,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Es recomana un paquet pkcs12 xifrat, ja que s&apos;emmagatzemarà una còpia en el fitxer de configuració.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -669,27 +673,27 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Si continueu, &lt;b&gt;se suprimiran aquests paràmetres&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Si continueu, &lt;b&gt;s&apos;ignoraran aquests paràmetres&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Alguns paràmetres s&apos;han configurat en versions més noves d&apos;aquest client i utilitzen característiques no disponibles en aquesta versió.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Ja hi ha una còpia de seguretat del fitxer de configuració actual a &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Surt</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="147"/>
         <source>Continue</source>
-        <translation type="unfinished"/>
+        <translation>Continua</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="207"/>
@@ -811,7 +815,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Mantén la versió seleccionada</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
@@ -826,17 +830,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Mantén les dues versions</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Mantén la versió local</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Mantén la versió del servidor</translation>
     </message>
 </context>
 <context>
@@ -844,17 +848,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Voleu suprimir la carpeta &lt;i&gt;%1&lt;/i&gt; i tot el contingut de manera permanent?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Voleu suprimir el fitxer &lt;i&gt;%1&lt;/i&gt; de manera permanent?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Confirmeu la supressió</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -868,7 +872,9 @@ This action will abort any currently running synchronization.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït un error en moure el fitxer:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -915,7 +921,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/discoveryphase.cpp" line="497"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="522"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Error del servidor: la resposta PROPFIND no té el format XML.</translation>
     </message>
 </context>
 <context>
@@ -923,27 +929,27 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Error en obrir la carpeta %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta no és accessible en el client; s&apos;ha denegat el permís</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha trobat la carpeta: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>La codificació del nom de fitxer no és vàlida.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Error en llegir la carpeta %1</translation>
     </message>
 </context>
 <context>
@@ -1043,7 +1049,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="373"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>S&apos;ha suprimit %1 i %n fitxer més.</numerusform><numerusform>S&apos;ha suprimit %1 i %n fitxers més.</numerusform></translation>
+        <translation><numerusform>S&apos;han suprimit %1 i %n fitxer més.</numerusform><numerusform>S&apos;han suprimit %1 i %n fitxers més.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="375"/>
@@ -1054,7 +1060,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>S&apos;ha baixat %1 i %n fitxer més.</numerusform><numerusform>S&apos;ha baixat %1 i %n fitxers més.</numerusform></translation>
+        <translation><numerusform>S&apos;han baixat %1 i %n fitxer més.</numerusform><numerusform>S&apos;han baixat %1 i %n fitxers més.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
@@ -1065,18 +1071,18 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>S&apos;han afegit %1 i %n fitxer més.</numerusform><numerusform>S&apos;han afegit %1 i %n fitxers més.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha afegit %1.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>S&apos;ha actualitzat %1 i %n fitxer més.</numerusform><numerusform>S&apos;ha actualitzat %1 i %n fitxers més.</numerusform></translation>
+        <translation><numerusform>S&apos;han actualitzat %1 i %n fitxer més.</numerusform><numerusform>S&apos;han actualitzat %1 i %n fitxers més.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="389"/>
@@ -1118,7 +1124,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>No s&apos;ha pogut sincronitzar %1 i %n fitxer més per errors. Consulteu el registre per a obtenir més informació.</numerusform><numerusform>No s&apos;ha pogut sincronitzar %1 i %n fitxers més per errors. Consulteu el registre per a obtenir més informació.</numerusform></translation>
+        <translation><numerusform>No s&apos;han pogut sincronitzar %1 i %n fitxer més per errors. Consulteu el registre per a obtenir més informació.</numerusform><numerusform>No s&apos;han pogut sincronitzar %1 i %n fitxers més per errors. Consulteu el registre per a obtenir més informació.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="417"/>
@@ -1241,29 +1247,34 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;han suprimit tots els fitxers de la carpeta de sincronització «%1» del servidor.
+Aquestes supressions se sincronitzaran a la vostra carpeta de sincronització local i aquests fitxers deixaran d&apos;estar disponibles si no teniu dret a restaurar-los.
+Si decidiu restaurar els fitxers, es tornaran a sincronitzar amb el servidor si teniu drets per a fer-ho.
+Si decidiu suprimir els fitxers, deixaran d&apos;estar disponibles, tret que en sigueu el propietari.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1240"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;han suprimit tots els fitxers de la carpeta de sincronització local «%1». Aquestes supressions se sincronitzaran amb el servidor, per la qual cosa els fitxers deixaran d&apos;estar disponibles si no els restaureu.
+Segur que voleu sincronitzar aquestes accions amb el servidor?
+Si es tracta d&apos;un accident i decidiu mantenir els fitxers, es tornaran a sincronitzar des del servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1244"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Voleu suprimir tots els fitxers?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1248"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Suprimeix tots els fitxers</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1249"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Mantén els fitxers</translation>
     </message>
 </context>
 <context>
@@ -1346,7 +1357,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1469"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>El camí seleccionat no existeix.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1358"/>
@@ -1429,7 +1440,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>La compatibilitat amb els fitxers virtuals està habilitada.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
@@ -1439,12 +1450,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;estan sincronitzant els fitxers virtuals amb la carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està sincronitzant amb la carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
@@ -1557,7 +1568,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>El supervisor no ha rebut cap notificació de prova.</translation>
     </message>
 </context>
 <context>
@@ -1649,7 +1660,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Ja esteu sincronitzant &lt;i&gt;%1&lt;/i&gt;, que és una subcarpeta de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1657,17 +1668,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Utilitza fitxers virtuals en comptes de baixar el contingut immediatament%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation> (experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Els fitxers virtuals no estan disponibles per la carpeta seleccionada</translation>
     </message>
 </context>
 <context>
@@ -1698,7 +1709,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Hem rebut un element Content-Length de baixada inesperat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
@@ -1823,7 +1834,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Crea un arxiu de depuració...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -1833,7 +1844,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>No podeu inhabilitar l&apos;inici automàtic perquè l&apos;inici automàtic per a tot el sistema està habilitat.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
@@ -1860,7 +1871,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Crea un arxiu de depuració</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -1870,12 +1881,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha creat l&apos;arxiu de depuració</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha creat l&apos;arxiu de depuració a %1</translation>
     </message>
 </context>
 <context>
@@ -2045,18 +2056,20 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>El client pot escriure registres de depuració a una carpeta temporal. Aquests registres són molt útils per a diagnosticar els problemes.
+Com que els fitxers de registre poden créixer, el client en crearà un de nou en cada execució de sincronització i comprimirà els anteriors. També suprimirà els fitxers de registre després d&apos;unes hores per evitar consumir massa espai del disc.
+Si s&apos;habiliten, els registres s&apos;escriuran a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Habilita el registre a una carpeta temporal</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Aquest paràmetre és persistent entre execucions del client. Tingueu en compte que l&apos;ús de qualsevol opció de registre des de la línia d&apos;ordres anul·larà aquest paràmetre.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -2066,7 +2079,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Obre la carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
@@ -2175,7 +2188,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Hi ha disponible una nova versió del client del %1 però s&apos;ha produït un error en el procés d&apos;actualització.&lt;/p&gt;&lt;p&gt;S&apos;ha baixat la versió &lt;b&gt;%2&lt;/b&gt;. La versió instal·lada és la %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
@@ -2185,7 +2198,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Reinicia i actualitza</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
@@ -2228,7 +2241,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Nota: els paràmetres del servidor intermediari no tenen efecte per als comptes en localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -2360,12 +2373,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading %1. Please wait …</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està baixant la versió %1. Espereu...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Hi ha disponible la versió %1. Reinicieu l&apos;aplicació per a iniciar l&apos;actualització.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
@@ -2380,7 +2393,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 is available. Please click &lt;a href=&apos;%3&apos;&gt;here&lt;/a&gt; to download the update.</source>
-        <translation>Està disponible la versió %2 del %1. Feu clic &lt;a href=&apos;%3&apos;&gt;aquí&lt;/a&gt; per a baixar l&apos;actualització.</translation>
+        <translation>Hi ha disponible la versió %2 del %1. Feu clic &lt;a href=&apos;%3&apos;&gt;aquí&lt;/a&gt; per a baixar l&apos;actualització.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
@@ -2428,12 +2441,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Utilitza &amp;fitxers virtuals en comptes de baixar el contingut immediatament%1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation> (experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -2458,7 +2471,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Els fitxers virtuals no estan disponibles per la carpeta seleccionada</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
@@ -2770,7 +2783,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="348"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Voleu habilitar la característica experimental?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="349"/>
@@ -2825,92 +2838,92 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="237"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;admet la sincronització d&apos;enllaços simbòlics.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="245"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer és a la llista de fitxers ignorats.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="249"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;admeten els noms de fitxer que finalitzen amb un punt en aquest sistema de fitxers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="259"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;admeten els noms de fitxers que contenen el caràcter «%1» en aquest sistema de fitxers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="263"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>El nom del fitxer conté com a mínim un caràcter no vàlid</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Aquest nom de fitxer és un nom reservat en aquest sistema de fitxers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="270"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>El nom del fitxer conté espais finals.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="273"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>El nom del fitxer és massa llarg.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ignora el fitxer o la carpeta perquè està ocult.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït un error en comprovar l&apos;estat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Conflicte: s&apos;ha baixat la versió del servidor, s&apos;ha canviat el nom de la còpia local i no s&apos;ha pujat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="286"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>El nom del fitxer no es pot codificar en el vostre sistema de fitxers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="289"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>El nom del fitxer es troba en la llista de prohibicions del servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="344"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer té una extensió reservada per als fitxers virtuals.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>mida</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>permisos</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="412"/>
         <source>etag</source>
-        <translation type="unfinished"/>
+        <translation>etag</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>id de fitxer</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
@@ -2920,42 +2933,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1186"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha ignorat perquè es troba a la llista de prohibicions «Trieu què voleu sincronitzar»</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1219"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>No es permet perquè no teniu permís per a afegir subcarpetes en aquesta carpeta</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1224"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>No es permet perquè no teniu permís per a afegir fitxers en aquesta carpeta</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1237"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>No es permet carregar aquest fitxer perquè és de només lectura en el servidor; s&apos;està restaurant</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1259"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha mogut a una destinació no vàlida; s&apos;està restaurant</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1272"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>No es permet suprimir; s&apos;està restaurant</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1381"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Error while reading the database</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1442"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>El servidor ha respost amb un error en llegir la carpeta «%1»: %2</translation>
     </message>
 </context>
 <context>
@@ -3089,7 +3102,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Error en establir l&apos;estat d&apos;ancoratge</translation>
     </message>
 </context>
 <context>
@@ -3118,7 +3131,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="142"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut canviar el nom de «%1» a «%2»; error: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
@@ -3134,7 +3147,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="233"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Error en establir l&apos;estat d&apos;ancoratge</translation>
     </message>
 </context>
 <context>
@@ -3186,7 +3199,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Falta l&apos;URL de sol·licitud</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
@@ -3316,7 +3329,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>Paràmetres del %1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
@@ -3535,7 +3548,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Cerca globalment</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="285"/>
@@ -3597,7 +3610,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharee.cpp" line="133"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -3688,7 +3701,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="946"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>No es permet tornar a compartir la carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="824"/>
@@ -3719,27 +3732,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Mou i canvia el nom...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Mou, canvia el nom i puja...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="925"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Suprimeix els canvis locals</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="931"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Mou i puja...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="932"/>
         <source>Delete</source>
-        <translation>Eliminar</translation>
+        <translation>Suprimeix</translation>
     </message>
 </context>
 <context>
@@ -3982,7 +3995,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>File or directory not found:</source>
-        <translation>No s&apos;ha trobat el fitxer o el directori:</translation>
+        <translation>No s&apos;ha trobat el fitxer o la carpeta:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
@@ -4042,7 +4055,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="357"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;han pogut actualitzar les metadades del fitxer virtual: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="536"/>
@@ -4064,7 +4077,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
         <location filename="../src/libsync/syncengine.cpp" line="1436"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>S&apos;ha ignorat per la llista negra &quot;Trieu què voleu sincronitzar&quot;</translation>
+        <translation>S&apos;ha ignorat perquè es troba a la llista de prohibicions «Trieu què voleu sincronitzar»</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1455"/>
@@ -4150,12 +4163,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="509"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;estan utilitzant fitxers virtuals amb sufix però no s&apos;ha definit el sufix</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>El fitxer conté espais finals.</translation>
+        <translation>El nom del fitxer conté espais finals.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -4215,7 +4228,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1018"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha cancel·lat</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
@@ -4244,13 +4257,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/systray.cpp" line="97"/>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync</source>
-        <translation>Pausa la sincronització</translation>
+        <translation>Atura la sincronització</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Reprèn la sincronització</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="99"/>
@@ -4265,12 +4278,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Atura la sincronització de tot</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Reprèn la sincronització de tot</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="234"/>
@@ -4359,7 +4372,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/vfs.cpp" line="80"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>La característica de sistema de fitxers virtual requereix un sistema de fitxers NTFS; %1 utilitza %2</translation>
     </message>
 </context>
 <context>
@@ -4411,7 +4424,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="228"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>El servidor del compte %1 utilitza la versió %2, que ha quedat obsoleta. No s&apos;ha provat l&apos;ús d&apos;aquest client amb versions del servidor obsoletes i és potencialment perillós. Continueu sota la vostra responsabilitat.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
@@ -4641,7 +4654,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;incronitza-ho tot des del servidor (recomanat)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
@@ -4959,7 +4972,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer baixat no coincideix amb la suma de verificació, es reprendrà. «%1» != «%2»</translation>
     </message>
 </context>
 <context>
@@ -5060,7 +5073,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="538"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Obre %1 localment</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="695"/>
@@ -5105,12 +5118,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha creat el fitxer virtual</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha reemplaçat per un fitxer virtual</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
@@ -5224,7 +5237,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>Sincronització correcta, s&apos;han ignorat alguns fitxers.</translation>
+        <translation>Sincronització correcta; s&apos;han ignorat alguns fitxers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="92"/>
@@ -5239,7 +5252,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="98"/>
         <source>Preparing to sync</source>
-        <translation>S&apos;està preparant per a la sincronització</translation>
+        <translation>S&apos;està preparant la sincronització</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="101"/>
@@ -5249,7 +5262,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="104"/>
         <source>Sync is paused</source>
-        <translation>La sincronització està en pausa.</translation>
+        <translation>La sincronització està en pausa</translation>
     </message>
 </context>
 <context>
@@ -5277,32 +5290,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Sempre disponible localment</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="78"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Disponible localment actualment</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Disponible parcialment només en línia</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Sempre disponible en línia</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Fes que sempre estigui disponible localment</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="95"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Allibera espai local</translation>
     </message>
 </context>
 <context>

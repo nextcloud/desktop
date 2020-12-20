@@ -3359,7 +3359,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ustawienia %1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
