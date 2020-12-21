@@ -399,7 +399,13 @@ public:
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
-    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false, bool useCoreIcon = false) const;
+    enum class IconFallback {
+        NoFallbackToCoreIcon,
+        FallbackToCoreIcon,
+        CoreIcon
+    };
+
+    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false, IconFallback fallbackType = IconFallback::FallbackToCoreIcon) const;
     static bool hasTheme(const QString &theme);
 #endif
     Theme();
