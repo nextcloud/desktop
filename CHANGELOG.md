@@ -3,7 +3,36 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.7.3...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.7.4...master
+
+Summary
+-------
+
+* Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
+* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+
+Details
+-------
+
+* Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
+
+   We fixed a bug a dialog window belonging to a removed account could still be visible. User action
+   on that dialog would then cause a crash.
+
+   https://github.com/owncloud/client/pull/8314
+
+* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+
+   We no longer recommend to use a http connection if a https url was not found.
+
+   https://github.com/owncloud/client/issues/8231
+
+Changelog for ownCloud Desktop Client [2.7.4] (2020-12-21)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.7.4 relevant to
+ownCloud admins and users.
+
+[2.7.4]: https://github.com/owncloud/client/compare/v2.7.3...v2.7.4
 
 Summary
 -------
@@ -11,7 +40,7 @@ Summary
 * Bugfix - Fix crash when a download is cancelled: [#4329](https://github.com/owncloud/enterprise/issues/4329)
 * Bugfix - Update Windows launch on start entry: [#7672](https://github.com/owncloud/client/issues/7672)
 * Bugfix - Log the final http request: [#8289](https://github.com/owncloud/client/pull/8289)
-* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+* Bugfix - Properly display parent Window when displaying a dialog: [#8313](https://github.com/owncloud/client/issues/8313)
 
 Details
 -------
@@ -35,11 +64,11 @@ Details
 
    https://github.com/owncloud/client/pull/8289
 
-* Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+* Bugfix - Properly display parent Window when displaying a dialog: [#8313](https://github.com/owncloud/client/issues/8313)
 
-   We no longer recommend to use a http connection if a https url was not found.
+   We fixed a bug where a dialgo was shown before the main window was show.
 
-   https://github.com/owncloud/client/issues/8231
+   https://github.com/owncloud/client/issues/8313
 
 Changelog for ownCloud Desktop Client [2.7.3] (2020-12-11)
 =======================================
