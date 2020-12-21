@@ -58,7 +58,7 @@ QColor ownCloudTheme::wizardHeaderSubTitleColor() const
 
 QIcon ownCloudTheme::wizardHeaderLogo() const
 {
-    return QIcon(QStringLiteral(":/client/ownCloud/theme/colored/wizard_logo.svg"));
+    return themeIcon(QStringLiteral("wizard_logo"), false, false, Theme::IconFallback::NoFallbackToCoreIcon);
 }
 
 QIcon ownCloudTheme::aboutIcon() const
