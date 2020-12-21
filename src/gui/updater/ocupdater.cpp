@@ -16,6 +16,7 @@
 #include "configfile.h"
 #include "common/utility.h"
 #include "accessmanager.h"
+#include "application.h"
 
 #include "updater/ocupdater.h"
 
@@ -421,6 +422,7 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     layout->addWidget(bb);
 
     msgBox->open();
+    ownCloudGui::raiseDialog(msgBox);
 }
 
 void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)

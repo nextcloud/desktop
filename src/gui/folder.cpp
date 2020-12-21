@@ -1225,6 +1225,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
     });
     connect(this, &Folder::destroyed, msgBox, &QMessageBox::deleteLater);
     msgBox->open();
+    ownCloudGui::raiseDialog(msgBox);
 }
 
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
