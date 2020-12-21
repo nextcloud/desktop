@@ -339,7 +339,7 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
         <location filename="../src/gui/accountsettings.cpp" line="408"/>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
         <source>Availability</source>
-        <translation type="unfinished"/>
+        <translation>Kullanılabilirlik</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="413"/>
