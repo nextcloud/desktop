@@ -508,6 +508,7 @@ void AccountSettings::slotRemoveCurrentFolder()
             }
         });
         messageBox->open();
+        ownCloudGui::raiseDialog(messageBox);
     }
 }
 

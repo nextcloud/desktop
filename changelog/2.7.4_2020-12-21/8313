@@ -1,0 +1,5 @@
+Bugfix: Properly display parent Window when displaying a dialog
+
+We fixed a bug where a dialgo was shown before the main window was show.
+
+https://github.com/owncloud/client/issues/8313

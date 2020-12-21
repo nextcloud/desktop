@@ -752,7 +752,7 @@ Esta acción abortará cualquier sincronización actualmente en ejecución.</tra
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1140"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1142"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
@@ -2615,7 +2615,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1006"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1008"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
@@ -2659,12 +2659,12 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="930"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="934"/>
         <source>File has changed since discovery</source>
         <translation>El archivo ha cambiado desde que fue descubierto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="996"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1000"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
@@ -3750,58 +3750,63 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
         <translation>%1 (no realizado por el error anterior, intente de nuevo %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="454"/>
+        <location filename="../src/libsync/syncengine.cpp" line="459"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Solo %1 disponible, se necesita por lo menos %2 para comenzar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="482"/>
+        <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Imposible abrir o crear la base de datos local de sincronización. Asegúrese de que tiene permisos de escritura en la carpeta de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1035"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1040"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Poco espacio libre en disco: La descarga lo reducirá por debajo del %1, debería abortar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1042"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1047"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>No hay suficiente espacio libre en el servidor para algunas subidas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="373"/>
+        <location filename="../src/libsync/syncengine.cpp" line="378"/>
         <source>Unresolved conflict.</source>
         <translation>Conflicto sin resolver.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="351"/>
+        <location filename="../src/libsync/syncengine.cpp" line="346"/>
+        <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="356"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>No se pudo actualizar los metadatos del archivo virtual: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="498"/>
+        <location filename="../src/libsync/syncengine.cpp" line="503"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>Usando archivos virtuales con sufijo, pero el mismo no está establecido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="510"/>
+        <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>No se pudo leer la lista de bloqueo de la base de datos local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="541"/>
+        <location filename="../src/libsync/syncengine.cpp" line="546"/>
         <source>Unable to read from the sync journal.</source>
         <translation>No se ha podido leer desde el registro de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="625"/>
+        <location filename="../src/libsync/syncengine.cpp" line="630"/>
         <source>Cannot open the sync journal</source>
         <translation>No es posible abrir el diario de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
         <source>Aborted</source>
         <translation>Interrumpido</translation>
     </message>
@@ -4393,8 +4398,8 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="360"/>
-        <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7</source>
-        <translation>%1 %2 %3 %4%8%9Bibliotecas Qt %5, %6%8Usando plugin de archivos virtuales : %7</translation>
+        <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7%8</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

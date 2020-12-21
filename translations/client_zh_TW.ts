@@ -752,7 +752,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1140"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1142"/>
         <source>Error writing metadata to the database</source>
         <translation>寫入後設資料(metadata) 時發生錯誤</translation>
     </message>
@@ -2618,7 +2618,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1006"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1008"/>
         <source>Error writing metadata to the database</source>
         <translation>寫入後設資料(metadata) 時發生錯誤</translation>
     </message>
@@ -2662,12 +2662,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="930"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="934"/>
         <source>File has changed since discovery</source>
         <translation>尋找的過程中檔案已經被更改</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="996"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1000"/>
         <source>Error writing metadata to the database</source>
         <translation>寫入後設資料(metadata) 時發生錯誤</translation>
     </message>
@@ -3753,58 +3753,63 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1（由於先前的錯誤而跳過，請在％2中重試）</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="454"/>
+        <location filename="../src/libsync/syncengine.cpp" line="459"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>目前僅有 %1 可以使用，至少需要 %2 才能開始</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="482"/>
+        <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>無法開啟或建立本地端同步資料庫。 確保您在同步目錄中具有寫訪問權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1035"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1040"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>磁盤空間不足：下載將減少以下可用空間 %1 被跳過了。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1042"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1047"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>伺服器上沒有可用的空間用於某些上載。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="373"/>
+        <location filename="../src/libsync/syncengine.cpp" line="378"/>
         <source>Unresolved conflict.</source>
         <translation>未解決的衝突。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="351"/>
+        <location filename="../src/libsync/syncengine.cpp" line="346"/>
+        <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="356"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>無法更新虛擬檔案元數據：％1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="498"/>
+        <location filename="../src/libsync/syncengine.cpp" line="503"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>使用帶後綴與虛擬文件，但未設置後綴</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="510"/>
+        <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>無法從本地端資料庫讀取黑名單</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="541"/>
+        <location filename="../src/libsync/syncengine.cpp" line="546"/>
         <source>Unable to read from the sync journal.</source>
         <translation>無法從同步日誌中讀取。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="625"/>
+        <location filename="../src/libsync/syncengine.cpp" line="630"/>
         <source>Cannot open the sync journal</source>
         <translation>同步處理日誌無法開啟</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
         <source>Aborted</source>
         <translation>中止</translation>
     </message>
@@ -4396,8 +4401,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="360"/>
-        <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7</source>
-        <translation>％1％2％3％4％8％9Libraries Qt％5，％6％8使用虛擬文件插件：％7</translation>
+        <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7%8</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -22,7 +22,7 @@
 #include <QElapsedTimer>
 #include <QNetworkConfigurationManager>
 
-#include "qtsingleapplication.h"
+#include "3rdparty/qtsingleapplication/qtsingleapplication.h"
 
 #include "syncresult.h"
 #include "logbrowser.h"

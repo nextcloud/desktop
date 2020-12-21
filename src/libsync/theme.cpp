@@ -148,9 +148,9 @@ bool Theme::isUsingDarkTheme() const
  * helper to load a icon from either the icon theme the desktop provides or from
  * the apps Qt resources.
  */
-QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible, bool useCoreIcon) const
+QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible, IconFallback fallbackType) const
 {
-    useCoreIcon = useCoreIcon || isVanilla();
+    const bool useCoreIcon = (fallbackType == IconFallback::CoreIcon) || isVanilla();
     QString flavor;
     if (sysTray) {
         flavor = systrayIconFlavor(_mono, sysTrayMenuVisible);
@@ -174,6 +174,11 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
             return cached = QIcon(svg);
         }
 
+        const QString png = QStringLiteral("%1/%2/%3.png").arg(path, flavor, name);
+        if (QFile::exists(png)) {
+            return cached = QIcon(png);
+        }
+
         const QList<int> sizes {16, 22, 32, 48, 64, 128, 256, 512, 1024};
         QString previousIcon;
         for (int size : sizes) {
@@ -190,8 +195,8 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
         }
     }
     if (cached.isNull()) {
-        if (!useCoreIcon) {
-            return themeIcon(name, sysTray, sysTrayMenuVisible, true);
+        if (!useCoreIcon && fallbackType == IconFallback::FallbackToCoreIcon) {
+            return themeIcon(name, sysTray, sysTrayMenuVisible, IconFallback::CoreIcon);
         }
         qWarning() << "Failed to locate the icon" << name;
     }

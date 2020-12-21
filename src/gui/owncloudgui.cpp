@@ -997,6 +997,7 @@ void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &messag
     msgBox->setWindowTitle(title);
     msgBox->setIcon(QMessageBox::Information);
     msgBox->open();
+    raiseDialog(msgBox);
 }
 
 void ownCloudGui::slotShowSettings()

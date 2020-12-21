@@ -752,7 +752,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1140"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1142"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียน metadata ไปยังฐานข้อมูล</translation>
     </message>
@@ -2611,7 +2611,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1006"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1008"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียน metadata ไปยังฐานข้อมูล</translation>
     </message>
@@ -2655,12 +2655,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="930"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="934"/>
         <source>File has changed since discovery</source>
         <translation>ไฟล์มีการเปลี่ยนแปลงตั้งแต่ถูกพบ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="996"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1000"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียน metadata ไปยังฐานข้อมูล</translation>
     </message>
@@ -3744,58 +3744,63 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 (ข้ามไปเนื่องจากข้อผิดพลาดก่อนหน้านี้ กำลังลองอีกครั้งใน %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="454"/>
+        <location filename="../src/libsync/syncengine.cpp" line="459"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="482"/>
+        <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>ไม่สามารถเปิดหรือสร้างฐานข้อมูลการประสานข้อมูลในเครื่อง ตรวจสอบว่าคุณมีสิทธิ์การเขียนในโฟลเดอร์ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1035"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1040"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>พื้นที่จัดเก็บเหลือน้อย: การดาวน์โหลดจะช่วยลดพื้นที่ว่างด้านล่าง %1 ที่ถูกข้ามไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1042"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1047"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>มีพื้นที่ว่างไม่เพียงพอบนเซิร์ฟเวอร์สำหรับการอัปโหลดบางรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="373"/>
+        <location filename="../src/libsync/syncengine.cpp" line="378"/>
         <source>Unresolved conflict.</source>
         <translation>ข้อขัดแย้งที่ยังไม่ได้แก้ไข</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="351"/>
+        <location filename="../src/libsync/syncengine.cpp" line="346"/>
+        <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="356"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>ไม่สามารถอัปเดตข้อมูล metadata ของไฟล์เสมือน: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="498"/>
+        <location filename="../src/libsync/syncengine.cpp" line="503"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>กำลังใช้ไฟล์เสมือนที่มีคำต่อท้าย แต่ไม่ได้ตั้งคำต่อท้าย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="510"/>
+        <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลในเครื่อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="541"/>
+        <location filename="../src/libsync/syncengine.cpp" line="546"/>
         <source>Unable to read from the sync journal.</source>
         <translation>ไม่สามารถอ่านจากบันทึกการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="625"/>
+        <location filename="../src/libsync/syncengine.cpp" line="630"/>
         <source>Cannot open the sync journal</source>
         <translation>ไม่สามารถเปิดการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
         <source>Aborted</source>
         <translation>ยกเลิกแล้ว</translation>
     </message>
@@ -4387,8 +4392,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="360"/>
-        <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7</source>
-        <translation>%1 %2 %3 %4 %8 %9 ห้องสมุด Qt %5, %6%8 กำลังใช้ปลั๊กอินไฟล์เสมือน: %7</translation>
+        <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7%8</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

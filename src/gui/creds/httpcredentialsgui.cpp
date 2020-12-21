@@ -117,7 +117,7 @@ void HttpCredentialsGui::showDialog()
             + QLatin1String("<br>");
     }
 
-    QInputDialog *dialog = new QInputDialog(qobject_cast<Application *>(qApp)->gui()->settingsDialog());
+    QInputDialog *dialog = new QInputDialog(ocApp()->gui()->settingsDialog());
     dialog->setAttribute(Qt::WA_DeleteOnClose, true);
     dialog->setWindowTitle(tr("Enter Password"));
     dialog->setLabelText(msg);
@@ -128,7 +128,6 @@ void HttpCredentialsGui::showDialog()
         dialogLabel->setTextFormat(Qt::RichText);
     }
 
-    dialog->open();
     connect(dialog, &QDialog::finished, this, [this, dialog](int result) {
         if (result == QDialog::Accepted) {
             _password = dialog->textValue();
@@ -138,6 +137,8 @@ void HttpCredentialsGui::showDialog()
         }
         emit asked();
     });
+    dialog->open();
+    ownCloudGui::raiseDialog(dialog);
 }
 
 QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
