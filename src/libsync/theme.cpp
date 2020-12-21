@@ -174,6 +174,11 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
             return cached = QIcon(svg);
         }
 
+        const QString png = QStringLiteral("%1/%2/%3.png").arg(path, flavor, name);
+        if (QFile::exists(png)) {
+            return cached = QIcon(png);
+        }
+
         const QList<int> sizes {16, 22, 32, 48, 64, 128, 256, 512, 1024};
         QString previousIcon;
         for (int size : sizes) {
