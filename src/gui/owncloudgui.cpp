@@ -1045,6 +1045,7 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 {
     auto window = ocApp()->gui()->settingsDialog();
     OC_ASSERT(window);
+    OC_ASSERT_X(!qobject_cast<QDialog *>(raiseWidget) || raiseWidget->parentWidget() == window, "raiseDialog should only be called with modal dialogs");
     if (!window) {
         return;
     }
