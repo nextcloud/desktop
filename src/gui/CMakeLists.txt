@@ -101,38 +101,6 @@ set(client_SRCS
     wizard/owncloudwizardresultpage.cpp
 )
 
-set(updater_SRCS
-    updater/ocupdater.cpp
-    updater/updateinfo.cpp
-    updater/updater.cpp
-)
-
-IF( APPLE )
-    list(APPEND client_SRCS cocoainitializer_mac.mm
-                            socketapisocket_mac.mm
-                            systray.mm
-                            settingsdialog_mac.mm)
-
-    if(SPARKLE_FOUND)
-        # Define this, we need to check in updater.cpp
-        add_definitions(-DHAVE_SPARKLE)
-        list(APPEND updater_SRCS updater/sparkleupdater_mac.mm updater/sparkleupdater.h)
-        list(APPEND updater_DEPS ${SPARKLE_LIBRARY})
-   endif()
-ENDIF()
-
-IF( NOT WIN32 AND NOT APPLE )
-    list(APPEND client_SRCS folderwatcher_linux.cpp)
-ENDIF()
-IF( WIN32 )
-    list(APPEND client_SRCS
-            folderwatcher_win.cpp
-            navigationpanehelper.cpp)
-ENDIF()
-IF( APPLE )
-    list(APPEND client_SRCS folderwatcher_mac.cpp)
-ENDIF()
-
 set(3rdparty_SRC
     ../3rdparty/QProgressIndicator/QProgressIndicator.cpp
     ../3rdparty/qtlockedfile/qtlockedfile.cpp
@@ -163,12 +131,6 @@ set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
 target_link_libraries(owncloudCore PUBLIC Qt5::Widgets Qt5::Network Qt5::Xml
                                           ${synclib_NAME})
 
-add_library(updater STATIC ${updater_SRCS})
-target_link_libraries(updater ${synclib_NAME} ${updater_DEPS} Qt5::Widgets Qt5::Network Qt5::Xml)
-target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-
-target_link_libraries( owncloudCore PUBLIC updater)
-
 target_include_directories(owncloudCore PUBLIC
     ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
@@ -176,17 +138,45 @@ target_include_directories(owncloudCore PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-## handle DBUS for Fdo notifications
-if( UNIX AND NOT APPLE )
+
+target_sources(owncloudCore PRIVATE
+    updater/ocupdater.cpp
+    updater/updateinfo.cpp
+    updater/updater.cpp
+)
+
+IF( APPLE )
+    find_package(Qt5 COMPONENTS MacExtras)
+    target_link_libraries(owncloudCore PUBLIC Qt5::MacExtras)
+
+    target_sources(owncloudCore PRIVATE
+            cocoainitializer_mac.mm
+            socketapisocket_mac.mm
+            systray.mm
+            settingsdialog_mac.mm
+
+            folderwatcher_mac.cpp)
+
+    if(SPARKLE_FOUND)
+        # Define this, we need to check in updater.cpp
+        target_compile_definitions(owncloudCore PUBLIC HAVE_SPARKLE)
+        target_sources(owncloudCore PRIVATE
+            updater/sparkleupdater_mac.mm
+            updater/sparkleupdater.h)
+        target_link_libraries(owncloudCore PRIVATE ${SPARKLE_LIBRARY})
+   endif()
+elseif( WIN32 )
+    target_sources(owncloudCore PRIVATE
+            folderwatcher_win.cpp
+            navigationpanehelper.cpp)
+elseif(UNIX AND NOT APPLE )
+    ## handle DBUS for Fdo notifications
     find_package(Qt5 COMPONENTS DBus)
     target_link_libraries(owncloudCore PUBLIC Qt5::DBus)
     target_compile_definitions(owncloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
+    target_sources(owncloudCore PRIVATE folderwatcher_linux.cpp)
 endif()
 
-if (APPLE)
-    find_package(Qt5 COMPONENTS MacExtras)
-    target_link_libraries(owncloudCore PUBLIC Qt5::MacExtras)
-endif()
 
 if(WITH_CRASHREPORTER)
     target_link_libraries(owncloudCore PUBLIC crashreporter-handler)
