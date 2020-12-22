@@ -372,13 +372,13 @@ Wait for the new sync, then encrypt it.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
-        <source>Disable virtual file support...</source>
-        <translation>Inhabilita la compatibilitat amb els fitxers virtuals...</translation>
+        <source>Disable virtual file support …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source>Enable virtual file support%1...</source>
-        <translation>Habilita la compatibilitat amb els fitxers virtuals%1...</translation>
+        <source>Enable virtual file support%1 …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>

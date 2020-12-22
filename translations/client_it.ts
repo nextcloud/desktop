@@ -373,13 +373,13 @@ Attendi la nuova sincronizzazione, quindi cifrala.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
-        <source>Disable virtual file support...</source>
-        <translation>Disabilita supporto dei file virtuali…</translation>
+        <source>Disable virtual file support …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source>Enable virtual file support%1...</source>
-        <translation>Abilita supporto dei file virtuali%1…</translation>
+        <source>Enable virtual file support%1 …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
