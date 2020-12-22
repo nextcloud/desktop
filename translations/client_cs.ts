@@ -373,12 +373,12 @@ Počkejte na příští synchronizaci a pak složku zašifrujte.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
-        <source>Disable virtual file support...</source>
-        <translation>Vypnout podporu pro virtuální soubor…</translation>
+        <source>Disable virtual file support …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source>Enable virtual file support%1...</source>
+        <source>Enable virtual file support%1 …</source>
         <translation type="unfinished"/>
     </message>
     <message>
