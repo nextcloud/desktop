@@ -373,13 +373,13 @@ S prazno mapo počakajte na konec usklajevanja, potem jo znova šifrirajte.</tra
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
-        <source>Disable virtual file support...</source>
-        <translation>Onemogoči podporo navideznih datotek ...</translation>
+        <source>Disable virtual file support …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
-        <source>Enable virtual file support%1...</source>
-        <translation>Omogoči podporo navideznih datotek %1 ...</translation>
+        <source>Enable virtual file support%1 …</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
