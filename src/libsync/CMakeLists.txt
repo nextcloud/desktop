@@ -62,7 +62,10 @@ set(libsync_SRCS
 )
 
 if (WIN32)
-    set (libsync_SRCS ${libsync_SRCS} vfs/cfapi/vfs_cfapi.cpp)
+    set(libsync_SRCS ${libsync_SRCS}
+        vfs/cfapi/cfapiwrapper.cpp
+        vfs/cfapi/vfs_cfapi.cpp
+    )
     add_definitions(-D_WIN32_WINNT=_WIN32_WINNT_WIN10)
     list(APPEND OS_SPECIFIC_LINK_LIBRARIES cldapi)
 endif()
