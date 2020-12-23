@@ -17,6 +17,22 @@ namespace cfapi {
 using namespace OCC::CfApiWrapper;
 }
 
+#define CFVERIFY_VIRTUAL(folder, path) \
+    QVERIFY(QFileInfo((folder).localPath() + (path)).exists()); \
+    QVERIFY(cfapi::isSparseFile((folder).localPath() + (path))); \
+    QVERIFY(dbRecord((folder), (path)).isValid()); \
+    QCOMPARE(dbRecord((folder), (path))._type, ItemTypeVirtualFile);
+
+#define CFVERIFY_NONVIRTUAL(folder, path) \
+    QVERIFY(QFileInfo((folder).localPath() + (path)).exists()); \
+    QVERIFY(!cfapi::isSparseFile((folder).localPath() + (path))); \
+    QVERIFY(dbRecord((folder), (path)).isValid()); \
+    QCOMPARE(dbRecord((folder), (path))._type, ItemTypeFile);
+
+#define CFVERIFY_GONE(folder, path) \
+    QVERIFY(!QFileInfo((folder).localPath() + (path)).exists()); \
+    QVERIFY(!dbRecord((folder), (path)).isValid());
+
 using namespace OCC;
 
 void setPinState(const QString &path, PinState state, cfapi::SetPinRecurseMode mode)
@@ -120,44 +136,40 @@ private slots:
         auto someDate = QDateTime(QDate(1984, 07, 30), QTime(1,3,2));
         fakeFolder.remoteModifier().setModTime("A/a1", someDate);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").size(), 64);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
         cleanup();
 
         // Another sync doesn't actually lead to changes
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").size(), 64);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.isEmpty());
         cleanup();
 
         // Not even when the remote is rediscovered
         fakeFolder.syncJournal().forceRemoteDiscoveryNextSync();
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").size(), 64);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.isEmpty());
         cleanup();
 
         // Neither does a remote change
         fakeFolder.remoteModifier().appendByte("A/a1");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").size(), 65);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_UPDATE_METADATA));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
         QCOMPARE(dbRecord(fakeFolder, "A/a1")._fileSize, 65);
         cleanup();
 
@@ -176,19 +188,18 @@ private slots:
         fakeFolder.remoteModifier().insert("A/a1", 65);
         fakeFolder.remoteModifier().setModTime("A/a1", someDate);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").size(), 65);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
         cleanup();
 
         // Remote rename is propagated
         fakeFolder.remoteModifier().rename("A/a1", "A/a1m");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/a1").exists());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1m"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1m");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1m").size(), 65);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1m").lastModified(), someDate);
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1"));
@@ -198,7 +209,6 @@ private slots:
             || (itemInstruction(completeSpy, "A/a1m", CSYNC_INSTRUCTION_NEW)
                 && itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_REMOVE)));
         QVERIFY(!dbRecord(fakeFolder, "A/a1").isValid());
-        QCOMPARE(dbRecord(fakeFolder, "A/a1m")._type, ItemTypeVirtualFile);
         cleanup();
 
         // Remote remove is propagated
@@ -215,9 +225,9 @@ private slots:
         fakeFolder.remoteModifier().insert("A/a2", 32);
         fakeFolder.remoteModifier().insert("A/a3", 33);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a2");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a2").size(), 32);
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a3"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a3");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a3").size(), 33);
         cleanup();
 
@@ -226,11 +236,9 @@ private slots:
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a2");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a2").size(), 32);
         QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_UPDATE_METADATA));
-        QVERIFY(dbRecord(fakeFolder, "A/a2").isValid());
-        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeVirtualFile);
         QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/a3").exists());
         QVERIFY(itemInstruction(completeSpy, "A/a3", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(!dbRecord(fakeFolder, "A/a3").isValid());
@@ -256,9 +264,9 @@ private slots:
         fakeFolder.remoteModifier().mkdir("B");
         fakeFolder.remoteModifier().insert("B/b1", 21);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "B/b1"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a2");
+        CFVERIFY_VIRTUAL(fakeFolder, "B/b1");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").size(), 11);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a2").size(), 12);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "B/b1").size(), 21);
@@ -289,12 +297,9 @@ private slots:
         QCOMPARE(fakeFolder.syncJournal().conflictRecordPaths().size(), 2);
 
         // nothing should have the virtual file tag
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "B/b1"));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "B/b1")._type, ItemTypeFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a1");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a2");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "B/b1");
 
         cleanup();
     }
@@ -327,11 +332,10 @@ private slots:
         // New files on the remote create virtual files
         fakeFolder.remoteModifier().insert("A/new", 42);
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/new"));
+        CFVERIFY_VIRTUAL(fakeFolder, "A/new");
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/new").size(), 42);
         QVERIFY(fakeFolder.currentRemoteState().find("A/new"));
         QVERIFY(itemInstruction(completeSpy, "A/new", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/new")._type, ItemTypeVirtualFile);
         cleanup();
     }
 
@@ -362,41 +366,17 @@ private slots:
         fakeFolder.remoteModifier().insert("A/b4");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a3"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a4"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a5"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a6"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a7"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/b1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/b2"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/b3"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/b4"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a2").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a4").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a5").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a6").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a7").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/b1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/b2").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/b3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/b4").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a3")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a4")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a5")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a6")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a7")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/b1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/b2")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/b3")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/b4")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a2");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a3");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a4");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a5");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a6");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a7");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/b1");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/b2");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/b3");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/b4");
 
         cleanup();
 
@@ -444,31 +424,19 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "A/b4m", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "A/b4", CSYNC_INSTRUCTION_REMOVE));
 
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/a3").exists());
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/a4").exists());
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a4m"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a5"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a6"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a7"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/b1"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/b2"));
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/b3").exists());
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/b4").exists());
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/b4m"));
-
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeFile);
-        QVERIFY(!dbRecord(fakeFolder, "A/a3").isValid());
-        QCOMPARE(dbRecord(fakeFolder, "A/a4m")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a5")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a6")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a7")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/b1")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/b2")._type, ItemTypeFile);
-        QVERIFY(!dbRecord(fakeFolder, "A/b3").isValid());
-        QCOMPARE(dbRecord(fakeFolder, "A/b4m")._type, ItemTypeFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a1");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a2");
+        CFVERIFY_GONE(fakeFolder, "A/a3");
+        CFVERIFY_GONE(fakeFolder, "A/a4");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a4m");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a5");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a6");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a7");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/b1");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/b2");
+        CFVERIFY_GONE(fakeFolder, "A/b3");
+        CFVERIFY_GONE(fakeFolder, "A/b4");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/b4m");
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
@@ -490,9 +458,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a1").exists());
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
         cleanup();
 
         // Download by changing the db entry
@@ -508,9 +474,8 @@ private slots:
         fakeFolder.serverErrorPaths().clear();
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a1");
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
     }
 
     void testNewFilesNotVirtual()
@@ -522,9 +487,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a1").exists());
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
 
         setPinState(fakeFolder.localPath(), PinState::AlwaysLocal, cfapi::NoRecurse);
 
@@ -532,9 +495,7 @@ private slots:
         fakeFolder.remoteModifier().insert("A/a2");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a2").exists());
-        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a2");
     }
 
     void testDownloadRecursive()
@@ -560,32 +521,14 @@ private slots:
         fakeFolder.remoteModifier().insert("B/Sub/b2");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/a3"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/a4"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/SubSub/a5"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub2/a6"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "B/b1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "B/Sub/b2"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a2").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/a3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/a4").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/SubSub/a5").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub2/a6").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "B/b1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "B/Sub/b2").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/a3")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/a4")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/SubSub/a5")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub2/a6")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "B/b1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "B/Sub/b2")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a2");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/Sub/a3");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/Sub/a4");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/Sub/SubSub/a5");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/Sub2/a6");
+        CFVERIFY_VIRTUAL(fakeFolder, "B/b1");
+        CFVERIFY_VIRTUAL(fakeFolder, "B/Sub/b2");
 
         // Download All file in the directory A/Sub
         // (as in Folder::downloadVirtualFile)
@@ -593,75 +536,35 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/a3"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/a4"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/SubSub/a5"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub2/a6"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "B/b1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "B/Sub/b2"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a2").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/a3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/a4").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/SubSub/a5").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub2/a6").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "B/b1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "B/Sub/b2").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/a3")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/a4")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/SubSub/a5")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub2/a6")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "B/b1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "B/Sub/b2")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a2");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/Sub/a3");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/Sub/a4");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/Sub/SubSub/a5");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/Sub2/a6");
+        CFVERIFY_VIRTUAL(fakeFolder, "B/b1");
+        CFVERIFY_VIRTUAL(fakeFolder, "B/Sub/b2");
 
         // Add a file in a subfolder that was downloaded
         // Currently, this continue to add it as a virtual file.
         fakeFolder.remoteModifier().insert("A/Sub/SubSub/a7");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/SubSub/a7"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/SubSub/a7").exists());
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/SubSub/a7")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "A/Sub/SubSub/a7");
 
         // Now download all files in "A"
         fakeFolder.syncJournal().markVirtualFileForDownloadRecursively("A");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/a2"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/a3"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/a4"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/SubSub/a5"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub/SubSub/a7"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "A/Sub2/a6"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "B/b1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "B/Sub/b2"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a2").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/a3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/a4").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/SubSub/a5").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub/SubSub/a7").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/Sub2/a6").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "B/b1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "B/Sub/b2").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/a3")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/a4")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/SubSub/a5")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub/SubSub/a7")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/Sub2/a6")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "B/b1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "B/Sub/b2")._type, ItemTypeVirtualFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a1");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/a2");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/Sub/a3");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/Sub/a4");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/Sub/SubSub/a5");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/Sub/SubSub/a7");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "A/Sub2/a6");
+        CFVERIFY_VIRTUAL(fakeFolder, "B/b1");
+        CFVERIFY_VIRTUAL(fakeFolder, "B/Sub/b2");
 
         // Now download remaining files in "B"
         fakeFolder.syncJournal().markVirtualFileForDownloadRecursively("B");
@@ -686,17 +589,9 @@ private slots:
         fakeFolder.remoteModifier().insert("file3", 256, 'C');
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "file1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "file2"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "file3"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "file1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "file2").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "file3").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "file1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "file2")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "file3")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "file1");
+        CFVERIFY_VIRTUAL(fakeFolder, "file2");
+        CFVERIFY_VIRTUAL(fakeFolder, "file3");
 
         cleanup();
 
@@ -706,12 +601,8 @@ private slots:
         triggerDownload(fakeFolder, "file3");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "file1").exists());
-        QVERIFY(!dbRecord(fakeFolder, "file1").isValid());
-
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "renamed1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "renamed1").exists());
-        QCOMPARE(dbRecord(fakeFolder, "renamed1")._type, ItemTypeVirtualFile);
+        CFVERIFY_GONE(fakeFolder, "file1");
+        CFVERIFY_VIRTUAL(fakeFolder, "renamed1");
 
         QVERIFY(fakeFolder.currentRemoteState().find("renamed1"));
         QVERIFY(itemInstruction(completeSpy, "renamed1", CSYNC_INSTRUCTION_RENAME));
@@ -719,20 +610,14 @@ private slots:
         // file2 has a conflict between the download request and the rename:
         // the rename wins, the download is ignored
 
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "file2").exists());
-        QVERIFY(!dbRecord(fakeFolder, "file2").isValid());
-
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "renamed2"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "renamed2").exists());
-        QCOMPARE(dbRecord(fakeFolder, "renamed2")._type, ItemTypeVirtualFile);
+        CFVERIFY_GONE(fakeFolder, "file2");
+        CFVERIFY_VIRTUAL(fakeFolder, "renamed2");
 
         QVERIFY(fakeFolder.currentRemoteState().find("renamed2"));
         QVERIFY(itemInstruction(completeSpy, "renamed2", CSYNC_INSTRUCTION_RENAME));
 
         QVERIFY(itemInstruction(completeSpy, "file3", CSYNC_INSTRUCTION_SYNC));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "file3"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "file3").exists());
-        QVERIFY(dbRecord(fakeFolder, "file3")._type == ItemTypeFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, "file3");
         cleanup();
     }
 
@@ -753,14 +638,8 @@ private slots:
         triggerDownload(fakeFolder, "case4");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "case3"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "case4"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "case3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "case4").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "case3")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "case4")._type, ItemTypeFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "case3");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "case4");
 
         cleanup();
 
@@ -778,22 +657,18 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         // Case 3: the rename went though, hydration is forgotten
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "case3").exists());
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "case3-rename"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "case3-rename").exists());
+        CFVERIFY_GONE(fakeFolder, "case3");
+        CFVERIFY_VIRTUAL(fakeFolder, "case3-rename");
         QVERIFY(!fakeFolder.currentRemoteState().find("case3"));
         QVERIFY(fakeFolder.currentRemoteState().find("case3-rename"));
         QVERIFY(itemInstruction(completeSpy, "case3-rename", CSYNC_INSTRUCTION_RENAME));
-        QVERIFY(dbRecord(fakeFolder, "case3-rename")._type == ItemTypeVirtualFile);
 
         // Case 4: the rename went though, dehydration is forgotten
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "case4").exists());
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "case4-rename"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "case4-rename").exists());
+        CFVERIFY_GONE(fakeFolder, "case4");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "case4-rename");
         QVERIFY(!fakeFolder.currentRemoteState().find("case4"));
         QVERIFY(fakeFolder.currentRemoteState().find("case4-rename"));
         QVERIFY(itemInstruction(completeSpy, "case4-rename", CSYNC_INSTRUCTION_RENAME));
-        QVERIFY(dbRecord(fakeFolder, "case4-rename")._type == ItemTypeFile);
     }
 
     // Dehydration via sync works
@@ -925,20 +800,10 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "f1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/a3"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "A/B/b1"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "f1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "A/B/b1").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "f1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/a3")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "A/B/b1")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "f1");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a1");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/a3");
+        CFVERIFY_VIRTUAL(fakeFolder, "A/B/b1");
 
         // Make local changes to a3
         fakeFolder.localModifier().remove("A/a3");
@@ -947,15 +812,11 @@ private slots:
         // Now wipe the virtuals
         SyncEngine::wipeVirtualFiles(fakeFolder.localPath(), fakeFolder.syncJournal(), *fakeFolder.syncEngine().syncOptions()._vfs);
 
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "f1").exists());
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/a1").exists());
+        CFVERIFY_GONE(fakeFolder, "f1");
+        CFVERIFY_GONE(fakeFolder, "A/a1");
         QVERIFY(QFileInfo(fakeFolder.localPath() + "A/a3").exists());
-        QVERIFY(!QFileInfo(fakeFolder.localPath() + "A/B/b1").exists());
-
-        QVERIFY(!dbRecord(fakeFolder, "f1").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/a1").isValid());
         QVERIFY(!dbRecord(fakeFolder, "A/a3").isValid());
-        QVERIFY(!dbRecord(fakeFolder, "A/B/b1").isValid());
+        CFVERIFY_GONE(fakeFolder, "A/B/b1");
 
         fakeFolder.switchToVfs(QSharedPointer<Vfs>(new VfsOff));
         ItemCompletedSpy completeSpy(fakeFolder);
@@ -1001,20 +862,10 @@ private slots:
         fakeFolder.remoteModifier().insert("unspec/file1");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "file1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "online/file1"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "local/file1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "unspec/file1"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "file1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "online/file1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "local/file1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "unspec/file1").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "file1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "online/file1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "local/file1")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "unspec/file1")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "file1");
+        CFVERIFY_VIRTUAL(fakeFolder, "online/file1");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "local/file1");
+        CFVERIFY_VIRTUAL(fakeFolder, "unspec/file1");
 
         // Test 2: change root to AlwaysLocal
         setPinState(fakeFolder.localPath(), PinState::AlwaysLocal, cfapi::Recurse);
@@ -1029,38 +880,18 @@ private slots:
         fakeFolder.remoteModifier().insert("unspec/file2");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "file2"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "online/file2"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "local/file2"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "unspec/file2"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "file2").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "online/file2").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "local/file2").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "unspec/file2").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "file2")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "online/file2")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "local/file2")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "unspec/file2")._type, ItemTypeVirtualFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, "file2");
+        CFVERIFY_VIRTUAL(fakeFolder, "online/file2");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "local/file2");
+        CFVERIFY_VIRTUAL(fakeFolder, "unspec/file2");
 
         // root file1 was hydrated due to its new pin state
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "file1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "file1").exists());
-        QCOMPARE(dbRecord(fakeFolder, "file1")._type, ItemTypeFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, "file1");
 
         // file1 is unchanged in the explicitly pinned subfolders
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "online/file1"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "local/file1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "unspec/file1"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "online/file1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "local/file1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "unspec/file1").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "online/file1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "local/file1")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "unspec/file1")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "online/file1");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "local/file1");
+        CFVERIFY_VIRTUAL(fakeFolder, "unspec/file1");
 
         // Test 3: change root to OnlineOnly
         setPinState(fakeFolder.localPath(), PinState::OnlineOnly, cfapi::Recurse);
@@ -1075,39 +906,18 @@ private slots:
         fakeFolder.remoteModifier().insert("unspec/file3");
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "file3"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "online/file3"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "local/file3"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "unspec/file3"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "file3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "online/file3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "local/file3").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "unspec/file3").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "file3")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "online/file3")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "local/file3")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "unspec/file3")._type, ItemTypeVirtualFile);
-
+        CFVERIFY_VIRTUAL(fakeFolder, "file3");
+        CFVERIFY_VIRTUAL(fakeFolder, "online/file3");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "local/file3");
+        CFVERIFY_VIRTUAL(fakeFolder, "unspec/file3");
 
         // root file1 was dehydrated due to its new pin state
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "file1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "file1").exists());
-        QCOMPARE(dbRecord(fakeFolder, "file1")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "file1");
 
         // file1 is unchanged in the explicitly pinned subfolders
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "online/file1"));
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "local/file1"));
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "unspec/file1"));
-
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "online/file1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "local/file1").exists());
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "unspec/file1").exists());
-
-        QCOMPARE(dbRecord(fakeFolder, "online/file1")._type, ItemTypeVirtualFile);
-        QCOMPARE(dbRecord(fakeFolder, "local/file1")._type, ItemTypeFile);
-        QCOMPARE(dbRecord(fakeFolder, "unspec/file1")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "online/file1");
+        CFVERIFY_NONVIRTUAL(fakeFolder, "local/file1");
+        CFVERIFY_VIRTUAL(fakeFolder, "unspec/file1");
     }
 
     void testAvailability()
@@ -1246,9 +1056,7 @@ private slots:
         vfs->setPinState("onlinerenamed2/file1rename", PinState::OnlineOnly);
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "onlinerenamed2/file1rename"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "onlinerenamed2/file1rename").exists());
-        QCOMPARE(dbRecord(fakeFolder, "onlinerenamed2/file1rename")._type, ItemTypeVirtualFile);
+        CFVERIFY_VIRTUAL(fakeFolder, "onlinerenamed2/file1rename");
 
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::OnlineOnly);
     }
@@ -1277,13 +1085,8 @@ private slots:
         // the sync sets the changed files pin states to unspecified
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "online/file1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "online/file1").exists());
-        QCOMPARE(dbRecord(fakeFolder, "online/file1")._type, ItemTypeFile);
-
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "local/file1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "local/file1").exists());
-        QCOMPARE(dbRecord(fakeFolder, "local/file1")._type, ItemTypeVirtualFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, "online/file1");
+        CFVERIFY_VIRTUAL(fakeFolder, "local/file1");
 
         QCOMPARE(*vfs->pinState("online/file1"), PinState::Unspecified);
         QCOMPARE(*vfs->pinState("local/file1"), PinState::Unspecified);
@@ -1291,13 +1094,8 @@ private slots:
         // no change on another sync
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(!cfapi::isSparseFile(fakeFolder.localPath() + "online/file1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "online/file1").exists());
-        QCOMPARE(dbRecord(fakeFolder, "online/file1")._type, ItemTypeFile);
-
-        QVERIFY(cfapi::isSparseFile(fakeFolder.localPath() + "local/file1"));
-        QVERIFY(QFileInfo(fakeFolder.localPath() + "local/file1").exists());
-        QCOMPARE(dbRecord(fakeFolder, "local/file1")._type, ItemTypeVirtualFile);
+        CFVERIFY_NONVIRTUAL(fakeFolder, "online/file1");
+        CFVERIFY_VIRTUAL(fakeFolder, "local/file1");
     }
 };
 
