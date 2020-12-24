@@ -1329,7 +1329,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1334"/>
         <source>Sync is paused.</source>
-        <translation type="unfinished"/>
+        <translation>La sincronizacion es suspenduda.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1340"/>
@@ -4242,7 +4242,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/systray.cpp" line="97"/>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Suspendre la sincro.</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
@@ -4983,7 +4983,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="143"/>
         <location filename="../src/gui/tray/Window.qml" line="255"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Suspendre la sincro. per totes</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="169"/>
