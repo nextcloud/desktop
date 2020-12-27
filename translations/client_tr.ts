@@ -374,17 +374,17 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosya desteğini devre dışı bırak …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Enable virtual file support%1 …</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosya desteğini etkinleştir%1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(deneysel)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -414,7 +414,7 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="780"/>
         <source>Disable virtual file support?</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosya desteği devre dışı bırakılsın mı?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="781"/>
@@ -423,12 +423,16 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Bu işlem sanal dosya desteğini devre dışı bırakır. Bunun sonucunda şu anda &apos;yalnız çevrimiçi kullanılabilir&apos; olarak işaretlenmiş klasörlerin içeriği indirilir.
+
+Sanal dosya desteğini devre dışı bırakmanın tek faydası isteğe bağlı eşitleme özelliğinin yeniden kullanılabilmesidir.
+
+Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Desteği devre dışı bırak</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="647"/>
@@ -473,7 +477,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1034"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu sürümü %1 desteklenmiyor! Kendi sorumluluğunuzda ilerleyin.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="772"/>
@@ -518,7 +522,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1070"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu yapılandırma hatası: %2 üzerinde %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="800"/>
@@ -652,7 +656,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Bir kopyası yapılandırma dosyasında saklanacağı için şifrelenmiş bir pkcs12 paketi şiddetle tavsiye edilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -685,12 +689,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="147"/>
         <source>Continue</source>
-        <translation type="unfinished"/>
+        <translation>Devam et</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="207"/>
@@ -926,27 +930,27 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Klasör %1 açılırken hata oluştu</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Klasöre istemcide erişilemiyor, izin reddedildi</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klasör bulunamadı: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adı kodlaması geçersiz</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Klasör %1 okunurken hata oluştu</translation>
     </message>
 </context>
 <context>
