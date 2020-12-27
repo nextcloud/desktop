@@ -18,10 +18,11 @@ Improvements and New Features
 The |version| release of the Nextcloud desktop sync client has many new features and
 improvements.
 
-  * Show server notifications on the client
-  * Improved sync speed
-  * Improved handling of Win32 file locks and network files
-  * Improved user notifications about ignored files and conflicts
-  * Add warnings for old server versions
-  * Update of QtKeyChain to support Windows credential store
-  * Packaging of dolphin overlay icon module for bleeding edge distributions
+* Login flow v2
+* Displays FileIgnored activities with an info icon
+* Add proper CA to client side certificate connection
+* Read .sync_exclude.lst in each subdirectory
+* Full-Scaled new logo in Windows 10 start menu tile
+* Qt5.5 compatiblity patch for login flow V2 + UI improvement (Use newer digest algorithms in TLS error dialog)
+* UI improvement: Message box: Delete / Keep all files
+* More minor fixes, a full list can be found `here <https://github.com/nextcloud/desktop/blob/master/ChangeLog>`_
