@@ -409,7 +409,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         if (serverEntry.remotePerm.isNull())
             missingData.append(tr("permissions"));
         if (serverEntry.etag.isEmpty())
-            missingData.append(tr("etag"));
+            missingData.append("ETag");
         if (serverEntry.fileId.isEmpty())
             missingData.append(tr("file id"));
         if (!missingData.isEmpty()) {
