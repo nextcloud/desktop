@@ -28,6 +28,12 @@ class OWNCLOUDSYNC_EXPORT HydrationJob : public QObject
 {
     Q_OBJECT
 public:
+    enum Status {
+        Success = 0,
+        Error,
+    };
+    Q_ENUM(Status)
+
     explicit HydrationJob(QObject *parent = nullptr);
 
     AccountPtr account() const;
@@ -48,13 +54,15 @@ public:
     QString folderPath() const;
     void setFolderPath(const QString &folderPath);
 
+    Status status() const;
+
     void start();
 
 signals:
     void finished(HydrationJob *job);
 
 private:
-    void emitFinished();
+    void emitFinished(Status status);
 
     void onNewConnection();
     void onGetFinished();
@@ -70,6 +78,7 @@ private:
     QLocalServer *_server = nullptr;
     QLocalSocket *_socket = nullptr;
     GETFileJob *_job = nullptr;
+    Status _status = Success;
 };
 
 } // namespace OCC

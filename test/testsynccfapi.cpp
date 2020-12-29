@@ -35,6 +35,12 @@ using namespace OCC::CfApiWrapper;
 
 using namespace OCC;
 
+enum ErrorKind : int {
+    NoError = 0,
+    // Lower code are corresponding to HTTP error code
+    Timeout = 1000,
+};
+
 void setPinState(const QString &path, PinState state, cfapi::SetPinRecurseMode mode)
 {
     Q_ASSERT(mode == cfapi::Recurse || mode == cfapi::NoRecurse);
@@ -1098,8 +1104,23 @@ private slots:
         CFVERIFY_VIRTUAL(fakeFolder, "local/file1");
     }
 
+    void testOpeningOnlineFileTriggersDownload_data()
+    {
+        QTest::addColumn<int>("errorKind");
+        QTest::newRow("no error") << static_cast<int>(NoError);
+        QTest::newRow("400") << 400;
+        QTest::newRow("401") << 401;
+        QTest::newRow("403") << 403;
+        QTest::newRow("404") << 404;
+        QTest::newRow("500") << 500;
+        QTest::newRow("503") << 503;
+        QTest::newRow("Timeout") << static_cast<int>(Timeout);
+    }
+
     void testOpeningOnlineFileTriggersDownload()
     {
+        QFETCH(int, errorKind);
+
         FakeFolder fakeFolder{ FileInfo() };
         setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -1116,6 +1137,21 @@ private slots:
 
         CFVERIFY_VIRTUAL(fakeFolder, "online/sub/file1");
 
+        // Setup error case if needed
+        if (errorKind == Timeout) {
+            fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) -> QNetworkReply * {
+                if (req.url().path().endsWith("online/sub/file1")) {
+                    return new FakeHangingReply(op, req, this);
+                }
+                return nullptr;
+            });
+        } else if (errorKind != NoError) {
+            fakeFolder.serverErrorPaths().append("online/sub/file1", errorKind);
+        }
+
+        // So the test that test timeout finishes fast
+        QScopedValueRollback<int> setHttpTimeout(AbstractNetworkJob::httpTimeout, errorKind == Timeout ? 1 : 10000);
+
         // Simulate another process requesting the open
         QEventLoop loop;
         bool openResult = false;
@@ -1130,14 +1166,22 @@ private slots:
         loop.exec();
         t.join();
 
-        CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
+        if (errorKind == NoError) {
+            CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
+        } else {
+            CFVERIFY_VIRTUAL(fakeFolder, "online/sub/file1");
+        }
 
         // Nothing should change
         ItemCompletedSpy completeSpy(fakeFolder);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(completeSpy.isEmpty());
 
-        CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
+        if (errorKind == NoError) {
+            CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
+        } else {
+            CFVERIFY_VIRTUAL(fakeFolder, "online/sub/file1");
+        }
     }
 };
 

@@ -15,6 +15,7 @@
 #include "cfapiwrapper.h"
 
 #include "common/utility.h"
+#include "hydrationjob.h"
 #include "vfs_cfapi.h"
 
 #include <QDir>
@@ -106,6 +107,7 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
         }
     });
     loop.exec();
+    QObject::disconnect(vfs, nullptr, &loop, nullptr);
     qCInfo(lcCfApiWrapper) << "VFS replied for hydration of" << path << requestId << "status was:" << hydrationRequestResult;
 
     if (!hydrationRequestResult) {
@@ -123,18 +125,31 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     }
 
     qint64 offset = 0;
-    while (socket.waitForReadyRead()) {
+
+    QObject::connect(&socket, &QLocalSocket::readyRead, &loop, [&] {
         auto data = socket.readAll();
         if (data.isEmpty()) {
             qCWarning(lcCfApiWrapper) << "Unexpected empty data received" << requestId;
             sendTransferError();
-            break;
+            loop.quit();
+            return;
         }
         sendTransferInfo(data, offset);
         offset += data.length();
-    }
+    });
 
-    qCInfo(lcCfApiWrapper) << "Hydration done for" << path << requestId;
+    QObject::connect(vfs, &OCC::VfsCfApi::hydrationRequestFinished, &loop, [&](const QString &id, int s) {
+        if (requestId == id) {
+            const auto status = static_cast<OCC::HydrationJob::Status>(s);
+            qCInfo(lcCfApiWrapper) << "Hydration done for" << path << requestId << status;
+            if (status != OCC::HydrationJob::Success) {
+                sendTransferError();
+            }
+            loop.quit();
+        }
+    });
+
+    loop.exec();
 }
 
 CF_CALLBACK_REGISTRATION cfApiCallbacks[] = {

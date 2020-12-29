@@ -88,6 +88,11 @@ void OCC::HydrationJob::setFolderPath(const QString &folderPath)
     _folderPath = folderPath;
 }
 
+OCC::HydrationJob::Status OCC::HydrationJob::status() const
+{
+    return _status;
+}
+
 void OCC::HydrationJob::start()
 {
     Q_ASSERT(_account);
@@ -103,7 +108,7 @@ void OCC::HydrationJob::start()
     const auto listenResult = _server->listen(_requestId);
     if (!listenResult) {
         qCCritical(lcHydration) << "Couldn't get server to listen" << _requestId << _localPath << _folderPath;
-        emitFinished();
+        emitFinished(Error);
         return;
     }
 
@@ -111,13 +116,19 @@ void OCC::HydrationJob::start()
     connect(_server, &QLocalServer::newConnection, this, &HydrationJob::onNewConnection);
 }
 
-void OCC::HydrationJob::emitFinished()
+void OCC::HydrationJob::emitFinished(Status status)
 {
-    _socket->disconnectFromServer();
-    connect(_socket, &QLocalSocket::disconnected, this, [=]{
+    _status = status;
+    if (status == Success) {
+        _socket->disconnectFromServer();
+        connect(_socket, &QLocalSocket::disconnected, this, [=]{
+            _socket->close();
+            emit finished(this);
+        });
+    } else {
         _socket->close();
         emit finished(this);
-    });
+    }
 }
 
 void OCC::HydrationJob::onNewConnection()
@@ -134,10 +145,10 @@ void OCC::HydrationJob::onNewConnection()
 
 void OCC::HydrationJob::onGetFinished()
 {
-    qCInfo(lcHydration) << "GETFileJob finished" << _requestId << _folderPath << _job->errorStatus() << _job->errorString();
+    qCInfo(lcHydration) << "GETFileJob finished" << _requestId << _folderPath << _job->reply()->error();
 
-    if (_job->errorStatus() != SyncFileItem::NoStatus && _job->errorStatus() != SyncFileItem::Success) {
-        emitFinished();
+    if (_job->reply()->error()) {
+        emitFinished(Error);
         return;
     }
 
@@ -146,11 +157,11 @@ void OCC::HydrationJob::onGetFinished()
     Q_ASSERT(record.isValid());
     if (!record.isValid()) {
         qCWarning(lcHydration) << "Couldn't find record to update after hydration" << _requestId << _folderPath;
-        emitFinished();
+        emitFinished(Error);
         return;
     }
 
     record._type = ItemTypeFile;
     _journal->setFileRecord(record);
-    emitFinished();
+    emitFinished(Success);
 }

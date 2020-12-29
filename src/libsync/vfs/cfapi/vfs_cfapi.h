@@ -60,6 +60,7 @@ public slots:
 signals:
     void hydrationRequestReady(const QString &requestId);
     void hydrationRequestFailed(const QString &requestId);
+    void hydrationRequestFinished(const QString &requestId, int status);
 
 protected:
     void startImpl(const VfsSetupParams &params) override;
