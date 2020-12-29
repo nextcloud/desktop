@@ -2922,11 +2922,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="412"/>
-        <source>etag</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>file id</source>
         <translation type="unfinished"/>

@@ -2939,11 +2939,6 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>dovoljenja</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="412"/>
-        <source>etag</source>
-        <translation>oznaka</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>file id</source>
         <translation>ID datoteke</translation>

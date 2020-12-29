@@ -2945,11 +2945,6 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Berechtigungen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="412"/>
-        <source>etag</source>
-        <translation>etag</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>file id</source>
         <translation>Datei-ID</translation>
