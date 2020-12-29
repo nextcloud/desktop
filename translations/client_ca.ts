@@ -2916,11 +2916,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>permisos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="412"/>
-        <source>etag</source>
-        <translation>etag</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>file id</source>
         <translation>id de fitxer</translation>

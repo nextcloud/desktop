@@ -2946,11 +2946,6 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>permisos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="412"/>
-        <source>etag</source>
-        <translation>etag</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>file id</source>
         <translation>identificador de archivo</translation>
