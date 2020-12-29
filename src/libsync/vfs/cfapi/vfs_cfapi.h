@@ -19,6 +19,7 @@
 #include "common/vfs.h"
 
 namespace OCC {
+class HydrationJob;
 class VfsCfApiPrivate;
 
 class VfsCfApi : public Vfs
@@ -53,12 +54,20 @@ public:
     AvailabilityResult availability(const QString &folderPath) override;
 
 public slots:
+    void requestHydration(const QString &requestId, const QString &path);
     void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) override;
+
+signals:
+    void hydrationRequestReady(const QString &requestId);
+    void hydrationRequestFailed(const QString &requestId);
 
 protected:
     void startImpl(const VfsSetupParams &params) override;
 
 private:
+    void scheduleHydrationJob(const QString &requestId, const QString &folderPath);
+    void onHydrationJobFinished(HydrationJob *job);
+
     struct HasHydratedDehydrated {
         bool hasHydrated = false;
         bool hasDehydrated = false;

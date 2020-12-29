@@ -1097,6 +1097,48 @@ private slots:
         CFVERIFY_NONVIRTUAL(fakeFolder, "online/file1");
         CFVERIFY_VIRTUAL(fakeFolder, "local/file1");
     }
+
+    void testOpeningOnlineFileTriggersDownload()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().mkdir("online");
+        fakeFolder.remoteModifier().mkdir("online/sub");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        setPinState(fakeFolder.localPath() + "online", PinState::OnlineOnly, cfapi::Recurse);
+
+        fakeFolder.remoteModifier().insert("online/sub/file1", 10 * 1024 * 1024);
+        QVERIFY(fakeFolder.syncOnce());
+
+        CFVERIFY_VIRTUAL(fakeFolder, "online/sub/file1");
+
+        // Simulate another process requesting the open
+        QEventLoop loop;
+        bool openResult = false;
+        bool readResult = false;
+        std::thread t([&] {
+            QFile file(fakeFolder.localPath() + "online/sub/file1");
+            openResult = file.open(QFile::ReadOnly);
+            readResult = !file.readAll().isEmpty();
+            file.close();
+            QMetaObject::invokeMethod(&loop, &QEventLoop::quit, Qt::QueuedConnection);
+        });
+        loop.exec();
+        t.join();
+
+        CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
+
+        // Nothing should change
+        ItemCompletedSpy completeSpy(fakeFolder);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(completeSpy.isEmpty());
+
+        CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncCfApi)

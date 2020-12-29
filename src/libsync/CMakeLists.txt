@@ -64,6 +64,7 @@ set(libsync_SRCS
 if (WIN32)
     set(libsync_SRCS ${libsync_SRCS}
         vfs/cfapi/cfapiwrapper.cpp
+        vfs/cfapi/hydrationjob.cpp
         vfs/cfapi/vfs_cfapi.cpp
     )
     add_definitions(-D_WIN32_WINNT=_WIN32_WINNT_WIN10)

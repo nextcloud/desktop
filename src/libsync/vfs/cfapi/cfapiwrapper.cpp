@@ -15,21 +15,126 @@
 #include "cfapiwrapper.h"
 
 #include "common/utility.h"
+#include "vfs_cfapi.h"
 
 #include <QDir>
 #include <QFileInfo>
+#include <QLocalSocket>
 #include <QLoggingCategory>
 
 #include <cfapi.h>
 #include <comdef.h>
+#include <ntstatus.h>
 
 Q_LOGGING_CATEGORY(lcCfApiWrapper, "nextcloud.sync.vfs.cfapi.wrapper", QtInfoMsg)
 
+#define FIELD_SIZE( type, field ) ( sizeof( ( (type*)0 )->field ) )
+#define CF_SIZE_OF_OP_PARAM( field )                                           \
+    ( FIELD_OFFSET( CF_OPERATION_PARAMETERS, field ) +                         \
+      FIELD_SIZE( CF_OPERATION_PARAMETERS, field ) )
+
 namespace {
-void CALLBACK cfApiFetchDataCallback(_In_ CONST CF_CALLBACK_INFO* callbackInfo, _In_ CONST CF_CALLBACK_PARAMETERS* callbackParameters)
+void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRANSFER_KEY &transferKey, NTSTATUS status, void *buffer, qint64 offset, qint64 length)
 {
-    qCCritical(lcCfApiWrapper()) << "Got in!";
-    Q_ASSERT(false);
+
+    CF_OPERATION_INFO opInfo = { 0 };
+    CF_OPERATION_PARAMETERS opParams = { 0 };
+
+    opInfo.StructSize = sizeof(opInfo);
+    opInfo.Type = CF_OPERATION_TYPE_TRANSFER_DATA;
+    opInfo.ConnectionKey = connectionKey;
+    opInfo.TransferKey = transferKey;
+    opParams.ParamSize = CF_SIZE_OF_OP_PARAM(TransferData);
+    opParams.TransferData.CompletionStatus = status;
+    opParams.TransferData.Buffer = buffer;
+    opParams.TransferData.Offset.QuadPart = offset;
+    opParams.TransferData.Length.QuadPart = length;
+
+    const qint64 result = CfExecute(&opInfo, &opParams);
+    Q_ASSERT(result == S_OK);
+    if (result != S_OK) {
+        qCCritical(lcCfApiWrapper) << "Couldn't send transfer info" << QString::number(transferKey.QuadPart, 16) << ":" << _com_error(result).ErrorMessage();
+    }
+}
+
+
+void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
+{
+    const auto sendTransferError = [=] {
+        cfApiSendTransferInfo(callbackInfo->ConnectionKey,
+                              callbackInfo->TransferKey,
+                              STATUS_UNSUCCESSFUL,
+                              nullptr,
+                              callbackParameters->FetchData.RequiredFileOffset.QuadPart,
+                              callbackParameters->FetchData.RequiredLength.QuadPart);
+    };
+
+    const auto sendTransferInfo = [=](QByteArray &data, qint64 offset) {
+        cfApiSendTransferInfo(callbackInfo->ConnectionKey,
+                              callbackInfo->TransferKey,
+                              STATUS_SUCCESS,
+                              data.data(),
+                              offset,
+                              data.length());
+    };
+
+    auto vfs = reinterpret_cast<OCC::VfsCfApi *>(callbackInfo->CallbackContext);
+    Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
+    const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
+    const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+
+    const auto invokeResult = QMetaObject::invokeMethod(vfs, [=] { vfs->requestHydration(requestId, path); }, Qt::QueuedConnection);
+    if (!invokeResult) {
+        qCCritical(lcCfApiWrapper) << "Failed to trigger hydration for" << path << requestId;
+        sendTransferError();
+        return;
+    }
+
+    // Block and wait for vfs to signal back the hydration is ready
+    bool hydrationRequestResult = false;
+    QEventLoop loop;
+    QObject::connect(vfs, &OCC::VfsCfApi::hydrationRequestReady, &loop, [&](const QString &id) {
+        if (requestId == id) {
+            hydrationRequestResult = true;
+            loop.quit();
+        }
+    });
+    QObject::connect(vfs, &OCC::VfsCfApi::hydrationRequestFailed, &loop, [&](const QString &id) {
+        if (requestId == id) {
+            hydrationRequestResult = false;
+            loop.quit();
+        }
+    });
+    loop.exec();
+    qCInfo(lcCfApiWrapper) << "VFS replied for hydration of" << path << requestId << "status was:" << hydrationRequestResult;
+
+    if (!hydrationRequestResult) {
+        sendTransferError();
+        return;
+    }
+
+    QLocalSocket socket;
+    socket.connectToServer(requestId);
+    const auto connectResult = socket.waitForConnected();
+    if (!connectResult) {
+        qCWarning(lcCfApiWrapper) << "Couldn't connect the socket" << requestId << socket.error() << socket.errorString();
+        sendTransferError();
+        return;
+    }
+
+    qint64 offset = 0;
+    while (socket.waitForReadyRead()) {
+        auto data = socket.readAll();
+        if (data.isEmpty()) {
+            qCWarning(lcCfApiWrapper) << "Unexpected empty data received" << requestId;
+            sendTransferError();
+            break;
+        }
+        sendTransferInfo(data, offset);
+        offset += data.length();
+    }
+
+    qCInfo(lcCfApiWrapper) << "Hydration done for" << path << requestId;
 }
 
 CF_CALLBACK_REGISTRATION cfApiCallbacks[] = {

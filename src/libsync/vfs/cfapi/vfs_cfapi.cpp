@@ -18,6 +18,7 @@
 #include <QFile>
 
 #include "cfapiwrapper.h"
+#include "hydrationjob.h"
 #include "syncfileitem.h"
 #include "filesystem.h"
 #include "common/syncjournaldb.h"
@@ -36,6 +37,7 @@ namespace OCC {
 class VfsCfApiPrivate
 {
 public:
+    QList<HydrationJob *> hydrationJobs;
     cfapi::ConnectionKey connectionKey;
 };
 
@@ -100,7 +102,7 @@ bool VfsCfApi::socketApiPinStateActionsShown() const
 
 bool VfsCfApi::isHydrating() const
 {
-    return false;
+    return !d->hydrationJobs.isEmpty();
 }
 
 Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId)
@@ -260,10 +262,79 @@ Vfs::AvailabilityResult VfsCfApi::availability(const QString &folderPath)
     return AvailabilityError::NoSuchItem;
 }
 
+void VfsCfApi::requestHydration(const QString &requestId, const QString &path)
+{
+    qCInfo(lcCfApi) << "Received request to hydrate" << path << requestId;
+    const auto root = QDir::toNativeSeparators(params().filesystemPath);
+    Q_ASSERT(path.startsWith(root));
+
+    const auto relativePath = QDir::fromNativeSeparators(path.mid(root.length()));
+    const auto journal = params().journal;
+
+    // Set in the database that we should download the file
+    SyncJournalFileRecord record;
+    journal->getFileRecord(relativePath, &record);
+    if (!record.isValid()) {
+        qCInfo(lcCfApi) << "Couldn't hydrate, did not find file in db";
+        emit hydrationRequestFailed(requestId);
+        return;
+    }
+
+    if (!record.isVirtualFile()) {
+        qCInfo(lcCfApi) << "Couldn't hydrate, the file is not virtual";
+        emit hydrationRequestFailed(requestId);
+        return;
+    }
+
+    // This is impossible to handle with CfAPI since the file size is generally different
+    // between the encrypted and the decrypted file which would make CfAPI reject the hydration
+    // of the placeholder with decrypted data
+    if (record._isE2eEncrypted || !record._e2eMangledName.isEmpty()) {
+        qCInfo(lcCfApi) << "Couldn't hydrate, the file is E2EE this is not supported";
+        emit hydrationRequestFailed(requestId);
+        return;
+    }
+
+    // All good, let's hydrate now
+    scheduleHydrationJob(requestId, relativePath);
+}
+
 void VfsCfApi::fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus)
 {
     Q_UNUSED(systemFileName);
     Q_UNUSED(fileStatus);
+}
+
+void VfsCfApi::scheduleHydrationJob(const QString &requestId, const QString &folderPath)
+{
+    Q_ASSERT(std::none_of(std::cbegin(d->hydrationJobs), std::cend(d->hydrationJobs), [=](HydrationJob *job) {
+        return job->requestId() == requestId || job->folderPath() == folderPath;
+    }));
+
+    if (d->hydrationJobs.isEmpty()) {
+        emit beginHydrating();
+    }
+
+    auto job = new HydrationJob(this);
+    job->setAccount(params().account);
+    job->setRemotePath(params().remotePath);
+    job->setLocalPath(params().filesystemPath);
+    job->setJournal(params().journal);
+    job->setRequestId(requestId);
+    job->setFolderPath(folderPath);
+    connect(job, &HydrationJob::finished, this, &VfsCfApi::onHydrationJobFinished);
+    d->hydrationJobs << job;
+    job->start();
+    emit hydrationRequestReady(requestId);
+}
+
+void VfsCfApi::onHydrationJobFinished(HydrationJob *job)
+{
+    Q_ASSERT(d->hydrationJobs.contains(job));
+    d->hydrationJobs.removeAll(job);
+    if (d->hydrationJobs.isEmpty()) {
+        emit doneHydrating();
+    }
 }
 
 VfsCfApi::HydratationAndPinStates VfsCfApi::computeRecursiveHydrationAndPinStates(const QString &folderPath, const Optional<PinState> &basePinState)
