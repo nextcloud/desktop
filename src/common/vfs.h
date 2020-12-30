@@ -20,7 +20,6 @@
 
 #include <memory>
 
-#include "assert.h"
 #include "ocsynclib.h"
 #include "result.h"
 #include "syncfilestatus.h"
@@ -159,24 +158,24 @@ public:
      * If the remote metadata changes, the local placeholder's metadata should possibly
      * change as well.
      */
-    virtual OC_REQUIRED_RESULT Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
+    virtual Q_REQUIRED_RESULT Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) = 0;
 
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
-    virtual OC_REQUIRED_RESULT Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
+    virtual Q_REQUIRED_RESULT Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
 
     /** Convert a hydrated placeholder to a dehydrated one. Called from PropagateDownlaod.
      *
      * This is different from delete+create because preserving some file metadata
      * (like pin states) may be essential for some vfs plugins.
      */
-    virtual OC_REQUIRED_RESULT Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) = 0;
+    virtual Q_REQUIRED_RESULT Result<void, QString> dehydratePlaceholder(const SyncFileItem &item) = 0;
 
     /** Discovery hook: even unchanged files may need UPDATE_METADATA.
      *
      * For instance cfapi vfs wants local hydrated non-placeholder files to
      * become hydrated placeholder files.
      */
-    virtual OC_REQUIRED_RESULT bool needsMetadataUpdate(const SyncFileItem &item) = 0;
+    virtual Q_REQUIRED_RESULT bool needsMetadataUpdate(const SyncFileItem &item) = 0;
 
     /** Convert a new file to a hydrated placeholder.
      *
@@ -191,13 +190,13 @@ public:
      * new placeholder shall supersede, for rename-replace actions with new downloads,
      * for example.
      */
-    virtual OC_REQUIRED_RESULT Result<void, QString> convertToPlaceholder(
+    virtual Q_REQUIRED_RESULT Result<void, QString> convertToPlaceholder(
         const QString &filename,
         const SyncFileItem &item,
         const QString &replacesFile = QString()) = 0;
 
     /// Determine whether the file at the given absolute path is a dehydrated placeholder.
-    virtual OC_REQUIRED_RESULT bool isDehydratedPlaceholder(const QString &filePath) = 0;
+    virtual Q_REQUIRED_RESULT bool isDehydratedPlaceholder(const QString &filePath) = 0;
 
     /** Similar to isDehydratedPlaceholder() but used from sync discovery.
      *
@@ -206,7 +205,7 @@ public:
      *
      * Returning true means that type was fully determined.
      */
-    virtual OC_REQUIRED_RESULT bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) = 0;
+    virtual Q_REQUIRED_RESULT bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) = 0;
 
     /** Sets the pin state for the item at a path.
      *
@@ -217,7 +216,7 @@ public:
      *
      * folderPath is relative to the sync folder. Can be "" for root folder.
      */
-    virtual OC_REQUIRED_RESULT bool setPinState(const QString &folderPath, PinState state) = 0;
+    virtual Q_REQUIRED_RESULT bool setPinState(const QString &folderPath, PinState state) = 0;
 
     /** Returns the pin state of an item at a path.
      *
@@ -228,7 +227,7 @@ public:
      *
      * Returns none on retrieval error.
      */
-    virtual OC_REQUIRED_RESULT Optional<PinState> pinState(const QString &folderPath) = 0;
+    virtual Q_REQUIRED_RESULT Optional<PinState> pinState(const QString &folderPath) = 0;
 
     /** Returns availability status of an item at a path.
      *
@@ -237,7 +236,7 @@ public:
      *
      * folderPath is relative to the sync folder. Can be "" for root folder.
      */
-    virtual OC_REQUIRED_RESULT AvailabilityResult availability(const QString &folderPath) = 0;
+    virtual Q_REQUIRED_RESULT AvailabilityResult availability(const QString &folderPath) = 0;
 
 public slots:
     /** Update in-sync state based on SyncFileStatusTracker signal.
