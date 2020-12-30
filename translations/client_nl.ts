@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityActionButton.qml" line="39"/>
         <source>Activity action button</source>
-        <translation type="unfinished"/>
+        <translation>Activiteiten actieknop</translation>
     </message>
 </context>
 <context>
@@ -655,7 +655,7 @@ Deze handeling zal alle synchronisatie die op dit moment loopt afbreken.</transl
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Een versleutelde pkcs12-bundel wordt sterk aanbevolen, aangezien er een kopie wordt opgeslagen in het configuratiebestand.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -673,17 +673,17 @@ Deze handeling zal alle synchronisatie die op dit moment loopt afbreken.</transl
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Doorgaan betekent &lt;b&gt;verwijderen van deze instellingen&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Doorgaan betekent &lt;b&gt;negeren van deze instellingen&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Sommige instellingen zijn geconfigureerd in nieuwere versies van deze client en maken gebruik van functies die niet beschikbaar zijn in deze versie.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; Van het huidige configuratiebestand is al een back-up gemaakt op &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
@@ -825,7 +825,7 @@ Deze handeling zal alle synchronisatie die op dit moment loopt afbreken.</transl
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Open server versie</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
@@ -1072,13 +1072,13 @@ Dit kan een probleem zijn met uw OpenSSL-bibliotheken.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 en %n andere bestand zijn toegevoegd.</numerusform><numerusform>%1 en %n andere bestanden zijn toegevoegd.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 is toegevoegd.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
@@ -1275,17 +1275,17 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folder.cpp" line="1244"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Alle bestanden verwijderen?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1248"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Alle bestanden verwijderen</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1249"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Bestanden bewaren</translation>
     </message>
 </context>
 <context>
@@ -1368,7 +1368,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folderman.cpp" line="1469"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Het geselecteerde pad bestaat niet!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1358"/>
@@ -1452,7 +1452,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Virtual file ondersteuning is ingeschakeld.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
@@ -1462,12 +1462,12 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniseren VirtualFiles met lokale map</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniseren met lokale map</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
@@ -1580,7 +1580,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>De kijker ontving geen testmelding.</translation>
     </message>
 </context>
 <context>
@@ -1680,7 +1680,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik virtuele bestanden in plaats van de content direct te downloaden%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
@@ -1690,7 +1690,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Virtuele bestanden zijn niet beschikbaar voor de geselecteerde map</translation>
     </message>
 </context>
 <context>
@@ -1721,7 +1721,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>We ontvingen een onverwachte download Content-Lengte.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
@@ -1846,7 +1846,7 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Debugarchief maken ...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -1856,12 +1856,12 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Je kunt autostart niet uitschakelen omdat systeem-brede autostart is ingeschakeld.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Wijzigen bijwerkkanaal?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="304"/>
@@ -1875,7 +1875,7 @@ Merk op dat dit alleen selecteert van welke pool upgrades worden overgenomen en 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="317"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Wijzigen bijwerkkanaal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="318"/>
@@ -2085,13 +2085,14 @@ Indien ingeschakeld, worden logboeken naar% 1 geschreven</translation>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Inschakelen logging naar tijdelijke map</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Deze instelling blijft bestaan tijdens het opnieuw opstarten van de client.
+Merk op dat het gebruik van logging-opdrachtregel opties deze instelling zal overschrijven.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -2101,7 +2102,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Openen map</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
@@ -2207,7 +2208,7 @@ Logs worden geschreven naar %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Bijwerken mislukt</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
@@ -2217,17 +2218,17 @@ Logs worden geschreven naar %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Vraag later nogmaals</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Herstarten en bijwerken</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Handmatig bijwerken</translation>
     </message>
 </context>
 <context>
@@ -2265,7 +2266,7 @@ Logs worden geschreven naar %1</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Let op: proxy-instellingen hebben geen effect voor accounts op localhost</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -2348,7 +2349,7 @@ Logs worden geschreven naar %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="120"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>Lege JSON van OAuth2 redirect</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="116"/>
@@ -2403,7 +2404,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 beschikbaar. Herstart de applicatie om de update te starten.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
@@ -2466,7 +2467,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik &amp;virtuele bestanden in plaats van direct downloaden content%1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
@@ -2496,7 +2497,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Virtuele bestanden zijn niet beschikbaar voor de geselecteerde map</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
@@ -2809,7 +2810,7 @@ Het is niet te adviseren om het te gebruiken.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="348"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Inschakelen experimentele functies?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="349"/>
@@ -2831,12 +2832,12 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="362"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Inschakelen experimentele aanduider modus</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="363"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Blijf veilig</translation>
     </message>
 </context>
 <context>
@@ -2870,72 +2871,72 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="237"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Symbolische links worden niet ondersteund bij het synchroniseren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="245"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand is opgenomen op de negeerlijst.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="249"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Bestandsnamen die eindigen met een punt worden niet ondersteund door het bestandssysteem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="259"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Bestandsnamen met een &apos;%1&apos; symbool worden niet ondersteund door het bestandssysteem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="263"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>De bestandsnaam bevat ten minste één ongeldig teken</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>De bestandsnaam is een gereserveerde naam op dit bestandssysteem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="270"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>De bestandsnaam bevat spaties achteraan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="273"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>De bestandsnaam is te lang.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Bestand/Map is genegeerd omdat het verborgen is. </translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Stat mislukt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Bestandsconflict: server versie is gedownload en lokale kopie hernoemd en niet geüpload</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="286"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>De bestandsnaam kan op je bestandssysteem niet worden gecodeerd.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="289"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>De bestandsnaam staat op de negeerlijst van de server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="344"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Bestand heeft een extensie gereserveerd voor virtuele bestanden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
@@ -2955,47 +2956,47 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Server meldde geen %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1186"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Genegeerd vanwege de &quot;wat synchroniseren&quot; negeerlijst</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1219"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan, omdat je geen permissies hebt om submappen aan die map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1224"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan omdat je geen rechten hebt om bestanden in die map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1237"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan om dit bestand te uploaden, omdat het alleen-lezen is op de server, herstellen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1259"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Verplaatst naar ongeldig doel, herstellen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1272"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan om te verwijderen, herstellen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1381"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij lezen database</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1442"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>Server gaf een foutmelding bij lezen directory &apos;%1&apos; : %2</translation>
     </message>
 </context>
 <context>
@@ -3129,7 +3130,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij instellen pin status</translation>
     </message>
 </context>
 <context>
@@ -3158,7 +3159,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="142"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Kon niet %1 hernoemen naar %2, fout: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
@@ -3174,7 +3175,10 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="233"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation> 
+Fout bij instellen pin status
+ 
+ </translation>
     </message>
 </context>
 <context>
@@ -3226,7 +3230,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Peilingen-URL ontbreekt</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
@@ -3356,7 +3360,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 Instellingen</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
@@ -3575,7 +3579,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="89"/>
         <source>Search globally</source>
-        <translation type="unfinished"/>
+        <translation>Zoek door alles</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="285"/>
@@ -3692,7 +3696,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="754"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Selecteer nieuwe locatie ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
@@ -3728,7 +3732,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="946"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Verder delen van deze map is niet toegestaan</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="824"/>
@@ -3754,17 +3758,17 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="916"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Oplossen conflict ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Verplaatsen en hernoemen ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Verplaatsen, hernoemen en uploaden ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="925"/>
@@ -3774,7 +3778,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="931"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Verplaatsen en uploaden ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="932"/>
@@ -4082,7 +4086,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="357"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kon virtuele bestand metadata niet bijwerken: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="536"/>
@@ -4190,7 +4194,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="509"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>gebruik maken van virtuele bestanden met achtervoegsel, maar achtervoegsel niet ingesteld</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
@@ -4255,7 +4259,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1018"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Afgebroken</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
@@ -4399,7 +4403,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/common/vfs.cpp" line="80"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>De Virtuele bestandssysteemfunctie vereist een NTFS bestandssysteem, %1 gebruikt %2</translation>
     </message>
 </context>
 <context>
@@ -4451,7 +4455,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="228"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>De server van account %1 gebruikt een niet ondersteunde versie %2. Het gebruik van deze clientsoftware met niet-ondersteunde server versies is niet getest en mogelijk gevaarlijk. Verdergaan is op eigen risico.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
@@ -4681,7 +4685,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;ynchroniseer alles vanaf de server (aanbevolen)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
@@ -4999,7 +5003,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Het gedownloade bestand komt niet overeen met het controlegetal. Het wordt opnieuw verwerkt.  &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -5145,12 +5149,12 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Virtueel bestand gecreëerd</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Vervangen door virtueel bestand</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
@@ -5317,32 +5321,32 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Altijd lokaal beschikbaar</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="78"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Momenteel lokaal beschikbaar</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Sommige alleen online beschikbaar</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Alleen online beschikbaar</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Maak altijd lokaal beschikbaar</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="95"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Lokale ruimte vrijmaken</translation>
     </message>
 </context>
 <context>
