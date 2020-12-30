@@ -346,7 +346,12 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
             // Ensure it's a placeholder file on disk
             if (item->_type == ItemTypeFile) {
-                _syncOptions._vfs->convertToPlaceholder(filePath, *item);
+                const auto result = _syncOptions._vfs->convertToPlaceholder(filePath, *item);
+                if (!result) {
+                    item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                    item->_errorString = tr("Could not update file : %1").arg(result.error());
+                    return;
+                }
             }
 
             // Update on-disk virtual file metadata
@@ -732,10 +737,11 @@ void SyncEngine::slotDiscoveryFinished()
         }
 
         QPointer<QObject> guard = new QObject();
-        auto callback = [this, finish, guard](bool cancel) -> void {
+        QPointer<QObject> self = this;
+        auto callback = [this, self, finish, guard](bool cancel) -> void {
             // use a guard to ensure its only called once...
-            if (!guard)
-            {
+            // qpointer to self to ensure we still exist
+            if (!guard || !self) {
                 return;
             }
             guard->deleteLater();

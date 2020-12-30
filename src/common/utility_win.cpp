@@ -94,7 +94,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     QString runPath = QLatin1String(runPathC);
     QSettings settings(runPath, QSettings::NativeFormat);
     if (enable) {
-        settings.setValue(appName, QCoreApplication::applicationFilePath().replace(QLatin1Char('/'), QLatin1Char('\\')));
+        settings.setValue(appName, QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
     } else {
         settings.remove(appName);
     }

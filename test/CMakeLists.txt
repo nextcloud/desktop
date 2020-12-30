@@ -74,6 +74,7 @@ if( UNIX AND NOT APPLE )
 endif(UNIX AND NOT APPLE)
 
 if (WIN32)
+    nextcloud_add_test(LongWinPath "")
     nextcloud_add_test(SyncCfApi "")
 endif()
 
