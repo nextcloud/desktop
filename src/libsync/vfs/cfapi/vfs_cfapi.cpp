@@ -149,16 +149,16 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
     return {};
 }
 
-void VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile)
+Result<void, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile)
 {
     const auto localPath = QDir::toNativeSeparators(filename);
     const auto replacesPath = QDir::toNativeSeparators(replacesFile);
 
     const auto handle = cfapi::handleForPath(localPath);
     if (cfapi::findPlaceholderInfo(handle)) {
-        cfapi::updatePlaceholderInfo(handle, item._modtime, item._size, item._fileId, replacesPath);
+        return cfapi::updatePlaceholderInfo(handle, item._modtime, item._size, item._fileId, replacesPath);
     } else {
-        cfapi::convertToPlaceholder(handle, item._modtime, item._size, item._fileId, replacesPath);
+        return cfapi::convertToPlaceholder(handle, item._modtime, item._size, item._fileId, replacesPath);
     }
 }
 
