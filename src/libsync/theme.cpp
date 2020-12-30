@@ -738,7 +738,8 @@ QPixmap Theme::createColorAwarePixmap(const QString &name)
 
 bool Theme::showVirtualFilesOption() const
 {
-    return ConfigFile().showExperimentalOptions();
+    const auto vfsMode = bestAvailableVfsMode();
+    return ConfigFile().showExperimentalOptions() || vfsMode == Vfs::WindowsCfApi;
 }
 
 } // end namespace client

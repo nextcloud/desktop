@@ -860,8 +860,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     auto postProcessLocalNew = [item, localEntry, this]() {
         if (localEntry.isVirtualFile) {
             // Remove the spurious file if it looks like a placeholder file
-            // (we know placeholder files contain " ")
-            if (localEntry.size <= 1) {
+            // (we know placeholder files contain " ", but only in the suffix case)
+            if (localEntry.size <= 1 || !isVfsWithSuffix()) {
                 qCWarning(lcDisco) << "Wiping virtual file without db entry for" << _currentFolder._local + "/" + localEntry.name;
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;

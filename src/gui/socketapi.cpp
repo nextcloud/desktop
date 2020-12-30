@@ -1178,8 +1178,11 @@ DirectEditor* SocketApi::getDirectEditorForLocalFile(const QString &localFile)
     auto capabilities = fileData.folder->accountState()->account()->capabilities();
 
     if (fileData.folder && fileData.folder->accountState()->isConnected()) {
+        const auto record = fileData.journalRecord();
+        const auto mimeMatchMode = record.isVirtualFile() ? QMimeDatabase::MatchExtension : QMimeDatabase::MatchDefault;
+
         QMimeDatabase db;
-        QMimeType type = db.mimeTypeForFile(localFile);
+        QMimeType type = db.mimeTypeForFile(localFile, mimeMatchMode);
 
         DirectEditor* editor = capabilities.getDirectEditorForMimetype(type);
         if (!editor) {
