@@ -166,7 +166,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Zvolte cílovou složku na protějšku</translation>
+        <translation>Zvolte federovanou cílovou složku</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -1618,7 +1618,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="181"/>
         <source>Create Remote Folder</source>
-        <translation>Vytvořit složku na protějšku</translation>
+        <translation>Vytvořit federovanou složku</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="182"/>
@@ -2702,7 +2702,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="506"/>
         <source>No remote folder specified!</source>
-        <translation>Není nastavena žádná složka na protějšku!</translation>
+        <translation>Není nastavena žádná federovaná složka!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="512"/>
@@ -2717,12 +2717,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Složka %1 byla na protějšku úspěšně vytvořena.</translation>
+        <translation>Složka %1 byla na federované straně úspěšně vytvořena.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="543"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Složka %1 už na protějšku existuje. Spojuje se pro synchronizaci.</translation>
+        <translation>Složka %1 už na federované straně existuje. Probíhá propojení synchronizace.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="545"/>
@@ -2733,18 +2733,18 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="549"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Vytvoření složky na protějšku se nezdařilo, pravděpodobně z důvodu neplatných přihlašovacích údajů.&lt;br/&gt;Vraťte se zpět a zkontrolujte je.&lt;/p&gt;</translation>
+        <translation>Vytvoření federované složky se nezdařilo, pravděpodobně z důvodu neplatných přihlašovacích údajů.&lt;br/&gt;Vraťte se zpět a zkontrolujte je.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="553"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvoření složky na protějšku se nezdařilo, pravděpodobně z důvodu neplatných přihlašovacích údajů.&lt;/font&gt;&lt;br/&gt;Vraťte se zpět a zkontrolujte je.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvoření federované složky se nezdařilo, pravděpodobně z důvodu neplatných přihlašovacích údajů.&lt;/font&gt;&lt;br/&gt;Vraťte se zpět a zkontrolujte je.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="558"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="559"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Vytváření složky %1 na protějšku se nezdařilo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Vytváření federované složky %1 se nezdařilo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="576"/>
