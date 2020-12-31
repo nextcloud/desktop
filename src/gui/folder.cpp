@@ -415,56 +415,56 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
         switch (status) {
         case LogStatusRemove:
             if (count > 1) {
-                text = tr("%1 and %n other file(s) have been removed.", "", count - 1).arg(file);
+                text = tr("%1 and %n other files have been removed.", "", count - 1).arg(file);
             } else {
                 text = tr("%1 has been removed.", "%1 names a file.").arg(file);
             }
             break;
         case LogStatusNew:
             if (count > 1) {
-                text = tr("%1 and %n other file(s) have been added.", "", count - 1).arg(file);
+                text = tr("%1 and %n other files have been added.", "", count - 1).arg(file);
             } else {
                 text = tr("%1 has been added.", "%1 names a file.").arg(file);
             }
             break;
         case LogStatusUpdated:
             if (count > 1) {
-                text = tr("%1 and %n other file(s) have been updated.", "", count - 1).arg(file);
+                text = tr("%1 and %n other files have been updated.", "", count - 1).arg(file);
             } else {
                 text = tr("%1 has been updated.", "%1 names a file.").arg(file);
             }
             break;
         case LogStatusRename:
             if (count > 1) {
-                text = tr("%1 has been renamed to %2 and %n other file(s) have been renamed.", "", count - 1).arg(file, renameTarget);
+                text = tr("%1 has been renamed to %2 and %n other files have been renamed.", "", count - 1).arg(file, renameTarget);
             } else {
                 text = tr("%1 has been renamed to %2.", "%1 and %2 name files.").arg(file, renameTarget);
             }
             break;
         case LogStatusMove:
             if (count > 1) {
-                text = tr("%1 has been moved to %2 and %n other file(s) have been moved.", "", count - 1).arg(file, renameTarget);
+                text = tr("%1 has been moved to %2 and %n other files have been moved.", "", count - 1).arg(file, renameTarget);
             } else {
                 text = tr("%1 has been moved to %2.").arg(file, renameTarget);
             }
             break;
         case LogStatusConflict:
             if (count > 1) {
-                text = tr("%1 has and %n other file(s) have sync conflicts.", "", count - 1).arg(file);
+                text = tr("%1 has and %n other files have sync conflicts.", "", count - 1).arg(file);
             } else {
                 text = tr("%1 has a sync conflict. Please check the conflict file!").arg(file);
             }
             break;
         case LogStatusError:
             if (count > 1) {
-                text = tr("%1 and %n other file(s) could not be synced due to errors. See the log for details.", "", count - 1).arg(file);
+                text = tr("%1 and %n other files could not be synced due to errors. See the log for details.", "", count - 1).arg(file);
             } else {
                 text = tr("%1 could not be synced due to an error. See the log for details.").arg(file);
             }
             break;
         case LogStatusFileLocked:
             if (count > 1) {
-                text = tr("%1 and %n other file(s) are currently locked.", "", count -1).arg(file);
+                text = tr("%1 and %n other files are currently locked.", "", count -1).arg(file);
             } else {
                 text = tr("%1 is currently locked.").arg(file);
             }
