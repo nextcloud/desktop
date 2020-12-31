@@ -4054,7 +4054,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 (이전 오류로 인해 스킵되었으며 %2에서 다시 시도)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="352"/>
+        <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4068,11 +4073,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>%1 만 사용할 수 있습니다. 시작하려면 %2 이상이 필요합니다</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>파일 이름에 유효하지 않은 문자가 하나 이상 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
@@ -4162,11 +4162,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>해당 파일 이름은 이 파일 시스템에서 예약된 이름입니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="509"/>
-        <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>파일 이름 뒤에 공백이 있습니다.</translation>
@@ -4175,6 +4170,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>파일 이름이 너무 깁니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="514"/>
+        <source>Using virtual files with suffix, but suffix is not set</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4187,14 +4187,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>폴더의 계층이 너무 깊습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="931"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>로컬 데이터베이스에서 블랙리스트를 읽을 수 없습니다.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>파일 시스템에서 파일 이름을 인코딩 할 수 없습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="931"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>로컬 데이터베이스에서 블랙리스트를 읽을 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
@@ -4227,7 +4227,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>잘못된 문자입니다. &quot;%1&quot;의 이름을 바꾸십시오.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
@@ -4235,6 +4235,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>디스크 공간이 부족합니다. 여유 공간이 %1 미만으로 남으면 다운로드를 건너 뜁니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>파일 이름에 유효하지 않은 문자가 하나 이상 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1816"/>

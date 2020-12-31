@@ -4036,7 +4036,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>1% (به علت خطای قبلی از بین رفته است، دوباره در 2% امتحان کنید)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="352"/>
+        <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4050,11 +4055,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>تنها 1% موجود است، حداقل 2% برای شروع مورد نیاز است</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>نام فایل دارای حداقل یک کاراکتر نامعتبر است</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
@@ -4144,11 +4144,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>نام پرونده یک نام رزرو شده در این سیستم پرونده است.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="509"/>
-        <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>نام پرونده شامل دنباله فضای خالی است.</translation>
@@ -4157,6 +4152,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>نام فایل خیلی طولانی است.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="514"/>
+        <source>Using virtual files with suffix, but suffix is not set</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4169,14 +4169,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>سلسله مراتب پوشه خیلی عمیق است</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="931"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>نمی توان لیست سیاه را از پایگاه داده محلی خواند</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>نام پرونده در سیستم پرونده شما رمزگذاری نمی شود.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="931"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>نمی توان لیست سیاه را از پایگاه داده محلی خواند</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
@@ -4209,7 +4209,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>کاراکتر نامعتبر، لطفا &quot;%1&quot; را تغییر نام دهید</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
@@ -4217,6 +4217,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>فضای دیسک کم است: دانلودهایی که فضای آزاد را به کمتر از 1% کاهش می دهند رد می شوند.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>نام فایل دارای حداقل یک کاراکتر نامعتبر است</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1816"/>

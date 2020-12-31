@@ -4053,7 +4053,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 (egy korábbi hiba miatt kihagyva, újrapróbálkozás %s múlva)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="352"/>
+        <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4067,11 +4072,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Csak %1 érhető el, de legalább %2 kell az indításhoz</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>A fájlnév legalább egy érvénytelen karaktert tartalmaz</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
@@ -4161,11 +4161,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>A fájlnév a rendszer számára fenntartott ezen a fájlrendszeren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="509"/>
-        <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>A fájlnév záró szóközöket tartalmaz.</translation>
@@ -4174,6 +4169,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>A fájlnév túl hosszú.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="514"/>
+        <source>Using virtual files with suffix, but suffix is not set</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4186,14 +4186,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>A mappaszerkezet túl mély</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="931"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Nem lehet kiolvasni a tiltólistát a helyi adatbázisból</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>A fájlnevet nem lehet kódolni a fájlrendszerén.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="931"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Nem lehet kiolvasni a tiltólistát a helyi adatbázisból</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
@@ -4226,7 +4226,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Érvénytelen karakterek, nevezze át: „%1”</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
@@ -4234,6 +4234,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Túl kevés a tárterület: A letöltések, melyek %1 alá csökkentették volna a szabad tárhelyet, kihagyásra kerültek.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>A fájlnév legalább egy érvénytelen karaktert tartalmaz</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1816"/>

@@ -4035,7 +4035,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 (ข้ามไปเนื่องจากข้อผิดพลาดก่อนหน้านี้ กำลังลองอีกครั้งใน %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="352"/>
+        <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4049,11 +4054,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
@@ -4144,11 +4144,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ชื่อไฟล์นี้เป็นชื่อที่ถูกสงวนไว้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="509"/>
-        <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>ชื่อไฟล์มีช่องว่างต่อท้าย</translation>
@@ -4157,6 +4152,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>ชื่อไฟล์ยาวเกินไป</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="514"/>
+        <source>Using virtual files with suffix, but suffix is not set</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4169,14 +4169,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>โฟลเดอร์มีโฟลเดอร์ย่อยเกินไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="931"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลต้นทาง</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>ชื่อไฟล์ไม่สามารถเข้ารหัสในระบบไฟล์ของคุณได้</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="931"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
@@ -4209,7 +4209,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ตัวอักษรไม่ถูกต้อง โปรดเปลี่ยนชื่อ &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
@@ -4217,6 +4217,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>พื้นที่จัดเก็บเหลือน้อย: การดาวน์โหลดจะช่วยลดพื้นที่ว่างด้านล่าง %1 ที่ถูกข้ามไป</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1816"/>

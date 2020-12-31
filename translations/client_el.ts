@@ -4054,7 +4054,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 (παράλειψη λόγω προηγούμενου λάθους, επόμενη προσπάθεια σε %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="352"/>
+        <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -4068,11 +4073,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Μόνο %1 είναι διαθέσιμα, απαιτούνται τουλάχιστον %2 για την εκκίνηση</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Το όνομα αρχείου περιέχει έναν τουλάχιστον μη έγκυρο χαρακτήρα</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
@@ -4162,11 +4162,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Το όνομα αρχείου είναι ένα κατοχυρωμένο όνομα σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="509"/>
-        <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Το όνομα του αρχείου περιέχει συνεχόμενα κενά.</translation>
@@ -4175,6 +4170,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>Το όνομα αρχείου είνια πολύ μεγάλο.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="514"/>
+        <source>Using virtual files with suffix, but suffix is not set</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4187,14 +4187,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Δομή φακέλων πολύ μεγάλη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="931"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Αδυναμία ανάγνωσης της μαύρης λίστας από την τοπική βάση δεδομένων</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Το όνομα αρχείου δεν μπορεί να κωδικοποιηθεί στο σύστημα αρχείων σας.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="931"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Αδυναμία ανάγνωσης της μαύρης λίστας από την τοπική βάση δεδομένων</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
@@ -4227,7 +4227,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Μη έγκυροι χαρακτήρες, παρακαλώ μετονομάστε το &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation type="unfinished"/>
     </message>
@@ -4235,6 +4235,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Ο χώρος δίσκου είναι χαμηλός: Οι λήψεις που θα μειώσουν τον ελέυθερο χώρο κάτω από %1 θα αγνοηθούν.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Το όνομα αρχείου περιέχει έναν τουλάχιστον μη έγκυρο χαρακτήρα</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1816"/>

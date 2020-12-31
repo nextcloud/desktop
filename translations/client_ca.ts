@@ -4048,7 +4048,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 (s&apos;ha omès a causa d&apos;un error anterior, torneu-ho a provar d&apos;aquí a %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="352"/>
+        <source>Could not update file : %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>No s&apos;han pogut actualitzar les metadades del fitxer virtual: %1</translation>
     </message>
@@ -4062,11 +4067,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Només hi ha %1 disponibles, necessiteu com a mínim %2 per a començar</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>El nom del fitxer conté com a mínim un caràcter no vàlid</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
@@ -4156,11 +4156,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Aquest nom de fitxer és un nom reservat en aquest sistema de fitxers.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="509"/>
-        <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>S&apos;estan utilitzant fitxers virtuals amb sufix però no s&apos;ha definit el sufix</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>El nom del fitxer conté espais finals.</translation>
@@ -4169,6 +4164,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>El nom del fitxer és massa llarg.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="514"/>
+        <source>Using virtual files with suffix, but suffix is not set</source>
+        <translation>S&apos;estan utilitzant fitxers virtuals amb sufix però no s&apos;ha definit el sufix</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4181,14 +4181,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>La jerarquia de carpetes és massa profunda.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="931"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>No s&apos;ha pogut llegir la llista negra de la base de dades local.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>El nom del fitxer no es pot codificar en el vostre sistema de fitxers.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="931"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>No s&apos;ha pogut llegir la llista negra de la base de dades local.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
@@ -4221,7 +4221,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Caràcters no vàlids; canvieu el nom de «%1».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1018"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation>S&apos;ha cancel·lat</translation>
     </message>
@@ -4229,6 +4229,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Queda poc espai en el disc: s&apos;han omès les baixades que reduirien l&apos;espai lliure per sota de %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1110"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>El nom del fitxer conté com a mínim un caràcter no vàlid</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1816"/>
