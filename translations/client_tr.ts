@@ -477,7 +477,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1034"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation>Sunucu sürümü %1 desteklenmiyor! Kendi sorumluluğunuzda ilerleyin.</translation>
+        <translation>%1 sunucu sürümü desteklenmiyor! Riski üstlenerek devam edebilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="772"/>
@@ -522,7 +522,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1070"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>Sunucu yapılandırma hatası: %2 üzerinde %1.</translation>
+        <translation>Sunucu yapılandırma sorunu: %1 ile %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="800"/>
@@ -656,7 +656,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation>Bir kopyası yapılandırma dosyasında saklanacağı için şifrelenmiş bir pkcs12 paketi şiddetle tavsiye edilir.</translation>
+        <translation>Bir kopyası yapılandırma dosyasında saklanacağından şifrelenmiş bir pkcs12 paketi önerilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
@@ -674,12 +674,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>İlerlerseniz &lt;b&gt;bu ayarlar silinecek&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="133"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>İlerlerseniz &lt;b&gt;bu ayarlar yok sayılacak&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
@@ -689,12 +689,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
         <source>Quit</source>
-        <translation>Çıkış</translation>
+        <translation>Çık</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="147"/>
         <source>Continue</source>
-        <translation>Devam et</translation>
+        <translation>Sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="207"/>
@@ -930,12 +930,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
         <source>Error while opening directory %1</source>
-        <translation>Klasör %1 açılırken hata oluştu</translation>
+        <translation>%1 klasörü açılırken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>Klasöre istemcide erişilemiyor, izin reddedildi</translation>
+        <translation>İstemciden klasöre erişilemedi, izin verilmedi</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
@@ -950,7 +950,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation>Klasör %1 okunurken hata oluştu</translation>
+        <translation>%1 klasörü okunurken sorun çıktı</translation>
     </message>
 </context>
 <context>

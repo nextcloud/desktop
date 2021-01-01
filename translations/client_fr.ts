@@ -1068,7 +1068,7 @@ Cela peut être un problème avec vos bibliothèques OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 et %n autre fichier ont été ajoutés.</numerusform><numerusform>%1 et %n autres fichiers ont été ajoutés.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
@@ -2879,7 +2879,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="270"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Le nom du fichier finit par des espaces.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="273"/>
@@ -4062,7 +4062,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de mettre à jour le fichier : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
@@ -4170,7 +4170,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Le nom du fichier se fini par des espaces.</translation>
+        <translation>Le nom du fichier finit par des espaces.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5307,7 +5307,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="78"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Actuellement disponible en local</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
