@@ -333,7 +333,7 @@ Aguarde a nova sincronização e criptografe-a.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="373"/>
         <location filename="../src/gui/accountsettings.cpp" line="409"/>
         <source>Edit Ignored Files</source>
-        <translation>Editar Arquivos a Ignorar</translation>
+        <translation>Editar arquivos a ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="408"/>
@@ -614,7 +614,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/ActivityListModel.cpp" line="519"/>
         <source>For more activities please open the Activity app.</source>
-        <translation>Para mais atividades, abra o aplicativo Activity.</translation>
+        <translation>Para mais atividades, abra o aplicativo Atividade.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
@@ -1833,7 +1833,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="222"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Editar arquivos &amp;ignorados</translation>
+        <translation>Editar arquivos a &amp;ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
@@ -1880,7 +1880,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Zip Archives</source>
-        <translation>Compactar arquivamentos</translation>
+        <translation>Arquivos Zip</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
@@ -1948,12 +1948,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Editor de Arquivos Ignorados</translation>
+        <translation>Editor de arquivos a ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>Ignorar Configurações Globais</translation>
+        <translation>Configurações globais</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -1963,7 +1963,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation>Arquivos Ignorados por Padrões</translation>
+        <translation>Arquivos a ignorar por padrões</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
@@ -5242,7 +5242,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Sync Success</source>
-        <translation>Sincronização Finalizada</translation>
+        <translation>Sincronização finalizada</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
