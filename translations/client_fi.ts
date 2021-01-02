@@ -383,7 +383,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(kokeellinen)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -502,7 +502,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="791"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Yhdistetään kohteeseen %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="794"/>
@@ -679,7 +679,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Jotkin asetetukset on asetettu uudemmalla sovelluksen versiolla ja käyttävät ominaisuuksia, jotka eivät ole saatavilla tässä versiossa.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Nykyiset asetukset on varmuuskopioituna kohteeseen %2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
@@ -756,29 +756,29 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoinnin ristiriita</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Kohteen %1 versioiden ristiriita.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
         <source>Which version of the file do you want to keep?&lt;br/&gt;If you select both versions, the local file will have a number added to its name.</source>
-        <translation type="unfinished"/>
+        <translation>Kumman tiedoston version haluat pitää?&lt;br/&gt;Jos valitset molemmat versiot, paikallisen tiedoston nimen perään lisätään numero.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="46"/>
         <source>Local version</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen versio</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Klikkaa avataksesi tiedoston</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -790,12 +790,12 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="103"/>
         <location filename="../src/gui/conflictdialog.ui" line="211"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 tavua</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Avaa paikallinen versio&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -805,38 +805,38 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Avaa palvelimella oleva versio&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Pidä valittu versio</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Avaa paikallinen versio</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Avaa palvelimella oleva versio</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Pidä molemmat versiot</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Pidä paikallinen versio</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Pidä palvelimella oleva versio</translation>
     </message>
 </context>
 <context>
@@ -844,17 +844,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Haluatko poistaa kansion &lt;i&gt;%1&lt;/i&gt; ja sen sisällön pysyvästi?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>Haluatko poistaa tiedoston &lt;i&gt;%1&lt;/i&gt; pysyvästi?</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>Vahvista poistaminen</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="134"/>
@@ -868,7 +868,9 @@ This action will abort any currently running synchronization.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Tiedoston siirtäminen epäonnistui:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -923,27 +925,27 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="262"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Virhe kansion %1 avaamisessa</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="264"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation type="unfinished"/>
+        <translation>Kansioon ei ole käyttöoikeutta</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kansiota ei löytynyt: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="299"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimen merkkikoodaus ei ole kelvollinen</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="318"/>
         <source>Error while reading directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Virhe kansion %1 luvussa</translation>
     </message>
 </context>
 <context>
@@ -952,7 +954,8 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="72"/>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
-        <translation type="unfinished"/>
+        <translation>Salausta varten ei voida luoda metatietoja. Poistetaan kansion lukitus.
+OpenSSL-kirjastosi kanssa saattaa olla ongelma.</translation>
     </message>
 </context>
 <context>
@@ -1065,13 +1068,13 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n muuta tiedostoa on lisätty.</numerusform><numerusform>%1 ja %n muuta tiedostoa on lisätty.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 on lisätty.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
@@ -1087,7 +1090,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="394"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 on nimetty uudelleen nimellä %2 ja %n muuta tiedostoa on uudelleennimetty.</numerusform><numerusform>%1 on nimetty uudelleen nimellä %2 ja %n muuta tiedostoa on uudelleennimetty.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="396"/>
@@ -1098,7 +1101,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 on siirretty kohteeseen %2 ja %n muuta tiedostoa on siirretty.</numerusform><numerusform>%1 on siirretty kohteeseen %2 ja %n muuta tiedostoa on siirretty.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="403"/>
@@ -1108,17 +1111,17 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n muulla tiedostolla on synkronointiristiriitoja.</numerusform><numerusform>%1 ja %n muulla tiedostolla on synkronointiristiriitoja.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="410"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>Kohteella %1 on synkronoinnin ristiriita. Tarkista konfliktitiedosto!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n muuta tiedostoa ei voitu synkronoida virheiden takia. Katso lisätietoja lokista.</numerusform><numerusform>%1 ja %n muuta tiedostoa ei voitu synkronoida virheiden takia. Katso lisätietoja lokista.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="417"/>
@@ -1128,7 +1131,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n muuta tiedostoa on tällä hetkellä lukittuna.</numerusform><numerusform>%1 ja %n muuta tiedostoa on tällä hetkellä lukittuna.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="424"/>
@@ -1609,7 +1612,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="182"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>Syötä uuden kansion nimi alle &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="212"/>
@@ -1823,7 +1826,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Koosta vianetsintätiedot...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -1860,7 +1863,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Koosta vianetsintätiedot</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="411"/>
@@ -1870,12 +1873,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Vianetsintätiedot koostettu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="417"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Vianetsintätietodot koostettu kohteeseen %1</translation>
     </message>
 </context>
 <context>
@@ -1986,7 +1989,9 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostoja ja kansioita, jotka täsmäävät kuvion kanssa, ei synkronoida.
+
+Kohteet, joissa poisto on sallittu, poistetaan, jos ne estävät kansion poistamisen. Tämä on käytännöllistä metatietojen kanssa.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="93"/>
