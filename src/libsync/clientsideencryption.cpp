@@ -703,33 +703,33 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
     auto ctx = PKeyCtx::forKey(publicKey, ENGINE_get_default_RSA());
     if (!ctx) {
         qCInfo(lcCse()) << "Could not initialize the pkey context.";
-        exit(1);
+        return {};
     }
 
     if (EVP_PKEY_encrypt_init(ctx) != 1) {
         qCInfo(lcCse()) << "Error initilaizing the encryption.";
-        exit(1);
+        return {};
     }
 
     if (EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
         qCInfo(lcCse()) << "Error setting the encryption padding.";
-        exit(1);
+        return {};
     }
 
     if (EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCse()) << "Error setting OAEP SHA 256";
-        exit(1);
+        return {};
     }
 
     if (EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCse()) << "Error setting MGF1 padding";
-        exit(1);
+        return {};
     }
 
     size_t outLen = 0;
     if (EVP_PKEY_encrypt(ctx, nullptr, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
         qCInfo(lcCse()) << "Error retrieving the size of the encrypted data";
-        exit(1);
+        return {};
     } else {
         qCInfo(lcCse()) << "Encryption Length:" << outLen;
     }
@@ -737,7 +737,7 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
     QByteArray out(static_cast<int>(outLen), '\0');
     if (EVP_PKEY_encrypt(ctx, unsignedData(out), &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
         qCInfo(lcCse()) << "Could not encrypt key." << err;
-        exit(1);
+        return {};
     }
 
     qCInfo(lcCse()) << out.toBase64();
@@ -816,6 +816,10 @@ bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) con
     auto publicKey = PKey::readPublicKey(publicKeyBio);
 
     auto encryptedData = EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
+    if (encryptedData.isEmpty()) {
+        qCInfo(lcCse()) << "encryption failed";
+        return false;
+    }
 
     Bio privateKeyBio;
     QByteArray privateKeyPem = account->e2e()->_privateKey;

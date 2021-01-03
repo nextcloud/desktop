@@ -366,7 +366,9 @@ bool LockEncryptFolderApiJob::finished()
 
     if (!_publicKey.isNull()) {
         const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_publicKey, token);
-        _journalDb->setE2EeLockedFolder(_fileId, folderTokenEncrypted);
+        if (!folderTokenEncrypted.isEmpty()) {
+            _journalDb->setE2EeLockedFolder(_fileId, folderTokenEncrypted);
+        }
     }
 
     //TODO: Parse the token and submit.
