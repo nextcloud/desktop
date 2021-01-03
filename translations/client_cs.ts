@@ -2922,7 +2922,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>oprávnění</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
@@ -5324,7 +5324,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="95"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Uvolnit prostor</translation>
     </message>
 </context>
 <context>
