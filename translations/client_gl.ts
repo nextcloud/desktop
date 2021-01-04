@@ -1682,7 +1682,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Os ficheiros virtuais non están dispoñíbeis para o cartafol seleccionado</translation>
     </message>
 </context>
 <context>
