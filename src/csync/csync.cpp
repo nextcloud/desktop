@@ -1,7 +1,7 @@
 /*
  * libcsync -- a library to sync a directory with another
  *
- * Copyright (c) 2020 by Hannah von Reth <hannah.vonreth@owncloud.com>
+ * Copyright (c) by Hannah von Reth <hannah.vonreth@owncloud.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
