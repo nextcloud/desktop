@@ -53,6 +53,8 @@ QString Vfs::modeToString(Mode mode)
         return QStringLiteral("suffix");
     case WindowsCfApi:
         return QStringLiteral("wincfapi");
+    case XAttr:
+        return QStringLiteral("xattr");
     }
     return QStringLiteral("off");
 }
@@ -145,6 +147,8 @@ static QString modeToPluginName(Vfs::Mode mode)
         return QStringLiteral("suffix");
     if (mode == Vfs::WindowsCfApi)
         return QStringLiteral("win");
+    if (mode == Vfs::XAttr)
+        return QStringLiteral("xattr");
     return QString();
 }
 
@@ -171,9 +175,32 @@ Vfs::Mode OCC::bestAvailableVfsMode()
 {
     if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         return Vfs::WindowsCfApi;
-    } else if (isVfsPluginAvailable(Vfs::WithSuffix)) {
+    }
+
+    if (isVfsPluginAvailable(Vfs::WithSuffix)) {
         return Vfs::WithSuffix;
     }
+
+    // For now the "suffix" backend has still precedence over the "xattr" backend.
+    // Ultimately the order of those ifs will change when xattr will be more mature.
+    // But what does "more mature" means here?
+    //
+    //  * On Mac when it properly reads and writes com.apple.LaunchServices.OpenWith
+    // This will require reverse engineering to see what they stuff in there. Maybe a good
+    // starting point:
+    // https://eclecticlight.co/2017/12/20/xattr-com-apple-launchservices-openwith-sets-a-custom-app-to-open-a-file/
+    //
+    //  * On Linux when our user.nextcloud.hydrate_exec is adopted by at least KDE and Gnome
+    // the "user.nextcloud" prefix might turn into "user.xdg" in the process since it would
+    // be best to have a freedesktop.org spec for it.
+    // When that time comes, it might still require detecting at runtime if that's indeed
+    // supported in the user session or even per sync folder (in case user would pick a folder
+    // which wouldn't support xattr for some reason)
+
+    if (isVfsPluginAvailable(Vfs::XAttr)) {
+        return Vfs::XAttr;
+    }
+
     return Vfs::Off;
 }
 
