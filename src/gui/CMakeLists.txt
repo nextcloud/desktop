@@ -172,8 +172,10 @@ elseif( WIN32 )
 elseif(UNIX AND NOT APPLE )
     ## handle DBUS for Fdo notifications
     find_package(Qt5 COMPONENTS DBus)
-    target_link_libraries(owncloudCore PUBLIC Qt5::DBus)
-    target_compile_definitions(owncloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
+    if (TARGET Qt5::DBus)
+        target_link_libraries(owncloudCore PUBLIC Qt5::DBus)
+        target_compile_definitions(owncloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
+    endif()
     target_sources(owncloudCore PRIVATE folderwatcher_linux.cpp)
 endif()
 
