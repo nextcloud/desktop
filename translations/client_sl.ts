@@ -1568,7 +1568,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1087"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Poteka čakanje na %n drugo mapo …</numerusform><numerusform>Poteka čakanje na %n drugi mapi …</numerusform><numerusform>Poteka čakanje na %n druge mape …</numerusform><numerusform>Poteka čakanje na %n drugih map …</numerusform></translation>
+        <translation><numerusform>Poteka pregledovanje %n mape …</numerusform><numerusform>Poteka pregledovanje %n map …</numerusform><numerusform>Poteka pregledovanje %n map …</numerusform><numerusform>Poteka pregledovanje %n map …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1093"/>
