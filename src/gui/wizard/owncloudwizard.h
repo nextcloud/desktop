@@ -32,9 +32,6 @@ Q_DECLARE_LOGGING_CATEGORY(lcWizard)
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;
 class OwncloudOAuthCredsPage;
-#ifndef NO_SHIBBOLETH
-class OwncloudShibbolethCredsPage;
-#endif
 class OwncloudAdvancedSetupPage;
 class OwncloudWizardResultPage;
 class AbstractCredentials;
@@ -121,9 +118,6 @@ private:
     OwncloudSetupPage *_setupPage;
     OwncloudHttpCredsPage *_httpCredsPage;
     OwncloudOAuthCredsPage *_browserCredsPage;
-#ifndef NO_SHIBBOLETH
-    OwncloudShibbolethCredsPage *_shibbolethCredsPage;
-#endif
     Flow2AuthCredsPage *_flow2CredsPage;
     OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage;

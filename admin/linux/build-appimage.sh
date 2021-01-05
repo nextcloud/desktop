@@ -37,7 +37,6 @@ cd /build
 mkdir build-client
 cd build-client
 cmake -D CMAKE_INSTALL_PREFIX=/usr \
-    -D NO_SHIBBOLETH=1 \
     -D BUILD_TESTING=OFF \
     -D BUILD_UPDATER=ON \
     -DMIRALL_VERSION_SUFFIX=PR-$DRONE_PULL_REQUEST \

@@ -13,13 +13,13 @@ desktop client.
 
 These instructions are updated to work with version |version| of the Nextcloud Client.
 
-You have two possibilities to clone the repo. 
+You have two possibilities to clone the repo.
 
-First option is As [remote URL](https://help.github.com/en/articles/which-remote-url-should-i-use) you can choose between cloning with HTTPS URL's, which is recommended or cloning with SSH URL's. 
+First option is As [remote URL](https://help.github.com/en/articles/which-remote-url-should-i-use) you can choose between cloning with HTTPS URL's, which is recommended or cloning with SSH URL's.
 
 [https://github.com/nextcloud/desktop.git](https://github.com/nextcloud/desktop.git)
 
-When you don't have SSH key added to your GitHub account, than use HTTPS. 
+When you don't have SSH key added to your GitHub account, than use HTTPS.
 
 When you no part of the nextcloud organisation, clone with HTTPS:
 
@@ -85,7 +85,7 @@ $ git submodule update
 12. Generate the build files:
 ```
 $ cd build
-$ cmake .. -DCMAKE_INSTALL_PREFIX=~/nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1 
+$ cmake .. -DCMAKE_INSTALL_PREFIX=~/nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug
 ```
 
 13. Compile and install:
@@ -240,7 +240,7 @@ To build the most up-to-date version of the client:
 
    .. note:: qtkeychain must be compiled with the same prefix e.g ``CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .``
 
-   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -DNO_SHIBBOLETH=1``
+   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/``
 
 4. Call ``make``.
 

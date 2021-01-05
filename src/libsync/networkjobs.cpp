@@ -920,18 +920,9 @@ void DetermineAuthTypeJob::start()
     oldFlowRequired->setIgnoreCredentialFailure(true);
 
     connect(get, &AbstractNetworkJob::redirected, this, [this, get](QNetworkReply *, const QUrl &target, int) {
-#ifndef NO_SHIBBOLETH
-        QRegExp shibbolethyWords("SAML|wayf");
-        shibbolethyWords.setCaseSensitivity(Qt::CaseInsensitive);
-        if (target.toString().contains(shibbolethyWords)) {
-            _resultGet = Shibboleth;
-            get->setFollowRedirects(false);
-        }
-#else
         Q_UNUSED(this)
         Q_UNUSED(get)
         Q_UNUSED(target)
-#endif
     });
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this]() {
         _getDone = true;

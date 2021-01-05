@@ -18,9 +18,6 @@
 #include "creds/credentialsfactory.h"
 #include "creds/httpcredentialsgui.h"
 #include "creds/dummycredentials.h"
-#ifndef NO_SHIBBOLETH
-#include "creds/shibbolethcredentials.h"
-#endif
 #include "creds/webflowcredentials.h"
 
 namespace OCC {
@@ -36,10 +33,6 @@ namespace CredentialsFactory {
             return new HttpCredentialsGui;
         } else if (type == "dummy") {
             return new DummyCredentials;
-#ifndef NO_SHIBBOLETH
-        } else if (type == "shibboleth") {
-            return new ShibbolethCredentials;
-#endif
         } else if (type == "webflow") {
             return new WebFlowCredentials;
         } else {

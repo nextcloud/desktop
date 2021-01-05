@@ -137,15 +137,6 @@ set(client_SRCS
     wizard/slideshow.cpp
 )
 
-IF(NOT NO_SHIBBOLETH)
-    list(APPEND client_SRCS
-        creds/shibbolethcredentials.cpp
-        creds/shibboleth/shibbolethwebview.cpp
-        creds/shibboleth/shibbolethuserjob.cpp
-        wizard/owncloudshibbolethcredspage.cpp
-    )
-endif()
-
 IF(BUILD_UPDATER)
     set(updater_SRCS
         updater/ocupdater.cpp
@@ -365,11 +356,6 @@ if (APPLE)
     target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::MacExtras)
 endif()
 
-if (NOT NO_SHIBBOLETH)
-    find_package(Qt5 COMPONENTS WebKitWidgets)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::WebKitWidgets)
-endif()
-
 if(WITH_CRASHREPORTER)
     target_link_libraries(${APPLICATION_EXECUTABLE} crashreporter-handler)
 
@@ -436,4 +422,3 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
         update_xdg_mimetypes( ${DATADIR}/mime/packages )
     endif(SharedMimeInfo_FOUND)
 endif()
-
