@@ -45,7 +45,8 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         nullptr);
 
     if (_directory == INVALID_HANDLE_VALUE) {
-        qCWarning(lcFolderWatcher) << "Failed to create handle for" << _path << ", error:" << Utility::formatLastWinError();
+        const auto error = GetLastError();
+        qCWarning(lcFolderWatcher) << "Failed to create handle for" << _path << ", error:" << Utility::formatWinError(error);
         _directory = 0;
         return;
     }
@@ -94,12 +95,13 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             2, handles,
             false, // awake once one of them arrives
             INFINITE);
+        const auto error = GetLastError();
         if (result == 1) {
             qCDebug(lcFolderWatcher) << "Received stop event, aborting folder watcher thread";
             break;
         }
         if (result != 0) {
-            qCWarning(lcFolderWatcher) << "WaitForMultipleObjects failed" << result << Utility::formatLastWinError();
+            qCWarning(lcFolderWatcher) << "WaitForMultipleObjects failed" << result << Utility::formatWinError(error);
             break;
         }
 
@@ -128,10 +130,11 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 && curEntry->Action != FILE_ACTION_RENAMED_OLD_NAME) {
                 const auto wfile = longfile.toStdWString();
                 const int longNameSize = GetLongPathNameW(wfile.data(), fileNameBuffer, fileNameBufferSize);
+                const auto error = GetLastError();
                 if (longNameSize > 0) {
                     longfile = QString::fromWCharArray(fileNameBuffer, longNameSize);
                 } else {
-                    qCWarning(lcFolderWatcher) << "Error converting file name" << longfile << "to full length, keeping original name." << Utility::formatLastWinError();
+                    qCWarning(lcFolderWatcher) << "Error converting file name" << longfile << "to full length, keeping original name." << Utility::formatWinError(error);
                 }
             }
 
