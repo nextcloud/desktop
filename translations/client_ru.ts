@@ -201,8 +201,8 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
-        <location filename="../src/gui/accountsettings.cpp" line="611"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1048"/>
+        <location filename="../src/gui/accountsettings.cpp" line="612"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1049"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -267,12 +267,12 @@
         <translation>Удалить подключение синхронизации каталога</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="602"/>
+        <location filename="../src/gui/accountsettings.cpp" line="603"/>
         <source>Disable virtual file support?</source>
         <translation>Отключить поддержку виртуальных файлов?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -285,92 +285,92 @@ This action will abort any currently running synchronization.</source>
 Это действие прервёт любую работающую сейчас синхронизацию.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="610"/>
+        <location filename="../src/gui/accountsettings.cpp" line="611"/>
         <source>Disable support</source>
         <translation>Отключить поддержку</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="712"/>
+        <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Sync Running</source>
         <translation>Синхронизация запущена</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="713"/>
+        <location filename="../src/gui/accountsettings.cpp" line="714"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Выполняется синхронизация.&lt;br/&gt;Вы хотите её остановить?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="809"/>
+        <location filename="../src/gui/accountsettings.cpp" line="810"/>
         <source>%1 in use</source>
         <translation>%1 используется</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="836"/>
+        <location filename="../src/gui/accountsettings.cpp" line="837"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 как &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="845"/>
+        <location filename="../src/gui/accountsettings.cpp" line="846"/>
         <source>Connected to %1.</source>
         <translation>Соединен с %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="850"/>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Сервер %1 временно недоступен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Сервер %1 в настоящее время находится в режиме технического обслуживания.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="856"/>
+        <location filename="../src/gui/accountsettings.cpp" line="857"/>
         <source>Signed out from %1.</source>
         <translation>Успешно вышли из %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="866"/>
+        <location filename="../src/gui/accountsettings.cpp" line="867"/>
         <source>Connecting to %1...</source>
         <translation>Соединение с %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="871"/>
+        <location filename="../src/gui/accountsettings.cpp" line="872"/>
         <source>No connection to %1 at %2.</source>
         <translation>Нет соединения с %1 в %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="910"/>
+        <location filename="../src/gui/accountsettings.cpp" line="911"/>
         <source>Log in</source>
         <translation>Войти</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1005"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1006"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Есть каталоги, которые не были синхронизированы, так как они слишком большие:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1007"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Есть каталоги, которые не были синхронизированы, так как они являются внешними хранилищами:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1008"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Есть каталоги, которые не были синхронизированы, так как они слишком велики или являются внешними хранилищами:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1041"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1042"/>
         <source>Confirm Account Removal</source>
         <translation>Подтверждение удаления учетной записи</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1042"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Вы действительно желаете удалить подключение к учетной записи &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание:&lt;/b&gt; Это действие &lt;b&gt;НЕ&lt;/b&gt; удалит ваши файлы.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1047"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1048"/>
         <source>Remove connection</source>
         <translation>Удалить подключение</translation>
     </message>
@@ -381,7 +381,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
-        <location filename="../src/gui/accountsettings.cpp" line="912"/>
+        <location filename="../src/gui/accountsettings.cpp" line="913"/>
         <source>Log out</source>
         <translation>Выйти</translation>
     </message>
@@ -431,37 +431,37 @@ This action will abort any currently running synchronization.</source>
         <translation>&lt;p&gt;Вы действительно желаете остановить синхронизацию папки &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание:&lt;/b&gt; Это действие &lt;b&gt;НЕ&lt;/b&gt; удалит ваши файлы.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="796"/>
+        <location filename="../src/gui/accountsettings.cpp" line="797"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) из %2 используется. Некоторые папки, включая сетевые или общие, могут иметь свои собственные ограничения.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="797"/>
+        <location filename="../src/gui/accountsettings.cpp" line="798"/>
         <source>%1 of %2 in use</source>
         <translation>%1 из %2 используется</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="806"/>
+        <location filename="../src/gui/accountsettings.cpp" line="807"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>В данный момент информация о заполненности хранилища недоступна.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="843"/>
+        <location filename="../src/gui/accountsettings.cpp" line="844"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Версия сервера %1 не поддерживается! Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="864"/>
         <source>Obtaining authorization from the browser.</source>
         <translation>Получение авторизации от браузера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="877"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Ошибка конфигурации сервера: %1 на %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="887"/>
+        <location filename="../src/gui/accountsettings.cpp" line="888"/>
         <source>No %1 connection configured.</source>
         <translation>Нет настроенного подключения %1.</translation>
     </message>
@@ -1610,7 +1610,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation>Введите пароль</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="161"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="162"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Кликните здесь&lt;/a&gt; чтобы запросить пароль приложения через веб-интерфейс.</translation>
     </message>
@@ -1842,53 +1842,53 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="391"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="392"/>
         <source>New Version Available</source>
         <translation>Доступна новая версия</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="397"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="398"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Доступна новая версия приложения %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; доступна для загрузки. Установленная версия: %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="410"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="460"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="411"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>Skip this version</source>
         <translation>Пропустить эту версию</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="411"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
         <source>Skip this time</source>
         <translation>Пропустить в этот раз</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
         <source>Get update</source>
         <translation>Получить обновление</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="441"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="443"/>
         <source>Update Failed</source>
         <translation>Обновление не удалось</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="447"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="449"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Доступна новая версия клиента %1, но процесс обновления не удался. &lt;/p&gt;&lt;p&gt;Было скачано &lt;b&gt;%2&lt;/b&gt;. Установленная версия — %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
         <source>Ask again later</source>
         <translation>Попросить снова позже</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
         <source>Restart and update</source>
         <translation>Перезапустить и продолжить</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
         <source>Update manually</source>
         <translation>Обновить вручную</translation>
     </message>
@@ -2112,59 +2112,59 @@ Received data: %2</source>
 <context>
     <name>OCC::OCUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>New %1 Update Ready</source>
         <translation>Доступно обновление %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="110"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>Новое обновление %1 в процессе установки. Установщик может запросить
 дополнительные разрешения во время обновления.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>Не удалось загрузить обновление. Для скачивания файлов вручную, нажмите &lt;a href=&apos;%1&apos;&gt;здесь&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>Could not check for new updates.</source>
         <translation>Не удалось проверить наличие новых обновлений.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>Downloading %1. Please wait...</source>
         <translation>Скачивается %1. Пожалуйста, подождите…</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>%1 available. Restart application to start the update.</source>
         <translation>Доступно %1. Перезапустите приложение, чтобы начать обновление.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
         <translation>Доступна новая версия %1. Для установки пожалуйста используйте системные средства обновления.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>Checking update server...</source>
         <translation>Проверка наличия обновлений на сервере...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="161"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Статус обновления неизвестен: Не удалось проверить наличие обновлений.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Обновлений в настоящий момент нет. У вас установлена самая последняя версия программы.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="184"/>
         <source>Update Check</source>
         <translation>Проверка Обновлений</translation>
     </message>
@@ -3763,12 +3763,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не могу открыть или создать локальную базу данных синхронизации. Удостоверьтесь, что у вас есть доступ на запись в каталог синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1040"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Мало места на диске: Скачивания, которые сократят свободное место ниже %1, будут пропущены.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1047"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>На сервере недостаточно места для некоторых закачек.</translation>
     </message>
@@ -3808,7 +3808,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не удаётся открыть журнал синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
         <translation>Прервано</translation>
     </message>
@@ -3824,7 +3824,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="382"/>
+        <location filename="../src/libsync/theme.cpp" line="387"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -4399,7 +4399,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="360"/>
+        <location filename="../src/libsync/theme.cpp" line="365"/>
         <source>%1 %2 %3 %4%8%9Libraries Qt %5, %6%8Using virtual files plugin: %7%8</source>
         <translation type="unfinished"/>
     </message>
@@ -4407,7 +4407,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::qtVer</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="350"/>
+        <location filename="../src/libsync/theme.cpp" line="355"/>
         <source>%1 (Built against Qt %1)</source>
         <translation type="unfinished"/>
     </message>
@@ -4415,7 +4415,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::versionWithSha</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="355"/>
+        <location filename="../src/libsync/theme.cpp" line="360"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
