@@ -23,9 +23,6 @@
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
 #include "wizard/owncloudoauthcredspage.h"
-#ifndef NO_SHIBBOLETH
-#include "wizard/owncloudshibbolethcredspage.h"
-#endif
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/owncloudwizardresultpage.h"
 #include "wizard/webviewpage.h"
@@ -52,9 +49,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _browserCredsPage(new OwncloudOAuthCredsPage)
-#ifndef NO_SHIBBOLETH
-    , _shibbolethCredsPage(new OwncloudShibbolethCredsPage)
-#endif
     , _flow2CredsPage(new Flow2AuthCredsPage)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage)
     , _resultPage(new OwncloudWizardResultPage)
@@ -67,9 +61,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_OAuthCreds, _browserCredsPage);
     setPage(WizardCommon::Page_Flow2AuthCreds, _flow2CredsPage);
-#ifndef NO_SHIBBOLETH
-    setPage(WizardCommon::Page_ShibbolethCreds, _shibbolethCredsPage);
-#endif
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
     setPage(WizardCommon::Page_Result, _resultPage);
     setPage(WizardCommon::Page_WebView, _webViewPage);
@@ -85,9 +76,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_browserCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_flow2CredsPage, &Flow2AuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
-#ifndef NO_SHIBBOLETH
-    connect(_shibbolethCredsPage, &OwncloudShibbolethCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
-#endif
     connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
@@ -193,12 +181,6 @@ void OwncloudWizard::successfulStep()
         _flow2CredsPage->setConnected();
         break;
 
-#ifndef NO_SHIBBOLETH
-    case WizardCommon::Page_ShibbolethCreds:
-        _shibbolethCredsPage->setConnected();
-        break;
-#endif
-
     case WizardCommon::Page_WebView:
         _webViewPage->setConnected();
         break;
@@ -220,12 +202,8 @@ void OwncloudWizard::successfulStep()
 void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
     _setupPage->setAuthType(type);
-#ifndef NO_SHIBBOLETH
-    if (type == DetermineAuthTypeJob::Shibboleth) {
-        _credentialsPage = _shibbolethCredsPage;
-    } else
-#endif
-        if (type == DetermineAuthTypeJob::OAuth) {
+
+    if (type == DetermineAuthTypeJob::OAuth) {
         _credentialsPage = _browserCredsPage;
     } else if (type == DetermineAuthTypeJob::LoginFlowV2) {
         _credentialsPage = _flow2CredsPage;
@@ -311,7 +289,7 @@ void OwncloudWizard::changeEvent(QEvent *e)
         emit styleChanged();
         break;
     case QEvent::ActivationChange:
-        if(isActiveWindow())
+        if (isActiveWindow())
             emit onActivate();
         break;
     default:
@@ -337,8 +315,7 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
     const auto bestVfsMode = bestAvailableVfsMode();
     QMessageBox *msgBox = nullptr;
     QPushButton *acceptButton = nullptr;
-    switch (bestVfsMode)
-    {
+    switch (bestVfsMode) {
     case Vfs::WindowsCfApi:
         callback(true);
         return;
@@ -358,7 +335,8 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(QWidget *receiver, const
                "\n\n"
                "This is a new, experimental mode. If you decide to use it, please report any "
                "issues that come up.")
-                .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX), QMessageBox::NoButton, receiver);
+                .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX),
+            QMessageBox::NoButton, receiver);
         acceptButton = msgBox->addButton(tr("Enable experimental placeholder mode"), QMessageBox::AcceptRole);
         msgBox->addButton(tr("Stay safe"), QMessageBox::RejectRole);
         break;
