@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
+* Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
 Details
@@ -20,6 +21,12 @@ Details
    on that dialog would then cause a crash.
 
    https://github.com/owncloud/client/pull/8314
+
+* Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
+
+   We fixed a bug where Windows Virtual Files where not handled as such and thus not removed.
+
+   https://github.com/owncloud/client/issues/8326
 
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 
