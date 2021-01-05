@@ -840,16 +840,15 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
     _childModified = true;
 
-    auto postProcessLocalNew = [item, localEntry, this]() {
+    auto postProcessLocalNew = [item, localEntry, path, this]() {
         if (localEntry.isVirtualFile) {
-            // Remove the spurious file if it looks like a placeholder file
-            // (we know placeholder files contain " ")
-            if (localEntry.size <= 1) {
-                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << _currentFolder._local + QLatin1Char('/') + localEntry.name;
+            const bool isPlaceHolder = _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
+            if (isPlaceHolder) {
+                qCWarning(lcDisco) << "Wiping virtual file without db entry for" << path._local;
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
             } else {
-                qCWarning(lcDisco) << "Virtual file without db entry for" << _currentFolder._local << localEntry.name
+                qCWarning(lcDisco) << "Virtual file without db entry for" << path._local
                                    << "but looks odd, keeping";
                 item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }

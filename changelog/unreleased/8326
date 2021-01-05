@@ -1,0 +1,6 @@
+Bugfix: Remove stray placeholders
+
+We fixed a bug where Windows Virtual Files where not handled as such and thus
+not removed.
+
+https://github.com/owncloud/client/issues/8326
