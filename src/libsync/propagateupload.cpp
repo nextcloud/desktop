@@ -25,7 +25,7 @@
 #include "propagatorjobs.h"
 #include "common/checksums.h"
 #include "syncengine.h"
-#include "propagateremotedelete.h"
+#include "deletejob.h"
 #include "common/asserts.h"
 #include "networkjobs.h"
 #include "clientsideencryption.h"

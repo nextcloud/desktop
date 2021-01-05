@@ -1468,6 +1468,11 @@ void FolderMetadata::removeEncryptedFile(const EncryptedFile &f)
     }
 }
 
+void FolderMetadata::removeAllEncryptedFiles()
+{
+    _files.clear();
+}
+
 QVector<EncryptedFile> FolderMetadata::files() const {
     return _files;
 }

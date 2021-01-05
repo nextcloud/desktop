@@ -14,65 +14,17 @@
 
 #include "propagateremotedelete.h"
 #include "propagateremotedeleteencrypted.h"
+#include "propagateremotedeleteencryptedrootfolder.h"
 #include "owncloudpropagator_p.h"
 #include "account.h"
+#include "deletejob.h"
 #include "common/asserts.h"
 
 #include <QLoggingCategory>
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDeleteJob, "nextcloud.sync.networkjob.delete", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateRemoteDelete, "nextcloud.sync.propagator.remotedelete", QtInfoMsg)
-
-DeleteJob::DeleteJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
-{
-}
-
-DeleteJob::DeleteJob(AccountPtr account, const QUrl &url, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
-    , _url(url)
-{
-}
-
-void DeleteJob::start()
-{
-    QNetworkRequest req;
-    if (!_folderToken.isEmpty()) {
-        req.setRawHeader("e2e-token", _folderToken);
-    }
-
-    if (_url.isValid()) {
-        sendRequest("DELETE", _url, req);
-    } else {
-        sendRequest("DELETE", makeDavUrl(path()), req);
-    }
-
-    if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcDeleteJob) << " Network error: " << reply()->errorString();
-    }
-    AbstractNetworkJob::start();
-}
-
-bool DeleteJob::finished()
-{
-    qCInfo(lcDeleteJob) << "DELETE of" << reply()->request().url() << "FINISHED WITH STATUS"
-                       << replyStatusString();
-
-    emit finishedSignal();
-    return true;
-}
-
-QByteArray DeleteJob::folderToken() const
-{
-    return _folderToken;
-}
-
-void DeleteJob::setFolderToken(const QByteArray &folderToken)
-{
-    _folderToken = folderToken;
-}
 
 PropagatorJob::JobParallelism PropagateRemoteDelete::parallelism()
 {
@@ -84,11 +36,22 @@ void PropagateRemoteDelete::start()
     if (propagator()->_abortRequested)
         return;
 
-    if (!_item->_encryptedFileName.isEmpty()) {
-        _deleteEncryptedHelper = new PropagateRemoteDeleteEncrypted(propagator(), _item, this);
-        connect(_deleteEncryptedHelper, &PropagateRemoteDeleteEncrypted::finished, this, [this] (bool success) {
-            Q_UNUSED(success) // Should we skip file deletion in case of failure?
-            createDeleteJob(_item->_encryptedFileName);
+    if (!_item->_encryptedFileName.isEmpty() || _item->_isEncrypted) {
+        if (!_item->_encryptedFileName.isEmpty()) {
+            _deleteEncryptedHelper = new PropagateRemoteDeleteEncrypted(propagator(), _item, this);
+        } else {
+            _deleteEncryptedHelper = new PropagateRemoteDeleteEncryptedRootFolder(propagator(), _item, this);
+        }
+        connect(_deleteEncryptedHelper, &AbstractPropagateRemoteDeleteEncrypted::finished, this, [this] (bool success) {
+            if (!success) {
+                SyncFileItem::Status status = SyncFileItem::NormalError;
+                if (_deleteEncryptedHelper->networkError() != QNetworkReply::NoError && _deleteEncryptedHelper->networkError() != QNetworkReply::ContentNotFoundError) {
+                    status = classifyError(_deleteEncryptedHelper->networkError(), _item->_httpErrorCode, &propagator()->_anotherSyncNeeded);
+                }
+                done(status, _deleteEncryptedHelper->errorString());
+            } else {
+                done(SyncFileItem::Success);
+            }
         });
         _deleteEncryptedHelper->start();
     } else {
@@ -103,9 +66,7 @@ void PropagateRemoteDelete::createDeleteJob(const QString &filename)
     _job = new DeleteJob(propagator()->account(),
         propagator()->fullRemotePath(filename),
         this);
-    if (_deleteEncryptedHelper && !_deleteEncryptedHelper->folderToken().isEmpty()) {
-        _job->setFolderToken(_deleteEncryptedHelper->folderToken());
-    }
+
     connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();
@@ -158,16 +119,6 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory());
     propagator()->_journal->commit("Remote Remove");
 
-    if (_deleteEncryptedHelper && !_job->folderToken().isEmpty()) {
-        propagator()->_activeJobList.append(this);
-        connect(_deleteEncryptedHelper, &PropagateRemoteDeleteEncrypted::folderUnlocked,
-                this, [this] {
-            propagator()->_activeJobList.removeOne(this);
-            done(SyncFileItem::Success);
-        });
-        _deleteEncryptedHelper->unlockFolder();
-    } else {
-        done(SyncFileItem::Success);
-    }
+    done(SyncFileItem::Success);
 }
 }

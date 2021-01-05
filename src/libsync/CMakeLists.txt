@@ -34,6 +34,8 @@ set(libsync_SRCS
     networkjobs.cpp
     owncloudpropagator.cpp
     nextcloudtheme.cpp
+    abstractpropagateremotedeleteencrypted.cpp
+    deletejob.cpp
     progressdispatcher.cpp
     propagatorjobs.cpp
     propagatedownload.cpp
@@ -42,6 +44,7 @@ set(libsync_SRCS
     propagateuploadng.cpp
     propagateremotedelete.cpp
     propagateremotedeleteencrypted.cpp
+    propagateremotedeleteencryptedrootfolder.cpp
     propagateremotemove.cpp
     propagateremotemkdir.cpp
     propagateuploadencrypted.cpp

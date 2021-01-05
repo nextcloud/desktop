@@ -14,21 +14,30 @@
 
 #pragma once
 
+#include <QMap>
+
 #include "abstractpropagateremotedeleteencrypted.h"
+#include "syncfileitem.h"
 
 namespace OCC {
 
-class PropagateRemoteDeleteEncrypted : public AbstractPropagateRemoteDeleteEncrypted
+class PropagateRemoteDeleteEncryptedRootFolder : public AbstractPropagateRemoteDeleteEncrypted
 {
     Q_OBJECT
 public:
-    PropagateRemoteDeleteEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent);
+    PropagateRemoteDeleteEncryptedRootFolder(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent);
 
     virtual void start() Q_DECL_OVERRIDE;
 
 private:
     void slotFolderUnLockedSuccessfully(const QByteArray &folderId) override;
     void slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode) override;
+    void slotDeleteNestedRemoteItemFinished();
+
+    void deleteNestedRemoteItem(const QString &filename);
+    void decryptAndRemoteDelete();
+
+    QMap<QString, OCC::SyncJournalFileRecord> _nestedItems; // Nested files and folders
 };
 
 }
