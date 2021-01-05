@@ -18,6 +18,7 @@
 
 #include "filesystembase.h"
 #include "utility.h"
+#include "common/asserts.h"
 
 #include <QDateTime>
 #include <QDir>
@@ -501,6 +502,7 @@ bool FileSystem::isJunction(const QString &filename)
 #ifdef Q_OS_WIN
 QString FileSystem::pathtoUNC(const QString &_str)
 {
+    OC_ASSERT(QFileInfo(_str).isAbsolute());
     if (_str.isEmpty()) {
         return _str;
     }
@@ -514,6 +516,7 @@ QString FileSystem::pathtoUNC(const QString &_str)
     // prepend \\?\ and to support long names
 
     if (str.at(0) == sep) {
+        // should not happen as we require the path to be absolute
         return QStringLiteral("\\\\?") + str;
     }
     return QStringLiteral("\\\\?\\") + str;
