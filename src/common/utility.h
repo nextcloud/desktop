@@ -241,9 +241,6 @@ namespace Utility {
     OCSYNC_EXPORT void UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs);
 
     OCSYNC_EXPORT QString formatWinError(long error);
-    inline QString formatLastWinError() {
-        return formatWinError(GetLastError());
-    };
 
     class OCSYNC_EXPORT NtfsPermissionLookupRAII
     {
