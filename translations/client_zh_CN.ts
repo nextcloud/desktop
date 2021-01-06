@@ -2793,12 +2793,12 @@ It is not advisable to use it.</source>
         <translation>跳过文件夹设置</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="348"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="325"/>
         <source>Enable experimental feature?</source>
         <translation>启用实验性功能？</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="349"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="326"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2809,12 +2809,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>当“虚拟文件”模式被启用时，最初不会下载任何文件，而是为服务器上存在的每个文件创建一个小的“%1”文件。内容可以通过运行这些文件或使用它们的上下文菜单来下载。虚拟文件模式与选择性同步是互斥的。当前未选择的文件夹将被翻译成“仅在线”的文件夹，并且您选择的同步设置将被重置。切换到此模式将中止任何当前正在运行的同步。这是一种新的实验性模式。如果您决定使用它，请报告出现的任何问题。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="362"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="340"/>
         <source>Enable experimental placeholder mode</source>
         <translation>启用实验占位符模式</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="363"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="341"/>
         <source>Stay safe</source>
         <translation>保持安全</translation>
     </message>
@@ -3618,42 +3618,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
         <translation>%1 (%2) </translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShibbolethCredentials</name>
-    <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
-        <source>Login Error</source>
-        <translation>登录错误</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
-        <source>You must sign in as user %1</source>
-        <translation>您必须以用户 &apos;%1&apos; 身份登录</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShibbolethWebView</name>
-    <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
-        <source>%1 - Authenticate</source>
-        <translation>%1 - 认证</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
-        <source>SSL Cipher Debug View</source>
-        <translation>SSL 加密调试视图</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
-        <source>Reauthentication required</source>
-        <translation>需要重新认证</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
-        <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation>您的会话已经过期。请重新登录。</translation>
     </message>
 </context>
 <context>
@@ -5382,6 +5346,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/discoveryphase.cpp" line="637"/>
         <source>Aborted by the user</source>
         <translation>被用户中止</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShibbolethCredentials</name>
+    <message>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
+        <source>Login Error</source>
+        <translation>登录错误</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
+        <source>You must sign in as user %1</source>
+        <translation>您必须以用户 &apos;%1&apos; 身份登录</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShibbolethWebView</name>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
+        <source>%1 - Authenticate</source>
+        <translation>%1 - 认证</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
+        <source>SSL Cipher Debug View</source>
+        <translation>SSL 加密调试视图</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
+        <source>Reauthentication required</source>
+        <translation>需要重新认证</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
+        <source>Your session has expired. You need to re-login to continue to use the client.</source>
+        <translation>您的会话已经过期。请重新登录。</translation>
     </message>
 </context>
 <context>

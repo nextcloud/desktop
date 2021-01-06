@@ -2805,12 +2805,12 @@ No se recomienda usarla.</translation>
         <translation>Omitir la configuración de carpetas</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="348"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="325"/>
         <source>Enable experimental feature?</source>
         <translation>¿Activar característica experimental?</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="349"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="326"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -2827,12 +2827,12 @@ Cambiar a este modo interrumpirá cualquier sincronización en proceso.
 Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de cualquier tipo de problema que pueda surgir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="362"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="340"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Activar modo experimental de marcador de posición</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="363"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="341"/>
         <source>Stay safe</source>
         <translation>Mantente a salvo</translation>
     </message>
@@ -3636,42 +3636,6 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
         <translation>%1 (%2)</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShibbolethCredentials</name>
-    <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
-        <source>Login Error</source>
-        <translation>Error al iniciar sesión</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
-        <source>You must sign in as user %1</source>
-        <translation>Debe iniciar sesión como el usuario %1</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShibbolethWebView</name>
-    <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
-        <source>%1 - Authenticate</source>
-        <translation>%1 - Autenticar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
-        <source>SSL Cipher Debug View</source>
-        <translation>Vista Depurador Chipher SSL</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
-        <source>Reauthentication required</source>
-        <translation>Debe volver a autenticarse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
-        <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation>Su sesión ha caducado. Necesita volver a iniciarla para continuar usando el cliente.</translation>
     </message>
 </context>
 <context>
@@ -5400,6 +5364,42 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/libsync/discoveryphase.cpp" line="637"/>
         <source>Aborted by the user</source>
         <translation>Interrumpido por el usuario</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShibbolethCredentials</name>
+    <message>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
+        <source>Login Error</source>
+        <translation>Error al iniciar sesión</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="254"/>
+        <source>You must sign in as user %1</source>
+        <translation>Debe iniciar sesión como el usuario %1</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShibbolethWebView</name>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="83"/>
+        <source>%1 - Authenticate</source>
+        <translation>%1 - Autenticar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
+        <source>SSL Cipher Debug View</source>
+        <translation>Vista Depurador Chipher SSL</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
+        <source>Reauthentication required</source>
+        <translation>Debe volver a autenticarse</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
+        <source>Your session has expired. You need to re-login to continue to use the client.</source>
+        <translation>Su sesión ha caducado. Necesita volver a iniciarla para continuar usando el cliente.</translation>
     </message>
 </context>
 <context>
