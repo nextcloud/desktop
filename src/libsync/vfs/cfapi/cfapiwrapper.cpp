@@ -346,7 +346,7 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         HANDLE handle = nullptr;
         const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), CF_OPEN_FILE_FLAG_NONE, &handle);
         if (openResult == S_OK) {
-            return {handle, CfCloseHandle};
+            return {handle, [](HANDLE h) { CfCloseHandle(h); }};
         }
     } else {
         const auto handle = CreateFile(path.toStdWString().data(), 0, 0, nullptr,
