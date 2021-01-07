@@ -117,7 +117,7 @@ private slots:
         {
             SyncJournalFileRecord record;
             record._path = "foo-nochecksum";
-            record._remotePerm = RemotePermissions();
+            record._remotePerm = RemotePermissions::fromDbValue("RW");
             record._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
 
             QVERIFY(_db.setFileRecord(record));
@@ -201,6 +201,7 @@ private slots:
             record._path = path;
             record._type = type;
             record._etag = initialEtag;
+            record._remotePerm = RemotePermissions::fromDbValue("RW");
             _db.setFileRecord(record);
         };
         auto getEtag = [&](const QByteArray &path) {
@@ -265,6 +266,7 @@ private slots:
         auto makeEntry = [&](const QByteArray &path) {
             SyncJournalFileRecord record;
             record._path = path;
+            record._remotePerm = RemotePermissions::fromDbValue("RW");
             _db.setFileRecord(record);
         };
 
