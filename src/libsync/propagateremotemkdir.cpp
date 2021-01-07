@@ -137,36 +137,34 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
         return;
     }
 
-    if (_item->_fileId.isEmpty()) {
-        // Owncloud 7.0.0 and before did not have a header with the file id.
-        // (https://github.com/owncloud/core/issues/9000)
-        // So we must get the file id using a PROPFIND
-        // This is required so that we can detect moves even if the folder is renamed on the server
-        // while files are still uploading
-        propagator()->_activeJobList.append(this);
-        auto propfindJob = new PropfindJob(propagator()->account(), jobPath, this);
-        propfindJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:id");
-        QObject::connect(propfindJob, &PropfindJob::result, this, &PropagateRemoteMkdir::propfindResult);
-        QObject::connect(propfindJob, &PropfindJob::finishedWithError, this, &PropagateRemoteMkdir::propfindError);
-        propfindJob->start();
-        _job = propfindJob;
-        return;
-    }
+    propagator()->_activeJobList.append(this);
+    auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
+    propfindJob->setProperties({"http://owncloud.org/ns:permissions"});
+    connect(propfindJob, &PropfindJob::result, this, [this, jobPath](const QVariantMap &result){
+        propagator()->_activeJobList.removeOne(this);
+        _item->_remotePerm = RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")).toString());
 
-    if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
-        success();
-    } else {
-        // We still need to mark that folder encrypted in case we were uploading it as encrypted one
-        // Another scenario, is we are creating a new folder because of move operation on an encrypted folder that works via remove + re-upload
-        propagator()->_activeJobList.append(this);
+        if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
+            success();
+        } else {
+            // We still need to mark that folder encrypted in case we were uploading it as encrypted one
+            // Another scenario, is we are creating a new folder because of move operation on an encrypted folder that works via remove + re-upload
+            propagator()->_activeJobList.append(this);
 
-        // We're expecting directory path in /Foo/Bar convention...
-        Q_ASSERT(jobPath.startsWith('/') && !jobPath.endsWith('/'));
-        // But encryption job expect it in Foo/Bar/ convention
-        auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, this);
-        connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
-        job->start();
-    }
+            // We're expecting directory path in /Foo/Bar convention...
+            Q_ASSERT(jobPath.startsWith('/') && !jobPath.endsWith('/'));
+            // But encryption job expect it in Foo/Bar/ convention
+            auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, jobPath.mid(1), _item->_fileId, this);
+            connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);
+            job->start();
+        }
+    });
+    connect(propfindJob, &PropfindJob::finishedWithError, this, [this]{
+        // ignore the PROPFIND error
+        propagator()->_activeJobList.removeOne(this);
+        done(SyncFileItem::NormalError);
+    });
+    propfindJob->start();
 }
 
 void PropagateRemoteMkdir::slotMkdir()
@@ -233,22 +231,6 @@ void PropagateRemoteMkdir::slotEncryptFolderFinished()
     propagator()->_activeJobList.removeOne(this);
     _item->_isEncrypted = true;
     success();
-}
-
-void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
-{
-    propagator()->_activeJobList.removeOne(this);
-    if (result.contains("id")) {
-        _item->_fileId = result["id"].toByteArray();
-    }
-    success();
-}
-
-void PropagateRemoteMkdir::propfindError()
-{
-    // ignore the PROPFIND error
-    propagator()->_activeJobList.removeOne(this);
-    done(SyncFileItem::Success);
 }
 
 void PropagateRemoteMkdir::success()
