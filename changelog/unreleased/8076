@@ -1,0 +1,5 @@
+Bugfix: Fix missing permission for newly created folder
+
+We fixed a bug where a newly created folder had no permissions set.
+
+https://github.com/owncloud/client/pull/8076

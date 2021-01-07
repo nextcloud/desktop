@@ -106,38 +106,20 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
     _item->_fileId = _job->reply()->rawHeader("OC-FileId");
 
-    if (_item->_fileId.isEmpty()) {
-        // Owncloud 7.0.0 and before did not have a header with the file id.
-        // (https://github.com/owncloud/core/issues/9000)
-        // So we must get the file id using a PROPFIND
-        // This is required so that we can detect moves even if the folder is renamed on the server
-        // while files are still uploading
-        propagator()->_activeJobList.append(this);
-        auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
-        propfindJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:id");
-        QObject::connect(propfindJob, &PropfindJob::result, this, &PropagateRemoteMkdir::propfindResult);
-        QObject::connect(propfindJob, &PropfindJob::finishedWithError, this, &PropagateRemoteMkdir::propfindError);
-        propfindJob->start();
-        _job = propfindJob;
-        return;
-    }
-    success();
-}
-
-void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
-{
-    propagator()->_activeJobList.removeOne(this);
-    if (result.contains(QStringLiteral("id"))) {
-        _item->_fileId = result[QStringLiteral("id")].toByteArray();
-    }
-    success();
-}
-
-void PropagateRemoteMkdir::propfindError()
-{
-    // ignore the PROPFIND error
-    propagator()->_activeJobList.removeOne(this);
-    done(SyncFileItem::Success);
+    propagator()->_activeJobList.append(this);
+    auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
+    propfindJob->setProperties({"http://owncloud.org/ns:permissions"});
+    connect(propfindJob, &PropfindJob::result, this, [this](const QVariantMap &result){
+        propagator()->_activeJobList.removeOne(this);
+        _item->_remotePerm = RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")).toString());
+        success();
+    });
+    connect(propfindJob, &PropfindJob::finishedWithError, this, [this]{
+        // ignore the PROPFIND error
+        propagator()->_activeJobList.removeOne(this);
+        done(SyncFileItem::NormalError);
+    });
+    propfindJob->start();
 }
 
 void PropagateRemoteMkdir::success()

@@ -51,8 +51,6 @@ public:
 private slots:
     void slotStartMkcolJob();
     void slotMkcolJobFinished();
-    void propfindResult(const QVariantMap &);
-    void propfindError();
     void success();
 };
 }
