@@ -22,7 +22,6 @@
 #include <QNetworkCookieJar>
 #include <QNetworkConfiguration>
 #include <QUuid>
-#include <QLibraryInfo>
 
 #include "cookiejar.h"
 #include "accessmanager.h"
@@ -43,7 +42,7 @@ AccessManager::AccessManager(QObject *parent)
     setCookieJar(new CookieJar);
 }
 
-static QByteArray generateRequestId()
+QByteArray AccessManager::generateRequestId()
 {
     // Use a UUID with the starting and ending curly brace removed.
     auto uuid = QUuid::createUuid().toByteArray();

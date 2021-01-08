@@ -6,6 +6,8 @@
  */
 
 #include "syncenginetestutils.h"
+#include "httplogger.h"
+#include "accessmanager.h"
 
 
 PathComponents::PathComponents(const char *path)
@@ -827,27 +829,30 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
     bool isUpload = request.url().path().startsWith(sUploadUrl.path());
     FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
+    auto newRequest = request;
+    newRequest.setRawHeader("X-Request-ID", OCC::AccessManager::generateRequestId());
     auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
     FakeReply *reply;
     if (verb == QLatin1String("PROPFIND"))
         // Ignore outgoingData always returning somethign good enough, works for now.
-        reply = new FakePropfindReply { info, op, request, this };
+        reply = new FakePropfindReply { info, op, newRequest, this };
     else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation)
-        reply = new FakeGetReply { info, op, request, this };
+        reply = new FakeGetReply { info, op, newRequest, this };
     else if (verb == QLatin1String("PUT") || op == QNetworkAccessManager::PutOperation)
-        reply = new FakePutReply { info, op, request, outgoingData->readAll(), this };
+        reply = new FakePutReply { info, op, newRequest, outgoingData->readAll(), this };
     else if (verb == QLatin1String("MKCOL"))
-        reply = new FakeMkcolReply { info, op, request, this };
+        reply = new FakeMkcolReply { info, op, newRequest, this };
     else if (verb == QLatin1String("DELETE") || op == QNetworkAccessManager::DeleteOperation)
-        reply = new FakeDeleteReply { info, op, request, this };
+        reply = new FakeDeleteReply { info, op, newRequest, this };
     else if (verb == QLatin1String("MOVE") && !isUpload)
-        reply = new FakeMoveReply { info, op, request, this };
+        reply = new FakeMoveReply { info, op, newRequest, this };
     else if (verb == QLatin1String("MOVE") && isUpload)
-        reply = new FakeChunkMoveReply { info, _remoteRootFileInfo, op, request, this };
+        reply = new FakeChunkMoveReply { info, _remoteRootFileInfo, op, newRequest, this };
     else {
         qDebug() << verb << outgoingData;
         Q_UNREACHABLE();
     }
+    OCC::HttpLogger::logRequest(reply, op, outgoingData);
     return reply;
 }
 
