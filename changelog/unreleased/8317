@@ -1,0 +1,5 @@
+Bugfix: Don't recommend non default sync option
+
+We fixed a bug where sync all was still recommended on Windows
+
+https://github.com/owncloud/client/issues/8317
