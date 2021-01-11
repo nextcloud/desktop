@@ -114,7 +114,12 @@ class OWNCLOUDSYNC_EXPORT SetEncryptionFlagApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit SetEncryptionFlagApiJob(const AccountPtr &account, const QByteArray& fileId, QObject *parent = nullptr);
+    enum FlagAction {
+        Clear = 0,
+        Set = 1
+    };
+
+    explicit SetEncryptionFlagApiJob(const AccountPtr &account, const QByteArray &fileId, FlagAction flagAction = Set, QObject *parent = nullptr);
 
 public slots:
     void start() override;
@@ -123,11 +128,12 @@ protected:
     bool finished() override;
 
 signals:
-    void success(const QByteArray fileId);
-    void error(const QByteArray fileId, int httpReturnCode);
+    void success(const QByteArray &fileId);
+    void error(const QByteArray &fileId, int httpReturnCode);
 
 private:
     QByteArray _fileId;
+    FlagAction _flagAction = Set;
 };
 
 class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob

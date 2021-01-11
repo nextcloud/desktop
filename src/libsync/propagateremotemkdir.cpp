@@ -17,7 +17,7 @@
 #include "account.h"
 #include "common/syncjournalfilerecord.h"
 #include "propagateuploadencrypted.h"
-#include "propagateremotedelete.h"
+#include "deletejob.h"
 #include "common/asserts.h"
 #include "encryptfolderjob.h"
 

@@ -24,7 +24,7 @@
 #include "propagatorjobs.h"
 #include "syncengine.h"
 #include "propagateremotemove.h"
-#include "propagateremotedelete.h"
+#include "deletejob.h"
 #include "common/asserts.h"
 
 #include <QNetworkAccessManager>
