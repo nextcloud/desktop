@@ -54,6 +54,7 @@ class Account;
 using AccountPtr = QSharedPointer<Account>;
 class AccessManager;
 class SimpleNetworkJob;
+class PushNotifications;
 
 /**
  * @brief Reimplement this to handle SSL errors from libsync
@@ -250,6 +251,8 @@ public:
     // Check for the directEditing capability
     void fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag);
 
+    PushNotifications *pushNotifications() const;
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -279,6 +282,8 @@ signals:
     /// Used in RemoteWipe
     void appPasswordRetrieved(QString);
 
+    void pushNotificationsReady(Account *account);
+
 protected Q_SLOTS:
     void slotCredentialsFetched();
     void slotCredentialsAsked();
@@ -287,6 +292,7 @@ protected Q_SLOTS:
 private:
     Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
+    void trySetupPushNotifications();
 
     QWeakPointer<Account> _sharedThis;
     QString _id;
@@ -331,6 +337,8 @@ private:
     // Direct Editing
     QString _lastDirectEditingETag;
 
+    PushNotifications *_pushNotifications = nullptr;
+
     /* IMPORTANT - remove later - FIXME MS@2019-12-07 -->
      * TODO: For "Log out" & "Remove account": Remove client CA certs and KEY!
      *
@@ -350,5 +358,6 @@ private:
 }
 
 Q_DECLARE_METATYPE(OCC::AccountPtr)
+Q_DECLARE_METATYPE(OCC::Account *)
 
 #endif //SERVERCONNECTION_H

@@ -413,6 +413,7 @@ public:
     FakeCredentials(QNetworkAccessManager *qnam) : _qnam{qnam} { }
     virtual QString authType() const { return "test"; }
     virtual QString user() const { return "admin"; }
+    virtual QString password() const { return "password"; }
     virtual QNetworkAccessManager *createQNAM() const { return _qnam; }
     virtual bool ready() const { return true; }
     virtual void fetchFromKeychain() { }

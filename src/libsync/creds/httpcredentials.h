@@ -91,7 +91,7 @@ public:
     void persist() override;
     QString user() const override;
     // the password or token
-    QString password() const;
+    QString password() const override;
     void invalidateToken() override;
     void forgetSensitiveData() override;
     QString fetchUser();
