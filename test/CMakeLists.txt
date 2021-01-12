@@ -54,6 +54,8 @@ nextcloud_add_test(UploadReset "syncenginetestutils.h")
 nextcloud_add_test(AllFilesDeleted "syncenginetestutils.h")
 nextcloud_add_test(Blacklist "syncenginetestutils.h")
 nextcloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
+nextcloud_add_test(Capabilities "")
+nextcloud_add_test(PushNotifications "pushnotificationstestutils.cpp")
 
 if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher "${FolderWatcher_SRC}")

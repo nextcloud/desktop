@@ -17,6 +17,7 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD|NetBSD|OpenBSD")
 
 set(libsync_SRCS
     account.cpp
+    pushnotifications.cpp
     wordlist.cpp
     bandwidthmanager.cpp
     capabilities.cpp
@@ -91,6 +92,7 @@ IF (NOT APPLE)
     )
 ENDIF(NOT APPLE)
 
+find_package(Qt5 REQUIRED COMPONENTS WebSockets)
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
 target_link_libraries(${synclib_NAME}
     ocsync
@@ -98,6 +100,7 @@ target_link_libraries(${synclib_NAME}
     OpenSSL::SSL
     ${OS_SPECIFIC_LINK_LIBRARIES}
     Qt5::Core Qt5::Network
+    Qt5::WebSockets
 )
 
 if (NOT TOKEN_AUTH_ONLY)

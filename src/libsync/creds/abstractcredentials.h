@@ -43,6 +43,7 @@ public:
 
     virtual QString authType() const = 0;
     virtual QString user() const = 0;
+    virtual QString password() const = 0;
     virtual QNetworkAccessManager *createQNAM() const = 0;
 
     /** Whether there are credentials that can be used for a connection attempt. */

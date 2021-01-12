@@ -16,6 +16,7 @@
 
 #include <QVariantMap>
 #include <QLoggingCategory>
+#include <QUrl>
 
 #include <QDebug>
 
@@ -172,6 +173,28 @@ bool Capabilities::chunkingNg() const
     if (chunkng == "1")
         return true;
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
+}
+
+PushNotificationTypes Capabilities::availablePushNotifications() const
+{
+    if (!_capabilities.contains("notify_push")) {
+        return PushNotificationType::None;
+    }
+
+    const auto types = _capabilities["notify_push"].toMap()["type"].toStringList();
+    PushNotificationTypes pushNotificationTypes;
+
+    if (types.contains("files")) {
+        pushNotificationTypes.setFlag(PushNotificationType::Files);
+    }
+
+    return pushNotificationTypes;
+}
+
+QUrl Capabilities::pushNotificationsWebSocketUrl() const
+{
+    const auto websocket = _capabilities["notify_push"].toMap()["endpoints"].toMap()["websocket"].toString();
+    return QUrl(websocket);
 }
 
 bool Capabilities::chunkingParallelUploadDisabled() const
