@@ -203,6 +203,19 @@
     </message>
 </context>
 <context>
+    <name>OCC::AbstractPropagateRemoteDeleteEncrypted</name>
+    <message>
+        <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
+        <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
+        <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::AccountManager</name>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="351"/>
@@ -423,7 +436,11 @@ Agarde a nova sincronización e logo cífreo.</translation>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Esta acción desactivará a compatibilidade cos ficheiros virtuais. Como consecuencia, descargaranse os contidos dos cartafoles que están marcados actualmente como «só dispoñíbeis en liña».
+
+A única vantaxe de desactivar a compatibilidade con ficheiros virtuais é que volverá dispoñíbel a función de sincronización selectiva.
+
+Esta acción interromperá calquera sincronización que estea a executarse actualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
@@ -680,7 +697,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Algúns axustes foron configuradas nas versións máis recentes deste cliente e usan funcións que non están dispoñíbeis nesta versión. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; Fíxose unha copia de seguridade do ficheiro de configuración actual &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
@@ -2071,7 +2088,9 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>O cliente pode escribir rexistros de depuración nun cartafol temporal. Estes rexistros son moi útiles para diagnosticar problemas.
+Dado que os ficheiros de rexistro poden ser grandes, o cliente iniciará un novo para cada execución de sincronización e comprimirá os máis antigos. Tamén eliminará os ficheiros de rexistro após un par de horas para evitar consumir demasiado espazo no disco.
+Se está activado, os rexistros escribiranse en %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -2812,7 +2831,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Cando está activado o modo «ficheiros virtuais» inicialmente non se descargarán ficheiros. Pola contra, crearase un pequeno ficheiro «%1» para cada ficheiro que existe no servidor. O contido pódese descargar executando estes ficheiros ou usando o seu menú contextual.
+
+O modo de ficheiros virtuais exclúese mutuamente coa sincronización selectiva. Os cartafoles non seleccionados actualmente converteranse en cartafoles só en liña e restabeleceranse os axustes de sincronización selectiva.
+
+Cambiar a este modo interromperá calquera sincronización que estea a executarse actualmente.
+
+Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe dos problemas que se presenten.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="340"/>
@@ -3124,6 +3149,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateremotedelete.cpp" line="152"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>O servidor devolveu código HTTP incorrecto. Agardábase 204, mais recibiuse «%1 %2».</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::PropagateRemoteDeleteEncryptedRootFolder</name>
+    <message>
+        <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
+        <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
