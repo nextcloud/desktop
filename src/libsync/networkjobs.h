@@ -426,6 +426,14 @@ public:
         QNetworkRequest req = QNetworkRequest(),
         QIODevice *requestBody = nullptr);
 
+    void prepareRequest(const QByteArray &verb, const QUrl &url,
+        const QNetworkRequest &req,
+        const QUrlQuery &arguments);
+
+    void prepareRequest(const QByteArray &verb, const QUrl &url,
+        const QNetworkRequest &req,
+        const QJsonObject &arguments);
+
     void start() override;
 
 signals:

@@ -21,44 +21,165 @@
 #include "creds/oauth.h"
 #include <QJsonObject>
 #include <QJsonDocument>
-#include <networkjobs.h>
+#include <QJsonArray>
+#include <QRandomGenerator>
+
 #include "theme.h"
 #include "networkjobs.h"
 #include "creds/httpcredentials.h"
-#include <QRandomGenerator>
 
-namespace OCC {
+#include <qt5keychain/keychain.h>
 
+using namespace OCC;
 Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
 
-OAuth::OAuth(Account *account, QObject *parent)
-: QObject(parent)
-, _account(account)
+namespace {
+const QString clientSecretC()
 {
+    return QStringLiteral("clientSecret");
 }
 
-OAuth::~OAuth()
+QVariant getRequiredField(const QJsonObject &json, const QString &s, QString *error)
 {
+    const auto out = json.constFind(s);
+    if (out == json.constEnd()) {
+        error->append(QStringLiteral("\tError: Missing field %1\n").arg(s));
+        return {};
+    }
+    return *out;
 }
 
-static void httpReplyAndClose(QPointer<QTcpSocket> socket, const QByteArray &code, const QByteArray &html,
-                              const QByteArray &moreHeaders = {})
+void httpReplyAndClose(const QPointer<QTcpSocket> &socket, const QByteArray &code, const QByteArray &html,
+    const QByteArray &moreHeaders = {})
 {
     if (!socket)
         return; // socket can have been deleted if the browser was closed
-    const QByteArray msg = QByteArrayLiteral("HTTP/1.1 ") %
-            code %
-            QByteArrayLiteral("\r\nContent-Type: text/html; charset=utf-8\r\nConnection: close\r\nContent-Length: ") %
-            QByteArray::number(html.length()) %
-            (!moreHeaders.isEmpty() ? QByteArrayLiteral("\r\n") % moreHeaders : QByteArray()) %
-            QByteArrayLiteral("\r\n\r\n") %
-            html;
+    // clang format has issues with the next line...
+    const QByteArray msg = QByteArrayLiteral("HTTP/1.1 ") % code % QByteArrayLiteral("\r\nContent-Type: text/html; charset=utf-8\r\nConnection: close\r\nContent-Length: ") % QByteArray::number(html.length()) % (!moreHeaders.isEmpty() ? QByteArrayLiteral("\r\n") % moreHeaders : QByteArray()) % QByteArrayLiteral("\r\n\r\n") % html;
     qCDebug(lcOauth) << msg;
     socket->write(msg);
     socket->disconnectFromHost();
     // We don't want that deleting the server too early prevent queued data to be sent on this socket.
     // The socket will be deleted after disconnection because disconnected is connected to deleteLater
     socket->setParent(nullptr);
+}
+
+class RegisterClientJob : public QObject
+{
+    Q_OBJECT
+public:
+    RegisterClientJob(Account *accout, const QUrl &registrationEndpoint, QObject *parent)
+        : QObject(parent)
+        , _account(accout)
+        , _registrationEndpoint(registrationEndpoint)
+    {
+        connect(this, &RegisterClientJob::errorOccured, this, &RegisterClientJob::deleteLater);
+        connect(this, &RegisterClientJob::finished, this, &RegisterClientJob::deleteLater);
+    }
+
+    void start()
+    {
+        auto keychainJob = new QKeychain::ReadPasswordJob(Theme::instance()->appName());
+        keychainJob->setKey(AbstractCredentials::keychainServerWideKey(_account, clientSecretC()));
+        connect(keychainJob, &QKeychain::ReadPasswordJob::finished, this, [this, keychainJob] {
+            if (keychainJob->error() == QKeychain::NoError) {
+                QJsonParseError error;
+                const auto doc = QJsonDocument::fromJson(keychainJob->binaryData(), &error);
+                if (error.error == QJsonParseError::NoError) {
+                    rgisterClientFinished(doc);
+                    return;
+                }
+                qCWarning(lcOauth) << Q_FUNC_INFO << error.errorString();
+            } else if (keychainJob->error() != QKeychain::EntryNotFound) {
+                qCCritical(lcOauth) << "Failed to read client id" << keychainJob->errorString();
+            }
+            rgisterClientOnline();
+        });
+        keychainJob->start();
+    }
+
+Q_SIGNALS:
+    void finished(const QString &clientId, const QString &clientSecret);
+    void errorOccured(const QString &error);
+
+private:
+    void rgisterClientOnline()
+    {
+        auto job = new OCC::SimpleNetworkJob(_account->sharedFromThis(), this);
+        connect(job, &OCC::SimpleNetworkJob::finishedSignal, this, [this, job] {
+            const auto data = job->reply()->readAll();
+            QJsonParseError error;
+            const auto json = QJsonDocument::fromJson(data, &error);
+            if (error.error == QJsonParseError::NoError) {
+                rgisterClientFinished(json);
+            } else {
+                qCWarning(lcOauth) << "Failed to register the client" << error.errorString() << data;
+                Q_EMIT errorOccured(error.errorString());
+            }
+        });
+        const QJsonObject json({ { QStringLiteral("client_name"), QStringLiteral("%1 %2").arg(Theme::instance()->appNameGUI(), Theme::instance()->version()) },
+            { QStringLiteral("redirect_uris"), QJsonArray { QStringLiteral("http://localhost") } },
+            { QStringLiteral("application_type"), QStringLiteral("native") },
+            { QStringLiteral("token_endpoint_auth_method"), QStringLiteral("client_secret_basic") } });
+        job->prepareRequest("POST", _registrationEndpoint, QNetworkRequest(), json);
+        job->start();
+    }
+
+    void rgisterClientFinished(const QJsonDocument &jsonDoc)
+    {
+        const auto json = jsonDoc.object();
+        {
+            QString error;
+            auto expireDate = QDateTime::fromSecsSinceEpoch(getRequiredField(json, QStringLiteral("client_secret_expires_at"), &error).value<qint64>());
+            if (!error.isEmpty()) {
+                Q_EMIT errorOccured(error);
+                return;
+            }
+            qCInfo(lcOauth) << "Client id iessued at:" << QDateTime::fromSecsSinceEpoch(json[QStringLiteral("client_id_issued_at")].toVariant().value<quint64>())
+                            << "expires at" << expireDate;
+            if (QDateTime::currentDateTimeUtc() > expireDate) {
+                qCDebug(lcOauth) << "Client registration expired";
+                rgisterClientOnline();
+                return;
+            }
+        }
+        auto keychainJob = new QKeychain::WritePasswordJob(Theme::instance()->appName());
+        keychainJob->setKey(AbstractCredentials::keychainServerWideKey(_account, clientSecretC()));
+        connect(keychainJob, &QKeychain::WritePasswordJob::finished, this, [keychainJob] {
+            if (keychainJob->error() != QKeychain::NoError) {
+                qCWarning(lcOauth) << "Failed to save clientId" << keychainJob->errorString();
+            }
+        });
+        keychainJob->setBinaryData(jsonDoc.toJson());
+        keychainJob->start();
+
+        QString error;
+        const auto client_id = getRequiredField(json, QStringLiteral("client_id"), &error).toString();
+        const auto client_secret = getRequiredField(json, QStringLiteral("client_secret"), &error).toString();
+        if (!error.isEmpty()) {
+            Q_EMIT errorOccured(error);
+            return;
+        }
+        Q_EMIT finished(client_id, client_secret);
+    }
+
+private:
+    Account *_account;
+    QUrl _registrationEndpoint;
+};
+
+}
+
+OAuth::OAuth(Account *account, QObject *parent)
+    : QObject(parent)
+    , _account(account)
+    , _clientId(Theme::instance()->oauthClientId())
+    , _clientSecret(Theme::instance()->oauthClientSecret())
+{
+}
+
+OAuth::~OAuth()
+{
 }
 
 void OAuth::startAuthentication()
@@ -73,8 +194,22 @@ void OAuth::startAuthentication()
     OC_ASSERT(_pkceCodeVerifier.size() == 128)
     _state = generateRandomString(8);
 
-    connect(this, &OAuth::fetchWellKnownFinished, this, [this]{
-        Q_EMIT authorisationLinkChanged(authorisationLink());
+    connect(this, &OAuth::fetchWellKnownFinished, this, [this] {
+        if (_registrationEndpoint.isValid()) {
+            auto job = new RegisterClientJob(_account, _registrationEndpoint, this);
+            connect(job, &RegisterClientJob::finished, this, [this](const QString &clientId, const QString &clientSecret) {
+                _clientId = clientId;
+                _clientSecret = clientSecret;
+                Q_EMIT authorisationLinkChanged(authorisationLink());
+            });
+            connect(job, &RegisterClientJob::errorOccured, this, [this](const QString &error) {
+                qCWarning(lcOauth) << "Failed to dynamically register the client, try the default client id" << error;
+                Q_EMIT authorisationLinkChanged(authorisationLink());
+            });
+            job->start();
+        } else {
+            Q_EMIT authorisationLinkChanged(authorisationLink());
+        }
     });
     fetchWellKnown();
 
@@ -179,7 +314,7 @@ void OAuth::startAuthentication()
 
 void OAuth::refreshAuthentication(const QString &refreshToken)
 {
-    connect(this, &OAuth::fetchWellKnownFinished, this, [this, refreshToken] {
+    auto refresh = [this, &refreshToken] {
         auto job = postTokenRequest({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
             { QStringLiteral("refresh_token"), refreshToken } });
         connect(job, &SimpleNetworkJob::finishedSignal, this, [this, refreshToken](QNetworkReply *reply) {
@@ -220,12 +355,30 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
             Q_EMIT refreshFinished(accessToken, newRefreshToken);
         });
         job->start();
+    };
+    connect(this, &OAuth::fetchWellKnownFinished, this, [this, refresh] {
+        if (_registrationEndpoint.isValid()) {
+            auto registerJob = new RegisterClientJob(_account, _registrationEndpoint, this);
+            connect(registerJob, &RegisterClientJob::finished, this, [this, refresh](const QString &clientId, const QString &clientSecret) {
+                _clientId = clientId;
+                _clientSecret = clientSecret;
+                refresh();
+            });
+            connect(registerJob, &RegisterClientJob::errorOccured, this, [this](const QString &error) {
+                qCWarning(lcOauth) << "Failed to dynamically register the client, try the default client id" << error;
+                Q_EMIT refreshFinished(QString(), QString());
+            });
+            registerJob->start();
+        } else {
+            refresh();
+        }
     });
     fetchWellKnown();
 }
 
-void OAuth::finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
-                     const QString &refreshToken, const QString &user, const QUrl &messageUrl) {
+void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken,
+    const QString &refreshToken, const QString &user, const QUrl &messageUrl)
+{
     if (!_account->davUser().isNull() && user != _account->davUser()) {
         // Connected with the wrong user
         qCWarning(lcOauth) << "We expected the user" << _account->davUser() << "but the server answered with user" << user;
@@ -253,23 +406,18 @@ SimpleNetworkJob *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &
 {
     const QUrl requestTokenUrl = _tokenEndpoint.isEmpty() ? Utility::concatUrlPath(_account->url(), QStringLiteral("/index.php/apps/oauth2/api/v1/token")) : _tokenEndpoint;
     QNetworkRequest req;
-    req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/x-www-form-urlencoded; charset=UTF-8"));
-    const QByteArray basicAuth = QStringLiteral("%1:%2").arg(Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret()).toUtf8().toBase64();
+    const QByteArray basicAuth = QStringLiteral("%1:%2").arg(_clientId, _clientSecret).toUtf8().toBase64();
     req.setRawHeader("Authorization", "Basic " + basicAuth);
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
-    auto requestBody = new QBuffer;
     QUrlQuery arguments;
-    arguments.setQueryItems(QList<QPair<QString, QString>> { { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
-                                { QStringLiteral("client_secret"), Theme::instance()->oauthClientSecret() },
+    arguments.setQueryItems(QList<QPair<QString, QString>> { { QStringLiteral("client_id"), _clientId },
+                                { QStringLiteral("client_secret"), _clientSecret },
                                 { QStringLiteral("scope"), Theme::instance()->openIdConnectScopes() } }
         << queryItems);
-
-    requestBody->setData(arguments.query(QUrl::FullyEncoded).toUtf8());
-
     auto job = new SimpleNetworkJob(_account->sharedFromThis(), this);
     job->setAuthenticationJob(true);
-    job->prepareRequest("POST", requestTokenUrl, req, requestBody);
+    job->prepareRequest("POST", requestTokenUrl, req, arguments);
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
     return job;
 }
@@ -282,16 +430,6 @@ QByteArray OAuth::generateRandomString(size_t size) const
     return QByteArray(reinterpret_cast<char *>(buffer.data()), static_cast<int>(size * sizeof(quint32))).toBase64(QByteArray::Base64UrlEncoding);
 }
 
-QVariant OAuth::getRequiredField(const QJsonObject &json, const QString &s, QString *error)
-{
-    const auto out = json.constFind(s);
-    if (out == json.constEnd()) {
-        error->append(tr("\tError: Missing field %1\n").arg(s));
-        return QJsonValue();
-    }
-    return *out;
-}
-
 QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
@@ -299,7 +437,7 @@ QUrl OAuth::authorisationLink() const
     const QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
                                           .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     query.setQueryItems({ { QStringLiteral("response_type"), QStringLiteral("code") },
-        { QStringLiteral("client_id"), Theme::instance()->oauthClientId() },
+        { QStringLiteral("client_id"), _clientId },
         { QStringLiteral("redirect_uri"), QStringLiteral("http://localhost:%1").arg(QString::number(_server.serverPort())) },
         { QStringLiteral("code_challenge"), QString::fromLatin1(code_challenge) },
         { QStringLiteral("code_challenge_method"), QStringLiteral("S256") },
@@ -348,8 +486,7 @@ void OAuth::fetchWellKnown()
         } else {
             auto job = new SimpleNetworkJob(_account->sharedFromThis(), this);
             job->setAuthenticationJob(true);
-            QUrl wellKnownUrl = Utility::concatUrlPath(_account->url(), QStringLiteral("/.well-known/openid-configuration"));
-            job->prepareRequest("GET", wellKnownUrl);
+            job->prepareRequest("GET", Utility::concatUrlPath(_account->url(), QStringLiteral("/.well-known/openid-configuration")));
             job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
             QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
                 _wellKnownFinished = true;
@@ -361,14 +498,10 @@ void OAuth::fetchWellKnown()
                 const auto jsonData = reply->readAll();
                 QJsonParseError jsonParseError;
                 const QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
-
                 if (jsonParseError.error == QJsonParseError::NoError) {
-                    QString authEp = json[QStringLiteral("authorization_endpoint")].toString();
-                    if (!authEp.isEmpty())
-                        this->_authEndpoint = QUrl::fromEncoded(authEp.toUtf8());
-                    QString tokenEp = json[QStringLiteral("token_endpoint")].toString();
-                    if (!tokenEp.isEmpty())
-                        this->_tokenEndpoint = QUrl::fromEncoded(tokenEp.toUtf8());
+                    _authEndpoint = QUrl::fromEncoded(json[QStringLiteral("authorization_endpoint")].toString().toUtf8());
+                    _tokenEndpoint = QUrl::fromEncoded(json[QStringLiteral("token_endpoint")].toString().toUtf8());
+                    _registrationEndpoint = QUrl::fromEncoded(json[QStringLiteral("registration_endpoint")].toString().toUtf8());
                 } else if (jsonParseError.error == QJsonParseError::IllegalValue) {
                     qCDebug(lcOauth) << ".well-known did not return json, the server most probably does not support oidc";
                 } else {
@@ -393,4 +526,4 @@ void OAuth::openBrowser()
     });
 }
 
-} // namespace OCC
+#include "oauth.moc"

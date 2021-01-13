@@ -19,9 +19,9 @@
 #include "accountfwd.h"
 #include "owncloudlib.h"
 
-class SimpleNetworkJob;
 
 namespace OCC {
+class SimpleNetworkJob;
 
 /**
  * Job that do the authorization grant and fetch the access token
@@ -88,23 +88,26 @@ signals:
 private:
 
     void fetchWellKnown();
-    void finalize(QPointer<QTcpSocket> socket, const QString &accessToken,
-                  const QString &refreshToken, const QString &userId, const QUrl &messageUrl);
+    void finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken,
+        const QString &refreshToken, const QString &userId, const QUrl &messageUrl);
 
     SimpleNetworkJob *postTokenRequest(const QList<QPair<QString, QString>> &queryItems);
 
     QByteArray generateRandomString(size_t size) const;
 
-    QVariant getRequiredField(const QJsonObject &json, const QString &s, QString *error);
 
     Account* _account;
     QTcpServer _server;
     bool _wellKnownFinished = false;
+
+    QString _clientId;
+    QString _clientSecret;
+
     QUrl _authEndpoint;
     QUrl _tokenEndpoint;
+    QUrl _registrationEndpoint;
     QByteArray _pkceCodeVerifier;
     QByteArray _state;
 };
-
 
 } // namespace OCC

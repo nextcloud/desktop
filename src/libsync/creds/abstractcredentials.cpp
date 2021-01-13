@@ -16,6 +16,7 @@
 #include <QString>
 #include <QCoreApplication>
 
+#include "account.h"
 #include "common/asserts.h"
 #include "creds/abstractcredentials.h"
 
@@ -33,6 +34,11 @@ void AbstractCredentials::setAccount(Account *account)
 {
     OC_ENFORCE_X(!_account, "should only setAccount once");
     _account = account;
+}
+
+QString AbstractCredentials::keychainServerWideKey(Account *acc, const QString &key)
+{
+    return keychainKey(acc->url().toString(), key, {});
 }
 
 QString AbstractCredentials::keychainKey(const QString &url, const QString &user, const QString &accountId)

@@ -1,0 +1,6 @@
+Change: Add support for dynamic client registration with OIDC
+
+We implemented support for dynamic client registration with an
+OpenID Connect provider.
+
+https://github.com/owncloud/client/pull/8350/
