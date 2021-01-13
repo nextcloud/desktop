@@ -318,7 +318,7 @@ void PropagateUploadFileNG::startNextChunk()
 
     const QString fileName = _fileToUpload._path;
     auto device = std::make_unique<UploadDevice>(
-            fileName, _currentChunk, _currentChunkSize, &propagator()->_bandwidthManager);
+            fileName, _sent, _currentChunkSize, &propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadNG) << "Could not prepare upload device: " << device->errorString();
 
