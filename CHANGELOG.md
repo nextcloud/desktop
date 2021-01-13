@@ -11,6 +11,7 @@ Summary
 * Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
 * Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
+* Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 
 Details
 -------
@@ -33,6 +34,15 @@ Details
    We no longer recommend to use a http connection if a https url was not found.
 
    https://github.com/owncloud/client/issues/8231
+
+* Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
+
+   We no longer follow redirects, when a redirect is detected we will start a connection
+   validation process that does follow redirects. This change improves the support of APM
+   solutions which apply special redirects to provide cookie sessions to the client.
+
+   https://github.com/owncloud/client/pull/8293
+   https://github.com/owncloud/client/pull/8253
 
 Changelog for ownCloud Desktop Client [2.7.4] (2020-12-21)
 =======================================
