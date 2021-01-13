@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
+* Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
 * Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
@@ -22,6 +23,12 @@ Details
    on that dialog would then cause a crash.
 
    https://github.com/owncloud/client/pull/8314
+
+* Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
+
+   We fixed a bug where sync all was still recommended on Windows
+
+   https://github.com/owncloud/client/issues/8317
 
 * Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
 
