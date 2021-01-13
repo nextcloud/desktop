@@ -655,7 +655,7 @@ Esta acción interromperá calquera sincronización que estea agora en proceso.<
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="53"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation>Certificado e chave (pkcs12) :</translation>
+        <translation>Certificado e clave (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="44"/>
