@@ -19,11 +19,6 @@
 
 #include <QLoggingCategory>
 
-namespace {
-const int MaxRetryCount = 5;
-}
-
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcJobQUeue, "sync.networkjob.jobqueue", QtDebugMsg)
@@ -62,7 +57,7 @@ bool JobQueue::isBlocked() const
 
 bool JobQueue::retry(AbstractNetworkJob *job)
 {
-    if (!needsRetry(job)) {
+    if (!job->needsRetry()) {
         return false;
     }
     if (_blocked) {
@@ -100,30 +95,6 @@ void JobQueue::clear()
 size_t JobQueue::size() const
 {
     return _jobs.size();
-}
-
-bool JobQueue::needsRetry(AbstractNetworkJob *job) const
-{
-    if (job->isAuthenticationJob()) {
-        qCDebug(lcJobQUeue) << "Not Retry auth job" << job << job->url();
-        return false;
-    }
-    if (job->retryCount() >= MaxRetryCount) {
-        qCDebug(lcJobQUeue) << "Not Retry too many retries" << job->retryCount() << job << job->url();
-        return false;
-    }
-
-    if (auto reply = job->reply()) {
-        if (!reply->attribute(QNetworkRequest::RedirectionTargetAttribute).isNull()) {
-            return true;
-        }
-        if (reply->error() != QNetworkReply::NoError) {
-            if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 JobQueueGuard::JobQueueGuard(JobQueue *queue)

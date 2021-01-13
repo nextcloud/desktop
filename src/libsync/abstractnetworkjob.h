@@ -54,7 +54,7 @@ public:
     void setPath(const QString &path);
     QString path() const { return _path; }
 
-    QUrl url() { return _request.url(); }
+    QUrl url() const { return _request.url(); }
 
     QNetworkReply *reply() const { return _reply; }
 
@@ -99,6 +99,9 @@ public:
 
     /** How many times was that job retried */
     int retryCount() const { return _retryCount; }
+
+
+    virtual bool needsRetry() const;
 
 public slots:
     void setTimeout(qint64 msec);

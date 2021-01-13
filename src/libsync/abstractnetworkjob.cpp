@@ -40,6 +40,11 @@
 
 Q_DECLARE_METATYPE(QTimer *)
 
+namespace {
+const int MaxRetryCount = 5;
+}
+
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcNetworkJob, "sync.networkjob", QtInfoMsg)
@@ -127,6 +132,31 @@ void AbstractNetworkJob::setAuthenticationJob(bool b)
 {
     _isAuthenticationJob = b;
 }
+
+bool AbstractNetworkJob::needsRetry() const
+{
+    if (isAuthenticationJob()) {
+        qCDebug(lcNetworkJob) << "Not Retry auth job" << this << url();
+        return false;
+    }
+    if (retryCount() >= MaxRetryCount) {
+        qCDebug(lcNetworkJob) << "Not Retry too many retries" << retryCount() << this << url();
+        return false;
+    }
+
+    if (auto reply = this->reply()) {
+        if (!reply->attribute(QNetworkRequest::RedirectionTargetAttribute).isNull()) {
+            return true;
+        }
+        if (reply->error() != QNetworkReply::NoError) {
+            if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 
 void AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
     QNetworkRequest req, QIODevice *requestBody)

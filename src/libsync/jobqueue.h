@@ -48,9 +48,6 @@ public:
     size_t size() const;
 
 private:
-    bool needsRetry(AbstractNetworkJob *job) const;
-
-
     void block();
     void unblock();
     /**
