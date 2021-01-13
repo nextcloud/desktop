@@ -207,12 +207,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor devolveu código HTTP incorrecto. Agardábase 204, mais recibiuse «%1 %2».</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>«%1 Produciuse un fallo ao crear o cartafol %2».</translation>
     </message>
 </context>
 <context>
@@ -654,7 +654,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation>Certificado e chave (pkcs12) :</translation>
+        <translation>Certificado e clave (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -3156,7 +3156,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor devolveu código HTTP incorrecto. Agardábase 204, mais recibiuse «%1 %2».</translation>
     </message>
 </context>
 <context>
