@@ -207,12 +207,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής επέστρεψε εσφαλμένο κωδικό HTTP. Αναμενόταν 204, αλλά ελήφθη &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 Το ξεκλείδωμα του κρυπτογραφημένου φακέλου απέτυχε %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1082,7 +1082,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Έχουν προστεθεί %1 και %n άλλα αρχείο(α).</numerusform><numerusform>Έχουν προστεθεί %1 και %n άλλα αρχείο(α).</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
@@ -3136,7 +3136,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής επέστρεψε εσφαλμένο κωδικό HTTP. Αναμενόταν 204, αλλά ελήφθη &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>

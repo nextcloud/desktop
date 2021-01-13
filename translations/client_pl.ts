@@ -207,12 +207,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer zwrócił nieprawidłowy kod HTTP. Oczekiwano 204, ale otrzymano &quot;%1 %2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1 Nie udało się odblokować zaszyfrowanego katalogu %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -3156,7 +3156,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer zwrócił nieprawidłowy kod HTTP. Oczekiwano 204, ale otrzymano &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>

@@ -2607,7 +2607,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="96"/>
         <source>This is the link to your %1 web interface when you open it in the browser.&lt;br/&gt;It looks like https://cloud.example.com or https://example.com/cloud</source>
-        <translation type="unfinished"/>
+        <translation>Aquest és l&apos;enllaç a la interfície web del %1 quan l&apos;obriu en el navegador.&lt;br/&gt;És similar a https://cloud.example.com o https://example.com/cloud</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="184"/>
@@ -4035,7 +4035,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut actualitzar el fitxer: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
