@@ -206,11 +206,7 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
         return;
     }
 
-    const auto account = propagator->account();
-
-    if (account->capabilities().clientSideEncryptionAvailable() &&
-        parentRec.isValid() &&
-        parentRec._isE2eEncrypted) {
+    if (hasEncryptedAncestor()) {
         _parallelism = WaitForFinished;
     }
 }
