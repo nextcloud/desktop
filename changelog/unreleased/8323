@@ -1,0 +1,6 @@
+Bugfix: Detect file name clash with VirtualFiles enabled
+
+We fixed an issue where the file name clash detection was not run with
+VirtualFiles enabled.
+
+https://github.com/owncloud/client/issues/8323
