@@ -34,14 +34,6 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     , _uploadEncryptedHelper(nullptr)
     , _parallelism(FullParallelism)
 {
-    const auto rootPath = [=]() {
-        const auto result = propagator->remotePath();
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
@@ -52,11 +44,7 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
         return;
     }
 
-    const auto account = propagator->account();
-
-    if (account->capabilities().clientSideEncryptionAvailable() &&
-        parentRec.isValid() &&
-        parentRec._isE2eEncrypted) {
+    if (hasEncryptedAncestor()) {
         _parallelism = WaitForFinished;
     }
 }
@@ -142,14 +130,6 @@ void PropagateRemoteMkdir::setDeleteExisting(bool enabled)
 
 void PropagateRemoteMkdir::slotMkdir()
 {
-    const auto rootPath = [=]() {
-        const auto result = propagator()->remotePath();
-        if (result.startsWith('/')) {
-            return result.mid(1);
-        } else {
-            return result;
-        }
-    }();
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
@@ -161,21 +141,7 @@ void PropagateRemoteMkdir::slotMkdir()
         return;
     }
 
-    const auto hasEncryptedAncestor = [=] {
-        auto pathComponents = parentPath.split('/');
-        while (!pathComponents.isEmpty()) {
-            SyncJournalFileRecord rec;
-            propagator()->_journal->getFileRecord(pathComponents.join('/'), &rec);
-            if (rec.isValid() && rec._isE2eEncrypted) {
-                return true;
-            }
-            pathComponents.removeLast();
-        }
-        return false;
-    }();
-
-    const auto account = propagator()->account();
-    if (!account->capabilities().clientSideEncryptionAvailable() || !hasEncryptedAncestor) {
+    if (!hasEncryptedAncestor()) {
         slotStartMkcolJob();
         return;
     }

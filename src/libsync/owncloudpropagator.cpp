@@ -301,6 +301,29 @@ void PropagateItemJob::slotRestoreJobFinished(SyncFileItem::Status status)
     }
 }
 
+bool PropagateItemJob::hasEncryptedAncestor() const
+{
+    if (!propagator()->account()->capabilities().clientSideEncryptionAvailable()) {
+        return false;
+    }
+
+    const auto path = _item->_file;
+    const auto slashPosition = path.lastIndexOf('/');
+    const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+
+    auto pathComponents = parentPath.split('/');
+    while (!pathComponents.isEmpty()) {
+        SyncJournalFileRecord rec;
+        propagator()->_journal->getFileRecord(pathComponents.join('/'), &rec);
+        if (rec.isValid() && rec._isE2eEncrypted) {
+            return true;
+        }
+        pathComponents.removeLast();
+    }
+
+    return false;
+}
+
 // ================================================================================
 
 PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
