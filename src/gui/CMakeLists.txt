@@ -1,8 +1,5 @@
 project(gui)
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2)
-set(CMAKE_AUTOMOC TRUE)
-set(CMAKE_AUTOUIC TRUE)
-set(CMAKE_AUTORCC TRUE)
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     add_definitions(-DQT_QML_DEBUG)
@@ -262,6 +259,39 @@ if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L/usr/local/lib")
 endif()
 
+add_library(nextcloudCore STATIC ${final_src})
+
+target_link_libraries(nextcloudCore
+  PUBLIC
+  Qt5::Widgets
+  Qt5::GuiPrivate
+  Qt5::Svg
+  Qt5::Network
+  Qt5::Xml
+  Qt5::Qml
+  Qt5::Quick
+  Qt5::QuickControls2
+  Qt5::WebEngineWidgets
+  ${synclib_NAME}
+)
+
+set_target_properties(nextcloudCore
+  PROPERTIES
+  AUTOUIC ON
+  AUTORCC ON
+  AUTOMOC ON
+)
+
+target_include_directories(nextcloudCore
+  PUBLIC
+  ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
+  ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
+  ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
+  ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
+  ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     if(NOT WIN32)
         file(GLOB _icons "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon.png")
@@ -279,15 +309,13 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     endif()
 
     # we may not add MACOSX_BUNDLE here, if not building one
-
-    # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
-    add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
+    add_executable(${APPLICATION_EXECUTABLE} WIN32 main.cpp)
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "${APPLICATION_ICON_NAME}.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
-    add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
+    add_executable(${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp)
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${client_I18N} DESTINATION ${QM_DIR})
@@ -314,12 +342,14 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
 
-target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::GuiPrivate Qt5::Svg Qt5::Network Qt5::Xml Qt5::Qml Qt5::Quick Qt5::QuickControls2 Qt5::WebEngineWidgets)
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
+target_link_libraries(${APPLICATION_EXECUTABLE} nextcloudCore)
+
 IF(BUILD_UPDATER)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
+  target_link_libraries(nextcloudCore PUBLIC updater)
 endif()
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
+
+target_link_libraries(nextcloudCore PUBLIC ${OS_SPECIFIC_LINK_LIBRARIES})
+
 IF( LIBCLOUDPROVIDERS_FOUND )
     string(TOLOWER "${APPLICATION_VENDOR}" DBUS_VENDOR)
     string(REGEX REPLACE "[^A-z0-9]" "" DBUS_VENDOR "${DBUS_VENDOR}")
@@ -331,42 +361,37 @@ IF( LIBCLOUDPROVIDERS_FOUND )
     set(LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH "/${DBUS_PREFIX}/${DBUS_VENDOR}/${DBUS_APPLICATION_NAME}")
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cloudproviders/cloudproviderconfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/cloudproviderconfig.h)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} ${GLib2_LDFLAGS} ${GIO_LDFLAGS} ${LIBCLOUDPROVIDERS_LIBRARY} )
+    target_link_libraries(nextcloudCore
+      PUBLIC
+      ${GLib2_LDFLAGS}
+      ${GIO_LDFLAGS}
+      ${LIBCLOUDPROVIDERS_LIBRARY}
+    )
 ENDIF()
-
-
-target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/kmessagewidget
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
 
 ## handle DBUS for Fdo notifications
 if( UNIX AND NOT APPLE )
     find_package(Qt5 COMPONENTS DBus)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::DBus)
-    target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "USE_FDO_NOTIFICATIONS")
+    target_link_libraries(nextcloudCore PUBLIC Qt5::DBus)
+    target_compile_definitions(nextcloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
 endif()
 
 if (APPLE)
     find_package(Qt5 COMPONENTS MacExtras)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::MacExtras)
+    target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras)
 endif()
 
 if(WITH_CRASHREPORTER)
-    target_link_libraries(${APPLICATION_EXECUTABLE} crashreporter-handler)
+    target_link_libraries(nextcloudCore PUBLIC crashreporter-handler)
 
     if(UNIX AND NOT MAC)
         find_package(Threads REQUIRED)
-        target_link_libraries( ${APPLICATION_EXECUTABLE} ${CMAKE_THREAD_LIBS_INIT})
+        target_link_libraries(nextcloudCore PUBLIC ${CMAKE_THREAD_LIBS_INIT})
     endif()
 endif()
 
 # application.cpp still uses QDesktopServices::storageLocation
-target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "QT_DISABLE_DEPRECATED_BEFORE=0")
+target_compile_definitions(nextcloudCore PRIVATE "QT_DISABLE_DEPRECATED_BEFORE=0")
 
 
 install(TARGETS ${APPLICATION_EXECUTABLE}

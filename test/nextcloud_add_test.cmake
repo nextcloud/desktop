@@ -9,8 +9,11 @@ macro(nextcloud_add_test test_class additional_cpp)
     set_target_properties(${OWNCLOUD_TEST_CLASS}Test PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY})
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
-        ${APPLICATION_EXECUTABLE}sync syncenginetestutils
-        Qt5::Core Qt5::Test Qt5::Xml Qt5::Network Qt5::Qml Qt5::Quick
+      ${APPLICATION_EXECUTABLE}sync
+      syncenginetestutils
+      nextcloudCore
+      Qt5::Test
+      Qt5::Quick
     )
 
     IF(BUILD_UPDATER)
@@ -25,7 +28,11 @@ macro(nextcloud_add_test test_class additional_cpp)
         COMMAND ${OWNCLOUD_TEST_CLASS}Test
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-    target_include_directories(${OWNCLOUD_TEST_CLASS}Test PRIVATE "${CMAKE_SOURCE_DIR}/test/")
+      target_include_directories(${OWNCLOUD_TEST_CLASS}Test
+        PRIVATE
+        "${CMAKE_SOURCE_DIR}/test/"
+        ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
+        )
 endmacro()
 
 macro(nextcloud_add_benchmark test_class additional_cpp)

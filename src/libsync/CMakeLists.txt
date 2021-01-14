@@ -120,17 +120,19 @@ ENDIF(NOT APPLE)
 find_package(Qt5 REQUIRED COMPONENTS WebSockets)
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
 target_link_libraries(${synclib_NAME}
-    "${csync_NAME}"
-    OpenSSL::Crypto
-    OpenSSL::SSL
-    ${OS_SPECIFIC_LINK_LIBRARIES}
-    Qt5::Core Qt5::Network
-    Qt5::WebSockets
+  PUBLIC
+  "${csync_NAME}"
+  OpenSSL::Crypto
+  OpenSSL::SSL
+  ${OS_SPECIFIC_LINK_LIBRARIES}
+  Qt5::Core
+  Qt5::Network
+  Qt5::WebSockets
 )
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt5 REQUIRED COMPONENTS Widgets Svg)
-    target_link_libraries(${synclib_NAME} Qt5::Widgets Qt5::Svg qt5keychain)
+    target_link_libraries(${synclib_NAME} PUBLIC Qt5::Widgets Qt5::Svg qt5keychain)
 endif()
 
 if(INOTIFY_FOUND)
