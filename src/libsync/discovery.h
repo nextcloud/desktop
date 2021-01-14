@@ -88,6 +88,16 @@ public:
     /** Start up to nbJobs, return the number of job started; emit finished() when done */
     int processSubJobs(int nbJobs);
 
+    void setInsideEncryptedTree(bool isInsideEncryptedTree)
+    {
+        _isInsideEncryptedTree = isInsideEncryptedTree;
+    }
+
+    bool isInsideEncryptedTree() const
+    {
+        return _isInsideEncryptedTree;
+    }
+
     SyncFileItemPtr _dirItem;
 
 private:
@@ -273,6 +283,7 @@ private:
     bool _childModified = false; // the directory contains modified item what would prevent deletion
     bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
     PinState _pinState = PinState::Unspecified; // The directory's pin-state, see computePinState()
+    bool _isInsideEncryptedTree = false; // this directory is encrypted or is within the tree of directories with root directory encrypted
 
 signals:
     void finished();

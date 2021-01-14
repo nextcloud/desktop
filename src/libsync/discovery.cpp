@@ -887,6 +887,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             qCInfo(lcDisco) << "Not a move, no item in db with inode" << localEntry.inode;
             return false;
         }
+
+        if (base._isE2eEncrypted || isInsideEncryptedTree()) {
+            return false;
+        }
+
         if (base.isDirectory() != item->isDirectory()) {
             qCInfo(lcDisco) << "Not a move, types don't match" << base._type << item->_type << localEntry.type;
             return false;
@@ -1149,6 +1154,7 @@ void ProcessDirectoryJob::processFileFinalize(
     }
     if (recurse) {
         auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer, this);
+        job->setInsideEncryptedTree(isInsideEncryptedTree() || item->_isEncrypted);
         if (removed) {
             job->setParent(_discoveryData);
             _discoveryData->_queuedDeletedDirectories[path._original] = job;
