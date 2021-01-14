@@ -1,4 +1,6 @@
 project(libsync)
+include(DefinePlatformDefaults)
+
 set(CMAKE_AUTOMOC TRUE)
 
 if ( APPLE )
@@ -72,6 +74,13 @@ if (WIN32)
     )
     add_definitions(-D_WIN32_WINNT=_WIN32_WINNT_WIN10)
     list(APPEND OS_SPECIFIC_LINK_LIBRARIES cldapi)
+elseif(LINUX) # elseif(LINUX OR APPLE)
+    set(libsync_SRCS ${libsync_SRCS} vfs/xattr/vfs_xattr.cpp)
+    if (APPLE)
+        set(libsync_SRCS ${libsync_SRCS} vfs/xattr/xattrwrapper_mac.cpp)
+    else()
+        set(libsync_SRCS ${libsync_SRCS} vfs/xattr/xattrwrapper_linux.cpp)
+    endif()
 endif()
 
 if(TOKEN_AUTH_ONLY)

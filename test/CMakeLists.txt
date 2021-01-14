@@ -1,3 +1,4 @@
+include(DefinePlatformDefaults)
 find_package(SQLite3 3.8.0 REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
@@ -76,6 +77,8 @@ endif(UNIX AND NOT APPLE)
 if (WIN32)
     nextcloud_add_test(LongWinPath "")
     nextcloud_add_test(SyncCfApi "")
+elseif(LINUX) # elseif(LINUX OR APPLE)
+    nextcloud_add_test(SyncXAttr "")
 endif()
 
 nextcloud_add_benchmark(LargeSync "")
