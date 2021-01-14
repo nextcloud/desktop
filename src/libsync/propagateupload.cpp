@@ -25,7 +25,7 @@
 #include "propagatorjobs.h"
 #include "common/checksums.h"
 #include "syncengine.h"
-#include "propagateremotedelete.h"
+#include "deletejob.h"
 #include "common/asserts.h"
 #include "networkjobs.h"
 #include "clientsideencryption.h"
@@ -206,11 +206,7 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
         return;
     }
 
-    const auto account = propagator->account();
-
-    if (account->capabilities().clientSideEncryptionAvailable() &&
-        parentRec.isValid() &&
-        parentRec._isE2eEncrypted) {
+    if (hasEncryptedAncestor()) {
         _parallelism = WaitForFinished;
     }
 }

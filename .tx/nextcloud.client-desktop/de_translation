@@ -24,4 +24,4 @@ Icon=@APPLICATION_EXECUTABLE@
 Icon[de]=@APPLICATION_ICON_NAME@
 Name[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
 Comment[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisierung
-GenericName[de]=Synchronisierungsordner
+GenericName[de]=Ordner-Synchronisation

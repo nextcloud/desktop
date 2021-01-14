@@ -171,6 +171,8 @@ protected:
         _item->_errorString = msg;
     }
 
+    bool hasEncryptedAncestor() const;
+
 protected slots:
     void slotRestoreJobFinished(SyncFileItem::Status status);
 

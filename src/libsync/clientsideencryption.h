@@ -137,6 +137,7 @@ public:
     QByteArray encryptedMetadata();
     void addEncryptedFile(const EncryptedFile& f);
     void removeEncryptedFile(const EncryptedFile& f);
+    void removeAllEncryptedFiles();
     QVector<EncryptedFile> files() const;
 
 

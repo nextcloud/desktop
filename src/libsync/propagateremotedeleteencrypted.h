@@ -1,43 +1,34 @@
-#ifndef PROPAGATEREMOTEDELETEENCRYPTED_H
-#define PROPAGATEREMOTEDELETEENCRYPTED_H
+/*
+ * Copyright (C) by Oleksandr Zolotov <alex@nextcloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
 
-#include <QObject>
-#include <QElapsedTimer>
+#pragma once
 
-#include "syncfileitem.h"
+#include "abstractpropagateremotedeleteencrypted.h"
 
 namespace OCC {
 
-class OwncloudPropagator;
-class PropagateRemoteDeleteEncrypted : public QObject
+class PropagateRemoteDeleteEncrypted : public AbstractPropagateRemoteDeleteEncrypted
 {
     Q_OBJECT
 public:
-    PropagateRemoteDeleteEncrypted(OwncloudPropagator *_propagator, SyncFileItemPtr item, QObject *parent);
+    PropagateRemoteDeleteEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent);
 
-    QByteArray folderToken();
-    void unlockFolder();
-
-    void start();
-
-signals:
-    void finished(bool success);
-    void folderUnlocked();
+    virtual void start() Q_DECL_OVERRIDE;
 
 private:
-    void slotFolderEncryptedIdReceived(const QStringList &list);
-    void slotTryLock(const QByteArray &folderId);
-    void slotFolderLockedSuccessfully(const QByteArray &fileId, const QByteArray &token);
-    void slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode);
-    void taskFailed();
-
-    OwncloudPropagator *_propagator;
-    SyncFileItemPtr _item;
-    QByteArray _folderToken;
-    QByteArray _folderId;
-    bool _folderLocked = false;
+    void slotFolderUnLockedSuccessfully(const QByteArray &folderId) override;
+    void slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode) override;
 };
 
 }
-
-#endif // PROPAGATEREMOTEDELETEENCRYPTED_H

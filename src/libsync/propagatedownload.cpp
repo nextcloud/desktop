@@ -985,7 +985,13 @@ void PropagateDownloadFile::downloadFinished()
         previousFileExists = false;
     }
 
-    if (previousFileExists) {
+    const auto vfs = propagator()->syncOptions()._vfs;
+
+    // In the case of an hydration, this size is likely to change for placeholders
+    // (except with the cfapi backend)
+    const auto isVirtualDownload = _item->_type == ItemTypeVirtualFileDownload;
+    const auto isCfApiVfs = vfs && vfs->mode() == Vfs::WindowsCfApi;
+    if (previousFileExists && (isCfApiVfs || !isVirtualDownload)) {
         // Check whether the existing file has changed since the discovery
         // phase by comparing size and mtime to the previous values. This
         // is necessary to avoid overwriting user changes that happened between
@@ -1027,7 +1033,6 @@ void PropagateDownloadFile::downloadFinished()
     if (_conflictRecord.isValid())
         propagator()->_journal->setConflictRecord(_conflictRecord);
 
-    auto vfs = propagator()->syncOptions()._vfs;
     if (vfs && vfs->mode() == Vfs::WithSuffix) {
         // If the virtual file used to have a different name and db
         // entry, remove it transfer its old pin state.

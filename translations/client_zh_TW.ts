@@ -203,6 +203,19 @@
     </message>
 </context>
 <context>
+    <name>OCC::AbstractPropagateRemoteDeleteEncrypted</name>
+    <message>
+        <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
+        <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
+        <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::AccountManager</name>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="351"/>
@@ -2915,17 +2928,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>大小</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>權限</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>檔案 ID</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
@@ -3116,6 +3129,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
+    <name>OCC::PropagateRemoteDeleteEncryptedRootFolder</name>
+    <message>
+        <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
+        <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="209"/>
@@ -3201,7 +3222,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>遺失投票網址</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
@@ -3631,7 +3652,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="754"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>選擇新位址...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="768"/>
@@ -3698,22 +3719,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="920"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>移動並重新命名...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="923"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>移動、重新命名並上傳...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="925"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>刪除本地變更</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="931"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>移動並上傳...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="932"/>
@@ -4194,7 +4215,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>已放棄</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
@@ -4222,19 +4243,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="94"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>開啟主對話方塊</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="97"/>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>暫停同步</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="98"/>
         <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>繼續同步</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="99"/>
@@ -4292,7 +4313,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="379"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>已同步 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserModel.cpp" line="381"/>

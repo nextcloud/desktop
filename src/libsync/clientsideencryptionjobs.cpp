@@ -257,8 +257,8 @@ bool LockEncryptFolderApiJob::finished()
     return true;
 }
 
-SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, const QByteArray& fileId, QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId)
+SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, const QByteArray& fileId, FlagAction flagAction, QObject* parent)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId), _flagAction(flagAction)
 {
 }
 
@@ -268,8 +268,10 @@ void SetEncryptionFlagApiJob::start()
     req.setRawHeader("OCS-APIREQUEST", "true");
     QUrl url = Utility::concatUrlPath(account()->url(), path());
 
-    qCInfo(lcCseJob()) << "marking the file with id" << _fileId << "as encrypted";
-    sendRequest("PUT", url, req);
+    qCInfo(lcCseJob()) << "marking the file with id" << _fileId << "as" << (_flagAction == Set ? "encrypted" : "non-encrypted") << ".";
+
+    sendRequest(_flagAction == Set ? "PUT" : "DELETE", url, req);
+
     AbstractNetworkJob::start();
 }
 

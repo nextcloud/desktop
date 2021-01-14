@@ -95,6 +95,7 @@ public:
         Off,
         WithSuffix,
         WindowsCfApi,
+        XAttr,
     };
     Q_ENUM(Mode)
     static QString modeToString(Mode mode);
