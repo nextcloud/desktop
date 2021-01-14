@@ -34,7 +34,8 @@ You do not need to sign a Contributor Agreement, but we ask that you follow our
 [Code of Conduct](https://nextcloud.com/code-of-conduct/).
 
 Please read the [Contribution Guide](https://nextcloud.com/contribute/) to get 
-started.
+started and follow the [Coding Style](https://github.com/nextcloud/desktop/wiki/Coding-Style)
+when writing new code.
 
 ## Translations
 Please submit translations via [Transifex](https://www.transifex.com/nextcloud/nextcloud/).
