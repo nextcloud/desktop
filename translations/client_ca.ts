@@ -2939,42 +2939,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1186"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>S&apos;ha ignorat perquè es troba a la llista de prohibicions «Trieu què voleu sincronitzar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1225"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>No es permet perquè no teniu permís per a afegir subcarpetes en aquesta carpeta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1224"/>
+        <location filename="../src/libsync/discovery.cpp" line="1230"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>No es permet perquè no teniu permís per a afegir fitxers en aquesta carpeta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1237"/>
+        <location filename="../src/libsync/discovery.cpp" line="1243"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No es permet carregar aquest fitxer perquè és de només lectura en el servidor; s&apos;està restaurant</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1259"/>
+        <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Moved to invalid target, restoring</source>
         <translation>S&apos;ha mogut a una destinació no vàlida; s&apos;està restaurant</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1272"/>
+        <location filename="../src/libsync/discovery.cpp" line="1278"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No es permet suprimir; s&apos;està restaurant</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1381"/>
+        <location filename="../src/libsync/discovery.cpp" line="1387"/>
         <source>Error while reading the database</source>
         <translation>Error while reading the database</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1442"/>
+        <location filename="../src/libsync/discovery.cpp" line="1448"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>El servidor ha respost amb un error en llegir la carpeta «%1»: %2</translation>
     </message>
@@ -4355,7 +4355,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="80"/>
+        <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>La característica de sistema de fitxers virtual requereix un sistema de fitxers NTFS; %1 utilitza %2</translation>
     </message>

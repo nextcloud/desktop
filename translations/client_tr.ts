@@ -207,12 +207,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan alınan HTTP kodu yanlış. 204 bekleniyordu, ancak &quot;%1 %2&quot; alındı.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1, %2 şifreli klasörünün kilidini açamadı&quot;.</translation>
     </message>
 </context>
 <context>
@@ -697,7 +697,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/application.cpp" line="139"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Bazı ayarlar, bu uygulamanın daha yeni sürümleri üzerinden yapılmış ve bu sürümde kullanılamaz.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Geçerli yapılandırma dosyası  zaten&lt;i&gt;%2&lt;/i&gt; üzerine yedeklendi.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
@@ -935,7 +935,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <location filename="../src/libsync/discoveryphase.cpp" line="497"/>
         <location filename="../src/libsync/discoveryphase.cpp" line="522"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu hatası: PROPFIND yanıtı XML biçiminde değil!</translation>
     </message>
 </context>
 <context>
@@ -1086,13 +1086,13 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="425"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ve diğer %n dosya eklendi.</numerusform><numerusform>%1 ve diğer %n dosya eklendi.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 eklendi.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="387"/>
@@ -1271,29 +1271,35 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; eşitleme klasöründeki tüm dosyalar silinecek.
+Silinen bu dosyalar yerel eşitleme klasörünüzden de silineceğinden, geri yükleme yetkiniz yoksa bu dosyaları kullanamayacaksınız. 
+Geri yükleme yetkiniz varsa ve geri yüklemeyi seçerseniz, dosyalar sunucu ile yeniden eşitlenir.
+Silmeyi seçerseniz, sahibi değilseniz bu dosyaları artık kullanamazsınız.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1240"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; eşitleme klasöründeki tüm dosyalar sunucudan silindi.
+Silinen dosyalar eşitleme sırasında yerel eşitleme klasörünüzden de silinecek ve bu dosyaları geri yüklemedikçe göremeyeceksiniz.
+Sunucuda bu eşitleme işlemlerinin yapılmasını istediğinizden emin misiniz?
+Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanız dosyalar sunucudan yeniden eşitlenecek.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1244"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Tüm dosyalar silinsin mi?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1248"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Tüm dosyalar silinsin</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1249"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Dosyalar korunsun</translation>
     </message>
 </context>
 <context>
@@ -1376,7 +1382,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1469"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Seçilmiş yol bulunamadı!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1358"/>
@@ -1459,7 +1465,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>
         <source>Virtual file support is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosya desteği etkinleştirildi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="241"/>
@@ -1469,12 +1475,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="299"/>
         <source>Synchronizing VirtualFiles with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosyalar yerel klasör ile eşitleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasör ile eşitleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
@@ -1679,7 +1685,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="473"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;i&gt;%2&lt;/i&gt; klasörünün alt klasörü olan &lt;i&gt;%1&lt;/i&gt; zaten eşitleniyor.</translation>
     </message>
 </context>
 <context>
@@ -1687,17 +1693,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>İçerik hemen indirilmesin yerine sanal dosyalar kullanılsın%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(deneysel)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosyalar seçilmiş klasör için kullanılamaz</translation>
     </message>
 </context>
 <context>
@@ -1728,7 +1734,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Beklenmeyen bir indirme içeriği uzunluğu alındı</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="215"/>
@@ -1863,7 +1869,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="162"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Otomatik başlatma sistem genelinde etkinleştirilmiş olduğundan, otomatik başlatma devre dışı bırakılamaz.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="303"/>
@@ -2081,18 +2087,21 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>İstemci uygulaması hata ayıklama günlüklerini bir geçici klasöre yazabilir. Bu günlükler sorunları çözmek için çok yararlıdır.
+Günlük dosyalarının boyutu büyük olabildiğinden, istemci uygulaması her eşitleme işleminde eski günlükleri sıkıştırarak yeni günlükle oluşturur. Ayrıca çok fazla disk alanının kullanılmaması için günlük dosyaları bir kaç saat sonra silinir.
+Bu seçenek etkinleştirildiğinde günlükler %1 klasörüne yazılır</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
         <source>Enable logging to temporary folder</source>
-        <translation type="unfinished"/>
+        <translation>Günlükler geçici klasöre yazılsın</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
         <source>This setting persists across client restarts.
 Note that using any logging command line options will override this setting.</source>
-        <translation type="unfinished"/>
+        <translation>Bu ayar istemci uygulaması yeniden başlatıldığında da korunur.
+Komut satırından verilen günlük komutlarının bu ayarın yerine geçeceğini unutmayın.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="70"/>
@@ -2102,7 +2111,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="77"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Klasörü aç</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
@@ -2266,7 +2275,7 @@ Günlükler %1 üzerine yazılacak</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="176"/>
         <source>Note: proxy settings have no effects for accounts on localhost</source>
-        <translation type="unfinished"/>
+        <translation>Not: Vekil sunucu ayarları localhost üzerindeki hesaplar için uygulanmaz</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -2349,7 +2358,7 @@ Günlükler %1 üzerine yazılacak</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="120"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>OAuth2 yönlendirmesinden gelen JSON boş</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="116"/>
@@ -2467,12 +2476,12 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source>Use &amp;virtual files instead of downloading content immediately%1</source>
-        <translation type="unfinished"/>
+        <translation>İçerik &amp;hemen indirilmesin yerine sanal dosyalar kullanılsın%1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="85"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(deneysel)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="154"/>
@@ -2497,7 +2506,7 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosyalar seçilmiş klasör için kullanılamaz</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
@@ -2810,7 +2819,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="325"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Deneysel özellikler etkinleştirilsin mi?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="326"/>
@@ -2821,17 +2830,23 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Sanal dosyalar&quot; kipi etkinleştirildiğinde, başlangıçta hiç bir dosya indirilmez. Onun yerine sunucudaki her dosya için küçük bir &quot;%1&quot; dosyası oluşturulur. Bu dosyalar yürütülerek ya da sağ tık menüsü kullanılarak dosyaların içeriği indirilebilir.
+
+Sanal dosya kipinde karşılıklı ayrıcalıklı seçmeli eşitleme yapırlır. Şu anda seçilmemiş klasörler yalnız çevrimiçi klasörlere çevrilir ve seçmeli eşitleme ayarlarınız sıfırlanır.
+
+Bu kipe geçildiğinde yürütülmekte olan eşitleme işlemleri iptal edilir.
+
+Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karşılaşabileceğiniz sorunları bize bildirin.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="340"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Deneysel yer belirteci kipi etkinleştirilsin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="341"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Güvende kalın</translation>
     </message>
 </context>
 <context>
@@ -2865,132 +2880,132 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="237"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Sembolik bağlantıların eşitlenmesi desteklenmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="245"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya yok sayılanlar listesinde.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="249"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Nokta ile biten dosya adları bu dosya sisteminde desteklenmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="259"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; karakterini içeren dosya adları bu sistemde desteklenmiyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="263"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adında en az bir geçersiz karakter var</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="265"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Bu dosya adı bu dosya sisteminde ayırtılmış bir ad olduğundan kullanılamaz.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="270"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adının sonunda boşluklar var.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="273"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adı çok uzun.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="276"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya/Klasör gizli olduğu için yok sayıldı.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="279"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Durum alınamadı.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Çakışma: Sunucu sürümü indirildi, yerel kopya yeniden adlandırıldı ve yüklenmedi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="286"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adı dosya sisteminizde kodlanamıyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="289"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adı sunucu üzerinde kara listeye alınmış.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="344"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Dosyanın uzantısı sanal dosyalar için ayrılmış.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="408"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>boyut</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="410"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>izinler</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="414"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>dosya kodu</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="418"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>sunucu numarası %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1186"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Eşitlenecek ögeleri seçin&quot; kara listesinde olduğundan yok sayıldı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1225"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Bu klasöre alt klasör ekleme izniniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1224"/>
+        <location filename="../src/libsync/discovery.cpp" line="1230"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Bu klasöre dosya ekleme izniniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1237"/>
+        <location filename="../src/libsync/discovery.cpp" line="1243"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu üzerinde salt okunur olduğundan, bu dosya yüklenemedi, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1259"/>
+        <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz bir hedefe taşındı, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1272"/>
+        <location filename="../src/libsync/discovery.cpp" line="1278"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Silmeye izin verilmedi, geri yükleniyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1381"/>
+        <location filename="../src/libsync/discovery.cpp" line="1387"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanı okunurken sorun çıktı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1442"/>
+        <location filename="../src/libsync/discovery.cpp" line="1448"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>!%1&apos; klasörü okunurken sunucu bir hata yanıtı verdi: %2</translation>
     </message>
 </context>
 <context>
@@ -3124,7 +3139,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Sabitleme durumu ayarlanırken sorun çıktı</translation>
     </message>
 </context>
 <context>
@@ -3140,7 +3155,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan alınan HTTP kodu yanlış. 204 bekleniyordu, ancak &quot;%1 %2&quot; alındı.</translation>
     </message>
 </context>
 <context>
@@ -3161,7 +3176,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="142"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>%1, %2 olarak yeniden adlandırılamadı, hata: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
@@ -3177,7 +3192,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="233"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Sabitleme durumu ayarlanırken sorun çıktı</translation>
     </message>
 </context>
 <context>
@@ -3229,7 +3244,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Anket adresi eksik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
@@ -3359,7 +3374,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 Ayarları</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="99"/>
@@ -3640,7 +3655,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharee.cpp" line="133"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -3695,7 +3710,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="946"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Bu klasör yeniden paylaşılamaz</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="824"/>
@@ -4049,12 +4064,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="352"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>Dosya güncellenemedi: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="362"/>
         <source>Could not update virtual file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosya üst verileri güncellenemedi: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="536"/>
@@ -4167,7 +4182,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="514"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosyalar son ek ile kullanılıyor. Ancak son ek ayarlanmamış</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="521"/>
@@ -4222,7 +4237,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Aborted</source>
-        <translation type="unfinished"/>
+        <translation>Vazgeçildi</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1809"/>
@@ -4369,9 +4384,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="80"/>
+        <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosya sistemi özelliği için NTFS dosya sistemi gereklidir. %1, %2 kullanıyor</translation>
     </message>
 </context>
 <context>
@@ -4423,7 +4438,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="228"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>%1 hesabındaki sunucu desteklenmeyen %2 sürümünü kullanıyor. Bu istemci desteklenmeyen sunucu sürümleri üzerinde denenmemiş olduğundan tehlikeli olabilir. Bu riski alıyorsanız devam edebilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
@@ -4653,7 +4668,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>Her şe&amp;y sunucudan eşitlensin (önerilir)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
@@ -4971,7 +4986,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="362"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>İndirilen dosya sağlama değerine uygun değil, yeniden indirilecek. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
 </context>
 <context>
@@ -5117,12 +5132,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Virtual file created</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosya eklendi</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Replaced by virtual file</source>
-        <translation type="unfinished"/>
+        <translation>Sanal dosya ile değiştirildi</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
@@ -5289,32 +5304,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="76"/>
         <source>Always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Her zaman yerel olarak kullanılabilir</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="78"/>
         <source>Currently available locally</source>
-        <translation type="unfinished"/>
+        <translation>Şu anda yerel olarak kullanılabilir</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="80"/>
         <source>Some available online only</source>
-        <translation type="unfinished"/>
+        <translation>Bazıları yalnız çevrimiçi kullanılabilir</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="83"/>
         <source>Available online only</source>
-        <translation type="unfinished"/>
+        <translation>Yalnız çevrimiçi kullanılabilir</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="90"/>
         <source>Make always available locally</source>
-        <translation type="unfinished"/>
+        <translation>Her zaman yerel olarak kullanılabilsin</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="95"/>
         <source>Free up local space</source>
-        <translation type="unfinished"/>
+        <translation>Yerelden kaldırıp yer aç</translation>
     </message>
 </context>
 <context>

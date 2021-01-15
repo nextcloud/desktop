@@ -2969,42 +2969,42 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>serwer zgłosił brak %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1186"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorowane z powodu czarnej listy &quot;Wybierz co synchronizować&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1225"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania podfolderów do tego folderu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1224"/>
+        <location filename="../src/libsync/discovery.cpp" line="1230"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania plików w tym folderze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1237"/>
+        <location filename="../src/libsync/discovery.cpp" line="1243"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Przesyłanie niedozwolone, ponieważ plik jest &quot;tylko do odczytu&quot; na serwerze, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1259"/>
+        <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Przeniesiono do nieprawidłowego obiektu, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1272"/>
+        <location filename="../src/libsync/discovery.cpp" line="1278"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Brak uprawnień by usunąć, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1381"/>
+        <location filename="../src/libsync/discovery.cpp" line="1387"/>
         <source>Error while reading the database</source>
         <translation>Błąd podczas odczytu bazy danych</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1442"/>
+        <location filename="../src/libsync/discovery.cpp" line="1448"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Serwer odpowiedział z błędem podczas odczytu katalogu &apos;%1&apos; : %2</translation>
     </message>
@@ -4385,7 +4385,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="80"/>
+        <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>Funkcja wirtualnego systemu plików wymaga systemu plików NTFS, %1 używa %2</translation>
     </message>
