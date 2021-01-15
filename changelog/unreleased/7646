@@ -1,0 +1,5 @@
+Bugfix: SQLite wal file grows to several gigabyte
+
+We fixed a bug where the SQLite wal file growed until the client was quit.
+
+https://github.com/owncloud/client/issues/7646
