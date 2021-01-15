@@ -937,9 +937,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     // If it's not a move it's just a local-NEW
     if (!moveCheck()) {
-       postProcessLocalNew();
-       finalize();
-       return;
+        const bool isRootEncryptedFolderRename = base._isE2eEncrypted && base._e2eMangledName.isEmpty() && !base._path.contains('/');
+        if (isRootEncryptedFolderRename) {
+            // if we're renaming the root encrypted folder, we'd need to mark it's NEW item with _isEncrypted true so the further processing will work correctly
+            item->_isEncrypted = true;
+        }
+        postProcessLocalNew();
+        finalize();
+        return;
     }
 
     // Check local permission if we are allowed to put move the file here

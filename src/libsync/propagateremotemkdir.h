@@ -60,5 +60,8 @@ private slots:
     void propfindResult(const QVariantMap &);
     void propfindError();
     void success();
+
+private:
+    bool _isEncryptedRootFolder = false;
 };
 }
