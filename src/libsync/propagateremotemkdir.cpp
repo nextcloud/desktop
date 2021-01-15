@@ -32,7 +32,7 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     : PropagateItemJob(propagator, item)
     , _deleteExisting(false)
     , _uploadEncryptedHelper(nullptr)
-    , _parallelism(FullParallelism)
+    , _isEncryptedRootFolder(_item->_isEncrypted && _item->_encryptedFileName.isEmpty())
 {
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
@@ -43,15 +43,6 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     if (!ok) {
         return;
     }
-
-    if (hasEncryptedAncestor()) {
-        _parallelism = WaitForFinished;
-    }
-}
-
-PropagatorJob::JobParallelism PropagateRemoteMkdir::parallelism()
-{
-    return _parallelism;
 }
 
 void PropagateRemoteMkdir::start()
@@ -203,7 +194,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         return;
     }
 
-    if (!_uploadEncryptedHelper) {
+    if (!_uploadEncryptedHelper && !_isEncryptedRootFolder) {
         success();
     } else {
         // We still need to mark that folder encrypted
@@ -212,7 +203,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         // We're expecting directory path in /Foo/Bar convention...
         Q_ASSERT(_job->path().startsWith('/') && !_job->path().endsWith('/'));
         // But encryption job expect it in Foo/Bar/ convention
-        const auto path = _job->path().mid(1);
+        const auto path = _isEncryptedRootFolder ? _job->path() : _job->path().mid(1);
 
         auto job = new OCC::EncryptFolderJob(propagator()->account(), propagator()->_journal, path, _item->_fileId, this);
         connect(job, &OCC::EncryptFolderJob::finished, this, &PropagateRemoteMkdir::slotEncryptFolderFinished);

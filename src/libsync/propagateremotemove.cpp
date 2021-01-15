@@ -85,6 +85,31 @@ void PropagateRemoteMove::start()
 
     if (origin == _item->_renameTarget) {
         // The parent has been renamed already so there is nothing more to do.
+
+        if (!_item->_encryptedFileName.isEmpty()) {
+            const auto path = _item->_file;
+            const auto slashPosition = path.lastIndexOf('/');
+            const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+
+            SyncJournalFileRecord parentRec;
+            bool ok = propagator()->_journal->getFileRecord(parentPath, &parentRec);
+            if (!ok) {
+                done(SyncFileItem::NormalError);
+                return;
+            }
+
+            // We should be encrypted as well since our parent is
+            const auto remoteParentPath = parentRec._e2eMangledName.isEmpty() ? parentPath : parentRec._e2eMangledName;
+
+            const auto lastSlashPosition = _item->_encryptedFileName.lastIndexOf('/');
+            const auto encryptedName = slashPosition >= 0 ? _item->_encryptedFileName.mid(lastSlashPosition + 1) : QString();
+
+            if (!encryptedName.isEmpty()) {
+                _item->_encryptedFileName = remoteParentPath + "/" + encryptedName;
+            }
+
+        }
+
         finalize();
         return;
     }

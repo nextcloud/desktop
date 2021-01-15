@@ -178,12 +178,15 @@ protected slots:
 
 private:
     QScopedPointer<PropagateItemJob> _restoreJob;
+    JobParallelism _parallelism;
 
 public:
     PropagateItemJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator)
         , _item(item)
+        , _parallelism(FullParallelism)
     {
+        _parallelism = (_item->_isEncrypted || hasEncryptedAncestor()) ? WaitForFinished : FullParallelism;
     }
     ~PropagateItemJob();
 
@@ -198,6 +201,8 @@ public:
         QMetaObject::invokeMethod(this, "start"); // We could be in a different thread (neon jobs)
         return true;
     }
+
+    virtual JobParallelism parallelism() override { return _parallelism; }
 
     SyncFileItemPtr _item;
 
