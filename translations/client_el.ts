@@ -2949,42 +2949,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ο διακομιστής δεν ανέφερε %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1186"/>
+        <location filename="../src/libsync/discovery.cpp" line="1192"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Αγνοήθηκε λόγω της μαύρης λίστας &quot;επιλέξτε τι να συγχρονίσετε&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1219"/>
+        <location filename="../src/libsync/discovery.cpp" line="1225"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε άδεια να προσθέσετε υποφακέλους σε αυτόν το φάκελο.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1224"/>
+        <location filename="../src/libsync/discovery.cpp" line="1230"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε άδεια να προσθέσετε φακέλους σε αυτόν το φάκελο.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1237"/>
+        <location filename="../src/libsync/discovery.cpp" line="1243"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Δεν επιτρέπεται η μεταφόρτωση αυτού του αρχείου επειδή είναι μόνο για ανάγνωση στον διακομιστή, γίνεται επαναφορά.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1259"/>
+        <location filename="../src/libsync/discovery.cpp" line="1265"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Μετακινήθηκε σε μη έγκυρο στόχο, επαναφορά.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1272"/>
+        <location filename="../src/libsync/discovery.cpp" line="1278"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Δεν επιτρέπεται η κατάργηση, επαναφορά.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1381"/>
+        <location filename="../src/libsync/discovery.cpp" line="1387"/>
         <source>Error while reading the database</source>
         <translation>Σφάλμα κατά την ανάγνωση της βάσης δεδομένων.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1442"/>
+        <location filename="../src/libsync/discovery.cpp" line="1448"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Ο διακομιστής απάντησε με σφάλμα κατά την ανάγνωση της διεύθυνσης ΄%1&apos; : %2</translation>
     </message>
@@ -4365,7 +4365,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Vfs</name>
     <message>
-        <location filename="../src/common/vfs.cpp" line="80"/>
+        <location filename="../src/common/vfs.cpp" line="82"/>
         <source>The Virtual filesystem feature requires a NTFS file system, %1 is using %2</source>
         <translation>Η δυνατότητα εικονικού συστήματος αρχείων απαιτεί σύστημα αρχείων NTFS, το %1 χρησιμοποιεί %2.</translation>
     </message>
