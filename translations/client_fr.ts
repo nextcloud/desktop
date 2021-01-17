@@ -386,12 +386,12 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Disable virtual file support …</source>
-        <translation type="unfinished"/>
+        <translation>Désactiver la support du fichier virtuel</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Enable virtual file support%1 …</source>
-        <translation type="unfinished"/>
+        <translation>Activer le support</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
@@ -435,7 +435,9 @@ Wait for the new sync, then encrypt it.</source>
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation type="unfinished"/>
+        <translation>Cette action désactivera le support du fichier virtuel. Par conséquent, les contenus des dossiers habituellement marqués comme &quot;disponibles en lignes seulement&quot; seront téléchargés.
+Le seul avantage de cette désactivation est que les fonctionnalités de synchronisation sélective seront de nouveau disponibles.
+Cette action entraînera la perte de toute synchronisation en cours.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
@@ -485,7 +487,8 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1034"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>La version %1 du serveur n&apos;est pas maintenue !
+Vous prenez vos propres risques.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="772"/>
@@ -664,7 +667,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
         <source>An encrypted pkcs12 bundle is strongly recommended as a copy will be stored in the configuration file.</source>
-        <translation type="unfinished"/>
+        <translation>Un paquet pkcs12 encrypté est vivement recommandé vu qu&apos;une copie sera stockée dans le fichier de configuration.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
