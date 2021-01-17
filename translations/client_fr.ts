@@ -2558,7 +2558,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="402"/>
         <source>permissions</source>
-        <translation>permissions</translation>
+        <translation>permissions, autorisations</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="404"/>
