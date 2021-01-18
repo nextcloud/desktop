@@ -793,8 +793,8 @@ Esta acción abortará cualquier sincronización actualmente en ejecución.</tra
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="480"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="501"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="474"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="495"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Error en el servidor: la réplica PROPFIND no está en un formato XML!</translation>
     </message>
@@ -2572,42 +2572,42 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
         <translation>servidor informó no %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1243"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Movido a objetivo no válido, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1257"/>
+        <location filename="../src/libsync/discovery.cpp" line="1256"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No está permitido borrar, restaurando.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1171"/>
+        <location filename="../src/libsync/discovery.cpp" line="1170"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado porque se encuentra en la lista negra de &quot;elija qué va a sincronizar&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1204"/>
+        <location filename="../src/libsync/discovery.cpp" line="1203"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>No permitido porque no tiene permiso para añadir subdirectorios a ese directorio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1209"/>
+        <location filename="../src/libsync/discovery.cpp" line="1208"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>No permitido porque no tiene permiso para añadir archivos a ese directorio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1222"/>
+        <location filename="../src/libsync/discovery.cpp" line="1221"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No está permitido subir este archivo porque es de solo lectura en el servidor, restaurando.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1367"/>
+        <location filename="../src/libsync/discovery.cpp" line="1366"/>
         <source>Error while reading the database</source>
         <translation>Error durante la lectura de la base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1428"/>
+        <location filename="../src/libsync/discovery.cpp" line="1427"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>El servidor respondió con un error al leer el directorio &apos;%1&apos; : %2</translation>
     </message>

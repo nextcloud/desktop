@@ -793,8 +793,8 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="480"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="501"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="474"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="495"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>伺服器錯誤：PROPFIND回覆格式為XML！</translation>
     </message>
@@ -2575,42 +2575,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>伺服器報告沒有 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1243"/>
         <source>Moved to invalid target, restoring</source>
         <translation>已移至無效的目標，正在還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1257"/>
+        <location filename="../src/libsync/discovery.cpp" line="1256"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允許刪除，復原中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1171"/>
+        <location filename="../src/libsync/discovery.cpp" line="1170"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>已忽略。根據 &quot;選擇要同步的項目&quot;的黑名單</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1204"/>
+        <location filename="../src/libsync/discovery.cpp" line="1203"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>拒絕此操作，您沒有在此新增子資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1209"/>
+        <location filename="../src/libsync/discovery.cpp" line="1208"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>拒絕此操作，您沒有新增檔案在此資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1222"/>
+        <location filename="../src/libsync/discovery.cpp" line="1221"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>拒絕上傳此檔案，此檔案在伺服器是唯讀檔，復原中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1367"/>
+        <location filename="../src/libsync/discovery.cpp" line="1366"/>
         <source>Error while reading the database</source>
         <translation>讀取資料庫時錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1428"/>
+        <location filename="../src/libsync/discovery.cpp" line="1427"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>伺服器回覆與一個錯誤而讀資料夾 &apos;%1&apos; : %2</translation>
     </message>

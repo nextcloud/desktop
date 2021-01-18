@@ -793,8 +793,8 @@ Cette action stoppera toute synchronisation en cours.</translation>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="480"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="501"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="474"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="495"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Erreur du serveur : la réponse PROPFIND n’est pas formatée en XML !</translation>
     </message>
@@ -2558,7 +2558,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/libsync/discovery.cpp" line="402"/>
         <source>permissions</source>
-        <translation>permissions</translation>
+        <translation>permissions, autorisations</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="404"/>
@@ -2576,42 +2576,42 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le serveur n&apos;a pas reporté de %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1244"/>
+        <location filename="../src/libsync/discovery.cpp" line="1243"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Déplacé vers une cible invalide, restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1257"/>
+        <location filename="../src/libsync/discovery.cpp" line="1256"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non autorisé à supprimer. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1171"/>
+        <location filename="../src/libsync/discovery.cpp" line="1170"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignoré en raison de la liste noire &quot;Sélectionner le contenu à synchroniser&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1204"/>
+        <location filename="../src/libsync/discovery.cpp" line="1203"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des sous-dossiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1209"/>
+        <location filename="../src/libsync/discovery.cpp" line="1208"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1222"/>
+        <location filename="../src/libsync/discovery.cpp" line="1221"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non autorisé à envoyer ce fichier car il est en lecture seule sur le serveur. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1367"/>
+        <location filename="../src/libsync/discovery.cpp" line="1366"/>
         <source>Error while reading the database</source>
         <translation>Erreur lors de la lecture de la base de données</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1428"/>
+        <location filename="../src/libsync/discovery.cpp" line="1427"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
         <translation>Le serveur a répondu avec une erreur durant la lecture du répertoire &apos;%1&apos; : %2</translation>
     </message>
