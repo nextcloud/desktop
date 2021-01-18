@@ -153,8 +153,13 @@ QByteArray findBestChecksum(const QByteArray &_checksums)
         || -1 != (i = checksums.indexOf(QLatin1String("MD5:"), Qt::CaseInsensitive))
         || -1 != (i = checksums.indexOf(QLatin1String("ADLER32:"), Qt::CaseInsensitive))) {
         // Now i is the start of the best checksum
-        // Grab it until the next space or end of string.
-        return _checksums.mid(i, _checksums.indexOf(' ', i) - i);
+        // Grab it until the next space or end of xml or end of string.
+        int end = _checksums.indexOf(' ', i);
+        // workaround for https://github.com/owncloud/core/pull/38304
+        if (end == -1) {
+            end = _checksums.indexOf('<', i);
+        }
+        return _checksums.mid(i, end - i);
     }
     qCWarning(lcChecksums) << "Failed to parse" << _checksums;
     return QByteArray();
