@@ -28,6 +28,7 @@
 
 #include "common/utility.h"
 #include "common/ownsql.h"
+#include "common/preparedsqlquerymanager.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/result.h"
 #include "common/pinstate.h"
@@ -397,46 +398,6 @@ private:
     int _transaction;
     bool _metadataTableIsEmpty;
 
-    SqlQuery _getFileRecordQuery;
-    SqlQuery _getFileRecordQueryByMangledName;
-    SqlQuery _getFileRecordQueryByInode;
-    SqlQuery _getFileRecordQueryByFileId;
-    SqlQuery _getFilesBelowPathQuery;
-    SqlQuery _getAllFilesQuery;
-    SqlQuery _listFilesInPathQuery;
-    SqlQuery _setFileRecordQuery;
-    SqlQuery _setFileRecordChecksumQuery;
-    SqlQuery _setFileRecordLocalMetadataQuery;
-    SqlQuery _getDownloadInfoQuery;
-    SqlQuery _setDownloadInfoQuery;
-    SqlQuery _deleteDownloadInfoQuery;
-    SqlQuery _getUploadInfoQuery;
-    SqlQuery _setUploadInfoQuery;
-    SqlQuery _deleteUploadInfoQuery;
-    SqlQuery _deleteFileRecordPhash;
-    SqlQuery _deleteFileRecordRecursively;
-    SqlQuery _getErrorBlacklistQuery;
-    SqlQuery _setErrorBlacklistQuery;
-    SqlQuery _getSelectiveSyncListQuery;
-    SqlQuery _getChecksumTypeIdQuery;
-    SqlQuery _getChecksumTypeQuery;
-    SqlQuery _insertChecksumTypeQuery;
-    SqlQuery _getDataFingerprintQuery;
-    SqlQuery _setDataFingerprintQuery1;
-    SqlQuery _setDataFingerprintQuery2;
-    SqlQuery _setKeyValueStoreQuery;
-    SqlQuery _getKeyValueStoreQuery;
-    SqlQuery _deleteKeyValueStoreQuery;
-    SqlQuery _getConflictRecordQuery;
-    SqlQuery _setConflictRecordQuery;
-    SqlQuery _deleteConflictRecordQuery;
-    SqlQuery _getRawPinStateQuery;
-    SqlQuery _getEffectivePinStateQuery;
-    SqlQuery _getSubPinsQuery;
-    SqlQuery _countDehydratedFilesQuery;
-    SqlQuery _setPinStateQuery;
-    SqlQuery _wipePinStateQuery;
-
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *
      * When schedulePathForRemoteDiscovery() is called some etags to _invalid_ in the
@@ -458,6 +419,8 @@ private:
      * variable, for specific filesystems, or when WAL fails in a particular way.
      */
     QByteArray _journalMode;
+
+    PreparedSqlQueryManager _queryManager;
 };
 
 bool OCSYNC_EXPORT
