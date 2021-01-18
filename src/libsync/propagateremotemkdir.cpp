@@ -33,7 +33,7 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     , _deleteExisting(false)
     , _uploadEncryptedHelper(nullptr)
     , _parallelism(FullParallelism)
-    , _isEncryptedRootFolder(_item->_isEncrypted && _item->_encryptedFileName.isEmpty() && !_item->_file.contains('/'))
+    , _isEncryptedRootFolder(_item->_isEncrypted && _item->_encryptedFileName.isEmpty())
 {
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');

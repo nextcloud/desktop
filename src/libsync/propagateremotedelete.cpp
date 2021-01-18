@@ -28,7 +28,7 @@ Q_LOGGING_CATEGORY(lcPropagateRemoteDelete, "nextcloud.sync.propagator.remotedel
 
 PropagatorJob::JobParallelism PropagateRemoteDelete::parallelism()
 {
-    return _item->_encryptedFileName.isEmpty() ? FullParallelism : WaitForFinished;
+    return _item->_encryptedFileName.isEmpty() && !_item->_isEncrypted ? FullParallelism : WaitForFinished;
 }
 
 void PropagateRemoteDelete::start()
