@@ -13,6 +13,7 @@ Summary
 * Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
+* Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 
 Details
 -------
@@ -50,6 +51,12 @@ Details
 
    https://github.com/owncloud/client/pull/8293
    https://github.com/owncloud/client/pull/8253
+
+* Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
+
+   We implemented support for dynamic client registration with an OpenID Connect provider.
+
+   https://github.com/owncloud/client/pull/8350/
 
 Changelog for ownCloud Desktop Client [2.7.4] (2020-12-21)
 =======================================
