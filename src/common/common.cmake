@@ -5,6 +5,7 @@ set(common_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/checksums.cpp
     ${CMAKE_CURRENT_LIST_DIR}/filesystembase.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ownsql.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/preparedsqlquerymanager.cpp
     ${CMAKE_CURRENT_LIST_DIR}/syncjournaldb.cpp
     ${CMAKE_CURRENT_LIST_DIR}/syncjournalfilerecord.cpp
     ${CMAKE_CURRENT_LIST_DIR}/utility.cpp
