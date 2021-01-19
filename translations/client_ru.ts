@@ -3832,17 +3832,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="330"/>
+        <location filename="../src/common/checksums.cpp" line="336"/>
         <source>The checksum header is malformed.</source>
         <translation>Некорректная контрольная сумма заголовка</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="357"/>
+        <location filename="../src/common/checksums.cpp" line="363"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>Заголовок контрольной суммы содержал неизвестный тип &apos;%1&apos; контрольной суммы</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="361"/>
+        <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>Скачанный файл не соответствует по контрольной сумме, скачивание будет возобновлено. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
