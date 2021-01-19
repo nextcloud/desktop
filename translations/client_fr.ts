@@ -3835,17 +3835,17 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="330"/>
+        <location filename="../src/common/checksums.cpp" line="336"/>
         <source>The checksum header is malformed.</source>
         <translation>L&apos;entête de somme de contrôle est mal formée.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="357"/>
+        <location filename="../src/common/checksums.cpp" line="363"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>L&apos;en-tête de la somme de contrôle contenait un type de somme de contrôle inconnu &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="361"/>
+        <location filename="../src/common/checksums.cpp" line="367"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>Le fichier téléchargé ne correspond pas au checksum, il va être retéléchargé. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
