@@ -892,7 +892,7 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 
 qint64 SyncJournalDb::getPHash(const QByteArray &file)
 {
-    int64_t h = 0;
+    qint64 h = 0;
     int len = file.length();
 
     h = c_jhash64((uint8_t *)file.data(), len, 0);
@@ -922,7 +922,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader
                  << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record._isE2eEncrypted;
 
-    qlonglong phash = getPHash(record._path);
+    const qint64 phash = getPHash(record._path);
     if (checkConnect()) {
         int plen = record._path.length();
 
@@ -1068,7 +1068,7 @@ bool SyncJournalDb::deleteFileRecord(const QString &filename, bool recursively)
                 return false;
             }
 
-            qlonglong phash = getPHash(filename.toUtf8());
+            const qint64 phash = getPHash(filename.toUtf8());
             query->bindValue(1, phash);
 
             if (!query->exec()) {
@@ -1372,7 +1372,7 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
 
     qCInfo(lcDb) << "Updating file checksum" << filename << contentChecksum << contentChecksumType;
 
-    qlonglong phash = getPHash(filename.toUtf8());
+    const qint64 phash = getPHash(filename.toUtf8());
     if (!checkConnect()) {
         qCWarning(lcDb) << "Failed to connect database.";
         return false;
@@ -1401,7 +1401,7 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
 
     qCInfo(lcDb) << "Updating local metadata for:" << filename << modtime << size << inode;
 
-    qlonglong phash = getPHash(filename.toUtf8());
+    const qint64 phash = getPHash(filename.toUtf8());
     if (!checkConnect()) {
         qCWarning(lcDb) << "Failed to connect database.";
         return false;
