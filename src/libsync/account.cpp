@@ -64,11 +64,6 @@ AccountPtr Account::create()
 {
     AccountPtr acc = AccountPtr(new Account);
     acc->setSharedThis(acc);
-
-        //TODO: This probably needs to have a better
-        // coupling, but it should work for now.
-        acc->e2e()->setAccount(acc);
-
     return acc;
 }
 
