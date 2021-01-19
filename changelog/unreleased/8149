@@ -1,0 +1,6 @@
+Bugfix: Mac tray icon is size
+
+We backported a change to Qt 5.12.10 which fixed the scaling of the system tray
+icon on Big Sur.
+
+https://github.com/owncloud/client/issues/8149
