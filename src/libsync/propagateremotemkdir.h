@@ -30,12 +30,9 @@ class PropagateRemoteMkdir : public PropagateItemJob
     QPointer<AbstractNetworkJob> _job;
     bool _deleteExisting;
     PropagateUploadEncrypted *_uploadEncryptedHelper;
-    JobParallelism _parallelism;
     friend class PropagateDirectory; // So it can access the _item;
 public:
     PropagateRemoteMkdir(OwncloudPropagator *propagator, const SyncFileItemPtr &item);
-
-    JobParallelism parallelism() override;
 
     void start() override;
     void abort(PropagatorJob::AbortType abortType) override;

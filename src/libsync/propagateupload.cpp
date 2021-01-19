@@ -192,7 +192,6 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     , _finished(false)
     , _deleteExisting(false)
     , _aborting(false)
-    , _parallelism(FullParallelism)
     , _uploadEncryptedHelper(nullptr)
     , _uploadingEncrypted(false)
 {
@@ -205,15 +204,6 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     if (!ok) {
         return;
     }
-
-    if (hasEncryptedAncestor()) {
-        _parallelism = WaitForFinished;
-    }
-}
-
-PropagatorJob::JobParallelism PropagateUploadFileCommon::parallelism()
-{
-    return _parallelism;
 }
 
 void PropagateUploadFileCommon::setDeleteExisting(bool enabled)

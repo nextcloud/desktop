@@ -26,11 +26,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPropagateRemoteDelete, "nextcloud.sync.propagator.remotedelete", QtInfoMsg)
 
-PropagatorJob::JobParallelism PropagateRemoteDelete::parallelism()
-{
-    return _item->_encryptedFileName.isEmpty() && !_item->_isEncrypted ? FullParallelism : WaitForFinished;
-}
-
 void PropagateRemoteDelete::start()
 {
     if (propagator()->_abortRequested)

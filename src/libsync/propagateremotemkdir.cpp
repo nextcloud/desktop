@@ -32,7 +32,6 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     : PropagateItemJob(propagator, item)
     , _deleteExisting(false)
     , _uploadEncryptedHelper(nullptr)
-    , _parallelism(FullParallelism)
     , _isEncryptedRootFolder(_item->_isEncrypted && _item->_encryptedFileName.isEmpty())
 {
     const auto path = _item->_file;
@@ -44,15 +43,6 @@ PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const
     if (!ok) {
         return;
     }
-
-    if (hasEncryptedAncestor() || _isEncryptedRootFolder) {
-        _parallelism = WaitForFinished;
-    }
-}
-
-PropagatorJob::JobParallelism PropagateRemoteMkdir::parallelism()
-{
-    return _parallelism;
 }
 
 void PropagateRemoteMkdir::start()
