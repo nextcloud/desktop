@@ -18,6 +18,7 @@ Summary
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
 * Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
+* Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
 
 Details
 -------
@@ -85,6 +86,13 @@ Details
    We implemented support for dynamic client registration with an OpenID Connect provider.
 
    https://github.com/owncloud/client/pull/8350/
+
+* Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
+
+   We now include the os version in the about dialog, this might help us to faster pin down os related
+   issues.
+
+   https://github.com/owncloud/client/pull/8374
 
 Changelog for ownCloud Desktop Client [2.7.4] (2020-12-21)
 =======================================
