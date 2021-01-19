@@ -2,5 +2,6 @@ Change: Third party upgrades in distributed binaries
 
 We updated Qt from 5.12.9 to 5.12.10.
 We updated OpenSSL from 1.1.1g to 1.1.1i.
+Linux dependencies: QtKeychain was updated from 0.10.0 to 0.12.0
 
 https://github.com/owncloud/client/issues/8349
