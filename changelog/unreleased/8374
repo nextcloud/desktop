@@ -1,0 +1,6 @@
+Change: Include full os version in the about dialog
+
+We now include the os version in the about dialog, this might help us to faster
+pin down os related issues.
+
+https://github.com/owncloud/client/pull/8374

@@ -363,17 +363,18 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
     }
 #endif
     return QCoreApplication::translate("ownCloudTheme::aboutVersions()",
-        "%1 %2 %3 %4%8"
+        "%1 %2 %3%8"
         "%9"
-        "Libraries Qt %5, %6%8"
-        "Using virtual files plugin: %7%8")
+        "Libraries Qt %4, %5%8"
+        "Using virtual files plugin: %6%8"
+        "%7")
         .arg(appName(),
             _version,
-            QStringLiteral(__DATE__),
-            QStringLiteral(__TIME__),
+            QStringLiteral(__DATE__ " " __TIME__),
             qtVersionString,
             QSslSocket::sslLibraryVersionString(),
             Vfs::modeToString(bestAvailableVfsMode()),
+            QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion(),
             br,
             gitUrl);
 }
