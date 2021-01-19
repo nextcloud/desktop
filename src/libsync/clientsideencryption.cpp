@@ -979,16 +979,6 @@ void ClientSideEncryption::slotRequestMnemonic()
     emit showMnemonic(_mnemonic);
 }
 
-bool ClientSideEncryption::hasPrivateKey() const
-{
-    return !_privateKey.isNull();
-}
-
-bool ClientSideEncryption::hasPublicKey() const
-{
-    return !_publicKey.isNull();
-}
-
 void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
 {
     // AES/GCM/NoPadding,

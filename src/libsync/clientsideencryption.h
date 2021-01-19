@@ -74,8 +74,6 @@ public:
     void initialize(const AccountPtr &account);
 
 private:
-    bool hasPrivateKey() const;
-    bool hasPublicKey() const;
     void generateKeyPair(const AccountPtr &account);
     void generateCSR(const AccountPtr &account, EVP_PKEY *keyPair);
     void encryptPrivateKey(const AccountPtr &account);
