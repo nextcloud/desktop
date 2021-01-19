@@ -9,11 +9,14 @@ Summary
 -------
 
 * Bugfix - SQLite wal file grows to several gigabyte: [#7646](https://github.com/owncloud/client/issues/7646)
+* Bugfix - Mac tray icon is size: [#8149](https://github.com/owncloud/client/issues/8149)
 * Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
 * Bugfix - Don't recommend non default sync option: [#8317](https://github.com/owncloud/client/issues/8317)
+* Bugfix - Detect file name clash with VirtualFiles enabled: [#8323](https://github.com/owncloud/client/issues/8323)
 * Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
+* Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 
 Details
@@ -24,6 +27,12 @@ Details
    We fixed a bug where the SQLite wal file growed until the client was quit.
 
    https://github.com/owncloud/client/issues/7646
+
+* Bugfix - Mac tray icon is size: [#8149](https://github.com/owncloud/client/issues/8149)
+
+   We backported a change to Qt 5.12.10 which fixed the scaling of the system tray icon on Big Sur.
+
+   https://github.com/owncloud/client/issues/8149
 
 * Bugfix - Fix potential crashes with the remove all dialog: [#8314](https://github.com/owncloud/client/pull/8314)
 
@@ -37,6 +46,12 @@ Details
    We fixed a bug where sync all was still recommended on Windows
 
    https://github.com/owncloud/client/issues/8317
+
+* Bugfix - Detect file name clash with VirtualFiles enabled: [#8323](https://github.com/owncloud/client/issues/8323)
+
+   We fixed an issue where the file name clash detection was not run with VirtualFiles enabled.
+
+   https://github.com/owncloud/client/issues/8323
 
 * Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
 
@@ -58,6 +73,12 @@ Details
 
    https://github.com/owncloud/client/pull/8293
    https://github.com/owncloud/client/pull/8253
+
+* Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
+
+   We updated Qt from 5.12.9 to 5.12.10. We updated OpenSSL from 1.1.1g to 1.1.1i.
+
+   https://github.com/owncloud/client/issues/8349
 
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 
