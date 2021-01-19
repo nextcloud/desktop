@@ -21,7 +21,7 @@ Icon=@APPLICATION_EXECUTABLE@
 
 
 # Translations
-Icon[sc]=@APPLICATION_ICON_NAME@
-Name[sc]=@APPLICATION_NAME@ cliente sicronizadore de desktop 
-Comment[sc]=@APPLICATION_NAME@ cliente de sincronizatzione desktop
+Icon[sc]=@NÙMENE_ICONA_APLICATZIONE@
+Name[sc]=@NÙMENE_APLICATZIONE@ cliente sicronizadore de iscrivania
+Comment[sc]=@NÙMENE_APLICATZIONE@ cliente de sincronizatzione iscrivania
 GenericName[sc]=Sincronizadore de cartellas
