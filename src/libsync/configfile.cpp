@@ -885,10 +885,10 @@ void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)
 bool ConfigFile::monoIcons() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    // On Mac and Linux we want bw by default
-    bool monoDefault = QByteArrayLiteral("Nextcloud") == QByteArrayLiteral(APPLICATION_NAME);
-#ifdef Q_OS_WIN
-    monoDefault = false;
+    bool monoDefault = false; // On Mac we want bw by default
+#ifdef Q_OS_MAC
+    // OEM themes are not obliged to ship mono icons
+    monoDefault = (0 == (strcmp("ownCloud", APPLICATION_NAME)));
 #endif
     return settings.value(QLatin1String(monoIconsC), monoDefault).toBool();
 }
