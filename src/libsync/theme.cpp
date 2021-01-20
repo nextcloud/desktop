@@ -52,6 +52,11 @@ QUrl imagePathToUrl(const QString &imagePath)
     }
 }
 
+bool shouldPreferSvg()
+{
+    return QByteArray(APPLICATION_ICON_SET).toUpper() == QByteArrayLiteral("SVG");
+}
+
 }
 
 namespace OCC {
@@ -533,7 +538,17 @@ QColor Theme::wizardHeaderBackgroundColor() const
 QPixmap Theme::wizardHeaderLogo() const
 {
 #ifdef APPLICATION_WIZARD_USE_CUSTOM_LOGO
-   return QPixmap(hidpiFileName(":/client/theme/colored/wizard_logo.png"));
+    const auto useSvg = shouldPreferSvg();
+    const auto logoBasePath = QStringLiteral(":/client/theme/colored/wizard_logo");
+    if (useSvg) {
+        const auto maxHeight = 64;
+        const auto maxWidth = 2 * maxHeight;
+        const auto icon = QIcon(logoBasePath + ".svg");
+        const auto size = icon.actualSize(QSize(maxWidth, maxHeight));
+        return icon.pixmap(size);
+    } else {
+        return QPixmap(hidpiFileName(logoBasePath + ".png"));
+    }
 #else
     return applicationIcon().pixmap(64);
 #endif
