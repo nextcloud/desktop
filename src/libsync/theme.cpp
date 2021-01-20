@@ -52,6 +52,11 @@ QUrl imagePathToUrl(const QString &imagePath)
     }
 }
 
+bool shouldPreferSvg()
+{
+    return QByteArray(APPLICATION_ICON_SET).toUpper() == QByteArrayLiteral("SVG");
+}
+
 }
 
 namespace OCC {
@@ -187,10 +192,11 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
             return QPixmap(pixmapName);
         };
 
-        const auto sizes = isBranded() ? QVector<int>{ 16, 22, 32, 48, 64, 128, 256, 512, 1024 }
-                                       : QVector<int>{ 16, 32, 64, 128, 256 };
+        const auto useSvg = shouldPreferSvg();
+        const auto sizes = useSvg ? QVector<int>{ 16, 32, 64, 128, 256 }
+                                  : QVector<int>{ 16, 22, 32, 48, 64, 128, 256, 512, 1024 };
         for (int size : sizes) {
-            auto px = isBranded() ? loadPixmap(size) : createPixmapFromSvg(size);
+            auto px = useSvg ? createPixmapFromSvg(size) : loadPixmap(size);
             if (px.isNull()) {
                 continue;
             }
@@ -219,20 +225,25 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray) const
 QString Theme::themeImagePath(const QString &name, int size, bool sysTray) const
 {
     const auto flavor = (!isBranded() && sysTray) ? systrayIconFlavor(_mono) : QLatin1String("colored");
+    const auto useSvg = shouldPreferSvg();
 
     // branded client may have several sizes of the same icon
-    const QString filePath = (isBranded() && size > 0)
-            ? QString::fromLatin1(":/client/theme/%1/%2-%3").arg(flavor).arg(name).arg(size)
-            : QString::fromLatin1(":/client/theme/%1/%2").arg(flavor).arg(name);
+    const QString filePath = (useSvg || size <= 0)
+            ? QString::fromLatin1(":/client/theme/%1/%2").arg(flavor).arg(name)
+            : QString::fromLatin1(":/client/theme/%1/%2-%3").arg(flavor).arg(name).arg(size);
 
-    const QString brandedImagePath = filePath + ".png";
-
-    // only return branded .png image path if it exists, or fall-back to non-branded .svg otherwise
-    if (isBranded() && QFile::exists(brandedImagePath)) {
-        return brandedImagePath;
+    const QString svgPath = filePath + ".svg";
+    if (useSvg) {
+        return svgPath;
     }
 
-    return filePath + ".svg";
+    const QString pngPath = filePath + ".png";
+    // Use the SVG as fallback if a PNG is missing so that we get a chance to display something
+    if (QFile::exists(pngPath)) {
+        return pngPath;
+    } else {
+        return svgPath;
+    }
 }
 
 QIcon Theme::uiThemeIcon(const QString &iconName, bool uiHasDarkBg) const
@@ -533,7 +544,17 @@ QColor Theme::wizardHeaderBackgroundColor() const
 QPixmap Theme::wizardHeaderLogo() const
 {
 #ifdef APPLICATION_WIZARD_USE_CUSTOM_LOGO
-   return QPixmap(hidpiFileName(":/client/theme/colored/wizard_logo.png"));
+    const auto useSvg = shouldPreferSvg();
+    const auto logoBasePath = QStringLiteral(":/client/theme/colored/wizard_logo");
+    if (useSvg) {
+        const auto maxHeight = 64;
+        const auto maxWidth = 2 * maxHeight;
+        const auto icon = QIcon(logoBasePath + ".svg");
+        const auto size = icon.actualSize(QSize(maxWidth, maxHeight));
+        return icon.pixmap(size);
+    } else {
+        return QPixmap(hidpiFileName(logoBasePath + ".png"));
+    }
 #else
     return applicationIcon().pixmap(64);
 #endif
