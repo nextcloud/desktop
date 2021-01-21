@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao remover &apos;%1&apos;: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -283,7 +283,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="611"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Desativar suporte</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
@@ -419,7 +419,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation> (experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="492"/>
@@ -810,7 +810,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="265"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Diretoria não encontrada: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="296"/>
@@ -1389,7 +1389,7 @@ Se foi acidental e decidir manter os seus ficheiros, eles serão sincronizados n
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="485"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation> (experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="519"/>
@@ -2172,7 +2172,7 @@ poderá pedir por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation> (experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="89"/>
