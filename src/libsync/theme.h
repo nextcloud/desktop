@@ -104,6 +104,7 @@ public:
         BrandedIconWithFallbackToVanillaIcon,
         VanillaIcon
     };
+
     /**
       * get an sync state icon
       */
@@ -118,7 +119,7 @@ public:
      * Whether use the dark icon theme
      * The function also ensures the theme supports the dark theme
      */
-    bool isUsingDarkTheme(IconType fallbackType = IconType::BrandedIcon) const;
+    bool isUsingDarkTheme() const;
 #endif
 
     virtual QString statusHeaderText(SyncResult::Status) const;
@@ -188,7 +189,7 @@ public:
 
 #ifndef TOKEN_AUTH_ONLY
     /** colored, white or black */
-    QString systrayIconFlavor(bool mono, bool sysTrayMenuVisible = false) const;
+    QString systrayIconFlavor(IconType type, bool mono, bool sysTrayMenuVisible = false) const;
 
     /**
      * Override to use a string or a custom image name.
@@ -406,10 +407,12 @@ public:
      */
     virtual bool enableExperimentalFeatures() const;
 
+    // whether or not a theme is available
+    bool hasTheme(IconType type, const QString &theme) const;
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
-    static bool hasTheme(const QString &theme);
 #endif
     Theme();
 
@@ -423,8 +426,10 @@ private:
     static Theme *_instance;
     bool _mono;
 #ifndef TOKEN_AUTH_ONLY
-    bool _hasDarkColoredTheme = hasTheme(QStringLiteral("dark"));
-    mutable QHash<QString, QIcon> _iconCache;
+    // <is vanilla, theme name>
+    mutable QMap<QPair<bool, QString>, bool> _themeCache;
+
+    mutable QMap<QString, QIcon> _iconCache;
 #endif
 };
 }

@@ -38,10 +38,41 @@
 #endif
 
 namespace {
+QString vanillaThemePath()
+{
+    return QStringLiteral(":/client/ownCloud/theme");
+}
+
+QString brandThemePath()
+{
+    return QStringLiteral(":/client/" APPLICATION_SHORTNAME "/theme");
+}
+
+QString darkTheme()
+{
+    return QStringLiteral("dark");
+}
+
+QString coloredTheme()
+{
+    return QStringLiteral("colored");
+}
+
+QString whiteTheme()
+{
+    return QStringLiteral("white");
+}
+
+QString blackTheme()
+{
+    return QStringLiteral("black");
+}
+
 constexpr bool strings_equal(char const *a, char const *b)
 {
     return *a == *b && (*a == '\0' || strings_equal(a + 1, b + 1));
 }
+
 constexpr bool isVanilla()
 {
     // TODO: c++17 stringview
@@ -137,12 +168,11 @@ QIcon Theme::aboutIcon() const
     return applicationIcon();
 }
 
-bool Theme::isUsingDarkTheme(IconType type) const
+bool Theme::isUsingDarkTheme() const
 {
-    if (!_hasDarkColoredTheme && type != IconType::VanillaIcon) {
-        return false;
-    }
-    return QPalette().base().color().lightnessF() <= 0.5;
+    //TODO: replace by a command line switch
+    static bool forceDark = qEnvironmentVariableIsSet("OWNCLOUD_FORCE_DARK_MODE");
+    return forceDark || QPalette().base().color().lightnessF() <= 0.5;
 }
 /*
  * helper to load a icon from either the icon theme the desktop provides or from
@@ -150,18 +180,19 @@ bool Theme::isUsingDarkTheme(IconType type) const
  */
 QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisible, IconType iconType) const
 {
+    // prevent recusion
     const bool useCoreIcon = (iconType == IconType::VanillaIcon) || isVanilla();
     QString flavor;
     if (sysTray) {
-        flavor = systrayIconFlavor(_mono, sysTrayMenuVisible);
+        flavor = systrayIconFlavor(iconType, _mono, sysTrayMenuVisible);
     } else {
-        if (isUsingDarkTheme(iconType)) {
-            flavor = QStringLiteral("dark");
+        if (isUsingDarkTheme() && hasTheme(iconType, darkTheme())) {
+            flavor = darkTheme();
         } else {
-            flavor = QStringLiteral("colored");
+            flavor = coloredTheme();
         }
     }
-    const QString path = useCoreIcon ? QStringLiteral(":/client/ownCloud/theme") : QStringLiteral(":/client/%1/theme").arg(appName());
+    const QString path = useCoreIcon ? vanillaThemePath() : brandThemePath();
     const QString key = name + QLatin1Char(',') + flavor;
     QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
     if (cached.isNull()) {
@@ -210,17 +241,26 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
     return cached;
 }
 
-bool Theme::hasTheme(const QString &theme)
+bool Theme::hasTheme(IconType type, const QString &theme) const
 {
-    return QFileInfo(QStringLiteral(":/client/" APPLICATION_SHORTNAME "/theme/%1/").arg(theme)).isDir();
+    const auto key = qMakePair(type != IconType::VanillaIcon, theme);
+    auto it = _themeCache.find(key);
+    if (it == _themeCache.end()) {
+        bool found = QFileInfo(QStringLiteral("%1/%2/").arg(type == IconType::VanillaIcon ? vanillaThemePath() : brandThemePath(), theme)).isDir();
+        if (!found && type == IconType::BrandedIconWithFallbackToVanillaIcon) {
+            found = hasTheme(IconType::VanillaIcon, theme);
+        }
+        return _themeCache[key] = found;
+    }
+    return it.value();
 }
 
-QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
+QString Theme::systrayIconFlavor(IconType type, bool mono, bool sysTrayMenuVisible) const
 {
     Q_UNUSED(sysTrayMenuVisible)
     QString flavor;
     if (mono) {
-        flavor = Utility::hasDarkSystray() ? QStringLiteral("white") : QStringLiteral("black");
+        flavor = Utility::hasDarkSystray() ? whiteTheme() : blackTheme();
 
 #ifdef Q_OS_MAC
         if (sysTrayMenuVisible) {
@@ -229,7 +269,7 @@ QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
 #endif
     } else {
         // we have a dark sys tray and the theme has support for that
-        flavor = (Utility::hasDarkSystray() && _hasDarkColoredTheme) ? QStringLiteral("dark") : QStringLiteral("colored");
+        flavor = (Utility::hasDarkSystray() && hasTheme(type, darkTheme())) ? darkTheme() : coloredTheme();
     }
     return flavor;
 }
@@ -303,7 +343,7 @@ bool Theme::systrayUseMonoIcons() const
 
 bool Theme::monoIconsAvailable() const
 {
-    return hasTheme(systrayIconFlavor(true));
+    return hasTheme(IconType::BrandedIcon, systrayIconFlavor(IconType::BrandedIcon, true));
 }
 
 QString Theme::updateCheckUrl() const

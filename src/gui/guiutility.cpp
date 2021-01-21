@@ -105,7 +105,7 @@ QIcon Utility::getCoreIcon(const QString &icon_name)
     if (icon_name.isEmpty()) {
         return {};
     }
-    const QString path = Theme::instance()->isUsingDarkTheme() ? QStringLiteral("dark") : QStringLiteral("light");
+    const QString path = (Theme::instance()->isUsingDarkTheme() && Theme::instance()->hasTheme(Theme::IconType::VanillaIcon, QStringLiteral("dark"))) ? QStringLiteral("dark") : QStringLiteral("light");
     const QIcon icon(QStringLiteral(":/client/resources/%1/%2").arg(path, icon_name));
     Q_ASSERT(!icon.isNull());
     return icon;
