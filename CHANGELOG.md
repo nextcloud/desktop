@@ -16,6 +16,7 @@ Summary
 * Bugfix - Remove stray placeholders: [#8326](https://github.com/owncloud/client/issues/8326)
 * Change - Don't ask the user to switch to http: [#8231](https://github.com/owncloud/client/issues/8231)
 * Change - Remove support for http redirects: [#8293](https://github.com/owncloud/client/pull/8293)
+* Change - Ignore the desktop.ini file in every directory, not only in top dir: [#8298](https://github.com/owncloud/client/issues/8298)
 * Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
 * Change - Add support for dynamic client registration with OIDC: [#8350](https://github.com/owncloud/client/pull/8350/)
 * Change - Include full os version in the about dialog: [#8374](https://github.com/owncloud/client/pull/8374)
@@ -74,6 +75,14 @@ Details
 
    https://github.com/owncloud/client/pull/8293
    https://github.com/owncloud/client/pull/8253
+
+* Change - Ignore the desktop.ini file in every directory, not only in top dir: [#8298](https://github.com/owncloud/client/issues/8298)
+
+   The windows explorer files called desktop.ini were ignored only in the top sync dir so far. They
+   are now ignored in the sync in all directory levels of the file tree.
+
+   https://github.com/owncloud/client/issues/8298
+   https://github.com/owncloud/client/pull/8299
 
 * Change - Third party upgrades in distributed binaries: [#8349](https://github.com/owncloud/client/issues/8349)
 
