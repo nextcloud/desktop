@@ -4288,19 +4288,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="414"/>
+        <location filename="../src/libsync/theme.cpp" line="425"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 klient pro desktop&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="417"/>
-        <location filename="../src/libsync/theme.cpp" line="427"/>
+        <location filename="../src/libsync/theme.cpp" line="428"/>
+        <location filename="../src/libsync/theme.cpp" line="438"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Verze %1. Více informací získáte kliknutím &lt;a href=&apos;%2&apos;&gt;sem&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="431"/>
+        <location filename="../src/libsync/theme.cpp" line="442"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Toto vydání bylo poskytnuto %1&lt;/p&gt;</translation>
     </message>
@@ -5102,7 +5102,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="393"/>
+        <location filename="../src/libsync/theme.cpp" line="404"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Sestaveno z Git revize &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; na %3, %4 s použitím Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -5209,52 +5209,52 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="77"/>
+        <location filename="../src/libsync/theme.cpp" line="82"/>
         <source>Status undefined</source>
         <translation>Nedefinovaný stav</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="80"/>
+        <location filename="../src/libsync/theme.cpp" line="85"/>
         <source>Waiting to start sync</source>
         <translation>Čeká se na zahájení synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="83"/>
+        <location filename="../src/libsync/theme.cpp" line="88"/>
         <source>Sync is running</source>
         <translation>Synchronizace probíhá</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="86"/>
+        <location filename="../src/libsync/theme.cpp" line="91"/>
         <source>Sync Success</source>
         <translation>Synchronizace úspěšná</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="89"/>
+        <location filename="../src/libsync/theme.cpp" line="94"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Synchronizace úspěšná, některé soubory byly ignorovány.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="92"/>
+        <location filename="../src/libsync/theme.cpp" line="97"/>
         <source>Sync Error</source>
         <translation>Chyba synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="95"/>
+        <location filename="../src/libsync/theme.cpp" line="100"/>
         <source>Setup Error</source>
         <translation>Chyba nastavení</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="98"/>
+        <location filename="../src/libsync/theme.cpp" line="103"/>
         <source>Preparing to sync</source>
         <translation>Připravuje se na synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="101"/>
+        <location filename="../src/libsync/theme.cpp" line="106"/>
         <source>Aborting …</source>
         <translation>Přerušuje se…</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="104"/>
+        <location filename="../src/libsync/theme.cpp" line="109"/>
         <source>Sync is paused</source>
         <translation>Synchronizace pozastavena</translation>
     </message>

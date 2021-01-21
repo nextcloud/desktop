@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Roskakoriin ei voida luoda kansioita</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
@@ -112,7 +112,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="167"/>
         <source>Error removing &apos;%1&apos;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Virhe poistaessa kohdetta &apos;%1&apos;: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="183"/>
@@ -697,12 +697,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="146"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Lopeta</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="147"/>
         <source>Continue</source>
-        <translation type="unfinished"/>
+        <translation>Jatka</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="207"/>
@@ -1269,17 +1269,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1244"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Poistetaanko kaikki tiedostot?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1248"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Poista kaikki tiedostot</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1249"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Pidä tiedostot</translation>
     </message>
 </context>
 <context>
@@ -1678,7 +1678,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="512"/>
         <source> (experimental)</source>
-        <translation type="unfinished"/>
+        <translation> (kokeellinen)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
@@ -1783,12 +1783,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="157"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>vakaa</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="162"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="189"/>
@@ -4272,19 +4272,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="414"/>
+        <location filename="../src/libsync/theme.cpp" line="425"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1-työpöytäsovellus&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="417"/>
-        <location filename="../src/libsync/theme.cpp" line="427"/>
+        <location filename="../src/libsync/theme.cpp" line="428"/>
+        <location filename="../src/libsync/theme.cpp" line="438"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Versio %1. Lisätietoja on saatavilla napsauttamalla &lt;a href=&apos;%2&apos;&gt;tästä&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="431"/>
+        <location filename="../src/libsync/theme.cpp" line="442"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -5086,7 +5086,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="393"/>
+        <location filename="../src/libsync/theme.cpp" line="404"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -5193,52 +5193,52 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="77"/>
+        <location filename="../src/libsync/theme.cpp" line="82"/>
         <source>Status undefined</source>
         <translation>Tila on määrittelemätön.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="80"/>
+        <location filename="../src/libsync/theme.cpp" line="85"/>
         <source>Waiting to start sync</source>
         <translation>Odotetaan synkronoinnin käynnistymistä</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="83"/>
+        <location filename="../src/libsync/theme.cpp" line="88"/>
         <source>Sync is running</source>
         <translation>Synkronointi meneillään</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="86"/>
+        <location filename="../src/libsync/theme.cpp" line="91"/>
         <source>Sync Success</source>
         <translation>Synkronointi valmistui</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="89"/>
+        <location filename="../src/libsync/theme.cpp" line="94"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Synkronointi onnistui, jotkin tiedostot ohitettiin.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="92"/>
+        <location filename="../src/libsync/theme.cpp" line="97"/>
         <source>Sync Error</source>
         <translation>Synkronointivirhe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="95"/>
+        <location filename="../src/libsync/theme.cpp" line="100"/>
         <source>Setup Error</source>
         <translation>Asetusvirhe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="98"/>
+        <location filename="../src/libsync/theme.cpp" line="103"/>
         <source>Preparing to sync</source>
         <translation>Valmistaudutaan synkronointiin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="101"/>
+        <location filename="../src/libsync/theme.cpp" line="106"/>
         <source>Aborting …</source>
         <translation>Keskeytetään ...</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="104"/>
+        <location filename="../src/libsync/theme.cpp" line="109"/>
         <source>Sync is paused</source>
         <translation>Synkronointi on keskeytetty</translation>
     </message>
