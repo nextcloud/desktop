@@ -1,0 +1,5 @@
+Bugfix: Support dark theme with branded client and vanilla icons
+
+We fixed a bug where the dark vanilla icons where used with a branded client.
+
+https://github.com/owncloud/enterprise/issues/4363
