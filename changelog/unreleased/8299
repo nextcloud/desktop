@@ -1,4 +1,4 @@
-Change - Ignore the desktop.ini file in every directory, not only in top dir
+Change: Ignore the desktop.ini file in every directory, not only in top dir
 
 The windows explorer files called desktop.ini were ignored only in the top 
 sync dir so far. They are now ignored in the sync in all directory levels 
